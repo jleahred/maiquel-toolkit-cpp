@@ -1,0 +1,112 @@
+== Stats
+
+
+
+
+
+[jle_temp_and_run]
+++++++++++++++++++++++++
+run=[('bash mtk_generate_stats.sh', 'mtk_stats.txt', 'wt')]
+print ''
+
+file_name='mtk_generate_stats.sh'
+
+echo 'Code FILES::'
+echo '+'
+echo '|=========================='
+
+echo '| # files (non externals) | '
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm |  grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | wc -l
+
+echo '| # external files  | '
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp | egrep  '/fb/|/yaml/|/pcre/' | wc -l
+
+
+echo '| # total files  | '
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp  -or -name *.msg -or -name *.fsm | wc -l
+
+
+echo '|=========================='
+
+
+echo 'Code LINES::'
+echo '+'
+echo '|=========================='
+
+echo '| # lines (non externals) | '
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | xargs cat | wc -l
+
+
+echo '| # external lines  | '
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp | egrep  '/fb/|/yaml/|/pcre/' | xargs cat | wc -l
+
+
+echo '|=========================='
+
+
+echo ; echo
+
+echo 'BIGEST files::'
+echo '+'
+echo '--------------'
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | xargs wc -l | sort -nr -k1 | head -15
+
+echo '--------------'
+
+
+
+echo 'DOCUMENTATION::'
+echo '+'
+echo '|=========================='
+
+echo '| # files | '
+find {docdir}/../doc.adoc | grep -v  *~ | wc -l
+
+echo '| # lines  | '
+find {docdir}/../doc.adoc | grep -v  *~ | xargs cat | wc -l
+
+echo '|=========================='
+
+
+echo 'EXAMPLES::'
+echo '+'
+echo '|=========================='
+
+echo '| # files  | '
+find {docdir}/../../examples/ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm| wc -l
+
+echo '| # lines  | '
+find {docdir}/../../examples/ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm| xargs cat | wc -l
+
+echo '|=========================='
+
+
+
++++++++++++++++++++++++++
+
+include::/tmp/adoc/mtk_stats.txt[]
+
+
+
+
+=== Versions changes
+
+
+[jle_temp_and_run]
+++++++++++++++++++++++++
+run=[('bash mtk_generate_stats_versions.sh', 'mtk_stats_versions.txt', 'wt')]
+print ''
+
+file_name='mtk_generate_stats_versions.sh'
+
+
+cd {docdir}
+echo '-------------'
+for tags in $(prev_ver="HEAD"; for t in $(git tag | sort -r | grep ^[0-9] | head -4) ; do echo $t..$prev_ver; prev_ver=$t ; done ) ; do echo ; echo $tags -------------------------  ; git diff $tags --stat | sort -rt'|' -k2 -g  | grep src/ | grep -v /doc.muse/ ; done 
+echo '-------------'
+
+
+
++++++++++++++++++++++++++
+
+include::/tmp/adoc/mtk_stats_versions.txt[]

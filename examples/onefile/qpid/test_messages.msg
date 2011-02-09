@@ -1,0 +1,1 @@
+../../../tools/src/build_msg/doc/examples/ex1/test_messages.msg

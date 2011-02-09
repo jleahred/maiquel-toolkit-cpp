@@ -1,0 +1,268 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= emarket
+
+
+== DFD emarket
+
+.DFD
+["graphviz", "emarket_dfd.png"]
+-----------
+digraph dfd0_graph {
+ rankdir=LR;
+ nodesep=0.3
+ ranksep = 1.5
+ // Nodos
+ node [fontsize=16];
+ CLIENT_out [label="\n\nC\n\nL\n\nI\n\nE\n\nN\n\nT\n\n" shape=box height=4];
+ emarket [label=" emarket " shape=circle height=3]
+ CLIENT_in [label="\n\nC\n\nL\n\nI\n\nE\n\nN\n\nT\n\n" shape=box height=4];
+ // Conectores
+ edge [fontsize=12];
+
+ CLIENT_out -> emarket [label = "rq_nw" color=red];
+ CLIENT_out -> emarket [label = "rq_md" color=red];
+ CLIENT_out -> emarket [label = "rq_cc" color=red];
+
+ CLIENT_out -> emarket [label = "rq_prod_list" color=red];
+ CLIENT_out -> emarket [label = "rq_init_prices_best" color=red];
+ CLIENT_out -> emarket [label = "rq_init_prices_queue" color=red];
+
+
+emarket -> CLIENT_in   [label = "cf_xx" color=red];
+
+emarket -> CLIENT_in   [label = "rj_xx" color=red];
+
+
+emarket -> CLIENT_in   [label = "cf_ex" color=red];
+
+emarket -> CLIENT_in   [label = "prices" color=red];
+emarket -> CLIENT_in   [label = "cf_prod_list" color=red];
+emarket -> CLIENT_in   [label = "cf_init_prices_best" color=red];
+emarket -> CLIENT_in   [label = "cf_init_prices_queue" color=red];
+
+
+}
+-----
+
+
+.DFD
+["graphviz", "dfd0.png"]
+-----------
+digraph dfd0_graph {
+
+node [shape=box width=1.7] CLIENT config;
+node [shape=circle, width=1.5] book_ord check_rq;
+
+CLIENT -> check_rq [label=rq_xx];
+CLIENT -> check_rq [label=rq_init_prices_xxx color=red];
+
+check_rq -> book_ord [label=oms_rq_xx];
+check_rq -> CLIENT [label=rj_xx color=red];
+check_rq -> book_ord [label=rq_init_prices_xxx color=red];
+
+order -> book_ord [label=add_order]
+order -> book_ord [label=del_order]
+order -> book_ord [label=modif_order]
+order -> book_ord [label=check_execs]
+order -> book_ord [label=price_update color=red]
+
+book_ord -> order [label=cf_ex]
+book_ord -> order [label=oms_rq_xx]
+
+book_ord -> CLIENT [label=prices_xxx color=red]
+
+book_ord -> CLIENT [label=init_prices_xxx color=red]
+
+order -> CLIENT [label=cf_xx]
+order -> CLIENT [label=rj_xx]
+order -> CLIENT [label=cf_ex]
+
+config -> check_rq [label=products color=red]
+
+}
+-----
+
+
+
+== Sequence
+
+.rq_nw
+["graphviz", "emarket_sec_rq_nw2.png"]
+-----------
+digraph dfd0_graph {
+
+ CLIENT [label=CLIENT, shape=box];
+ CLIENT2 [label=CLIENT, shape=box];
+ CLIENT3 [label=CLIENT, shape=box];
+ order [label=order]
+ order2 [label=order]
+ conect1[shape=diamond,style=filled,label="",height=.1,width=.1]
+
+
+ CLIENT -> check_rq [label = "rq_nw"];
+
+ check_rq -> ord_book [label = "oms_rq_nw"];
+ ord_book->order [label = "oms_rq_nw"];
+
+ order -> conect1
+ order -> CLIENT2 [label = "rj_nw"];
+ ord_book__add [label = ord_book ]
+ conect1 -> ord_book__add [label = "1.- add_book"];
+ conect1 -> CLIENT2 [label = "2.- cf_nw"];
+
+ conect1 -> ord_book__check_ex [label = "3.- check_executions"];
+
+ ord_book__pu [label=ord_book]
+ conect1 -> ord_book__pu [label = "4.- prices update"];
+
+ ord_book__check_ex [label = ord_book ]
+ ord_book__check_ex -> order2 [label = "cf execs"];
+
+ order2 -> CLIENT3 [label = "cf_ex"];
+
+ CLIENT4 [label=CLIENT, shape=box];
+ ord_book__pu-> CLIENT4 [label = "prices update"];
+
+}
+-----
+
+.rq_md
+["graphviz", "emarket_sec_rq_md2.png"]
+-----------
+digraph dfd0_graph {
+
+ CLIENT [label=CLIENT, shape=box];
+ CLIENT2 [label=CLIENT, shape=box];
+ CLIENT3 [label=CLIENT, shape=box];
+ order [label=order]
+ order2 [label=order]
+ conect1[shape=diamond,style=filled,label="",height=.1,width=.1]
+
+
+ CLIENT -> check_rq [label = "rq_md"];
+
+ check_rq -> ord_book [label = "oms_rq_md"];
+ ord_book->order [label = "oms_rq_md"];
+
+ order -> conect1
+ order -> CLIENT2 [label = "rj_md"];
+ ord_book__add [label = ord_book ]
+ conect1 -> ord_book__add [label = "1.- modif_book"];
+ conect1 -> CLIENT2 [label = "2.- cf_md"];
+
+ conect1 -> ord_book__check_ex [label = "3.- check_executions"];
+
+ ord_book__pu [label=ord_book]
+ conect1 -> ord_book__pu [label = "4.- prices update"];
+
+ ord_book__check_ex [label = ord_book ]
+ ord_book__check_ex -> order2 [label = "cf execs"];
+
+ order2 -> CLIENT3 [label = "cf_ex"];
+
+ CLIENT4 [label=CLIENT, shape=box];
+ ord_book__pu-> CLIENT4 [label = "prices update"];
+
+}
+-----
+
+
+.rq_cc
+["graphviz", "emarket_sec_rq_cc2.png"]
+-----------
+digraph dfd0_graph {
+
+ CLIENT [label=CLIENT, shape=box];
+ CLIENT2 [label=CLIENT, shape=box];
+ order [label=order]
+ conect1[shape=diamond,style=filled,label="",height=.1,width=.1]
+
+
+ CLIENT -> check_rq [label = "rq_cc"];
+
+ check_rq -> ord_book [label = "oms_rq_cc"];
+ ord_book->order [label = "oms_rq_cc"];
+
+ order -> conect1
+ order -> CLIENT2 [label = "rj_cc"];
+ ord_book__add [label = ord_book ]
+ conect1 -> ord_book__add [label = "1.- del_book"];
+ conect1 -> CLIENT2 [label = "2.- cf_cc"];
+
+ ord_book__pu [label=ord_book]
+ conect1 -> ord_book__pu [label = "3.- prices update"];
+
+ CLIENT4 [label=CLIENT, shape=box];
+ ord_book__pu-> CLIENT4 [label = "prices update"];
+
+}
+-----
+
+
+
+
+
+== Order
+* This is the kernel of the application
+* This is not a simple info container
+* It will keep information, check request, and will generate responses coordinating the job with order book
+* As you saw on diagrams, this object will control the flow and will generate messages in proper secuence
+* +oms_rq_xx+ message will add a field indicanting the reject reason and the order will send the reject to the client
+
+=== Flow control
+* The system is synchronous, therefore the flow control will be simplified +
+  i.e. it's imposible to receive two consecutive orders with no confirmation of previus
+
+
+==== Limit simple orders
+
+* Diagram
++
+.Orders LS status diagram
+["graphviz", "components_trading_o_ls.png"]
+-----------
+include::../src/ord_ls.dot[]
+------------
++
+* Definition
++
+.Full definition
+----
+include::../src/ord_ls.fsm[]
+----
++
+* Generated interfaz per order
++
+[source,{cpp}]
+.Order LS interfaz
+----
+include::../src/ord_ls.h[]
+----
+
+
+
+== Orders book
+
+* Here we will have all orders
+* An will be indexed by +ord_id+
+* We will have two queues per product with orders. One for bids, and another for asks
++
+.order_book interfaz
+[source,{cpp}]
+.Order LS interfaz
+----
+include::../src/orders_book.h[]
+----
+
+
+== Check_request
+
+* Here we will check the product code and precision on prices and quantity
+* We could also check filters and permisions here
+.order_book interfaz
++
+[source,{cpp}]
+.Check request interfaz
+----
+include::../src/check_request.h[]
+----

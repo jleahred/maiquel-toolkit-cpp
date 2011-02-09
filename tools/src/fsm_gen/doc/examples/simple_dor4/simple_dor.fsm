@@ -1,0 +1,129 @@
+//  DOR
+
+::INIT::
+    NAMESPACE='testing'
+    GENERATE_ON='generated'
+
+
+::INPUTS::
+    rq_key      (user : std::string)
+    rq_open     (user : std::string, pass_coded : std::string)
+    rq_close    (user : std::string, pass_coded : std::string)
+
+
+
+
+
+::OUTPUTS::
+    sig_opened        ()
+    sig_closed        ()
+    sig_generated_key       (key : std::string)
+    sig_alarm         (alarm : mtk::Alarm)   // <1>
+
+
+
+
+
+
+::COMMON_STATUS_INFO::
+      log : std::list<std::string> ({})    // <2>
+
+
+
+::STATUS::opened
+      opened_time : mtk::DateTime ({ mtk::dtNowLocal() })    //  <3>
+
+::STATUS::closed
+
+
+::STATUS::w_rq_open
+      key : std::string ({_})         //  <4>
+      [{                            //  <5>
+          std::cout << "w_rq_open"  << std::endl;  
+          ci->sig_generated_key.emit(key());
+      }]
+
+::STATUS::w_rq_close 
+      key : std::string       ({_})
+      key_again : std::string ({_key})   // <6>
+      [{ std::cout << "w_rq_close"  << std::endl;      }]
+
+
+
+
+
+
+::TRANSITIONS::
+
+
+//  these are the most relevant transitions to document
+
+closed       --   rq_key                                                -->  w_rq_open (generate_key(user))  // <7>
+
+w_rq_open    --   rq_open   && valid_key    /   open_dor, sig_opened    -->  opened
+w_rq_open    --   rq_open                   /   cout_invalid_key        -->  closed
+
+opened       --   rq_key                    /   COUT_RQK                -->  w_rq_close (generate_key(user))
+
+w_rq_close   --   rq_close  && valid_key    /   close_dor, sig_closed   -->  closed
+w_rq_close   --   rq_close                  /   cout_invalid_key        -->  opened
+
+
+//  next transitions are necessary in order to fill all the possibilities but are not necessary
+//  to understand the logic   <8>
+
+closed       --   rq_open      /   LOGIC_ERROR        ''>  closed
+closed       --   rq_close     /   LOGIC_ERROR        ''>  closed
+
+w_rq_open    --   rq_key       /   LOGIC_ERROR        ''>  closed
+w_rq_open    --   rq_close     /   LOGIC_ERROR        ''>  closed
+
+opened       --   rq_open      /   LOGIC_ERROR        ''>  opened
+opened       --   rq_close     /   LOGIC_ERROR        ''>  opened
+
+w_rq_close   --   rq_key       /   LOGIC_ERROR        ''>  opened
+w_rq_close   --   rq_open      /   LOGIC_ERROR        ''>  opened
+
+
+
+::MACROS::    // <9>
+     valid_key
+     [{
+         key() == "1111"
+     }]
+     
+    open_dor
+    [{
+        std::cout << "opening dor" << std::endl;
+        ci->__log.push_back( MTK_SS("open_door" << std::endl) );
+    }]
+
+    close_dor
+    [{
+        std::cout << "closing dor" << std::endl;
+        ci->__log.push_back( MTK_SS("close_dor" << std::endl) );
+    }]
+
+
+     sig_opened
+     [{
+        std::cout << "post action opened" << std::endl;
+        ci->sig_opened.emit();
+     }]
+  
+     sig_closed
+     [{
+        std::cout << "post action closeded" << std::endl;
+        ci->sig_closed.emit();
+     }]
+
+    COUT_RQK
+    [{
+        std::cout << "COUT_RQK" << std::endl;
+    }]
+
+
+    cout_invalid_key
+    [{
+        std::cout << "invalid key " << key()  << std::endl;
+    }]

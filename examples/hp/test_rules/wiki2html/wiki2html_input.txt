@@ -1,0 +1,48 @@
+Este es el TItulo
+
+! Header1
+! Header 1 dos
+!! Header 2
+AquI tenemos texto no wiki
+! Header 1
+Con un par de lIneas
+<nowiki>
+Ahora annadimos un
+no wiki con dos lIneas
+</nowiki>
+seguido de wikitext
+! Ahora ponemos una cabecera 1
+! Y otra cabecera 1
+Seguido de nada ! especial
+!! Y de una cabecera 2
+! asdfasd
+texto normal
+* bullet1
+* otro bullet del mismo nivel
+** Ahora con uno de bullet2
+** con otro en el mismo nivel
+* Y pasamos al nivel 1
+Y seguido **de** a ''algUn'' texto
+normalito
+Y ahora ponemos **negrita seguido de ''cursiva'' y quitamos negrita**
+Y ahora al revEs ''italica  con **negrita** dentro''
+Como fue ESTO
+* bullet1
+* otro bullet del mismo nivel
+** Ahora con uno de bullet2
+** con otro en el mismo nivel
+* Y pasamos al nivel 1
+
+asdfasdf dasf 
+----
+
+Y si no lo ponemos al principio quE pasa----adfasd
+Y para terminar le ponemos
+
+! **formato** a una ''cabecera'' como esta 
+Texto en **negrita
+varias lIneas** como estas
+
+Y ahora ponemos [[un enlace -> www.Alla.com ]] para probar
+
+FIIIIN

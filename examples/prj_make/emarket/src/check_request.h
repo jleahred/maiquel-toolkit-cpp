@@ -1,0 +1,38 @@
+#ifndef EMARKET_CHECK_REQUEST_H
+#define EMARKET_CHECK_REQUEST_H
+
+
+
+#include "components/trading/msg_trd_cli_ls.h"
+#include "components/trading/msg_trd_oms_rq.h"
+#include "support/signalslot.hpp"
+#include "mtk_qpid/mtk_qpid.hpp"
+
+
+class check_request : public mtk::SignalReceptor {
+typedef check_request CLASS_NAME;
+
+public:
+    //  in  cli -> check_request
+    void RQ_NW_LS(const mtk::trd::msg::RQ_NW_LS& rq);
+    void RQ_MD_LS(const mtk::trd::msg::RQ_MD_LS& rq);
+    void RQ_CC_LS(const mtk::trd::msg::RQ_CC_LS& rq);
+    
+    
+    // out -> book_orders
+    mtk::Signal<const mtk::trd::msg::oms_RQ_NW_LS&>   sig_oms_rq_nw;
+    mtk::Signal<const mtk::trd::msg::oms_RQ_MD_LS&>   sig_oms_rq_md;
+    mtk::Signal<const mtk::trd::msg::oms_RQ_CC_LS&>   sig_oms_rq_cc;
+
+	check_request();
+	~check_request();
+
+private:
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_NW_LS> > hqpid_rqnwls;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_MD_LS> > hqpid_rqmdls;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_CC_LS> > hqpid_rqccls;
+};
+
+
+
+#endif // EMARKET_CHECK_REQUEST_H

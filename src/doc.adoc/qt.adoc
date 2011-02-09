@@ -1,0 +1,64 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
+
+== Qt
+
+=== mtk integration with Qt (with example)
+
+* You have a minimun example at +examples/qt/ex_min_qt/+
+* It's necesary to add some lines on main.cpp and mainwindow.cpp and mainwindow.h
+* Here you have a +.pro+ file example
++
+.examples/qt/ex_min_qt/src/ex_min_qt.pro
+[source,{cpp}]
+-----
+include::../../examples/qt/ex_min_qt/src/ex_min_qt.pro[]
+-----
+<1> Path to +mtk/src+ for including files
+<2> Libraries to work with +mtk+ and +qpid+
++
+* To avoid the program stops with a non catched exception, we will add on +main.cpp+...
++
+.examples/qt/ex_min_qt/src/main.cpp
+[source,{cpp}]
+-----
+include::../../examples/qt/ex_min_qt/src/main.cpp[]
+-----
+<1> It will catch all exceptions
+<2> Catched exceptions will be notified with this signal
+<3> Instead of using +QApplication+, we will work with this class
+<4> And we will connect the signal to manage exceptions not catched by program
++
+* On +mainwindow+ we will sinchronize the +mtk:timer+ and we will control the exceptions and notifications generated processing +mtk::timers+
++
+.examples/qt/ex_min_qt/src/mainwindow.h
+[source,{cpp}]
+-----
+include::../../examples/qt/ex_min_qt/src/mainwindow.h[]
+-----
+<1> This class will call +mtk::timer+ and will control exceptions and alarm notifications
+<2> Exceptions and alarm notifications will be signaled with it
+<3> +MainWindow+ will receive signals (almos the exception and notifications configured previously and on +main.cpp+)
+<4> Connecting the alarm signal
++
+* And prepareng mtk on +mainwindow.cpp+
++
+.examples/qt/ex_min_qt/src/mainwindow.cpp
+[source,{cpp}]
+-----
+include::../../examples/qt/ex_min_qt/src/mainwindow.cpp[]
+-----
+<1> Generating and activating a timer to sinchronize wit +mtk::timer+
+<2> Checking +mtk::timers+
+<3> signaling alarms
+<4> Creating an instance of mtk timer and alarms control
+<5> And connecting the alarm signal
+
+
+=== Sending orders qt example
+
+.examples/qt/ex_send_order/src/mainwindow.cpp
+[source,{cpp}]
+-----
+include::../../examples/qt/ex_send_order/src/mainwindow.cpp[]
+-----

@@ -1,0 +1,26 @@
+== Qt Components
+
+
+
+[jle_temp_and_run]
++++++++++++++++++
+run=[ ("echo '--------'",'ls.txt', 'wt'), 
+      ("ls {docdir}/../../src/qt_components/src/ | grep .*\.h", 'ls.txt', 'at'),
+      ("echo '--------'",'ls.txt', 'at')]
+print ''
++++++++++++++++++
+
+.src/qt_components/src
+include::/tmp/adoc/ls.txt[]
+
+
+
+=== QOrderBook
+
+* Connected to order book component with a hook
+
+
+=== QEditOrder
+
+* It lets user to fill data for new orders or modifications
+

@@ -1,0 +1,172 @@
+== Sockets
+
+:cpp: {basebackend@docbook:c++:cpp}
+
+
+
+* Each socket will have a name +
+  This name will be provided on construction
+* This string, will be showed on all +Alarm+ messages
+* Compiling on windows requires the library +w2_32+
+
+=== Levels
+* Divided on tree levels
+** SO socket implementation level
+** Many strategies, locking, using singals, etc...
+** Server/Client level
+** Parsing messages level
++
+.Socket levels
+["graphviz", "socket_levels.png"]
+-------------
+digraph socket_levels
+{
+	// rankdir = LR;
+	client_server -> basic_sockets
+	//
+	message_parser    -> client_server
+	
+}
+-------------
++
+* Diferent levels can be combined "al gusto"
+* They are not precombined in order to avoid a combinatory explosion
+
+=== Sockets low level
+--
+* On this level we have the SO interfaz
+* Here we can choose:
+** Locking or not locking
+** With signals
+** A combination of both
+--
+tcp_base_socket::
+* Non locking easy socket
+
+tcp_base_socket_writelock::
+* Write locking socket
+
+
+=== Sockets server/client level
+
+tcp_client::
+* Small client
+
+tcp_server_mono::
+* Easy server working only with one client connection
+
+
+=== Socket parsing messages level
+--
+* They are examples for reference
+--
+
+tcp_pstringseparator::
+* It works with strings with a configurable delimiter
+
+tcp_pnbytes_size::
+* Two first bytes indicates the message size
+
+
+=== Combining sockets levels
+* We could need a non locked socket for a client, with messages as text with a delimiter
+* Or perhaps a server mono-conextion with locking write using binary messages with size indicator
+* Or a socket for text with delimiter, server one connextion managed with so signals
+* Or even other combinations
+* As you can see on next image, the combinations possibilities 
++
+.Socket combinations
+["graphviz", "socket_combinations.png"]
+-------------
+
+digraph socket_levels
+{
+	//rankdir = LR
+	tcp_client -> tcp_base_socket
+	tcp_client -> tcp_base_socket_writelock
+	tcp_server_mono -> tcp_base_socket
+	tcp_server_multi -> tcp_base_socket
+	tcp_server_mono -> tcp_base_socket_writelock
+	tcp_server_multi -> tcp_base_socket_writelock
+ 	tcp_stringseparator -> tcp_server_mono
+	tcp_stringseparator -> tcp_server_multi
+	tcp_p2bytes_size -> tcp_client
+	tcp_stringseparator -> tcp_client
+	tcp_p2bytes_size -> tcp_server_mono
+	tcp_p2bytes_size -> tcp_server_multi
+}
+-------------
++
+* We could try to solve it using supersockets with many configurable properties
+** It will generate interfaces partially used
+** Complex implementation
+** More dificult to use
+* With this kind of clasification, we could have handreds or thousands of classes to combine all options
+* Instead of creating all options before using it, the proposal is to pick funcionalities on each level, and create your own class with this combination of funcionalities
+* On next example, we have a combination of ++ string_separator, client, base_socket+
++
+[source,{cpp}]
+-----
+class tcp_client_stringseparator
+            :  public   idt::tcp_base_stringseparator<
+                            idt::tcp_client <idt::tcp_base_socket> >
+{
+    idt::non_copyable noncopy;
+public:
+    tcp_client_stringseparator(const std::string& _separator)
+            : idt::tcp_base_stringseparator<idt::tcp_client<idt::tcp_base_socket> >(_separator) {};
+
+};
+-----
++
+* Now, lets combine +string_separator, server_mono, write_lock+
++
+[source,{cpp}]
+-----
+class tcp_servermono_stringseparator :  public idt::tcp_base_stringseparator<idt::tcp_server_mono<idt::tcp_socket_writelock> >
+{
+    idt::non_copyable noncopy;
+public:
+tcp_servermono_stringseparator(const std::string& separator)
+            : idt::tcp_base_stringseparator<idt::tcp_server_mono<idt::tcp_socket_writelock> >(separator) {};
+};
+-----
++
+* This model lets us reuse code creating classes when we need it with the specific funcionality (combination of levels) avoiding the problem of super_complex_classes or combinatory explosion
+* The syntax to create our socket instance could be better +
+  We could try to simplify using macros (but it doesn't look necessary and practical)
+
+
+=== TCP Sockets examples
+
+==== Example1
+.ex_tcp_socket1.cpp
+[source,{cpp}]
+----
+include::../../examples/onefile/sockets/ex_tcp_socket1.cpp[]
+----
+
+==== Example2
+.ex_tcp_socket2.cpp
+[source,{cpp}]
+----
+include::../../examples/onefile/sockets/ex_tcp_socket2.cpp[]
+----
+
+
+==== Example3
+.ex_tcp_socket3.cpp
+[source,{cpp}]
+----
+include::../../examples/onefile/sockets/ex_tcp_socket3.cpp[]
+----
+
+
+
+=== UDP socket example
+
+.ex_udp_socket.cpp
+[source,{cpp}]
+----
+include::../../examples/onefile/sockets/ex_udp_socket.cpp[]
+----

@@ -1,0 +1,95 @@
+= MTK
+José Luis Esteban
+
+
+:cpp: {basebackend@docbook:c++:cpp}
+
+
+
+// compile: a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D __builds/
+
+
+
+
+//   B e f o r e    c o m p i l a t i o n . . .
+
+//   update VERSION file
+//   check document modifications  ****here****
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| lib version |  **
+include::../../VERSION[]
+**
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2010-11-13
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+<<<
+
+
+include::general.adoc[]
+
+include::support.adoc[]
+include::support2.adoc[]
+
+include::qpid.adoc[]
+
+
+include::sockets.adoc[]
+
+include::firebird.adoc[]
+
+include::yaml.adoc[]
+
+include::components/components.adoc[]
+
+
+include::qt.adoc[]
+
+include::qt_components.adoc[]
+
+
+
+:leveloffset: 1
+
+include::../../tools/src/fsm_gen/doc/fsm_gen.adoc[]
+include::../../tools/src/build_msg/doc/build_msg.adoc[]
+
+:leveloffset: 0
+
+
+
+include::projects_examples.adoc[]
+
+
+
+
+
+
+include::todo.adoc[]
+
+
+
+include::modifs.adoc[]
+
+include::stats.adoc[]
+

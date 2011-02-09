@@ -1,0 +1,421 @@
+[[fsm_gen,fsm_gen]]
+= FSM_GEN
+
+:cpp: {basebackend@docbook:c++:cpp}
+
+
+
+== Document info
+
+[width="75%", cols="1v, 2v" , options=""]
+|==========================================================
+| Writted by   |   José Luis Esteban +
+
+| Creation Date  |   2010-11-12
+
+| Revision Date |   
+
+| Generated |   {docdate} {doctime}
+
+| Version |   
+
+| Document name |   {docname}
+
+
+|========================================================
+
+== Document modifications
+
+[cols="1,6", options="header"]
+|====================================================================
+| Date | Desciption
+
+| 2010-11-12 | xxxx
+
+|==========================================================
+
+
+
+
+
+== Introduction
+
+* Starting with +fsm_gen dsl+, this script will generate a couple of files to use on your +cpp+ programs and a +dot+ diagram
+* The generated files are +RIIA+ designed
+* +fsm_gen dsl+ lets you to define a **F**inite **S**tate **M**achine in a declarative way
+* You will have to write +pre-actions, post-actions+, ++guards++ and +initializers+
+* This python script uses +dhp+ from +mtk/tools/bin+ to validate and parse the +fsm+ definition
+* Let's see an small example...
+* To run this tool
+** You have to create a symbolic link to +mtk/tools/bin/+ on current folder called +tools+
+** After that, you can call it with +tools/fsm_gen.py <files to compile>+
+** Or... ++find . -name \'*.fsm\'  |  xargs python tools/fsm_gen.py++
+
+
+== TODO
+include::todo.adoc[]
+
+
+
+== Simple DOR example   (DOR 1)
+
+* This is the ++fsm_gen dsl++ defining the finite state machine
++
+----
+include::examples/simple_dor/simple_dor.fsm[]
+----
++
+* ++fsm_gen++ will create two files to work on c++
++
+* Here it is the +class+ interface generated to use in your program
++
+[source,{cpp}]
+----
+include::examples/simple_dor/generated/simple_dor.h[]
+----
++
+* Here you have an example of filled +class+ in an small +main+
++
+[source,{cpp}]
+----
+include::examples/simple_dor/main.cpp[]
+----
++
+* The ++fsm_gen++ script will also generate a ++.dot++ file for ++graphviz++
++
+["graphviz", "simple_dor.png"]
+-----------
+include::examples/simple_dor/generated/simple_dor.dot[]
+------------
++
+[NOTE]
+The gray status indicates the initial status
+
+=== fsm_gen dsl explanation
+* This is a very simple example with no guards, few actions, no properties...
+--
+Sections::
+* The sections start with a line ++::SECTION_NAME::++ and end in next section name
++
+[NOTE]
+This is not fully true. +
+Sections starts with +SECION_NAME::+  and ends with +\n::+ +
+But looks like starting with +::SECION_NAME::+
++
+* Sections has to be in order
+
+INIT::
+* We can write some +python+ code.
+* This sections is ready to initialize some values (like for example, +NAMESPACE+) for +python+ script
+
+INPUTS::
+* Here we have the input information (aka events on +fsm+)
+* In this easy case, we don't have parameters
+* Inputs cannot have return value
+* In this case... +open+ will request the dor to open and +close+...
+
+OUTPUTS::
+* These are +signals+ (+mtk::signal<const xxx&>+) that will be fired by the +fsm+
+* In this case they don't have params
+* Obviously, we want to fire +sig_opened+ when the dor si opened and +sig_closed+ whe dor is closed. We have to fire them on +actions+ code to fill
+
+COMMON_STATUS_INFO::
+* Here we can put information (properties) that are common to all status
+* The compiler, will put this information in a +mtk::CountPtr+. Therefore information will not be copied
+* In this small example, we don't have properties
+
+
+STATUS::
+* We have to write a +::STATUS::+ section per status in our +fsm+
+* Each status, can have especific properties +
+  This is special interesting to work in +RIIA+ style
+
+
+TRANSITIONS::
+* Each line is a diferent +transition+
+* On left, we have the initial status
+* After +--+, we have the +input+ or event
+* After +/+ we have the +actions+
+* And last, after +-\->+ we have the final +status+
+* There are more posibilities and we will see them later (+guards+, +preactions+ and +postactions+)
++
+[NOTE]
+To make the diagram more clear, it's a good idea to hide some transitions +
+Transitions endind with +''>+ instead of +-\->+  will not be draw on diagram
+
+MACROS::
+* Here we can write C++ code for our actions or guards
+* If no macro is defined on +fsm+ file, the system will write the macro name with prefix +fsm_gen_+ on c++ code +
+  This lets you write the macros code on your program instead on fsm definition
+
+--
+
+
+
+== DOR example with key  (guards and input params)  (DOR 2)
+
+* Now, let's give a key to our dor +
+  In order to open or close the dor, you have to provide a valid key
+* This is the +fsm_gen dsl+ defining the finite state machine
++
+----
+include::examples/simple_dor2/simple_dor.fsm[]
+----
+<1> Input with *parameters*  (in this case one parameter of type +int+)
+<2> Equal to 1
+<3> Transition with *guard*. +
+    This transition will be executed if +guard+ returns +true+
+<4> This is the +else+ or +default+ for transition 3
+<5> This transiction will be executed when +guard+ returns +true+
+<6> Else of transition 5
++
+* Here you have an example of filled ++class++ in small main
++
+[source,{cpp}]
+----
+include::examples/simple_dor2/main.cpp[]
+----
+<1> Now +open+ requires a *param* (the key). +
+    In this case with wrong *param*
+<2> +open+ with valid *param*
+<3> +close+ with grong *param*
+<4> +close+ with valid *param*
++
+* _Remember_ The ++fsm_gen++ script will also generate a ++.dot++ file for ++graphviz++
++
+["graphviz", "simple_dor2.png"]
+-----------
+include::examples/simple_dor2/generated/simple_dor.dot[]
+------------
++
+[NOTE]
+The gray status indicates the initial status
+
+
+== DOR exmaple with postactions  (DOR 3)
+
+* We also can configure _postactions_ +
+  These actions will be executed after _status_ changes
++
+----
+include::examples/simple_dor3/simple_dor.fsm[]
+----
+<1> _pre_ and *post*  actions separated by comma
+<2> Only a *postaction*, empty _preaction_
++
+* Filling and using it
++
+[source,{cpp}]
+----
+include::examples/simple_dor3/main.cpp[]
+----
++
+* _Remember_ The ++fsm_gen++ script will also generate a ++.dot++ file for ++graphviz++
++
+["graphviz", "simple_dor3.png"]
+-----------
+include::examples/simple_dor3/generated/simple_dor.dot[]
+------------
++
+[NOTE]
+The gray status indicates the initial status
+
+
+== DOR with many features (DOR 4)
+
+* It's time to add a bit of complexity to our dor
+* Instead of require a simple password for each user, we will require the password codded with a key generated by dor
+* In this example we will introduce many features, sometimes not in best way to do things
++
+----
+include::examples/simple_dor4/simple_dor.fsm[]
+----
+<1> Output signal to notify alarms
+<2> Adding properties to all status
+<3> Adding property to specific status and initialization code
+<4> Adding property with sortcut to initialize from requiered param from status constructor
+<5> Adding code to constructor
+<6> Adding property with specific initialization (no sortcut)
+<7> Initializating status with method call
+<8> Using predefined +LOGIC_ERROR+ macro to fill all transitions
+<9> Macros definition
++
+* Constructor code +(4, 5)+, has to be at the end of +status+ definition
+* Look that +initializers+ are delimitied by +({ ... })+ and the +code+ is delimited by +[{ ... }]+
+* Filling and using it
++
+[source,{cpp}]
+----
+include::examples/simple_dor4/main.cpp[]
+----
++
+* _Remember_ The ++fsm_gen++ script will also generate a ++.dot++ file for ++graphviz++
+* All +LOGIC_ERROR+ transitions has been removed using +''>+
++
+["graphviz", "simple_dor4.png"]
+-----------
+include::examples/simple_dor4/generated/simple_dor.dot[]
+------------
++
+[NOTE]
+The gray status indicates the initial status
+
+
+== Error control
+
+LOGIC_ERROR::
+* You can handle easily all ilogical transitions with +LOGIC_ERROR+ macro
+* The system will allways generate +sig_alarm+ signal and +LOGIC_ERROR+ automatically
+* The macro +LOGIC_ERROR+ will emit +sig_alarm+ (therefore, if you use +LOGIC_ERROR+ macro, you will have to define this output)
+
+Exceptions::
+* The generated code, will catch all exceptions and will add status info before rethrowing the exception
+
+
+
+== Login access, more logical, less features (DOR 5)
+
+* There are not many diferences bettween a dor control and a login control
+* Usually, there is not necessary to apply all features
+* In this example, we aren't using +posactions+ (very dangerous)
++
+----
+include::examples/simple_dor5/simple_dor.fsm[]
+----
+<1> This is an optional initialization line +
+    It's mandatory when the first status (as +logout+) requieres extra parameters
++
+* Filling and using it
++
+[source,{cpp}]
+----
+include::examples/simple_dor5/main.cpp[]
+----
++
+* _Remember_ The ++fsm_gen++ script will also generate a ++.dot++ file for ++graphviz++
++
+["graphviz", "simple_dor5.png"]
+-----------
+include::examples/simple_dor5/generated/simple_dor.dot[]
+------------
++
+[NOTE]
+The gray status indicates the initial status
++
+[IMPORTANT]
+The properties allways has to be accessed by their access methods +
+To get de value  +<method_name>()+ +
+To set the value +set_<method_name>(new_value)+
++
+* Running this example you can see a *problem* with +session_id+
+** +session_id+ is a global property.
+** We initialized in one status and we forgot to delete the value when leave this status
+** We could try to don't forget to delete, but this is not a very good option.
+*** It's very easy to forget
+*** It's dificult to detect when we forget it
+** The best option has to be +RAII+
+
+
+== Fixing Login access with PHONY properties  (DOR 6)
+
+Some properties doesn't have sense in all status
+
+Fixing it is very easy
+
+You only have to declare a property with same name in the specific status
+
+But... this is not a full solution. The problem is that... it's very easy to access by mistake to write or read the property from a status that hasn't have this property by logic
+
+* To solve it, +phony+ properties
+* +properties+ and +methods+ (inputs and outputs) can have visibility specification
+* It could be +public+, +private+ and +phony+ (in properties)
+* By default, if you don't specify anything, them will be +public+
+* +phony+ means a false property. +
+  A +phony+ property never will generate a member +
+  You have the oportunity to generate a member on specific status as next example
++
+----
+include::examples/simple_dor6/simple_dor.fsm[]
+----
+<1> The visibility on properties can be +public+, +private+ or +phony+
+* Filling and using it
++
+[source,{cpp}]
+----
+include::examples/simple_dor6/main.cpp[]
+----
++
+* _Remember_ The ++fsm_gen++ script will also generate a ++.dot++ file for ++graphviz++
++
+["graphviz", "simple_dor6.png"]
+-----------
+include::examples/simple_dor6/generated/simple_dor.dot[]
+------------
++
+[NOTE]
+The gray status indicates the initial status
+
+
+== Login with TIMEOUT  (DOR 7)
+
+* Using +call_later+ (RAII pattern)
++
+----
+include::examples/simple_dor7/simple_dor.fsm[]
+----
+<1> This input will not be received from external source, therefore, it's private
+* Filling and using it
++
+[source,{cpp}]
+----
+include::examples/simple_dor7/main.cpp[]
+----
++
+* _Remember_ The ++fsm_gen++ script will also generate a ++.dot++ file for ++graphviz++
++
+["graphviz", "simple_dor7.png"]
+-----------
+include::examples/simple_dor7/generated/simple_dor.dot[]
+------------
++
+[NOTE]
+The gray status indicates the initial status
+
+
+== Real example, Limit simple orders Cli Control Flow
+
+.+fsm+ definition
+----
+include::../../../../src/components/trading/trd_cli_ls.fsm[]
+----
+
+.Filling it
+[source,{cpp}]
+----
+include::../../../../src/components/trading/trd_cli_ls.cpp[]
+----
+
+.Testing it
+[source,{cpp}]
+----
+include::../../../../examples/onefile/components/trading/test_trd_cli_ls.cpp[]
+----
+
+.Diagram
+["graphviz", "trd_cli_ls.png"]
+-----------
+include::../../../../src/components/trading/trd_cli_ls.dot[]
+------------
+
+
+
+
+== FAQ
+
+Why generate a +.impl+ file instead a +.cpp+?::
+Because the +.impl+ file is part of a +.cpp+ file, is not a full +.cpp+ file and has to be _included_ in final +.cpp+ file
+
+Why to have status names two times, in +::STATUS::+ and in transitions?::
+This redundance reduce typing errors. Imagine you write on a transition a status name with a typo error. +
+Without the redundance, the system cannot warn you about it and it will create a new false status
+

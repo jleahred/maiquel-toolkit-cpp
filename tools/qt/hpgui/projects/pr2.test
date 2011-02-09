@@ -1,0 +1,4 @@
+ADMIN
+{
+    IdReloj:1234
+    ProcessName:TEST_FBINSERT

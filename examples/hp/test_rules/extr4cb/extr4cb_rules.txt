@@ -1,0 +1,103 @@
+MAIN
+
+
+
+//	Basado en Mini XML parser
+//	buscamos CodeBlocks_project_file\Project\Unit\filename
+
+
+MAIN ::=   LABELS 
+
+LABELS ::= LABEL LABELS
+LABELS ::= LABEL 
+
+
+//	buscamos  CodeBlocks_project_file\Project\Unit\filename
+
+
+//	primero buscamos   CodeBlocks_project_file
+LABEL ::= MAIN_CB_LABEL
+
+MAIN_CB_LABEL ::= _ < cblabelname  > _ LABELS_IN_MAIN_CB _ </  cblabelname  >                    ##transf2-> $(LABELS_IN_MAIN_CB)
+//MAIN_CB_LABEL ::= _ < cblabelname spcs PROPERTIES_INLABEL spcs />                                ##transf2-> $(__nothing__)
+//MAIN_CB_LABEL ::= _ < cblabelname spcs PROPERTIES_INLABEL _ > _ LABELS_IN_MAIN_CB _ </ cblabelname  >          ##transf2-> $(__nothing__)
+//MAIN_CB_LABEL ::= _ < cblabelname spcs />                                                       ##transf2-> $(__nothing__)
+cblabelname ::= (CodeBlocks_project_file)
+
+//	 buscamos   Project
+
+LABELS_IN_MAIN_CB ::=  LABEL_IN_MAIN_CB LABELS_IN_MAIN_CB
+LABELS_IN_MAIN_CB ::=  LABEL_IN_MAIN_CB 
+
+LABEL_IN_MAIN_CB ::= _ < project  > _ LABELS_IN_MCB_PROJECT _ </  project  >              ##transf2-> $(LABELS_IN_MCB_PROJECT)
+//LABEL_IN_MAIN_CB ::= _ < project spcs PROPERTIES_INLABEL spcs />                               
+//LABEL_IN_MAIN_CB ::= _ < project spcs PROPERTIES_INLABEL _ > _ LABELS_IN_MCB_PROJECT _ </ project  >          
+//LABEL_IN_MAIN_CB ::= _ < project spcs />                                                       
+project ::= (Project)
+
+
+//	Buscamos Unit
+LABELS_IN_MCB_PROJECT ::=  LABEL_IN_MCB_PROJECT LABELS_IN_MCB_PROJECT
+LABELS_IN_MCB_PROJECT ::=  LABEL_IN_MCB_PROJECT 
+
+LABEL_IN_MCB_PROJECT ::= _ < unit  > _ LABELS _ </  unit  >                               ##transf2->  $(__nothing__)
+LABEL_IN_MCB_PROJECT ::= _ < unit spcs PROPERTIES_INLABEL_UNIT spcs />                    ##transf2->  $(PROPERTIES_INLABEL_UNIT)$(__endl__)
+LABEL_IN_MCB_PROJECT ::= _ < unit spcs PROPERTIES_INLABEL_UNIT _ > _ LABELS _ </ unit  >  ##transf2->  $(__nothing__)
+LABEL_IN_MCB_PROJECT ::= _ < unit spcs />                                                       
+unit ::= (Unit)
+
+
+PROPERTIES_INLABEL_UNIT ::=  filename  =  " PROP_VALUE "   spcs PROPERTIES_INLABEL        ##transf2->  $(PROP_VALUE)
+PROPERTIES_INLABEL_UNIT ::=  labelname =  " PROP_VALUE "   spcs PROPERTIES_INLABEL_UNIT   ##transf2->  $(PROPERTIES_INLABEL_UNIT)
+PROPERTIES_INLABEL_UNIT ::=  filename  =  " PROP_VALUE "                                  ##transf2->  $(PROP_VALUE)
+PROPERTIES_INLABEL_UNIT ::=  PROPERTIES_INLABEL
+filename ::= (filename)
+
+
+
+//	ignoring labels
+LABEL_IN_MAIN_CB ::= LABEL
+LABEL_IN_MCB_PROJECT ::= LABEL
+
+
+
+
+
+
+//	normal xml miniparsers
+
+
+LABEL ::= _ <  labelname  > _ LABELS _ </  labelname  >                               ##transf2-> $(__nothing__)
+
+
+LABEL ::= _ < labelname spcs PROPERTIES_INLABEL spcs />                               ##transf2-> $(__nothing__)
+LABEL ::= _ < labelname spcs PROPERTIES_INLABEL _ > _ LABELS _ </ labelname  >        ##transf2-> $(__nothing__)
+LABEL ::= _ < labelname spcs />                                                       ##transf2-> $(__nothing__)
+
+PROPERTIES_INLABEL ::=  prop_name  =  " PROP_VALUE "   spcs PROPERTIES_INLABEL        ##transf2-> $(__nothing__)
+PROPERTIES_INLABEL ::=  prop_name  =  " PROP_VALUE "                                  ##transf2-> $(__nothing__)
+
+
+prop_name ::= ([a-zA-Z0-9_]+)
+
+PROP_VALUE ::= propchars  PROP_VALUE
+PROP_VALUE ::= propchars 
+
+propchars  ::= ([a-zA-Z0-9 _\\\.\-\:]+)
+propchars  ::= (\/[^>])
+
+
+
+labelname ::= ([a-zA-Z0-9_]+)
+
+" ::= (\")
+= ::= (\=)
+< ::= (\<)
+> ::= (\>)
+</ ::= (\<\/)
+/> ::= (\/\>)
+
+
+_ ::= ([ \r\n\t]*)
+spcs ::=  ([ \n\r\t]+)
+

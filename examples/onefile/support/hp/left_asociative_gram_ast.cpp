@@ -1,0 +1,49 @@
+#include <iostream>
+
+#include "support/hp/humbleparser.h"
+
+//  Prueba de gramática LL con operador + asociativo por la derecha con ast
+
+int main(int /*argc*/, char* /*argv*/[])
+{
+    mtk::HumbleParser  hParser;
+
+    hParser.AddRule("   EXPR    ::=    VAL EXPR_                        ");
+    hParser.AddRule("   EXPR_   ::=    add_operator VAL EXPR_           ");
+    hParser.AddRule("   EXPR_   ::=    _                 ");
+
+
+
+    hParser.AddRule("   VAL     ::=    FUNC _ ( EXPR _ )                ");
+    hParser.AddRule("   VAL     ::=    _ num                            ");
+    hParser.AddRule("   VAL     ::=    VAR                              ");
+    hParser.AddRule("   VAR     ::=    _ id                             ");
+    hParser.AddRule("   FUNC    ::=    _ id                             ");
+
+
+    hParser.AddRule("   num           ::=    ([0-9]+)                     ");
+    hParser.AddRule("   id            ::=    ([a-z|A-Z][0-9|a-z|A-Z|_]*)");
+    hParser.AddRule("   id            ::=    (_+[0-9|a-z|A-Z]+[0-9|a-z|A-Z|_]*)");
+    hParser.AddRule("   mult_operator ::=    ([\\*|\\\\])                 ");
+    hParser.AddRule("   add_operator  ::=    ([\\+|\\-])                  ");
+    hParser.AddRule("   unaryoperator ::=    ([\\+|\\-])                  ");
+    hParser.AddRule("   _             ::=    ([ |\t]*)                    ");
+    hParser.AddRule("   (             ::=    (\\()                        ");
+    hParser.AddRule("   )             ::=    (\\))                        ");
+
+
+    bool result;
+    std::string resultTest;
+    mtk::AST_Node_Item astRoot("");
+    hParser.Parse(      "1+2+3",
+                        "EXPR"
+                 ).assign(result, resultTest, astRoot);
+
+    std::cout << std::endl << result <<  "  "  <<   resultTest;
+
+    std::cout << std::endl << std::endl ;
+    std::cout << std::endl << AST_GetStringNodes(&astRoot);
+
+    #include "support/release_on_exit.hpp"
+    return result == true ? 0 : -1;
+} 

@@ -1,0 +1,27 @@
+== projects_examples
+
+On +examples+ dir we have some full projects examples
+
+[NOTE]
+To avoid loops on directory tree, instead of linking mtk, it's linked folders and files inside mtk
+
+[jle_temp_and_run]
++++++++++++++++++
+run=[ ("echo '--------'",'ls.txt', 'wt'), 
+      ("ls {docdir}/../../examples/prj_make | grep -v makefile", 'ls.txt', 'at'),
+      ("echo '--------'",'ls.txt', 'at')]
+print ''
++++++++++++++++++
+
+.examples/prj_make
+include::/tmp/adoc/ls.txt[]
+
+
+
+=== emarket
+
+* This is a non trivial example
+* It's a basic electronic market to test the system with trading and prices
+* There is an especific document on +emarket/doc+ folder and compiled on +mtk/doc+
+
+

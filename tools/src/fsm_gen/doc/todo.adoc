@@ -1,0 +1,7 @@
+//=== TODO:  FSM_GEN
+
+* remove the macro LOGIC_ERROR
+* fsm_gen prefix on macros to fill in c++ code
+* status enum
+* Link on all included files to open with kate directly -edit-
+

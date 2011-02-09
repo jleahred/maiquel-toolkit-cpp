@@ -1,0 +1,287 @@
+== General 
+
+
+
+
+
+=== Code style
+
+
+There are many styles codding C++ (Scott Meyers, standar library, Bijarne Stroustroup, Thinkin in C++, Google, Qt...) +
+Many of them uses the CamelCase with classes starting in uppercase. +
+In your programs, you will have to mix some of them using standard library and Qt library (for example)
+
+* Files will be lowercase
+* Access control
+** <name>() to get the property
+** set_<name>(value) to set the property
+* Declaration in classes
+** First the public part, at the end, the private
+** Private part, has to be as small as possible
+** In public part, we will start with constructor and destructor
+* Arguments will be const references (except basic types)
+* Conversion to string and concatenating
+** Using +MTK_SS+
+** This is not good for internationalitation
+** Never user + to concatenate strings
+* Enumerators
+** Enumerator definition will be  +en<name>+
+** Enumerator options will be <sufix_name><Option>
+* The source code has to be in +utf-8+ and +carry-return+ as end of line (Linux style). If necessary, modify configuration in your IDE
+* To help writting with code completion, try to group clasess and functions by prefixname. It will be easier to find your funcion with codecompletion +
+  Even if it means to write words in names in a weird order
+* Header files will have +.h+ extension, except files with no +.cpp+. In these cases, the extension will be +.hpp+
+
+[red]#pending to add class, functions, methods and variables names#
+
+
+[[lib_dependencies,lib_dependencies]]
+=== Library dependencies
+* In gcc/g++ the library order is important
+* If +libb+ depends from +liba+, you have to write +libb+ before +liba+ on linking
+* Example libraries for linking...
++
+-----
+LIBS = -Lxxx/external/lib/linux -Lxxx/lib  -lidtfirebird -lfbclient64   -lyaml -lidtsoporte
+-----
++
+* _MTK_ dependency diagram
++
+["graphviz", "dependency_diagram.png"]
+-----------
+digraph lib_depend
+{
+	// rankdir = LR;
+	
+           qt_components     ->  mtk_components_a
+
+           mtk_components_a   ->  mtk_qpid_a
+           mtk_components_a   ->  mtkfirebird_a
+
+           mtkfirebird_a    -> fbclient_so
+           mtkfirebird_a    -> mtksuport_a
+
+	mtk_qpid_a       -> mtksuport_a
+	mtk_qpid_a       -> qpidclient
+	
+	
+	yaml_a          -> mtksuport_a
+	mtksockets_a    -> mtksuport_a
+	
+}
+------------
++
+[IMPORTANT]
+If you use sockets on windows, you will have to add +ws2_32+ library
+
+
+=== Support source dependencies
+
+[jle_temp_and_run]
+++++++++++++++++++++++++
+run=[('bash mtk_generate_support_depend.sh', 'mtk_support_depend.dot', 'wt')]
+print ''
+
+file_name='mtk_generate_support_depend.sh'
+
+echo 'digraph G {  node [shape = box, fontsize = 8];' ; for f in $(find {docdir}/../ -regex '.*\.\(h\|hpp\)'  | grep /support/ | grep -v /re/ | grep -v mtk_bool | grep -v release_on_exit | grep -v bhvm) ; do echo $(basename $f) '-> {' ; cat $f | {docdir}/../../tools/bin/dhp {docdir}/../../examples/onefile/support/hp/cpp_dep.dhp ; echo ' }' ; echo ; echo ; done | tr . _ ; echo }
++++++++++++++++++++++++++
+
+["graphviz", "support_dependency_diagram.png"]
+-----------
+include::/tmp/adoc/mtk_support_depend.dot[]
+-----------
+
+
+
+=== Critical applications
+* C++ is not a language oriented to critical applications
+* Soft realtime applications, are applications that has to work fast and estable
+* A good way to deal with it, is processing messages
+** Every message has to be procesed fast
+** If there is a problem processing a message, the system has to stop processing it and get next message
+* Typical software fails:
+.. Exceptions throwed
+.. Invalid memory access due to wrong pointers
+.. Memory leaks
+.. Infinite loops
+.. Consuming all resources
+.. Integer zero division
+* Fails controled by library
+.. The system will catch and control +mtk::Alarm+ , +std::exception+ and any kind of +exception+ +
+   The library will add information, rethrow, notify and process next message
+.. Using ++mtk::CountPtr++ is dificult to have invalid memory access and pointer errors
+.. Using ++mtk::Singal++ simplify the resource managment
+.. The library, have some macros to manage the integer zero division +
+   In messages loop, the system will trap this error and will continue with next message
+* Don't use raw pointers
+** Raw pointers dangers
+*** Pointer arithmetic
+*** Null pointers
+*** Random pointer
+*** Invalid pointer (pointing to wrong memory address)
+*** Memory leaks
+** +mtk::CountPtr+ help
+*** There is not pointer arithmetic
+*** If you try to access to a _null_ pointer, the system will throw an exception instead to stop the hole program
+*** It's dificult to have a +mtk::CountPtr+ pointing to invalid address or not initilized memory
+*** RIIA. The memory will be deleted when nothing is pointing to it
+** Iterators are not pointers but looks very similar
+*** Iterator arithmetic
+*** Null iterators
+*** Random iterators
+*** Invalid iterators
+** There are +mtk+ containers with checked iterators (very stricts checks, more than necessary) <<mtk_containers>>
+* In general, +mtk+ library will try to replace _aborts_ by  _exceptions_
+
+
+=== Global configuration
+* [red]#pending#
+
+
+=== Compile/linking library
+
+* You can use IDEs like codelite, codeblocks, qtcreator, kdevelop...
+* All headers will be reference to src, therefore, it will be necessary to add +mtk/src+ to the include path
+* The librarys and examples can be build with make
+--
+Compile options::
++
+* The makefiles get compilation options from +compopt_make+ file
+* Some librarys need diferent options like (firebird or yaml) +
+  In those cases, their makefiles will be adapted
+* The options to compile are very strict
++
+Compiling::
++
+----
+INCLUDES= -I./mtk/src
+----
+Linking::
+* Libraries will be generated on +lib/+
+* See <<lib_dependencies, lib_dependencies>>
+--
+
+
+=== Creation and compilation projects
+
+* procedures created on Linux, but most of them will work on windows with msys console
+--
+Creating a project::
+* The folder tree for each project will be:
++
+[cols="1, 8" , options=""]
+|==========================================================
+| src  | source code
+| etc  | config files
+| data | data files (when necessary)
+| mkt  | int to +mtk+ library folder
+| bin  | generated executables
+| temp | temporary files
+| doc  | 
+|==========================================================
+* Steps...
+. Create a symbolic link to mtk on our proyect +
+  Write next line on project root folder
++
+-----
+ln -s mtk/project.make/makefile
+-----
++
+. Copy makefile template to project root folder
++
+-----
+cp mtk/project.make/project.mak.example project.mak
+-----
++
+. Edit to personalize +project.mak+ just copied +
+  It's a small and simple file
++
+[source,{make}]
+----
+include::../../project.make/project.mak.example[]
+----
++
+* You will have to configure +OUT+ and +LIBS+ see <<lib_dependencies, lib_dependencies>>
+--
+Compiling::
+* The compilation can be done with make
+** This is simple and very portable (it's not necessary to install cmake, autotools, qmake, etc...)
+* Execute in console or emacs make
+//* If we don't give parameters, it will write something like...
++
+[jle_temp_and_run]
+++++++++++++++++++++++++
+run=[('bash mtk_example_make_no_params.sh', 'example_make_no_params.adoc', 'wt')]
+print ''
+file_name='mtk_example_make_no_params.sh'
+echo "* If we don't give parameters, it will write something like..."
+echo '+'
+echo '-------------'
+cd {docdir}/../../examples/prj_make/umtktcp/client
+make | tr - =
+echo '-------------'
++++++++++++++++++++++++++
+include::/tmp/adoc/example_make_no_params.adoc[]
+
+* Executing +make alldebug+ will compile with valid parameters to work with _valgrind_
+* If due to a weird reason (mental issues by example) you are developing on windows, don't forget to modify the file +platform.cpp+ in order to configure windows target
+
+
+Compile in a diferent machine::
+. First, we need to move the source code
++
+----
+make compress
+----
++
+This command will generate a file compressed with zip with name +copy.zip+ and will give instructions to decompress
++
+. We will copy this file to target machine
+. Decompress the file (with command previusly provieded)
+. Execute +make all+ +
+  This command will compile de library and your program
+. Adjustments...
+** Could be necessary to change libraries from 64bits to 32bits +
+*** Edit +project.mak+
+** Could be also necessary to change compiling options to compile with older gcc versions
+*** Editing +project.mak+, uncomment line +#CXXFLAGS=-O2+
+Example::
+++  mtk/examples/prj_make/umkttcp/++
+
+* In this folder we have two examples comunicating together
+* I replaced the link to +mtk+ for several links inside +mtk+ in order to avoid recursion on filesystem
+* Obiously, on real projects, you don't need to do it
++
+./home/maiquel/develop/mtk/examples/prj_make/umkttcp/client/project.mak
+-----------
+include::/home/maiquel/develop/mtk/examples/prj_make/umtktcp/client/project.mak
+-----------
+
+[IMPORTANT]
+To compile in windows with +make+, you will have to use +msys+ or similar
+
+
+=== Configure codelite
+
+* [red]#PENDING To compile projects integrating library source, not using compiled libs#
+
+=== Concurrency
+* The +mtk+ library is not designed to work with threads
+* +mtk+ is oriented to work with several proceses integrated with a middleware
+* Therefore, the concurrency model will be based on message comunication
+* Concurrency systems based on shared memory, are not scalable and very dificult maintenance
+
+
+=== Examples and regresion test
+
+* On folder +examples+
+* Most of them will write on standard output lines will be used as regresion test
+* Output not valid for regresion test, will start with +NO_REGRESION+ (as time intervals, current dates, etc...)
+* If there are any problem executing the example, it will return a code diferent to 0
+* The library is verified with +valgrind+ +
+  fbclient doesn't dealocate all the memory, therefore, examples and applications using it, will have a valgrind report with issues
+
+
+
+

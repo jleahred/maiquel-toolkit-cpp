@@ -1,0 +1,10 @@
+//=== TODO: Message generator (build_msg)
+
+
+* Static verification of repeated tags
+* Append fields in control fields
+** DateTime and fluct control
+** version info and version control
+** On reception, we have to check control fields, message type and fluctuations
+* Message atributes, topic, message type
+

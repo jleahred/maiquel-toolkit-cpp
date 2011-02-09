@@ -1,0 +1,6 @@
+
+* Separation of interfaz and implementation on generated messages (.h and .cpp)
+* Isolate global support funcions
+* Limit the number of request cancelations per order, or almost, the frecuency
+* Other orders types
+

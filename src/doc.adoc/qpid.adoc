@@ -1,0 +1,71 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
+== mtk_qpid
+
+* +qpid+ is a implementation from redhat and apache fundation of +AMQP+
+* On +mtk+ we have a small warper to work with it
+* Messages generated with +mtk build messages+ can be used with +qpid+ easily
+** They can define the working subject for each message
+
+[NOTE]
+In order to run examples, you have to run and configure qpidd +
++qpidd +
+export PYTHONPATH=/home/maiquel/Downloads/qpid-0.6/python/ +
+./qpid-config add exchange topic testing+
+
+
+=== mtk_qpid small example1
+[source,{cpp}]
+-----
+include::../../examples/onefile/qpid/ex_qpid1.cpp[]
+-----
+<1> Suscribing directly (not common)
+
+=== mtk_qpid small example2
+* Now the system connects with a class
+[source,{cpp}]
+-----
+include::../../examples/onefile/qpid/ex_qpid2.cpp[]
+-----
+
+
+=== mtk_qpid direct message example
+
+[source,{cpp}]
+-----
+include::../../examples/onefile/qpid/ex_qpid_direct_msg.cpp[]
+-----
+<1> creating codding and sending the message
+
+
+=== mtk_qpid sending and receving with parsing (recommended)
+
+[source,{cpp}]
+-----
+include::../../examples/onefile/qpid/ex_qpid_msg_parsing.cpp[]
+-----
+<1> Header file with message definition. It was created with +build_message+
+<2> Normal suscription, parsing and considereing message type
+<3> Manual suscription no parsing
+
+Look we are making a double subscription with two messages types on same address, therefore, we will receive messages twice
+
+The message used on this testing is defined on 
+
+.tools/src/build_msg/doc/examples/ex1/test_messages.msg
+[source,{cpp}]
+----
+include::../../tools/src/build_msg/doc/examples/ex1/test_messages.msg[]
+----
+////////
+<1> Initialization (pending to put at end and hide on documents)
+<2> Creating a message with version 0
+<3> Optional field
+<4> Defining subject on message
+<5> External nested submessage
+<6> External NOT nested submessage
+<7> Group of fields not nested on wired message
+<8> Group of fields nested on wired message
+<9> If visibility is not especified, it's mandatory
+<10> Inheritance example
+//////////

@@ -1,0 +1,23 @@
+MAIN
+
+MAIN     ::=  VALUE   ##transf2-> txt:$(VALUE)
+
+VALUE ::=   $( VARIABLE )  VALUE    
+VALUE ::=   $( VARIABLE )           
+
+VALUE ::=   NOT_ENDL_OR_ESCAPE_INIT_VAR  VALUE            
+VALUE ::=   NOT_ENDL_OR_ESCAPE_INIT_VAR
+
+NOT_ENDL_OR_ESCAPE_INIT_VAR  ::=  escape_init_var
+NOT_ENDL_OR_ESCAPE_INIT_VAR  ::=  !endl
+
+
+VARIABLE  ::=   !close_par !close_par*   ##transf2-> $(__endl__)var:$(!close_par)$(!close_par*)$(__endl__)txt:
+
+
+!endl      ::=  !([\n\r]) 
+$(  ::= '$('                   ##transf2-> $(__nothing__)
+)  ::=   ')'                   ##transf2-> $(__nothing__)
+!close_par  ::=  !(\))
+escape_init_var   ::=  '\$('               ##transf2-> $(__dollar_open_par__)
+

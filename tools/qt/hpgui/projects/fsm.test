@@ -1,0 +1,128 @@
+//  DOR  login access
+
+::INIT::
+    NAMESPACE='testing'
+    GENERATE_ON='generated'
+
+
+::INPUTS::
+    rq_key      ()
+    rq_login    (user : std::string, pass_coded : std::string)
+    rq_logout   ()
+
+
+
+
+
+::OUTPUTS::
+    sig_login_ok        (sess_id : std::string)
+    sig_logout          (description : std::string)
+    sig_reject_login    ()
+    sig_generated_key   (key : std::string)
+    //sig_alarm         (alarm : mtk::Alarma)   implicit allways
+
+
+
+
+
+
+::COMMON_STATUS_INFO::
+      session_id : std::string ({""})  phony   // <1>
+      
+
+
+
+::STATUS::logout
+      description : std::string ({_})
+      [{ ci->sig_logout.emit(description()); }]
+
+      
+::STATUS::login_ok
+      session_id : std::string ({_})
+      [{ ci->sig_login_ok.emit(session_id()); }]
+
+
+::STATUS::w_rq_login
+      key : std::string ({_})
+
+
+
+
+
+
+
+::TRANSITIONS::
+
+
+
+//  param to initialize logout (init state) first time
+INITIALIZE "initializing"
+
+
+   
+//  these are the most relevant transitions to document
+
+logout      --   rq_key                         / GEN_KEY & GEN_KEY         -->  w_rq_login(key)   / GEN_KEY & GEN_KEY
+
+w_rq_login  --   rq_login  &&  is_valid_pass    / GEN_SESS_ID      -->  login_ok(sess_id)
+
+w_rq_login  --   rq_login                       / EMIT_LOG_REJ     -->  logout("invalid user/pass")
+
+login_ok    --   rq_logout                                         -->  logout("requested by user")
+
+
+
+//  next transitions are necessary in order to fill all the possibilities but are not necessary
+//  to understand the logic
+
+logout      --   rq_login       /   LOGIC_ERROR        -->  logout("rq_login on logout state. logic error")
+logout      --   rq_logout      /   LOGIC_ERROR        -->  logout("rq_logout on logout state. logic error")
+
+w_rq_login  --   rq_key         /   LOGIC_ERROR        -->  logout("rq_key on w_rq_login state. logic error")
+w_rq_login  --   rq_logout      /   LOGIC_ERROR        -->  logout("rq_logout on w_rq_login state. logic error")
+
+login_ok    --   rq_key         /   LOGIC_ERROR        -->  logout("rq_key on login_ok state. logic error")
+login_ok    --   rq_login       /   LOGIC_ERROR        -->  logout("rq_login on login_ok state. logic error")
+
+
+
+
+::MACROS::
+      GEN_KEY 
+      [{  
+          std::string key = MTK_SS(mtk::rand());
+          ci->sig_generated_key.emit(key);
+      }]
+
+      GEN_SESS_ID
+      [{
+          static int counter=1;
+          std::string sess_id = MTK_SS(++counter);
+      }]
+      EMIT_LOG_REJ
+      [{
+          ci->sig_reject_login.emit();
+      }]
+
+
+      is_valid_pass
+      [{
+            ({
+            bool result = false;
+            std::cout << "is_valid_pas " << user << " " << pass_coded << "  " << key() << std::endl;
+            
+            std::string calculated_pass_coded = mtk::crc32_as_string(MTK_SS(user << "1111" << key()));
+            if (user == "fulanito"  &&  pass_coded == calculated_pass_coded)
+            {
+                std::cout << "is_valid_pas   ok" << std::endl;
+                result = true;
+            }
+            else
+            {
+                std::cout << "is_valid_pas   FALSE" << std::endl;
+                result = false;
+            }
+            result;
+            })
+      }]
+      

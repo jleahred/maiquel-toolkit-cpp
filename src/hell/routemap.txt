@@ -1,0 +1,30 @@
+VERSIÓN 1.0
+========================
+
+
+- Single data types
+  - void
+  - double
+  - bool
+  - string
+  - ¿int?
+
+- Complex data types
+  - tuples
+  - vector
+  - asociative maps
+
+- Operators
+  - String concatenation  <<
+  - Arithmetics  + - * / % ^  +=  -=  *=  /=
+  - Logic  == !=  and  or  not 
+  - Relationals  <  <= > >=
+  - Asignament by copy  :=
+
+
+
+OTHERS
+=============
+
+- Methaprograming
+- Lambdas or functions

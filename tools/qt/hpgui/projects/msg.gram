@@ -1,0 +1,205 @@
+MAIN
+
+
+MAIN  ::=  INITIALIZATION  MESSAGE*   ##transf2->$(INITIALIZATION)$(__endl__)MESSAGES=[ $(MESSAGE*) ]
+
+
+
+INITIALIZATION  ::= NR_ENDL*   _BEGIN_INIT  !_END_INIT*  _END_INIT
+INITIALIZATION  ::= NR_ENDL*
+
+
+
+_BEGIN_INIT ::=  'BEGIN_INIT'   ##transf2->$(__nothing__)
+_END_INIT   ::=  'END_INIT'     ##transf2->$(__nothing__)
+!_END_INIT  ::=  !'END_INIT'
+
+
+__beginrule__
+
+
+MESSAGE  ::= NR_ENDL* _  MSG_NAME                             NR_ENDL*  
+             _ [<            MSG_PROPERTIES       _  >]       NR_ENDL* 
+             _ {                                              NR_ENDL*
+                             FIELD_DEFINITION*
+             _ }                                              NR_ENDL* 
+             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)} ) ,
+
+__endrule__
+
+
+
+
+__beginrule__
+
+
+SUB_MESSAGE  ::= NR_ENDL* _  MSG_NAME _  ( _ FIELD_TAG _ ) _  NR_ENDL*  
+             _ [<            MSG_PROPERTIES         >]        NR_ENDL* 
+             _ {                                              NR_ENDL*
+                             FIELD_DEFINITION*
+             _ }                                              NR_ENDL* 
+             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)}, '$(FIELD_TAG)' ) ,
+
+__endrule__
+
+
+MSG_PROPERTIES  ::=  _ mp_name _ : _ mp_value _ ,  MSG_PROPERTIES   ##transf2->'$(mp_name)':'$(mp_value)' , $(MSG_PROPERTIES)
+MSG_PROPERTIES  ::=  _ mp_name _ : _ mp_value                       ##transf2->'$(mp_name)':'$(mp_value)'
+
+mp_name  ::=  ([VI]|SUBJ)
+mp_value ::=  ([a-zA-Z0-9_\:\.\$\{\}\(\)]+)
+
+
+//  composed message definition
+FIELD_DEFINITION  ::=  SUB_MESSAGE  ##transf2-> $(__endl__)$(__space__)$(__space__){'IN_SUB_MSG':  $(SUB_MESSAGE) },
+FIELD_DEFINITION  ::=  MESSAGE      ##transf2-> $(__endl__)$(__space__)$(__space__){'IN_MSG':  $(MESSAGE)  },
+
+
+
+//  single message definition
+__beginrule__
+FIELD_DEFINITION  ::= 
+                   _  FIELD_NAME    
+                   _  ( _ FIELD_TAG _ )
+                   _  :  _ field_type _
+                   _  OPTIONS
+
+                   NR_ENDL* 
+                   ##transf2->{'FIELD_NAME':'$(FIELD_NAME)', 'FIELD_TAG':'$(FIELD_TAG)', 'field_type':'$(field_type)', 'OPTIONS':$(OPTIONS) },$(__space__)
+
+__endrule__
+
+
+
+
+//   lists
+__beginrule__
+FIELD_DEFINITION  ::= 
+                   _  [ _ FIELD_NAME  _ ]
+                   _  ( _ FIELD_TAG _ )
+                   _  :  _ field_type _
+                   _  OPTIONS
+
+                   NR_ENDL* 
+                   ##transf2->{'FIELD_NAME':'$(FIELD_NAME)', 'FIELD_TAG':'$(FIELD_TAG)', 'field_type':'mtk::list<$(field_type) >', 'OPTIONS':$(OPTIONS) },$(__space__)
+
+__endrule__
+
+
+//  single message definition  with SUBMESSAGE field type
+__beginrule__
+FIELD_DEFINITION  ::= 
+                   _  FIELD_NAME    
+                   _  ( _ FIELD_TAG _ )
+                   _  :  _ SUB_MSG_TYPE
+                   _  OPTIONS
+
+                   NR_ENDL* 
+                   ##transf2->{'FIELD_NAME':'$(FIELD_NAME)', 'FIELD_TAG':'$(FIELD_TAG)', 'sub_msg_type':'$(SUB_MSG_TYPE)', 'OPTIONS':$(OPTIONS) },$(__space__)
+
+__endrule__
+
+
+//  LIST with single message definition  with SUBMESSAGE field type
+__beginrule__
+FIELD_DEFINITION  ::= 
+                   _  [ _ FIELD_NAME  _  ]
+                   _  ( _ FIELD_TAG _ )
+                   _  :  _ SUB_MSG_TYPE
+                   _  OPTIONS
+
+                   NR_ENDL* 
+                   ##transf2->{'FIELD_NAME':'$(FIELD_NAME)', 'FIELD_TAG':'$(FIELD_TAG)', 'sub_msg_type':'mtk::list<$(SUB_MSG_TYPE) >', 'OPTIONS':$(OPTIONS) },$(__space__)
+
+__endrule__
+
+
+
+//  single message definition  with SUBMESSAGE field type  NOT nested
+__beginrule__
+FIELD_DEFINITION  ::= 
+                   _  FIELD_NAME    
+                   _  :  _ SUB_MSG_TYPE
+//                   _  OPTIONS
+
+                   NR_ENDL* 
+//                   ##transf2->{'FIELD_NAME':'$(FIELD_NAME)', 'sub_msg_type_not_nested':'$(SUB_MSG_TYPE)', 'OPTIONS':$(OPTIONS) },$(__space__)
+                   ##transf2->{'FIELD_NAME':'$(FIELD_NAME)', 'sub_msg_type_not_nested':'$(SUB_MSG_TYPE)' },$(__space__)
+
+__endrule__
+
+
+
+
+
+
+
+MSG_NAME    ::=  id
+FIELD_NAME  ::=  id
+FIELD_TAG   ::=  id
+
+
+field_type  ::= 'string'    ##transf2->std::string
+field_type  ::= 'int8'      ##transf2->int8_t
+field_type  ::= 'int16'     ##transf2->int16_t
+field_type  ::= 'int32'     ##transf2->int32_t
+field_type  ::= 'int64'     ##transf2->int64_t
+field_type  ::= 'double'    ##transf2->mtk::Double
+field_type  ::= 'fix_num'   ##transf2->mtk::FixedNumber
+field_type  ::= 'date_time' ##transf2->mtk::DateTime
+
+
+SUB_MSG_TYPE ::= id  ::  SUB_MSG_TYPE
+SUB_MSG_TYPE ::= id
+
+
+
+OPTIONS  ::=  [ _ OPT_IDS _ ]
+OPTIONS  ::=  _   ##transf2->[]
+
+OPT_IDS  ::=  option _ , _  OPT_IDS
+OPT_IDS  ::=  option 
+
+option ::=  'mandatory'   ##transf2->'mandatory'
+option ::=  'recomended'  ##transf2->'recomended'
+option ::=  'optional'    ##transf2->'optional'
+
+
+
+//  COMMENT, SPACES, TABS, ENDLINES...   not relevant with almost one endl
+NR_ENDL  ::=  _  _// !endl*   endl                                  ##transf2->$(__endl__)
+NR_ENDL  ::=  _  init_comment   !end_comment/*  end_comment _ endl  ##transf2->$(__endl__)
+NR_ENDL  ::=  _   endl                                              ##transf2->$(__endl__)
+NR_ENDL+  ::=   NR_ENDL NR_ENDL*                                    ##transf2->$(__endl__)
+
+_//           ::=  '//'
+!endl         ::=  !([\n\r])
+init_comment  ::=  '/*'
+!end_comment/ ::=  !(\*/)
+end_comment   ::=  '*/'
+
+
+//_  ::=  __isspace*__
+_     ::=  ([ \t]*)
+endl  ::=  __endl__
+
+
+
+
+//  misc terminals
+
+
+,   ::=  ','
+:   ::=  ':'
+::  ::=  '::'
+(   ::=  '('
+)   ::=  ')'
+id  ::=  ([a-zA-Z][a-zA-Z0-9_]*)
+_Id  ::=  ([A-Z][a-zA-Z0-9_]*)
+{   ::=  '{'
+}   ::=  '}'
+[   ::=  '['
+]   ::=  ']'
+!>] ::=  !(>\])
+[<  ::=  '[<'
+>]  ::=  '>]'

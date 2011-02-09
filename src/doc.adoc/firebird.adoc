@@ -1,0 +1,127 @@
+== Firebird
+
+:cpp: {basebackend@docbook:c++:cpp}
+
+
+Firebird is a great sql database server
+
+=== General
+* On mtk we integrated the C++ library +ibpp+  http:www.ibpp.org[]
+* This library uses +IBPP+ namespace
+* Exceptions, inherits from +std::exception+
++
+----------
+                             std::exception
+                                    |
+                            IBPP::Exception
+                          /                 \
+             IBPP::LogicException    IBPP::SQLException
+                      |
+               IBPP::WrongType
+----------
++
+* Catching +std::exception+ is managed on +mtk+ library
+* Allways +mtk+ or an application catchs +(...)+ exceptions, they also have to catch +std::exception+
+* Added methods to work with +mtk::dtDateTime+ and +mtk::dtTimeQuantity+
+** Don't use methods +Date+, +Time+ or +Timestamp+ from +ibpp+ library (could be eliminated in future)
+
+=== Compilation
+* On +src/fb+ there is the +IBPP+ modified and the include file
++
+---------
+ #include "fb/ibpp.h"
+---------
+
+=== Linking
+* +mtk+ will generate +libfirebird.a+ static library
+* Therefore, to connect to a firebird database, you have to link with +-libfirebird -lfbclient64 -lmtksupport+
+* +fbclient64+ is the firebird dinamyc link library
+** You have a copy in +external/libs+ with versions for windows and linux
+** It is compiled with glib2.3 and with version info
+
+
+=== Preparing example
+
+.Create the database...
+----------
+  /home/maiquel/develop/testing/mtk_db/examples.fdb 
+----------
+
+.Database script
+[source, sql]
+----------
+/********************* ROLES **********************/
+
+/********************* UDFS ***********************/
+
+/****************** GENERATORS ********************/
+
+CREATE GENERATOR GEN_ALARMS_ID;
+/******************** DOMAINS *********************/
+
+/******************* PROCEDURES ******************/
+
+/******************** TABLES **********************/
+
+CREATE TABLE ALARMS
+(
+  ID_ALARM Integer NOT NULL,
+  DATE_TIME Timestamp NOT NULL,
+  REC_DATE_TIME Timestamp NOT NULL,
+  SOURCE_CODE Varchar(80) NOT NULL,
+  DESCRIPTION Varchar(2048) NOT NULL,
+  CONSTRAINT PK_ALARMS PRIMARY KEY (ID_ALARM)
+);
+/********************* VIEWS **********************/
+
+/******************* EXCEPTIONS *******************/
+
+/******************** TRIGGERS ********************/
+
+SET TERM ^ ;
+CREATE TRIGGER ALARMS_BI FOR ALARMS ACTIVE
+BEFORE INSERT POSITION 0
+AS
+DECLARE VARIABLE tmp DECIMAL(18,0);
+BEGIN
+  IF (NEW.id_alarm IS NULL) THEN
+    NEW.id_alarm = GEN_ID(GEN_ALARMS_ID, 1);
+  ELSE
+  BEGIN
+    tmp = GEN_ID(GEN_ALARMS_ID, 0);
+    if (tmp < new.id_alarm) then
+      tmp = GEN_ID(GEN_ALARMS_ID, new.id_alarm-tmp);
+  END
+  
+  
+  NEW.REC_DATE_TIME = current_timestamp;
+  
+END^
+SET TERM ; ^
+
+CREATE DESCENDING INDEX IDX_ALARMS_DT ON ALARMS (DATE_TIME,SOURCE_CODE);
+GRANT DELETE, INSERT, REFERENCES, SELECT, UPDATE
+ ON ALARMS TO  SYSDBA WITH GRANT OPTION;
+----------
+
+.Inserting command
+[source, sql]
+----------
+INSERT INTO ALARMS (DATE_TIME, SOURCE_CODE, DESCRIPTION)
+ VALUES (
+current_timestamp, 
+'SOURCE_CODE', 
+'DESCRIPTION'
+)
+----------
+
+
+=== Example
+* Reading and writting with parameters
++
+.ex_fb.cpp
+[source,{cpp}]
+----
+include::../../examples/onefile/fb/ex_fb.cpp[]
+----
+

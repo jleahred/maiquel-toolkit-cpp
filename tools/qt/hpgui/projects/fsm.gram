@@ -1,0 +1,283 @@
+MAIN
+
+
+
+__beginrule__
+
+MAIN     ::=  NR_ENDL*   ::__silence 
+                         INIT
+                         INPUTS
+                         OUTPUTS
+                         COMMON_STATUS_INFO
+                         STATUS_LIST
+                         TRANSITIONS
+                         MACROS
+__endrule__
+
+
+
+::__silence  ::= '::'  ##transf2->$(__nothing__)
+
+
+
+
+
+
+//  COMMENT, SPACES, TABS, ENDLINES...   not relevant
+NR_ENDL  ::=  _  _// while_!endl   endl                             ##transf2->$(__endl__)
+NR_ENDL  ::=  _  init_comment   till_end_comment   _ endl           ##transf2->$(__endl__)
+NR_ENDL  ::=  _   endl                                              ##transf2->$(__endl__)
+NR_ENDL+  ::=   NR_ENDL NR_ENDL*                                    ##transf2->$(__endl__)
+
+_//           ::=  '//'
+!endl         ::=  !([\n\r])
+while_!endl         ::=  ([^\n\r]*)
+init_comment  ::=  '/*'
+!end_comment/ ::=  !(\*/)
+till_end_comment  ::= ((.|[\n\r])*?\*\/)
+end_comment   ::=  '*/'
+
+
+//_  ::=  __isspace*__
+_     ::=  ([ \t]*)
+endl  ::=  __endl__
+
+
+
+
+
+
+
+// INIT::
+INIT  ::=  _INIT::  NR_ENDL*  _  LINE_INIT*    NR_ENDL*  ::   ##transf2->$(LINE_INIT*)
+
+_INIT::   ::=  'INIT::'
+LINE_INIT  ::= !END_SECTION  _  while_!endl  endl   _   ##transf2->$(!END_SECTION)$(while_!endl)$(__endl__)
+!END_SECTION ::=   !(\n+\:\:)
+
+
+
+
+
+
+
+//  INPUTS::
+
+INPUTS  ::=  _INPUTS::  NR_ENDL*  INPUT_LINE*   ::   ##transf2->$(INPUT_LINE*)
+_INPUTS::  ::=  'INPUTS::'
+
+INPUT_LINE  ::=  NR_ENDL*  INPUT_DECL  INPUT_DECL*     ##transf2->INPUTS_LIST = [$(INPUT_DECL) $(INPUT_DECL*) {}]$(__endl__)
+
+INPUT_DECL  ::=  _  INPUT_NAME _ (  _  PARAMS  _  )  _  visibility NR_ENDL*  CODE  NR_ENDL+   ##transf2->{'name':'$(INPUT_NAME)', 'params':[$(PARAMS)], 'visibility':'$(visibility)', 'code':$(CODE)},
+INPUT_DECL  ::=  _  INPUT_NAME _ (  _             )  _  visibility NR_ENDL*  CODE  NR_ENDL+   ##transf2->{'name':'$(INPUT_NAME)', 'params':[]         , 'visibility':'$(visibility)', 'code':$(CODE)},
+
+INPUT_DECL  ::=  _  INPUT_NAME _ (  _  PARAMS  _  )  _  visibility                 NR_ENDL+   ##transf2->{'name':'$(INPUT_NAME)', 'params':[$(PARAMS)], 'visibility':'$(visibility)', 'code':''},
+INPUT_DECL  ::=  _  INPUT_NAME _ (  _             )  _  visibility                 NR_ENDL+   ##transf2->{'name':'$(INPUT_NAME)', 'params':[]         , 'visibility':'$(visibility)', 'code':''},
+
+
+INPUT_NAME  ::=  id
+INPUT_TYPE  ::=  id
+
+
+
+
+
+//  OUTPUTS::
+
+OUTPUTS  ::=  _OUTPUTS::  NR_ENDL*  OUTPUT_LINE*  ::   ##transf2->$(OUTPUT_LINE*)
+_OUTPUTS::  ::=  'OUTPUTS::'
+
+OUTPUT_LINE  ::=  NR_ENDL*  OUTPUT_DECL  OUTPUT_DECL*  ##transf2->OUTPUTS_LIST = [$(OUTPUT_DECL) $(OUTPUT_DECL*)]$(__endl__)
+// {'name':'sig_alarm', 'params':[{'p_name':'alarm', 'p_type':'mtk::Alarm'}], 'visibility':''}]$(__endl__)
+
+OUTPUT_DECL  ::=  _  OUTPUT_NAME _ (  _  PARAMS  _  )  _  visibility NR_ENDL+   ##transf2->{'name':'$(OUTPUT_NAME)', 'params':[$(PARAMS)], 'visibility':'$(visibility)'},
+OUTPUT_DECL  ::=  _  OUTPUT_NAME _ (  _             )  _  visibility NR_ENDL+   ##transf2->{'name':'$(OUTPUT_NAME)', 'params':[]         , 'visibility':'$(visibility)'},
+
+OUTPUT_NAME  ::=  id
+OUTPUT_TYPE  ::=  id
+
+
+
+
+
+
+
+// COMMON_STATUS_INFO::
+
+COMMON_STATUS_INFO   ::=  _COMMON_STATUS_INFO  NR_ENDL*  CSI_LINE*    ::    ##transf2->COMMON_STATUS_INFO = [$(CSI_LINE*){}]$(__endl__)
+
+_COMMON_STATUS_INFO  ::=  'COMMON_STATUS_INFO::'
+CSI_LINE  ::=  PROPERTY_DECL
+
+PROPERTY_DECL   ::=    _  PROP_NAME  _  :   _   PROP_TYPE   _  ({   _  prop_initializer* _  }) _ visibility  NR_ENDL+  ##transf2->{'name':'$(PROP_NAME)', 'type':'$(PROP_TYPE)', 'initializer':'$(prop_initializer*)', 'visibility':'$(visibility)'},
+PROPERTY_DECL   ::=    _  PROP_NAME  _  :   _   PROP_TYPE   _  ({   _                       }) _ visibility  NR_ENDL+  ##transf2->{'name':'$(PROP_NAME)', 'type':'$(PROP_TYPE)', 'initializer':'$(PROP_TYPE)()'      , 'visibility':'$(visibility)'},
+
+
+PROP_NAME         ::= id
+
+
+PROP_TYPE         ::=  prop_type prop_type*
+prop_type         ::=  !(\n|(\(\{))
+//prop_type         ::=  !((.*\:\:\n)|(\(\{))
+//![{_or_endl_or:      ::=  !((\[{|\r|\r|\:))
+//PROP_TYPE         ::=  !(*
+//!(         ::=  !((\(|\n|\r))
+//PROP_TYPE         ::= id _ :: _ PROP_TYPE
+//PROP_TYPE         ::= id 
+
+
+//PROP_INITIALIZER  ::=  !(!) !(!)* _ ( _ ) _
+prop_initializer  ::= !'})'
+
+//PROP_INITIALIZER  ::=  !(!) !(!)* _ ( _ ) _
+//PROP_INITIALIZER  ::=  !(!) !(!)* _ ( _ PROP_INITIALIZER _ ) _
+//PROP_INITIALIZER  ::=  !(!) !(!)* 
+//!(!)  ::=   !((\(|\)|\n|\r))
+
+
+
+
+
+
+
+
+
+//  STATUS_LIST::
+
+STATUS_LIST  ::=   STATUS*     ##transf2->STATUS=[]$(__endl__)$(STATUS*)
+
+//STATUS  ::= _STATUS  STATUS_NAME ( PARAMS )  NR_ENDL+  PROPERTY_DECL*  NR_ENDL*    ##transf2->STATUS.extend([{'name':'$(STATUS_NAME)', 'params':[$(PARAMS)], 'properties':[$(PROPERTY_DECL*)]}])$(__endl__)
+
+//STATUS  ::= _STATUS  STATUS_NAME             NR_ENDL+  PROPERTY_DECL*  NR_ENDL*    ##transf2->STATUS.extend([{'name':'$(STATUS_NAME)', 'params':[]         , 'properties':[$(PROPERTY_DECL*)]}])$(__endl__)
+STATUS  ::= _STATUS  STATUS_NAME             NR_ENDL+   PROPERTY_DECL*  NR_ENDL*   CODE    NR_ENDL*  ::  ##transf2->STATUS.extend([{'name':'$(STATUS_NAME)', 'ctor_code':$(CODE), 'properties':[$(PROPERTY_DECL*)]}])$(__endl__)
+STATUS  ::= _STATUS  STATUS_NAME             NR_ENDL+   PROPERTY_DECL*             CODE    NR_ENDL*  ::  ##transf2->STATUS.extend([{'name':'$(STATUS_NAME)', 'ctor_code':''          , 'properties':[$(PROPERTY_DECL*)]}])$(__endl__)
+
+
+
+//CODE ::= _ [{  till_}]  _   ##transf2->   '$(till_}])'
+
+//till_}]  ::= ((.|[\n\r])*?(\}\]))
+CODE  ::=  _ [{ code* _ }]   ##transf2->'$(code*)'
+CODE  ::=  _                 ##transf2->''
+code ::= ((\n|\r))           ##transf2->\n
+code ::= !'}]'
+
+[{  ::=  '[{'
+}]  ::=  '}]'
+({  ::=  '({'
+})  ::=  '})'
+
+
+
+//STATUS_PROPERTIES  ::=   _  STATUS_PROPERTY  STATUS_PROPERTY*  ##transf2->[$(STATUS_PROPERTY)  $(STATUS_PROPERTY*) {}]
+//STATUS_PROPERTY    ::=   _  ST_PROPERTY_NAME  _ : _  PARAMS  _ visibility  NR_ENDL+  ##transf2->{'prop_name':'$(ST_PROPERTY_NAME)', 'prop_initializer':'$(char_st_property_initializer)$(char_st_property_initializer*)', 'visibility':'$(visibility)'},$(__space__)
+//STATUS_PROPERTY    ::=   _  ST_PROPERTY_NAME  _ : _  char_st_property_initializer char_st_property_initializer* _ visibility  NR_ENDL+  ##transf2->{'prop_name':'$(ST_PROPERTY_NAME)', 'prop_initializer':'$(char_st_property_initializer)$(char_st_property_initializer*)', 'visibility':'$(visibility)'},$(__space__)
+
+
+
+_STATUS      ::= 'STATUS::'
+STATUS_NAME  ::=  id
+//PARAM_TYPE   ::=  id
+//PARAM_NAME   ::=  id
+
+//ST_PROPERTY_NAME  ::= id
+//char_st_property_initializer  ::=  !([\n\r:])
+//char_st_property_initializer  ::= !((public)|(private)|(//)|(/\*)|(\n)|(\r)|(:))
+
+
+
+
+//  TRANSITIONS::
+
+TRANSITIONS ::=  _TRANSITIONS::  NR_ENDL+   INITIALITATION   NR_ENDL+   TRANSITION*  ::  ##transf2->INIT_PARAMS_CREATING_STATUS=$(INITIALITATION)$(__endl__)TRANSITIONS = []$(__endl__)$(TRANSITION*)
+TRANSITIONS ::=  _TRANSITIONS::  NR_ENDL+   TRANSITION*                              ::  ##transf2->INIT_PARAMS_CREATING_STATUS=''$(__endl__)TRANSITIONS = []$(__endl__)$(TRANSITION*)
+
+TRANSITION   ::=  STATUS_NAME  _  --  _  TRANSITION_INFO  _  -->  _  NEW_STATUS  NR_ENDL+   ##transf2->TRANSITIONS.extend([{'name':'$(STATUS_NAME)', 'trans_info':$(TRANSITION_INFO), 'new_status':$(NEW_STATUS), 'hidden':False}])$(__endl__)
+TRANSITION   ::=  STATUS_NAME  _  --  _  TRANSITION_INFO  _  ''>  _  NEW_STATUS  NR_ENDL+   ##transf2->TRANSITIONS.extend([{'name':'$(STATUS_NAME)', 'trans_info':$(TRANSITION_INFO), 'new_status':$(NEW_STATUS), 'hidden':True}])$(__endl__)
+
+
+TRANSITION_INFO  ::=  INPUT_NAME _ && _  TRANS_GUARD  _ / _  TRANS_ACTIONS       ##transf2->{'input':'$(INPUT_NAME)', 'guard':'$(TRANS_GUARD)', $(TRANS_ACTIONS)}
+TRANSITION_INFO  ::=  INPUT_NAME _ && _  TRANS_GUARD  _                          ##transf2->{'input':'$(INPUT_NAME)', 'guard':'$(TRANS_GUARD)', 'pre_action':''     , 'post_action':''}
+TRANSITION_INFO  ::=  INPUT_NAME _                      / _  TRANS_ACTIONS       ##transf2->{'input':'$(INPUT_NAME)', 'guard':''              , $(TRANS_ACTIONS)}
+TRANSITION_INFO  ::=  INPUT_NAME                                                 ##transf2->{'input':'$(INPUT_NAME)', 'guard':''              , 'pre_action':''     , 'post_action':''}
+
+
+
+NEW_STATUS  ::=   STATUS_NAME _ CTOR_PARAMS       ##transf2->{'name':'$(STATUS_NAME)', 'ctor_params':'$(CTOR_PARAMS)'}
+CTOR_PARAMS ::=   !endl_or_//*
+//NEW_STATUS  ::=   STATUS_NAME _ ( _ id _ )
+//NEW_STATUS  ::=   STATUS_NAME
+!endl_or_//  ::=  !(([\n\r]|//))
+
+
+TRANS_ACTIONS   ::= _  MACRO_NAMES _ , _ MACRO_NAMES _    ##transf2->'pre_action':'$(MACRO_NAMES)'   , 'post_action':'$(MACRO_NAMES#1)'
+TRANS_ACTIONS   ::= _  MACRO_NAMES _                      ##transf2->'pre_action':'$(MACRO_NAMES)'   , 'post_action':''       
+TRANS_ACTIONS   ::= _ , _ MACRO_NAMES _                   ##transf2->'pre_action':''                 , 'post_action':'$(MACRO_NAMES)'  
+
+MACRO_NAMES  ::= macro_name _ & _ MACRO_NAMES
+MACRO_NAMES  ::= macro_name
+macro_name ::= ([A-Za-z_]+)
+
+INITIALITATION  ::= _ initialize _ !endl*  ##transf2->'$(!endl*)'
+initialize  ::=  'INITIALIZE'
+
+
+
+_TRANSITIONS::  ::= 'TRANSITIONS::'
+
+TRANS_GUARD     ::=  MACRO_NAMES
+
+--  ::=  '--'
+--> ::=  '-->'
+''> ::=  '''>'
+/   ::=  '/'
+&&  ::=  '&&'
+&   ::=  '&'
+
+
+
+
+
+
+//  MACROS::
+
+MACROS ::=  _MACROS:: NR_ENDL+  MACRO*       ##transf2->MACROS={}$(__endl__)$(MACRO*)$(__endl__)
+
+MACRO ::=  _ id NR_ENDL*  CODE  NR_ENDL*  _  ##transf2->MACROS['$(id)'] = $(CODE)$(__endl__)
+
+
+_MACROS::  ::=  'MACROS::'
+
+
+
+
+
+
+//PARAMS
+PARAMS ::= _ PARAM _ , _ PARAMS _
+PARAMS ::= _ PARAM _
+
+PARAM  ::= _   P_NAME  _  :  _  P_TYPE  _   ##transf2->{'p_name':'$(P_NAME)', 'p_type':'$(P_TYPE)'}
+
+
+P_TYPE ::= id _ :: _ P_TYPE
+P_TYPE ::= id 
+
+
+P_NAME ::= id
+P_TYPE ::= id
+
+
+
+
+
+,   ::=  ','
+:   ::=  ':'
+::  ::=  '::'
+(   ::=  '('
+)   ::=  ')'
+id  ::=  ([a-zA-Z_][a-zA-Z0-9_]*)
+visibility  ::=  'public'
+visibility  ::=  'private'
+visibility  ::=  'phony'
+visibility  ::=  ''

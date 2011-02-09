@@ -1,0 +1,26 @@
+
+# compiler flags (-g -O2 -Wall)
+CXXFLAGS = -O0 -g
+CFLAGS = -O0
+
+
+# linker flags
+LDFLAGS = -O0
+
+
+# compiler
+CXX = g++
+
+
+# compiler
+CC = gcc
+
+
+VALGRIND = valgrind --tool=memcheck --leak-check=full  --show-reachable=yes
+#VALGRIND = valgrind --tool=memcheck --leak-check=full 
+#--suppressions=valgrind.supp
+#--leak-check=yes
+#--leak-check=full
+
+
+

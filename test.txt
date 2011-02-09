@@ -1,0 +1,4678 @@
+mkdir -p temp
+rm -f compopt_make
+ln -s compopt_make.release compopt_make
+make -C examples/ test
+make[1]: Entering directory `/home/maiquel/develop/mtk/examples'
+find . -name *.exec | xargs rm -f
+make -C onefile/ test
+make[2]: Entering directory `/home/maiquel/develop/mtk/examples/onefile'
+make -C support/ test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/support'
+ex_alarm.exec ----------------------------------------------------------------
+./ex_alarm.exec
+
+             ERROR Unkown # throwing @int main()(ex_alarm.cpp:33)
+
+             ERROR Unkown # throwing @int main()(ex_alarm.cpp:49)
+
+             Warn  Unkown # stacked @int main()(ex_alarm.cpp:67)
+rm -f ./ex_alarm.exec
+ex_asyn_call_delay.exec ----------------------------------------------------------------
+./ex_asyn_call_delay.exec
+Que lo mandoooo...0
+Que lo mandoooo...1
+Que lo mandoooo...2
+Que lo mandoooo...3
+Que lo mandoooo...4
+Que lo mandoooo...5
+Que lo mandoooo...6
+Que lo mandoooo...7
+Que lo mandoooo...8
+Que lo mandoooo...9
+Que lo mandoooo...10
+Que lo mandoooo...11
+Que lo mandoooo...12
+Que lo mandoooo...13
+Que lo mandoooo...14
+Que lo mandoooo...15
+Que lo mandoooo...16
+Que lo mandoooo...17
+Que lo mandoooo...18
+Que lo mandoooo...19
+Que lo mandoooo...20
+Que lo mandoooo...21
+Que lo mandoooo...22
+Que lo mandoooo...23
+Que lo mandoooo...24
+Que lo mandoooo...25
+Que lo mandoooo...26
+Que lo mandoooo...27
+Que lo mandoooo...28
+Que lo mandoooo...29
+Que lo mandoooo...30
+Que lo mandoooo...31
+Que lo mandoooo...32
+Que lo mandoooo...33
+Que lo mandoooo...34
+Que lo mandoooo...35
+Que lo mandoooo...36
+Que lo mandoooo...37
+Que lo mandoooo...38
+Que lo mandoooo...39
+Que lo mandoooo...40
+Que lo mandoooo...41
+Que lo mandoooo...42
+Que lo mandoooo...43
+Que lo mandoooo...44
+Que lo mandoooo...45
+Que lo mandoooo...46
+Que lo mandoooo...47
+Que lo mandoooo...48
+Que lo mandoooo...49
+Que lo mandoooo...50
+Que lo mandoooo...51
+Que lo mandoooo...52
+Que lo mandoooo...53
+Que lo mandoooo...54
+Que lo mandoooo...55
+Que lo mandoooo...56
+Que lo mandoooo...57
+Que lo mandoooo...58
+Que lo mandoooo...59
+Que lo mandoooo...60
+Que lo mandoooo...61
+Que lo mandoooo...62
+Que lo mandoooo...63
+Que lo mandoooo...64
+Que lo mandoooo...65
+Que lo mandoooo...66
+Que lo mandoooo...67
+Que lo mandoooo...68
+Que lo mandoooo...69
+Que lo mandoooo...70
+Que lo mandoooo...71
+Que lo mandoooo...72
+Que lo mandoooo...73
+Que lo mandoooo...74
+Que lo mandoooo...75
+Que lo mandoooo...76
+Que lo mandoooo...77
+Que lo mandoooo...78
+Que lo mandoooo...79
+Que lo mandoooo...80
+Que lo mandoooo...81
+Que lo mandoooo...82
+Que lo mandoooo...83
+Que lo mandoooo...84
+Que lo mandoooo...85
+Que lo mandoooo...86
+Que lo mandoooo...87
+Que lo mandoooo...88
+Que lo mandoooo...89
+Que lo mandoooo...90
+Que lo mandoooo...91
+Que lo mandoooo...92
+Que lo mandoooo...93
+Que lo mandoooo...94
+Que lo mandoooo...95
+Que lo mandoooo...96
+Que lo mandoooo...97
+Que lo mandoooo...98
+Que lo mandoooo...99
+Que lo mandoooo...100
+Que lo mandoooo...101
+Que lo mandoooo...102
+Que lo mandoooo...103
+Que lo mandoooo...104
+Que lo mandoooo...105
+Que lo mandoooo...106
+Que lo mandoooo...107
+Que lo mandoooo...108
+Que lo mandoooo...109
+Que lo mandoooo...110
+Que lo mandoooo...111
+Que lo mandoooo...112
+Que lo mandoooo...113
+Que lo mandoooo...114
+Que lo mandoooo...115
+Que lo mandoooo...116
+Que lo mandoooo...117
+Que lo mandoooo...118
+Que lo mandoooo...119
+Que lo mandoooo...120
+Que lo mandoooo...121
+Que lo mandoooo...122
+Que lo mandoooo...123
+Que lo mandoooo...124
+Que lo mandoooo...125
+Que lo mandoooo...126
+Que lo mandoooo...127
+Que lo mandoooo...128
+Que lo mandoooo...129
+Que lo mandoooo...130
+Que lo mandoooo...131
+Que lo mandoooo...132
+Que lo mandoooo...133
+Que lo mandoooo...134
+Que lo mandoooo...135
+Que lo mandoooo...136
+Que lo mandoooo...137
+Que lo mandoooo...138
+Que lo mandoooo...139
+Que lo mandoooo...140
+Que lo mandoooo...141
+Que lo mandoooo...142
+Que lo mandoooo...143
+Que lo mandoooo...144
+Que lo mandoooo...145
+Que lo mandoooo...146
+Que lo mandoooo...147
+Que lo mandoooo...148
+Que lo mandoooo...149
+Que lo mandoooo...150
+Que lo mandoooo...151
+Que lo mandoooo...152
+Que lo mandoooo...153
+Que lo mandoooo...154
+Que lo mandoooo...155
+Que lo mandoooo...156
+Que lo mandoooo...157
+Que lo mandoooo...158
+Que lo mandoooo...159
+Que lo mandoooo...160
+Que lo mandoooo...161
+Que lo mandoooo...162
+Que lo mandoooo...163
+Que lo mandoooo...164
+Que lo mandoooo...165
+Que lo mandoooo...166
+Que lo mandoooo...167
+Que lo mandoooo...168
+Que lo mandoooo...169
+Que lo mandoooo...170
+Que lo mandoooo...171
+Que lo mandoooo...172
+Que lo mandoooo...173
+Que lo mandoooo...174
+Que lo mandoooo...175
+Que lo mandoooo...176
+Que lo mandoooo...177
+Que lo mandoooo...178
+Que lo mandoooo...179
+Que lo mandoooo...180
+Que lo mandoooo...181
+Que lo mandoooo...182
+Que lo mandoooo...183
+Que lo mandoooo...184
+Que lo mandoooo...185
+Que lo mandoooo...186
+Que lo mandoooo...187
+Que lo mandoooo...188
+Que lo mandoooo...189
+Que lo mandoooo...190
+Que lo mandoooo...191
+Que lo mandoooo...192
+Que lo mandoooo...193
+Que lo mandoooo...194
+Que lo mandoooo...195
+Que lo mandoooo...196
+Que lo mandoooo...197
+Que lo mandoooo...198
+Que lo mandoooo...199
+Que lo mandoooo...200
+queue overflow   method:MandaNumero   paramType:int    qty:1   timeInterval:mtk::dtMilliseconds(100)    maxQueueSize200 
+Que lo mandoooo...201
+queue overflow   method:MandaNumero   paramType:int    qty:1   timeInterval:mtk::dtMilliseconds(100)    maxQueueSize200 
+Que lo mandoooo...202
+queue overflow   method:MandaNumero   paramType:int    qty:1   timeInterval:mtk::dtMilliseconds(100)    maxQueueSize200 
+Que lo mandoooo...203
+queue overflow   method:MandaNumero   paramType:int    qty:1   timeInterval:mtk::dtMilliseconds(100)    maxQueueSize200 
+Que lo mandoooo...204
+queue overflow   method:MandaNumero   paramType:int    qty:1   timeInterval:mtk::dtMilliseconds(100)    maxQueueSize200 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+rm -f ./ex_asyn_call_delay.exec
+ex_bool.exec ----------------------------------------------------------------
+./ex_bool.exec
+testing mtk::Bool<bool>
+correcto
+correcto
+correcto
+0
+1
+rm -f ./ex_bool.exec
+ex_call_later.exec ----------------------------------------------------------------
+./ex_call_later.exec
+
+rm -f ./ex_call_later.exec
+ex_configfile.exec ----------------------------------------------------------------
+./ex_configfile.exec
+esto es una prueba
+estaaaaaaa es otra prueba
+esto es oooootraaaaa prueba 2
+prrrrrrr
+11111111111111
+2222222222222
+3333333333333
+MODIFICADO...
+NODES...
+ADMIN11
+ADMIN33
+NODES...
+ADMIN
+ADMIN2
+PROPERTIES...
+pr1
+pr2
+EstaSeBorra
+pr3
+var2expand
+PROPERTIES...
+type value:  pr11
+type value:  pr4
+UNA LISTA...
+elemento1
+elemento2
+elemento3
+ultimo
+saving... 
+esto se expande bien
+FIN..... 
+rm -f ./ex_configfile.exec
+ex_configini.exec ----------------------------------------------------------------
+./ex_configini.exec
+
+
+[section2]paraaaa-> ini
+_[___none___]_
+_[section2]_
+counter_=_9
+paaaaaa_=_ini
+_[PRDELETE]_
+ex_controlfluctuaciones.exec ----------------------------------------------------------------
+./ex_controlfluctuaciones.exec
+
+rm -f ./ex_controlfluctuaciones.exec
+ex_count_ptr.exec ----------------------------------------------------------------
+./ex_count_ptr.exec
+CountPtr<int>  with value 8
+rm -f ./ex_count_ptr.exec
+ex_crc32.exec ----------------------------------------------------------------
+./ex_crc32.exec
+FA4EF735
+8D49C7A3
+14409619
+6347A68F
+FD23332C
+8A2403BA
+132D5200
+642A6296
+F4957F07
+83924F91
+BB8964B4
+CC8E5422
+55870598
+2280350E
+BCE4A0AD
+CBE3903B
+52EAC181
+25EDF117
+B552EC86
+C255DC10
+90A43777
+E7A307E1
+7EAA565B
+09AD66CD
+97C9F36E
+E0CEC3F8
+79C79242
+0EC0A2D4
+9E7FBF45
+E9788FD3
+89BF0636
+FEB836A0
+67B1671A
+10B6578C
+8ED2C22F
+F9D5F2B9
+60DCA303
+17DB9395
+87648E04
+F063BE92
+C6FE90F1
+B1F9A067
+28F0F1DD
+5FF7C14B
+C19354E8
+B694647E
+2F9D35C4
+589A0552
+C82518C3
+BF222855
+DFE5A1B0
+A8E29126
+31EBC09C
+46ECF00A
+D88865A9
+AF8F553F
+36860485
+41813413
+D13E2982
+A6391914
+F4C8F273
+83CFC2E5
+1AC6935F
+6DC1A3C9
+F3A5366A
+84A206FC
+1DAB5746
+6AAC67D0
+FA137A41
+8D144AD7
+EDD3C332
+9AD4F3A4
+03DDA21E
+74DA9288
+EABE072B
+9DB937BD
+04B06607
+73B75691
+E3084B00
+940F7B96
+6A4BDFFD
+1D4CEF6B
+8445BED1
+F3428E47
+6D261BE4
+1A212B72
+83287AC8
+F42F4A5E
+649057CF
+13976759
+7350EEBC
+0457DE2A
+9D5E8F90
+EA59BF06
+743D2AA5
+033A1A33
+9A334B89
+ED347B1F
+7D8B668E
+0A8C5618
+
+1937585673
+737D3609
+312A6AA6
+00000000rm -f ./ex_crc32.exec
+ex_date_time2.exec ----------------------------------------------------------------
+./ex_date_time2.exec
+result ok.
+rm -f ./ex_date_time2.exec
+ex_date_time.exec ----------------------------------------------------------------
+./ex_date_time.exec
+
+4rm -f ./ex_date_time.exec
+ex_exec_max_frec.exec ----------------------------------------------------------------
+./ex_exec_max_frec.exec
+rm -f ./ex_exec_max_frec.exec
+ex_factory.exec ----------------------------------------------------------------
+./ex_factory.exec
+creating a instance... dbserver db_db me my_password
+creating file_handler
+destroying file_handler
+deleting instance... dbserver db_db me my_password
+rm -f ./ex_factory.exec
+ex_fixed_number2.exec ----------------------------------------------------------------
+./ex_fixed_number2.exec
+OK!!!  
+rm -f ./ex_fixed_number2.exec
+ex_fixed_number.exec ----------------------------------------------------------------
+./ex_fixed_number.exec
+rm -f ./ex_fixed_number.exec
+ex_foreach.exec ----------------------------------------------------------------
+./ex_foreach.exec
+  ..3
+  ..3
+  ..3
+  ..3
+  ..3
+  ..3
+  ..3
+  ..3
+  ..3
+  ..3
+  ..4
+  ..4
+  ..4
+  ..4
+  ..4
+  ..4
+  ..4
+  ..4
+  ..4
+  ..4
+  ..1  uno
+  ..2  dos
+  ..3  tres
+  ..4  cuatro
+  ..5  cinco
+rm -f ./ex_foreach.exec
+ex_mtk_connect_this.exec ----------------------------------------------------------------
+./ex_mtk_connect_this.exec
+
+No param
+recibído...  88
+recibído...  987
+recibído...   string:Hola pajarito sin cola  double:3.14159
+recibído...   string:Hasta luego cara huevo  double:2.33358
+rm -f ./ex_mtk_connect_this.exec
+ex_nullable.exec ----------------------------------------------------------------
+./ex_nullable.exec
+nint1  8
+rm -f ./ex_nullable.exec
+ex_signal2function.exec ----------------------------------------------------------------
+./ex_signal2function.exec
+Resibío sin parámetrosss...  
+repetimos... 
+Resibío sin parámetrosss...  
+Resibío1...  1
+repetimos... 
+Resibío1...  1
+Resibío2...  3
+repetimos... 
+Resibío2...  3
+Resibío3...  6
+repetimos... 
+Resibío3...  6
+Resibío4...  10
+repetimos... 
+Resibío4...  10
+rm -f ./ex_signal2function.exec
+ex_signal2signal.exec ----------------------------------------------------------------
+./ex_signal2signal.exec
+
+No param
+No param
+No param
+recibío...  5
+recibío...  3
+rm -f ./ex_signal2signal.exec
+ex_signal_slot.exec ----------------------------------------------------------------
+./ex_signal_slot.exec
+
+No param
+recibído...  88
+recibído...  987
+recibído...   string:Hola pajarito sin cola  double:3.14159
+
+recibído...   string:Hasta luego cara huevo  double:2.33358
+rm -f ./ex_signal_slot.exec
+ex_string_codec.exec ----------------------------------------------------------------
+./ex_string_codec.exec
+\L
+
+lista 1... 
+hola pajarito sin cola
+hasta luego, cara huevo
+hola \\ queso de bola
+
+lista 2... 
+Esta, es,, la lista 2
+\Lhola pajarito sin cola,hasta luego\, cara huevo,hola \\\\ queso de bola
+pues esoooo  
+ala... a parl\\aaaaa.
+
+
+decoding...
+
+aaa=adio\\=ssss
+b\\=b\\=\\=bbb=2222s2d2d2d22
+hol\\=a=pajarito sin cola
+rm -f ./ex_string_codec.exec
+ex_string_try.exec ----------------------------------------------------------------
+./ex_string_try.exec
+
+9.098  1
+
+9.098
+3.14152
+0
+9
+0
+0
+1
+rm -f ./ex_string_try.exec
+ex_timer.exec ----------------------------------------------------------------
+./ex_timer.exec
+rm -f ./ex_timer.exec
+ex_tuples.exec ----------------------------------------------------------------
+./ex_tuples.exec
+(4,5)
+NOT t2int2 < t2int
+(9.9,7)
+first element tdooubleint tuple is : 9.9
+second element tdooubleint tuple is : 7
+first element tdooubleint tuple is : 9.9
+second element tdooubleint tuple is : 7
+rm -f ./ex_tuples.exec
+test_configfile.exec ----------------------------------------------------------------
+./test_configfile.exec
+Fichero config_saved2.cfg guardado
+Fichero config_saved2.cfg cargado
+************************************************************************************
+Comprobamos todo el fichero
+NODE [] = ADMIN
+PROPERTY [ADMIN.IdReloj] = 4443
+PROPERTY [ADMIN.ProcessName] = HOLA_PRUEBA
+PROPERTY [ADMIN.ProcessPriority] = High
+PROPERTY [ADMIN.Production] = false
+PROPERTY [ADMIN.Market] = ~
+PROPERTY [ADMIN.TibcoDaemon] = 128.2.254.100:7500
+PROPERTY [ADMIN.TibcoNetwork] = ~
+PROPERTY [ADMIN.MarketConVariable] = soy el mercado mercado expandido
+PROPERTY [ADMIN.unaperdida] = acA
+PROPERTY [ADMIN.ESTASEBORRA] = la van a borrar
+NODE [ADMIN] = TibcoServices
+PROPERTY [ADMIN.TibcoServices.Client] = 03
+PROPERTY [ADMIN.TibcoServices.Server] = 02
+PROPERTY [ADMIN.TibcoServices.Service] = 01
+PROPERTY [ADMIN.TibcoServices.Other] = 07
+PROPERTY [ADMIN.TibcoServices.Pepe] = 09
+NODE [ADMIN] = PR1
+PROPERTY [ADMIN.PR1.Hola] = 9
+PROPERTY [ADMIN.PR1.varmercado] = mercado expandido
+NODE [ADMIN.PR1] = PR2
+PROPERTY [ADMIN.PR1.PR2.pajarito] = sin cola
+NODE [] = HOLA
+LISTA seq: 
+[
+1,2,3,4,5
+]
+PROPERTY [HOLA.prueba] = hola
+LISTA lista: 
+[
+item
+otro item
+item 1,2,3
+]
+LISTA listavaciaono: 
+[
+]
+LISTA mevanaborrar: 
+[
+1elemento
+]
+NODE [] = SECT1
+Los ficheros son consistentes
+************************************************************************************
+
+************************************************************************************
+Vamos a leer algunas propiedades
+[ADMIN.ProcessPriority] = High
+[ADMIN.TibcoServices.Client] = 03
+[HOLA.prueba] = hola
+[HOLA.noExisto] No tiene valor
+************************************************************************************
+
+************************************************************************************
+Obtenemos la lista de propiedades de [ADMIN.TibcoServices]
+Client
+Server
+Service
+Other
+Pepe
+************************************************************************************
+
+************************************************************************************
+Obtenemos la lista de nodos de [ADMIN.PR1]
+PR2
+************************************************************************************
+
+************************************************************************************
+Escribimos un valor en una propiedad de un nodo anidado
+Los ficheros son consistentes [ADMIN.TibcoServices.Client] 555 == 555
+************************************************************************************
+
+************************************************************************************
+Añadimos una propiedad a un nodo existente
+Los ficheros son consistentes [ADMIN.TibcoServices.Nuevo] 666 == 666
+Añadimos una propiedad a un nodo existente
+Los ficheros son consistentes [ADMIN.TibcoServices.Nuevo2] 777 == 777
+************************************************************************************
+
+************************************************************************************
+Añadimos una propiedad a un nodo existente utilizando simbolos
+Los ficheros son consistentes [ADMIN.ConSim-bolo_s] 8888 == 8888
+************************************************************************************
+
+************************************************************************************
+Añadimos una propiedad a un nodo nuevo
+No está permitido crear una propiedad en un nodo nuevo: 
+             ERROR NoPerm # on file config2.cfg alarm @CF_Create
+             ERROR NoPerm # Cannot create property with a node key [NODO_NUEVO.hOLa]   node doesn't exists @void mtk::ConfigFile::Create(const std::string&, const std::string&, const std::string&)(configfile.cpp:614)
+************************************************************************************
+Vamos a borrar una propiedad
+Se ha borrado la propiedad [ADMIN.ESTASEBORRA]
+************************************************************************************
+
+************************************************************************************
+Comprobamos todo el fichero
+NODE [] = ADMIN
+PROPERTY [ADMIN.IdReloj] = 4443
+PROPERTY [ADMIN.ProcessName] = HOLA_PRUEBA
+PROPERTY [ADMIN.ProcessPriority] = High
+PROPERTY [ADMIN.Production] = false
+PROPERTY [ADMIN.Market] = ~
+PROPERTY [ADMIN.TibcoDaemon] = 128.2.254.100:7500
+PROPERTY [ADMIN.TibcoNetwork] = ~
+PROPERTY [ADMIN.MarketConVariable] = soy el mercado mercado expandido
+PROPERTY [ADMIN.unaperdida] = acA
+PROPERTY [ADMIN.ConSim-bolo_s] = 8888
+NODE [ADMIN] = TibcoServices
+PROPERTY [ADMIN.TibcoServices.Client] = 555
+PROPERTY [ADMIN.TibcoServices.Server] = 02
+PROPERTY [ADMIN.TibcoServices.Service] = 01
+PROPERTY [ADMIN.TibcoServices.Other] = 07
+PROPERTY [ADMIN.TibcoServices.Pepe] = 09
+PROPERTY [ADMIN.TibcoServices.Nuevo] = 666
+PROPERTY [ADMIN.TibcoServices.Nuevo2] = 777
+NODE [ADMIN] = PR1
+PROPERTY [ADMIN.PR1.Hola] = 9
+PROPERTY [ADMIN.PR1.varmercado] = mercado expandido
+NODE [ADMIN.PR1] = PR2
+PROPERTY [ADMIN.PR1.PR2.pajarito] = sin cola
+NODE [] = HOLA
+LISTA seq: 
+[
+1,2,3,4,5
+]
+PROPERTY [HOLA.prueba] = hola
+LISTA lista: 
+[
+item
+otro item
+item 1,2,3
+]
+LISTA listavaciaono: 
+[
+]
+LISTA mevanaborrar: 
+[
+1elemento
+]
+NODE [] = SECT1
+Los ficheros son consistentes
+************************************************************************************
+
+************************************************************************************
+Vamos a borrar un nodo
+No esta permitido borrar un nodo: 
+             ERROR Unkown # Cannot delete on keys.property [ADMIN] @void mtk::ConfigFile::Delete(const std::string&)(configfile.cpp:581)
+************************************************************************************
+Vamos a intentar escribir un valor en un nodo:
+No esta permitido escribir un valor en un nodo: 
+             ERROR NoPerm # on file config2.cfg alarm @CF_Create
+             ERROR NoPerm # Cannot write a property on a node [ADMIN]  @void mtk::ConfigFile::Create(const std::string&, const std::string&, const std::string&)(configfile.cpp:605)
+************************************************************************************
+Comprobamos todo el fichero
+NODE [] = ADMIN
+PROPERTY [ADMIN.IdReloj] = 4443
+PROPERTY [ADMIN.ProcessName] = HOLA_PRUEBA
+PROPERTY [ADMIN.ProcessPriority] = High
+PROPERTY [ADMIN.Production] = false
+PROPERTY [ADMIN.Market] = ~
+PROPERTY [ADMIN.TibcoDaemon] = 128.2.254.100:7500
+PROPERTY [ADMIN.TibcoNetwork] = ~
+PROPERTY [ADMIN.MarketConVariable] = soy el mercado mercado expandido
+PROPERTY [ADMIN.unaperdida] = acA
+PROPERTY [ADMIN.ConSim-bolo_s] = 8888
+NODE [ADMIN] = TibcoServices
+PROPERTY [ADMIN.TibcoServices.Client] = 555
+PROPERTY [ADMIN.TibcoServices.Server] = 02
+PROPERTY [ADMIN.TibcoServices.Service] = 01
+PROPERTY [ADMIN.TibcoServices.Other] = 07
+PROPERTY [ADMIN.TibcoServices.Pepe] = 09
+PROPERTY [ADMIN.TibcoServices.Nuevo] = 666
+PROPERTY [ADMIN.TibcoServices.Nuevo2] = 777
+NODE [ADMIN] = PR1
+PROPERTY [ADMIN.PR1.Hola] = 9
+PROPERTY [ADMIN.PR1.varmercado] = mercado expandido
+NODE [ADMIN.PR1] = PR2
+PROPERTY [ADMIN.PR1.PR2.pajarito] = sin cola
+NODE [] = HOLA
+LISTA seq: 
+[
+1,2,3,4,5
+]
+PROPERTY [HOLA.prueba] = hola
+LISTA lista: 
+[
+item
+otro item
+item 1,2,3
+]
+LISTA listavaciaono: 
+[
+]
+LISTA mevanaborrar: 
+[
+1elemento
+]
+NODE [] = SECT1
+Los ficheros son consistentes
+************************************************************************************
+
+************************************************************************************
+Vamos a intentar crear un identificador con símbolos no permitidos:
+No esta permitido crear un identificador con símbolos no permitidos: 
+             ERROR Unkown # invalid id ADMIN.aaaa íá=() @cf::Create
+************************************************************************************
+Vamos a coger una propiedad con variables:
+Valor de la variable varmercado:mercado expandido
+MarketConVariable: soy el mercado mercado expandido
+************************************************************************************
+************************************************************************************
+Vamos a coger una propiedad con variable que es la misma propiedad (recursivo)
+No permitida recursividad: too depth recursion (11)  $(SECT1.PROP1)  on file config2.cfg
+************************************************************************************
+Vamos a modificar una lista
+************************************************************************************
+Vamos a modificar una lista dejandola vacia
+************************************************************************************
+Vamos a insertar un elemento a una lista vacia
+************************************************************************************
+Creamos una lista que no existe
+************************************************************************************
+ModifOrCreate una lista que no existe
+************************************************************************************
+Vamos a borrar una lista
+ESCRIBIMOS EL FICHERO... 
+ADMIN
+{
+    IdReloj:4443
+    ProcessName:HOLA_PRUEBA
+    ProcessPriority:High
+
+  # pueden leerse de global (comunes)
+    Production:false
+    Market:~
+    TibcoDaemon:128.2.254.100:7500
+    TibcoNetwork:~
+    MarketConVariable:soy el mercado $(ADMIN.PR1.varmercado)
+
+
+
+    TibcoServices
+    {
+        Client:555
+        Server:02
+        Service:01
+        Other:07
+        Pepe:09
+        Nuevo:666
+        Nuevo2:777
+    
+    }
+    PR1
+    {
+        Hola:9
+        PR2
+        {
+            pajarito:sin cola
+        
+        }
+        varmercado:mercado expandido
+    
+    }
+    unaperdida:acA
+    ConSim-bolo_s:8888
+
+}
+HOLA
+{
+    seq:
+    [
+        primer elemento lista
+        1,2,3,4,5
+        ultimo elemento lista
+    ]
+
+    prueba:hola # kaaa;aaa
+
+    lista:
+    [
+        ~
+    ]
+
+    listavaciaono:
+    [
+        Ahora no estoy vacia
+    ]
+
+    mevanaborrar:
+    [
+        1elemento
+    ]
+
+    listaCopiaDeSeq:
+    [
+        primer elemento lista
+        1,2,3,4,5
+        ultimo elemento
+************************************************************************************
+
+FIN..... 
+************************************************************************************
+
+rm -f ./test_configfile.exec
+test_containers.exec ----------------------------------------------------------------
+./test_containers.exec
+5
+5
+5
+3
+5
+333333
+444444
+tamaño 3
+33  ,  333333
+44  ,  444444
+55  ,  555555
+33  ,  333333
+44  ,  444444
+55  ,  555555
+existe 33  con 333333
+no existe 88
+Mínima prueba con listas
+copia iterator lista
+00000000
+1111111
+22222222
+
+Pruebas de fallos..................
+1.-  tratamos de obtener un dato de un iterador que no está inicialiado
+             ERROR Unkown # iterator not valid @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)2.-  tratamos de avanzar en un iterador no inicializado
+             ERROR Unkown # iterator not valid @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:218)3.-  tratamos de obtener datos de un iterador que apunta a un mapa vacío
+             ERROR Unkown # iterator not valid @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)4.-  tratamos de obtener un datos de un iterador cuando su contenedor se ha borrado
+esto bien 0
+             ERROR Unkown # container is not registered @int mtk::internal_for_containers::get_registered_container_last_size_change(int)(container_support.cpp:48)5.-  tratamos de avanzar iterador su contenedor se ha borrado (eliminado)
+esto bien 0
+             ERROR Unkown # container is not registered @int mtk::internal_for_containers::get_registered_container_last_size_change(int)(container_support.cpp:48)6.-  tratamos de avanzar en un iterador cuando su contenedor se ha vaciado
+             ERROR Unkown # iterator not valid @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)7.-  tratamos de obtener datos de un iterador del que se ha borrado su elemento
+             ERROR Unkown # iterator not valid @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)8.-  tratamos de avanzar en un iterador que apunta al final
+             ERROR Unkown # iterator not valid @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:218)9.-  tratamos de avanzar en un iterador que llegó al final
+este bien______________
+             ERROR Unkown # ++ on end iterator @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:221)10.-  comparar iteradores de diferentes contenedores
+             ERROR Unkown # on different owners @bool mtk::map<key_type, T>::iterator::operator==(const mtk::map<key_type, T>::iterator&) const [with key_type = int, T = int](../../../src/support/map.hpp:246)
+
+TIENE BUENA PINTA.
+rm -f ./test_containers.exec
+test_div0_control.exec ----------------------------------------------------------------
+./test_div0_control.exec
+uno 
+capturamos en 1 SIGNAL FPE  probably int div0
+dos 
+capturamos en 2-3 SIGNAL FPE  probably int div0
+cuatro 
+capturamos en 4 SIGNAL FPE  probably int div0
+cinco 
+lo intentamos OTRA VEZ
+capturamos en 5 SIGNAL FPE  probably int div0
+Pero no me importa...   End of program...
+rm -f ./test_div0_control.exec
+test_dtMachineGetTotalMillisecs.exec ----------------------------------------------------------------
+./test_dtMachineGetTotalMillisecs.exec
+
+
+elemental, llamada sin desbordamiento
+base:   5000
+incr:   0
+b+i 32  5000
+result: 5000
+diff:   1
+
+elemental, nueva llamada sin desbordamiento
+base:   5000
+incr:   5000
+b+i 32  10000
+result: 10000
+diff:   1
+
+sin desbordamiento pero muy cerca  (sólo a 5 milisegundos)
+base:   4294967291
+incr:   0
+b+i 32  4294967291
+result: 4294967291
+diff:   1
+
+primer desbordamiento por poquito (15-5 millisecs)
+
+base:   4294967291
+incr:   15
+b+i 32  10
+result: 4294967306
+diff:   1
+
+sin desbordamiento adicional
+
+base:   4294967291
+incr:   20000
+b+i 32  19995
+result: 4294987291
+diff:   1
+
+cerca segundo desbordamiento (a 1000ms)
+base:   4294966296
+incr:   0
+b+i 32  4294966296
+result: 8589933592
+diff:   1
+
+segundo desbordamiento (por 500ms)
+base:   4294966296
+incr:   1500
+b+i 32  500
+result: 8589935092
+diff:   1rm -f ./test_dtMachineGetTotalMillisecs.exec
+test_performance_signal_slot.exec ----------------------------------------------------------------
+./test_performance_signal_slot.exec
+---------------------------------------------------------------------
+BUCLE suma entero 
+
+-2014260032
+---------------------------------------------------------------------
+signal -> función (emit)
+
+---------------------------------------------------------------------
+signal -> función (no emit)
+
+---------------------------------------------------------------------
+signal -> método  (emit)
+
+---------------------------------------------------------------------
+llamada directa función 
+
+10000000
+time: 
+too fast...
+---------------------------------------------------------------------
+signal -> función 
+
+10000000
+rm -f ./test_performance_signal_slot.exec
+test_resources_signal_slot.exec ----------------------------------------------------------------
+./test_resources_signal_slot.exec
+
+Sólo mandamos señales...
+..........
+
+Conectamos y desconectamos SIN MANDAR SEÑALES (MALO, MALO)...
+
+
+Conectamos y desconectamos mandando señal...
+..........
+
+Creamos receptor, conexión, sacamos de ámbito receptor...
+..........
+
+Creamos signal, conexión, sacamos de ámbito signal...
+..........
+
+Enviamos señal, sobre signal cruzados...
+
+
+
+
+
+
+
+
+
+
+
+
+conectamos, desconectamos, enviamos señal sobre signal cruzados...
+
+
+
+
+
+
+
+
+
+
+
+
+creamos un receptorsignal, conectamos, desconectamos, enviamos señal sobre signal cruzados...
+
+
+
+
+
+
+
+
+
+
+
+
+creamos dos receptorsignal, conectamos, desconectamos, enviamos señal sobre signal cruzados...
+
+
+
+
+
+
+
+
+
+
+
+rm -f ./test_resources_signal_slot.exec
+test_signal_slot.exec ----------------------------------------------------------------
+./test_signal_slot.exec
+
+una conexión a uno     Tres conexiones a 2, mandamos un signal
+
+(1)recibio... 111
+recibio 2222...
+recibio 2222...
+recibio 2222...
+
+Desconectamos un 2
+
+Desconectamos un 2  OK
+
+(1)recibio... 111
+recibio 2222...
+recibio 2222...
+
+Desconectamos un 1
+
+Desconectamos un 1  OK
+recibio 2222...
+recibio 2222...
+
+Desconectamos un 1
+
+Desconectamos un 1  FAIL
+recibio 2222...
+recibio 2222...
+
+desconectamos todo... y mandamos un mensaje nuevo
+Creamos otro recpetor temporal, conectamos a 1 mandamo señal
+(22)recibio... 111
+
+(23)recibio... 111
+
+el últmo receptor temporal sale de ámbito
+acceso incorrecto a la memoria
+Sólo se debería escribir 1
+(22)recibio... 111
+
+(24)recibio... 111
+
+(22)recibio... 111
+
+(24)recibio... 111
+
+(77)recibio... 111
+
+(77)recibio... 111
+
+(22)recibio... 111
+
+(24)recibio... 111
+
+(88)recibio... 111
+
+(22)recibio... 111
+
+(24)recibio... 111
+
+DESCONECTAMOS_________
+SE TIENE QUE RECIBIR...
+
+(1)recibio... 111
+rm -f ./test_signal_slot.exec
+test_string_trim.exec ----------------------------------------------------------------
+./test_string_trim.exec
+Test trim functions
+ O K      TEST("    a    "   , "a"  , ' '  )
+ O K      TEST("    a"   , "a"  , ' '  )
+ O K      TEST("a    "   , "a"  , ' '  )
+ O K      TEST(" a "   , "a"  , ' '  )
+ O K      TEST("a"   , "a"  , ' '  )
+ O K      TEST("         "   , ""  , ' '  )
+ O K      TEST("     "   , ""  , ' '  )
+ O K      TEST("  "   , ""  , ' '  )
+ O K      TEST(" "   , ""  , ' '  )
+ O K      TEST(""   , ""  , ' '  )
+ O K      TEST("         "   , ""  , " "  )
+ O K      TEST("     "   , ""  , " "  )
+ O K      TEST("  "   , ""  , " "  )
+ O K      TEST(" "   , ""  , " "  )
+ O K      TEST(""   , ""  , " "  )
+ O K      TEST("    a    "   , "a"  , " "  )
+ O K      TEST("    a"   , "a"  , " "  )
+ O K      TEST("a    "   , "a"  , " "  )
+ O K      TEST(" a "   , "a"  , " "  )
+ O K      TEST("a"   , "a"  , " "  )
+ O K      TEST("    a    "   , "a"  , "  "  )
+ O K      TEST("    a"   , "a"  , "  "  )
+ O K      TEST("a    "   , "a"  , "  "  )
+ O K      TEST(" a "   , "a"  , "  "  )
+ O K      TEST("a"   , "a"  , "  "  )
+ O K      TEST("    a    "   , "a"  , "b "  )
+ O K      TEST("    a"   , "a"  , "b "  )
+ O K      TEST("a    "   , "a"  , "b "  )
+ O K      TEST(" a "   , "a"  , "b "  )
+ O K      TEST("a"   , "a"  , "b "  )
+ O K      TEST("    a    "   , "a"  , " b "  )
+ O K      TEST("    a"   , "a"  , " b "  )
+ O K      TEST("a    "   , "a"  , " b "  )
+ O K      TEST(" a "   , "a"  , " b "  )
+ O K      TEST("a"   , "a"  , " b "  )
+ O K      TEST("    a    "   , "a"  , " b"  )
+ O K      TEST("    a"   , "a"  , " b"  )
+ O K      TEST("a    "   , "a"  , " b"  )
+ O K      TEST(" a "   , "a"  , " b"  )
+ O K      TEST("a"   , "a"  , " b"  )
+ O K      TEST("    a    "   , ""  , "a "  )
+ O K      TEST("    a"   , ""  , "a "  )
+ O K      TEST("a    "   , ""  , "a "  )
+ O K      TEST(" a "   , ""  , "a "  )
+ O K      TEST("a"   , ""  , "a "  )
+ O K      TEST("    a    "   , ""  , " a "  )
+ O K      TEST("    a"   , ""  , " a "  )
+ O K      TEST("a    "   , ""  , " a "  )
+ O K      TEST(" a "   , ""  , " a "  )
+ O K      TEST("a"   , ""  , " a "  )
+ O K      TEST("    a    "   , ""  , " a"  )
+ O K      TEST("    a"   , ""  , " a"  )
+ O K      TEST("a    "   , ""  , " a"  )
+ O K      TEST(" a "   , ""  , " a"  )
+ O K      TEST("a"   , ""  , " a"  )
+ O K      TEST("    a    "   , ""  , "ab "  )
+ O K      TEST("    a"   , ""  , "ab "  )
+ O K      TEST("a    "   , ""  , "ab "  )
+ O K      TEST(" a "   , ""  , "ab "  )
+ O K      TEST("a"   , ""  , "ab "  )
+ O K      TEST("    a    "   , ""  , " ab "  )
+ O K      TEST("    a"   , ""  , " ab "  )
+ O K      TEST("a    "   , ""  , " ab "  )
+ O K      TEST(" a "   , ""  , " ab "  )
+ O K      TEST("a"   , ""  , " ab "  )
+ O K      TEST("    a    "   , ""  , " ab"  )
+ O K      TEST("    a"   , ""  , " ab"  )
+ O K      TEST("a    "   , ""  , " ab"  )
+ O K      TEST(" a "   , ""  , " ab"  )
+ O K      TEST("a"   , ""  , " ab"  )
+ O K      TEST("    a    "   , ""  , "ba "  )
+ O K      TEST("    a"   , ""  , "ba "  )
+ O K      TEST("a    "   , ""  , "ba "  )
+ O K      TEST(" a "   , ""  , "ba "  )
+ O K      TEST("a"   , ""  , "ba "  )
+ O K      TEST("         "   , ""  , ' '  )
+ O K      TEST("     "   , ""  , ' '  )
+ O K      TEST("  "   , ""  , ' '  )
+ O K      TEST(" "   , ""  , ' '  )
+ O K      TEST(""   , ""  , ' '  )
+ O K      TEST("         "   , ""  , " "  )
+ O K      TEST("     "   , ""  , " "  )
+ O K      TEST("  "   , ""  , " "  )
+ O K      TEST(" "   , ""  , " "  )
+ O K      TEST(""   , ""  , " "  )
+ O K      TEST("         "   , ""  , "  "  )
+ O K      TEST("     "   , ""  , "  "  )
+ O K      TEST("  "   , ""  , "  "  )
+ O K      TEST(" "   , ""  , "  "  )
+ O K      TEST(""   , ""  , "  "  )
+ O K      TEST("         "   , ""  , "a "  )
+ O K      TEST("     "   , ""  , "a "  )
+ O K      TEST("  "   , ""  , "a "  )
+ O K      TEST(" "   , ""  , "a "  )
+ O K      TEST(""   , ""  , "a "  )
+ O K      TEST("         "   , ""  , " a "  )
+ O K      TEST("     "   , ""  , " a "  )
+ O K      TEST("  "   , ""  , " a "  )
+ O K      TEST(" "   , ""  , " a "  )
+ O K      TEST(""   , ""  , " a "  )
+ O K      TEST("         "   , ""  , " a"  )
+ O K      TEST("     "   , ""  , " a"  )
+ O K      TEST("  "   , ""  , " a"  )
+ O K      TEST(" "   , ""  , " a"  )
+ O K      TEST(""   , ""  , " a"  )
+ O K      TEST("    ab    "   , "a"  , "b "  )
+ O K      TEST("    ab"   , "a"  , "b "  )
+ O K      TEST("ab    "   , "a"  , "b "  )
+ O K      TEST(" ab "   , "a"  , "b "  )
+ O K      TEST("ab"   , "a"  , "b "  )
+ O K      TEST("    ab    "   , "a"  , " b "  )
+ O K      TEST("    ab"   , "a"  , " b "  )
+ O K      TEST("ab    "   , "a"  , " b "  )
+ O K      TEST(" ab "   , "a"  , " b "  )
+ O K      TEST("ab"   , "a"  , " b "  )
+ O K      TEST("    ab    "   , "a"  , " b"  )
+ O K      TEST("    ab"   , "a"  , " b"  )
+ O K      TEST("ab    "   , "a"  , " b"  )
+ O K      TEST(" ab "   , "a"  , " b"  )
+ O K      TEST("ab"   , "a"  , " b"  )
+ O K      TEST("    ab    "   , "a"  , " bb"  )
+ O K      TEST("    ab"   , "a"  , " bb"  )
+ O K      TEST("ab    "   , "a"  , " bb"  )
+ O K      TEST(" ab "   , "a"  , " bb"  )
+ O K      TEST("ab"   , "a"  , " bb"  )
+ O K      TEST("    ab    "   , "a"  , " b b"  )
+ O K      TEST("    ab"   , "a"  , " b b"  )
+ O K      TEST("ab    "   , "a"  , " b b"  )
+ O K      TEST(" ab "   , "a"  , " b b"  )
+ O K      TEST("ab"   , "a"  , " b b"  )
+ O K      TEST("    a a    "   , "a a"  , " "  )
+ O K      TEST("    a a"   , "a a"  , " "  )
+ O K      TEST("a a    "   , "a a"  , " "  )
+ O K      TEST(" a a "   , "a a"  , " "  )
+ O K      TEST("a a"   , "a a"  , " "  )
+ O K      TEST("    a a    "   , "a a"  , "  "  )
+ O K      TEST("    a a"   , "a a"  , "  "  )
+ O K      TEST("a a    "   , "a a"  , "  "  )
+ O K      TEST(" a a "   , "a a"  , "  "  )
+ O K      TEST("a a"   , "a a"  , "  "  )
+ O K      TEST("    a a    "   , "a a"  , "b "  )
+ O K      TEST("    a a"   , "a a"  , "b "  )
+ O K      TEST("a a    "   , "a a"  , "b "  )
+ O K      TEST(" a a "   , "a a"  , "b "  )
+ O K      TEST("a a"   , "a a"  , "b "  )
+ O K      TEST("    a a    "   , "a a"  , " b "  )
+ O K      TEST("    a a"   , "a a"  , " b "  )
+ O K      TEST("a a    "   , "a a"  , " b "  )
+ O K      TEST(" a a "   , "a a"  , " b "  )
+ O K      TEST("a a"   , "a a"  , " b "  )
+ O K      TEST("    a a    "   , "a a"  , " b"  )
+ O K      TEST("    a a"   , "a a"  , " b"  )
+ O K      TEST("a a    "   , "a a"  , " b"  )
+ O K      TEST(" a a "   , "a a"  , " b"  )
+ O K      TEST("a a"   , "a a"  , " b"  )
+ O K      TEST("    a a    "   , "a a"  , " b b "  )
+ O K      TEST("    a a"   , "a a"  , " b b "  )
+ O K      TEST("a a    "   , "a a"  , " b b "  )
+ O K      TEST(" a a "   , "a a"  , " b b "  )
+ O K      TEST("a a"   , "a a"  , " b b "  )
+rm -f ./test_string_trim.exec
+make -C debug
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/support/debug'
+ex_check_scope_time.exec ----------------------------------------------------------------
+./ex_check_scope_time.exec
+sum recursivo... 5.0005e+07
+sum lineal   ... 5.00001e+11
+sum lineal2  ... 5e+15
+sum lineal3  ... 5e+15
+sum lineal4  ... 9.8746e+08
+
+
+
+times...  
+
+
+rm -f ./ex_check_scope_time.exec
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/support/debug'
+make -C hp
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/support/hp'
+first_gram_math_expr.exec ----------------------------------------------------------------
+./first_gram_math_expr.exec
+
+1  okrm -f ./first_gram_math_expr.exec
+left_asociative_gram_ast.exec ----------------------------------------------------------------
+./left_asociative_gram_ast.exec
+
+1  ok
+
+
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        1
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        +
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        2
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        +
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        3
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+--------------------------------------------------------------
+value:        
+rule4Replace: 
+childs:       
+--------------------------------------------------------------
+rm -f ./left_asociative_gram_ast.exec
+left_asociative_gram.exec ----------------------------------------------------------------
+./left_asociative_gram.exec
+
+1  okrm -f ./left_asociative_gram.exec
+prog_transf_math_expr.exec ----------------------------------------------------------------
+./prog_transf_math_expr.exec
+text2Parse 1+ 2+3
+1  ok
+
+
+
+
+text2Parse -1 +  2+ 3
+1  ok
+
+
+
+
+text2Parse 1+2+(4+5)
+1  ok
+
+
+
+
+text2Parse 1+2+(+3+(4+5))+1
+1  ok
+
+
+
+
+text2Parse +1 +  2+ 3- x + sin ( -y) + (8+ (9+2+3))+1
+1  ok
+
+
+
+
+text2Parse 1+2+pow(2,5)
+1  ok
+
+
+
+
+text2Parse 1+2+3
+1  ok
+
+
+
+
+text2Parse 1+2*3
+1  ok
+
+
+
+
+text2Parse 1*2+3
+1  ok
+
+
+
+
+text2Parse 1*2*3
+1  ok
+
+
+
+
+text2Parse y=x=1+2*3
+1  ok
+
+
+
+
+text2Parse x=1+(y=2*3)
+1  ok
+
+
+
+
+text2Parse -(2*(-(1+2)))
+1  ok
+
+
+
+
+text2Parse 1+2^3
+1  ok
+
+
+
+
+text2Parse 1+2^3^4
+1  ok
+
+
+
+
+text2Parse 1.009+.2+1.+2
+1  ok
+
+
+
+
+text2Parse x=1+(y=2*3)
+1  ok
+
+
+
+
+rm -f ./prog_transf_math_expr.exec
+prog_trans_from_file.exec ----------------------------------------------------------------
+./prog_trans_from_file.exec
+num:1
+fun/1:+
+num:2
+fun/2:+
+num:3
+fun/2:+
+var:x
+fun/2:-
+var:y
+fun/1:-
+fun/1:sin
+fun/2:+
+num:8
+num:9
+num:2
+fun/2:+
+num:3
+fun/2:+
+
+fun/2:+
+
+fun/2:+
+num:1
+fun/2:+
+
+rm -f ./prog_trans_from_file.exec
+testing_parser_program.exec ----------------------------------------------------------------
+./testing_parser_program.exec
+platform.hpp basic_types.hpp 
+
+
+
+
+rm -f ./testing_parser_program.exec
+#make -C components
+echo "FIN"
+FIN
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/support/hp'
+#make -C fb
+#make -C components
+#make -C clicompo
+echo "FIN"
+FIN
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/support'
+make -C sockets/ test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/sockets'
+ex_tcp_socket1.exec ----------------------------------------------------------------
+./ex_tcp_socket1.exec
+client connected
+server connected
+RECIBE EL CLIENTE...   hola pajaritooooooooooooooooooooooooo
+recibe el servidor...  Hola pajarito sin cola
+recibe el servidor...  Hasta luego, cara huevo
+recibe el servidor...  
+recibe el servidor...  Una pasa que me he tragado y no me pasa
+rm -f ./ex_tcp_socket1.exec
+ex_tcp_socket2.exec ----------------------------------------------------------------
+./ex_tcp_socket2.exec
+client connected
+server connected
+RECIBE EL CLIENTE...   hola pajaritooooooooooooooooooooooooo
+recibe el servidor...  Hola pajarito sin cola
+recibe el servidor...  Hasta luego, cara huevo
+recibe el servidor...  
+recibe el servidor...  Una pasa que me he tragado y no me pasa
+rm -f ./ex_tcp_socket2.exec
+ex_tcp_socket3.exec ----------------------------------------------------------------
+./ex_tcp_socket3.exec
+client connected
+server connected
+RECIBE EL CLIENTE...   hola.
+recibe el servidor...  holaaaaaaa
+recibe el servidor...  adiooooos
+recibe el servidor...  otro mensaje
+rm -f ./ex_tcp_socket3.exec
+ex_udp_socket.exec ----------------------------------------------------------------
+./ex_udp_socket.exec
+Prueba de socket udp
+
+   from: 127.0.0.11
+
+   from: 127.0.0.12
+
+   from: 127.0.0.13
+
+   from: 127.0.0.14
+
+   from: 127.0.0.15
+
+   from: 127.0.0.16
+
+   from: 127.0.0.17
+
+   from: 127.0.0.18
+
+   from: 127.0.0.19
+
+   from: 127.0.0.110
+
+   from: 127.0.0.111
+
+   from: 127.0.0.112
+
+   from: 127.0.0.113
+
+   from: 127.0.0.114
+
+   from: 127.0.0.115
+
+   from: 127.0.0.116
+
+   from: 127.0.0.117
+
+   from: 127.0.0.118
+
+   from: 127.0.0.119
+
+   from: 127.0.0.120
+
+   from: 127.0.0.121
+
+   from: 127.0.0.122
+
+   from: 127.0.0.123
+
+   from: 127.0.0.124
+
+   from: 127.0.0.125
+
+   from: 127.0.0.126
+
+   from: 127.0.0.127
+
+   from: 127.0.0.128
+
+   from: 127.0.0.129
+
+   from: 127.0.0.130
+
+   from: 127.0.0.131
+
+   from: 127.0.0.132
+
+   from: 127.0.0.133
+
+   from: 127.0.0.134
+
+   from: 127.0.0.135
+
+   from: 127.0.0.136
+
+   from: 127.0.0.137
+
+   from: 127.0.0.138
+
+   from: 127.0.0.139
+
+   from: 127.0.0.140
+
+   from: 127.0.0.141
+
+   from: 127.0.0.142
+
+   from: 127.0.0.143
+
+   from: 127.0.0.144
+
+   from: 127.0.0.145
+
+   from: 127.0.0.146
+
+   from: 127.0.0.147
+
+   from: 127.0.0.148
+
+   from: 127.0.0.149
+
+   from: 127.0.0.150
+
+   from: 127.0.0.151
+
+   from: 127.0.0.152
+
+   from: 127.0.0.153
+
+   from: 127.0.0.154
+
+   from: 127.0.0.155
+
+   from: 127.0.0.156
+
+   from: 127.0.0.157
+
+   from: 127.0.0.158
+
+   from: 127.0.0.159
+
+rm -f ./ex_udp_socket.exec
+#make -C fb
+#make -C components
+#make -C clicompo
+echo "FIN"
+FIN
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/sockets'
+make -C yaml/ test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/yaml'
+ex_yaml.exec ----------------------------------------------------------------
+./ex_yaml.exec
+ADMIN:
+  IdReloj: 4443
+  ProcessName: HOLA_PRUEBA
+  Production: false  # A partir de aquí, pueden leerse de global (comunes) o quizá deben
+  Market: ~
+  TibcoDaemon: 128.2.254.100:7500
+  TibcoNetwork: ~
+  TibcoServices:
+    Client: 03
+    Server: 02
+    Service: 01
+    Other: 07
+    Pepe: 09
+
+Probamos a leer algunas propiedades...
+4443
+HOLA_PRUEBA
+09
+rm -f ./ex_yaml.exec
+#make -C clicompo
+echo "FIN"
+FIN
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/yaml'
+make -C fb/  test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/fb'
+ex_fb.exec ----------------------------------------------------------------
+./ex_fb.exec
+id          : 1
+SOURCE_CODE  : SOURCE_CODE
+DATE_TIME  : 2010-11-20 10:39:08.454
+
+id          : 2
+SOURCE_CODE  : sc2010-11-20 18:20:20.882
+DATE_TIME  : 2010-11-20 18:20:20.882
+
+id          : 3
+SOURCE_CODE  : sc2010-11-20 18:20:25.792
+DATE_TIME  : 2010-11-20 18:20:25.792
+
+id          : 4
+SOURCE_CODE  : sc2010-11-20 18:20:50.102
+DATE_TIME  : 2010-11-20 18:20:50.102
+
+id          : 5
+SOURCE_CODE  : sc2010-11-20 18:52:39.143
+DATE_TIME  : 2010-11-20 18:52:39.143
+
+id          : 6
+SOURCE_CODE  : sc2010-11-20 18:52:48.448
+DATE_TIME  : 2010-11-20 18:52:48.448
+
+id          : 7
+SOURCE_CODE  : sc2010-11-20 21:42:54.002
+DATE_TIME  : 2010-11-20 21:42:54.002
+
+id          : 8
+SOURCE_CODE  : sc2010-11-20 22:21:20.097
+DATE_TIME  : 2010-11-20 22:21:20.097
+
+id          : 9
+SOURCE_CODE  : sc2010-11-21 2:15:35.435
+DATE_TIME  : 2010-11-21 2:15:35.435
+
+id          : 10
+SOURCE_CODE  : sc2010-11-21 8:35:25.863
+DATE_TIME  : 2010-11-21 8:35:25.789
+
+rm -f ./ex_fb.exec
+#make -C debug
+echo "FIN"
+FIN
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/fb'
+make -C qpid/  test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/qpid'
+ex_qpid1.exec ----------------------------------------------------------------
+./ex_qpid1.exec
+to run this example...  qpid-cofigure add exchange topic tesging
+
+{subject:hola.pajarito}  1
+{subject:hola.pajarito}  2
+{subject:hola.pajarito}  3
+{subject:hola.pajarito}  4
+rm -f ./ex_qpid1.exec
+ex_qpid2.exec ----------------------------------------------------------------
+./ex_qpid2.exec
+{subject:hola.pajarito}  1
+{subject:hola.pajarito}  2
+{subject:hola.pajarito}  3
+{subject:hola.pajarito}  4
+rm -f ./ex_qpid2.exec
+ex_qpid_direct_msg.exec ----------------------------------------------------------------
+./ex_qpid_direct_msg.exec
+{subject:hola.pajarito}  {colours:[red, green, white], id:987654321, list:[hi, there], name:Widget, nested:{n1:1, n2:22}, percent:0.98999999999999999}
+{subject:hola.pajarito}  {colours:[red, green, white], id:987654321, list:[hi, there], name:Widget, nested:{n1:1, n2:22}, percent:0.98999999999999999}
+{subject:hola.pajarito}  {colours:[red, green, white], id:987654321, list:[hi, there], name:Widget, nested:{n1:1, n2:22}, percent:0.98999999999999999}
+{subject:hola.pajarito}  {colours:[red, green, white], id:987654321, list:[hi, there], name:Widget, nested:{n1:1, n2:22}, percent:0.98999999999999999}
+rm -f ./ex_qpid_direct_msg.exec
+ex_qpid_msg_parsing.exec ----------------------------------------------------------------
+./ex_qpid_msg_parsing.exec
+RECEIVED----------------------------
+{ order_id:order_id  cli_ref:cli_ref  position:{ buy_sell:b  price:1.88#1  quantity:2.66#1   }  positionnn:{ buy_sell:b  price:1.88#1  quantity:2.66#1   }  control_fields_:{ clock_id:2011-01-20  secuence:123   }  product_code:{ market:market  product_code:product  aditional_code:aditional code   }  names:[john, peter, ]  postitions:[{ buy_sell:b  price:1.88#1  quantity:2.66#1   }, ]   }
+
+
+
+{_cf_:{mt:RQ_NW_LS}, bs:b, ci:734462, cr:cli_ref, ns:[john, peter], oid:order_id, pc:{ac:aditional code, mk:market, pr:product}, pos:{bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}, poss:[{bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}], pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}, sec:123}
+{bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}-------------------
+rm -f ./ex_qpid_msg_parsing.exec
+#make -C debug
+echo "FIN"
+FIN
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/qpid'
+make -C components/  test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components'
+make -C trading/
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components/trading'
+test_trd_cli_ls.exec ----------------------------------------------------------------
+./test_trd_cli_ls.exec
+request_new 
+{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  request_pos:{ price:100.123#1  quantity:30.#1  side:buy   }  cli_ref:cli_ref   }) }
+
+confirm_new 
+{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:100.123#1  quantity:30.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   }) }
+
+request_modif 
+{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  request_pos:{ price:100.333#1  quantity:30.#1  side:buy   }  cli_ref:cli_ref   }) }
+
+confirm_modif 
+{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:100.333#1  quantity:30.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   }) }
+
+reject_modif 
+{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:100.333#1  quantity:30.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }  description:Error: Received rq_md on status market   }) }
+
+request_canc 
+{ ({ req_info:{ req_id:{ sess_id:sess_id  req_code:0   }  client:CLIENT   }  order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  request_pos:{ price:100.333#1  quantity:30.#1  side:buy   }  cli_ref:cli_ref   }) }
+
+confirm_modif 
+{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:101.222#1  quantity:45.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   }) }
+
+confirm_exec 
+{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:101.222#1  quantity:40.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   })executed_pos:{ price:101.222#1  quantity:5.#1  side:buy   }   }
+
+request_canc 
+{ ({ req_info:{ req_id:{ sess_id:sess_id  req_code:0   }  client:CLIENT   }  order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  request_pos:{ price:101.222#1  quantity:40.#1  side:buy   }  cli_ref:cli_ref   }) }
+
+confirm_canc 
+{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:101.222#1  quantity:40.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   }) }
+
+rm -f ./test_trd_cli_ls.exec
+#make -C components
+#make -C clicompo
+echo "FIN"
+FIN
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components/trading'
+echo "FIN"
+FIN
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components'
+make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile'
+make -C hp/      test
+make[2]: Entering directory `/home/maiquel/develop/mtk/examples/hp'
+make -C calculator/ test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/hp/calculator'
+mkdir -p bin
+mkdir temp -p
+g++ -c -I./src -I../../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/arithmachine.o src/arithmachine.cpp
+mkdir temp -p
+g++ -c -I./src -I../../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/test.o src/test.cpp
+g++   temp/arithmachine.o  temp/test.o -L../../../lib -lmtksupport  -o bin/test_calculator
+bin/test_calculator
+
+RESULTADO... 5
+
+x == 5
+y == 5
+z == #invalid#
+j == 3
+RESULTADO2... 12.5
+RESULTADO (0) =  -13.8
+
+RESULTADO (1) =  -14.7
+
+RESULTADO (2) =  -15.6
+
+RESULTADO (3) =  -16.5
+
+RESULTADO (4) =  -17.4
+
+RESULTADO (5) =  -18.3
+
+RESULTADO (6) =  -19.2
+
+RESULTADO (7) =  -20.1
+
+RESULTADO (8) =  -21
+
+RESULTADO (9) =  -21.9
+
+RESULTADO (10) =  -22.8
+
+RESULTADO (11) =  -23.7
+
+RESULTADO (12) =  -24.6
+
+RESULTADO (13) =  -25.5
+
+RESULTADO (14) =  -26.4
+
+RESULTADO (15) =  -27.3
+
+RESULTADO (16) =  -28.2
+
+RESULTADO (17) =  -29.1
+
+RESULTADO (18) =  -30
+
+RESULTADO (19) =  -30.9
+
+RESULTADO (20) =  -31.8
+
+RESULTADO (21) =  -32.7
+
+RESULTADO (22) =  -33.6
+
+RESULTADO (23) =  -34.5
+
+RESULTADO (24) =  -35.4
+
+RESULTADO (25) =  -36.3
+
+RESULTADO (26) =  -37.2
+
+RESULTADO (27) =  -38.1
+
+RESULTADO (28) =  -39
+
+RESULTADO (29) =  -39.9
+
+RESULTADO (30) =  -40.8
+
+RESULTADO (31) =  -41.7
+
+RESULTADO (32) =  -42.6
+
+RESULTADO (33) =  -43.5
+
+RESULTADO (34) =  -44.4
+
+RESULTADO (35) =  -45.3
+
+RESULTADO (36) =  -46.2
+
+RESULTADO (37) =  -47.1
+
+RESULTADO (38) =  -48
+
+RESULTADO (39) =  -48.9
+
+RESULTADO (40) =  -49.8
+
+RESULTADO (41) =  -50.7
+
+RESULTADO (42) =  -51.6
+
+RESULTADO (43) =  -52.5
+
+RESULTADO (44) =  -53.4
+
+RESULTADO (45) =  -54.3
+
+RESULTADO (46) =  -55.2
+
+RESULTADO (47) =  -56.1
+
+RESULTADO (48) =  -57
+
+RESULTADO (49) =  -57.9
+
+RESULTADO (50) =  -58.8
+
+RESULTADO (51) =  -59.7
+
+RESULTADO (52) =  -60.6
+
+RESULTADO (53) =  -61.5
+
+RESULTADO (54) =  -62.4
+
+RESULTADO (55) =  -63.3
+
+RESULTADO (56) =  -64.2
+
+RESULTADO (57) =  -65.1
+
+RESULTADO (58) =  -66
+
+RESULTADO (59) =  -66.9
+
+RESULTADO (60) =  -67.8
+
+RESULTADO (61) =  -68.7
+
+RESULTADO (62) =  -69.6
+
+RESULTADO (63) =  -70.5
+
+RESULTADO (64) =  -71.4
+
+RESULTADO (65) =  -72.3
+
+RESULTADO (66) =  -73.2
+
+RESULTADO (67) =  -74.1
+
+RESULTADO (68) =  -75
+
+RESULTADO (69) =  -75.9
+
+RESULTADO (70) =  -76.8
+
+RESULTADO (71) =  -77.7
+
+RESULTADO (72) =  -78.6
+
+RESULTADO (73) =  -79.5
+
+RESULTADO (74) =  -80.4
+
+RESULTADO (75) =  -81.3
+
+RESULTADO (76) =  -82.2
+
+RESULTADO (77) =  -83.1
+
+RESULTADO (78) =  -84
+
+RESULTADO (79) =  -84.9
+
+RESULTADO (80) =  -85.8
+
+RESULTADO (81) =  -86.7
+
+RESULTADO (82) =  -87.6
+
+RESULTADO (83) =  -88.5
+
+RESULTADO (84) =  -89.4
+
+RESULTADO (85) =  -90.3
+
+RESULTADO (86) =  -91.2
+
+RESULTADO (87) =  -92.1
+
+RESULTADO (88) =  -93
+
+RESULTADO (89) =  -93.9
+
+RESULTADO (90) =  -94.8
+
+RESULTADO (91) =  -95.7
+
+RESULTADO (92) =  -96.6
+
+RESULTADO (93) =  -97.5
+
+RESULTADO (94) =  -98.4
+
+RESULTADO (95) =  -99.3
+
+RESULTADO (96) =  -100.2
+
+RESULTADO (97) =  -101.1
+
+RESULTADO (98) =  -102
+
+RESULTADO (99) =  -102.9
+
+RESULTADO (100) =  -103.8
+
+RESULTADO (101) =  -104.7
+
+RESULTADO (102) =  -105.6
+
+RESULTADO (103) =  -106.5
+
+RESULTADO (104) =  -107.4
+
+RESULTADO (105) =  -108.3
+
+RESULTADO (106) =  -109.2
+
+RESULTADO (107) =  -110.1
+
+RESULTADO (108) =  -111
+
+RESULTADO (109) =  -111.9
+
+RESULTADO (110) =  -112.8
+
+RESULTADO (111) =  -113.7
+
+RESULTADO (112) =  -114.6
+
+RESULTADO (113) =  -115.5
+
+RESULTADO (114) =  -116.4
+
+RESULTADO (115) =  -117.3
+
+RESULTADO (116) =  -118.2
+
+RESULTADO (117) =  -119.1
+
+RESULTADO (118) =  -120
+
+RESULTADO (119) =  -120.9
+
+RESULTADO (120) =  -121.8
+
+RESULTADO (121) =  -122.7
+
+RESULTADO (122) =  -123.6
+
+RESULTADO (123) =  -124.5
+
+RESULTADO (124) =  -125.4
+
+RESULTADO (125) =  -126.3
+
+RESULTADO (126) =  -127.2
+
+RESULTADO (127) =  -128.1
+
+RESULTADO (128) =  -129
+
+RESULTADO (129) =  -129.9
+
+RESULTADO (130) =  -130.8
+
+RESULTADO (131) =  -131.7
+
+RESULTADO (132) =  -132.6
+
+RESULTADO (133) =  -133.5
+
+RESULTADO (134) =  -134.4
+
+RESULTADO (135) =  -135.3
+
+RESULTADO (136) =  -136.2
+
+RESULTADO (137) =  -137.1
+
+RESULTADO (138) =  -138
+
+RESULTADO (139) =  -138.9
+
+RESULTADO (140) =  -139.8
+
+RESULTADO (141) =  -140.7
+
+RESULTADO (142) =  -141.6
+
+RESULTADO (143) =  -142.5
+
+RESULTADO (144) =  -143.4
+
+RESULTADO (145) =  -144.3
+
+RESULTADO (146) =  -145.2
+
+RESULTADO (147) =  -146.1
+
+RESULTADO (148) =  -147
+
+RESULTADO (149) =  -147.9
+
+RESULTADO (150) =  -148.8
+
+RESULTADO (151) =  -149.7
+
+RESULTADO (152) =  -150.6
+
+RESULTADO (153) =  -151.5
+
+RESULTADO (154) =  -152.4
+
+RESULTADO (155) =  -153.3
+
+RESULTADO (156) =  -154.2
+
+RESULTADO (157) =  -155.1
+
+RESULTADO (158) =  -156
+
+RESULTADO (159) =  -156.9
+
+RESULTADO (160) =  -157.8
+
+RESULTADO (161) =  -158.7
+
+RESULTADO (162) =  -159.6
+
+RESULTADO (163) =  -160.5
+
+RESULTADO (164) =  -161.4
+
+RESULTADO (165) =  -162.3
+
+RESULTADO (166) =  -163.2
+
+RESULTADO (167) =  -164.1
+
+RESULTADO (168) =  -165
+
+RESULTADO (169) =  -165.9
+
+RESULTADO (170) =  -166.8
+
+RESULTADO (171) =  -167.7
+
+RESULTADO (172) =  -168.6
+
+RESULTADO (173) =  -169.5
+
+RESULTADO (174) =  -170.4
+
+RESULTADO (175) =  -171.3
+
+RESULTADO (176) =  -172.2
+
+RESULTADO (177) =  -173.1
+
+RESULTADO (178) =  -174
+
+RESULTADO (179) =  -174.9
+
+RESULTADO (180) =  -175.8
+
+RESULTADO (181) =  -176.7
+
+RESULTADO (182) =  -177.6
+
+RESULTADO (183) =  -178.5
+
+RESULTADO (184) =  -179.4
+
+RESULTADO (185) =  -180.3
+
+RESULTADO (186) =  -181.2
+
+RESULTADO (187) =  -182.1
+
+RESULTADO (188) =  -183
+
+RESULTADO (189) =  -183.9
+
+RESULTADO (190) =  -184.8
+
+RESULTADO (191) =  -185.7
+
+RESULTADO (192) =  -186.6
+
+RESULTADO (193) =  -187.5
+
+RESULTADO (194) =  -188.4
+
+RESULTADO (195) =  -189.3
+
+RESULTADO (196) =  -190.2
+
+RESULTADO (197) =  -191.1
+
+RESULTADO (198) =  -192
+
+RESULTADO (199) =  -192.9
+
+RESULTADO (200) =  -193.8
+
+RESULTADO (201) =  -194.7
+
+RESULTADO (202) =  -195.6
+
+RESULTADO (203) =  -196.5
+
+RESULTADO (204) =  -197.4
+
+RESULTADO (205) =  -198.3
+
+RESULTADO (206) =  -199.2
+
+RESULTADO (207) =  -200.1
+
+RESULTADO (208) =  -201
+
+RESULTADO (209) =  -201.9
+
+RESULTADO (210) =  -202.8
+
+RESULTADO (211) =  -203.7
+
+RESULTADO (212) =  -204.6
+
+RESULTADO (213) =  -205.5
+
+RESULTADO (214) =  -206.4
+
+RESULTADO (215) =  -207.3
+
+RESULTADO (216) =  -208.2
+
+RESULTADO (217) =  -209.1
+
+RESULTADO (218) =  -210
+
+RESULTADO (219) =  -210.9
+
+RESULTADO (220) =  -211.8
+
+RESULTADO (221) =  -212.7
+
+RESULTADO (222) =  -213.6
+
+RESULTADO (223) =  -214.5
+
+RESULTADO (224) =  -215.4
+
+RESULTADO (225) =  -216.3
+
+RESULTADO (226) =  -217.2
+
+RESULTADO (227) =  -218.1
+
+RESULTADO (228) =  -219
+
+RESULTADO (229) =  -219.9
+
+RESULTADO (230) =  -220.8
+
+RESULTADO (231) =  -221.7
+
+RESULTADO (232) =  -222.6
+
+RESULTADO (233) =  -223.5
+
+RESULTADO (234) =  -224.4
+
+RESULTADO (235) =  -225.3
+
+RESULTADO (236) =  -226.2
+
+RESULTADO (237) =  -227.1
+
+RESULTADO (238) =  -228
+
+RESULTADO (239) =  -228.9
+
+RESULTADO (240) =  -229.8
+
+RESULTADO (241) =  -230.7
+
+RESULTADO (242) =  -231.6
+
+RESULTADO (243) =  -232.5
+
+RESULTADO (244) =  -233.4
+
+RESULTADO (245) =  -234.3
+
+RESULTADO (246) =  -235.2
+
+RESULTADO (247) =  -236.1
+
+RESULTADO (248) =  -237
+
+RESULTADO (249) =  -237.9
+
+RESULTADO (250) =  -238.8
+
+RESULTADO (251) =  -239.7
+
+RESULTADO (252) =  -240.6
+
+RESULTADO (253) =  -241.5
+
+RESULTADO (254) =  -242.4
+
+RESULTADO (255) =  -243.3
+
+RESULTADO (256) =  -244.2
+
+RESULTADO (257) =  -245.1
+
+RESULTADO (258) =  -246
+
+RESULTADO (259) =  -246.9
+
+RESULTADO (260) =  -247.8
+
+RESULTADO (261) =  -248.7
+
+RESULTADO (262) =  -249.6
+
+RESULTADO (263) =  -250.5
+
+RESULTADO (264) =  -251.4
+
+RESULTADO (265) =  -252.3
+
+RESULTADO (266) =  -253.2
+
+RESULTADO (267) =  -254.1
+
+RESULTADO (268) =  -255
+
+RESULTADO (269) =  -255.9
+
+RESULTADO (270) =  -256.8
+
+RESULTADO (271) =  -257.7
+
+RESULTADO (272) =  -258.6
+
+RESULTADO (273) =  -259.5
+
+RESULTADO (274) =  -260.4
+
+RESULTADO (275) =  -261.3
+
+RESULTADO (276) =  -262.2
+
+RESULTADO (277) =  -263.1
+
+RESULTADO (278) =  -264
+
+RESULTADO (279) =  -264.9
+
+RESULTADO (280) =  -265.8
+
+RESULTADO (281) =  -266.7
+
+RESULTADO (282) =  -267.6
+
+RESULTADO (283) =  -268.5
+
+RESULTADO (284) =  -269.4
+
+RESULTADO (285) =  -270.3
+
+RESULTADO (286) =  -271.2
+
+RESULTADO (287) =  -272.1
+
+RESULTADO (288) =  -273
+
+RESULTADO (289) =  -273.9
+
+RESULTADO (290) =  -274.8
+
+RESULTADO (291) =  -275.7
+
+RESULTADO (292) =  -276.6
+
+RESULTADO (293) =  -277.5
+
+RESULTADO (294) =  -278.4
+
+RESULTADO (295) =  -279.3
+
+RESULTADO (296) =  -280.2
+
+RESULTADO (297) =  -281.1
+
+RESULTADO (298) =  -282
+
+RESULTADO (299) =  -282.9
+
+RESULTADO (300) =  -283.8
+
+RESULTADO (301) =  -284.7
+
+RESULTADO (302) =  -285.6
+
+RESULTADO (303) =  -286.5
+
+RESULTADO (304) =  -287.4
+
+RESULTADO (305) =  -288.3
+
+RESULTADO (306) =  -289.2
+
+RESULTADO (307) =  -290.1
+
+RESULTADO (308) =  -291
+
+RESULTADO (309) =  -291.9
+
+RESULTADO (310) =  -292.8
+
+RESULTADO (311) =  -293.7
+
+RESULTADO (312) =  -294.6
+
+RESULTADO (313) =  -295.5
+
+RESULTADO (314) =  -296.4
+
+RESULTADO (315) =  -297.3
+
+RESULTADO (316) =  -298.2
+
+RESULTADO (317) =  -299.1
+
+RESULTADO (318) =  -300
+
+RESULTADO (319) =  -300.9
+
+RESULTADO (320) =  -301.8
+
+RESULTADO (321) =  -302.7
+
+RESULTADO (322) =  -303.6
+
+RESULTADO (323) =  -304.5
+
+RESULTADO (324) =  -305.4
+
+RESULTADO (325) =  -306.3
+
+RESULTADO (326) =  -307.2
+
+RESULTADO (327) =  -308.1
+
+RESULTADO (328) =  -309
+
+RESULTADO (329) =  -309.9
+
+RESULTADO (330) =  -310.8
+
+RESULTADO (331) =  -311.7
+
+RESULTADO (332) =  -312.6
+
+RESULTADO (333) =  -313.5
+
+RESULTADO (334) =  -314.4
+
+RESULTADO (335) =  -315.3
+
+RESULTADO (336) =  -316.2
+
+RESULTADO (337) =  -317.1
+
+RESULTADO (338) =  -318
+
+RESULTADO (339) =  -318.9
+
+RESULTADO (340) =  -319.8
+
+RESULTADO (341) =  -320.7
+
+RESULTADO (342) =  -321.6
+
+RESULTADO (343) =  -322.5
+
+RESULTADO (344) =  -323.4
+
+RESULTADO (345) =  -324.3
+
+RESULTADO (346) =  -325.2
+
+RESULTADO (347) =  -326.1
+
+RESULTADO (348) =  -327
+
+RESULTADO (349) =  -327.9
+
+RESULTADO (350) =  -328.8
+
+RESULTADO (351) =  -329.7
+
+RESULTADO (352) =  -330.6
+
+RESULTADO (353) =  -331.5
+
+RESULTADO (354) =  -332.4
+
+RESULTADO (355) =  -333.3
+
+RESULTADO (356) =  -334.2
+
+RESULTADO (357) =  -335.1
+
+RESULTADO (358) =  -336
+
+RESULTADO (359) =  -336.9
+
+RESULTADO (360) =  -337.8
+
+RESULTADO (361) =  -338.7
+
+RESULTADO (362) =  -339.6
+
+RESULTADO (363) =  -340.5
+
+RESULTADO (364) =  -341.4
+
+RESULTADO (365) =  -342.3
+
+RESULTADO (366) =  -343.2
+
+RESULTADO (367) =  -344.1
+
+RESULTADO (368) =  -345
+
+RESULTADO (369) =  -345.9
+
+RESULTADO (370) =  -346.8
+
+RESULTADO (371) =  -347.7
+
+RESULTADO (372) =  -348.6
+
+RESULTADO (373) =  -349.5
+
+RESULTADO (374) =  -350.4
+
+RESULTADO (375) =  -351.3
+
+RESULTADO (376) =  -352.2
+
+RESULTADO (377) =  -353.1
+
+RESULTADO (378) =  -354
+
+RESULTADO (379) =  -354.9
+
+RESULTADO (380) =  -355.8
+
+RESULTADO (381) =  -356.7
+
+RESULTADO (382) =  -357.6
+
+RESULTADO (383) =  -358.5
+
+RESULTADO (384) =  -359.4
+
+RESULTADO (385) =  -360.3
+
+RESULTADO (386) =  -361.2
+
+RESULTADO (387) =  -362.1
+
+RESULTADO (388) =  -363
+
+RESULTADO (389) =  -363.9
+
+RESULTADO (390) =  -364.8
+
+RESULTADO (391) =  -365.7
+
+RESULTADO (392) =  -366.6
+
+RESULTADO (393) =  -367.5
+
+RESULTADO (394) =  -368.4
+
+RESULTADO (395) =  -369.3
+
+RESULTADO (396) =  -370.2
+
+RESULTADO (397) =  -371.1
+
+RESULTADO (398) =  -372
+
+RESULTADO (399) =  -372.9
+
+RESULTADO (400) =  -373.8
+
+RESULTADO (401) =  -374.7
+
+RESULTADO (402) =  -375.6
+
+RESULTADO (403) =  -376.5
+
+RESULTADO (404) =  -377.4
+
+RESULTADO (405) =  -378.3
+
+RESULTADO (406) =  -379.2
+
+RESULTADO (407) =  -380.1
+
+RESULTADO (408) =  -381
+
+RESULTADO (409) =  -381.9
+
+RESULTADO (410) =  -382.8
+
+RESULTADO (411) =  -383.7
+
+RESULTADO (412) =  -384.6
+
+RESULTADO (413) =  -385.5
+
+RESULTADO (414) =  -386.4
+
+RESULTADO (415) =  -387.3
+
+RESULTADO (416) =  -388.2
+
+RESULTADO (417) =  -389.1
+
+RESULTADO (418) =  -390
+
+RESULTADO (419) =  -390.9
+
+RESULTADO (420) =  -391.8
+
+RESULTADO (421) =  -392.7
+
+RESULTADO (422) =  -393.6
+
+RESULTADO (423) =  -394.5
+
+RESULTADO (424) =  -395.4
+
+RESULTADO (425) =  -396.3
+
+RESULTADO (426) =  -397.2
+
+RESULTADO (427) =  -398.1
+
+RESULTADO (428) =  -399
+
+RESULTADO (429) =  -399.9
+
+RESULTADO (430) =  -400.8
+
+RESULTADO (431) =  -401.7
+
+RESULTADO (432) =  -402.6
+
+RESULTADO (433) =  -403.5
+
+RESULTADO (434) =  -404.4
+
+RESULTADO (435) =  -405.3
+
+RESULTADO (436) =  -406.2
+
+RESULTADO (437) =  -407.1
+
+RESULTADO (438) =  -408
+
+RESULTADO (439) =  -408.9
+
+RESULTADO (440) =  -409.8
+
+RESULTADO (441) =  -410.7
+
+RESULTADO (442) =  -411.6
+
+RESULTADO (443) =  -412.5
+
+RESULTADO (444) =  -413.4
+
+RESULTADO (445) =  -414.3
+
+RESULTADO (446) =  -415.2
+
+RESULTADO (447) =  -416.1
+
+RESULTADO (448) =  -417
+
+RESULTADO (449) =  -417.9
+
+RESULTADO (450) =  -418.8
+
+RESULTADO (451) =  -419.7
+
+RESULTADO (452) =  -420.6
+
+RESULTADO (453) =  -421.5
+
+RESULTADO (454) =  -422.4
+
+RESULTADO (455) =  -423.3
+
+RESULTADO (456) =  -424.2
+
+RESULTADO (457) =  -425.1
+
+RESULTADO (458) =  -426
+
+RESULTADO (459) =  -426.9
+
+RESULTADO (460) =  -427.8
+
+RESULTADO (461) =  -428.7
+
+RESULTADO (462) =  -429.6
+
+RESULTADO (463) =  -430.5
+
+RESULTADO (464) =  -431.4
+
+RESULTADO (465) =  -432.3
+
+RESULTADO (466) =  -433.2
+
+RESULTADO (467) =  -434.1
+
+RESULTADO (468) =  -435
+
+RESULTADO (469) =  -435.9
+
+RESULTADO (470) =  -436.8
+
+RESULTADO (471) =  -437.7
+
+RESULTADO (472) =  -438.6
+
+RESULTADO (473) =  -439.5
+
+RESULTADO (474) =  -440.4
+
+RESULTADO (475) =  -441.3
+
+RESULTADO (476) =  -442.2
+
+RESULTADO (477) =  -443.1
+
+RESULTADO (478) =  -444
+
+RESULTADO (479) =  -444.9
+
+RESULTADO (480) =  -445.8
+
+RESULTADO (481) =  -446.7
+
+RESULTADO (482) =  -447.6
+
+RESULTADO (483) =  -448.5
+
+RESULTADO (484) =  -449.4
+
+RESULTADO (485) =  -450.3
+
+RESULTADO (486) =  -451.2
+
+RESULTADO (487) =  -452.1
+
+RESULTADO (488) =  -453
+
+RESULTADO (489) =  -453.9
+
+RESULTADO (490) =  -454.8
+
+RESULTADO (491) =  -455.7
+
+RESULTADO (492) =  -456.6
+
+RESULTADO (493) =  -457.5
+
+RESULTADO (494) =  -458.4
+
+RESULTADO (495) =  -459.3
+
+RESULTADO (496) =  -460.2
+
+RESULTADO (497) =  -461.1
+
+RESULTADO (498) =  -462
+
+RESULTADO (499) =  -462.9
+
+RESULTADO (500) =  -463.8
+
+RESULTADO (501) =  -464.7
+
+RESULTADO (502) =  -465.6
+
+RESULTADO (503) =  -466.5
+
+RESULTADO (504) =  -467.4
+
+RESULTADO (505) =  -468.3
+
+RESULTADO (506) =  -469.2
+
+RESULTADO (507) =  -470.1
+
+RESULTADO (508) =  -471
+
+RESULTADO (509) =  -471.9
+
+RESULTADO (510) =  -472.8
+
+RESULTADO (511) =  -473.7
+
+RESULTADO (512) =  -474.6
+
+RESULTADO (513) =  -475.5
+
+RESULTADO (514) =  -476.4
+
+RESULTADO (515) =  -477.3
+
+RESULTADO (516) =  -478.2
+
+RESULTADO (517) =  -479.1
+
+RESULTADO (518) =  -480
+
+RESULTADO (519) =  -480.9
+
+RESULTADO (520) =  -481.8
+
+RESULTADO (521) =  -482.7
+
+RESULTADO (522) =  -483.6
+
+RESULTADO (523) =  -484.5
+
+RESULTADO (524) =  -485.4
+
+RESULTADO (525) =  -486.3
+
+RESULTADO (526) =  -487.2
+
+RESULTADO (527) =  -488.1
+
+RESULTADO (528) =  -489
+
+RESULTADO (529) =  -489.9
+
+RESULTADO (530) =  -490.8
+
+RESULTADO (531) =  -491.7
+
+RESULTADO (532) =  -492.6
+
+RESULTADO (533) =  -493.5
+
+RESULTADO (534) =  -494.4
+
+RESULTADO (535) =  -495.3
+
+RESULTADO (536) =  -496.2
+
+RESULTADO (537) =  -497.1
+
+RESULTADO (538) =  -498
+
+RESULTADO (539) =  -498.9
+
+RESULTADO (540) =  -499.8
+
+RESULTADO (541) =  -500.7
+
+RESULTADO (542) =  -501.6
+
+RESULTADO (543) =  -502.5
+
+RESULTADO (544) =  -503.4
+
+RESULTADO (545) =  -504.3
+
+RESULTADO (546) =  -505.2
+
+RESULTADO (547) =  -506.1
+
+RESULTADO (548) =  -507
+
+RESULTADO (549) =  -507.9
+
+RESULTADO (550) =  -508.8
+
+RESULTADO (551) =  -509.7
+
+RESULTADO (552) =  -510.6
+
+RESULTADO (553) =  -511.5
+
+RESULTADO (554) =  -512.4
+
+RESULTADO (555) =  -513.3
+
+RESULTADO (556) =  -514.2
+
+RESULTADO (557) =  -515.1
+
+RESULTADO (558) =  -516
+
+RESULTADO (559) =  -516.9
+
+RESULTADO (560) =  -517.8
+
+RESULTADO (561) =  -518.7
+
+RESULTADO (562) =  -519.6
+
+RESULTADO (563) =  -520.5
+
+RESULTADO (564) =  -521.4
+
+RESULTADO (565) =  -522.3
+
+RESULTADO (566) =  -523.2
+
+RESULTADO (567) =  -524.1
+
+RESULTADO (568) =  -525
+
+RESULTADO (569) =  -525.9
+
+RESULTADO (570) =  -526.8
+
+RESULTADO (571) =  -527.7
+
+RESULTADO (572) =  -528.6
+
+RESULTADO (573) =  -529.5
+
+RESULTADO (574) =  -530.4
+
+RESULTADO (575) =  -531.3
+
+RESULTADO (576) =  -532.2
+
+RESULTADO (577) =  -533.1
+
+RESULTADO (578) =  -534
+
+RESULTADO (579) =  -534.9
+
+RESULTADO (580) =  -535.8
+
+RESULTADO (581) =  -536.7
+
+RESULTADO (582) =  -537.6
+
+RESULTADO (583) =  -538.5
+
+RESULTADO (584) =  -539.4
+
+RESULTADO (585) =  -540.3
+
+RESULTADO (586) =  -541.2
+
+RESULTADO (587) =  -542.1
+
+RESULTADO (588) =  -543
+
+RESULTADO (589) =  -543.9
+
+RESULTADO (590) =  -544.8
+
+RESULTADO (591) =  -545.7
+
+RESULTADO (592) =  -546.6
+
+RESULTADO (593) =  -547.5
+
+RESULTADO (594) =  -548.4
+
+RESULTADO (595) =  -549.3
+
+RESULTADO (596) =  -550.2
+
+RESULTADO (597) =  -551.1
+
+RESULTADO (598) =  -552
+
+RESULTADO (599) =  -552.9
+
+RESULTADO (600) =  -553.8
+
+RESULTADO (601) =  -554.7
+
+RESULTADO (602) =  -555.6
+
+RESULTADO (603) =  -556.5
+
+RESULTADO (604) =  -557.4
+
+RESULTADO (605) =  -558.3
+
+RESULTADO (606) =  -559.2
+
+RESULTADO (607) =  -560.1
+
+RESULTADO (608) =  -561
+
+RESULTADO (609) =  -561.9
+
+RESULTADO (610) =  -562.8
+
+RESULTADO (611) =  -563.7
+
+RESULTADO (612) =  -564.6
+
+RESULTADO (613) =  -565.5
+
+RESULTADO (614) =  -566.4
+
+RESULTADO (615) =  -567.3
+
+RESULTADO (616) =  -568.2
+
+RESULTADO (617) =  -569.1
+
+RESULTADO (618) =  -570
+
+RESULTADO (619) =  -570.9
+
+RESULTADO (620) =  -571.8
+
+RESULTADO (621) =  -572.7
+
+RESULTADO (622) =  -573.6
+
+RESULTADO (623) =  -574.5
+
+RESULTADO (624) =  -575.4
+
+RESULTADO (625) =  -576.3
+
+RESULTADO (626) =  -577.2
+
+RESULTADO (627) =  -578.1
+
+RESULTADO (628) =  -579
+
+RESULTADO (629) =  -579.9
+
+RESULTADO (630) =  -580.8
+
+RESULTADO (631) =  -581.7
+
+RESULTADO (632) =  -582.6
+
+RESULTADO (633) =  -583.5
+
+RESULTADO (634) =  -584.4
+
+RESULTADO (635) =  -585.3
+
+RESULTADO (636) =  -586.2
+
+RESULTADO (637) =  -587.1
+
+RESULTADO (638) =  -588
+
+RESULTADO (639) =  -588.9
+
+RESULTADO (640) =  -589.8
+
+RESULTADO (641) =  -590.7
+
+RESULTADO (642) =  -591.6
+
+RESULTADO (643) =  -592.5
+
+RESULTADO (644) =  -593.4
+
+RESULTADO (645) =  -594.3
+
+RESULTADO (646) =  -595.2
+
+RESULTADO (647) =  -596.1
+
+RESULTADO (648) =  -597
+
+RESULTADO (649) =  -597.9
+
+RESULTADO (650) =  -598.8
+
+RESULTADO (651) =  -599.7
+
+RESULTADO (652) =  -600.6
+
+RESULTADO (653) =  -601.5
+
+RESULTADO (654) =  -602.4
+
+RESULTADO (655) =  -603.3
+
+RESULTADO (656) =  -604.2
+
+RESULTADO (657) =  -605.1
+
+RESULTADO (658) =  -606
+
+RESULTADO (659) =  -606.9
+
+RESULTADO (660) =  -607.8
+
+RESULTADO (661) =  -608.7
+
+RESULTADO (662) =  -609.6
+
+RESULTADO (663) =  -610.5
+
+RESULTADO (664) =  -611.4
+
+RESULTADO (665) =  -612.3
+
+RESULTADO (666) =  -613.2
+
+RESULTADO (667) =  -614.1
+
+RESULTADO (668) =  -615
+
+RESULTADO (669) =  -615.9
+
+RESULTADO (670) =  -616.8
+
+RESULTADO (671) =  -617.7
+
+RESULTADO (672) =  -618.6
+
+RESULTADO (673) =  -619.5
+
+RESULTADO (674) =  -620.4
+
+RESULTADO (675) =  -621.3
+
+RESULTADO (676) =  -622.2
+
+RESULTADO (677) =  -623.1
+
+RESULTADO (678) =  -624
+
+RESULTADO (679) =  -624.9
+
+RESULTADO (680) =  -625.8
+
+RESULTADO (681) =  -626.7
+
+RESULTADO (682) =  -627.6
+
+RESULTADO (683) =  -628.5
+
+RESULTADO (684) =  -629.4
+
+RESULTADO (685) =  -630.3
+
+RESULTADO (686) =  -631.2
+
+RESULTADO (687) =  -632.1
+
+RESULTADO (688) =  -633
+
+RESULTADO (689) =  -633.9
+
+RESULTADO (690) =  -634.8
+
+RESULTADO (691) =  -635.7
+
+RESULTADO (692) =  -636.6
+
+RESULTADO (693) =  -637.5
+
+RESULTADO (694) =  -638.4
+
+RESULTADO (695) =  -639.3
+
+RESULTADO (696) =  -640.2
+
+RESULTADO (697) =  -641.1
+
+RESULTADO (698) =  -642
+
+RESULTADO (699) =  -642.9
+
+RESULTADO (700) =  -643.8
+
+RESULTADO (701) =  -644.7
+
+RESULTADO (702) =  -645.6
+
+RESULTADO (703) =  -646.5
+
+RESULTADO (704) =  -647.4
+
+RESULTADO (705) =  -648.3
+
+RESULTADO (706) =  -649.2
+
+RESULTADO (707) =  -650.1
+
+RESULTADO (708) =  -651
+
+RESULTADO (709) =  -651.9
+
+RESULTADO (710) =  -652.8
+
+RESULTADO (711) =  -653.7
+
+RESULTADO (712) =  -654.6
+
+RESULTADO (713) =  -655.5
+
+RESULTADO (714) =  -656.4
+
+RESULTADO (715) =  -657.3
+
+RESULTADO (716) =  -658.2
+
+RESULTADO (717) =  -659.1
+
+RESULTADO (718) =  -660
+
+RESULTADO (719) =  -660.9
+
+RESULTADO (720) =  -661.8
+
+RESULTADO (721) =  -662.7
+
+RESULTADO (722) =  -663.6
+
+RESULTADO (723) =  -664.5
+
+RESULTADO (724) =  -665.4
+
+RESULTADO (725) =  -666.3
+
+RESULTADO (726) =  -667.2
+
+RESULTADO (727) =  -668.1
+
+RESULTADO (728) =  -669
+
+RESULTADO (729) =  -669.9
+
+RESULTADO (730) =  -670.8
+
+RESULTADO (731) =  -671.7
+
+RESULTADO (732) =  -672.6
+
+RESULTADO (733) =  -673.5
+
+RESULTADO (734) =  -674.4
+
+RESULTADO (735) =  -675.3
+
+RESULTADO (736) =  -676.2
+
+RESULTADO (737) =  -677.1
+
+RESULTADO (738) =  -678
+
+RESULTADO (739) =  -678.9
+
+RESULTADO (740) =  -679.8
+
+RESULTADO (741) =  -680.7
+
+RESULTADO (742) =  -681.6
+
+RESULTADO (743) =  -682.5
+
+RESULTADO (744) =  -683.4
+
+RESULTADO (745) =  -684.3
+
+RESULTADO (746) =  -685.2
+
+RESULTADO (747) =  -686.1
+
+RESULTADO (748) =  -687
+
+RESULTADO (749) =  -687.9
+
+RESULTADO (750) =  -688.8
+
+RESULTADO (751) =  -689.7
+
+RESULTADO (752) =  -690.6
+
+RESULTADO (753) =  -691.5
+
+RESULTADO (754) =  -692.4
+
+RESULTADO (755) =  -693.3
+
+RESULTADO (756) =  -694.2
+
+RESULTADO (757) =  -695.1
+
+RESULTADO (758) =  -696
+
+RESULTADO (759) =  -696.9
+
+RESULTADO (760) =  -697.8
+
+RESULTADO (761) =  -698.7
+
+RESULTADO (762) =  -699.6
+
+RESULTADO (763) =  -700.5
+
+RESULTADO (764) =  -701.4
+
+RESULTADO (765) =  -702.3
+
+RESULTADO (766) =  -703.2
+
+RESULTADO (767) =  -704.1
+
+RESULTADO (768) =  -705
+
+RESULTADO (769) =  -705.9
+
+RESULTADO (770) =  -706.8
+
+RESULTADO (771) =  -707.7
+
+RESULTADO (772) =  -708.6
+
+RESULTADO (773) =  -709.5
+
+RESULTADO (774) =  -710.4
+
+RESULTADO (775) =  -711.3
+
+RESULTADO (776) =  -712.2
+
+RESULTADO (777) =  -713.1
+
+RESULTADO (778) =  -714
+
+RESULTADO (779) =  -714.9
+
+RESULTADO (780) =  -715.8
+
+RESULTADO (781) =  -716.7
+
+RESULTADO (782) =  -717.6
+
+RESULTADO (783) =  -718.5
+
+RESULTADO (784) =  -719.4
+
+RESULTADO (785) =  -720.3
+
+RESULTADO (786) =  -721.2
+
+RESULTADO (787) =  -722.1
+
+RESULTADO (788) =  -723
+
+RESULTADO (789) =  -723.9
+
+RESULTADO (790) =  -724.8
+
+RESULTADO (791) =  -725.7
+
+RESULTADO (792) =  -726.6
+
+RESULTADO (793) =  -727.5
+
+RESULTADO (794) =  -728.4
+
+RESULTADO (795) =  -729.3
+
+RESULTADO (796) =  -730.2
+
+RESULTADO (797) =  -731.1
+
+RESULTADO (798) =  -732
+
+RESULTADO (799) =  -732.9
+
+RESULTADO (800) =  -733.8
+
+RESULTADO (801) =  -734.7
+
+RESULTADO (802) =  -735.6
+
+RESULTADO (803) =  -736.5
+
+RESULTADO (804) =  -737.4
+
+RESULTADO (805) =  -738.3
+
+RESULTADO (806) =  -739.2
+
+RESULTADO (807) =  -740.1
+
+RESULTADO (808) =  -741
+
+RESULTADO (809) =  -741.9
+
+RESULTADO (810) =  -742.8
+
+RESULTADO (811) =  -743.7
+
+RESULTADO (812) =  -744.6
+
+RESULTADO (813) =  -745.5
+
+RESULTADO (814) =  -746.4
+
+RESULTADO (815) =  -747.3
+
+RESULTADO (816) =  -748.2
+
+RESULTADO (817) =  -749.1
+
+RESULTADO (818) =  -750
+
+RESULTADO (819) =  -750.9
+
+RESULTADO (820) =  -751.8
+
+RESULTADO (821) =  -752.7
+
+RESULTADO (822) =  -753.6
+
+RESULTADO (823) =  -754.5
+
+RESULTADO (824) =  -755.4
+
+RESULTADO (825) =  -756.3
+
+RESULTADO (826) =  -757.2
+
+RESULTADO (827) =  -758.1
+
+RESULTADO (828) =  -759
+
+RESULTADO (829) =  -759.9
+
+RESULTADO (830) =  -760.8
+
+RESULTADO (831) =  -761.7
+
+RESULTADO (832) =  -762.6
+
+RESULTADO (833) =  -763.5
+
+RESULTADO (834) =  -764.4
+
+RESULTADO (835) =  -765.3
+
+RESULTADO (836) =  -766.2
+
+RESULTADO (837) =  -767.1
+
+RESULTADO (838) =  -768
+
+RESULTADO (839) =  -768.9
+
+RESULTADO (840) =  -769.8
+
+RESULTADO (841) =  -770.7
+
+RESULTADO (842) =  -771.6
+
+RESULTADO (843) =  -772.5
+
+RESULTADO (844) =  -773.4
+
+RESULTADO (845) =  -774.3
+
+RESULTADO (846) =  -775.2
+
+RESULTADO (847) =  -776.1
+
+RESULTADO (848) =  -777
+
+RESULTADO (849) =  -777.9
+
+RESULTADO (850) =  -778.8
+
+RESULTADO (851) =  -779.7
+
+RESULTADO (852) =  -780.6
+
+RESULTADO (853) =  -781.5
+
+RESULTADO (854) =  -782.4
+
+RESULTADO (855) =  -783.3
+
+RESULTADO (856) =  -784.2
+
+RESULTADO (857) =  -785.1
+
+RESULTADO (858) =  -786
+
+RESULTADO (859) =  -786.9
+
+RESULTADO (860) =  -787.8
+
+RESULTADO (861) =  -788.7
+
+RESULTADO (862) =  -789.6
+
+RESULTADO (863) =  -790.5
+
+RESULTADO (864) =  -791.4
+
+RESULTADO (865) =  -792.3
+
+RESULTADO (866) =  -793.2
+
+RESULTADO (867) =  -794.1
+
+RESULTADO (868) =  -795
+
+RESULTADO (869) =  -795.9
+
+RESULTADO (870) =  -796.8
+
+RESULTADO (871) =  -797.7
+
+RESULTADO (872) =  -798.6
+
+RESULTADO (873) =  -799.5
+
+RESULTADO (874) =  -800.4
+
+RESULTADO (875) =  -801.3
+
+RESULTADO (876) =  -802.2
+
+RESULTADO (877) =  -803.1
+
+RESULTADO (878) =  -804
+
+RESULTADO (879) =  -804.9
+
+RESULTADO (880) =  -805.8
+
+RESULTADO (881) =  -806.7
+
+RESULTADO (882) =  -807.6
+
+RESULTADO (883) =  -808.5
+
+RESULTADO (884) =  -809.4
+
+RESULTADO (885) =  -810.3
+
+RESULTADO (886) =  -811.2
+
+RESULTADO (887) =  -812.1
+
+RESULTADO (888) =  -813
+
+RESULTADO (889) =  -813.9
+
+RESULTADO (890) =  -814.8
+
+RESULTADO (891) =  -815.7
+
+RESULTADO (892) =  -816.6
+
+RESULTADO (893) =  -817.5
+
+RESULTADO (894) =  -818.4
+
+RESULTADO (895) =  -819.3
+
+RESULTADO (896) =  -820.2
+
+RESULTADO (897) =  -821.1
+
+RESULTADO (898) =  -822
+
+RESULTADO (899) =  -822.9
+
+RESULTADO (900) =  -823.8
+
+RESULTADO (901) =  -824.7
+
+RESULTADO (902) =  -825.6
+
+RESULTADO (903) =  -826.5
+
+RESULTADO (904) =  -827.4
+
+RESULTADO (905) =  -828.3
+
+RESULTADO (906) =  -829.2
+
+RESULTADO (907) =  -830.1
+
+RESULTADO (908) =  -831
+
+RESULTADO (909) =  -831.9
+
+RESULTADO (910) =  -832.8
+
+RESULTADO (911) =  -833.7
+
+RESULTADO (912) =  -834.6
+
+RESULTADO (913) =  -835.5
+
+RESULTADO (914) =  -836.4
+
+RESULTADO (915) =  -837.3
+
+RESULTADO (916) =  -838.2
+
+RESULTADO (917) =  -839.1
+
+RESULTADO (918) =  -840
+
+RESULTADO (919) =  -840.9
+
+RESULTADO (920) =  -841.8
+
+RESULTADO (921) =  -842.7
+
+RESULTADO (922) =  -843.6
+
+RESULTADO (923) =  -844.5
+
+RESULTADO (924) =  -845.4
+
+RESULTADO (925) =  -846.3
+
+RESULTADO (926) =  -847.2
+
+RESULTADO (927) =  -848.1
+
+RESULTADO (928) =  -849
+
+RESULTADO (929) =  -849.9
+
+RESULTADO (930) =  -850.8
+
+RESULTADO (931) =  -851.7
+
+RESULTADO (932) =  -852.6
+
+RESULTADO (933) =  -853.5
+
+RESULTADO (934) =  -854.4
+
+RESULTADO (935) =  -855.3
+
+RESULTADO (936) =  -856.2
+
+RESULTADO (937) =  -857.1
+
+RESULTADO (938) =  -858
+
+RESULTADO (939) =  -858.9
+
+RESULTADO (940) =  -859.8
+
+RESULTADO (941) =  -860.7
+
+RESULTADO (942) =  -861.6
+
+RESULTADO (943) =  -862.5
+
+RESULTADO (944) =  -863.4
+
+RESULTADO (945) =  -864.3
+
+RESULTADO (946) =  -865.2
+
+RESULTADO (947) =  -866.1
+
+RESULTADO (948) =  -867
+
+RESULTADO (949) =  -867.9
+
+RESULTADO (950) =  -868.8
+
+RESULTADO (951) =  -869.7
+
+RESULTADO (952) =  -870.6
+
+RESULTADO (953) =  -871.5
+
+RESULTADO (954) =  -872.4
+
+RESULTADO (955) =  -873.3
+
+RESULTADO (956) =  -874.2
+
+RESULTADO (957) =  -875.1
+
+RESULTADO (958) =  -876
+
+RESULTADO (959) =  -876.9
+
+RESULTADO (960) =  -877.8
+
+RESULTADO (961) =  -878.7
+
+RESULTADO (962) =  -879.6
+
+RESULTADO (963) =  -880.5
+
+RESULTADO (964) =  -881.4
+
+RESULTADO (965) =  -882.3
+
+RESULTADO (966) =  -883.2
+
+RESULTADO (967) =  -884.1
+
+RESULTADO (968) =  -885
+
+RESULTADO (969) =  -885.9
+
+RESULTADO (970) =  -886.8
+
+RESULTADO (971) =  -887.7
+
+RESULTADO (972) =  -888.6
+
+RESULTADO (973) =  -889.5
+
+RESULTADO (974) =  -890.4
+
+RESULTADO (975) =  -891.3
+
+RESULTADO (976) =  -892.2
+
+RESULTADO (977) =  -893.1
+
+RESULTADO (978) =  -894
+
+RESULTADO (979) =  -894.9
+
+RESULTADO (980) =  -895.8
+
+RESULTADO (981) =  -896.7
+
+RESULTADO (982) =  -897.6
+
+RESULTADO (983) =  -898.5
+
+RESULTADO (984) =  -899.4
+
+RESULTADO (985) =  -900.3
+
+RESULTADO (986) =  -901.2
+
+RESULTADO (987) =  -902.1
+
+RESULTADO (988) =  -903
+
+RESULTADO (989) =  -903.9
+
+RESULTADO (990) =  -904.8
+
+RESULTADO (991) =  -905.7
+
+RESULTADO (992) =  -906.6
+
+RESULTADO (993) =  -907.5
+
+RESULTADO (994) =  -908.4
+
+RESULTADO (995) =  -909.3
+
+RESULTADO (996) =  -910.2
+
+RESULTADO (997) =  -911.1
+
+RESULTADO (998) =  -912
+
+RESULTADO (999) =  -912.9
+Empezamos iteraciones... 1000000
+
+
+rm -f  temp/arithmachine.o  temp/test.o
+rm -f bin/test_calculator
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/hp/calculator'
+make -C test_rules/ test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/hp/test_rules'
+nothing now
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/hp/test_rules'
+make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/hp'
+make -C bhvm/    test
+make[2]: Entering directory `/home/maiquel/develop/mtk/examples/bhvm'
+g++ -I../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings bhvmt.cpp  -L../../external/lib/linux -L../../lib  -lmtksupport -o bhvmt.exec
+cat program.hellt  | ./dhp hellt_compiler.rules | ./bhvmt.exec
+status
+==========
+program_counter:54
+stack:
+
+ @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:159)
+status
+==========
+program_counter:54
+stack:
+
+
+vars
+==========
+i ==  double:101
+result ==  double:5050
+
+rm -f *.exec
+echo "FIN"
+FIN
+make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/bhvm'
+make -C hell/    test
+make[2]: Entering directory `/home/maiquel/develop/mtk/examples/hell'
+make -C onefile/
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/hell/onefile'
+asocmem0.exec
+asocmem0.exec ----------------------------------------------------------------
+./asocmem0.exec
+cara de bola
+
+ALARMA SALIDA...
+
+cara de huevo
+
+
+ALARMA SALIDA...
+
+222222222222222222!!!!!!!!!
+222222222222222222
+before create scope 
+33333333333333333333!!!!!!!!!
+before end scope 
+after end scope 
+
+
+ALARMA SALIDA...
+
+before create scope 44
+0!!!!!!!!!
+before end scope 
+before end scope 
+after end scope 
+4444
+rm -f ./asocmem0.exec
+echo "FIN"
+FIN
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/hell/onefile'
+make -C bhvm_asocmem0
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/hell/bhvm_asocmem0'
+g++ -I../../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings bhvmt.cpp  -L../../../lib  -lmtkhell -lmtksupport -o bhvmt.exec
+cat program.hellt  | ./dhp hellt_compiler.rules | ./bhvmt.exec
+==========
+program_counter:1
+stack:
+  double:0
+
+ @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:163) [2]
+             CRIT. Unkown # unknown command  push var:i @void mtk::bhvm::exec_instruction(const std::string&)(./hvm/bhvm.cpp:144)
+status
+==========
+program_counter:1
+stack:
+  double:0
+
+
+asoc_mem0::get_status
+--------------------------------------------------------------
+LOCAL
+========
+
+
+cat program2.hellt  | ./dhp hellt_compiler.rules | ./bhvmt.exec
+==========
+program_counter:1
+stack:
+  double:(__void__)
+
+ @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:163) [2]
+             CRIT. Unkown # unknown command  push var:result @void mtk::bhvm::exec_instruction(const std::string&)(./hvm/bhvm.cpp:144)
+status
+==========
+program_counter:1
+stack:
+  double:(__void__)
+
+
+asoc_mem0::get_status
+--------------------------------------------------------------
+LOCAL
+========
+
+
+rm -f *.exec
+echo "FIN"
+FIN
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/hell/bhvm_asocmem0'
+make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/hell'
+make -C prj_make/    test
+make[2]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make'
+make -C umtktcp test
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp'
+make -C client this
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp/client'
+rm -f  temp/utibtcp_client.o
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/utibtcp_client.o src/utibtcp_client.cpp
+g++   temp/utibtcp_client.o -L./mtk/external/lib/linux -L./mtk/lib -lmtksockets -lmtksupport  -o bin/utibtcp_cli
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp/client'
+make -C mono_server this
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp/mono_server'
+rm -f  temp/utibtcp_monoserver.o
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/utibtcp_monoserver.o src/utibtcp_monoserver.cpp
+g++   temp/utibtcp_monoserver.o -L./mtk/external/lib/linux -L./mtk/lib -lmtksockets -lmtksupport  -o bin/utibtcp_monoserver
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp/mono_server'
+mono_server/bin/utibtcp_monoserver & client/bin/utibtcp_cli 
+client connected___________________________
+client connected__________________________
+sending...  ping 1
+recibido... sending...    ping 1
+ PONG... 
+-----------------------
+sending...  ping 2
+recibido... sending...    ping 2
+ PONG... 
+-----------------------
+sending...  ping 3
+recibido... sending...    ping 3
+ PONG... 
+-----------------------
+sending...  ping 4
+recibido... sending...    ping 4
+ PONG... 
+-----------------------
+sending...  ping 5
+recibido... sending...    ping 5
+ PONG... 
+-----------------------
+sending...  ping 6
+recibido... sending...    ping 6
+ PONG... 
+-----------------------
+sending...  ping 7
+recibido... sending...    ping 7
+ PONG... 
+-----------------------
+sending...  ping 8
+recibido... sending...    ping 8
+ PONG... 
+-----------------------
+sending...  ping 9
+recibido... sending...    ping 9
+ PONG... 
+-----------------------
+sending...  ping 10
+recibido... sending...    ping 10
+ PONG... 
+-----------------------
+sending...  ping 11
+recibido... sending...    ping 11
+ PONG... 
+-----------------------
+sending...  ping 12
+recibido... sending...    ping 12
+ PONG... 
+-----------------------
+sending...  ping 13
+recibido... sending...    ping 13
+ PONG... 
+-----------------------
+sending...  ping 14
+recibido... sending...    ping 14
+ PONG... 
+-----------------------
+sending...  ping 15
+recibido... sending...    ping 15
+ PONG... 
+-----------------------
+sending...  ping 16
+recibido... sending...    ping 16
+ PONG... 
+-----------------------
+sending...  ping 17
+recibido... sending...    ping 17
+ PONG... 
+-----------------------
+sending...  ping 18
+recibido... sending...    ping 18
+ PONG... 
+-----------------------
+sending...  ping 19
+recibido... sending...    ping 19
+ PONG... 
+-----------------------
+sending...  ping 20
+recibido... sending...    ping 20
+ PONG... 
+-----------------------
+sending...  ping 21
+recibido... sending...    ping 21
+ PONG... 
+-----------------------
+sending...  ping 22
+recibido... sending...    ping 22
+ PONG... 
+-----------------------
+sending...  ping 23
+recibido... sending...    ping 23
+ PONG... 
+-----------------------
+sending...  ping 24
+recibido... sending...    ping 24
+ PONG... 
+-----------------------
+sending...  ping 25
+recibido... sending...    ping 25
+ PONG... 
+-----------------------
+sending...  ping 26
+recibido... sending...    ping 26
+ PONG... 
+-----------------------
+sending...  ping 27
+recibido... sending...    ping 27
+ PONG... 
+-----------------------
+sending...  ping 28
+recibido... sending...    ping 28
+ PONG... 
+-----------------------
+sending...  ping 29
+recibido... sending...    ping 29
+ PONG... 
+-----------------------
+sending...  ping 30
+recibido... sending...    ping 30
+ PONG... 
+-----------------------
+sending...  ping 31
+recibido... sending...    ping 31
+ PONG... 
+-----------------------
+sending...  ping 32
+recibido... sending...    ping 32
+ PONG... 
+-----------------------
+sending...  ping 33
+recibido... sending...    ping 33
+ PONG... 
+-----------------------
+sending...  ping 34
+recibido... sending...    ping 34
+ PONG... 
+-----------------------
+sending...  ping 35
+recibido... sending...    ping 35
+ PONG... 
+-----------------------
+sending...  ping 36
+recibido... sending...    ping 36
+ PONG... 
+-----------------------
+sending...  ping 37
+recibido... sending...    ping 37
+ PONG... 
+-----------------------
+sending...  ping 38
+recibido... sending...    ping 38
+ PONG... 
+-----------------------
+sending...  ping 39
+recibido... sending...    ping 39
+ PONG... 
+-----------------------
+sending...  ping 40
+recibido... sending...    ping 40
+ PONG... 
+-----------------------
+sending...  ping 41
+recibido... sending...    ping 41
+ PONG... 
+-----------------------
+sending...  ping 42
+recibido... sending...    ping 42
+ PONG... 
+-----------------------
+sending...  ping 43
+recibido... sending...    ping 43
+ PONG... 
+-----------------------
+sending...  ping 44
+recibido... sending...    ping 44
+ PONG... 
+-----------------------
+sending...  ping 45
+recibido... sending...    ping 45
+ PONG... 
+-----------------------
+sending...  ping 46
+recibido... sending...    ping 46
+ PONG... 
+-----------------------
+sending...  ping 47
+recibido... sending...    ping 47
+ PONG... 
+-----------------------
+sending...  ping 48
+recibido... sending...    ping 48
+ PONG... 
+-----------------------
+sending...  ping 49
+recibido... sending...    ping 49
+ PONG... 
+-----------------------
+sending...  ping 50
+recibido... sending...    ping 50
+ PONG... 
+-----------------------
+sending...  ping 51
+recibido... sending...    ping 51
+ PONG... 
+-----------------------
+sending...  ping 52
+recibido... sending...    ping 52
+ PONG... 
+-----------------------
+sending...  ping 53
+recibido... sending...    ping 53
+ PONG... 
+-----------------------
+sending...  ping 54
+recibido... sending...    ping 54
+ PONG... 
+-----------------------
+sending...  ping 55
+recibido... sending...    ping 55
+ PONG... 
+-----------------------
+sending...  ping 56
+recibido... sending...    ping 56
+ PONG... 
+-----------------------
+sending...  ping 57
+recibido... sending...    ping 57
+ PONG... 
+-----------------------
+sending...  ping 58
+recibido... sending...    ping 58
+ PONG... 
+-----------------------
+sending...  ping 59
+recibido... sending...    ping 59
+ PONG... 
+-----------------------
+sending...  ping 60
+recibido... sending...    ping 60
+ PONG... 
+-----------------------
+sending...  ping 61
+recibido... sending...    ping 61
+ PONG... 
+-----------------------
+sending...  ping 62
+recibido... sending...    ping 62
+ PONG... 
+-----------------------
+sending...  ping 63
+recibido... sending...    ping 63
+ PONG... 
+-----------------------
+sending...  ping 64
+recibido... sending...    ping 64
+ PONG... 
+-----------------------
+sending...  ping 65
+recibido... sending...    ping 65
+ PONG... 
+-----------------------
+sending...  ping 66
+recibido... sending...    ping 66
+ PONG... 
+-----------------------
+sending...  ping 67
+recibido... sending...    ping 67
+ PONG... 
+-----------------------
+sending...  ping 68
+recibido... sending...    ping 68
+ PONG... 
+-----------------------
+sending...  ping 69
+recibido... sending...    ping 69
+ PONG... 
+-----------------------
+sending...  ping 70
+recibido... sending...    ping 70
+ PONG... 
+-----------------------
+sending...  ping 71
+recibido... sending...    ping 71
+ PONG... 
+-----------------------
+sending...  ping 72
+recibido... sending...    ping 72
+ PONG... 
+-----------------------
+sending...  ping 73
+recibido... sending...    ping 73
+ PONG... 
+-----------------------
+sending...  ping 74
+recibido... sending...    ping 74
+ PONG... 
+-----------------------
+sending...  ping 75
+recibido... sending...    ping 75
+ PONG... 
+-----------------------
+sending...  ping 76
+recibido... sending...    ping 76
+ PONG... 
+-----------------------
+sending...  ping 77
+recibido... sending...    ping 77
+ PONG... 
+-----------------------
+sending...  ping 78
+recibido... sending...    ping 78
+ PONG... 
+-----------------------
+sending...  ping 79
+recibido... sending...    ping 79
+ PONG... 
+-----------------------
+sending...  ping 80
+recibido... sending...    ping 80
+ PONG... 
+-----------------------
+sending...  ping 81
+recibido... sending...    ping 81
+ PONG... 
+-----------------------
+sending...  ping 82
+recibido... sending...    ping 82
+ PONG... 
+-----------------------
+sending...  ping 83
+recibido... sending...    ping 83
+ PONG... 
+-----------------------
+sending...  ping 84
+recibido... sending...    ping 84
+ PONG... 
+-----------------------
+sending...  ping 85
+recibido... sending...    ping 85
+ PONG... 
+-----------------------
+sending...  ping 86
+recibido... sending...    ping 86
+ PONG... 
+-----------------------
+sending...  ping 87
+recibido... sending...    ping 87
+ PONG... 
+-----------------------
+sending...  ping 88
+recibido... sending...    ping 88
+ PONG... 
+-----------------------
+sending...  ping 89
+recibido... sending...    ping 89
+ PONG... 
+-----------------------
+sending...  ping 90
+recibido... sending...    ping 90
+ PONG... 
+-----------------------
+sending...  ping 91
+recibido... sending...    ping 91
+ PONG... 
+-----------------------
+sending...  ping 92
+recibido... sending...    ping 92
+ PONG... 
+-----------------------
+sending...  ping 93
+recibido... sending...    ping 93
+ PONG... 
+-----------------------
+sending...  ping 94
+recibido... sending...    ping 94
+ PONG... 
+-----------------------
+sending...  ping 95
+recibido... sending...    ping 95
+ PONG... 
+-----------------------
+sending...  ping 96
+recibido... sending...    ping 96
+ PONG... 
+-----------------------
+sending...  ping 97
+recibido... sending...    ping 97
+ PONG... 
+-----------------------
+sending...  ping 98
+recibido... sending...    ping 98
+ PONG... 
+-----------------------
+sending...  ping 99
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp'
+make -C emarket this
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/emarket'
+rm -f  temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/check_request.o src/check_request.cpp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/orders_book.o src/orders_book.cpp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/ord_ls.o src/ord_ls.cpp
+g++   temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient  -o bin/emarket
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/emarket'
+make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make'
+make -C qt/ test
+make[2]: Entering directory `/home/maiquel/develop/mtk/examples/qt'
+rm -rf temp; mkdir -p temp; cd temp; mkdir -p bin; cd bin; qmake ../../ex_min_qt/src/ex_min_qt.pro; make; ./ex_min_qt
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
+/usr/bin/uic-qt4 ../../ex_min_qt/src/mainwindow.ui -o ui_mainwindow.h
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. -o main.o ../../ex_min_qt/src/main.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. -o mainwindow.o ../../ex_min_qt/src/mainwindow.cpp
+/usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. ../../ex_min_qt/src/mainwindow.h -o moc_mainwindow.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
+g++ -Wl,-O1 -o ex_min_qt main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lmtksupport -lqpidclient -lQtGui -lQtCore -lpthread 
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
+rm -rf temp; mkdir -p temp; cd temp; mkdir -p bin; cd bin; qmake ../../ex_send_order/src/ex_send_order.pro; make; ./ex_send_order
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
+/usr/bin/uic-qt4 ../../ex_send_order/src/mainwindow.ui -o ui_mainwindow.h
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o main.o ../../ex_send_order/src/main.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o mainwindow.o ../../ex_send_order/src/mainwindow.cpp
+/usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. ../../ex_send_order/src/mainwindow.h -o moc_mainwindow.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
+g++ -Wl,-O1 -o ex_send_order main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lqt_components -lmtk_components -lmtk_qpid -lmtksupport -lqpidclient -lQtGui -lQtCore -lpthread 
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
+make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/qt'
+make[1]: Leaving directory `/home/maiquel/develop/mtk/examples'
+to convert...  iconv --from-code=ISO-8859-1 --to-code=UTF-8 ./oldfile.htm > ./newfile.html

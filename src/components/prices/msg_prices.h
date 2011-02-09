@@ -1,0 +1,202 @@
+
+#ifndef  __msg_prices__
+#define  __msg_prices__
+
+
+// generated automatically
+// coded last modification:        Mon Jan 17 22:35:00 2011
+// pythonscript last modification: Mon Jan 24 10:23:48 2011
+
+
+#include "support/nullable.hpp"
+#include "support/fixed_number.h"
+#include "support/date_time.h"
+#include "support/list.hpp"
+#include "support/alarm.h"
+#include "support/exec_max_frec.h"
+#include "mtk_qpid/qpid_msg_support.hpp"
+#include "support/mtk_string.h"
+#include <qpid/messaging/MapContent.h>
+#include <qpid/messaging/Message.h>
+#include <qpid/messaging/MapView.h>
+#include "mtk_qpid/msg_control_fields.h"
+#include "mtk_qpid/mtk_qpid.hpp"
+
+
+#include "components/msg_common.h"
+#include "support/mtk_double.h"
+
+namespace mtk { 
+namespace prices { 
+namespace msg { 
+
+
+
+
+//-------------------------------
+//      sub_price_level
+//-------------------------------    
+class sub_price_level     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_price_level (    const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity );
+    explicit sub_price_level ( const qpid::messaging::Message& message );
+    virtual ~sub_price_level (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_price_level"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_price_level"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::FixedNumber                          price; 
+    mtk::FixedNumber                          quantity; 
+
+
+
+    //  subject info
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      sub_price_deph5
+//-------------------------------    
+class sub_price_deph5     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_price_deph5 (    const sub_price_level&  _level0,   const sub_price_level&  _level1,   const sub_price_level&  _level2,   const sub_price_level&  _level3,   const sub_price_level&  _level4 );
+    explicit sub_price_deph5 ( const qpid::messaging::Message& message );
+    virtual ~sub_price_deph5 (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_price_deph5"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_price_deph5"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    sub_price_level                           level0; 
+    sub_price_level                           level1; 
+    sub_price_level                           level2; 
+    sub_price_level                           level3; 
+    sub_price_level                           level4; 
+
+
+
+    //  subject info
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      best_prices
+//-------------------------------    
+class best_prices     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit best_prices (    const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks );
+    explicit best_prices ( const qpid::messaging::Message& message );
+    virtual ~best_prices (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "best_prices"; };
+    static  std::string static_get_message_type_as_string(void)        { return "best_prices"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::msg::sub_product_code                product_code; 
+    sub_price_deph5                           bids; 
+    sub_price_deph5                           asks; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& product_code_sys_code_market,const std::string& product_code_sys_code_product);
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+    
+    
+    
+//  fordward declarations-----------------------------------------------------------
+    std::ostream& operator<< (std::ostream& o, const sub_price_level & c);
+
+bool operator== (const sub_price_level& a, const sub_price_level& b);
+bool operator!= (const sub_price_level& a, const sub_price_level& b);
+
+    std::ostream& operator<< (std::ostream& o, const sub_price_deph5 & c);
+
+bool operator== (const sub_price_deph5& a, const sub_price_deph5& b);
+bool operator!= (const sub_price_deph5& a, const sub_price_deph5& b);
+
+    std::ostream& operator<< (std::ostream& o, const best_prices & c);
+
+bool operator== (const best_prices& a, const best_prices& b);
+bool operator!= (const best_prices& a, const best_prices& b);
+
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_level& a);
+void __internal_add2map (qpid::messaging::Variant::Map& map, const sub_price_level& a);
+void __internal_add2map (qpid::messaging::MapContent& map, const sub_price_level& a);
+void copy (sub_price_level& a, const qpid::messaging::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_deph5& a);
+void __internal_add2map (qpid::messaging::Variant::Map& map, const sub_price_deph5& a);
+void __internal_add2map (qpid::messaging::MapContent& map, const sub_price_deph5& a);
+void copy (sub_price_deph5& a, const qpid::messaging::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const best_prices& a);
+void __internal_add2map (qpid::messaging::Variant::Map& map, const best_prices& a);
+void __internal_add2map (qpid::messaging::MapContent& map, const best_prices& a);
+void copy (best_prices& a, const qpid::messaging::Variant& map);
+
+    sub_price_level  __internal_get_default(sub_price_level *);
+    
+    sub_price_deph5  __internal_get_default(sub_price_deph5 *);
+    
+    best_prices  __internal_get_default(best_prices *);
+    
+
+};   //namespace mtk {
+};   //namespace prices {
+};   //namespace msg {
+
+
+
+
+
+    
+template<typename T>
+void   copy(mtk::nullable<T>& result, const qpid::messaging::Variant& v);
+
+
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::sub_price_level)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::sub_price_deph5)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::best_prices)
+
+
+
+
+#endif

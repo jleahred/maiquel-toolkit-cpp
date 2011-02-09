@@ -1,0 +1,8 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
+
+=== Msg common
+
+-------------
+include::../../../src/components/msg_common.msg[]
+-------------

@@ -1,0 +1,65 @@
+//  DOR
+
+
+::INIT::
+    NAMESPACE = 'testing'
+    GENERATE_ON='generated'
+
+
+
+::INPUTS::
+    open    ()
+    close   ()
+
+
+
+
+
+::OUTPUTS::
+    sig_opened        ()
+    sig_closed        ()
+
+
+
+
+
+
+::COMMON_STATUS_INFO::
+
+
+
+::STATUS::opened
+
+::STATUS::closed
+
+
+
+
+
+
+::TRANSITIONS::
+
+closed        --   open    /   open_dor     -->  opened
+closed        --   close                    -->  closed
+
+opened        --   open                     -->  opened
+opened        --   close    /   close_dor   -->  closed
+
+
+
+
+::MACROS::
+
+    open_dor
+    [{
+        std::cout << "closing dor" << std::endl;
+        ci->sig_closed.emit();
+    }]
+    
+    close_dor
+    [{
+        std::cout << "opening dor" << std::endl;
+        ci->sig_opened.emit();
+    }]
+
+

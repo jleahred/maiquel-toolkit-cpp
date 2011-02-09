@@ -1,0 +1,24 @@
+MAIN
+
+MAIN ::= EXPR
+
+
+// esta es una gramática que acepta una cadena de resta de números
+// es asociativa por la derecha (mal)
+// 1-2-3   lo transforma a postifja  1 2 3 - -    que es equivalente a  1-(2-3)  y es incorrecto
+//
+//EXPR ::= num - EXPR         ##transf2-> $(num)$(__endl__)$(EXPR)$(__endl__)-
+//EXPR ::= num
+//num ::= ([0-9]*)
+//-  ::= '-'
+
+
+//   esta sí funciona como debe, con asociatividad por la izquierda
+//   observa que transforma 1-2-3-4 en  1 2 - 3 - 4 - en notación postfija
+EXPR ::=  num SUBS*    ##transf2-> $(num)$(__endl__)$(SUBS*)
+SUBS ::=  - num        ##transf2-> $(__endl__)$(num)$(__endl__)-
+num ::= ([0-9]+)
+-  ::= '-'
+
+
+

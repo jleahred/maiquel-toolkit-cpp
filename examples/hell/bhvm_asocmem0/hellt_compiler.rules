@@ -1,0 +1,191 @@
+MAIN
+
+
+ 
+MAIN ::= _ SENTENCE* _
+ 
+ 
+__beginrule__ 
+
+SENTENCE ::= _ MATH_EXPR _ ;                             
+
+##transf2-> 
+
+$(MATH_EXPR)$(__endl__)
+pop$(__endl__)
+
+__endrule__
+
+
+
+SENTENCE ::= _ ;     ##transf2->  $(__nothing__)
+
+;        ::= ';'     ##transf2->  $(__nothing__)
+
+
+
+SENTENCE ::= _ DEFINITION _ ;
+
+
+
+SENTENCE_BLOCK  ::=  SENTENCE
+
+__beginrule__
+SENTENCE_BLOCK  ::=  _ { _ SENTENCE* _ }   
+
+
+##transf2->  
+
+push cmd:begin_scope$(__endl__)
+calle$(__endl__)
+$(SENTENCE*)$(__endl__)
+push cmd:end_scope$(__endl__)
+calle$(__endl__)
+
+__endrule__
+
+
+
+
+
+__beginrule__
+
+DEFINITION ::= def __ id __ as __ type  
+  
+
+##transf2->  
+
+push $(type):(__void__)$(__endl__)
+push var:$(id)$(__endl__)
+push cmd:defvar$(__endl__)
+calle$(__endl__)
+
+__endrule__
+
+
+__beginrule__
+
+DEFINITION ::= def __ id __ := __ EXPR  
+
+##transf2->  
+
+$(EXPR)$(__endl__)
+push var:$(id)$(__endl__)
+push cmd:defvar$(__endl__)
+calle$(__endl__)
+
+__endrule__
+
+
+def ::= 'def'
+as ::= 'as'
+type ::= ([0-9|a-z|A-Z]+[0-9|a-z|A-Z|_]+)
+__ ::=  __isspace+__            ##transf2-> $(__nothing__)
+
+
+
+
+__beginrule__
+// ------------------------   WHILE   -------------------------------
+
+SENTENCE ::= _ while _ ( _ BOOL_EXPR _ ) _ SENTENCE_BLOCK
+
+##transf2-> 
+
+define_label:label:beginwhile$(__counter__)$(__endl__)
+push label:endwhile$(__counter__)$(__endl__)
+push label:whilesentence$(__counter__)$(__endl__)
+$(BOOL_EXPR)$(__endl__)
+push cmd:if$(__endl__)
+calle$(__endl__)
+jump$(__endl__)
+define_label:label:whilesentence$(__counter__)$(__endl__)
+$(SENTENCE_BLOCK)push label:beginwhile$(__counter__)$(__endl__)
+jump$(__endl__)
+define_label:label:endwhile$(__counter__)$(__endl__)
+nop$(__endl__)
+
+// ------------------------   WHILE   -------------------------------
+__endrule__
+
+
+
+
+
+while::= 'while'
+{ ::= '{'
+} ::= '}'
+
+
+
+
+EXPR ::=  BOOL_EXPR
+EXPR ::=  MATH_EXPR
+
+
+
+
+
+BOOL_EXPR ::= MATH_EXPR !=  MATH_EXPR       ##transf2-> $(MATH_EXPR)$(__endl__)$(MATH_EXPR#1)$(__endl__)push cmd:!=$(__endl__)calle$(__endl__)
+
+!=    ::=     '!='
+
+
+
+
+
+
+
+
+
+
+
+MATH_EXPR    ::=    _ VAR _ := _ MATH_EXPR    ##transf2-> $(MATH_EXPR)$(__endl__)$(VAR)$(__endl__)push cmd:write2var$(__endl__)calle$(__endl__)
+MATH_EXPR    ::=    _ VAL _ MATH_EXPR'   ##transf2-> $(VAL)$(__endl__)$(MATH_EXPR')
+MATH_EXPR    ::=    _ unaryoperator VAL _ MATH_EXPR'   ##transf2-> $(VAL)$(__endl__)$(unaryoperator)$(__endl__)$(MATH_EXPR')
+MATH_EXPR    ::=    _ ( _ MATH_EXPR _ ) _ MATH_EXPR'   ##transf2-> $(MATH_EXPR)$(__endl__)$(MATH_EXPR')
+MATH_EXPR    ::=    _ unaryoperator ( _ MATH_EXPR _ ) _ MATH_EXPR'   ##transf2-> $(MATH_EXPR)$(__endl__)$(unaryoperator)$(__endl__)$(MATH_EXPR')
+MATH_EXPR'   ::=    POWER
+MATH_EXPR'   ::=    FACTOR
+MATH_EXPR'   ::=    SUM
+POWER   ::=    _ powerop _ VAL _ POWER  ##transf2-> $(VAL)$(__endl__)$(POWER)$(__endl__)$(powerop)
+POWER   ::=    _ powerop _ VAL _ FACTOR   ##transf2-> $(VAL)$(__endl__)$(powerop)$(__endl__)$(FACTOR)
+POWER   ::=    _ powerop _ VAL _ SUM   ##transf2-> $(VAL)$(__endl__)$(powerop)$(__endl__)$(SUM)
+POWER   ::=    _ powerop _ ( _ MATH_EXPR _ ) _ MATH_EXPR'   ##transf2-> $(MATH_EXPR)$(__endl__)$(mult_operator)$(__endl__)$(MATH_EXPR')
+ 
+FACTOR  ::=    _ mult_operator _ VAL _ POWER   ##transf2-> $(VAL)$(__endl__)$(POWER)$(__endl__)$(mult_operator)
+FACTOR  ::=    _ mult_operator _ VAL _ FACTOR  ##transf2-> $(VAL)$(__endl__)$(mult_operator)$(__endl__)$(FACTOR)
+FACTOR  ::=    _ mult_operator _ VAL _ SUM    ##transf2-> $(VAL)$(__endl__)$(mult_operator)$(__endl__)$(SUM)
+FACTOR  ::=    _ mult_operator _ ( _ MATH_EXPR _ ) _ MATH_EXPR'    ##transf2-> $(MATH_EXPR)$(__endl__)$(mult_operator)$(__endl__)$(MATH_EXPR')
+
+SUM     ::=    _ add_operator _ VAL _ POWER    ##transf2-> $(VAL)$(__endl__)$(POWER)$(__endl__)$(add_operator)
+SUM     ::=    _ add_operator _ VAL _ FACTOR   ##transf2-> $(VAL)$(__endl__)$(FACTOR)$(__endl__)$(add_operator)
+SUM     ::=    _ add_operator _ VAL _ SUM   ##transf2-> $(VAL)$(__endl__)$(add_operator)$(__endl__)$(SUM)
+SUM     ::=    _ add_operator _ ( _ MATH_EXPR _ ) _ MATH_EXPR'   ##transf2-> $(MATH_EXPR)$(__endl__)$(add_operator)$(__endl__)$(MATH_EXPR')
+SUM     ::=    _
+
+//      PENDING...
+VAL     ::=    FUNC _ ( _ MATH_EXPR _ ) _   ##transf2-> $(MATH_EXPR)fun/1:$(FUNC)
+VAL     ::=    FUNC _ ( _ MATH_EXPR _ , _ MATH_EXPR _ ) _    ##transf2-> $(MATH_EXPR)$(__endl__)$(MATH_EXPR#1)fun/2:$(FUNC)
+
+
+VAL     ::=    num
+VAL     ::=    READ_VAR   ##transf2-> $(READ_VAR)$(__endl__)push cmd:read4var$(__endl__)calle$(__endl__)
+READ_VAR::=    VAR
+VAR     ::=    id   ##transf2-> push var:$(id)
+FUNC    ::=    id
+
+num           ::=    ([0-9]*\.[0-9]+)  ##transf2-> push double:$(t)
+num           ::=    ([0-9]+\.[0-9]*)  ##transf2-> push double:$(t)
+num           ::=    ([0-9]+)  ##transf2-> push double:$(t)
+id            ::=    ([a-z|A-Z][0-9|a-z|A-Z|_]*)
+id            ::=    (_+[0-9|a-z|A-Z]+[0-9|a-z|A-Z|_]*)
+powerop       ::=    '^'   ##transf2-> push cmd:$(t)$(__endl__)calle
+mult_operator ::=    ([\*|\/])   ##transf2-> push cmd:$(t)$(__endl__)calle
+add_operator  ::=    ([\+|\-])   ##transf2-> push cmd:$(t)$(__endl__)calle
+unaryoperator ::=    ([\+|\-])   ##transf2-> push cmd:unary$(t)$(__endl__)calle
+_             ::=    __isspace*__   ##transf2-> $(__nothing__)
+(             ::=    '('
+)             ::=    ')'
+,             ::=    ','
+:=            ::=    ':='
