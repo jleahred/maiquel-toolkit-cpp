@@ -187,7 +187,10 @@ inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const std::s
 
 inline void handle_qpid_exchange_receiver::check_queue(void)
 {
-        qpid::messaging::Message message;
+        if (receiver.available() == 0)
+            return;
+			
+		qpid::messaging::Message message;
         while (receiver.fetch(message, 0))
         {
             //  pending, not too much fetches each time
