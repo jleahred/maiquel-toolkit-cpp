@@ -1,0 +1,147 @@
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="humbleParser" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\humbleParser" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="..\idTibco" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\humbleParser" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-I ./idTibco" />
+		</Compiler>
+		<Unit filename="ast.cpp" />
+		<Unit filename="ast.h" />
+		<Unit filename="humbleparser.cpp" />
+		<Unit filename="humbleparser.h" />
+		<Unit filename="idTibco\soporte\DateTime.cpp" />
+		<Unit filename="idTibco\soporte\DateTime.h" />
+		<Unit filename="idTibco\soporte\Double.cpp" />
+		<Unit filename="idTibco\soporte\Double.h" />
+		<Unit filename="idTibco\soporte\ExecMaxFrec.cpp" />
+		<Unit filename="idTibco\soporte\ExecMaxFrec.h" />
+		<Unit filename="idTibco\soporte\Nullable.hpp" />
+		<Unit filename="idTibco\soporte\alarma.cpp" />
+		<Unit filename="idTibco\soporte\alarma.h" />
+		<Unit filename="idTibco\soporte\basicTypes.hpp" />
+		<Unit filename="idTibco\soporte\configIni.cpp" />
+		<Unit filename="idTibco\soporte\configIni.h" />
+		<Unit filename="idTibco\soporte\containers.hpp" />
+		<Unit filename="idTibco\soporte\countPtr.hpp" />
+		<Unit filename="idTibco\soporte\crc32.cpp" />
+		<Unit filename="idTibco\soporte\crc32.h" />
+		<Unit filename="idTibco\soporte\debug\checkscopetime.cpp" />
+		<Unit filename="idTibco\soporte\debug\checkscopetime.h" />
+		<Unit filename="idTibco\soporte\fixedNumber.cpp" />
+		<Unit filename="idTibco\soporte\fixedNumber.h" />
+		<Unit filename="idTibco\soporte\foreach.hpp" />
+		<Unit filename="idTibco\soporte\idtString.cpp" />
+		<Unit filename="idTibco\soporte\idtString.h" />
+		<Unit filename="idTibco\soporte\platform.cpp" />
+		<Unit filename="idTibco\soporte\platform.hpp" />
+		<Unit filename="idTibco\soporte\property.cpp" />
+		<Unit filename="idTibco\soporte\property.h" />
+		<Unit filename="idTibco\soporte\re\RegExp.cpp" />
+		<Unit filename="idTibco\soporte\re\RegExp.h" />
+		<Unit filename="idTibco\soporte\re\pcre\config.h" />
+		<Unit filename="idTibco\soporte\re\pcre\pcre.h" />
+		<Unit filename="idTibco\soporte\re\pcre\pcre_chartables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_dfa_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_fullinfo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_get.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_globals.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_info.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_internal.h" />
+		<Unit filename="idTibco\soporte\re\pcre\pcre_maketables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_newline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_ord2utf8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_refcount.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_study.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_tables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_try_flipped.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_ucp_searchfuncs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_valid_utf8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_version.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\pcre_xclass.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="idTibco\soporte\re\pcre\ucp.h" />
+		<Unit filename="idTibco\soporte\re\pcre\ucpinternal.h" />
+		<Unit filename="idTibco\soporte\re\pcre\ucptable.h" />
+		<Unit filename="idTibco\soporte\signalslot.hpp" />
+		<Unit filename="idTibco\soporte\stringCodec.cpp" />
+		<Unit filename="idTibco\soporte\stringCodec.h" />
+		<Unit filename="idTibco\soporte\tuples.hpp" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

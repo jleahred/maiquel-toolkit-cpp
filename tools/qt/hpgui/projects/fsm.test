@@ -1,0 +1,476 @@
+//      O R D    M K
+
+
+::INIT::
+        NAMESPACES=['mtk','trd']
+        GENERATE_ON='.'
+        INCLUDES = [    '#include "components/trading/msg_trd_cli_mk.h"',
+                        '#include "components/trading/trd_cli_support.h"',
+                        '#include "components/admin/admin.h"',
+                        '#include "components/trading/trd_cli_historic.h"',
+                        '#include "support/call_later.h"',
+                        ]
+
+
+::INPUTS::
+    rq_nw           (rq   :  mtk::trd::msg::RQ_NW_MK)   [{  int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
+    rq_md           (rq   :  mtk::trd::msg::RQ_MD_MK)   [{  int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   }]
+	rq_cc           (rq   :  mtk::trd::msg::RQ_CC_MK)   [{  int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
+
+	cf_nw           (cf   :  mtk::trd::msg::CF_NW_MK)   [{  int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
+	cf_md           (cf   :  mtk::trd::msg::CF_MD_MK)   [{  int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
+	cf_cc           (cf   :  mtk::trd::msg::CF_CC_MK)   [{  int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
+
+	rj_nw           (rj   :  mtk::trd::msg::RJ_NW_MK)   [{  int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
+	rj_md           (rj   :  mtk::trd::msg::RJ_MD_MK)   [{  int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
+	rj_cc           (rj   :  mtk::trd::msg::RJ_CC_MK)   [{  int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
+
+	cf_ex           (ex   :  mtk::trd::msg::CF_EX_MK)
+                        [{
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
+                        }]
+
+	cf_exLK         (exlk   :  mtk::trd::msg::CF_EXLK)
+                        [{
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        }]
+
+	cf_st           (st   :  mtk::trd::msg::CF_ST_MK)   [{  IF_LAST_CONF_ISNULL__WRITE_IT         }]
+	cf_st           (st   :  mtk::trd::msg::CF_ST_MK,   _history : mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>)   [{  IF_LAST_CONF_ISNULL__WRITE_IT  set__history(_history);     }]
+
+    time_out        (_:   int )  [{  mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  }]
+
+
+
+
+
+::OUTPUTS::
+    sig_rq_nw        (rq   :  mtk::trd::msg::RQ_NW_MK)
+    sig_rq_md        (rq   :  mtk::trd::msg::RQ_MD_MK)
+	sig_rq_cc        (rq   :  mtk::trd::msg::RQ_CC_MK)
+
+	sig_rj_nw        (rj   :  mtk::trd::msg::RJ_NW_MK)
+	sig_rj_md        (rj   :  mtk::trd::msg::RJ_MD_MK)
+	sig_rj_cc        (rj   :  mtk::trd::msg::RJ_CC_MK)
+
+	sig_cf_nw        (cf   :  mtk::trd::msg::CF_NW_MK)
+	sig_cf_md        (cf   :  mtk::trd::msg::CF_MD_MK)
+	sig_cf_cc        (cf   :  mtk::trd::msg::CF_CC_MK)
+
+
+	sig_cf_ex        (ex   :  mtk::trd::msg::CF_EX_MK)
+
+    sig_cf_st        (st   :  mtk::trd::msg::CF_ST_MK)
+
+    sig_changed      (                               )
+
+
+
+
+
+::COMMON_STATUS_INFO::
+      last_confirmation  :  mtk::nullable<mtk::trd::msg::CF_XX_MK>          ({ mtk::nullable<mtk::trd::msg::CF_XX_MK>() })
+      last_request       :  mtk::nullable<mtk::trd::msg::RQ_XX_MK>          ({ mtk::nullable<mtk::trd::msg::RQ_XX_MK>() })
+      history            :  mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >  ({ mtk::make_cptr(new mtk::trd::hist::order_historic_dangerous_not_signal_warped)       })
+      executions         :  mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>  ({ mtk::make_cptr(new mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped) })
+      in_market          :  bool                                            ({false})                                           phony
+      is_canceled        :  bool                                            ({false})                                           phony
+      is_full_executed   :  bool                                            ({false})                                           phony
+      has_pending_rq     :  bool                                            ({false})                                           phony
+      serrors            :  std::string                                     ({""})
+
+
+
+::STATUS::init
+
+::STATUS::w_cfnw
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
+      has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
+
+::STATUS::market
+      in_market               :  bool                                        ({true})
+
+::STATUS::w_cfmd
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
+      has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
+
+::STATUS::w_cfcc
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
+      has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
+
+::STATUS::w_cfmdcc
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
+      has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
+
+::STATUS::w_cfnwmd
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
+      has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
+
+::STATUS::w_cfnwcc
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
+      has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
+
+::STATUS::canceled
+      is_canceled             :  bool                                        ({true})
+
+::STATUS::executed
+      is_full_executed        :  bool                                        ({true})
+
+
+::STATUS::error
+      description        :  std::string                                      ({_})
+      [{
+            ci->__serrors += std::string(", ") + description();
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", description(), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+      }]
+
+
+
+
+
+
+
+
+::TRANSITIONS::
+
+
+
+
+init    --   rq_nw  &&   invalid_rq   && test/   , rj_rqnw             ''>   error      ("invalid rqnw ")       //  errors details provided by guardian
+init    --   rq_nw                           /   , rq_rqnw             -->   w_cfnw     (mtk::dtSeconds(2))
+init    --   rq_md                           /   , rj_rqmd             ''>   error      (method_name)
+init    --   rq_cc                           /   , rj_rqcc             ''>   error      (method_name)
+init    --   cf_nw                           /   , cf_cfnw             -->   market
+init    --   cf_md                           /   , cf_cfmd             -->   market
+init    --   cf_cc                           /   , cf_cfcc             ''>   canceled
+init    --   rj_nw                                                     ''>   error      (method_name)
+init    --   rj_md                                                     ''>   error      (method_name)
+init    --   rj_cc                                                     ''>   error      (method_name)
+init    --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
+init    --   cf_ex                           /   , cf_cfex             -->   market
+init    --   cf_st  &&  full_exec            /   , cf_cfst             -->   executed
+init    --   cf_st  &&  is_rem_qty_zero      /   , cf_cfst             -->   canceled
+init    --   cf_st                           /   , cf_cfst             -->   market
+init    --   cf_exLK                         /   , cf_cfexLK           ''>   error      ("received cfexlk with no order")
+init    --   time_out                                                  ''>   error      (method_name)
+
+
+
+w_cfnw  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
+w_cfnw  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   w_cfnwcc   (mtk::dtSeconds(2))
+w_cfnw  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfnwcc   (mtk::dtSeconds(2))
+w_cfnw  --   rq_md                           /   , rq_rqmd             -->   w_cfnwmd   (mtk::dtSeconds(2))
+w_cfnw  --   rq_cc                           /   , rq_cc               -->   w_cfnwcc   (mtk::dtSeconds(2))
+w_cfnw  --   cf_nw  &&   invalid_cf          /   , cf_cfnw & rq_cc     ''>   error      ("invalid cfnw ")       //  errors details provided by guardian
+w_cfnw  --   cf_nw                           /   , cf_cfnw             -->   market
+w_cfnw  --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error      (method_name)
+w_cfnw  --   cf_cc                           /   , cf_cfcc             ''>   error      (method_name)
+w_cfnw  --   rj_nw                           /   , cf_rjnw             ''>   canceled
+w_cfnw  --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error      (method_name)
+w_cfnw  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
+w_cfnw  --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error      (method_name)
+w_cfnw  --   cf_st                                                     ''>   w_cfnw     (mtk::dtSeconds(2))
+w_cfnw  --   cf_exLK                         /   , cf_cfexLK           ''>   error      ("received cfexlk waiting for confirmation")
+w_cfnw  --   time_out                                                  ''>   w_cfnw     (mtk::dtSeconds(0))
+
+
+market  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
+market  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   w_cfcc     (mtk::dtSeconds(2))
+market  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfcc     (mtk::dtSeconds(2))
+market  --   rq_md                           /   , rq_rqmd             -->   w_cfmd     (mtk::dtSeconds(2))
+market  --   rq_cc                           /   , rq_cc               -->   w_cfcc     (mtk::dtSeconds(2))
+market  --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error      (method_name)
+market  --   cf_md                           /   , cf_cfmd_nr          ''>   market
+market  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc  ''>   error	    ("invalid cfcc")   //	perhaps we receive a confirm cancelation on diferent order
+market  --   cf_cc                           /   , cf_cfcc_nr          -->   canceled
+market  --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error      (method_name)
+market  --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error      (method_name)
+market  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
+market  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
+market  --   cf_ex                           /   , cf_cfex             ''>   market
+market  --   cf_st                                                     ''>   market
+market  --   cf_exLK                         /   , cf_cfexLK           ''>   market
+market  --   time_out                                                  ''>   error      (method_name)
+
+
+w_cfmd  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
+w_cfmd  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   error      ("invalid rqmd")
+w_cfmd  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfmdcc   (mtk::dtSeconds(2))
+w_cfmd  --   rq_md                           /   , rq_rqmd             ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   rq_cc                           /   , rq_cc               -->   w_cfmdcc   (mtk::dtSeconds(2))
+w_cfmd  --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error      (method_name)
+w_cfmd  --   cf_md  &&   invalid_cf          /   , cf_cfmd & rq_cc     ''>   error      ("invalid cfmd")
+w_cfmd  --   cf_md  &&   is_conf_last_rqmd   /   , cf_cfmd             -->   market
+w_cfmd  --   cf_md                           /   , cf_cfmd_pend        ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc  ''>   error	    ("invalid cfcc")  //	perhaps we receive a confirm cancelation on diferent order
+w_cfmd  --   cf_cc                           /   , cf_cfcc_nr          -->   canceled
+w_cfmd  --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error      (method_name)
+w_cfmd  --   rj_md                           /   , cf_rjmd             ''>   market
+w_cfmd  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
+w_cfmd  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
+w_cfmd  --   cf_ex                           /   , cf_cfex             ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   cf_st                                                     ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   cf_exLK                         /   , cf_cfexLK           ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   time_out                                                  ''>   w_cfmd     (mtk::dtSeconds(0))
+
+
+
+w_cfcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error       (method_name)
+w_cfcc  --   rq_md                           /   , rj_rqmd            ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   rq_cc                           /   , rq_cc              ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   cf_nw                           /   , cf_cfnw & rq_cc    ''>   error       (method_name)
+w_cfcc  --   cf_md                           /   , cf_cfmd            ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc ''>   error	    ("invalid cfcc")  //	perhaps we receive a confirm cancelation on diferent order
+w_cfcc  --   cf_cc                           /   , cf_cfcc            -->   canceled
+w_cfcc  --   rj_nw                           /   , cf_rjnw & rq_cc    ''>   error       (method_name)
+w_cfcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error       (method_name)
+w_cfcc  --   rj_cc                           /   , cf_rjcc            ''>   market
+w_cfcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
+w_cfcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   cf_st                                                    ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   time_out                                                 ''>   w_cfcc      (mtk::dtSeconds(0))
+
+
+w_cfmdcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
+w_cfmdcc  --   rq_md  &&   invalid_rq          /   , rj_rqmd            ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc    ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   rq_md                           /   , rj_rqmd & rq_cc    ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   rq_cc                           /   , rq_cc              ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_nw                           /   , cf_cfnw & rq_cc    ''>   error     (method_name)
+w_cfmdcc  --   cf_md  &&   invalid_cf          /   , cf_cfmd & rq_cc    ''>   error     ("invalid cfmd")
+w_cfmdcc  --   cf_md  &&   is_conf_last_rqmd   /   , cf_cfmd            -->   w_cfcc    (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_md                           /   , cf_cfmd_pend       ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc ''>   error	    ("invalid cfcc")  //	perhaps we receive a confirm cancelation on diferent order
+w_cfmdcc  --   cf_cc                           /   , cf_cfcc            -->   canceled
+w_cfmdcc  --   rj_nw                           /   , cf_rjnw & rq_cc    ''>   error     (method_name)
+w_cfmdcc  --   rj_md                           /   , cf_rjmd            ''>   w_cfcc    (mtk::dtSeconds(2))
+w_cfmdcc  --   rj_cc                           /   , cf_rjcc            ''>   w_cfmd    (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
+w_cfmdcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_st                                                    ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   time_out                                                 ''>   w_cfmdcc  (mtk::dtSeconds(0))
+
+
+
+w_cfnwmd  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
+w_cfnwmd  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc    ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwmd  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc    ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwmd  --   rq_md                           /   , rq_rqmd            ''>   w_cfnwmd  (mtk::dtSeconds(2))
+w_cfnwmd  --   rq_cc                           /   , rq_cc              -->   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwmd  --   cf_nw  &&   invalid_cf          /   , cf_cfnw & rq_cc    ''>   error     ("invalid cfnw")
+w_cfnwmd  --   cf_nw                           /   , cf_cfnw            -->   w_cfmd    (mtk::dtSeconds(2))
+w_cfnwmd  --   cf_md                           /   , cf_cfmd & rq_cc    ''>   error     (method_name)
+w_cfnwmd  --   cf_cc                           /   , cf_cfcc & rq_cc    ''>   error     (method_name)
+w_cfnwmd  --   rj_nw                           /   , cf_rjnw            ''>   canceled
+w_cfnwmd  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error     (method_name)
+w_cfnwmd  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
+w_cfnwmd  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
+w_cfnwmd  --   cf_st                                                    ''>   w_cfnwmd  (mtk::dtSeconds(2))
+w_cfnwmd  --   cf_exLK                         /   , cf_cfexLK          ''>   error     ("received cfexlk waiting for confirmation2")
+w_cfnwmd  --   time_out                                                 ''>   w_cfnwmd  (mtk::dtSeconds(0))
+
+
+w_cfnwcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
+w_cfnwcc  --   rq_md                           /   , rq_rqmd & rq_cc    ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwcc  --   rq_cc                           /   , rq_cc              ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwcc  --   cf_nw  &&   invalid_cf          /   , cf_cfnw & rq_cc    ''>   error     ("invalid cfnw")
+w_cfnwcc  --   cf_nw                           /   , cf_cfnw            -->   w_cfcc    (mtk::dtSeconds(2))
+w_cfnwcc  --   cf_md                           /   , cf_cfmd & rq_cc    ''>   error     (method_name)
+w_cfnwcc  --   cf_cc                           /   , cf_cfcc & rq_cc    ''>   error     (method_name)
+w_cfnwcc  --   rj_nw                           /   , cf_rjnw            ''>   canceled
+w_cfnwcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error     (method_name)
+w_cfnwcc  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
+w_cfnwcc  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
+w_cfnwcc  --   cf_st                                                    ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwcc  --   cf_exLK                         /   , cf_cfexLK          ''>   error     ("received cfexlk waiting for confirmation3")
+w_cfnwcc  --   time_out                                                 ''>   w_cfnwcc  (mtk::dtSeconds(0))
+
+
+
+canceled --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
+canceled --   rq_md                           /   , rj_rqmd             ''>   canceled
+canceled --   rq_cc                           /   , rj_rqcc             ''>   canceled
+canceled --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error     (method_name)
+canceled --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error     (method_name)
+canceled --   cf_cc                           /   , cf_cfcc & rq_cc     ''>   error     (method_name)
+canceled --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error     (method_name)
+canceled --   rj_md                           /   , cf_rjmd             ''>   canceled
+canceled --   rj_cc                           /   , cf_rjcc             ''>   canceled
+canceled --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
+canceled --   cf_st                                                     ''>   canceled
+canceled --   cf_exLK                         /   , cf_cfexLK           ''>   canceled
+canceled --   time_out                                                  ''>   error      (method_name)
+
+
+executed --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
+executed --   rq_md                           /   , rj_rqmd             ''>   executed
+executed --   rq_cc                           /   , rj_rqcc             ''>   executed
+executed --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error     (method_name)
+executed --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error     (method_name)
+executed --   cf_cc                           /   , cf_cfcc & rq_cc     ''>   error     (method_name)
+executed --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error     (method_name)
+executed --   rj_md                           /   , cf_rjmd             ''>   executed
+executed --   rj_cc                           /   , cf_rjcc             ''>   executed
+executed --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
+executed --   cf_st                                                     ''>   executed
+executed --   cf_exLK                         /   , cf_cfexLK           ''>   executed
+executed --   time_out                                                  ''>   error      (method_name)
+
+
+
+error    --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
+error    --   rq_md                           /   , rj_rqmd             ''>   error     (method_name)
+error    --   rq_cc                           /   , rq_cc               ''>   error     (method_name)
+error    --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error     (method_name)
+error    --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error     (method_name)
+error    --   cf_cc                           /   , cf_cfcc & rq_cc     ''>   error     (method_name)
+error    --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error     (method_name)
+error    --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error     (method_name)
+error    --   rj_cc                           /   , cf_rjcc             ''>   error     (method_name)
+error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
+error    --   cf_st                                                     ''>   error     (method_name)
+error    --   cf_exLK                         /   , cf_cfexLK           ''>   error     (method_name)
+error    --   time_out                                                  ''>   error     (method_name)
+
+
+
+
+
+::MACROS::
+
+        //  progressing  request.................................................
+            rq_rqnw     [{  ADD_HIST_RQ(rq, nw)     ci->sig_rq_nw(rq);  ci->sig_changed();  }]
+
+            rq_rqmd     [{  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  }]
+
+            /*********  cancelations will be allways generated not progressed
+            rq_rq_cc
+                [{
+                    ci->sig_rq_cc(p);   ci->sig_changed();
+                }]
+            **************/
+
+        //  progressing  confirmations.................................................
+            cf_cfnw         [{  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  }]
+
+            cf_cfmd         [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
+            cf_cfmd_nr      [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
+            cf_cfmd_pend    [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
+
+            cf_cfcc         [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
+            cf_cfcc_nr      [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
+
+            cf_cfst         [{                          ci->sig_cf_st(st);  ci->sig_changed();  }]
+
+        //  CONFIRM EXECUTIONS..........................................
+            cf_cfex         [{  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  }]
+
+
+        //  CONFIRM LINKED execs..........................................
+            cf_cfexLK
+            [{
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            }]
+
+
+        //  progressing  rejects.................................................
+            cf_rjnw         [{  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  }]
+
+            cf_rjmd         [{  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  }]
+
+            cf_rjcc         [{  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  }]
+
+
+
+        //  rejecting request.................................................
+            rj_rqnw [{ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  }]
+            rj_rqcc [{ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  }]
+            rj_rqmd [{ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  }]
+
+
+        //  requesting not requested..........................................
+            rq_cc
+                [{
+                    if (last_confirmation().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
+                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else if (last_request().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
+                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else
+                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                }]
+
+
+
+
+
+
+
+        //  GUARD macros ///////////////////////////////////////////////////////////////////
+            invalid_rq
+                [{
+                    nerrors > 0
+                }]
+
+            quantity_lower_ex
+                [{
+                    qty_lower_exec
+                }]
+
+            invalid_cf
+                [{
+                    nerrors > 0
+                }]
+
+            is_conf_last_rqmd
+                [{
+                    ({  bool result = false;
+                        if (ci->last_request().HasValue())
+                            result = (cf.req_id == ci->last_request().Get().request_info.req_id);
+                        else
+                            result = false;
+                        result;
+                    })
+                }]
+
+            full_exec
+                [{
+                    last_confirmation().HasValue() == true
+                    &&  last_confirmation().Get().total_execs.acc_quantity
+                        == last_confirmation().Get().market_pos.quantity
+                }]
+
+            is_rem_qty_zero
+                [{
+                    last_confirmation().HasValue() == true
+                    &&  last_confirmation().Get().total_execs.remaining_qty.GetIntCode() == 0
+                }]

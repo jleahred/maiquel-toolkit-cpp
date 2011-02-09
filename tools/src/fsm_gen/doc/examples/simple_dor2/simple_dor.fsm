@@ -1,0 +1,68 @@
+//  DOR
+
+::INIT::
+    NAMESPACE='testing'
+    GENERATE_ON='generated'
+
+
+::INPUTS::
+    open    (key : int)        //  <1>
+    close   (key : int)        //  <2>
+
+
+
+
+
+::OUTPUTS::
+    sig_opened        ()
+    sig_closed        ()
+
+
+
+
+
+
+::COMMON_STATUS_INFO::
+
+
+
+::STATUS::opened
+
+::STATUS::closed
+
+
+
+
+
+
+::TRANSITIONS::
+
+closed        --   open  && valid_key   /   open_dor    -->  opened   //  <3>
+closed        --   open                                 -->  closed   //  <4>
+closed        --   close                                -->  closed
+
+opened        --   close && valid_key   /   close_dor   -->  closed   //  <5>
+opened        --   close                                -->  opened   //  <6>
+opened        --   open                                 -->  opened
+
+
+::MACROS::
+
+    valid_key
+    [{
+        key == 1111
+    }]
+
+    open_dor
+    [{
+        std::cout << "opening dor" << std::endl;
+        ci->sig_opened.emit();
+    }]
+
+    close_dor
+    [{
+        std::cout << "closing dor" << std::endl;
+        ci->sig_closed.emit();
+    }]
+
+

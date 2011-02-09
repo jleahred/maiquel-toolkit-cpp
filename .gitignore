@@ -1,0 +1,11 @@
+*.bak
+*~
+TAGS
+BROWSE
+.directory
+*/*/temp/*
+temp/*
+src/qpid
+lib/*
+*.kdev4
+*.kdev_*

@@ -1,0 +1,213 @@
+= Messages generator  (build_msg)
+
+:cpp: {basebackend@docbook:c++:cpp}
+
+
+
+== Document info
+
+[width="75%", cols="1v, 2v" , options=""]
+|==========================================================
+| Writted by   |   José Luis Esteban +
+
+| Creation Date  |   2010-11-29
+
+| Revision Date |   2011-02-10
+
+| Generated |   {docdate} {doctime}
+
+| Version |   
+
+| Document name |   {docname}
+
+
+|========================================================
+
+== Document modifications
+
+[cols="1,6", options="header"]
+|====================================================================
+| Date | Desciption
+
+
+| 2010-11-30 | Added inheritance and  message properties +
+BEGIN_NAMESPACE and END_NAMESPACE
+
+
+|==========================================================
+
+
+
+
+
+== Introduction
+
+* Using a +DSL+ to define messages, the tool will generate the c++ code
+* The generated structs, are simple and independent
+* The script accepts multiple files (you can use it with find and xargs, ie)
+* It will generate a +.h+ and a +.cpp+ files with class definition an implementations on same folder that original one
+* All messages sent with +mtk+ will have +controlFields+ as defined bellow
+** Here we will have information about the version, datetime to control flucts, message-type...
+** This fields will be filled and used by +mtk+
++
+----
+include::../../../../src/mtk_qpid/msg_control_fields.msg[]
+----
+
+
+
+
+== TODO
+include::todo.adoc[]
+
+
+
+
+
+== Example 1
+
+* Definition of messages and fields..
++
+.test_messages.msg
+----
+include::examples/ex1/test_messages.msg[]
+----
+<1> Here we can define some initializations as the namespace for generated structs
+<2> First message declaration (indicating the message version)
+<3> Each message property, has a name, code (small please, it will travel on the network), type, and options or attributes
+<4> Specifying subject
+<5> We can use other messages as field of our messages, +submessages+
+<6> We can also add fields at same +wired+ level
+<7> We can define a set of fields grouped in a common subjetc
+<8> A group of inline submessages can work on a +wired+ submessage
+<9> By default, properties are mandatory
+<10> a list of names of type strings
+<11> A list of positions of type limit position
+<12> +LimitPositionChild+ inherits from +LimitPosition+
+<13> This code will be executed on building message just before send +
+     Non realtime messages could generate the message long time before sending it
++
+* Using the generated code in our program
++
+.ex1/main.cpp
+[source,{cpp}]
+----
+include::examples/ex1/main.cpp[]
+----
++
+* Here is the generated interface...
++
+.ex1/test_messages.h
+[source,{cpp}]
+----
+include::examples/ex1/test_messages.h[]
+----
+
+
+
+== Example 2, using keys
+
+* Definition of messages and fields..
++
+.examples/ex2/test_msg_key.msg
+----
+include::examples/ex2/test_msg_key.msg[]
+----
++
+* Using the generated code in our program
++
+.examples/ex2/main.cpp
+[source,{cpp}]
+----
+include::examples/ex2/main.cpp[]
+----
++
+* This is the generated code...
++
+.examples/ex2/test_msg_key.h
+[source,{cpp}]
+----
+include::examples/ex2/test_msg_key.h[]
+----
++
+* Generated file saving directly from +map+ (it is saved as list)
++
+.examples/ex2/test_db__map.yaml
+[source,{yaml}]
+----
+include::examples/ex2/test_db__map.yaml[]
+----
++
+* This is the file saved as list
++
+.examples/ex2/test_db__list.yaml
+[source,{yaml}]
+----
+include::examples/ex2/test_db__list.yaml[]
+----
+
+
+== Example 3
+
+* Creating a less than +<+ operator for a set of fields with +LessOP+
++
+------
+sub_grant  [< >]
+{
+    key  [< LessOP:1 >]
+    {
+        market      (mk)        :   string
+        account     (acc)       :   mtk::trd::msg::sub_account_info
+        
+    }
+    type        (ty)    : string        //  F   C  V   (Full  Cancel  View)
+}
+------
+
+
+
+== Example 4. Working with dynamic messages
+
+* Message definition
++
+.examples/prj_make/dyn_msgs/src/msg_dynamic.msg
+[source,{cpp}]
+----
+include::../../../../examples/prj_make/dyn_msgs/src/msg_dynamic.msg[]
+----
++
+* The code using it
++
+.examples/prj_make/dyn_msgs/src/main.cpp
+[source,{cpp}]
+----
+include::../../../../examples/prj_make/dyn_msgs/src/main.cpp[]
+----
+
+
+
+
+
+
+== FAQ
+
+How to use a enumeration or other defined type::
+* See the code for enBidAsk
++
+[source,{cpp}]
+----
+include::../../../../src/components/trading/msg_trd_common_support.h[]
+----
+
+
+== Using it on components/trading/msg_trd_cli_ls.msg
+
+.src/components/trading/msg_trd_common.msg
+----
+include::../../../../src/components/trading/msg_trd_common.msg[]
+----
+
+.src/components/trading/msg_trd_cli_ls.msg
+----
+include::../../../../src/components/trading/msg_trd_cli_ls.msg[]
+----

@@ -1,0 +1,212 @@
+.PHONY : default
+default:
+	@echo  choose a target   libs doc libxxx clean gitzip
+
+
+
+allall:  delete_spaces libs tools clean doc check_files
+
+#  compila librerías
+#  time (make clean ; make libs ; make qtlibs; make tools) 2> errors.txt
+#  check errors.txt
+
+# compila ejemplos
+# time make testjustcompile  2> errors.txt
+
+# compila y ejecuta ejemplos
+# time (make testrelease > full_test.txt) 2> errors.txt
+# cat full_test.txt | grep -v '^__NR__:' | grep -v '^del._='  | grep -v ccccc  | grep  -v '^   sum..______'  |  grep  -v '^code:         '  |  grep  -v '^NODE NAME:    '| grep  -v '^[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9] ' | grep -v sess_id:  > test.txt;
+#   check differences with previus version
+#   rm full_test.txt
+
+
+#  conviene pasar también el test con valgrind
+#  time (make clean; make libsdebug; make qtlibs; make testdebug 2> temp.txt)
+#  if no errors on execution, continue
+#  cat temp.txt | grep '\(lost:\|ERROR SUMMARY\)' > valgrind.txt
+#  revisar cat valgrind.txt
+#  rm temp.txt
+
+
+#  y también conviene ejecutar cppcheck
+# time (find ./src/ -name *.cpp -or -name *.h -or -name *.hpp | grep -v /mig_liffe/ | grep -v /yaml/ | grep -v /fb/ | xargs cppcheck --all --verbose --style -I src 2> cppcheck.txt)
+
+
+# revisar las diferencias en los ficheros test.txt valgrind.txt y cppcheck.txt
+
+
+# actualizar modificaciones documento adoc
+# editar fichero VERSION
+
+# time make allall  compilará todo de nuevo en versión release y generará la documentación
+
+
+# al final se ejecuta checkfiles y tiene que volver sin error y escribir un 0 (provisionalmente está escribiendo un 1)
+# commit en git
+# etiquetar la nueva versión en git
+# subir documentación al servidor
+#   dolphin doc/mtk.chunked/  fish://smsrv01@192.168.7.10/home/smsrv01/temp
+#   cd; make sshsrv
+# generar nueva versión número impar
+
+
+
+
+
+
+libs : config_release deletelibs libmtksupport libmtksockets  libfirebird libmtkhell libyaml libmtk_qpid  cleanlibs
+
+libsdebug : config_debug deletelibs libmtksupport  libmtksockets  libfirebird libmtkhell libyaml libmtk_qpid  cleanlibs
+
+libsdebugO2 : config_debugO2 deletelibs libmtksupport libmtksockets  libfirebird libmtkhell libyaml libmtk_qpid cleanlibs
+
+libs_fpic : config_release_fpic deletelibs libmtksupport libmtksockets  libfirebird libmtkhell libyaml libmtk_qpid cleanlibs
+
+
+
+
+.PHONY : deletelibs
+deletelibs: cleanlibs
+	rm lib/*.a -f
+
+.PHONY : libmtksupport
+libmtksupport: prepare
+	make -C src/support lib
+
+.PHONY : libmtksockets
+libmtksockets : prepare
+	make -C src/sockets lib
+
+
+.PHONY : libfirebird
+libfirebird: prepare
+	make -C src/fb lib
+
+.PHONY : libyaml
+libyaml: prepare
+	make -C src/yaml lib
+
+
+
+.PHONY : libmtkhell
+libmtkhell: prepare
+	make -C src/hell lib
+
+.PHONY : libmtk_qpid
+libmtk_qpid: prepare
+	make -C src/mtk_qpid lib
+
+
+
+
+.PHONY : tools
+tools :
+	make -C tools
+
+
+
+
+testjustcompile : config_just_compile test_current_config
+
+testrelease : config_release test_current_config
+
+testdebug : config_debug test_current_config
+
+testdebugO2 : config_debugO2 test_current_config
+
+
+
+
+.PHONY : test_current_config
+test_current_config :
+	make -C examples/ test
+	@echo 'to convert...  iconv --from-code=ISO-8859-1 --to-code=UTF-8 ./oldfile.htm > ./newfile.html'
+	@find ./src -type f | grep -v .png | grep -v temp | grep -v doxys | grep -v .git | grep -v '*~' | grep -v '.*o' | grep -v '/bin/' | xargs isutf8
+	@find ./examples -type f | grep -v .png | grep -v temp | grep -v doxys | grep -v .git | grep -v '*~'| grep -v '.*o' | grep -v '/bin/' | xargs isutf8
+
+
+
+.PHONY : check_files
+check_files :
+	@echo 'to convert...  iconv --from-code=ISO-8859-1 --to-code=UTF-8 ./oldfile.html > ./newfile.html'
+	@find ./src -type f | grep -v .png | grep -v temp | grep -v doxys | grep -v .git | grep -v '*~' | grep -v '.*o' | grep -v '/bin/' | xargs isutf8
+	@find ./examples -type f | grep -v .png | grep -v temp | grep -v doxys | grep -v .git | grep -v '*~'| grep -v '.*o' | grep -v '/bin/' | xargs isutf8
+	#verificamos si se utilizan contenedores no mtk (no seguros)
+	@echo 'we don`t have to use std::containers pending!!!! to reactivate'
+	#@find src/components -name '*.h' -or -name '*.cpp' -or -name '*.hpp' | xargs grep -w 'std::map\|std::vector\|std::list' -sl | grep -v 'msg_*' | wc -l
+
+
+
+
+.PHONY : clean
+clean: cleanlibs
+
+
+.PHONY : cleanlibs
+cleanlibs:
+	make -C src/support clean
+	make -C src/sockets clean
+	make -C src/fb clean
+	make -C src/hell clean
+	find . -name temp | xargs rm -rf
+
+
+.PHONY : gitzip
+gitzip :
+	git archive --format=zip HEAD > gitMTK.zip
+
+
+
+.PHONY : prepare
+prepare:
+	mkdir -p lib
+	mkdir -p temp
+
+.PHONY : config_release
+config_release:
+	mkdir -p temp
+	rm -f compopt_make
+	ln -s compopt_make.release compopt_make
+
+.PHONY : config_release_fpic
+config_release_fpic:
+	mkdir -p temp
+	rm -f compopt_make
+	ln -s compopt_make.release.fpic compopt_make
+
+
+.PHONY : config_debug
+config_debug:
+	mkdir -p temp
+	rm -f compopt_make
+	ln -s compopt_make.debug compopt_make
+
+
+.PHONY : config_debugO2
+config_debugO2:
+	mkdir -p temp
+	rm -f compopt_make
+	ln -s compopt_make.debugO2 compopt_make
+
+.PHONY : config_just_compile
+config_just_compile:
+	mkdir -p temp
+	rm -f compopt_make
+	ln -s compopt_make.just_compile_release compopt_make
+
+
+
+.PHONY : delete_spaces
+delete_spaces:
+	for f in `find . -type f -regex '.*\.h$$\|.*\.cpp$$\|.*\.impl$$\|.*\.fsm$$\|.*\.msg$$\|.*\makefile$$\|.*\.mak$$\|.*\_make\.release$$\|.*\_make\.debug$$'` ; do  cat $$f | sed 's/[ \t]*$$//' > temp.rms; mv -f temp.rms $$f;  done
+
+
+
+.PHONY : doc
+doc:
+	mkdir -p doc
+	echo '*' > doc/.gitignore
+	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/doc.adoc/mtk.adoc
+	a2x --verbose -d book -r . --icons --icons-dir adoc.images/icons -f chunked -D doc/ src/doc.adoc/mtk.adoc
+	cd examples/prj_make; find . -name doc -type d  | xargs rm -rf; make doc; find . -name doc -type d  | wc -l
+	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/   examples/prj_make/emarket/src/emarket.adoc

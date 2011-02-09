@@ -1,0 +1,43 @@
+ADMIN
+{
+    PRLIST:[ 
+             item1
+             item2
+             ITEM3
+             hola pajarito sin cola, como ests cara de bola
+            ]
+    IdReloj:1234
+    ProcessName:TEST_FBINSERT
+    ProcessPriority:High
+
+    # pueden leerse de global (comunes)
+    Production:No
+    Market:~
+    Server:128.2.254.100:7500
+    Network:~
+
+
+    Services
+    {
+        Client:03
+        Server:02
+        Pepe:09
+    }
+}
+
+DBPR
+{
+    SERVER: 128.2.8.44
+    NAME: MABE
+    USER: SYSDBA
+}
+
+DBLOCALPR
+{
+    SERVER: 128.2.7.188
+    NAME: testfbinsert
+    USER: SYSDBA
+}
+
+
+

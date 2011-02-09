@@ -1,0 +1,51 @@
+:cpp: {basebackend@docbook:c++:cpp}
+== Working on...
+
+
+
+* Not now
+
+
+== TODO
+Important::
+* Remove from messages the BEGIN_INIT part
+* BEGIN_INIT on messages, has to be at end of msg file
+* Init new +mtk+ git repository
+** Remove generated doc from the repository
+* Control dates dsl, compiled and script (fsm_gen)
+* Document info with more space (like subdocuments tools)
+* 3.33  Example extending virtual machine  wrong level
+* external folder for external source and a soft link con src to simplify compilation
+** check the scripts to count lines removing soft links and getting the new directory
+* Include in scripts count lines, the python programs  .py extensions
+* Scripts fsm msg will write last modified source, last modified script and last generated code
+* Namespace +mtk::Admin+
+
+Medium::
+* Factories has to detect too many and too fast request
+* Generate documentation for +hp+
+* +mtk::SignalSlot+ has to work with const functions and methods
+* Look for files not using +mtk containers+
+* +Nullable+ operator +<<+  (for +nullable+, operator +<<+ defined on 2010-11-29)
+** find src/components -name '.h' -or -name '.cpp' -or -name '.hpp' | xargs grep -w 'std::map\|std::vector\|std::list' -sl  wc -l
+* Check +release on exit+ formats (names)
+* +MTK_CATCHxxx+ could have an extra param to indicate the alarm priority
+* +ConfigFile+ with out of section comments
+* Sockets with async connection (non locking)
+* +Call later+ with bigger precision
+* +Call later+ checking pending calls. Warning on 50, stop con 500
+* Attention to signal/slot and exceptions breaking the program flow. Now, when it happends, pending signals will not be call
+
+Low::
+* There are +cout+ con library. Could be better to use +cerr+
+* DateTime writting UMT +xxx http://www.w3.org/TR/NOTE-datetime 
+
+
+
+=== FSM_GEN
+include::../../tools/src/fsm_gen/doc/todo.adoc[]
+
+
+=== Message generator (build_msg)
+include::../../tools/src/build_msg/doc/todo.adoc[]
+

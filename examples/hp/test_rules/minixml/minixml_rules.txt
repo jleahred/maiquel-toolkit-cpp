@@ -1,0 +1,51 @@
+MAIN
+
+
+
+//	Mini XML parser
+//	ejemplo sencillo
+//	no parsea todo el conjunto de XML
+
+
+
+MAIN ::=   LABELS 
+
+LABELS ::= LABEL LABELS
+LABELS ::= LABEL 
+
+
+
+LABEL ::= _ <  labelname  > _ LABELS _ </  labelname  >                               ##transf2->  $(__endl__)initGroup:$(labelname)==$(labelname#1)$(__endl__){$(__endl__)$(LABELS)$(__endl__)}$(__endl__)
+
+
+LABEL ::= _ < labelname spcs PROPERTIES_INLABEL spcs />                               ##transf2->  $(__endl__)initGroup:$(labelname)$(__endl__){$(__endl__)$(PROPERTIES_INLABEL)$(__endl__)}$(__endl__)
+LABEL ::= _ < labelname spcs PROPERTIES_INLABEL _ > _ LABELS _ </ labelname  >        ##transf2->  $(__endl__)initGroup:$(labelname)==$(labelname#1)$(__endl__){$(__endl__)$(PROPERTIES_INLABEL)$(__endl__)$(LABELS)$(__endl__)}$(__endl__)
+LABEL ::= _ < labelname spcs />                                                       ##transf2->  $(__endl__)initGroup:$(labelname)$(__endl__){}
+
+PROPERTIES_INLABEL ::=  prop_name  =  " PROP_VALUE "   spcs PROPERTIES_INLABEL        ##transf2->  $(prop_name)=$(PROP_VALUE)$(__endl__)$(PROPERTIES_INLABEL)
+PROPERTIES_INLABEL ::=  prop_name  =  " PROP_VALUE "                                  ##transf2->  $(prop_name)=$(PROP_VALUE)
+
+
+prop_name ::= ([a-zA-Z0-9_]+)
+
+PROP_VALUE ::= propchars  PROP_VALUE
+PROP_VALUE ::= propchars 
+
+propchars  ::= ([a-zA-Z0-9 _\\\.\-]+)
+propchars  ::= (\/[^>])
+
+
+
+labelname ::= ([a-zA-Z0-9_]+)
+
+" ::= (\")
+= ::= (\=)
+< ::= (\<)
+> ::= (\>)
+</ ::= (\<\/)
+/> ::= (\/\>)
+
+
+_ ::= ([ \r\n\t]*)
+spcs ::=  ([ \n\r\t]+)
+

@@ -1,0 +1,24 @@
+:cpp: {basebackend@docbook:c++:cpp}
+== projects_examples
+
+On +examples/pr_make+ dir we have some full projects examples
+
+On each example there are detailed documentation
+
+
+[NOTE]
+To avoid loops on directory tree, instead of linking mtk, it's linked folders and files inside mtk
+
+[jle_temp_and_run]
++++++++++++++++++
+run=[ ("echo '--------'",'ls.txt', 'wt'), 
+      ("ls {docdir}/../../examples/prj_make | grep -v makefile", 'ls.txt', 'at'),
+      ("echo '--------'",'ls.txt', 'at')]
+print ''
++++++++++++++++++
+
+.examples/prj_make
+include::/tmp/adoc/ls.txt[]
+
+
+

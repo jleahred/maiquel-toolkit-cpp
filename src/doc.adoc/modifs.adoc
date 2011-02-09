@@ -1,0 +1,23 @@
+== Modifs
+*Current*
+include::../../VERSION[]
+
+
+
+0.10  2011-::
+
+Fixed errors;;
+* soon
+
+New;;
+* soon
+
+
+Modif interfaz;;
+* soon
+
+Other;;
+* soon
+
+
+

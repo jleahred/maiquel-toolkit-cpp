@@ -1,0 +1,69 @@
+MAIN
+
+
+
+
+MAIN ::= SOURCE*
+
+SOURCE ::= INCLUDE_DIRECTIVE   
+SOURCE ::= COMMENTARIES          ##transf2-> $(__nothing__)
+SOURCE ::= LITERAL               ##transf2-> $(__nothing__)
+SOURCE ::= any                   ##transf2-> $(__nothing__)
+
+
+
+
+
+
+
+INCLUDE_DIRECTIVE ::= _* # include _* " FILE_NAME " _*  endl    ##transf2-> $(FILE_NAME)$(__space__)
+INCLUDE_DIRECTIVE ::= _* # include _* " PATH FILE_NAME " _*  endl   ##transf2-> $(FILE_NAME)$(__space__)
+
+
+PATH ::= file_dir_cars dir_separator PATH
+PATH ::= file_dir_cars dir_separator
+
+
+FILE_NAME ::=  file_dir_cars
+
+
+
+COMMENTARIES ::= /*_  !*/*  */   
+
+
+COMMENTARIES ::=  _// !endl*  endl    
+COMMENTARIES ::=  _// !endl*             
+
+
+LITERAL ::= " !"*  "             
+
+
+
+
+
+_ ::= __space_tab__
+endl ::= __endl__
+!endl ::=  !(\n)
+
+include ::= 'include'
+
+# ::= '#'
+
+" ::= '"'
+!" ::= !'"'
+
+
+
+/*_  ::=  '/*'
+!*/  ::=  !'*/'
+*/  ::=  '*/'
+_// ::= '//'
+
+
+any ::= __any__  
+
+file_dir_cars ::= ([0-9|a-z|A-Z|\_|\ \.]+)
+dir_separator ::= (\/|\\)
+
+
+

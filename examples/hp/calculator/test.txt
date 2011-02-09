@@ -1,0 +1,3 @@
+mkdir -p bin
+mkdir temp -p
+g++ -c -I./src -I../../../src -O2 -Werror -Wall -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow  -o temp/arithmachine.o src/arithmachine.cpp

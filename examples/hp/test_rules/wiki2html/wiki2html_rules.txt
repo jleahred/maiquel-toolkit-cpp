@@ -1,0 +1,202 @@
+MAIN
+
+
+MAIN ::= TITLE BODY                    ##transf2-> <HTML><TITLE>$(TITLE)</TITLE><BODY>$(BODY)</BODY></HTML>
+
+
+//------------------------------------------------------------
+
+//		TITLE
+
+//------------------------------------------------------------
+
+
+//	la primera línea tiene el título
+TITLE ::= line endl endl
+//	.+ no incluye saltos de línea
+line       ::= (.+)
+endl       ::= (\r\n)
+endl       ::= (\r)
+endl       ::= (\n)
+multi_endl ::= ((\n|\r)+)
+
+
+
+//------------------------------------------------------------
+
+//		BODY
+//		BODY ::=  ( NON_WIKI_BLOCK ||  WIKI_BLOCK )*
+//------------------------------------------------------------
+
+BODY ::= NON_WIKI_BLOCK BODY                              ##transf2-> <pre>$(NON_WIKI_BLOCK)</pre>$(BODY)
+BODY ::= NON_WIKI_BLOCK                                   ##transf2-> <pre>$(NON_WIKI_BLOCK)</pre>
+BODY ::= WIKI_BLOCK     BODY
+BODY ::= WIKI_BLOCK  
+
+
+//------------------------------------------------------------
+
+//		BODY.NON_WIKI_BLOCK
+
+//------------------------------------------------------------
+
+NON_WIKI_BLOCK ::= begin_nowiki NON_WIKI_TEXT
+NON_WIKI_TEXT  ::= end_nowiki
+NON_WIKI_TEXT  ::= nonwiki_char NON_WIKI_TEXT
+begin_nowiki   ::= (\<nowiki\>)                           ##transf2-> $(__nothing__)
+end_nowiki     ::= (\</nowiki\>)                          ##transf2-> $(__nothing__) 
+nonwiki_char   ::= ([A-Za-z0-9 \n:]+)
+
+
+//------------------------------------------------------------
+
+//		BODY.WIKI_BLOCK
+
+//	para garantizar que wiki block comienza siempre por endl, en todas las expansiones, tiene que ir precedido por endl
+//	Podría llamarse a WIKI_BLOCK sin ser el inicio de línea al encontrarse un carácter no aceptado 
+//------------------------------------------------------------
+
+WIKI_BLOCK  ::=  HEADERS 
+WIKI_BLOCK  ::=  BULLETS
+WIKI_BLOCK  ::=  wiki_code_begin_line
+//	WIKI_TEXT prueba varios caracteres y en caso de duda, llama otra vez a WIKI_BLOCK para dar la oportunidad a HEADERS, BULLETS,...
+WIKI_BLOCK  ::=  WIKI_TEXT
+
+wiki_code_begin_line ::= (\-\-\-\-)                       ##transf2-> <HR>
+
+
+
+//------------------------------------------------------------
+//		BODY.WIKI_BLOCK.WIKI_TEXT
+//------------------------------------------------------------
+WIKI_TEXT ::= WIKITEXT2HTML
+
+
+
+//------------------------------------------------------------
+//		BODY.WIKI_BLOCK.HEADERS
+//------------------------------------------------------------
+
+HEADERS  ::=  header1 WIKITEXT2HTML multi_endl WIKI_BLOCK      ##transf2-> <h1>$(WIKITEXT2HTML)</h1>$(__endl__)$(WIKI_BLOCK)
+HEADERS  ::=  header1 WIKITEXT2HTML                            ##transf2-> <h1>$(WIKITEXT2HTML)</h1>$(__endl__)
+HEADERS  ::=  header2 line multi_endl WIKI_BLOCK               ##transf2-> <h2>$(line)</h2>$(__endl__)$(WIKI_BLOCK)
+HEADERS  ::=  header2 line                                     ##transf2-> <h2>$(line)</h2>$(__endl__)
+
+header1  ::= (! )
+header2  ::= (!! )
+
+
+
+//------------------------------------------------------------
+//		BODY.WIKI_BLOCK.BULLETS
+//------------------------------------------------------------
+
+BULLETS ::= BULLETS_BEGIN
+
+BULLETS_BEGIN ::= bullet1 line multi_endl BULLET1             ##transf2-> <OL><LI>$(line)$(__endl__)$(BULLET1)$(__endl__)</OL>
+BULLETS_BEGIN ::= bullet1 line                                ##transf2-> <OL><LI>$(line)</OL>$(__endl__)
+
+//	conexión con bullet2
+BULLET1 ::= bullet2 line multi_endl BULLET2                   ##transf2-> <OL><LI>$(line)$(__endl__)$(BULLET2)
+BULLET1 ::= bullet2 line                                      ##transf2-> <OL><LI>$(line)$(__endl__)</OL>
+
+//	bullet1
+BULLET1 ::= bullet1 line multi_endl BULLET1                   ##transf2-> <LI>$(line)$(__endl__)$(BULLET1)
+BULLET1 ::= bullet1 line                                      ##transf2-> <LI>$(line)$(__endl__)
+
+
+//	bullet2
+BULLET2 ::= bullet2 line multi_endl BULLET2                   ##transf2-> <LI>$(line)$(__endl__)$(BULLET2)
+BULLET2 ::= bullet2 line                                      ##transf2-> <LI>$(line)$(__endl__)
+
+//	recursividad con bullet1
+BULLET2 ::= BULLET1                                           ##transf2-> $(__endl__)</OL>$(BULLET1)
+
+
+bullet1 ::= (\* )
+bullet2 ::= (\*\* )
+
+
+
+//------------------------------------------------------------
+//		BODY.WIKI_BLOCK.XXXXX.WIKITEXT2HTML
+//------------------------------------------------------------
+
+WIKITEXT2HTML ::= WIKIBOLD2HTML   WIKITEXT2HTML
+WIKITEXT2HTML ::= WIKIBOLD2HTML 
+
+WIKITEXT2HTML ::= WIKIITALIC2HTML WIKITEXT2HTML
+WIKITEXT2HTML ::= WIKIITALIC2HTML
+
+WIKITEXT2HTML ::= WIKILINK2HTML   WIKITEXT2HTML
+WIKITEXT2HTML ::= WIKILINK2HTML
+
+WIKITEXT2HTML ::= wiki_char_outformat multi_endl 
+WIKITEXT2HTML ::= wiki_char_outformat WIKITEXT2HTML
+WIKITEXT2HTML ::= wiki_char_outformat 
+WIKITEXT2HTML ::= multi_endl
+
+wiki_char_outformat ::= (\\\\)                                 ##transf2-> <BR>
+wiki_char_outformat ::= ([A-Za-z0-9 :!\-]+)
+
+
+
+
+//------------------
+//	negrita
+//------------------
+WIKIBOLD2HTML ::= begin_bold IN_BOLD                           ##transf2-> <B>$(IN_BOLD)</B>
+//	negrita con italic dentro
+IN_BOLD       ::=  begin_italic IN_BOLD_IN_ITALIC  IN_BOLD     ##transf2-> <I>$(IN_BOLD_IN_ITALIC)$(IN_BOLD)
+
+IN_BOLD       ::= wiki_char_in_format IN_BOLD
+IN_BOLD       ::= wiki_char_in_format end_bold                 ##transf2->  $(wiki_char_in_format)
+
+begin_bold    ::= (\*\*)
+end_bold      ::= (\*\*)
+
+
+//------------------
+//	itálica
+//------------------
+WIKIITALIC2HTML ::= begin_italic IN_ITALIC                      ##transf2-> <I>$(IN_ITALIC)</I>
+//	italica con  negrita dentro
+IN_ITALIC       ::=  begin_bold IN_ITALIC_IN_BOLD  IN_ITALIC    ##transf2-> <B>$(IN_ITALIC_IN_BOLD)$(IN_ITALIC)
+
+IN_ITALIC       ::= wiki_char_in_format IN_ITALIC
+IN_ITALIC       ::= wiki_char_in_format end_italic              ##transf2-> $(wiki_char_in_format)
+
+//------------------
+//	BOLD  e  ITALIC anidados...
+//------------------
+IN_BOLD_IN_ITALIC ::= wiki_char_in_format IN_BOLD_IN_ITALIC   
+IN_BOLD_IN_ITALIC ::= wiki_char_in_format end_italic            ##transf2-> $(wiki_char_in_format)</I>
+
+IN_ITALIC_IN_BOLD ::= wiki_char_in_format IN_ITALIC_IN_BOLD   
+IN_ITALIC_IN_BOLD ::= wiki_char_in_format end_bold              ##transf2-> $(wiki_char_in_format)</B>
+
+
+begin_italic ::= ('')
+end_italic   ::= ('')
+
+wiki_char_in_format ::= (([A-Za-z0-9 :!\n\-]+))
+
+
+
+//------------------
+//		WIKILINK2HTML
+//------------------
+
+WIKILINK2HTML ::= begin_link LINK_FROM -> LINK_TO  end_link     ##transf2-> <A HREF="$(LINK_TO)"> $(LINK_FROM)</A>
+
+
+begin_link ::= (\[\[)
+end_link   ::= (\]\])
+
+LINK_FROM ::=  char_in_link LINK_FROM
+LINK_FROM ::=  char_in_link 
+LINK_TO   ::=  char_in_link LINK_TO
+LINK_TO   ::=  char_in_link 
+
+char_in_link ::= ([a-zA-Z0-9 \.]+)
+->           ::= (\-\>)

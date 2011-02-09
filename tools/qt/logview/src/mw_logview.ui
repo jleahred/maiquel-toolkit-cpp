@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MW_LogViewClass</class>
+ <widget class="QMainWindow" name="MW_LogViewClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MW_LogView</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPlainTextEdit" name="pteLogText">
+      <property name="styleSheet">
+       <string notr="true">font: 11pt &quot;Courier 10 Pitch&quot;;</string>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="lineWrapMode">
+       <enum>QPlainTextEdit::NoWrap</enum>
+      </property>
+      <property name="plainText">
+       <string>20:02:57.216 Warn   Unkown  ll:1 # stast1:  ktibmsgs:530 alarms:27 logs:27 @AdminServer_Stats
+18:22:51.049 ERROR  Unkown  ll:1 # AdminServer_ctor&gt;Se ha producido un error al acceder al fichero (Top Level) ../../_etc/global2.cfg alarma @STATUS_REFRESH:EAFNF_../../_etc/global2.cfg [6]
+        +0ms ERROR  Unkown       |  on file ../../_etc/global2.cfg alarma @CF_LoadFromFile
+        +0ms ERROR  Unkown       | problem opening file  @cf::GetString2ParseFromFile |ll:1
+18:22:50.631 CRITIC Unkown  ll:1 # AdminServer_ctor&gt;Se ha producido un error al acceder al fichero de (Function Name) ../_etc/global2.cfg alarma @STATUS_REFRESH:EAFNF_../_etc/global2.cfg [3]
+        +0ms ERROR  Unkown       |  on file ../_etc/global2.cfg alarma @CF_LoadFromFile
+        +0ms ERROR  Unkown       | problem opening file  @cf::GetString2ParseFromFile |ll:1
+20:06:21.814 ERROR  RealTm  ll:1 # Fluctuación prev : 4m 25s 614msidreloj 4443 @CheckFluctuacion |ll:1
+20:02:57.216 Warn   Unkown  ll:1 # stast1:  ktibmsgs:530 alarms:27 logs:27 @AdminServer_Stats
+20:02:57.216 Warn   Unkown  ll:1 # stast1:  ktibmsgs:530 alarms:27 logs:27 @AdminServer_Stats
+20:06:21.831 ERROR  RealTm  ll:1 # Fluctuación 5min : 4m 25s 614msidreloj 4443 @CheckFluctuacion |ll:1
+18:22:51.049 ERROR  Unkown  ll:1 # AdminServer_ctor&gt;Se ha producido un error al acceder al fichero (Top Level) ../../_etc/global2.cfg alarma @STATUS_REFRESH:EAFNF_../../_etc/global2.cfg [6]
+        +0ms ERROR  Unkown       |  on file ../../_etc/global2.cfg alarma @CF_LoadFromFile
+        +0ms ERROR  Unkown       | problem opening file  @cf::GetString2ParseFromFile |ll:1
+20:02:57.216 Warn   Unkown  ll:1 # stast1:  ktibmsgs:530 alarms:27 logs:27 @AdminServer_Stats
+18:22:50.631 ERROR  Unkown  ll:1 # AdminServer_ctor&gt;Se ha producido un error al acceder al fichero de (Function Name) ../_etc/global2.cfg alarma @STATUS_REFRESH:EAFNF_../_etc/global2.cfg [3]
+        +0ms ERROR  Unkown       |  on file ../_etc/global2.cfg alarma @CF_LoadFromFile
+        +0ms ERROR  Unkown       | problem opening file  @cf::GetString2ParseFromFile |ll:1
+20:02:57.216 Warn   Unkown  ll:1 # stast1:  ktibmsgs:530 alarms:27 logs:27 @AdminServer_Stats
+20:22:58.006 Warn   Unkown  ll:1 # stast1:  ktibmsgs:636 alarms:34 logs:34 @AdminServer_Stats |ll:1
+20:02:57.216 Warn   Unkown  ll:1 # stast1:  ktibmsgs:530 alarms:27 logs:27 @AdminServer_Stats
+18:22:51.049 ERROR  Unkown  ll:1 # AdminServer_ctor&gt;Se ha producido un error al acceder al fichero (Top Level) ../../_etc/global2.cfg alarma @STATUS_REFRESH:EAFNF_../../_etc/global2.cfg [6]
+        +0ms ERROR  Unkown       |  on file ../../_etc/global2.cfg alarma @CF_LoadFromFile
+18:22:51.045 ERROR  Unkown       # problem opening file  @cf::GetString2ParseFromFile |ll:1
+20:02:57.216 Warn   Unkown  ll:1 # stast1:  ktibmsgs:530 alarms:27 logs:27 @AdminServer_Stats
+20:02:57.216 Warn   Unkown  ll:1 # stast1:  ktibmsgs:530 alarms:27 logs:27 @AdminServer_Stats
+18:22:50.631 ERROR  Unkown  ll:1 # AdminServer_ctor&gt;Se ha producido un error al acceder al fichero de (Function Name) ../_etc/global2.cfg alarma @STATUS_REFRESH:EAFNF_../_etc/global2.cfg [3]
+        +0ms ERROR  Unkown       |  on file ../_etc/global2.cfg alarma @CF_LoadFromFile
+</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,12 @@
+def i := 0; 
+def result as double;
+
+
+result:=0;
+
+while (i != 101)
+{
+  result := result +i;
+  i := i+1;
+}
+
