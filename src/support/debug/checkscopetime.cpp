@@ -14,7 +14,7 @@
 
 
 #ifndef MTK_PLATFORM
-    #error  "mtk::   NO ESTÁ CARGADO EL FICHERO DE CONFIGURACIÓN  soposupport/form.h"
+    #error  "mtk::   NO ESTÁ CARGADO EL FICHERO DE CONFIGURACIÓN  support/platform.hpp"
 #endif
 
 #if (MTK_PLATFORM == MTK_WIN_PLATFORM)

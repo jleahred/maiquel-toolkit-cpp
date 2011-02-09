@@ -42,7 +42,7 @@ In your programs, you will have to mix some of them using standard library and Q
 * Example libraries for linking...
 +
 -----
-LIBS = -Lxxx/external/lib/linux -Lxxx/lib  -lidtfirebird -lfbclient64   -lyaml -lidtsoporte
+LIBS = -Lxxx/external/lib/linux -Lxxx/lib -lmtk_components -lmtk_qpid -lqpidclient -lmtkfirebird -lfbclient64 -lmtksockets -lmtksupport -lyaml;
 -----
 +
 * _MTK_ dependency diagram
