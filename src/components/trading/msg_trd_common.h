@@ -5,7 +5,7 @@
 
 // generated automatically
 // coded last modification:        Mon Jan 17 22:34:07 2011
-// pythonscript last modification: Mon Jan 24 10:23:48 2011
+// pythonscript last modification: Thu Feb 10 18:34:23 2011
 
 
 #include "support/nullable.hpp"
@@ -16,9 +16,7 @@
 #include "support/exec_max_frec.h"
 #include "mtk_qpid/qpid_msg_support.hpp"
 #include "support/mtk_string.h"
-#include <qpid/messaging/MapContent.h>
 #include <qpid/messaging/Message.h>
-#include <qpid/messaging/MapView.h>
 #include "mtk_qpid/msg_control_fields.h"
 #include "mtk_qpid/mtk_qpid.hpp"
 
@@ -115,13 +113,11 @@ bool operator== (const sub_total_executions& a, const sub_total_executions& b);
 bool operator!= (const sub_total_executions& a, const sub_total_executions& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_order_id& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const sub_order_id& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const sub_order_id& a);
-void copy (sub_order_id& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a);
+void copy (sub_order_id& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_total_executions& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const sub_total_executions& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const sub_total_executions& a);
-void copy (sub_total_executions& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executions& a);
+void copy (sub_total_executions& a, const qpid::types::Variant& map);
 
     sub_order_id  __internal_get_default(sub_order_id *);
     
@@ -138,7 +134,7 @@ void copy (sub_total_executions& a, const qpid::messaging::Variant& map);
 
     
 template<typename T>
-void   copy(mtk::nullable<T>& result, const qpid::messaging::Variant& v);
+void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::sub_order_id)

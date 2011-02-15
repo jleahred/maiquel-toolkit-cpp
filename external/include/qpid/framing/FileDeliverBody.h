@@ -40,22 +40,22 @@ namespace qpid {
 namespace framing {
 
 class FileDeliverBody : public ModelMethod {
-    string consumerTag;
+    std::string consumerTag;
     uint64_t deliveryTag;
-    string exchange;
-    string routingKey;
-    string identifier;
+    std::string exchange;
+    std::string routingKey;
+    std::string identifier;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x9;
     static const MethodId METHOD_ID = 0xb;
     FileDeliverBody(
-        ProtocolVersion, const string& _consumerTag,
+        ProtocolVersion, const std::string& _consumerTag,
         uint64_t _deliveryTag,
         bool _redelivered,
-        const string& _exchange,
-        const string& _routingKey,
-        const string& _identifier) : 
+        const std::string& _exchange,
+        const std::string& _routingKey,
+        const std::string& _identifier) : 
         consumerTag(_consumerTag),
         deliveryTag(_deliveryTag),
         exchange(_exchange),
@@ -71,8 +71,8 @@ public:
     }
     FileDeliverBody(ProtocolVersion=ProtocolVersion())  : deliveryTag(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setConsumerTag(const string& _consumerTag);
-    QPID_COMMON_EXTERN const string& getConsumerTag() const;
+    QPID_COMMON_EXTERN void setConsumerTag(const std::string& _consumerTag);
+    QPID_COMMON_EXTERN const std::string& getConsumerTag() const;
     QPID_COMMON_EXTERN bool hasConsumerTag() const;
     QPID_COMMON_EXTERN void clearConsumerTagFlag();
     QPID_COMMON_EXTERN void setDeliveryTag(uint64_t _deliveryTag);
@@ -81,16 +81,16 @@ public:
     QPID_COMMON_EXTERN void clearDeliveryTagFlag();
     QPID_COMMON_EXTERN void setRedelivered(bool _redelivered);
     QPID_COMMON_EXTERN bool getRedelivered() const;
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setRoutingKey(const string& _routingKey);
-    QPID_COMMON_EXTERN const string& getRoutingKey() const;
+    QPID_COMMON_EXTERN void setRoutingKey(const std::string& _routingKey);
+    QPID_COMMON_EXTERN const std::string& getRoutingKey() const;
     QPID_COMMON_EXTERN bool hasRoutingKey() const;
     QPID_COMMON_EXTERN void clearRoutingKeyFlag();
-    QPID_COMMON_EXTERN void setIdentifier(const string& _identifier);
-    QPID_COMMON_EXTERN const string& getIdentifier() const;
+    QPID_COMMON_EXTERN void setIdentifier(const std::string& _identifier);
+    QPID_COMMON_EXTERN const std::string& getIdentifier() const;
     QPID_COMMON_EXTERN bool hasIdentifier() const;
     QPID_COMMON_EXTERN void clearIdentifierFlag();
     typedef void ResultType;

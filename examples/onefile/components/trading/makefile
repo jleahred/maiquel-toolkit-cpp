@@ -3,7 +3,7 @@ INCLUDES = -I../../../../src
 
 
 # library paths
-LIBS = -L../../../../external/lib/linux -L../../../../lib  -lmtk_components -lmtk_qpid -lmtksupport -lqpidclient
+LIBS = -L../../../../external/lib/linux -L../../../../lib  -lmtk_components -lmtk_qpid -lmtksupport -lqpidclient -lqpidmessaging
 
 
 

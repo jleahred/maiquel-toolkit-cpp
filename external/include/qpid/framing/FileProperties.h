@@ -36,28 +36,28 @@ namespace qpid {
 namespace framing {
 
 class FileProperties  {
-    string contentType;
-    string contentEncoding;
+    std::string contentType;
+    std::string contentEncoding;
     FieldTable headers;
     uint8_t priority;
-    string replyTo;
-    string messageId;
-    string filename;
+    std::string replyTo;
+    std::string messageId;
+    std::string filename;
     uint64_t timestamp;
-    string clusterId;
+    std::string clusterId;
     uint16_t flags;
 public:
     static const uint16_t TYPE = 2305;
     FileProperties(
-        const string& _contentType,
-        const string& _contentEncoding,
+        const std::string& _contentType,
+        const std::string& _contentEncoding,
         const FieldTable& _headers,
         uint8_t _priority,
-        const string& _replyTo,
-        const string& _messageId,
-        const string& _filename,
+        const std::string& _replyTo,
+        const std::string& _messageId,
+        const std::string& _filename,
         uint64_t _timestamp,
-        const string& _clusterId) : 
+        const std::string& _clusterId) : 
         contentType(_contentType),
         contentEncoding(_contentEncoding),
         headers(_headers),
@@ -80,12 +80,12 @@ public:
     }
     FileProperties()  : priority(0), timestamp(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setContentType(const string& _contentType);
-    QPID_COMMON_EXTERN const string& getContentType() const;
+    QPID_COMMON_EXTERN void setContentType(const std::string& _contentType);
+    QPID_COMMON_EXTERN const std::string& getContentType() const;
     QPID_COMMON_EXTERN bool hasContentType() const;
     QPID_COMMON_EXTERN void clearContentTypeFlag();
-    QPID_COMMON_EXTERN void setContentEncoding(const string& _contentEncoding);
-    QPID_COMMON_EXTERN const string& getContentEncoding() const;
+    QPID_COMMON_EXTERN void setContentEncoding(const std::string& _contentEncoding);
+    QPID_COMMON_EXTERN const std::string& getContentEncoding() const;
     QPID_COMMON_EXTERN bool hasContentEncoding() const;
     QPID_COMMON_EXTERN void clearContentEncodingFlag();
     QPID_COMMON_EXTERN void setHeaders(const FieldTable& _headers);
@@ -97,24 +97,24 @@ public:
     QPID_COMMON_EXTERN uint8_t getPriority() const;
     QPID_COMMON_EXTERN bool hasPriority() const;
     QPID_COMMON_EXTERN void clearPriorityFlag();
-    QPID_COMMON_EXTERN void setReplyTo(const string& _replyTo);
-    QPID_COMMON_EXTERN const string& getReplyTo() const;
+    QPID_COMMON_EXTERN void setReplyTo(const std::string& _replyTo);
+    QPID_COMMON_EXTERN const std::string& getReplyTo() const;
     QPID_COMMON_EXTERN bool hasReplyTo() const;
     QPID_COMMON_EXTERN void clearReplyToFlag();
-    QPID_COMMON_EXTERN void setMessageId(const string& _messageId);
-    QPID_COMMON_EXTERN const string& getMessageId() const;
+    QPID_COMMON_EXTERN void setMessageId(const std::string& _messageId);
+    QPID_COMMON_EXTERN const std::string& getMessageId() const;
     QPID_COMMON_EXTERN bool hasMessageId() const;
     QPID_COMMON_EXTERN void clearMessageIdFlag();
-    QPID_COMMON_EXTERN void setFilename(const string& _filename);
-    QPID_COMMON_EXTERN const string& getFilename() const;
+    QPID_COMMON_EXTERN void setFilename(const std::string& _filename);
+    QPID_COMMON_EXTERN const std::string& getFilename() const;
     QPID_COMMON_EXTERN bool hasFilename() const;
     QPID_COMMON_EXTERN void clearFilenameFlag();
     QPID_COMMON_EXTERN void setTimestamp(uint64_t _timestamp);
     QPID_COMMON_EXTERN uint64_t getTimestamp() const;
     QPID_COMMON_EXTERN bool hasTimestamp() const;
     QPID_COMMON_EXTERN void clearTimestampFlag();
-    QPID_COMMON_EXTERN void setClusterId(const string& _clusterId);
-    QPID_COMMON_EXTERN const string& getClusterId() const;
+    QPID_COMMON_EXTERN void setClusterId(const std::string& _clusterId);
+    QPID_COMMON_EXTERN const std::string& getClusterId() const;
     QPID_COMMON_EXTERN bool hasClusterId() const;
     QPID_COMMON_EXTERN void clearClusterIdFlag();
     QPID_COMMON_EXTERN friend std::ostream& operator<<(std::ostream&, const FileProperties&);

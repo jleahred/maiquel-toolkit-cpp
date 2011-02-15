@@ -40,15 +40,15 @@ namespace qpid {
 namespace framing {
 
 class MessageResumeBody : public ModelMethod {
-    string destination;
-    string resumeId;
+    std::string destination;
+    std::string resumeId;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x4;
     static const MethodId METHOD_ID = 0x6;
     MessageResumeBody(
-        ProtocolVersion, const string& _destination,
-        const string& _resumeId) : 
+        ProtocolVersion, const std::string& _destination,
+        const std::string& _resumeId) : 
         destination(_destination),
         resumeId(_resumeId),
         flags(0){
@@ -57,12 +57,12 @@ public:
     }
     MessageResumeBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setDestination(const string& _destination);
-    QPID_COMMON_EXTERN const string& getDestination() const;
+    QPID_COMMON_EXTERN void setDestination(const std::string& _destination);
+    QPID_COMMON_EXTERN const std::string& getDestination() const;
     QPID_COMMON_EXTERN bool hasDestination() const;
     QPID_COMMON_EXTERN void clearDestinationFlag();
-    QPID_COMMON_EXTERN void setResumeId(const string& _resumeId);
-    QPID_COMMON_EXTERN const string& getResumeId() const;
+    QPID_COMMON_EXTERN void setResumeId(const std::string& _resumeId);
+    QPID_COMMON_EXTERN const std::string& getResumeId() const;
     QPID_COMMON_EXTERN bool hasResumeId() const;
     QPID_COMMON_EXTERN void clearResumeIdFlag();
     typedef MessageResumeResult ResultType;

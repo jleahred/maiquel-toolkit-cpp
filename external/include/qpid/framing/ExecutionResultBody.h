@@ -41,14 +41,14 @@ namespace framing {
 
 class ExecutionResultBody : public ModelMethod {
     SequenceNumber commandId;
-    string value;
+    std::string value;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x3;
     static const MethodId METHOD_ID = 0x2;
     ExecutionResultBody(
         ProtocolVersion, const SequenceNumber& _commandId,
-        const string& _value) : 
+        const std::string& _value) : 
         commandId(_commandId),
         value(_value),
         flags(0){
@@ -61,8 +61,8 @@ public:
     QPID_COMMON_EXTERN SequenceNumber getCommandId() const;
     QPID_COMMON_EXTERN bool hasCommandId() const;
     QPID_COMMON_EXTERN void clearCommandIdFlag();
-    QPID_COMMON_EXTERN void setValue(const string& _value);
-    QPID_COMMON_EXTERN const string& getValue() const;
+    QPID_COMMON_EXTERN void setValue(const std::string& _value);
+    QPID_COMMON_EXTERN const std::string& getValue() const;
     QPID_COMMON_EXTERN bool hasValue() const;
     QPID_COMMON_EXTERN void clearValueFlag();
     typedef void ResultType;

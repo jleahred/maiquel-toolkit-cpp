@@ -40,21 +40,21 @@ namespace qpid {
 namespace framing {
 
 class ClusterConnectionTxEnqueueBody : public ModelMethod {
-    string queue;
+    std::string queue;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x81;
     static const MethodId METHOD_ID = 0x15;
     ClusterConnectionTxEnqueueBody(
-        ProtocolVersion, const string& _queue) : 
+        ProtocolVersion, const std::string& _queue) : 
         queue(_queue),
         flags(0){
         flags |= (1 << 8);
     }
     ClusterConnectionTxEnqueueBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setQueue(const string& _queue);
-    QPID_COMMON_EXTERN const string& getQueue() const;
+    QPID_COMMON_EXTERN void setQueue(const std::string& _queue);
+    QPID_COMMON_EXTERN const std::string& getQueue() const;
     QPID_COMMON_EXTERN bool hasQueue() const;
     QPID_COMMON_EXTERN void clearQueueFlag();
     typedef void ResultType;

@@ -39,14 +39,14 @@ namespace qpid {
 namespace framing {
 
 class ConnectionOpenBody : public AMQMethodBody {
-    string virtualHost;
+    std::string virtualHost;
     Array capabilities;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x1;
     static const MethodId METHOD_ID = 0x7;
     ConnectionOpenBody(
-        ProtocolVersion, const string& _virtualHost,
+        ProtocolVersion, const std::string& _virtualHost,
         const Array& _capabilities,
         bool _insist) : 
         virtualHost(_virtualHost),
@@ -58,8 +58,8 @@ public:
     }
     ConnectionOpenBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setVirtualHost(const string& _virtualHost);
-    QPID_COMMON_EXTERN const string& getVirtualHost() const;
+    QPID_COMMON_EXTERN void setVirtualHost(const std::string& _virtualHost);
+    QPID_COMMON_EXTERN const std::string& getVirtualHost() const;
     QPID_COMMON_EXTERN bool hasVirtualHost() const;
     QPID_COMMON_EXTERN void clearVirtualHostFlag();
     QPID_COMMON_EXTERN void setCapabilities(const Array& _capabilities);

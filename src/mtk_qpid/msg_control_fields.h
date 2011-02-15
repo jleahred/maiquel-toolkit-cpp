@@ -5,7 +5,7 @@
 
 // generated automatically
 // coded last modification:        Mon Jan 17 23:12:18 2011
-// pythonscript last modification: Mon Jan 24 10:23:48 2011
+// pythonscript last modification: Thu Feb 10 18:34:23 2011
 
 
 #include "support/nullable.hpp"
@@ -16,9 +16,7 @@
 #include "support/exec_max_frec.h"
 #include "mtk_qpid/qpid_msg_support.hpp"
 #include "support/mtk_string.h"
-#include <qpid/messaging/MapContent.h>
 #include <qpid/messaging/Message.h>
-#include <qpid/messaging/MapView.h>
 #include "mtk_qpid/msg_control_fields.h"
 
 
@@ -73,9 +71,8 @@ bool operator== (const sub_control_fields& a, const sub_control_fields& b);
 bool operator!= (const sub_control_fields& a, const sub_control_fields& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_control_fields& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const sub_control_fields& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const sub_control_fields& a);
-void copy (sub_control_fields& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fields& a);
+void copy (sub_control_fields& a, const qpid::types::Variant& map);
 
     sub_control_fields  __internal_get_default(sub_control_fields *);
     
@@ -89,7 +86,7 @@ void copy (sub_control_fields& a, const qpid::messaging::Variant& map);
 
     
 template<typename T>
-void   copy(mtk::nullable<T>& result, const qpid::messaging::Variant& v);
+void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 

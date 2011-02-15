@@ -42,8 +42,9 @@ namespace framing {
 class ClusterConnectionShadowReadyBody : public ModelMethod {
     uint64_t memberId;
     uint64_t connectionId;
-    string userName;
-    string fragment;
+    std::string managementId;
+    std::string userName;
+    std::string fragment;
     uint32_t sendMax;
     uint16_t flags;
 public:
@@ -52,11 +53,13 @@ public:
     ClusterConnectionShadowReadyBody(
         ProtocolVersion, uint64_t _memberId,
         uint64_t _connectionId,
-        const string& _userName,
-        const string& _fragment,
+        const std::string& _managementId,
+        const std::string& _userName,
+        const std::string& _fragment,
         uint32_t _sendMax) : 
         memberId(_memberId),
         connectionId(_connectionId),
+        managementId(_managementId),
         userName(_userName),
         fragment(_fragment),
         sendMax(_sendMax),
@@ -66,6 +69,7 @@ public:
         flags |= (1 << 10);
         flags |= (1 << 11);
         flags |= (1 << 12);
+        flags |= (1 << 13);
     }
     ClusterConnectionShadowReadyBody(ProtocolVersion=ProtocolVersion())  : memberId(0), connectionId(0), sendMax(0), flags(0) {}
     
@@ -77,12 +81,16 @@ public:
     QPID_COMMON_EXTERN uint64_t getConnectionId() const;
     QPID_COMMON_EXTERN bool hasConnectionId() const;
     QPID_COMMON_EXTERN void clearConnectionIdFlag();
-    QPID_COMMON_EXTERN void setUserName(const string& _userName);
-    QPID_COMMON_EXTERN const string& getUserName() const;
+    QPID_COMMON_EXTERN void setManagementId(const std::string& _managementId);
+    QPID_COMMON_EXTERN const std::string& getManagementId() const;
+    QPID_COMMON_EXTERN bool hasManagementId() const;
+    QPID_COMMON_EXTERN void clearManagementIdFlag();
+    QPID_COMMON_EXTERN void setUserName(const std::string& _userName);
+    QPID_COMMON_EXTERN const std::string& getUserName() const;
     QPID_COMMON_EXTERN bool hasUserName() const;
     QPID_COMMON_EXTERN void clearUserNameFlag();
-    QPID_COMMON_EXTERN void setFragment(const string& _fragment);
-    QPID_COMMON_EXTERN const string& getFragment() const;
+    QPID_COMMON_EXTERN void setFragment(const std::string& _fragment);
+    QPID_COMMON_EXTERN const std::string& getFragment() const;
     QPID_COMMON_EXTERN bool hasFragment() const;
     QPID_COMMON_EXTERN void clearFragmentFlag();
     QPID_COMMON_EXTERN void setSendMax(uint32_t _sendMax);
@@ -92,7 +100,7 @@ public:
     typedef void ResultType;
 
     template <class T> ResultType invoke(T& invocable) const {
-        return invocable.shadowReady(getMemberId(), getConnectionId(), getUserName(), getFragment(), getSendMax());
+        return invocable.shadowReady(getMemberId(), getConnectionId(), getManagementId(), getUserName(), getFragment(), getSendMax());
     }
 
     using  AMQMethodBody::accept;

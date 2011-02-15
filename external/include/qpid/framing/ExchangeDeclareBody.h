@@ -40,18 +40,18 @@ namespace qpid {
 namespace framing {
 
 class ExchangeDeclareBody : public ModelMethod {
-    string exchange;
-    string type;
-    string alternateExchange;
+    std::string exchange;
+    std::string type;
+    std::string alternateExchange;
     FieldTable arguments;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x7;
     static const MethodId METHOD_ID = 0x1;
     ExchangeDeclareBody(
-        ProtocolVersion, const string& _exchange,
-        const string& _type,
-        const string& _alternateExchange,
+        ProtocolVersion, const std::string& _exchange,
+        const std::string& _type,
+        const std::string& _alternateExchange,
         bool _passive,
         bool _durable,
         bool _autoDelete,
@@ -71,16 +71,16 @@ public:
     }
     ExchangeDeclareBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setType(const string& _type);
-    QPID_COMMON_EXTERN const string& getType() const;
+    QPID_COMMON_EXTERN void setType(const std::string& _type);
+    QPID_COMMON_EXTERN const std::string& getType() const;
     QPID_COMMON_EXTERN bool hasType() const;
     QPID_COMMON_EXTERN void clearTypeFlag();
-    QPID_COMMON_EXTERN void setAlternateExchange(const string& _alternateExchange);
-    QPID_COMMON_EXTERN const string& getAlternateExchange() const;
+    QPID_COMMON_EXTERN void setAlternateExchange(const std::string& _alternateExchange);
+    QPID_COMMON_EXTERN const std::string& getAlternateExchange() const;
     QPID_COMMON_EXTERN bool hasAlternateExchange() const;
     QPID_COMMON_EXTERN void clearAlternateExchangeFlag();
     QPID_COMMON_EXTERN void setPassive(bool _passive);

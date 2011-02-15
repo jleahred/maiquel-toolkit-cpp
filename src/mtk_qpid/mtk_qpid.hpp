@@ -22,8 +22,7 @@
 #include <qpid/messaging/Receiver.h>
 #include <qpid/messaging/Sender.h>
 #include <qpid/messaging/Session.h>
-#include <qpid/messaging/Variant.h>
-#include <qpid/messaging/MapView.h>
+#include <qpid/messaging/Message.h>
 
 
 #include "support/basic_types.hpp"
@@ -83,19 +82,24 @@ struct qpid_session
     
     qpid::messaging::Receiver      createReceiver(const std::string& filter)  {  
             //std::string session_config = MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always, filter:[control, "<< filter <<"]}");
-            std::string session_config = MTK_SS(address<< "; {assert:always, node-properties:{type:topic}, filter:[control, "<< filter <<"]}");
+            std::string session_config = MTK_SS(address<< "/" << filter << "; {assert:always, node:{type:topic}}");
             qpid::messaging::Receiver receiver = session.createReceiver(session_config);
             receiver.setCapacity(1000);
             return receiver;
         }
-    
+
     qpid_session(const std::string& url, const std::string& _address)
-        :  connection   (qpid::messaging::Connection::open(url))
-         , session      (connection.newSession())
+        :  connection   (url)
+         //, session      (connection.newSession())
          , address      (_address)
-         //, sender       (session.createSender(MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always}")))
-         , sender       (session.createSender(MTK_SS(address<< "; {assert:always, node-properties:{type:topic} }")))
-    { sender.setCapacity(1000);     }
+         ////, sender       (session.createSender(MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always}")))
+         //, sender       (session.createSender(MTK_SS(address<< "; {assert:always, node-properties:{type:topic} }")))
+    { 
+            connection.open(); 
+            session = connection.createSession();
+            sender = session.createSender(MTK_SS(address<< "; {assert:always, node:{type:topic} }"));
+            sender.setCapacity(1000);     
+    }
     ~qpid_session() {session.close(); };
 };
 
@@ -187,11 +191,11 @@ inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const std::s
 
 inline void handle_qpid_exchange_receiver::check_queue(void)
 {
-        if (receiver.available() == 0)
+        if (receiver.getAvailable() == 0)
             return;
 			
 		qpid::messaging::Message message;
-        while (receiver.fetch(message, 0))
+        while (receiver.fetch(message, qpid::messaging::Duration(0)))
         {
             //  pending, not too much fetches each time
             
@@ -223,23 +227,26 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
                                 std::string(" address>") + "pending",
                                 alPriorCritic
                         );
-                    qpid::messaging::MapView mv(message);
+                    qpid::types::Variant::Map mv;
+                    qpid::messaging::decode(message, mv);
                     qpid_error.Add(mtk::Alarm(MTK_HERE, MTK_SS("msg>  " << mv), mtk::alPriorCritic));
                     qpid_error.Add(alError);
                     mtk::AlarmMsg(qpid_error);
                 }
                 catch (std::exception& e) {
                     Alarm  qpid_error("handle_qpid_exchange_receiver",
-                                MTK_SS (" SUBJ>" << message.getHeaders() << "  " << e.what()),
+                                MTK_SS (" SUBJ>" << message.getSubject() << "  " << e.what()),
                                 alPriorCritic);
-                    qpid::messaging::MapView mv(message);
+                    qpid::types::Variant::Map mv;
+                    qpid::messaging::decode(message, mv);
                     qpid_error.Add(mtk::Alarm(MTK_HERE, MTK_SS("msg>  " << mv), mtk::alPriorCritic));
                     mtk::AlarmMsg(qpid_error);
                 } catch (...) {
                     Alarm  qpid_error("handle_qpid_exchange_receiver",
-                                MTK_SS (" SUBJ>" << message.getHeaders() << "  ... unkown exception"),
+                                MTK_SS (" SUBJ>" << message.getSubject() << "  ... unkown exception"),
                                 alPriorCritic);
-                    qpid::messaging::MapView mv(message);
+                    qpid::types::Variant::Map mv;
+                    qpid::messaging::decode(message, mv);
                     qpid_error.Add(mtk::Alarm(MTK_HERE, MTK_SS("msg>  " << mv), mtk::alPriorCritic));
                     mtk::AlarmMsg(qpid_error);
                 }
@@ -304,8 +311,9 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
     //  get control fields
     //  if message type matches, convert and send signal
     
-    qpid::messaging::MapView mv(message);
-    std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant>::const_iterator it;
+    qpid::types::Variant::Map mv;
+    qpid::messaging::decode(message, mv);
+    std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
     
     if (mv.find("_cf_") == mv.end())
         throw mtk::Alarm(MTK_HERE, "missing control fileds", mtk::alPriorCritic, mtk::alTypeNoPermisions);

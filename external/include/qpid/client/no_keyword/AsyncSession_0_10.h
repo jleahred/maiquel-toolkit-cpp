@@ -76,7 +76,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion executionResult(const SequenceNumber& commandId=SequenceNumber(), const string& value=string(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion executionResult(const SequenceNumber& commandId=SequenceNumber(), const std::string& value=std::string(), bool sync=false);
     
     /**
      * 
@@ -115,7 +115,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion executionException(uint16_t errorCode=0, const SequenceNumber& commandId=SequenceNumber(), uint8_t classCode=0, uint8_t commandCode=0, uint8_t fieldIndex=0, const string& description=string(), const FieldTable& errorInfo=FieldTable(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion executionException(uint16_t errorCode=0, const SequenceNumber& commandId=SequenceNumber(), uint8_t classCode=0, uint8_t commandCode=0, uint8_t fieldIndex=0, const std::string& description=std::string(), const FieldTable& errorInfo=FieldTable(), bool sync=false);
     
     /**
      * 
@@ -151,7 +151,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion messageTransfer(const string& destination=string(), uint8_t acceptMode=1, uint8_t acquireMode=0, const Message& content=Message(std::string()), bool sync=false);
+    QPID_CLIENT_EXTERN Completion messageTransfer(const std::string& destination=std::string(), uint8_t acceptMode=1, uint8_t acquireMode=0, const Message& content=Message(std::string()), bool sync=false);
     
     /**
      * 
@@ -197,7 +197,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion messageReject(const SequenceSet& transfers=SequenceSet(), uint16_t code=0, const string& text=string(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion messageReject(const SequenceSet& transfers=SequenceSet(), uint16_t code=0, const std::string& text=std::string(), bool sync=false);
     
     /**
      * 
@@ -264,7 +264,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN TypedResult<qpid::framing::MessageResumeResult> messageResume(const string& destination=string(), const string& resumeId=string(), bool sync=false);
+    QPID_CLIENT_EXTERN TypedResult<qpid::framing::MessageResumeResult> messageResume(const std::string& destination=std::string(), const std::string& resumeId=std::string(), bool sync=false);
     
     /**
      *  This command asks the server to start a "subscription", which is a request for messages
@@ -305,7 +305,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion messageSubscribe(const string& queue=string(), const string& destination=string(), uint8_t acceptMode=0, uint8_t acquireMode=0, bool exclusive=false, const string& resumeId=string(), uint64_t resumeTtl=0, const FieldTable& arguments=FieldTable(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion messageSubscribe(const std::string& queue=std::string(), const std::string& destination=std::string(), uint8_t acceptMode=0, uint8_t acquireMode=0, bool exclusive=false, const std::string& resumeId=std::string(), uint64_t resumeTtl=0, const FieldTable& arguments=FieldTable(), bool sync=false);
     
     /**
      * 
@@ -321,7 +321,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion messageCancel(const string& destination=string(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion messageCancel(const std::string& destination=std::string(), bool sync=false);
     
     /**
      * 
@@ -358,7 +358,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion messageSetFlowMode(const string& destination=string(), uint8_t flowMode=0, bool sync=false);
+    QPID_CLIENT_EXTERN Completion messageSetFlowMode(const std::string& destination=std::string(), uint8_t flowMode=0, bool sync=false);
     
     /**
      * 
@@ -386,7 +386,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion messageFlow(const string& destination=string(), uint8_t unit=0, uint32_t value=0, bool sync=false);
+    QPID_CLIENT_EXTERN Completion messageFlow(const std::string& destination=std::string(), uint8_t unit=0, uint32_t value=0, bool sync=false);
     
     /**
      * 
@@ -401,7 +401,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion messageFlush(const string& destination=string(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion messageFlush(const std::string& destination=std::string(), bool sync=false);
     
     /**
      * 
@@ -416,7 +416,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion messageStop(const string& destination=string(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion messageStop(const std::string& destination=std::string(), bool sync=false);
     
     /**
      * 
@@ -701,7 +701,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion exchangeDeclare(const string& exchange=string(), const string& type=string(), const string& alternateExchange=string(), bool passive=false, bool durable=false, bool autoDelete=false, const FieldTable& arguments=FieldTable(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion exchangeDeclare(const std::string& exchange=std::string(), const std::string& type=std::string(), const std::string& alternateExchange=std::string(), bool passive=false, bool durable=false, bool autoDelete=false, const FieldTable& arguments=FieldTable(), bool sync=false);
     
     /**
      * 
@@ -722,7 +722,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion exchangeDelete(const string& exchange=string(), bool ifUnused=false, bool sync=false);
+    QPID_CLIENT_EXTERN Completion exchangeDelete(const std::string& exchange=std::string(), bool ifUnused=false, bool sync=false);
     
     /**
      * 
@@ -739,7 +739,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN TypedResult<qpid::framing::ExchangeQueryResult> exchangeQuery(const string& name=string(), bool sync=false);
+    QPID_CLIENT_EXTERN TypedResult<qpid::framing::ExchangeQueryResult> exchangeQuery(const std::string& name=std::string(), bool sync=false);
     
     /**
      *  This command binds a queue to an exchange. Until a queue is bound it will not receive
@@ -767,7 +767,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion exchangeBind(const string& queue=string(), const string& exchange=string(), const string& bindingKey=string(), const FieldTable& arguments=FieldTable(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion exchangeBind(const std::string& queue=std::string(), const std::string& exchange=std::string(), const std::string& bindingKey=std::string(), const FieldTable& arguments=FieldTable(), bool sync=false);
     
     /**
      * 
@@ -793,7 +793,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion exchangeUnbind(const string& queue=string(), const string& exchange=string(), const string& bindingKey=string(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion exchangeUnbind(const std::string& queue=std::string(), const std::string& exchange=std::string(), const std::string& bindingKey=std::string(), bool sync=false);
     
     /**
      * 
@@ -827,7 +827,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN TypedResult<qpid::framing::ExchangeBoundResult> exchangeBound(const string& exchange=string(), const string& queue=string(), const string& bindingKey=string(), const FieldTable& arguments=FieldTable(), bool sync=false);
+    QPID_CLIENT_EXTERN TypedResult<qpid::framing::ExchangeBoundResult> exchangeBound(const std::string& exchange=std::string(), const std::string& queue=std::string(), const std::string& bindingKey=std::string(), const FieldTable& arguments=FieldTable(), bool sync=false);
     
     /**
      * 
@@ -889,7 +889,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion queueDeclare(const string& queue=string(), const string& alternateExchange=string(), bool passive=false, bool durable=false, bool exclusive=false, bool autoDelete=false, const FieldTable& arguments=FieldTable(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion queueDeclare(const std::string& queue=std::string(), const std::string& alternateExchange=std::string(), bool passive=false, bool durable=false, bool exclusive=false, bool autoDelete=false, const FieldTable& arguments=FieldTable(), bool sync=false);
     
     /**
      * 
@@ -917,7 +917,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion queueDelete(const string& queue=string(), bool ifUnused=false, bool ifEmpty=false, bool sync=false);
+    QPID_CLIENT_EXTERN Completion queueDelete(const std::string& queue=std::string(), bool ifUnused=false, bool ifEmpty=false, bool sync=false);
     
     /**
      * 
@@ -934,7 +934,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN Completion queuePurge(const string& queue=string(), bool sync=false);
+    QPID_CLIENT_EXTERN Completion queuePurge(const std::string& queue=std::string(), bool sync=false);
     
     /**
      * 
@@ -947,7 +947,7 @@ class AsyncSession_0_10:
      * If true the broker will respond with completion status as soon as possible.
      * 
      */
-    QPID_CLIENT_EXTERN TypedResult<qpid::framing::QueueQueryResult> queueQuery(const string& queue=string(), bool sync=false);
+    QPID_CLIENT_EXTERN TypedResult<qpid::framing::QueueQueryResult> queueQuery(const std::string& queue=std::string(), bool sync=false);
 };
 
 }}} // namespace qpid::client::no_keyword

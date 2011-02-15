@@ -3,7 +3,7 @@ INCLUDES = -I../../../src
 
 
 # library paths
-LIBS = -L../../../external/lib/linux -L../../../lib  -lmtkfirebird -lfbclient64   -lmtksupport  -lyaml -lmtk_qpid -lqpidclient
+LIBS = -L../../../external/lib/linux -L../../../lib  -lmtkfirebird -lfbclient64   -lmtksupport  -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging
 
 
 

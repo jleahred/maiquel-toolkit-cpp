@@ -24,7 +24,7 @@ int main()
 
         try
         {
-            IBPP::Database db = IBPP::DatabaseFactory("127.0.0.1", "/home/maiquel/develop/testing/mtk_db/examples.fdb", "SYSDBA", "mtkmtk");
+            IBPP::Database db = IBPP::DatabaseFactory("127.0.0.1", "testing", "SYSDBA", "mtkmtk");
             db->Connect();
             IBPP::Transaction tr = IBPP::TransactionFactory(db);
             tr->Start();
@@ -72,7 +72,7 @@ int main()
 
         try
         {
-            IBPP::Database db = IBPP::DatabaseFactory("127.0.0.1", "/home/maiquel/develop/testing/mtk_db/examples.fdb", "SYSDBA", "mtkmtk");
+            IBPP::Database db = IBPP::DatabaseFactory("127.0.0.1", "testing", "SYSDBA", "mtkmtk");
             db->Connect();
             IBPP::Transaction tr = IBPP::TransactionFactory(db);
             tr->Start();

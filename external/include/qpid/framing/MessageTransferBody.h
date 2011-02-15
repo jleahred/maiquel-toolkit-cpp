@@ -40,7 +40,7 @@ namespace qpid {
 namespace framing {
 
 class MessageTransferBody : public ModelMethod {
-    string destination;
+    std::string destination;
     uint8_t acceptMode;
     uint8_t acquireMode;
     uint16_t flags;
@@ -48,7 +48,7 @@ public:
     static const ClassId CLASS_ID = 0x4;
     static const MethodId METHOD_ID = 0x1;
     MessageTransferBody(
-        ProtocolVersion, const string& _destination,
+        ProtocolVersion, const std::string& _destination,
         uint8_t _acceptMode,
         uint8_t _acquireMode) : 
         destination(_destination),
@@ -61,8 +61,8 @@ public:
     }
     MessageTransferBody(ProtocolVersion=ProtocolVersion())  : acceptMode(1), acquireMode(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setDestination(const string& _destination);
-    QPID_COMMON_EXTERN const string& getDestination() const;
+    QPID_COMMON_EXTERN void setDestination(const std::string& _destination);
+    QPID_COMMON_EXTERN const std::string& getDestination() const;
     QPID_COMMON_EXTERN bool hasDestination() const;
     QPID_COMMON_EXTERN void clearDestinationFlag();
     QPID_COMMON_EXTERN void setAcceptMode(uint8_t _acceptMode);

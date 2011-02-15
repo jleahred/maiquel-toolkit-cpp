@@ -40,14 +40,14 @@ namespace framing {
 
 class ConnectionCloseBody : public AMQMethodBody {
     uint16_t replyCode;
-    string replyText;
+    std::string replyText;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x1;
     static const MethodId METHOD_ID = 0xb;
     ConnectionCloseBody(
         ProtocolVersion, uint16_t _replyCode,
-        const string& _replyText) : 
+        const std::string& _replyText) : 
         replyCode(_replyCode),
         replyText(_replyText),
         flags(0){
@@ -60,8 +60,8 @@ public:
     QPID_COMMON_EXTERN uint16_t getReplyCode() const;
     QPID_COMMON_EXTERN bool hasReplyCode() const;
     QPID_COMMON_EXTERN void clearReplyCodeFlag();
-    QPID_COMMON_EXTERN void setReplyText(const string& _replyText);
-    QPID_COMMON_EXTERN const string& getReplyText() const;
+    QPID_COMMON_EXTERN void setReplyText(const std::string& _replyText);
+    QPID_COMMON_EXTERN const std::string& getReplyText() const;
     QPID_COMMON_EXTERN bool hasReplyText() const;
     QPID_COMMON_EXTERN void clearReplyTextFlag();
 virtual uint8_t type() const { return 0;/*control segment*/ }

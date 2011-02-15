@@ -5,7 +5,7 @@
 
 // generated automatically
 // coded last modification:        Mon Jan 17 22:33:43 2011
-// pythonscript last modification: Mon Jan 24 10:23:48 2011
+// pythonscript last modification: Thu Feb 10 18:34:23 2011
 
 
 #include "support/nullable.hpp"
@@ -16,9 +16,7 @@
 #include "support/exec_max_frec.h"
 #include "mtk_qpid/qpid_msg_support.hpp"
 #include "support/mtk_string.h"
-#include <qpid/messaging/MapContent.h>
 #include <qpid/messaging/Message.h>
-#include <qpid/messaging/MapView.h>
 #include "mtk_qpid/msg_control_fields.h"
 #include "mtk_qpid/mtk_qpid.hpp"
 
@@ -152,17 +150,14 @@ bool operator== (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b);
 bool operator!= (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const oms_RQ_NW_LS& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const oms_RQ_NW_LS& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const oms_RQ_NW_LS& a);
-void copy (oms_RQ_NW_LS& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_LS& a);
+void copy (oms_RQ_NW_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const oms_RQ_MD_LS& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const oms_RQ_MD_LS& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const oms_RQ_MD_LS& a);
-void copy (oms_RQ_MD_LS& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_LS& a);
+void copy (oms_RQ_MD_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const oms_RQ_CC_LS& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const oms_RQ_CC_LS& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const oms_RQ_CC_LS& a);
-void copy (oms_RQ_CC_LS& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_LS& a);
+void copy (oms_RQ_CC_LS& a, const qpid::types::Variant& map);
 
     oms_RQ_NW_LS  __internal_get_default(oms_RQ_NW_LS *);
     
@@ -181,7 +176,7 @@ void copy (oms_RQ_CC_LS& a, const qpid::messaging::Variant& map);
 
     
 template<typename T>
-void   copy(mtk::nullable<T>& result, const qpid::messaging::Variant& v);
+void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_NW_LS)

@@ -123,11 +123,16 @@
     (ClusterConfigChangeBody) \
     (ClusterMessageExpiredBody) \
     (ClusterErrorCheckBody) \
+    (ClusterTimerWakeupBody) \
+    (ClusterTimerDropBody) \
     (ClusterShutdownBody) \
+    (ClusterDeliverToQueueBody) \
     (ClusterConnectionAnnounceBody) \
     (ClusterConnectionDeliverCloseBody) \
     (ClusterConnectionDeliverDoOutputBody) \
     (ClusterConnectionAbortBody) \
+    (ClusterConnectionShadowSetUserBody) \
+    (ClusterConnectionShadowPrepareBody) \
     (ClusterConnectionConsumerStateBody) \
     (ClusterConnectionDeliveryRecordBody) \
     (ClusterConnectionTxStartBody) \
@@ -146,7 +151,10 @@
     (ClusterConnectionExchangeBody) \
     (ClusterConnectionQueueBody) \
     (ClusterConnectionExpiryIdBody) \
-    (ClusterConnectionAddQueueListenerBody) 
+    (ClusterConnectionAddQueueListenerBody) \
+    (ClusterConnectionManagementSchemaBody) \
+    (ClusterConnectionManagementSetupStateBody) \
+    (ClusterConnectionManagementAgentsBody) 
 
 #define OTHER_BODIES() (AMQContentBody)(AMQHeaderBody)(AMQHeartbeatBody))
 

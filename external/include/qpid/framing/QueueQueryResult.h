@@ -36,8 +36,8 @@ namespace qpid {
 namespace framing {
 
 class QueueQueryResult  {
-    string queue;
-    string alternateExchange;
+    std::string queue;
+    std::string alternateExchange;
     FieldTable arguments;
     uint32_t messageCount;
     uint32_t subscriberCount;
@@ -45,8 +45,8 @@ class QueueQueryResult  {
 public:
     static const uint16_t TYPE = 2049;
     QueueQueryResult(
-        const string& _queue,
-        const string& _alternateExchange,
+        const std::string& _queue,
+        const std::string& _alternateExchange,
         bool _durable,
         bool _exclusive,
         bool _autoDelete,
@@ -70,12 +70,12 @@ public:
     }
     QueueQueryResult()  : messageCount(0), subscriberCount(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setQueue(const string& _queue);
-    QPID_COMMON_EXTERN const string& getQueue() const;
+    QPID_COMMON_EXTERN void setQueue(const std::string& _queue);
+    QPID_COMMON_EXTERN const std::string& getQueue() const;
     QPID_COMMON_EXTERN bool hasQueue() const;
     QPID_COMMON_EXTERN void clearQueueFlag();
-    QPID_COMMON_EXTERN void setAlternateExchange(const string& _alternateExchange);
-    QPID_COMMON_EXTERN const string& getAlternateExchange() const;
+    QPID_COMMON_EXTERN void setAlternateExchange(const std::string& _alternateExchange);
+    QPID_COMMON_EXTERN const std::string& getAlternateExchange() const;
     QPID_COMMON_EXTERN bool hasAlternateExchange() const;
     QPID_COMMON_EXTERN void clearAlternateExchangeFlag();
     QPID_COMMON_EXTERN void setDurable(bool _durable);

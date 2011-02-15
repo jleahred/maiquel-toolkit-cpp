@@ -42,7 +42,7 @@ namespace framing {
 class MessageRejectBody : public ModelMethod {
     SequenceSet transfers;
     uint16_t code;
-    string text;
+    std::string text;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x4;
@@ -50,7 +50,7 @@ public:
     MessageRejectBody(
         ProtocolVersion, const SequenceSet& _transfers,
         uint16_t _code,
-        const string& _text) : 
+        const std::string& _text) : 
         transfers(_transfers),
         code(_code),
         text(_text),
@@ -69,8 +69,8 @@ public:
     QPID_COMMON_EXTERN uint16_t getCode() const;
     QPID_COMMON_EXTERN bool hasCode() const;
     QPID_COMMON_EXTERN void clearCodeFlag();
-    QPID_COMMON_EXTERN void setText(const string& _text);
-    QPID_COMMON_EXTERN const string& getText() const;
+    QPID_COMMON_EXTERN void setText(const std::string& _text);
+    QPID_COMMON_EXTERN const std::string& getText() const;
     QPID_COMMON_EXTERN bool hasText() const;
     QPID_COMMON_EXTERN void clearTextFlag();
     typedef void ResultType;

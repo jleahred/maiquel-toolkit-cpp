@@ -5,9 +5,7 @@
 #include "support/call_later.h"
 #include "support/alarm.h"
 #include "support/factory.hpp"
-#include <qpid/messaging/MapContent.h>
 #include <qpid/messaging/Message.h>
-#include <qpid/messaging/MapView.h>
 
 
 #include "test_messages.h"    // <1>
@@ -28,17 +26,17 @@ void on_message(const testing::RQ_NW_LS& message)
     std::cout << "RECEIVED----------------------------" << std::endl;
     std::cout <<  message << std::endl;
     std::cout << std::endl << std::endl << std::endl;
-
 }
 
 
 void on_message(const qpid::messaging::Message& message)
 {
-    qpid::messaging::MapView mv(message);
+    qpid::types::Variant::Map mv;
+    qpid::messaging::decode(message, mv);
     std::cout << mv  << std::endl;
 
 
-    std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant>::const_iterator it = mv.find("pos");
+    std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it = mv.find("pos");
     if (it == mv.end())
         std::cout << "NOT FOUND" << std::endl;
     else 

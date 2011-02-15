@@ -112,8 +112,9 @@ void MainWindow::on_pbListen_clicked()
 
 void MainWindow::on_message(const qpid::messaging::Message& message)
 {
-    qpid::messaging::MapView mv(message);
-    Log(QString(MTK_SS(message.getSubject() << " " << message.getHeaders() << " " << mv).c_str()));
+    qpid::types::Variant::Map mv;
+    qpid::messaging::decode(message, mv);
+    Log(QString(MTK_SS(message.getSubject() << " " << message.getSubject()  << " " << mv).c_str()));
 }
 
 void MainWindow::on_pbDelLog_clicked()

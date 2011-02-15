@@ -40,18 +40,18 @@ namespace qpid {
 namespace framing {
 
 class ExchangeBoundBody : public ModelMethod {
-    string exchange;
-    string queue;
-    string bindingKey;
+    std::string exchange;
+    std::string queue;
+    std::string bindingKey;
     FieldTable arguments;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x7;
     static const MethodId METHOD_ID = 0x6;
     ExchangeBoundBody(
-        ProtocolVersion, const string& _exchange,
-        const string& _queue,
-        const string& _bindingKey,
+        ProtocolVersion, const std::string& _exchange,
+        const std::string& _queue,
+        const std::string& _bindingKey,
         const FieldTable& _arguments) : 
         exchange(_exchange),
         queue(_queue),
@@ -65,16 +65,16 @@ public:
     }
     ExchangeBoundBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setQueue(const string& _queue);
-    QPID_COMMON_EXTERN const string& getQueue() const;
+    QPID_COMMON_EXTERN void setQueue(const std::string& _queue);
+    QPID_COMMON_EXTERN const std::string& getQueue() const;
     QPID_COMMON_EXTERN bool hasQueue() const;
     QPID_COMMON_EXTERN void clearQueueFlag();
-    QPID_COMMON_EXTERN void setBindingKey(const string& _bindingKey);
-    QPID_COMMON_EXTERN const string& getBindingKey() const;
+    QPID_COMMON_EXTERN void setBindingKey(const std::string& _bindingKey);
+    QPID_COMMON_EXTERN const std::string& getBindingKey() const;
     QPID_COMMON_EXTERN bool hasBindingKey() const;
     QPID_COMMON_EXTERN void clearBindingKeyFlag();
     QPID_COMMON_EXTERN void setArguments(const FieldTable& _arguments);

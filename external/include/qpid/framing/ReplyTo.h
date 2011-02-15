@@ -36,13 +36,13 @@ namespace qpid {
 namespace framing {
 
 class ReplyTo  {
-    string exchange;
-    string routingKey;
+    std::string exchange;
+    std::string routingKey;
     uint16_t flags;
 public:
     ReplyTo(
-        const string& _exchange,
-        const string& _routingKey) : 
+        const std::string& _exchange,
+        const std::string& _routingKey) : 
         exchange(_exchange),
         routingKey(_routingKey),
         flags(0){
@@ -51,12 +51,12 @@ public:
     }
     ReplyTo()  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setRoutingKey(const string& _routingKey);
-    QPID_COMMON_EXTERN const string& getRoutingKey() const;
+    QPID_COMMON_EXTERN void setRoutingKey(const std::string& _routingKey);
+    QPID_COMMON_EXTERN const std::string& getRoutingKey() const;
     QPID_COMMON_EXTERN bool hasRoutingKey() const;
     QPID_COMMON_EXTERN void clearRoutingKeyFlag();
     QPID_COMMON_EXTERN friend std::ostream& operator<<(std::ostream&, const ReplyTo&);

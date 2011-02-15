@@ -39,12 +39,12 @@ namespace framing {
 class MessageProperties  {
     uint64_t contentLength;
     Uuid messageId;
-    string correlationId;
+    std::string correlationId;
     ReplyTo replyTo;
-    string contentType;
-    string contentEncoding;
-    string userId;
-    string appId;
+    std::string contentType;
+    std::string contentEncoding;
+    std::string userId;
+    std::string appId;
     FieldTable applicationHeaders;
     uint16_t flags;
 public:
@@ -52,12 +52,12 @@ public:
     MessageProperties(
         uint64_t _contentLength,
         const Uuid& _messageId,
-        const string& _correlationId,
+        const std::string& _correlationId,
         const ReplyTo& _replyTo,
-        const string& _contentType,
-        const string& _contentEncoding,
-        const string& _userId,
-        const string& _appId,
+        const std::string& _contentType,
+        const std::string& _contentEncoding,
+        const std::string& _userId,
+        const std::string& _appId,
         const FieldTable& _applicationHeaders) : 
         contentLength(_contentLength),
         messageId(_messageId),
@@ -89,28 +89,28 @@ public:
     QPID_COMMON_EXTERN const Uuid& getMessageId() const;
     QPID_COMMON_EXTERN bool hasMessageId() const;
     QPID_COMMON_EXTERN void clearMessageIdFlag();
-    QPID_COMMON_EXTERN void setCorrelationId(const string& _correlationId);
-    QPID_COMMON_EXTERN const string& getCorrelationId() const;
+    QPID_COMMON_EXTERN void setCorrelationId(const std::string& _correlationId);
+    QPID_COMMON_EXTERN const std::string& getCorrelationId() const;
     QPID_COMMON_EXTERN bool hasCorrelationId() const;
     QPID_COMMON_EXTERN void clearCorrelationIdFlag();
     QPID_COMMON_EXTERN void setReplyTo(const ReplyTo& _replyTo);
     QPID_COMMON_EXTERN const ReplyTo& getReplyTo() const;
     QPID_COMMON_EXTERN bool hasReplyTo() const;
     QPID_COMMON_EXTERN void clearReplyToFlag();
-    QPID_COMMON_EXTERN void setContentType(const string& _contentType);
-    QPID_COMMON_EXTERN const string& getContentType() const;
+    QPID_COMMON_EXTERN void setContentType(const std::string& _contentType);
+    QPID_COMMON_EXTERN const std::string& getContentType() const;
     QPID_COMMON_EXTERN bool hasContentType() const;
     QPID_COMMON_EXTERN void clearContentTypeFlag();
-    QPID_COMMON_EXTERN void setContentEncoding(const string& _contentEncoding);
-    QPID_COMMON_EXTERN const string& getContentEncoding() const;
+    QPID_COMMON_EXTERN void setContentEncoding(const std::string& _contentEncoding);
+    QPID_COMMON_EXTERN const std::string& getContentEncoding() const;
     QPID_COMMON_EXTERN bool hasContentEncoding() const;
     QPID_COMMON_EXTERN void clearContentEncodingFlag();
-    QPID_COMMON_EXTERN void setUserId(const string& _userId);
-    QPID_COMMON_EXTERN const string& getUserId() const;
+    QPID_COMMON_EXTERN void setUserId(const std::string& _userId);
+    QPID_COMMON_EXTERN const std::string& getUserId() const;
     QPID_COMMON_EXTERN bool hasUserId() const;
     QPID_COMMON_EXTERN void clearUserIdFlag();
-    QPID_COMMON_EXTERN void setAppId(const string& _appId);
-    QPID_COMMON_EXTERN const string& getAppId() const;
+    QPID_COMMON_EXTERN void setAppId(const std::string& _appId);
+    QPID_COMMON_EXTERN const std::string& getAppId() const;
     QPID_COMMON_EXTERN bool hasAppId() const;
     QPID_COMMON_EXTERN void clearAppIdFlag();
     QPID_COMMON_EXTERN void setApplicationHeaders(const FieldTable& _applicationHeaders);

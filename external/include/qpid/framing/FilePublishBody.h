@@ -40,19 +40,19 @@ namespace qpid {
 namespace framing {
 
 class FilePublishBody : public ModelMethod {
-    string exchange;
-    string routingKey;
-    string identifier;
+    std::string exchange;
+    std::string routingKey;
+    std::string identifier;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x9;
     static const MethodId METHOD_ID = 0x9;
     FilePublishBody(
-        ProtocolVersion, const string& _exchange,
-        const string& _routingKey,
+        ProtocolVersion, const std::string& _exchange,
+        const std::string& _routingKey,
         bool _mandatory,
         bool _immediate,
-        const string& _identifier) : 
+        const std::string& _identifier) : 
         exchange(_exchange),
         routingKey(_routingKey),
         identifier(_identifier),
@@ -65,20 +65,20 @@ public:
     }
     FilePublishBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setRoutingKey(const string& _routingKey);
-    QPID_COMMON_EXTERN const string& getRoutingKey() const;
+    QPID_COMMON_EXTERN void setRoutingKey(const std::string& _routingKey);
+    QPID_COMMON_EXTERN const std::string& getRoutingKey() const;
     QPID_COMMON_EXTERN bool hasRoutingKey() const;
     QPID_COMMON_EXTERN void clearRoutingKeyFlag();
     QPID_COMMON_EXTERN void setMandatory(bool _mandatory);
     QPID_COMMON_EXTERN bool getMandatory() const;
     QPID_COMMON_EXTERN void setImmediate(bool _immediate);
     QPID_COMMON_EXTERN bool getImmediate() const;
-    QPID_COMMON_EXTERN void setIdentifier(const string& _identifier);
-    QPID_COMMON_EXTERN const string& getIdentifier() const;
+    QPID_COMMON_EXTERN void setIdentifier(const std::string& _identifier);
+    QPID_COMMON_EXTERN const std::string& getIdentifier() const;
     QPID_COMMON_EXTERN bool hasIdentifier() const;
     QPID_COMMON_EXTERN void clearIdentifierFlag();
     typedef void ResultType;

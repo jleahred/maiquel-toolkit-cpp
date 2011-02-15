@@ -39,14 +39,14 @@ namespace qpid {
 namespace framing {
 
 class ConnectionRedirectBody : public AMQMethodBody {
-    string host;
+    std::string host;
     Array knownHosts;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x1;
     static const MethodId METHOD_ID = 0x9;
     ConnectionRedirectBody(
-        ProtocolVersion, const string& _host,
+        ProtocolVersion, const std::string& _host,
         const Array& _knownHosts) : 
         host(_host),
         knownHosts(_knownHosts),
@@ -56,8 +56,8 @@ public:
     }
     ConnectionRedirectBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setHost(const string& _host);
-    QPID_COMMON_EXTERN const string& getHost() const;
+    QPID_COMMON_EXTERN void setHost(const std::string& _host);
+    QPID_COMMON_EXTERN const std::string& getHost() const;
     QPID_COMMON_EXTERN bool hasHost() const;
     QPID_COMMON_EXTERN void clearHostFlag();
     QPID_COMMON_EXTERN void setKnownHosts(const Array& _knownHosts);

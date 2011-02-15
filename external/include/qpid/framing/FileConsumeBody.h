@@ -40,16 +40,16 @@ namespace qpid {
 namespace framing {
 
 class FileConsumeBody : public ModelMethod {
-    string queue;
-    string consumerTag;
+    std::string queue;
+    std::string consumerTag;
     FieldTable arguments;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x9;
     static const MethodId METHOD_ID = 0x3;
     FileConsumeBody(
-        ProtocolVersion, const string& _queue,
-        const string& _consumerTag,
+        ProtocolVersion, const std::string& _queue,
+        const std::string& _consumerTag,
         bool _noLocal,
         bool _noAck,
         bool _exclusive,
@@ -69,12 +69,12 @@ public:
     }
     FileConsumeBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setQueue(const string& _queue);
-    QPID_COMMON_EXTERN const string& getQueue() const;
+    QPID_COMMON_EXTERN void setQueue(const std::string& _queue);
+    QPID_COMMON_EXTERN const std::string& getQueue() const;
     QPID_COMMON_EXTERN bool hasQueue() const;
     QPID_COMMON_EXTERN void clearQueueFlag();
-    QPID_COMMON_EXTERN void setConsumerTag(const string& _consumerTag);
-    QPID_COMMON_EXTERN const string& getConsumerTag() const;
+    QPID_COMMON_EXTERN void setConsumerTag(const std::string& _consumerTag);
+    QPID_COMMON_EXTERN const std::string& getConsumerTag() const;
     QPID_COMMON_EXTERN bool hasConsumerTag() const;
     QPID_COMMON_EXTERN void clearConsumerTagFlag();
     QPID_COMMON_EXTERN void setNoLocal(bool _noLocal);

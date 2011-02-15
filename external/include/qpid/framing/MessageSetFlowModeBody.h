@@ -40,14 +40,14 @@ namespace qpid {
 namespace framing {
 
 class MessageSetFlowModeBody : public ModelMethod {
-    string destination;
+    std::string destination;
     uint8_t flowMode;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x4;
     static const MethodId METHOD_ID = 0x9;
     MessageSetFlowModeBody(
-        ProtocolVersion, const string& _destination,
+        ProtocolVersion, const std::string& _destination,
         uint8_t _flowMode) : 
         destination(_destination),
         flowMode(_flowMode),
@@ -57,8 +57,8 @@ public:
     }
     MessageSetFlowModeBody(ProtocolVersion=ProtocolVersion())  : flowMode(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setDestination(const string& _destination);
-    QPID_COMMON_EXTERN const string& getDestination() const;
+    QPID_COMMON_EXTERN void setDestination(const std::string& _destination);
+    QPID_COMMON_EXTERN const std::string& getDestination() const;
     QPID_COMMON_EXTERN bool hasDestination() const;
     QPID_COMMON_EXTERN void clearDestinationFlag();
     QPID_COMMON_EXTERN void setFlowMode(uint8_t _flowMode);

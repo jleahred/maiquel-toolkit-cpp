@@ -40,14 +40,14 @@ namespace qpid {
 namespace framing {
 
 class FileOpenBody : public ModelMethod {
-    string identifier;
+    std::string identifier;
     uint64_t contentSize;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x9;
     static const MethodId METHOD_ID = 0x6;
     FileOpenBody(
-        ProtocolVersion, const string& _identifier,
+        ProtocolVersion, const std::string& _identifier,
         uint64_t _contentSize) : 
         identifier(_identifier),
         contentSize(_contentSize),
@@ -57,8 +57,8 @@ public:
     }
     FileOpenBody(ProtocolVersion=ProtocolVersion())  : contentSize(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setIdentifier(const string& _identifier);
-    QPID_COMMON_EXTERN const string& getIdentifier() const;
+    QPID_COMMON_EXTERN void setIdentifier(const std::string& _identifier);
+    QPID_COMMON_EXTERN const std::string& getIdentifier() const;
     QPID_COMMON_EXTERN bool hasIdentifier() const;
     QPID_COMMON_EXTERN void clearIdentifierFlag();
     QPID_COMMON_EXTERN void setContentSize(uint64_t _contentSize);

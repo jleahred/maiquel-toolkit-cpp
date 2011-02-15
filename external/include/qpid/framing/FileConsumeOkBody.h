@@ -40,21 +40,21 @@ namespace qpid {
 namespace framing {
 
 class FileConsumeOkBody : public ModelMethod {
-    string consumerTag;
+    std::string consumerTag;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x9;
     static const MethodId METHOD_ID = 0x4;
     FileConsumeOkBody(
-        ProtocolVersion, const string& _consumerTag) : 
+        ProtocolVersion, const std::string& _consumerTag) : 
         consumerTag(_consumerTag),
         flags(0){
         flags |= (1 << 8);
     }
     FileConsumeOkBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setConsumerTag(const string& _consumerTag);
-    QPID_COMMON_EXTERN const string& getConsumerTag() const;
+    QPID_COMMON_EXTERN void setConsumerTag(const std::string& _consumerTag);
+    QPID_COMMON_EXTERN const std::string& getConsumerTag() const;
     QPID_COMMON_EXTERN bool hasConsumerTag() const;
     QPID_COMMON_EXTERN void clearConsumerTagFlag();
     typedef void ResultType;

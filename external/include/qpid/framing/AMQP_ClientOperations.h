@@ -59,7 +59,7 @@ class AMQP_ClientOperations {
     const Array& mechanisms,
     const Array& locales) = 0;
     
-    virtual void secure(const string& challenge) = 0;
+    virtual void secure(const std::string& challenge) = 0;
     
     virtual void tune(uint16_t channelMax,
     uint16_t maxFrameSize,
@@ -68,13 +68,13 @@ class AMQP_ClientOperations {
     
     virtual void openOk(const Array& knownHosts) = 0;
     
-    virtual void redirect(const string& host,
+    virtual void redirect(const std::string& host,
     const Array& knownHosts) = 0;
     
     virtual void heartbeat(    ) = 0;
     
     virtual void close(uint16_t replyCode,
-    const string& replyText) = 0;
+    const std::string& replyText) = 0;
     
     virtual void closeOk(    ) = 0;
     }; // class ConnectionHandler
@@ -90,14 +90,14 @@ class AMQP_ClientOperations {
         virtual ~SessionHandler() {}
         // Protocol methods
     
-    virtual void attach(const string& name,
+    virtual void attach(const std::string& name,
     bool force) = 0;
     
-    virtual void attached(const string& name) = 0;
+    virtual void attached(const std::string& name) = 0;
     
-    virtual void detach(const string& name) = 0;
+    virtual void detach(const std::string& name) = 0;
     
-    virtual void detached(const string& name,
+    virtual void detached(const std::string& name,
     uint8_t code) = 0;
     
     virtual void requestTimeout(uint32_t timeout) = 0;
@@ -139,14 +139,14 @@ class AMQP_ClientOperations {
     virtual void sync(    ) = 0;
     
     virtual void result(const SequenceNumber& commandId,
-    const string& value) = 0;
+    const std::string& value) = 0;
     
     virtual void exception(uint16_t errorCode,
     const SequenceNumber& commandId,
     uint8_t classCode,
     uint8_t commandCode,
     uint8_t fieldIndex,
-    const string& description,
+    const std::string& description,
     const FieldTable& errorInfo) = 0;
     }; // class ExecutionHandler
     
@@ -165,22 +165,22 @@ class AMQP_ClientOperations {
     
     virtual void reject(const SequenceSet& transfers,
     uint16_t code,
-    const string& text) = 0;
+    const std::string& text) = 0;
     
     virtual void release(const SequenceSet& transfers,
     bool setRedelivered) = 0;
     
-    virtual MessageResumeResult resume(const string& destination,
-    const string& resumeId) = 0;
+    virtual MessageResumeResult resume(const std::string& destination,
+    const std::string& resumeId) = 0;
     
-    virtual void setFlowMode(const string& destination,
+    virtual void setFlowMode(const std::string& destination,
     uint8_t flowMode) = 0;
     
-    virtual void flow(const string& destination,
+    virtual void flow(const std::string& destination,
     uint8_t unit,
     uint32_t value) = 0;
     
-    virtual void stop(const string& destination) = 0;
+    virtual void stop(const std::string& destination) = 0;
     }; // class MessageHandler
     
     
@@ -196,19 +196,19 @@ class AMQP_ClientOperations {
     
     virtual void qosOk(    ) = 0;
     
-    virtual void consumeOk(const string& consumerTag) = 0;
+    virtual void consumeOk(const std::string& consumerTag) = 0;
     
-    virtual void open(const string& identifier,
+    virtual void open(const std::string& identifier,
     uint64_t contentSize) = 0;
     
     virtual void openOk(uint64_t stagedSize) = 0;
     
-    virtual void deliver(const string& consumerTag,
+    virtual void deliver(const std::string& consumerTag,
     uint64_t deliveryTag,
     bool redelivered,
-    const string& exchange,
-    const string& routingKey,
-    const string& identifier) = 0;
+    const std::string& exchange,
+    const std::string& routingKey,
+    const std::string& identifier) = 0;
     }; // class FileHandler
     
     
@@ -224,7 +224,7 @@ class AMQP_ClientOperations {
     
     virtual void qosOk(    ) = 0;
     
-    virtual void consumeOk(const string& consumerTag) = 0;
+    virtual void consumeOk(const std::string& consumerTag) = 0;
     }; // class StreamHandler
     
     

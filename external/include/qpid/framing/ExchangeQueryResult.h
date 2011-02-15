@@ -36,13 +36,13 @@ namespace qpid {
 namespace framing {
 
 class ExchangeQueryResult  {
-    string type;
+    std::string type;
     FieldTable arguments;
     uint16_t flags;
 public:
     static const uint16_t TYPE = 1793;
     ExchangeQueryResult(
-        const string& _type,
+        const std::string& _type,
         bool _durable,
         bool _notFound,
         const FieldTable& _arguments) : 
@@ -56,8 +56,8 @@ public:
     }
     ExchangeQueryResult()  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setType(const string& _type);
-    QPID_COMMON_EXTERN const string& getType() const;
+    QPID_COMMON_EXTERN void setType(const std::string& _type);
+    QPID_COMMON_EXTERN const std::string& getType() const;
     QPID_COMMON_EXTERN bool hasType() const;
     QPID_COMMON_EXTERN void clearTypeFlag();
     QPID_COMMON_EXTERN void setDurable(bool _durable);

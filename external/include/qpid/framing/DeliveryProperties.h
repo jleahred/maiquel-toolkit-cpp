@@ -41,9 +41,9 @@ class DeliveryProperties  {
     uint64_t ttl;
     uint64_t timestamp;
     uint64_t expiration;
-    string exchange;
-    string routingKey;
-    string resumeId;
+    std::string exchange;
+    std::string routingKey;
+    std::string resumeId;
     uint64_t resumeTtl;
     uint16_t flags;
 public:
@@ -57,9 +57,9 @@ public:
         uint64_t _ttl,
         uint64_t _timestamp,
         uint64_t _expiration,
-        const string& _exchange,
-        const string& _routingKey,
-        const string& _resumeId,
+        const std::string& _exchange,
+        const std::string& _routingKey,
+        const std::string& _resumeId,
         uint64_t _resumeTtl) : 
         priority(_priority),
         deliveryMode(_deliveryMode),
@@ -112,16 +112,16 @@ public:
     QPID_COMMON_EXTERN uint64_t getExpiration() const;
     QPID_COMMON_EXTERN bool hasExpiration() const;
     QPID_COMMON_EXTERN void clearExpirationFlag();
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setRoutingKey(const string& _routingKey);
-    QPID_COMMON_EXTERN const string& getRoutingKey() const;
+    QPID_COMMON_EXTERN void setRoutingKey(const std::string& _routingKey);
+    QPID_COMMON_EXTERN const std::string& getRoutingKey() const;
     QPID_COMMON_EXTERN bool hasRoutingKey() const;
     QPID_COMMON_EXTERN void clearRoutingKeyFlag();
-    QPID_COMMON_EXTERN void setResumeId(const string& _resumeId);
-    QPID_COMMON_EXTERN const string& getResumeId() const;
+    QPID_COMMON_EXTERN void setResumeId(const std::string& _resumeId);
+    QPID_COMMON_EXTERN const std::string& getResumeId() const;
     QPID_COMMON_EXTERN bool hasResumeId() const;
     QPID_COMMON_EXTERN void clearResumeIdFlag();
     QPID_COMMON_EXTERN void setResumeTtl(uint64_t _resumeTtl);

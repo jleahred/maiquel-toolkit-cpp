@@ -40,18 +40,18 @@ namespace framing {
 
 class ConnectionStartOkBody : public AMQMethodBody {
     FieldTable clientProperties;
-    string mechanism;
-    string response;
-    string locale;
+    std::string mechanism;
+    std::string response;
+    std::string locale;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x1;
     static const MethodId METHOD_ID = 0x2;
     ConnectionStartOkBody(
         ProtocolVersion, const FieldTable& _clientProperties,
-        const string& _mechanism,
-        const string& _response,
-        const string& _locale) : 
+        const std::string& _mechanism,
+        const std::string& _response,
+        const std::string& _locale) : 
         clientProperties(_clientProperties),
         mechanism(_mechanism),
         response(_response),
@@ -69,16 +69,16 @@ public:
     QPID_COMMON_EXTERN FieldTable& getClientProperties();
     QPID_COMMON_EXTERN bool hasClientProperties() const;
     QPID_COMMON_EXTERN void clearClientPropertiesFlag();
-    QPID_COMMON_EXTERN void setMechanism(const string& _mechanism);
-    QPID_COMMON_EXTERN const string& getMechanism() const;
+    QPID_COMMON_EXTERN void setMechanism(const std::string& _mechanism);
+    QPID_COMMON_EXTERN const std::string& getMechanism() const;
     QPID_COMMON_EXTERN bool hasMechanism() const;
     QPID_COMMON_EXTERN void clearMechanismFlag();
-    QPID_COMMON_EXTERN void setResponse(const string& _response);
-    QPID_COMMON_EXTERN const string& getResponse() const;
+    QPID_COMMON_EXTERN void setResponse(const std::string& _response);
+    QPID_COMMON_EXTERN const std::string& getResponse() const;
     QPID_COMMON_EXTERN bool hasResponse() const;
     QPID_COMMON_EXTERN void clearResponseFlag();
-    QPID_COMMON_EXTERN void setLocale(const string& _locale);
-    QPID_COMMON_EXTERN const string& getLocale() const;
+    QPID_COMMON_EXTERN void setLocale(const std::string& _locale);
+    QPID_COMMON_EXTERN const std::string& getLocale() const;
     QPID_COMMON_EXTERN bool hasLocale() const;
     QPID_COMMON_EXTERN void clearLocaleFlag();
 virtual uint8_t type() const { return 0;/*control segment*/ }

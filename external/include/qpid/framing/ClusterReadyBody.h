@@ -40,21 +40,21 @@ namespace qpid {
 namespace framing {
 
 class ClusterReadyBody : public ModelMethod {
-    string url;
+    std::string url;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x80;
     static const MethodId METHOD_ID = 0x10;
     ClusterReadyBody(
-        ProtocolVersion, const string& _url) : 
+        ProtocolVersion, const std::string& _url) : 
         url(_url),
         flags(0){
         flags |= (1 << 8);
     }
     ClusterReadyBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setUrl(const string& _url);
-    QPID_COMMON_EXTERN const string& getUrl() const;
+    QPID_COMMON_EXTERN void setUrl(const std::string& _url);
+    QPID_COMMON_EXTERN const std::string& getUrl() const;
     QPID_COMMON_EXTERN bool hasUrl() const;
     QPID_COMMON_EXTERN void clearUrlFlag();
     typedef void ResultType;

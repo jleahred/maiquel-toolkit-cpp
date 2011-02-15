@@ -1,5 +1,5 @@
-#ifndef QPID_MESSAGING_CODEC_H
-#define QPID_MESSAGING_CODEC_H
+#ifndef QPID_CLIENT_AMQP0_10_FAILOVERUPDATES_H
+#define QPID_CLIENT_AMQP0_10_FAILOVERUPDATES_H
 
 /*
  *
@@ -10,9 +10,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -21,24 +21,29 @@
  * under the License.
  *
  */
-#include <string>
-#include "qpid/client/ClientImportExport.h"
+#include "qpid/messaging/ImportExport.h"
 
 namespace qpid {
 namespace messaging {
+class Connection;
+struct FailoverUpdatesImpl;
 
-class Variant;
 /**
- *
+ * A utility to listen for updates on cluster membership and update
+ * the list of known urls for a connection accordingly.
  */
-class Codec
+class FailoverUpdates
 {
   public:
-    QPID_CLIENT_EXTERN virtual ~Codec() {}
-    virtual void encode(const Variant&, std::string&) = 0;
-    virtual void decode(const std::string&, Variant&) = 0;
+    QPID_MESSAGING_EXTERN FailoverUpdates(Connection& connection);
+    QPID_MESSAGING_EXTERN ~FailoverUpdates();
   private:
+    FailoverUpdatesImpl* impl;
+
+    //no need to copy instances of this class
+    FailoverUpdates(const FailoverUpdates&);
+    FailoverUpdates& operator=(const FailoverUpdates&);
 };
 }} // namespace qpid::messaging
 
-#endif  /*!QPID_MESSAGING_CODEC_H*/
+#endif  /*!QPID_CLIENT_AMQP0_10_FAILOVERUPDATES_H*/

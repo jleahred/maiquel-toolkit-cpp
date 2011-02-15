@@ -64,6 +64,7 @@ digraph lib_depend
 	mtk_qpid_a       -> mtksuport_a
 	mtk_qpid_a       -> qpidclient
 	
+            qpidclient      -> qpidmessaging
 	
 	yaml_a          -> mtksuport_a
 	mtksockets_a    -> mtksuport_a
@@ -161,6 +162,13 @@ Linking::
 * Libraries will be generated on +lib/+
 * See <<lib_dependencies, lib_dependencies>>
 --
+
+.Compiling on windows
+[NOTE]
+* +mtk/src/qpid+ is a soft link to +mtk/external/include/qpid+ +
+  As you don't have links on windows, you will have to copy it manually
+* On ImportExport.h from qpid headers, would be necessary to disable dllimport (when compiling static library)
+
 
 
 === Creation and compilation projects

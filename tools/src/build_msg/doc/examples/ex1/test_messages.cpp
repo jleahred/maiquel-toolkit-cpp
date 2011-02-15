@@ -1,7 +1,7 @@
 
 // generated automatically
-// coded last modification:        Fri Jan 21 18:42:55 2011
-// pythonscript last modification: Mon Jan 24 10:23:48 2011
+// coded last modification:        Tue Jan 25 11:30:03 2011
+// pythonscript last modification: Thu Feb 10 18:34:23 2011
 
 
 #include "support/mtk_double.h"
@@ -92,44 +92,44 @@ bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 
 
 
-inline void  copy(mtk::FixedNumber& result, const qpid::messaging::Variant& v)
+inline void  copy(mtk::FixedNumber& result, const qpid::types::Variant& v)
 {
-    result = ({   std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> ifn = /*it->second*/v.asMap();
+    result = ({   std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> ifn = /*it->second*/v.asMap();
                     mtk::FixedNumber(mtk::fnIntCode(ifn["n"].asInt32()), mtk::fnDec(ifn["d"].asInt8()), mtk::fnInc(ifn["i"].asInt8()));
             });
 }
 
-inline void   copy(std::string& result, const qpid::messaging::Variant& v)
+inline void   copy(std::string& result, const qpid::types::Variant& v)
 {
     result = v.asString();
 }
 
 
 
-inline void   copy(char& result, const qpid::messaging::Variant& v)
+inline void   copy(char& result, const qpid::types::Variant& v)
 {
     result = v.asInt8();
 }
 
 
-inline void copy(mtk::DateTime& result, const qpid::messaging::Variant& v)
+inline void copy(mtk::DateTime& result, const qpid::types::Variant& v)
 {
     result =  WARNING_do_not_use_it__I_coul_kill_you_for_it__get_DateTime_from_time_quantity(mtk::dtTimeQuantity(mtk::dtTimeQuantitySerialNumber(v.asDouble())));
 }
 
-inline void copy(int32_t& result, const qpid::messaging::Variant& v)
+inline void copy(int32_t& result, const qpid::types::Variant& v)
 {
     result =  v.asInt32();
 }
 
-inline void copy(mtk::Double& result, const qpid::messaging::Variant& v)
+inline void copy(mtk::Double& result, const qpid::types::Variant& v)
 {
     result =  v.asDouble();
 }
 
 
 template<typename T>
-void   copy(mtk::nullable<T>& result, const qpid::messaging::Variant& v)
+void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v)
 {
     T temp(__internal_get_default((T*)0));
     copy(temp, v);
@@ -138,10 +138,10 @@ void   copy(mtk::nullable<T>& result, const qpid::messaging::Variant& v)
 
 
 template<typename T>
-void  copy (mtk::list<T>& result, const qpid::messaging::Variant& v)
+void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 {
-    const qpid::messaging::Variant::List& l = v.asList();
-    std::list<qpid::messaging::Variant>::const_iterator it = l.begin();
+    const qpid::types::Variant::List& l = v.asList();
+    std::list<qpid::types::Variant>::const_iterator it = l.begin();
     while (it!= l.end())
     {
         T temp(__internal_get_default((T*)0));
@@ -153,64 +153,36 @@ void  copy (mtk::list<T>& result, const qpid::messaging::Variant& v)
 
 
 
-    inline void __internal_add2map (qpid::messaging::Variant::Map& map, const std::string& a, const std::string& key)
-    {
-        map[key] = a;
-    }
-    inline void __internal_add2map (qpid::messaging::MapContent& map, const std::string& a, const std::string& key)
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const std::string& a, const std::string& key)
     {
         map[key] = a;
     }
 
-    inline void __internal_add2map (qpid::messaging::Variant::Map& map, const mtk::FixedNumber& a, const std::string& key)
-    {
-        map[key] = QPID_DESCOMPOSE_FIXED_NUMBER(a);
-    }
-    inline void __internal_add2map (qpid::messaging::MapContent& map, const mtk::FixedNumber& a, const std::string& key)
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::FixedNumber& a, const std::string& key)
     {
         map[key] = QPID_DESCOMPOSE_FIXED_NUMBER(a);
     }
 
-    inline void __internal_add2map (qpid::messaging::Variant::Map& map, const mtk::Double& a, const std::string& key)
-    {
-        map[key] = a.get()._0;
-    }
-    inline void __internal_add2map (qpid::messaging::MapContent& map, const mtk::Double& a, const std::string& key)
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::Double& a, const std::string& key)
     {
         map[key] = a.get()._0;
     }
 
 
-    #define REGISTER_LIST_BASIC_TYPE(__TYPE__)         inline void  __internal_add2map  (qpid::messaging::Variant::Map& map, const mtk::list<__TYPE__>& l, const std::string& key)            {                qpid::messaging::Variant::List list;                                mtk::list<__TYPE__>::const_iterator it = l.begin();                while (it != l.end())                {                    list.push_back(*it);                    ++it;                }                                map[key] = list;            }            inline void  __internal_add2map  (qpid::messaging::MapContent& map, const mtk::list<__TYPE__>& l, const std::string& key)            {                qpid::messaging::Variant::List list;                                mtk::list<__TYPE__>::const_iterator it = l.begin();                while (it != l.end())                {                    list.push_back(*it);                    ++it;                }                                map[key] = list;            }    
+    #define REGISTER_LIST_BASIC_TYPE(__TYPE__)         inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<__TYPE__>& l, const std::string& key)            {                qpid::types::Variant::List list;                                mtk::list<__TYPE__>::const_iterator it = l.begin();                while (it != l.end())                {                    list.push_back(*it);                    ++it;                }                                map[key] = list;            }    
 
     REGISTER_LIST_BASIC_TYPE(std::string)
     
     
     template<typename T>
-    void  __internal_add2map  (qpid::messaging::Variant::Map& map, const mtk::list<T>& l, const std::string& key)
+    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<T>& l, const std::string& key)
     {
-        qpid::messaging::Variant::List list;
+        qpid::types::Variant::List list;
         
         typename mtk::list<T>::const_iterator it = l.begin();
         while (it != l.end())
         {
-            qpid::messaging::Variant::Map m;
-            __internal_add2map(m, *it);
-            list.push_back(m);
-            ++it;
-        }
-        
-        map[key] = list;
-    }
-    template<typename T>
-    void  __internal_add2map  (qpid::messaging::MapContent& map, const mtk::list<T>& l, const std::string& key)
-    {
-        qpid::messaging::Variant::List list;
-        
-        typename mtk::list<T>::const_iterator it = l.begin();
-        while (it != l.end())
-        {
-            qpid::messaging::Variant::Map m;
+            qpid::types::Variant::Map m;
             __internal_add2map(m, *it);
             list.push_back(m);
             ++it;
@@ -219,76 +191,43 @@ void  copy (mtk::list<T>& result, const qpid::messaging::Variant& v)
         map[key] = list;
     }
 
+
     template<typename T>
-    void  __internal_add2map  (qpid::messaging::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
+    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
     {
         if (n.HasValue())
             __internal_add2map(map, n.Get(), key);
     }
 
-    template<typename T>
-    void  __internal_add2map  (qpid::messaging::MapContent& map, const mtk::nullable<T>& n, const std::string& key)
-    {
-        if (n.HasValue())
-            __internal_add2map(map, n.Get(), key);
-    }
-
-    inline void __internal_add2map (qpid::messaging::Variant::Map& map, const mtk::DateTime& a, const std::string& key)
-    {
-        map[key] = double(a.__WARNING_NOT_CALL_IT_internal_use_GetTimeQuantitySerialNumber().WarningDontDoThisGetInternal());
-    }
-    inline void __internal_add2map (qpid::messaging::MapContent& map, const mtk::DateTime& a, const std::string& key)
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::DateTime& a, const std::string& key)
     {
         map[key] = double(a.__WARNING_NOT_CALL_IT_internal_use_GetTimeQuantitySerialNumber().WarningDontDoThisGetInternal());
     }
 
-    inline void __internal_add2map (qpid::messaging::Variant::Map& map, const int32_t& a, const std::string& key)
-    {
-        map[key] = int32_t(a);
-    }
-    inline void __internal_add2map (qpid::messaging::MapContent& map, const int32_t& a, const std::string& key)
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const int32_t& a, const std::string& key)
     {
         map[key] = int32_t(a);
     }
 
-    inline void __internal_add2map (qpid::messaging::Variant::Map& map, const int16_t& a, const std::string& key)
-    {
-        map[key] = int16_t(a);
-    }
-    inline void __internal_add2map (qpid::messaging::MapContent& map, const int16_t& a, const std::string& key)
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const int16_t& a, const std::string& key)
     {
         map[key] = int16_t(a);
     }
 
-    inline void __internal_add2map (qpid::messaging::Variant::Map& map, const int8_t& a, const std::string& key)
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const int8_t& a, const std::string& key)
     {
         map[key] = int8_t(a);
     }
-    inline void __internal_add2map (qpid::messaging::MapContent& map, const int8_t& a, const std::string& key)
-    {
-        map[key] = int8_t(a);
-    }
-    inline void __internal_add2map (qpid::messaging::Variant::Map& map, const int64_t& a, const std::string& key)
-    {
-        map[key] = int64_t(a);
-    }
-    inline void __internal_add2map (qpid::messaging::MapContent& map, const int64_t& a, const std::string& key)
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const int64_t& a, const std::string& key)
     {
         map[key] = int64_t(a);
     }
 
 
     template<typename T>
-    void  __internal_add2map(qpid::messaging::MapContent& map, const T& t, const std::string& key)
+    void  __internal_add2map(qpid::types::Variant::Map& map, const T& t, const std::string& key)
     {
-        qpid::messaging::Variant::Map m;
-        __internal_add2map(m, t);
-        map[key] = m;
-    }
-    template<typename T>
-    void  __internal_add2map(qpid::messaging::Variant::Map& map, const T& t, const std::string& key)
-    {
-        qpid::messaging::Variant::Map m;
+        qpid::types::Variant::Map m;
         __internal_add2map(m, t);
         map[key] = m;
     }
@@ -522,12 +461,12 @@ bool operator!= (const LimitPositionChild& a, const LimitPositionChild& b)
 
 
 
-//void  __internal_qpid_fill (LimitPosition& c, std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv)
-void  copy (LimitPosition& c, const qpid::messaging::Variant& v)
+//void  __internal_qpid_fill (LimitPosition& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (LimitPosition& c, const qpid::types::Variant& v)
     {  
-        const std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv = v.asMap();
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant>::const_iterator it;
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
                     it = mv.find("bs");
@@ -552,26 +491,7 @@ void  copy (LimitPosition& c, const qpid::messaging::Variant& v)
     }
 
 
-void __internal_add2map (qpid::messaging::Variant::Map& map, const LimitPosition& a)
-{
-    
-
-if (a.buy_sell.HasValue())
-//  field_type
-        __internal_add2map(map, a.buy_sell, std::string("bs"));
-if (a.price.HasValue())
-//  field_type
-        __internal_add2map(map, a.price, std::string("pr"));
-//  field_type
-        __internal_add2map(map, a.quantity, std::string("qt"));
-
-
-};
-
-
-
-
-void __internal_add2map (qpid::messaging::MapContent& map, const LimitPosition& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const LimitPosition& a)
 {
     
 
@@ -591,12 +511,12 @@ if (a.price.HasValue())
 
 
 
-//void  __internal_qpid_fill (RQ_NW_LS& c, std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv)
-void  copy (RQ_NW_LS& c, const qpid::messaging::Variant& v)
+//void  __internal_qpid_fill (RQ_NW_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
     {  
-        const std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv = v.asMap();
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant>::const_iterator it;
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
                     it = mv.find("oid");
@@ -657,35 +577,7 @@ void  copy (RQ_NW_LS& c, const qpid::messaging::Variant& v)
     }
 
 
-void __internal_add2map (qpid::messaging::Variant::Map& map, const RQ_NW_LS& a)
-{
-    
-
-//  field_type
-        __internal_add2map(map, a.order_id, std::string("oid"));
-//  field_type
-        __internal_add2map(map, a.cli_ref, std::string("cr"));
-//  sub_msg_type
-        __internal_add2map(map, a.position, std::string("pos"));
-//  sub_msg_type_not_nested
-        __internal_add2map(map, a.positionnn);
-//  IN_MSG
-        __internal_add2map(map, a.control_fields_);
-//  IN_SUB_MSG
-//        map["pc"] =  qpidmsg_coded_as_qpid_Map(a.product_code);
-        __internal_add2map(map, a.product_code);
-//  field_type
-        __internal_add2map(map, a.names, std::string("ns"));
-//  sub_msg_type
-        __internal_add2map(map, a.postitions, std::string("poss"));
-
-
-};
-
-
-
-
-void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a)
 {
     
 
@@ -714,12 +606,12 @@ void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS& a)
 
 
 
-//void  __internal_qpid_fill (RQ_NW_LS::IC_control_fields_& c, std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv)
-void  copy (RQ_NW_LS::IC_control_fields_& c, const qpid::messaging::Variant& v)
+//void  __internal_qpid_fill (RQ_NW_LS::IC_control_fields_& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (RQ_NW_LS::IC_control_fields_& c, const qpid::types::Variant& v)
     {  
-        const std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv = v.asMap();
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant>::const_iterator it;
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
                     it = mv.find("ci");
@@ -740,22 +632,7 @@ void  copy (RQ_NW_LS::IC_control_fields_& c, const qpid::messaging::Variant& v)
     }
 
 
-void __internal_add2map (qpid::messaging::Variant::Map& map, const RQ_NW_LS::IC_control_fields_& a)
-{
-    
-
-//  field_type
-        __internal_add2map(map, a.clock_id, std::string("ci"));
-//  field_type
-        __internal_add2map(map, a.secuence, std::string("sec"));
-
-
-};
-
-
-
-
-void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS::IC_control_fields_& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_control_fields_& a)
 {
     
 
@@ -771,12 +648,12 @@ void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS::IC_co
 
 
 
-//void  __internal_qpid_fill (RQ_NW_LS::IC_product_code& c, std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv)
-void  copy (RQ_NW_LS::IC_product_code& c, const qpid::messaging::Variant& v)
+//void  __internal_qpid_fill (RQ_NW_LS::IC_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (RQ_NW_LS::IC_product_code& c, const qpid::types::Variant& v)
     {  
-        const std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv = v.asMap();
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant>::const_iterator it;
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
                     it = mv.find("mk");
@@ -805,24 +682,7 @@ void  copy (RQ_NW_LS::IC_product_code& c, const qpid::messaging::Variant& v)
     }
 
 
-void __internal_add2map (qpid::messaging::Variant::Map& map, const RQ_NW_LS::IC_product_code& a)
-{
-    
-
-//  field_type
-        __internal_add2map(map, a.market, std::string("mk"));
-//  field_type
-        __internal_add2map(map, a.product_code, std::string("pr"));
-//  field_type
-        __internal_add2map(map, a.aditional_code, std::string("ac"));
-
-
-};
-
-
-
-
-void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS::IC_product_code& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_product_code& a)
 {
     
 
@@ -840,12 +700,12 @@ void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS::IC_pr
 
 
 
-//void  __internal_qpid_fill (LimitPositionChild& c, std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv)
-void  copy (LimitPositionChild& c, const qpid::messaging::Variant& v)
+//void  __internal_qpid_fill (LimitPositionChild& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (LimitPositionChild& c, const qpid::types::Variant& v)
     {  
-        const std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> mv = v.asMap();
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<LimitPosition&>(c), v);
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant>::const_iterator it;
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
                     it = mv.find("nf");
@@ -858,22 +718,7 @@ copy(static_cast<LimitPosition&>(c), v);
     }
 
 
-void __internal_add2map (qpid::messaging::Variant::Map& map, const LimitPositionChild& a)
-{
-    
-//  parent
-__internal_add2map(map, static_cast<const LimitPosition&>(a));
-
-//  field_type
-        __internal_add2map(map, a.new_field, std::string("nf"));
-
-
-};
-
-
-
-
-void __internal_add2map (qpid::messaging::MapContent& map, const LimitPositionChild& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const LimitPositionChild& a)
 {
     
 //  parent
@@ -896,7 +741,7 @@ __internal_add2map(map, static_cast<const LimitPosition&>(a));
 qpid::messaging::Message LimitPosition::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message message;
-    qpid::messaging::MapContent content(message);
+    qpid::types::Variant::Map content;
 
 
 //if (this->buy_sell.HasValue())
@@ -916,7 +761,8 @@ qpid::messaging::Message LimitPosition::qpidmsg_codded_as_qpid_message (void) co
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
-    content.encode();
+    
+    qpid::messaging::encode(content, message);
     return message;
 };
 
@@ -926,7 +772,7 @@ qpid::messaging::Message LimitPosition::qpidmsg_codded_as_qpid_message (void) co
 qpid::messaging::Message RQ_NW_LS::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message message;
-    qpid::messaging::MapContent content(message);
+    qpid::types::Variant::Map content;
 
 
 //  field_type
@@ -957,7 +803,8 @@ qpid::messaging::Message RQ_NW_LS::qpidmsg_codded_as_qpid_message (void) const
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
-    content.encode();
+    
+    qpid::messaging::encode(content, message);
     return message;
 };
 
@@ -967,7 +814,7 @@ qpid::messaging::Message RQ_NW_LS::qpidmsg_codded_as_qpid_message (void) const
 qpid::messaging::Message RQ_NW_LS::IC_control_fields_::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message message;
-    qpid::messaging::MapContent content(message);
+    qpid::types::Variant::Map content;
 
 
 //  field_type
@@ -982,7 +829,8 @@ qpid::messaging::Message RQ_NW_LS::IC_control_fields_::qpidmsg_codded_as_qpid_me
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
-    content.encode();
+    
+    qpid::messaging::encode(content, message);
     return message;
 };
 
@@ -992,7 +840,7 @@ qpid::messaging::Message RQ_NW_LS::IC_control_fields_::qpidmsg_codded_as_qpid_me
 qpid::messaging::Message RQ_NW_LS::IC_product_code::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message message;
-    qpid::messaging::MapContent content(message);
+    qpid::types::Variant::Map content;
 
 
 //  field_type
@@ -1010,7 +858,8 @@ qpid::messaging::Message RQ_NW_LS::IC_product_code::qpidmsg_codded_as_qpid_messa
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
-    content.encode();
+    
+    qpid::messaging::encode(content, message);
     return message;
 };
 
@@ -1020,7 +869,7 @@ qpid::messaging::Message RQ_NW_LS::IC_product_code::qpidmsg_codded_as_qpid_messa
 qpid::messaging::Message LimitPositionChild::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message message;
-    qpid::messaging::MapContent content(message);
+    qpid::types::Variant::Map content;
 
 //  parent
 __internal_add2map(content, static_cast<const LimitPosition&>(*this));
@@ -1034,7 +883,8 @@ __internal_add2map(content, static_cast<const LimitPosition&>(*this));
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
-    content.encode();
+    
+    qpid::messaging::encode(content, message);
     return message;
 };
 
@@ -1109,9 +959,10 @@ __internal_get_default((LimitPosition*)0), //   field_type
 LimitPosition::LimitPosition (const qpid::messaging::Message& msg)
     :  //   field_type
    quantity(__internal_get_default((mtk::FixedNumber*)0)) 
-    {  
-        qpid::messaging::MapView mv(msg);
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> map = mv.asMap();
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -1138,9 +989,10 @@ RQ_NW_LS::RQ_NW_LS (const qpid::messaging::Message& msg)
    names(__internal_get_default((mtk::list<std::string >*)0)),
 //   sub_msg_type
    postitions(__internal_get_default((mtk::list<LimitPosition >*)0)) 
-    {  
-        qpid::messaging::MapView mv(msg);
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> map = mv.asMap();
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -1155,9 +1007,10 @@ RQ_NW_LS::IC_control_fields_::IC_control_fields_ (const qpid::messaging::Message
    clock_id(__internal_get_default((mtk::DateTime*)0)),
 //   field_type
    secuence(__internal_get_default((int32_t*)0)) 
-    {  
-        qpid::messaging::MapView mv(msg);
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> map = mv.asMap();
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -1174,9 +1027,10 @@ RQ_NW_LS::IC_product_code::IC_product_code (const qpid::messaging::Message& msg)
    product_code(__internal_get_default((std::string*)0)),
 //   field_type
    aditional_code(__internal_get_default((std::string*)0)) 
-    {  
-        qpid::messaging::MapView mv(msg);
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> map = mv.asMap();
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -1189,9 +1043,10 @@ RQ_NW_LS::IC_product_code::IC_product_code (const qpid::messaging::Message& msg)
 LimitPositionChild::LimitPositionChild (const qpid::messaging::Message& msg)
     :  LimitPosition(msg), //   field_type
    new_field(__internal_get_default((std::string*)0)) 
-    {  
-        qpid::messaging::MapView mv(msg);
-        std::map<qpid::messaging::MapView::key_type, qpid::messaging::Variant> map = mv.asMap();
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")

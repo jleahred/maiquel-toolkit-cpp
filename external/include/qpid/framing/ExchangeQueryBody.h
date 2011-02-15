@@ -40,21 +40,21 @@ namespace qpid {
 namespace framing {
 
 class ExchangeQueryBody : public ModelMethod {
-    string name;
+    std::string name;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x7;
     static const MethodId METHOD_ID = 0x3;
     ExchangeQueryBody(
-        ProtocolVersion, const string& _name) : 
+        ProtocolVersion, const std::string& _name) : 
         name(_name),
         flags(0){
         flags |= (1 << 8);
     }
     ExchangeQueryBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setName(const string& _name);
-    QPID_COMMON_EXTERN const string& getName() const;
+    QPID_COMMON_EXTERN void setName(const std::string& _name);
+    QPID_COMMON_EXTERN const std::string& getName() const;
     QPID_COMMON_EXTERN bool hasName() const;
     QPID_COMMON_EXTERN void clearNameFlag();
     typedef ExchangeQueryResult ResultType;

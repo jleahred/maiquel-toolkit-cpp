@@ -40,16 +40,16 @@ namespace qpid {
 namespace framing {
 
 class QueueDeclareBody : public ModelMethod {
-    string queue;
-    string alternateExchange;
+    std::string queue;
+    std::string alternateExchange;
     FieldTable arguments;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x8;
     static const MethodId METHOD_ID = 0x1;
     QueueDeclareBody(
-        ProtocolVersion, const string& _queue,
-        const string& _alternateExchange,
+        ProtocolVersion, const std::string& _queue,
+        const std::string& _alternateExchange,
         bool _passive,
         bool _durable,
         bool _exclusive,
@@ -69,12 +69,12 @@ public:
     }
     QueueDeclareBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setQueue(const string& _queue);
-    QPID_COMMON_EXTERN const string& getQueue() const;
+    QPID_COMMON_EXTERN void setQueue(const std::string& _queue);
+    QPID_COMMON_EXTERN const std::string& getQueue() const;
     QPID_COMMON_EXTERN bool hasQueue() const;
     QPID_COMMON_EXTERN void clearQueueFlag();
-    QPID_COMMON_EXTERN void setAlternateExchange(const string& _alternateExchange);
-    QPID_COMMON_EXTERN const string& getAlternateExchange() const;
+    QPID_COMMON_EXTERN void setAlternateExchange(const std::string& _alternateExchange);
+    QPID_COMMON_EXTERN const std::string& getAlternateExchange() const;
     QPID_COMMON_EXTERN bool hasAlternateExchange() const;
     QPID_COMMON_EXTERN void clearAlternateExchangeFlag();
     QPID_COMMON_EXTERN void setPassive(bool _passive);

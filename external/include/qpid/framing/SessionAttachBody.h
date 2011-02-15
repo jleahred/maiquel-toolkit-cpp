@@ -39,13 +39,13 @@ namespace qpid {
 namespace framing {
 
 class SessionAttachBody : public AMQMethodBody {
-    string name;
+    std::string name;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x2;
     static const MethodId METHOD_ID = 0x1;
     SessionAttachBody(
-        ProtocolVersion, const string& _name,
+        ProtocolVersion, const std::string& _name,
         bool _force) : 
         name(_name),
         flags(0){
@@ -54,8 +54,8 @@ public:
     }
     SessionAttachBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setName(const string& _name);
-    QPID_COMMON_EXTERN const string& getName() const;
+    QPID_COMMON_EXTERN void setName(const std::string& _name);
+    QPID_COMMON_EXTERN const std::string& getName() const;
     QPID_COMMON_EXTERN bool hasName() const;
     QPID_COMMON_EXTERN void clearNameFlag();
     QPID_COMMON_EXTERN void setForce(bool _force);

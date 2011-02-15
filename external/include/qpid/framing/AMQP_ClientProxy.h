@@ -52,7 +52,7 @@ class AMQP_ClientProxy:
                     const Array& mechanisms,
                     const Array& locales);
         
-        QPID_COMMON_EXTERN virtual void secure(const string& challenge);
+        QPID_COMMON_EXTERN virtual void secure(const std::string& challenge);
         
         QPID_COMMON_EXTERN virtual void tune(uint16_t channelMax,
                     uint16_t maxFrameSize,
@@ -61,13 +61,13 @@ class AMQP_ClientProxy:
         
         QPID_COMMON_EXTERN virtual void openOk(const Array& knownHosts);
         
-        QPID_COMMON_EXTERN virtual void redirect(const string& host,
+        QPID_COMMON_EXTERN virtual void redirect(const std::string& host,
                     const Array& knownHosts);
         
         QPID_COMMON_EXTERN virtual void heartbeat();
         
         QPID_COMMON_EXTERN virtual void close(uint16_t replyCode,
-                    const string& replyText);
+                    const std::string& replyText);
         
         QPID_COMMON_EXTERN virtual void closeOk();
         
@@ -81,14 +81,14 @@ class AMQP_ClientProxy:
         public:
         Session(FrameHandler& f) : Proxy(f) {}
         static Session& get(AMQP_ClientProxy& proxy) { return proxy.getSession(); }
-        QPID_COMMON_EXTERN virtual void attach(const string& name,
+        QPID_COMMON_EXTERN virtual void attach(const std::string& name,
                     bool force);
         
-        QPID_COMMON_EXTERN virtual void attached(const string& name);
+        QPID_COMMON_EXTERN virtual void attached(const std::string& name);
         
-        QPID_COMMON_EXTERN virtual void detach(const string& name);
+        QPID_COMMON_EXTERN virtual void detach(const std::string& name);
         
-        QPID_COMMON_EXTERN virtual void detached(const string& name,
+        QPID_COMMON_EXTERN virtual void detached(const std::string& name,
                     uint8_t code);
         
         QPID_COMMON_EXTERN virtual void requestTimeout(uint32_t timeout);
@@ -128,14 +128,14 @@ class AMQP_ClientProxy:
         QPID_COMMON_EXTERN virtual void sync();
         
         QPID_COMMON_EXTERN virtual void result(const SequenceNumber& commandId,
-                    const string& value);
+                    const std::string& value);
         
         QPID_COMMON_EXTERN virtual void exception(uint16_t errorCode,
                     const SequenceNumber& commandId,
                     uint8_t classCode,
                     uint8_t commandCode,
                     uint8_t fieldIndex,
-                    const string& description,
+                    const std::string& description,
                     const FieldTable& errorInfo);
         
     };
@@ -148,7 +148,7 @@ class AMQP_ClientProxy:
         public:
         Message(FrameHandler& f) : Proxy(f) {}
         static Message& get(AMQP_ClientProxy& proxy) { return proxy.getMessage(); }
-        QPID_COMMON_EXTERN virtual void transfer(const string& destination,
+        QPID_COMMON_EXTERN virtual void transfer(const std::string& destination,
                     uint8_t acceptMode,
                     uint8_t acquireMode);
         
@@ -156,22 +156,22 @@ class AMQP_ClientProxy:
         
         QPID_COMMON_EXTERN virtual void reject(const SequenceSet& transfers,
                     uint16_t code,
-                    const string& text);
+                    const std::string& text);
         
         QPID_COMMON_EXTERN virtual void release(const SequenceSet& transfers,
                     bool setRedelivered);
         
-        QPID_COMMON_EXTERN virtual void resume(const string& destination,
-                    const string& resumeId);
+        QPID_COMMON_EXTERN virtual void resume(const std::string& destination,
+                    const std::string& resumeId);
         
-        QPID_COMMON_EXTERN virtual void setFlowMode(const string& destination,
+        QPID_COMMON_EXTERN virtual void setFlowMode(const std::string& destination,
                     uint8_t flowMode);
         
-        QPID_COMMON_EXTERN virtual void flow(const string& destination,
+        QPID_COMMON_EXTERN virtual void flow(const std::string& destination,
                     uint8_t unit,
                     uint32_t value);
         
-        QPID_COMMON_EXTERN virtual void stop(const string& destination);
+        QPID_COMMON_EXTERN virtual void stop(const std::string& destination);
         
     };
     
@@ -225,9 +225,9 @@ class AMQP_ClientProxy:
         static File& get(AMQP_ClientProxy& proxy) { return proxy.getFile(); }
         QPID_COMMON_EXTERN virtual void qosOk();
         
-        QPID_COMMON_EXTERN virtual void consumeOk(const string& consumerTag);
+        QPID_COMMON_EXTERN virtual void consumeOk(const std::string& consumerTag);
         
-        QPID_COMMON_EXTERN virtual void open(const string& identifier,
+        QPID_COMMON_EXTERN virtual void open(const std::string& identifier,
                     uint64_t contentSize);
         
         QPID_COMMON_EXTERN virtual void openOk(uint64_t stagedSize);
@@ -235,16 +235,16 @@ class AMQP_ClientProxy:
         QPID_COMMON_EXTERN virtual void stage();
         
         QPID_COMMON_EXTERN virtual void return_(uint16_t replyCode,
-                    const string& replyText,
-                    const string& exchange,
-                    const string& routingKey);
+                    const std::string& replyText,
+                    const std::string& exchange,
+                    const std::string& routingKey);
         
-        QPID_COMMON_EXTERN virtual void deliver(const string& consumerTag,
+        QPID_COMMON_EXTERN virtual void deliver(const std::string& consumerTag,
                     uint64_t deliveryTag,
                     bool redelivered,
-                    const string& exchange,
-                    const string& routingKey,
-                    const string& identifier);
+                    const std::string& exchange,
+                    const std::string& routingKey,
+                    const std::string& identifier);
         
     };
     
@@ -258,17 +258,17 @@ class AMQP_ClientProxy:
         static Stream& get(AMQP_ClientProxy& proxy) { return proxy.getStream(); }
         QPID_COMMON_EXTERN virtual void qosOk();
         
-        QPID_COMMON_EXTERN virtual void consumeOk(const string& consumerTag);
+        QPID_COMMON_EXTERN virtual void consumeOk(const std::string& consumerTag);
         
         QPID_COMMON_EXTERN virtual void return_(uint16_t replyCode,
-                    const string& replyText,
-                    const string& exchange,
-                    const string& routingKey);
+                    const std::string& replyText,
+                    const std::string& exchange,
+                    const std::string& routingKey);
         
-        QPID_COMMON_EXTERN virtual void deliver(const string& consumerTag,
+        QPID_COMMON_EXTERN virtual void deliver(const std::string& consumerTag,
                     uint64_t deliveryTag,
-                    const string& exchange,
-                    const string& queue);
+                    const std::string& exchange,
+                    const std::string& queue);
         
     };
     

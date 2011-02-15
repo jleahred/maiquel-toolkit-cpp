@@ -12,7 +12,7 @@ const std::string g_address = "testing";
 
 void on_message(const qpid::messaging::Message& message)
 {
-    std::cout <<  message.getHeaders() << "  " << message.getContent() << std::endl;
+    std::cout <<  message.getSubject() << "  " << message.getContent() << std::endl;
 }
 
 

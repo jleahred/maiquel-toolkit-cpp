@@ -40,11 +40,11 @@ namespace qpid {
 namespace framing {
 
 class MessageSubscribeBody : public ModelMethod {
-    string queue;
-    string destination;
+    std::string queue;
+    std::string destination;
     uint8_t acceptMode;
     uint8_t acquireMode;
-    string resumeId;
+    std::string resumeId;
     uint64_t resumeTtl;
     FieldTable arguments;
     uint16_t flags;
@@ -52,12 +52,12 @@ public:
     static const ClassId CLASS_ID = 0x4;
     static const MethodId METHOD_ID = 0x7;
     MessageSubscribeBody(
-        ProtocolVersion, const string& _queue,
-        const string& _destination,
+        ProtocolVersion, const std::string& _queue,
+        const std::string& _destination,
         uint8_t _acceptMode,
         uint8_t _acquireMode,
         bool _exclusive,
-        const string& _resumeId,
+        const std::string& _resumeId,
         uint64_t _resumeTtl,
         const FieldTable& _arguments) : 
         queue(_queue),
@@ -79,12 +79,12 @@ public:
     }
     MessageSubscribeBody(ProtocolVersion=ProtocolVersion())  : acceptMode(0), acquireMode(0), resumeTtl(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setQueue(const string& _queue);
-    QPID_COMMON_EXTERN const string& getQueue() const;
+    QPID_COMMON_EXTERN void setQueue(const std::string& _queue);
+    QPID_COMMON_EXTERN const std::string& getQueue() const;
     QPID_COMMON_EXTERN bool hasQueue() const;
     QPID_COMMON_EXTERN void clearQueueFlag();
-    QPID_COMMON_EXTERN void setDestination(const string& _destination);
-    QPID_COMMON_EXTERN const string& getDestination() const;
+    QPID_COMMON_EXTERN void setDestination(const std::string& _destination);
+    QPID_COMMON_EXTERN const std::string& getDestination() const;
     QPID_COMMON_EXTERN bool hasDestination() const;
     QPID_COMMON_EXTERN void clearDestinationFlag();
     QPID_COMMON_EXTERN void setAcceptMode(uint8_t _acceptMode);
@@ -97,8 +97,8 @@ public:
     QPID_COMMON_EXTERN void clearAcquireModeFlag();
     QPID_COMMON_EXTERN void setExclusive(bool _exclusive);
     QPID_COMMON_EXTERN bool getExclusive() const;
-    QPID_COMMON_EXTERN void setResumeId(const string& _resumeId);
-    QPID_COMMON_EXTERN const string& getResumeId() const;
+    QPID_COMMON_EXTERN void setResumeId(const std::string& _resumeId);
+    QPID_COMMON_EXTERN const std::string& getResumeId() const;
     QPID_COMMON_EXTERN bool hasResumeId() const;
     QPID_COMMON_EXTERN void clearResumeIdFlag();
     QPID_COMMON_EXTERN void setResumeTtl(uint64_t _resumeTtl);

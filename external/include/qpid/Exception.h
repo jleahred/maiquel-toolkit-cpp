@@ -26,9 +26,7 @@
 #include "qpid/framing/constants.h"
 #include "qpid/framing/enum.h"
 #include "qpid/sys/StrError.h"
-#include "qpid/Msg.h"
 #include "qpid/CommonImportExport.h"
-#include <memory>
 #include <string>
 #include <errno.h>
 
@@ -60,20 +58,20 @@ struct ErrnoException : public Exception {
 
 struct SessionException : public Exception {
     const framing::execution::ErrorCode code;
-    SessionException(framing::execution::ErrorCode code_, const std::string& _message)
-        : Exception(_message), code(code_) {}
+    SessionException(framing::execution::ErrorCode code_, const std::string& message)
+        : Exception(message), code(code_) {}
 };
 
 struct ChannelException : public Exception {
     const framing::session::DetachCode code;
-    ChannelException(framing::session::DetachCode _code, const std::string& _message)
-        : Exception(_message), code(_code) {}
+    ChannelException(framing::session::DetachCode _code, const std::string& message)
+        : Exception(message), code(_code) {}
 };
 
 struct ConnectionException : public Exception {
     const framing::connection::CloseCode code;
-    ConnectionException(framing::connection::CloseCode _code, const std::string& _message)
-        : Exception(_message), code(_code) {}
+    ConnectionException(framing::connection::CloseCode _code, const std::string& message)
+        : Exception(message), code(_code) {}
 };
 
 struct ClosedException : public Exception {

@@ -36,8 +36,8 @@ namespace qpid {
 namespace framing {
 
 class StreamProperties  {
-    string contentType;
-    string contentEncoding;
+    std::string contentType;
+    std::string contentEncoding;
     FieldTable headers;
     uint8_t priority;
     uint64_t timestamp;
@@ -45,8 +45,8 @@ class StreamProperties  {
 public:
     static const uint16_t TYPE = 2561;
     StreamProperties(
-        const string& _contentType,
-        const string& _contentEncoding,
+        const std::string& _contentType,
+        const std::string& _contentEncoding,
         const FieldTable& _headers,
         uint8_t _priority,
         uint64_t _timestamp) : 
@@ -64,12 +64,12 @@ public:
     }
     StreamProperties()  : priority(0), timestamp(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setContentType(const string& _contentType);
-    QPID_COMMON_EXTERN const string& getContentType() const;
+    QPID_COMMON_EXTERN void setContentType(const std::string& _contentType);
+    QPID_COMMON_EXTERN const std::string& getContentType() const;
     QPID_COMMON_EXTERN bool hasContentType() const;
     QPID_COMMON_EXTERN void clearContentTypeFlag();
-    QPID_COMMON_EXTERN void setContentEncoding(const string& _contentEncoding);
-    QPID_COMMON_EXTERN const string& getContentEncoding() const;
+    QPID_COMMON_EXTERN void setContentEncoding(const std::string& _contentEncoding);
+    QPID_COMMON_EXTERN const std::string& getContentEncoding() const;
     QPID_COMMON_EXTERN bool hasContentEncoding() const;
     QPID_COMMON_EXTERN void clearContentEncodingFlag();
     QPID_COMMON_EXTERN void setHeaders(const FieldTable& _headers);

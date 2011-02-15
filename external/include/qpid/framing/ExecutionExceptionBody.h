@@ -45,7 +45,7 @@ class ExecutionExceptionBody : public ModelMethod {
     uint8_t classCode;
     uint8_t commandCode;
     uint8_t fieldIndex;
-    string description;
+    std::string description;
     FieldTable errorInfo;
     uint16_t flags;
 public:
@@ -57,7 +57,7 @@ public:
         uint8_t _classCode,
         uint8_t _commandCode,
         uint8_t _fieldIndex,
-        const string& _description,
+        const std::string& _description,
         const FieldTable& _errorInfo) : 
         errorCode(_errorCode),
         commandId(_commandId),
@@ -97,8 +97,8 @@ public:
     QPID_COMMON_EXTERN uint8_t getFieldIndex() const;
     QPID_COMMON_EXTERN bool hasFieldIndex() const;
     QPID_COMMON_EXTERN void clearFieldIndexFlag();
-    QPID_COMMON_EXTERN void setDescription(const string& _description);
-    QPID_COMMON_EXTERN const string& getDescription() const;
+    QPID_COMMON_EXTERN void setDescription(const std::string& _description);
+    QPID_COMMON_EXTERN const std::string& getDescription() const;
     QPID_COMMON_EXTERN bool hasDescription() const;
     QPID_COMMON_EXTERN void clearDescriptionFlag();
     QPID_COMMON_EXTERN void setErrorInfo(const FieldTable& _errorInfo);

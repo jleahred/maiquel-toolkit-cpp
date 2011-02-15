@@ -41,18 +41,18 @@ namespace framing {
 
 class StreamReturnBody : public ModelMethod {
     uint16_t replyCode;
-    string replyText;
-    string exchange;
-    string routingKey;
+    std::string replyText;
+    std::string exchange;
+    std::string routingKey;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0xa;
     static const MethodId METHOD_ID = 0x7;
     StreamReturnBody(
         ProtocolVersion, uint16_t _replyCode,
-        const string& _replyText,
-        const string& _exchange,
-        const string& _routingKey) : 
+        const std::string& _replyText,
+        const std::string& _exchange,
+        const std::string& _routingKey) : 
         replyCode(_replyCode),
         replyText(_replyText),
         exchange(_exchange),
@@ -69,16 +69,16 @@ public:
     QPID_COMMON_EXTERN uint16_t getReplyCode() const;
     QPID_COMMON_EXTERN bool hasReplyCode() const;
     QPID_COMMON_EXTERN void clearReplyCodeFlag();
-    QPID_COMMON_EXTERN void setReplyText(const string& _replyText);
-    QPID_COMMON_EXTERN const string& getReplyText() const;
+    QPID_COMMON_EXTERN void setReplyText(const std::string& _replyText);
+    QPID_COMMON_EXTERN const std::string& getReplyText() const;
     QPID_COMMON_EXTERN bool hasReplyText() const;
     QPID_COMMON_EXTERN void clearReplyTextFlag();
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setRoutingKey(const string& _routingKey);
-    QPID_COMMON_EXTERN const string& getRoutingKey() const;
+    QPID_COMMON_EXTERN void setRoutingKey(const std::string& _routingKey);
+    QPID_COMMON_EXTERN const std::string& getRoutingKey() const;
     QPID_COMMON_EXTERN bool hasRoutingKey() const;
     QPID_COMMON_EXTERN void clearRoutingKeyFlag();
     typedef void ResultType;

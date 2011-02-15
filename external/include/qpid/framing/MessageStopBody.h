@@ -40,21 +40,21 @@ namespace qpid {
 namespace framing {
 
 class MessageStopBody : public ModelMethod {
-    string destination;
+    std::string destination;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x4;
     static const MethodId METHOD_ID = 0xc;
     MessageStopBody(
-        ProtocolVersion, const string& _destination) : 
+        ProtocolVersion, const std::string& _destination) : 
         destination(_destination),
         flags(0){
         flags |= (1 << 8);
     }
     MessageStopBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setDestination(const string& _destination);
-    QPID_COMMON_EXTERN const string& getDestination() const;
+    QPID_COMMON_EXTERN void setDestination(const std::string& _destination);
+    QPID_COMMON_EXTERN const std::string& getDestination() const;
     QPID_COMMON_EXTERN bool hasDestination() const;
     QPID_COMMON_EXTERN void clearDestinationFlag();
     typedef void ResultType;

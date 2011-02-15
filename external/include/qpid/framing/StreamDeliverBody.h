@@ -40,19 +40,19 @@ namespace qpid {
 namespace framing {
 
 class StreamDeliverBody : public ModelMethod {
-    string consumerTag;
+    std::string consumerTag;
     uint64_t deliveryTag;
-    string exchange;
-    string queue;
+    std::string exchange;
+    std::string queue;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0xa;
     static const MethodId METHOD_ID = 0x8;
     StreamDeliverBody(
-        ProtocolVersion, const string& _consumerTag,
+        ProtocolVersion, const std::string& _consumerTag,
         uint64_t _deliveryTag,
-        const string& _exchange,
-        const string& _queue) : 
+        const std::string& _exchange,
+        const std::string& _queue) : 
         consumerTag(_consumerTag),
         deliveryTag(_deliveryTag),
         exchange(_exchange),
@@ -65,20 +65,20 @@ public:
     }
     StreamDeliverBody(ProtocolVersion=ProtocolVersion())  : deliveryTag(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setConsumerTag(const string& _consumerTag);
-    QPID_COMMON_EXTERN const string& getConsumerTag() const;
+    QPID_COMMON_EXTERN void setConsumerTag(const std::string& _consumerTag);
+    QPID_COMMON_EXTERN const std::string& getConsumerTag() const;
     QPID_COMMON_EXTERN bool hasConsumerTag() const;
     QPID_COMMON_EXTERN void clearConsumerTagFlag();
     QPID_COMMON_EXTERN void setDeliveryTag(uint64_t _deliveryTag);
     QPID_COMMON_EXTERN uint64_t getDeliveryTag() const;
     QPID_COMMON_EXTERN bool hasDeliveryTag() const;
     QPID_COMMON_EXTERN void clearDeliveryTagFlag();
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setQueue(const string& _queue);
-    QPID_COMMON_EXTERN const string& getQueue() const;
+    QPID_COMMON_EXTERN void setQueue(const std::string& _queue);
+    QPID_COMMON_EXTERN const std::string& getQueue() const;
     QPID_COMMON_EXTERN bool hasQueue() const;
     QPID_COMMON_EXTERN void clearQueueFlag();
     typedef void ResultType;

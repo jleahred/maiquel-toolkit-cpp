@@ -40,9 +40,9 @@ namespace qpid {
 namespace framing {
 
 class ClusterConnectionDeliveryRecordBody : public ModelMethod {
-    string queue;
+    std::string queue;
     SequenceNumber position;
-    string tag;
+    std::string tag;
     SequenceNumber id;
     uint32_t credit;
     uint16_t flags;
@@ -50,9 +50,9 @@ public:
     static const ClassId CLASS_ID = 0x81;
     static const MethodId METHOD_ID = 0x11;
     ClusterConnectionDeliveryRecordBody(
-        ProtocolVersion, const string& _queue,
+        ProtocolVersion, const std::string& _queue,
         const SequenceNumber& _position,
-        const string& _tag,
+        const std::string& _tag,
         const SequenceNumber& _id,
         bool _acquired,
         bool _accepted,
@@ -83,16 +83,16 @@ public:
     }
     ClusterConnectionDeliveryRecordBody(ProtocolVersion=ProtocolVersion())  : credit(0), flags(0) {}
     
-    QPID_COMMON_EXTERN void setQueue(const string& _queue);
-    QPID_COMMON_EXTERN const string& getQueue() const;
+    QPID_COMMON_EXTERN void setQueue(const std::string& _queue);
+    QPID_COMMON_EXTERN const std::string& getQueue() const;
     QPID_COMMON_EXTERN bool hasQueue() const;
     QPID_COMMON_EXTERN void clearQueueFlag();
     QPID_COMMON_EXTERN void setPosition(const SequenceNumber& _position);
     QPID_COMMON_EXTERN SequenceNumber getPosition() const;
     QPID_COMMON_EXTERN bool hasPosition() const;
     QPID_COMMON_EXTERN void clearPositionFlag();
-    QPID_COMMON_EXTERN void setTag(const string& _tag);
-    QPID_COMMON_EXTERN const string& getTag() const;
+    QPID_COMMON_EXTERN void setTag(const std::string& _tag);
+    QPID_COMMON_EXTERN const std::string& getTag() const;
     QPID_COMMON_EXTERN bool hasTag() const;
     QPID_COMMON_EXTERN void clearTagFlag();
     QPID_COMMON_EXTERN void setId(const SequenceNumber& _id);

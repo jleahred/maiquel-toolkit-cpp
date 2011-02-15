@@ -4,8 +4,8 @@
 
 
 // generated automatically
-// coded last modification:        Fri Jan 21 18:42:55 2011
-// pythonscript last modification: Mon Jan 24 10:23:48 2011
+// coded last modification:        Tue Jan 25 11:30:03 2011
+// pythonscript last modification: Thu Feb 10 18:34:23 2011
 
 
 #include "support/nullable.hpp"
@@ -16,9 +16,7 @@
 #include "support/exec_max_frec.h"
 #include "mtk_qpid/qpid_msg_support.hpp"
 #include "support/mtk_string.h"
-#include <qpid/messaging/MapContent.h>
 #include <qpid/messaging/Message.h>
-#include <qpid/messaging/MapView.h>
 #include "mtk_qpid/msg_control_fields.h"
 #include "mtk_qpid/mtk_qpid.hpp"
 
@@ -246,25 +244,20 @@ bool operator== (const LimitPositionChild& a, const LimitPositionChild& b);
 bool operator!= (const LimitPositionChild& a, const LimitPositionChild& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const LimitPosition& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const LimitPosition& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const LimitPosition& a);
-void copy (LimitPosition& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const LimitPosition& a);
+void copy (LimitPosition& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const RQ_NW_LS& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS& a);
-void copy (RQ_NW_LS& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a);
+void copy (RQ_NW_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS::IC_control_fields_& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const RQ_NW_LS::IC_control_fields_& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS::IC_control_fields_& a);
-void copy (RQ_NW_LS::IC_control_fields_& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_control_fields_& a);
+void copy (RQ_NW_LS::IC_control_fields_& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS::IC_product_code& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const RQ_NW_LS::IC_product_code& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const RQ_NW_LS::IC_product_code& a);
-void copy (RQ_NW_LS::IC_product_code& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_product_code& a);
+void copy (RQ_NW_LS::IC_product_code& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const LimitPositionChild& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const LimitPositionChild& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const LimitPositionChild& a);
-void copy (LimitPositionChild& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const LimitPositionChild& a);
+void copy (LimitPositionChild& a, const qpid::types::Variant& map);
 
     LimitPosition  __internal_get_default(LimitPosition *);
     
@@ -285,7 +278,7 @@ void copy (LimitPositionChild& a, const qpid::messaging::Variant& map);
 
     
 template<typename T>
-void   copy(mtk::nullable<T>& result, const qpid::messaging::Variant& v);
+void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(testing::LimitPosition)

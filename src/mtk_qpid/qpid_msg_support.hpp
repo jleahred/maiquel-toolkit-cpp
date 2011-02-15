@@ -4,9 +4,7 @@
 #include <sys/types.h>
 
 
-#include <qpid/messaging/MapContent.h>
 #include <qpid/messaging/Message.h>
-#include <qpid/messaging/MapView.h>
 
 
 
@@ -26,7 +24,7 @@
 
 #define QPID_DESCOMPOSE_FIXED_NUMBER(__fn__)  \
     ({  \
-    qpid::messaging::Variant::Map m_fn;  \
+    qpid::types::Variant::Map m_fn;  \
     m_fn["n"] = int32_t(__fn__.GetIntCode());  \
     m_fn["d"] = int8_t(__fn__.GetExt().GetDec());  \
     m_fn["i"] = int8_t(__fn__.GetExt().GetInc());  \

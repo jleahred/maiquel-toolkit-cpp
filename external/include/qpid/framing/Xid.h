@@ -37,15 +37,15 @@ namespace framing {
 
 class Xid  {
     uint32_t format;
-    string globalId;
-    string branchId;
+    std::string globalId;
+    std::string branchId;
     uint16_t flags;
 public:
     static const uint16_t TYPE = 1540;
     Xid(
         uint32_t _format,
-        const string& _globalId,
-        const string& _branchId) : 
+        const std::string& _globalId,
+        const std::string& _branchId) : 
         format(_format),
         globalId(_globalId),
         branchId(_branchId),
@@ -60,12 +60,12 @@ public:
     QPID_COMMON_EXTERN uint32_t getFormat() const;
     QPID_COMMON_EXTERN bool hasFormat() const;
     QPID_COMMON_EXTERN void clearFormatFlag();
-    QPID_COMMON_EXTERN void setGlobalId(const string& _globalId);
-    QPID_COMMON_EXTERN const string& getGlobalId() const;
+    QPID_COMMON_EXTERN void setGlobalId(const std::string& _globalId);
+    QPID_COMMON_EXTERN const std::string& getGlobalId() const;
     QPID_COMMON_EXTERN bool hasGlobalId() const;
     QPID_COMMON_EXTERN void clearGlobalIdFlag();
-    QPID_COMMON_EXTERN void setBranchId(const string& _branchId);
-    QPID_COMMON_EXTERN const string& getBranchId() const;
+    QPID_COMMON_EXTERN void setBranchId(const std::string& _branchId);
+    QPID_COMMON_EXTERN const std::string& getBranchId() const;
     QPID_COMMON_EXTERN bool hasBranchId() const;
     QPID_COMMON_EXTERN void clearBranchIdFlag();
     QPID_COMMON_EXTERN friend std::ostream& operator<<(std::ostream&, const Xid&);

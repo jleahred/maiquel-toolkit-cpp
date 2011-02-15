@@ -40,13 +40,13 @@ namespace qpid {
 namespace framing {
 
 class ExchangeDeleteBody : public ModelMethod {
-    string exchange;
+    std::string exchange;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x7;
     static const MethodId METHOD_ID = 0x2;
     ExchangeDeleteBody(
-        ProtocolVersion, const string& _exchange,
+        ProtocolVersion, const std::string& _exchange,
         bool _ifUnused) : 
         exchange(_exchange),
         flags(0){
@@ -55,8 +55,8 @@ public:
     }
     ExchangeDeleteBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
     QPID_COMMON_EXTERN void setIfUnused(bool _ifUnused);

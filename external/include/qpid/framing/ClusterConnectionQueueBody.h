@@ -40,21 +40,21 @@ namespace qpid {
 namespace framing {
 
 class ClusterConnectionQueueBody : public ModelMethod {
-    string encoded;
+    std::string encoded;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x81;
     static const MethodId METHOD_ID = 0x32;
     ClusterConnectionQueueBody(
-        ProtocolVersion, const string& _encoded) : 
+        ProtocolVersion, const std::string& _encoded) : 
         encoded(_encoded),
         flags(0){
         flags |= (1 << 8);
     }
     ClusterConnectionQueueBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setEncoded(const string& _encoded);
-    QPID_COMMON_EXTERN const string& getEncoded() const;
+    QPID_COMMON_EXTERN void setEncoded(const std::string& _encoded);
+    QPID_COMMON_EXTERN const std::string& getEncoded() const;
     QPID_COMMON_EXTERN bool hasEncoded() const;
     QPID_COMMON_EXTERN void clearEncodedFlag();
     typedef void ResultType;

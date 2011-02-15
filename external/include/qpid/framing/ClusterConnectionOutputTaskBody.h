@@ -41,14 +41,14 @@ namespace framing {
 
 class ClusterConnectionOutputTaskBody : public ModelMethod {
     uint16_t channel;
-    string name;
+    std::string name;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x81;
     static const MethodId METHOD_ID = 0x19;
     ClusterConnectionOutputTaskBody(
         ProtocolVersion, uint16_t _channel,
-        const string& _name) : 
+        const std::string& _name) : 
         channel(_channel),
         name(_name),
         flags(0){
@@ -61,8 +61,8 @@ public:
     QPID_COMMON_EXTERN uint16_t getChannel() const;
     QPID_COMMON_EXTERN bool hasChannel() const;
     QPID_COMMON_EXTERN void clearChannelFlag();
-    QPID_COMMON_EXTERN void setName(const string& _name);
-    QPID_COMMON_EXTERN const string& getName() const;
+    QPID_COMMON_EXTERN void setName(const std::string& _name);
+    QPID_COMMON_EXTERN const std::string& getName() const;
     QPID_COMMON_EXTERN bool hasName() const;
     QPID_COMMON_EXTERN void clearNameFlag();
     typedef void ResultType;

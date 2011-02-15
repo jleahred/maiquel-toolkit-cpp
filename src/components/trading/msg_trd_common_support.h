@@ -45,15 +45,11 @@ inline enBuySell  __internal_get_default (enBuySell*)
 {
     return buy;
 }
-inline void  copy(enBuySell& result, const qpid::messaging::Variant& v)
+inline void  copy(enBuySell& result, const qpid::types::Variant& v)
 {
     result = enBuySell(v.asInt8());
 }
-inline void __internal_add2map (qpid::messaging::MapContent& map, enBuySell a, const std::string& key)
-{
-    map[key] = int8_t(a);
-}
-inline void __internal_add2map (qpid::messaging::Variant::Map& map, enBuySell a, const std::string& key)
+inline void __internal_add2map (qpid::types::Variant::Map& map, enBuySell a, const std::string& key)
 {
     map[key] = int8_t(a);
 }

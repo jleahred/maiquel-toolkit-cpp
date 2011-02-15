@@ -281,7 +281,7 @@ class Session_0_10:
     BOOST_PARAMETER_MEMFUN(void, executionResult, 0, 3, ExecutionResultParameters) {
         return no_keyword::Session_0_10::executionResult(
             p[arg::commandId|SequenceNumber()],
-            p[arg::value|string()],
+            p[arg::value|std::string()],
             p[arg::sync|true]);
     }
     
@@ -292,14 +292,14 @@ class Session_0_10:
             p[arg::classCode|0],
             p[arg::commandCode|0],
             p[arg::fieldIndex|0],
-            p[arg::description|string()],
+            p[arg::description|std::string()],
             p[arg::errorInfo|FieldTable()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(void, messageTransfer, 0, 5, MessageTransferParameters) {
         return no_keyword::Session_0_10::messageTransfer(
-            p[arg::destination|string()],
+            p[arg::destination|std::string()],
             p[arg::acceptMode|1],
             p[arg::acquireMode|0],
             p[arg::content|Message(std::string())],
@@ -316,7 +316,7 @@ class Session_0_10:
         return no_keyword::Session_0_10::messageReject(
             p[arg::transfers|SequenceSet()],
             p[arg::code|0],
-            p[arg::text|string()],
+            p[arg::text|std::string()],
             p[arg::sync|true]);
     }
     
@@ -335,19 +335,19 @@ class Session_0_10:
     
     BOOST_PARAMETER_MEMFUN(qpid::framing::MessageResumeResult, messageResume, 0, 3, MessageResumeParameters) {
         return no_keyword::Session_0_10::messageResume(
-            p[arg::destination|string()],
-            p[arg::resumeId|string()],
+            p[arg::destination|std::string()],
+            p[arg::resumeId|std::string()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(void, messageSubscribe, 0, 9, MessageSubscribeParameters) {
         return no_keyword::Session_0_10::messageSubscribe(
-            p[arg::queue|string()],
-            p[arg::destination|string()],
+            p[arg::queue|std::string()],
+            p[arg::destination|std::string()],
             p[arg::acceptMode|0],
             p[arg::acquireMode|0],
             p[arg::exclusive|false],
-            p[arg::resumeId|string()],
+            p[arg::resumeId|std::string()],
             p[arg::resumeTtl|0],
             p[arg::arguments|FieldTable()],
             p[arg::sync|true]);
@@ -355,20 +355,20 @@ class Session_0_10:
     
     BOOST_PARAMETER_MEMFUN(void, messageCancel, 0, 2, MessageCancelParameters) {
         return no_keyword::Session_0_10::messageCancel(
-            p[arg::destination|string()],
+            p[arg::destination|std::string()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(void, messageSetFlowMode, 0, 3, MessageSetFlowModeParameters) {
         return no_keyword::Session_0_10::messageSetFlowMode(
-            p[arg::destination|string()],
+            p[arg::destination|std::string()],
             p[arg::flowMode|0],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(void, messageFlow, 0, 4, MessageFlowParameters) {
         return no_keyword::Session_0_10::messageFlow(
-            p[arg::destination|string()],
+            p[arg::destination|std::string()],
             p[arg::unit|0],
             p[arg::value|0],
             p[arg::sync|true]);
@@ -376,13 +376,13 @@ class Session_0_10:
     
     BOOST_PARAMETER_MEMFUN(void, messageFlush, 0, 2, MessageFlushParameters) {
         return no_keyword::Session_0_10::messageFlush(
-            p[arg::destination|string()],
+            p[arg::destination|std::string()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(void, messageStop, 0, 2, MessageStopParameters) {
         return no_keyword::Session_0_10::messageStop(
-            p[arg::destination|string()],
+            p[arg::destination|std::string()],
             p[arg::sync|true]);
     }
     
@@ -467,9 +467,9 @@ class Session_0_10:
     
     BOOST_PARAMETER_MEMFUN(void, exchangeDeclare, 0, 8, ExchangeDeclareParameters) {
         return no_keyword::Session_0_10::exchangeDeclare(
-            p[arg::exchange|string()],
-            p[arg::type|string()],
-            p[arg::alternateExchange|string()],
+            p[arg::exchange|std::string()],
+            p[arg::type|std::string()],
+            p[arg::alternateExchange|std::string()],
             p[arg::passive|false],
             p[arg::durable|false],
             p[arg::autoDelete|false],
@@ -479,47 +479,47 @@ class Session_0_10:
     
     BOOST_PARAMETER_MEMFUN(void, exchangeDelete, 0, 3, ExchangeDeleteParameters) {
         return no_keyword::Session_0_10::exchangeDelete(
-            p[arg::exchange|string()],
+            p[arg::exchange|std::string()],
             p[arg::ifUnused|false],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(qpid::framing::ExchangeQueryResult, exchangeQuery, 0, 2, ExchangeQueryParameters) {
         return no_keyword::Session_0_10::exchangeQuery(
-            p[arg::name|string()],
+            p[arg::name|std::string()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(void, exchangeBind, 0, 5, ExchangeBindParameters) {
         return no_keyword::Session_0_10::exchangeBind(
-            p[arg::queue|string()],
-            p[arg::exchange|string()],
-            p[arg::bindingKey|string()],
+            p[arg::queue|std::string()],
+            p[arg::exchange|std::string()],
+            p[arg::bindingKey|std::string()],
             p[arg::arguments|FieldTable()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(void, exchangeUnbind, 0, 4, ExchangeUnbindParameters) {
         return no_keyword::Session_0_10::exchangeUnbind(
-            p[arg::queue|string()],
-            p[arg::exchange|string()],
-            p[arg::bindingKey|string()],
+            p[arg::queue|std::string()],
+            p[arg::exchange|std::string()],
+            p[arg::bindingKey|std::string()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(qpid::framing::ExchangeBoundResult, exchangeBound, 0, 5, ExchangeBoundParameters) {
         return no_keyword::Session_0_10::exchangeBound(
-            p[arg::exchange|string()],
-            p[arg::queue|string()],
-            p[arg::bindingKey|string()],
+            p[arg::exchange|std::string()],
+            p[arg::queue|std::string()],
+            p[arg::bindingKey|std::string()],
             p[arg::arguments|FieldTable()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(void, queueDeclare, 0, 8, QueueDeclareParameters) {
         return no_keyword::Session_0_10::queueDeclare(
-            p[arg::queue|string()],
-            p[arg::alternateExchange|string()],
+            p[arg::queue|std::string()],
+            p[arg::alternateExchange|std::string()],
             p[arg::passive|false],
             p[arg::durable|false],
             p[arg::exclusive|false],
@@ -530,7 +530,7 @@ class Session_0_10:
     
     BOOST_PARAMETER_MEMFUN(void, queueDelete, 0, 4, QueueDeleteParameters) {
         return no_keyword::Session_0_10::queueDelete(
-            p[arg::queue|string()],
+            p[arg::queue|std::string()],
             p[arg::ifUnused|false],
             p[arg::ifEmpty|false],
             p[arg::sync|true]);
@@ -538,13 +538,13 @@ class Session_0_10:
     
     BOOST_PARAMETER_MEMFUN(void, queuePurge, 0, 2, QueuePurgeParameters) {
         return no_keyword::Session_0_10::queuePurge(
-            p[arg::queue|string()],
+            p[arg::queue|std::string()],
             p[arg::sync|true]);
     }
     
     BOOST_PARAMETER_MEMFUN(qpid::framing::QueueQueryResult, queueQuery, 0, 2, QueueQueryParameters) {
         return no_keyword::Session_0_10::queueQuery(
-            p[arg::queue|string()],
+            p[arg::queue|std::string()],
             p[arg::sync|true]);
     }
     

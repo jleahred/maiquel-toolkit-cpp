@@ -40,15 +40,15 @@ namespace qpid {
 namespace framing {
 
 class StreamPublishBody : public ModelMethod {
-    string exchange;
-    string routingKey;
+    std::string exchange;
+    std::string routingKey;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0xa;
     static const MethodId METHOD_ID = 0x6;
     StreamPublishBody(
-        ProtocolVersion, const string& _exchange,
-        const string& _routingKey,
+        ProtocolVersion, const std::string& _exchange,
+        const std::string& _routingKey,
         bool _mandatory,
         bool _immediate) : 
         exchange(_exchange),
@@ -61,12 +61,12 @@ public:
     }
     StreamPublishBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setExchange(const string& _exchange);
-    QPID_COMMON_EXTERN const string& getExchange() const;
+    QPID_COMMON_EXTERN void setExchange(const std::string& _exchange);
+    QPID_COMMON_EXTERN const std::string& getExchange() const;
     QPID_COMMON_EXTERN bool hasExchange() const;
     QPID_COMMON_EXTERN void clearExchangeFlag();
-    QPID_COMMON_EXTERN void setRoutingKey(const string& _routingKey);
-    QPID_COMMON_EXTERN const string& getRoutingKey() const;
+    QPID_COMMON_EXTERN void setRoutingKey(const std::string& _routingKey);
+    QPID_COMMON_EXTERN const std::string& getRoutingKey() const;
     QPID_COMMON_EXTERN bool hasRoutingKey() const;
     QPID_COMMON_EXTERN void clearRoutingKeyFlag();
     QPID_COMMON_EXTERN void setMandatory(bool _mandatory);

@@ -111,5 +111,5 @@ void MainWindow::on_pbConnect_clicked()
 
 void MainWindow::OnReceivedMessage(const qpid::messaging::Message& message)
 {
-    Write(MTK_SS(message.getHeaders() << "  " << message.getContent()).c_str());
+    Write(MTK_SS(message.getSubject() << "  " << message.getContent()).c_str());
 }

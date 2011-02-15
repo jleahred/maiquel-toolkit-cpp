@@ -5,7 +5,7 @@
 
 // generated automatically
 // coded last modification:        Mon Jan 17 22:35:00 2011
-// pythonscript last modification: Mon Jan 24 10:23:48 2011
+// pythonscript last modification: Thu Feb 10 18:34:23 2011
 
 
 #include "support/nullable.hpp"
@@ -16,9 +16,7 @@
 #include "support/exec_max_frec.h"
 #include "mtk_qpid/qpid_msg_support.hpp"
 #include "support/mtk_string.h"
-#include <qpid/messaging/MapContent.h>
 #include <qpid/messaging/Message.h>
-#include <qpid/messaging/MapView.h>
 #include "mtk_qpid/msg_control_fields.h"
 #include "mtk_qpid/mtk_qpid.hpp"
 
@@ -160,17 +158,14 @@ bool operator== (const best_prices& a, const best_prices& b);
 bool operator!= (const best_prices& a, const best_prices& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_level& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const sub_price_level& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const sub_price_level& a);
-void copy (sub_price_level& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& a);
+void copy (sub_price_level& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_deph5& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const sub_price_deph5& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const sub_price_deph5& a);
-void copy (sub_price_deph5& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_deph5& a);
+void copy (sub_price_deph5& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const best_prices& a);
-void __internal_add2map (qpid::messaging::Variant::Map& map, const best_prices& a);
-void __internal_add2map (qpid::messaging::MapContent& map, const best_prices& a);
-void copy (best_prices& a, const qpid::messaging::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const best_prices& a);
+void copy (best_prices& a, const qpid::types::Variant& map);
 
     sub_price_level  __internal_get_default(sub_price_level *);
     
@@ -189,7 +184,7 @@ void copy (best_prices& a, const qpid::messaging::Variant& map);
 
     
 template<typename T>
-void   copy(mtk::nullable<T>& result, const qpid::messaging::Variant& v);
+void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::sub_price_level)

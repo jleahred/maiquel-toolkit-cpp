@@ -40,27 +40,63 @@ namespace qpid {
 namespace framing {
 
 class ClusterConnectionAnnounceBody : public ModelMethod {
+    std::string managementId;
     uint32_t ssf;
+    std::string authid;
+    std::string username;
+    std::string initialFrames;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x81;
     static const MethodId METHOD_ID = 0x1;
     ClusterConnectionAnnounceBody(
-        ProtocolVersion, uint32_t _ssf) : 
+        ProtocolVersion, const std::string& _managementId,
+        uint32_t _ssf,
+        const std::string& _authid,
+        bool _nodict,
+        const std::string& _username,
+        const std::string& _initialFrames) : 
+        managementId(_managementId),
         ssf(_ssf),
+        authid(_authid),
+        username(_username),
+        initialFrames(_initialFrames),
         flags(0){
+        setNodict(_nodict);
         flags |= (1 << 8);
+        flags |= (1 << 9);
+        flags |= (1 << 10);
+        flags |= (1 << 12);
+        flags |= (1 << 13);
     }
     ClusterConnectionAnnounceBody(ProtocolVersion=ProtocolVersion())  : ssf(0), flags(0) {}
     
+    QPID_COMMON_EXTERN void setManagementId(const std::string& _managementId);
+    QPID_COMMON_EXTERN const std::string& getManagementId() const;
+    QPID_COMMON_EXTERN bool hasManagementId() const;
+    QPID_COMMON_EXTERN void clearManagementIdFlag();
     QPID_COMMON_EXTERN void setSsf(uint32_t _ssf);
     QPID_COMMON_EXTERN uint32_t getSsf() const;
     QPID_COMMON_EXTERN bool hasSsf() const;
     QPID_COMMON_EXTERN void clearSsfFlag();
+    QPID_COMMON_EXTERN void setAuthid(const std::string& _authid);
+    QPID_COMMON_EXTERN const std::string& getAuthid() const;
+    QPID_COMMON_EXTERN bool hasAuthid() const;
+    QPID_COMMON_EXTERN void clearAuthidFlag();
+    QPID_COMMON_EXTERN void setNodict(bool _nodict);
+    QPID_COMMON_EXTERN bool getNodict() const;
+    QPID_COMMON_EXTERN void setUsername(const std::string& _username);
+    QPID_COMMON_EXTERN const std::string& getUsername() const;
+    QPID_COMMON_EXTERN bool hasUsername() const;
+    QPID_COMMON_EXTERN void clearUsernameFlag();
+    QPID_COMMON_EXTERN void setInitialFrames(const std::string& _initialFrames);
+    QPID_COMMON_EXTERN const std::string& getInitialFrames() const;
+    QPID_COMMON_EXTERN bool hasInitialFrames() const;
+    QPID_COMMON_EXTERN void clearInitialFramesFlag();
     typedef void ResultType;
 
     template <class T> ResultType invoke(T& invocable) const {
-        return invocable.announce(getSsf());
+        return invocable.announce(getManagementId(), getSsf(), getAuthid(), getNodict(), getUsername(), getInitialFrames());
     }
 
     using  AMQMethodBody::accept;

@@ -39,21 +39,21 @@ namespace qpid {
 namespace framing {
 
 class ConnectionSecureOkBody : public AMQMethodBody {
-    string response;
+    std::string response;
     uint16_t flags;
 public:
     static const ClassId CLASS_ID = 0x1;
     static const MethodId METHOD_ID = 0x4;
     ConnectionSecureOkBody(
-        ProtocolVersion, const string& _response) : 
+        ProtocolVersion, const std::string& _response) : 
         response(_response),
         flags(0){
         flags |= (1 << 8);
     }
     ConnectionSecureOkBody(ProtocolVersion=ProtocolVersion())  : flags(0) {}
     
-    QPID_COMMON_EXTERN void setResponse(const string& _response);
-    QPID_COMMON_EXTERN const string& getResponse() const;
+    QPID_COMMON_EXTERN void setResponse(const std::string& _response);
+    QPID_COMMON_EXTERN const std::string& getResponse() const;
     QPID_COMMON_EXTERN bool hasResponse() const;
     QPID_COMMON_EXTERN void clearResponseFlag();
 virtual uint8_t type() const { return 0;/*control segment*/ }
