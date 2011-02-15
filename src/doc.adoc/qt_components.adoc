@@ -1,3 +1,5 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
 == Qt Components
 
 
@@ -14,6 +16,30 @@ print ''
 include::/tmp/adoc/ls.txt[]
 
 
+
+=== mtkContainerWidget
+
+* All widget in terminal will be inside this one
+* It will give next functionalities
+** Moving
+** Resizing
+** Request persistence
+** Recover from persistence
+
+.example pro
+[source,{cpp}]
+-----
+include::../../examples/qt/ex_cont_widget/src/ex_cont_widget.pro[]
+-----
+
+.example code
+[source,{cpp}]
+-----
+include::../../examples/qt/ex_cont_widget/src/mainwindow.cpp[]
+-----
+<1> Instanciating the contained widgets
+<2> Preparing layout for contained widgets
+<3> This call will raise the movement title and the small resize square
 
 === QOrderBook
 
