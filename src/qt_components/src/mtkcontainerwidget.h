@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QPoint>
-
+#include <QImage>
 
 
 class QMouseEvent;
@@ -23,7 +23,7 @@ private:
     void updateBackground(bool show);
     //QColor basecolor;
     bool    moving;
-
+    QImage  image_close;
 
 signals:
     void on_mousePressEvent(QMouseEvent* event);
@@ -39,6 +39,7 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent* event);
     virtual void mouseReleaseEvent(QMouseEvent* event);
     virtual void leaveEvent ( QEvent * event );
+    virtual void paintEvent(QPaintEvent *);
 };
 
 class mtk_uResize : public QWidget
@@ -51,7 +52,7 @@ public:
 
 private:
     QColor basecolor;
-    void updateBackground(bool focus);
+    //void updateBackground(bool focus);
 
 
 signals:
@@ -62,9 +63,9 @@ public slots:
 private slots:
 
 protected:
-    void mousePressEvent(QMouseEvent* event);
+    //void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
+    //void mouseReleaseEvent(QMouseEvent* event);
 
 };
 
@@ -88,9 +89,14 @@ private:
     mtk_uResize* resizer;
 
 protected:
-    virtual void    resizeEvent ( QResizeEvent * event );
-    virtual void    focusInEvent ( QFocusEvent * /*event*/ ) {  raise(); }
+    virtual void    resizeEvent  (QResizeEvent * event );
+    virtual void    focusInEvent (QFocusEvent * /*event*/ ) { raise(); }
+    virtual void    paintEvent   (QPaintEvent *);
+
+
 signals:
+    void signal_start_moving(void);
+    void signal_stop_moving (void);
 
 
 public slots:

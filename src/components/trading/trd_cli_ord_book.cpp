@@ -18,7 +18,7 @@ mtk::msg::sub_request_info   get_request_info (void)
     static const std::string session = MTK_SS(mtk::dtNowLocal());
     return mtk::msg::sub_request_info (mtk::msg::sub_request_id(session, MTK_SS("pending"<<++i)), "CLIENT");
 }
-std::string get_url(void) { return "amqp:tcp:127.0.0.1:5672"; };
+std::string get_url(void) { return "amqp:tcp:192.168.7.1:5672"; };
 std::string get_address(void) { return "CLITRD"; };
 
 

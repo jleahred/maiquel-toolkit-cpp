@@ -1,6 +1,9 @@
 #include "qeditorder.h"
 #include "ui_qeditorder.h"
 
+
+#include "qt_components/src/qmtk_misc.h"
+
 /*
 QEditOrder::QEditOrder(QWidget *parent) :
     QDialog(parent),
@@ -22,17 +25,20 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, QWidget *parent) :
         rq(_rq)
 {
     ui->setupUi(this);
+    QFont font(this->font());
+    font.setPixelSize(get_base_font_size());
+    this->setFont(font);
 
     rq = _rq;
     if (rq.request_pos.side == mtk::trd::msg::buy)
     {
         ui->BuySell->setText("BUY");
-        setPalette( QPalette( Qt::green ) );
+        setPalette( mtk_green );
     }
     else
     {
         ui->BuySell->setText("SELL");
-        setPalette( QPalette(QColor(Qt::red).lighter()));
+        setPalette( QPalette(mtk_red));
         //setPalette( QPalette( Qt::red ) );
     }
     ui->market->setText(rq.product_code.sys_code.market.c_str());

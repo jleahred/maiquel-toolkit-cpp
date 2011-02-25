@@ -23,6 +23,8 @@ public:
     explicit QOrderBook(QWidget *parent = 0);
     ~QOrderBook();
 
+    void update_sizes(void);
+
 signals:
 
 public slots:

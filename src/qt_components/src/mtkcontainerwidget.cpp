@@ -2,25 +2,25 @@
 
 
 #include <QMouseEvent>
+#include <QPainter>
 
-
+#include "qt_components/src/qmtk_misc.h"
 
 
 
 mtk_uTitle::mtk_uTitle(QWidget *parent) :
     QWidget(parent), moving(false)
 {
-    //basecolor = this->palette().background().color();
-    //basecolor = Qt::darkBlue;
-    //this->setAutoFillBackground(true);
-
+    /*
     QPalette p(palette());
     p.setColor(QPalette::Background, Qt::blue);
     this->setPalette(p);
-
+    */
     this->setMouseTracking(true);
     updateBackground(false);
-    setCursor(QCursor(Qt::SizeAllCursor));
+    this->setStyleSheet("background-color: rgba(0, 0, 255, 200);");
+
+    image_close.load(":/small_icons/image_close");
 }
 
 
@@ -33,10 +33,12 @@ void mtk_uTitle::updateBackground(bool show)
 
 void mtk_uTitle::mousePressEvent(QMouseEvent* event)
 {
+    if (event->pos().x()  >  this->width()-image_close.width())
+        dynamic_cast<mtkContainerWidget*>(this->parent())->close();
     moving = true;
     updateBackground(true);
     event->accept(); // do not propagate
-    emit on_mousePressEvent(event);
+    Q_EMIT on_mousePressEvent(event);
 }
 
 void mtk_uTitle::mouseMoveEvent(QMouseEvent* event)
@@ -45,7 +47,7 @@ void mtk_uTitle::mouseMoveEvent(QMouseEvent* event)
     if (moving)
     {
         event->accept(); // do not propagate
-        emit on_mouseMoveEvent(event);
+        Q_EMIT on_mouseMoveEvent(event);
     }
 }
 
@@ -59,7 +61,17 @@ void mtk_uTitle::mouseReleaseEvent(QMouseEvent* event)
 {
     moving = false;
     event->accept(); // do not propagate
-    emit on_mouseReleaseEvent(event);
+    Q_EMIT on_mouseReleaseEvent(event);
+}
+
+void mtk_uTitle::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+    if(this->autoFillBackground())
+    {
+        QPainter qpainter(this);
+        qpainter.drawImage(this->width()-image_close.width(), 0, image_close);
+    }
 }
 
 
@@ -69,19 +81,7 @@ mtk_uResize::mtk_uResize(QWidget *parent) :
     QWidget(parent)
 {
     basecolor = this->palette().background().color();
-    //this->setAutoFillBackground(true);
-    updateBackground(false);
     setCursor(QCursor(Qt::SizeFDiagCursor));
-}
-
-void mtk_uResize::updateBackground(bool focus)
-{
-    QPalette p(palette());
-    //if (focus)
-    //    p.setColor(QPalette::Background, basecolor.lighter());
-    //else
-        p.setColor(QPalette::Background, basecolor);
-    this->setPalette(p);
 }
 
 
@@ -90,23 +90,21 @@ void mtk_uResize::mouseMoveEvent(QMouseEvent* event)
 {
     event->accept(); // do not propagate
     QMouseEvent new_event(event->type(), mapToParent(event->pos()), event->globalPos(), event->button(), event->buttons(), event->modifiers());
-    emit on_mouseMoveEvent(&new_event);
+    Q_EMIT on_mouseMoveEvent(&new_event);
 }
 
 
-
+/*
 void mtk_uResize::mousePressEvent(QMouseEvent* event)
 {
     event->accept(); // do not propagate
-    updateBackground(true);
 }
 
 void mtk_uResize::mouseReleaseEvent(QMouseEvent* event)
 {
     event->accept(); // do not propagate
-    updateBackground(false);
 }
-
+*/
 
 
 
@@ -130,12 +128,14 @@ mtkContainerWidget::mtkContainerWidget(QWidget *parent) :
     p.setColor(QPalette::Background, Qt::red);
     this->setAutoFillBackground(true);
     this->setPalette(p);*/
-
+    this->setAutoFillBackground(false);
 }
 
 
 void mtkContainerWidget::title_mousePressEvent(QMouseEvent* event)
 {
+    Q_EMIT signal_start_moving();
+
     if (isWindow())
         moving_offset = event->globalPos() - pos();
     else
@@ -145,14 +145,32 @@ void mtkContainerWidget::title_mousePressEvent(QMouseEvent* event)
 void mtkContainerWidget::title_mouseMoveEvent(QMouseEvent* event)
 {
     if (isWindow())
-        move(event->globalPos() - moving_offset);
+    {
+        QPoint new_pos (event->globalPos() - moving_offset);
+        if (new_pos.y() <= -6)
+            new_pos.setY(-6);
+
+        move(new_pos);
+    }
     else
-        move(mapToParent(event->pos() - moving_offset));
+    {
+        QPoint new_pos (mapToParent(event->pos() - moving_offset));
+        if (new_pos.y() <= -6)
+            new_pos.setY(-6);
+        if (new_pos.x() <= -6)
+            new_pos.setX(-6);
+        if (new_pos.x() >= 2000-30)
+            new_pos.setX(2000-30);
+        if (new_pos.y() >= 1080-30)
+            new_pos.setY(1080-30);
+        move(new_pos/10*10 + QPoint(6,6));
+    }
 }
 
 void mtkContainerWidget::title_mouseReleaseEvent(QMouseEvent* /*event*/)
 {
     moving_offset = QPoint();
+    Q_EMIT signal_stop_moving();
 }
 
 
@@ -171,7 +189,7 @@ void mtkContainerWidget::resize_mouseMoveEvent(QMouseEvent* event)
         newsize.setWidth(100);
     if (newsize.height() < 100)
         newsize.setHeight(100);
-    resize(newsize);
+    resize(newsize/10*10);
 }
 
 void mtkContainerWidget::inserting_components_ended(void)
@@ -180,3 +198,18 @@ void mtkContainerWidget::inserting_components_ended(void)
     title->raise();
 }
 
+void mtkContainerWidget::paintEvent   (QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+    QPainter qpainter(this);
+
+    QColor color = mtk_yellow;
+    if (this->hasFocus())
+        color = Qt::blue;
+    QPen pen = QPen(color, 1, Qt::SolidLine);
+    qpainter.setPen(pen);
+    qpainter.drawLine(4, 4, 4, this->height()-5);
+    qpainter.drawLine(4, 4, this->width()-5, 4);
+    qpainter.drawLine(this->width()-5, 4, this->width()-5, this->height()-5);
+    qpainter.drawLine(4, this->height()-5, this->width()-5, this->height()-5);
+}

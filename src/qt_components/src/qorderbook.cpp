@@ -7,6 +7,7 @@
 
 #include "qeditorder.h"
 #include "qmtk_misc.h"
+#include "qt_components/src/qcommontabledelegate.h"
 
 
 //  pending admin
@@ -90,10 +91,11 @@ public:
     {
         int row = table_widget->rowCount();
         table_widget->insertRow(row);
+
         for (int column=0; column<10; ++column)
         {
             items[column] = new QTableWidgetItem;
-            items[column]->setFlags(Qt::ItemIsEnabled);
+            items[column]->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             items[column]->setBackgroundColor(Qt::white);
             table_widget->setItem(row, column, items[column]);
             if (column == col_price  ||  column == col_quantity  ||  column == col_exec_quantity
@@ -147,9 +149,10 @@ public:
     QColor  get_default_color(void)
     {
         if      (inner_order->serrors() != "")
-            return Qt::red;
+            return mtk_red;
         else if (inner_order->in_market())
-            return Qt::yellow;
+            //return mtk_yellow;
+            return Qt::white;
         else if (inner_order->is_canceled())
             return Qt::gray;
         else if (inner_order->is_full_executed())
@@ -283,12 +286,12 @@ public:
         if (buy_sell == mtk::trd::msg::buy)
         {
             item->setText("buy");
-            item->setBackgroundColor(Qt::green);
+            item->setBackgroundColor(mtk_green);
         }
         else
         {
             item->setText("sell");
-            item->setBackgroundColor(QColor(Qt::red).lighter());
+            item->setBackgroundColor(mtk_red);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }
@@ -364,16 +367,22 @@ QOrderBook::QOrderBook(QWidget *parent) :
         table_widget->setColumnCount(counter);
     }
     table_widget->setHorizontalHeaderLabels(headers_captions);
-    table_widget->verticalHeader()->setDefaultSectionSize(20);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(table_widget);
+    layout->setMargin(0);
     this->setLayout(layout);
     table_widget->verticalHeader()->setVisible(false);
-    table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
-    table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.4);  moved on_new_order
+    //table_widget->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     table_widget->setColumnWidth(col_session_id, 20);
     table_widget->setColumnWidth(col_req_code, 20);
     table_widget->setColumnWidth(col_observs, 400);
+    table_widget->horizontalHeader()->setStretchLastSection(true);
+
+    table_widget->setItemDelegate(new QCommonTableDelegate(table_widget));
+    table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
+    table_widget->setShowGrid(false);
 
     //  setting up actions
     table_widget->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -400,6 +409,8 @@ QOrderBook::QOrderBook(QWidget *parent) :
 
 
 
+
+
     MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_order_ls_new(), on_new_order);
     mtk::trd::trd_cli_ord_book::get_signal_request_hook().connect(on_request_with_user_check);
     //setContentsMargins(0,0,0,0);
@@ -415,6 +426,13 @@ QOrderBook::~QOrderBook()
 void QOrderBook::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 {
     orders->insert(std::make_pair(order_id, mtk::make_cptr(new order_in_qbook(table_widget, order))));
+/*
+    static int size = QFontMetrics(this->font()).height()*1.4;
+    static bool initialized=false;
+    if (!initialized)
+        table_widget->verticalHeader()->setDefaultSectionSize(size);
+    initialized = true;
+*/
 }
 
 
@@ -452,4 +470,10 @@ void QOrderBook::request_cancel(void)
     if (row==-1)        return;
     const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
     mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+}
+
+
+void QOrderBook::update_sizes(void)
+{
+    table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.4);
 }
