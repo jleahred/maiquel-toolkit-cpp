@@ -1,0 +1,107 @@
+= Messages
+
+
+Here we have the messages definitions (and in some cases the state diagrams) from component messages.
+
+
+
+//////////////
+[jle_temp_and_run]
+++++++++++++++++++++++++
+run=[('python generate_messages_doc.py', 'generate_messages_doc.txt', 'wt')]
+
+print ''
+
+file_name='generate_messages_doc.py'
+
+
+# this is our testing script
+import os
+import re
+
+
+
+def process_path(path) :
+    dirList=os.listdir(path)
+    for fname in dirList:
+        full_name = os.path.join(path, fname)
+        if os.path.isdir(full_name)  and  fname != 'tools':
+            process_path (full_name)
+        else :
+            if os.path.splitext(fname)[1] == '.msg' :
+                file_msg = re.match('.*/components/(.*)', full_name)
+                print '== ' + file_msg.group(1) + '\n'
+                ##print full_name +'\n'
+                print '---------'
+                print 'include::' + full_name + '[]'
+                print '---------\n\n'
+    
+    
+    
+   
+process_path('{docdir}/../../../src/components')
+
+
++++++++++++++++++++++++++
+
+include::/tmp/adoc/generate_messages_doc.txt[]
+
+//////////////
+
+
+
+== Common
+
+.Common submessages for several kind of components
+-----
+include::{docdir}/../../../src/components/msg_common.msg[]
+-----
+
+.Support code for common messages
+-----
+include::{docdir}/../../../src/components/msg_common_support.h[]
+-----
+
+
+
+== Trading
+
+.Common submessages for trading
+-----
+include::{docdir}/../../../src/components/trading/msg_trd_common.msg[]
+-----
+
+
+.Support code for trading client messages
+-----
+include::{docdir}/../../../src/components/trading/msg_trd_common_support.h[]
+-----
+
+
+
+.Online trading Limit Orders client messages
+-----
+include::{docdir}/../../../src/components/trading/msg_trd_cli_ls.msg[]
+-----
+
+
+.Orders LS status diagram
+["graphviz", "components_trading_o_ls.png"]
+-----------
+include::{docdir}/../../../src/components/trading/trd_cli_ls.dot[]
+------------
+
+
+
+.Trading Limit Orders OMS messages (added permision filter fields)
+-----
+include::{docdir}/../../../src/components/trading/msg_trd_oms_rq.msg[]
+-----
+
+
+== Prices
+
+.Online prices messages
+-----
+include::{docdir}/../../../src/components/prices/msg_prices.msg[]
+-----

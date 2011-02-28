@@ -60,6 +60,12 @@ include::firebird.adoc[]
 
 include::yaml.adoc[]
 
+:leveloffset: 1
+include::components/messages.adoc[]
+:leveloffset: 0
+
+
+
 include::components/components.adoc[]
 
 
