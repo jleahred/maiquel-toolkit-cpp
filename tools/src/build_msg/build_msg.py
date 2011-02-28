@@ -989,7 +989,6 @@ for file in sys.argv[1:] :
 
 // generated automatically
 // coded last modification:        $CODED_LAST_MODIF
-// pythonscript last modification: $SCRIPT_LAST_MODIF
 
 
 #include "support/nullable.hpp"
@@ -1006,7 +1005,7 @@ $NOT_CONTROL_FIELDS
 
 
 """).substitute(HEADER_GUARD = '__' +FILE_NAME + '__', 
-            CODED_LAST_MODIF=str(time.ctime(os.path.getmtime(ORIG_FILE))), SCRIPT_LAST_MODIF=str(time.ctime(os.path.getmtime(sys.argv[0]))),
+            CODED_LAST_MODIF=str(time.ctime(os.path.getmtime(ORIG_FILE))),   ##SCRIPT_LAST_MODIF=str(time.ctime(os.path.getmtime(sys.argv[0]))),
             NOT_CONTROL_FIELDS = NOT_CONTROL_FIELDS)
 
     content_file_h += '\n'.join(INCLUDES)
@@ -1063,14 +1062,13 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
     content_file_cpp = Template("""
 // generated automatically
 // coded last modification:        $CODED_LAST_MODIF
-// pythonscript last modification: $SCRIPT_LAST_MODIF
 
 
 #include "support/mtk_double.h"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
 
-""").substitute(CODED_LAST_MODIF=str(time.ctime(os.path.getmtime(ORIG_FILE))), SCRIPT_LAST_MODIF=str(time.ctime(os.path.getmtime(sys.argv[0]))))
+""").substitute(CODED_LAST_MODIF=str(time.ctime(os.path.getmtime(ORIG_FILE))))##, SCRIPT_LAST_MODIF=str(time.ctime(os.path.getmtime(sys.argv[0]))))
 
     content_file_cpp += '#include "' + os.path.basename(DEST_FILE_H) + '"'
 

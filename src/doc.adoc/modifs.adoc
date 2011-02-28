@@ -5,6 +5,29 @@ include::../../VERSION[]
 
 
 
+0.46  2011-02-28::
+
+Fixed errors;;
+* System to get new messages was not efficient
+
+New;;
+* QPID 0.8
+** Added headers on +mtk/external/headers/qpid+
+* Qt components
+** container widget and best prices table
+
+
+
+Modif interfaz;;
+* none
+
+Other;;
+* Improved qdepth and qmarginal
+* Compiled on windows with mingw32
+
+
+
+
 
 0.45  2011-01-25::
 

@@ -1,7 +1,6 @@
 
 // generated automatically
 // coded last modification:        Mon Jan 17 23:12:18 2011
-// pythonscript last modification: Thu Feb 10 18:34:23 2011
 
 
 #include "support/mtk_double.h"

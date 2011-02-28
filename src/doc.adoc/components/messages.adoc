@@ -54,12 +54,12 @@ include::/tmp/adoc/generate_messages_doc.txt[]
 
 .Common submessages for several kind of components
 -----
-include::{docdir}/../../../src/components/msg_common.msg[]
+include::../../../src/components/msg_common.msg[]
 -----
 
 .Support code for common messages
 -----
-include::{docdir}/../../../src/components/msg_common_support.h[]
+include::../../../src/components/msg_common_support.h[]
 -----
 
 
@@ -68,34 +68,34 @@ include::{docdir}/../../../src/components/msg_common_support.h[]
 
 .Common submessages for trading
 -----
-include::{docdir}/../../../src/components/trading/msg_trd_common.msg[]
+include::../../../src/components/trading/msg_trd_common.msg[]
 -----
 
 
 .Support code for trading client messages
 -----
-include::{docdir}/../../../src/components/trading/msg_trd_common_support.h[]
+include::../../../src/components/trading/msg_trd_common_support.h[]
 -----
 
 
 
 .Online trading Limit Orders client messages
 -----
-include::{docdir}/../../../src/components/trading/msg_trd_cli_ls.msg[]
+include::../../../src/components/trading/msg_trd_cli_ls.msg[]
 -----
 
 
 .Orders LS status diagram
 ["graphviz", "components_trading_o_ls.png"]
 -----------
-include::{docdir}/../../../src/components/trading/trd_cli_ls.dot[]
+include::../../../src/components/trading/trd_cli_ls.dot[]
 ------------
 
 
 
 .Trading Limit Orders OMS messages (added permision filter fields)
 -----
-include::{docdir}/../../../src/components/trading/msg_trd_oms_rq.msg[]
+include::../../../src/components/trading/msg_trd_oms_rq.msg[]
 -----
 
 
@@ -103,5 +103,5 @@ include::{docdir}/../../../src/components/trading/msg_trd_oms_rq.msg[]
 
 .Online prices messages
 -----
-include::{docdir}/../../../src/components/prices/msg_prices.msg[]
+include::../../../src/components/prices/msg_prices.msg[]
 -----

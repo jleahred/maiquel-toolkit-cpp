@@ -44,24 +44,12 @@ ex_tcp_socket3.exec   lost:-----------------------------------
 ex_udp_socket.exec   lost:-----------------------------------
 ex_yaml.exec   lost:-----------------------------------
 ex_fb.exec   lost:-----------------------------------
-==10331==    definitely lost: 60 bytes in 1 blocks
-==10331==    indirectly lost: 240 bytes in 10 blocks
-==10331==      possibly lost: 0 bytes in 0 blocks
+==7332==    definitely lost: 60 bytes in 1 blocks
+==7332==    indirectly lost: 240 bytes in 10 blocks
+==7332==      possibly lost: 0 bytes in 0 blocks
 ex_qpid1.exec   lost:-----------------------------------
-==10354==    definitely lost: 0 bytes in 0 blocks
-==10354==    indirectly lost: 0 bytes in 0 blocks
-==10354==      possibly lost: 756 bytes in 12 blocks
 ex_qpid2.exec   lost:-----------------------------------
-==10367==    definitely lost: 0 bytes in 0 blocks
-==10367==    indirectly lost: 0 bytes in 0 blocks
-==10367==      possibly lost: 756 bytes in 12 blocks
 ex_qpid_direct_msg.exec   lost:-----------------------------------
-==10379==    definitely lost: 0 bytes in 0 blocks
-==10379==    indirectly lost: 0 bytes in 0 blocks
-==10379==      possibly lost: 756 bytes in 12 blocks
 ex_qpid_msg_parsing.exec   lost:-----------------------------------
-==10396==    definitely lost: 0 bytes in 0 blocks
-==10396==    indirectly lost: 0 bytes in 0 blocks
-==10396==      possibly lost: 878 bytes in 14 blocks
 test_trd_cli_ls.exec   lost:-----------------------------------
 asocmem0.exec   lost:-----------------------------------

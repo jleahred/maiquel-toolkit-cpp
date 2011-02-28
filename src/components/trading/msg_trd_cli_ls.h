@@ -5,7 +5,6 @@
 
 // generated automatically
 // coded last modification:        Tue Jan 25 09:30:13 2011
-// pythonscript last modification: Thu Feb 10 18:34:23 2011
 
 
 #include "support/nullable.hpp"
