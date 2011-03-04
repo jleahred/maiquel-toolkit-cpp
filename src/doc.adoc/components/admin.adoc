@@ -1,0 +1,31 @@
+:cpp: {basebackend@docbook:c++:cpp}
+=== Admin
+
+* This component will work with client and servers
+* It has an internal singleton on implementation (.cpp) but the interfaz has no objetcs, only "functions" call, grouped by namespaces.
+* It will...
+** Send the keep alive
+** Send the enter and exit messages
+** Check the received keep alive
+** Check local fluctuacions
+** Get the +AlarmMsg+ to write in log and send by network
+** Manage the configuration file
+*** The process will access to the configuration file using this component
+** Manage commands and responses
+** etc...
+* That's the interfaz
++
+.components/admin/admin.h
+[source,{cpp}]
+----
+include::../../components/admin/admin.h[]
+----
+
+
+==== example
+
+.examples/onefile/components/admin/ex_admin.cpp
+[source,{cpp}]
+----
+include::../../../examples/onefile/components/admin/ex_admin.cpp[]
+----

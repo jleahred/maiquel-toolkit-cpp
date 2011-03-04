@@ -139,14 +139,15 @@ FIELD_NAME  ::=  id
 FIELD_TAG   ::=  id
 
 
-field_type  ::= 'string'    ##transf2->std::string
-field_type  ::= 'int8'      ##transf2->int8_t
-field_type  ::= 'int16'     ##transf2->int16_t
-field_type  ::= 'int32'     ##transf2->int32_t
-field_type  ::= 'int64'     ##transf2->int64_t
-field_type  ::= 'double'    ##transf2->mtk::Double
-field_type  ::= 'fix_num'   ##transf2->mtk::FixedNumber
-field_type  ::= 'date_time' ##transf2->mtk::DateTime
+field_type  ::= 'string'         ##transf2->std::string
+field_type  ::= 'int8'           ##transf2->int8_t
+field_type  ::= 'int16'          ##transf2->int16_t
+field_type  ::= 'int32'          ##transf2->int32_t
+field_type  ::= 'int64'          ##transf2->int64_t
+field_type  ::= 'double'         ##transf2->mtk::Double
+field_type  ::= 'fix_num'        ##transf2->mtk::FixedNumber
+field_type  ::= 'date_time'      ##transf2->mtk::DateTime
+field_type  ::= 'time_quantity'  ##transf2->mtk::dtTimeQuantity
 
 
 SUB_MSG_TYPE ::= id  ::  SUB_MSG_TYPE

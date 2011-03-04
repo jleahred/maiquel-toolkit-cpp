@@ -1,6 +1,16 @@
+:cpp: {basebackend@docbook:c++:cpp}
 == Components
 
 include::msg_common.adoc[]
+
+
+include::request_response_pattern.adoc[]
+
+
+
+include::admin.adoc[]
+
+
 
 include::trading/msg_trading.adoc[]
 

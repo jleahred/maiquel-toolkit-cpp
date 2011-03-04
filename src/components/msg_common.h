@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Mon Jan 17 22:34:28 2011
+// coded last modification:        Thu Mar  3 09:08:08 2011
 
 
 #include "support/nullable.hpp"
@@ -25,6 +25,74 @@
 
 namespace mtk { 
 namespace msg { 
+
+
+
+
+//-------------------------------
+//      sub_request_id
+//-------------------------------    
+class sub_request_id     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_request_id (    const std::string&  _sess_id,   const std::string&  _req_code );
+    explicit sub_request_id ( const qpid::messaging::Message& message );
+    virtual ~sub_request_id (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_request_id"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_request_id"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    std::string                               sess_id; 
+    std::string                               req_code; 
+
+
+
+    //  subject info
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      sub_request_info
+//-------------------------------    
+class sub_request_info     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_request_info (    const sub_request_id&  _req_id,   const std::string&  _client );
+    explicit sub_request_info ( const qpid::messaging::Message& message );
+    virtual ~sub_request_info (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_request_info"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_request_info"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    sub_request_id                            req_id; 
+    std::string                               client; 
+
+
+
+    //  subject info
+    
+private:
+    std::string check_recomended(void) const;
+};
+
 
 
 
@@ -100,26 +168,25 @@ private:
 
 
 //-------------------------------
-//      sub_request_id
+//      sub_request_r
 //-------------------------------    
-class sub_request_id     
+class sub_request_r     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit sub_request_id (    const std::string&  _sess_id,   const std::string&  _req_code );
-    explicit sub_request_id ( const qpid::messaging::Message& message );
-    virtual ~sub_request_id (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_request_id"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_request_id"; };
+    explicit sub_request_r (    const std::string&  _request_code );
+    explicit sub_request_r ( const qpid::messaging::Message& message );
+    virtual ~sub_request_r (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_request_r"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_request_r"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
     // fields
-    std::string                               sess_id; 
-    std::string                               req_code; 
+    std::string                               request_code; 
 
 
 
@@ -134,58 +201,27 @@ private:
 
 
 //-------------------------------
-//      sub_order_id
+//      sub_r_response
 //-------------------------------    
-class sub_order_id        :  public  sub_request_id
+class sub_r_response     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit sub_order_id (  const sub_request_id&  parent );
-    explicit sub_order_id ( const qpid::messaging::Message& message );
-    virtual ~sub_order_id (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_order_id"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_order_id"; };
+    explicit sub_r_response (    const std::string&  _request_code,   const int16_t&  _sec_number,   const bool&  _is_last_response );
+    explicit sub_r_response ( const qpid::messaging::Message& message );
+    virtual ~sub_r_response (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_r_response"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_r_response"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
     // fields
-
-
-
-    //  subject info
-    
-private:
-    std::string check_recomended(void) const;
-};
-
-
-
-
-
-//-------------------------------
-//      sub_request_info
-//-------------------------------    
-class sub_request_info     
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit sub_request_info (    const sub_request_id&  _req_id,   const std::string&  _client );
-    explicit sub_request_info ( const qpid::messaging::Message& message );
-    virtual ~sub_request_info (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_request_info"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_request_info"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
-    
-
-    // fields
-    sub_request_id                            req_id; 
-    std::string                               client; 
+    std::string                               request_code; 
+    int16_t                                   sec_number; 
+    bool                                      is_last_response; 
 
 
 
@@ -202,6 +238,16 @@ private:
     
     
 //  fordward declarations-----------------------------------------------------------
+    std::ostream& operator<< (std::ostream& o, const sub_request_id & c);
+
+bool operator== (const sub_request_id& a, const sub_request_id& b);
+bool operator!= (const sub_request_id& a, const sub_request_id& b);
+
+    std::ostream& operator<< (std::ostream& o, const sub_request_info & c);
+
+bool operator== (const sub_request_info& a, const sub_request_info& b);
+bool operator!= (const sub_request_info& a, const sub_request_info& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c);
 
 bool operator== (const sub_single_product_code& a, const sub_single_product_code& b);
@@ -212,46 +258,46 @@ bool operator!= (const sub_single_product_code& a, const sub_single_product_code
 bool operator== (const sub_product_code& a, const sub_product_code& b);
 bool operator!= (const sub_product_code& a, const sub_product_code& b);
 
-    std::ostream& operator<< (std::ostream& o, const sub_request_id & c);
+    std::ostream& operator<< (std::ostream& o, const sub_request_r & c);
 
-bool operator== (const sub_request_id& a, const sub_request_id& b);
-bool operator!= (const sub_request_id& a, const sub_request_id& b);
+bool operator== (const sub_request_r& a, const sub_request_r& b);
+bool operator!= (const sub_request_r& a, const sub_request_r& b);
 
-    std::ostream& operator<< (std::ostream& o, const sub_order_id & c);
+    std::ostream& operator<< (std::ostream& o, const sub_r_response & c);
 
-bool operator== (const sub_order_id& a, const sub_order_id& b);
-bool operator!= (const sub_order_id& a, const sub_order_id& b);
+bool operator== (const sub_r_response& a, const sub_r_response& b);
+bool operator!= (const sub_r_response& a, const sub_r_response& b);
 
-    std::ostream& operator<< (std::ostream& o, const sub_request_info & c);
-
-bool operator== (const sub_request_info& a, const sub_request_info& b);
-bool operator!= (const sub_request_info& a, const sub_request_info& b);
-
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_id& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a);
+void copy (sub_request_id& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info& a);
+void copy (sub_request_info& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_single_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_single_product_code& a);
 void copy (sub_single_product_code& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code& a);
 void copy (sub_product_code& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_id& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a);
-void copy (sub_request_id& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_order_id& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a);
-void copy (sub_order_id& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_info& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info& a);
-void copy (sub_request_info& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_r& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_r& a);
+void copy (sub_request_r& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_r_response& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a);
+void copy (sub_r_response& a, const qpid::types::Variant& map);
 
+    sub_request_id  __internal_get_default(sub_request_id *);
+    
+    sub_request_info  __internal_get_default(sub_request_info *);
+    
     sub_single_product_code  __internal_get_default(sub_single_product_code *);
     
     sub_product_code  __internal_get_default(sub_product_code *);
     
-    sub_request_id  __internal_get_default(sub_request_id *);
+    sub_request_r  __internal_get_default(sub_request_r *);
     
-    sub_order_id  __internal_get_default(sub_order_id *);
-    
-    sub_request_info  __internal_get_default(sub_request_info *);
+    sub_r_response  __internal_get_default(sub_r_response *);
     
 
 };   //namespace mtk {
@@ -266,11 +312,12 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_id)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_single_product_code)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_product_code)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_id)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_order_id)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_info)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_r)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_r_response)
 
 
 

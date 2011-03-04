@@ -317,14 +317,14 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
                 [{
                     if (last_confirmation().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
-                                                                mtk::admin::get_request_info(),
+                                                                mtk::admin::client_get_request_info(),
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
                                                                 last_confirmation().Get().confirmated_info.cli_ref)));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
-                                                                mtk::admin::get_request_info(),
+                                                                mtk::admin::client_get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,

@@ -77,6 +77,7 @@ struct qpid_session
 {
     qpid::messaging::Connection         connection;
     qpid::messaging::Session            session;
+    const std::string                   url;
     const std::string                   address;
     qpid::messaging::Sender             sender;
     
@@ -88,9 +89,10 @@ struct qpid_session
             return receiver;
         }
 
-    qpid_session(const std::string& url, const std::string& _address)
-        :  connection   (url)
+    qpid_session(const std::string& _url, const std::string& _address)
+        :  connection   (_url)
          //, session      (connection.newSession())
+         , url          (_url)
          , address      (_address)
          ////, sender       (session.createSender(MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always}")))
          //, sender       (session.createSender(MTK_SS(address<< "; {assert:always, node-properties:{type:topic} }")))
@@ -191,11 +193,16 @@ inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const std::s
 
 inline void handle_qpid_exchange_receiver::check_queue(void)
 {
-        if (receiver.getAvailable() == 0)
+        qpid::messaging::Receiver           local_receiver = receiver;         
+        CountPtr<qpid_session>              local_session  = session;
+        //  this is to protect in case of  handle_qpid_exchange_receiver is out of scope when is processing a message 
+    
+        if (local_receiver.getAvailable() == 0)
             return;
 			
 		qpid::messaging::Message message;
-        while (receiver.fetch(message, qpid::messaging::Duration(0)))
+        /*while*/ (local_receiver.fetch(message, qpid::messaging::Duration(0)))
+            ;
         {
             //  pending, not too much fetches each time
             
@@ -267,7 +274,7 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
             }
             
         }
-        session->session.acknowledge();     //  configure it asynchronous?
+        local_session->session.acknowledge();     //  configure it asynchronous?
 }
 
 

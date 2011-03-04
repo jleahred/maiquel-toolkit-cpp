@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Mon Jan 17 22:34:28 2011
+// coded last modification:        Thu Mar  3 09:08:08 2011
 
 
 #include "support/mtk_double.h"
@@ -36,11 +36,19 @@ namespace msg {
     {
         return mtk::DateTime(mtk::dtYear(2000), mtk::dtMonth(1), mtk::dtDay(1));
     }
-    inline int8_t __internal_get_default_int8_t(int8_t*)
+    inline mtk::dtTimeQuantity __internal_get_default(mtk::dtTimeQuantity*)
+    {
+        return mtk::dtTimeQuantity(mtk::dtHours(0), mtk::dtMinutes(0), mtk::dtSeconds(0), mtk::dtMilliseconds(0));
+    }
+    inline bool __internal_get_default(bool*)
+    {
+        return false;
+    }
+    inline int8_t __internal_get_default(int8_t*)
     {
         return 0;
     }
-    inline int16_t  __internal_get_default_int16_t(int16_t*)
+    inline int16_t  __internal_get_default(int16_t*)
     {
         return 0;
     }
@@ -117,9 +125,29 @@ inline void copy(mtk::DateTime& result, const qpid::types::Variant& v)
     result =  WARNING_do_not_use_it__I_coul_kill_you_for_it__get_DateTime_from_time_quantity(mtk::dtTimeQuantity(mtk::dtTimeQuantitySerialNumber(v.asDouble())));
 }
 
+inline void copy(mtk::dtTimeQuantity& result, const qpid::types::Variant& v)
+{
+    result =  mtk::dtTimeQuantity(mtk::dtTimeQuantitySerialNumber(v.asDouble()));
+}
+
+inline void copy(int8_t& result, const qpid::types::Variant& v)
+{
+    result =  v.asInt8();
+}
+
+inline void copy(int16_t& result, const qpid::types::Variant& v)
+{
+    result =  v.asInt16();
+}
+
 inline void copy(int32_t& result, const qpid::types::Variant& v)
 {
     result =  v.asInt32();
+}
+
+inline void copy(bool& result, const qpid::types::Variant& v)
+{
+    result =  v.asBool();
 }
 
 inline void copy(mtk::Double& result, const qpid::types::Variant& v)
@@ -203,6 +231,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     {
         map[key] = double(a.__WARNING_NOT_CALL_IT_internal_use_GetTimeQuantitySerialNumber().WarningDontDoThisGetInternal());
     }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::dtTimeQuantity& a, const std::string& key)
+    {
+        map[key] = double(a.GetQuantitySerialNumber().WarningDontDoThisGetInternal());
+    }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const int32_t& a, const std::string& key)
     {
@@ -222,6 +254,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     {
         map[key] = int64_t(a);
     }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const bool& a, const std::string& key)
+    {
+        map[key] = bool(a);
+    }
 
 
     template<typename T>
@@ -239,6 +275,46 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //------------------------------------------------------------------------
 //  I M P L E M E N T A T I O N
 //  internal fordward declarations
+
+
+sub_request_id::sub_request_id (   const std::string&  _sess_id,   const std::string&  _req_code)
+    :     sess_id(_sess_id),   req_code(_req_code) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_request_id::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
+sub_request_info::sub_request_info (   const sub_request_id&  _req_id,   const std::string&  _client)
+    :     req_id(_req_id),   client(_client) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_request_info::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
 
 
 sub_single_product_code::sub_single_product_code (   const std::string&  _market,   const std::string&  _product,   const mtk::nullable<std::string>&  _code)
@@ -281,8 +357,8 @@ std::string sub_product_code::check_recomended(void) const
 
 
 
-sub_request_id::sub_request_id (   const std::string&  _sess_id,   const std::string&  _req_code)
-    :     sess_id(_sess_id),   req_code(_req_code) 
+sub_request_r::sub_request_r (   const std::string&  _request_code)
+    :     request_code(_request_code) 
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -292,7 +368,7 @@ sub_request_id::sub_request_id (   const std::string&  _sess_id,   const std::st
 
 
 
-std::string sub_request_id::check_recomended(void) const
+std::string sub_request_r::check_recomended(void) const
 {
     std::string result;
 
@@ -301,8 +377,8 @@ std::string sub_request_id::check_recomended(void) const
 
 
 
-sub_order_id::sub_order_id ( const sub_request_id&  parent)
-    :  sub_request_id(parent) 
+sub_r_response::sub_r_response (   const std::string&  _request_code,   const int16_t&  _sec_number,   const bool&  _is_last_response)
+    :     request_code(_request_code),   sec_number(_sec_number),   is_last_response(_is_last_response) 
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -312,7 +388,7 @@ sub_order_id::sub_order_id ( const sub_request_id&  parent)
 
 
 
-std::string sub_order_id::check_recomended(void) const
+std::string sub_r_response::check_recomended(void) const
 {
     std::string result;
 
@@ -320,24 +396,26 @@ std::string sub_order_id::check_recomended(void) const
 }
 
 
-
-sub_request_info::sub_request_info (   const sub_request_id&  _req_id,   const std::string&  _client)
-    :     req_id(_req_id),   client(_client) 
-    {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
-                    MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-std::string sub_request_info::check_recomended(void) const
+std::ostream& operator<< (std::ostream& o, const sub_request_id & c)
 {
-    std::string result;
+    o << "{ "
 
-    return result;
-}
+        << "sess_id:"<<   c.sess_id << "  "        << "req_code:"<<   c.req_code << "  "
+        << " }";
+    return o;
+};
+
+
+
+std::ostream& operator<< (std::ostream& o, const sub_request_info & c)
+{
+    o << "{ "
+
+        << "req_id:"<< c.req_id<<"  "        << "client:"<<   c.client << "  "
+        << " }";
+    return o;
+};
+
 
 
 std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c)
@@ -362,35 +440,48 @@ std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
 
 
 
-std::ostream& operator<< (std::ostream& o, const sub_request_id & c)
+std::ostream& operator<< (std::ostream& o, const sub_request_r & c)
 {
     o << "{ "
 
-        << "sess_id:"<<   c.sess_id << "  "        << "req_code:"<<   c.req_code << "  "
+        << "request_code:"<<   c.request_code << "  "
         << " }";
     return o;
 };
 
 
 
-std::ostream& operator<< (std::ostream& o, const sub_order_id & c)
+std::ostream& operator<< (std::ostream& o, const sub_r_response & c)
 {
     o << "{ "
-    << "("  <<  static_cast<const sub_request_id&>(c)  << ")" 
 
+        << "request_code:"<<   c.request_code << "  "        << "sec_number:"<<   c.sec_number << "  "        << "is_last_response:"<< c.is_last_response<<"  "
         << " }";
     return o;
 };
 
 
 
-std::ostream& operator<< (std::ostream& o, const sub_request_info & c)
+bool operator== (const sub_request_id& a, const sub_request_id& b)
 {
-    o << "{ "
+    return (          a.sess_id ==  b.sess_id  &&          a.req_code ==  b.req_code  &&   true  );
+};
 
-        << "req_id:"<< c.req_id<<"  "        << "client:"<<   c.client << "  "
-        << " }";
-    return o;
+bool operator!= (const sub_request_id& a, const sub_request_id& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const sub_request_info& a, const sub_request_info& b)
+{
+    return (          a.req_id ==  b.req_id  &&          a.client ==  b.client  &&   true  );
+};
+
+bool operator!= (const sub_request_info& a, const sub_request_info& b)
+{
+    return !(a==b);
 };
 
 
@@ -419,39 +510,111 @@ bool operator!= (const sub_product_code& a, const sub_product_code& b)
 
 
 
-bool operator== (const sub_request_id& a, const sub_request_id& b)
+bool operator== (const sub_request_r& a, const sub_request_r& b)
 {
-    return (          a.sess_id ==  b.sess_id  &&          a.req_code ==  b.req_code  &&   true  );
+    return (          a.request_code ==  b.request_code  &&   true  );
 };
 
-bool operator!= (const sub_request_id& a, const sub_request_id& b)
-{
-    return !(a==b);
-};
-
-
-
-bool operator== (const sub_order_id& a, const sub_order_id& b)
-{
-    return ( (static_cast<const sub_request_id&>(a)   ==  static_cast<const sub_request_id&>(b))  &&    true  );
-};
-
-bool operator!= (const sub_order_id& a, const sub_order_id& b)
+bool operator!= (const sub_request_r& a, const sub_request_r& b)
 {
     return !(a==b);
 };
 
 
 
-bool operator== (const sub_request_info& a, const sub_request_info& b)
+bool operator== (const sub_r_response& a, const sub_r_response& b)
 {
-    return (          a.req_id ==  b.req_id  &&          a.client ==  b.client  &&   true  );
+    return (          a.request_code ==  b.request_code  &&          a.sec_number ==  b.sec_number  &&          a.is_last_response ==  b.is_last_response  &&   true  );
 };
 
-bool operator!= (const sub_request_info& a, const sub_request_info& b)
+bool operator!= (const sub_r_response& a, const sub_r_response& b)
 {
     return !(a==b);
 };
+
+
+
+
+//void  __internal_qpid_fill (sub_request_id& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_request_id& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("sid");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field sess_id on message sub_request_id::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.sess_id, it->second);
+                        //c.sess_id = it->second;
+//   field_type
+
+                    it = mv.find("rqc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field req_code on message sub_request_id::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.req_code, it->second);
+                        //c.req_code = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a)
+{
+    
+
+//  field_type
+        __internal_add2map(map, a.sess_id, std::string("sid"));
+//  field_type
+        __internal_add2map(map, a.req_code, std::string("rqc"));
+
+
+};
+
+
+
+
+
+//void  __internal_qpid_fill (sub_request_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_request_info& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("rid");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field req_id on message sub_request_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.req_id, it->second);
+                        //__internal_qpid_fill(c.req_id, it->second.asMap());
+//   field_type
+
+                    it = mv.find("cli");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field client on message sub_request_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.client, it->second);
+                        //c.client = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info& a)
+{
+    
+
+//  sub_msg_type
+        __internal_add2map(map, a.req_id, std::string("rid"));
+//  field_type
+        __internal_add2map(map, a.client, std::string("cli"));
+
+
+};
+
 
 
 
@@ -557,40 +720,30 @@ if (a.description.HasValue())
 
 
 
-//void  __internal_qpid_fill (sub_request_id& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_request_id& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (sub_request_r& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_request_r& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("sid");
+                    it = mv.find("rc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field sess_id on message sub_request_id::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_code on message sub_request_r::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.sess_id, it->second);
-                        //c.sess_id = it->second;
-//   field_type
-
-                    it = mv.find("rqc");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field req_code on message sub_request_id::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.req_code, it->second);
-                        //c.req_code = it->second;
+                        copy(c.request_code, it->second);
+                        //c.request_code = it->second;
 
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_r& a)
 {
     
 
 //  field_type
-        __internal_add2map(map, a.sess_id, std::string("sid"));
-//  field_type
-        __internal_add2map(map, a.req_code, std::string("rqc"));
+        __internal_add2map(map, a.request_code, std::string("rc"));
 
 
 };
@@ -599,64 +752,50 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a
 
 
 
-//void  __internal_qpid_fill (sub_order_id& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_order_id& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<sub_request_id&>(c), v);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-
-    }
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a)
-{
-    
-//  parent
-__internal_add2map(map, static_cast<const sub_request_id&>(a));
-
-
-
-};
-
-
-
-
-
-//void  __internal_qpid_fill (sub_request_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_request_info& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (sub_r_response& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_r_response& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("rc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_code on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.request_code, it->second);
+                        //c.request_code = it->second;
+//   field_type
+
+                    it = mv.find("sq");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field sec_number on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.sec_number, it->second);
+                        //c.sec_number = it->second;
 //   sub_msg_type
 
-                    it = mv.find("rid");
+                    it = mv.find("lr");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field req_id on message sub_request_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field is_last_response on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.req_id, it->second);
-                        //__internal_qpid_fill(c.req_id, it->second.asMap());
-//   field_type
-
-                    it = mv.find("cli");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field client on message sub_request_info::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.client, it->second);
-                        //c.client = it->second;
+                        copy(c.is_last_response, it->second);
+                        //__internal_qpid_fill(c.is_last_response, it->second.asMap());
 
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a)
 {
     
 
-//  sub_msg_type
-        __internal_add2map(map, a.req_id, std::string("rid"));
 //  field_type
-        __internal_add2map(map, a.client, std::string("cli"));
+        __internal_add2map(map, a.request_code, std::string("rc"));
+//  field_type
+        __internal_add2map(map, a.sec_number, std::string("sq"));
+//  sub_msg_type
+        __internal_add2map(map, a.is_last_response, std::string("lr"));
 
 
 };
@@ -668,10 +807,63 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info&
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+
+qpid::messaging::Message sub_request_id::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  field_type
+//        content["sid"] = this->sess_id;
+        __internal_add2map(content, this->sess_id, std::string("sid"));
+//  field_type
+//        content["rqc"] = this->req_code;
+        __internal_add2map(content, this->req_code, std::string("rqc"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message sub_request_info::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  sub_msg_type
+//        content["rid"] =  qpidmsg_coded_as_qpid_Map(this->req_id);
+        __internal_add2map(content, this->req_id, std::string("rid"));
+//  field_type
+//        content["cli"] = this->client;
+        __internal_add2map(content, this->client, std::string("cli"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
 
 qpid::messaging::Message sub_single_product_code::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
@@ -692,8 +884,8 @@ qpid::messaging::Message sub_single_product_code::qpidmsg_codded_as_qpid_message
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -701,7 +893,7 @@ qpid::messaging::Message sub_single_product_code::qpidmsg_codded_as_qpid_message
 
 qpid::messaging::Message sub_product_code::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
@@ -723,25 +915,22 @@ qpid::messaging::Message sub_product_code::qpidmsg_codded_as_qpid_message (void)
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
 
 
-qpid::messaging::Message sub_request_id::qpidmsg_codded_as_qpid_message (void) const
+qpid::messaging::Message sub_request_r::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
 //  field_type
-//        content["sid"] = this->sess_id;
-        __internal_add2map(content, this->sess_id, std::string("sid"));
-//  field_type
-//        content["rqc"] = this->req_code;
-        __internal_add2map(content, this->req_code, std::string("rqc"));
+//        content["rc"] = this->request_code;
+        __internal_add2map(content, this->request_code, std::string("rc"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
@@ -749,47 +938,28 @@ qpid::messaging::Message sub_request_id::qpidmsg_codded_as_qpid_message (void) c
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
 
 
-qpid::messaging::Message sub_order_id::qpidmsg_codded_as_qpid_message (void) const
+qpid::messaging::Message sub_r_response::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
-    qpid::types::Variant::Map content;
-
-//  parent
-__internal_add2map(content, static_cast<const sub_request_id&>(*this));
-
-
-
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
-
-    
-    qpid::messaging::encode(content, message);
-    return message;
-};
-
-
-
-
-qpid::messaging::Message sub_request_info::qpidmsg_codded_as_qpid_message (void) const
-{
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
+//  field_type
+//        content["rc"] = this->request_code;
+        __internal_add2map(content, this->request_code, std::string("rc"));
+//  field_type
+//        content["sq"] = this->sec_number;
+        __internal_add2map(content, this->sec_number, std::string("sq"));
 //  sub_msg_type
-//        content["rid"] =  qpidmsg_coded_as_qpid_Map(this->req_id);
-        __internal_add2map(content, this->req_id, std::string("rid"));
-//  field_type
-//        content["cli"] = this->client;
-        __internal_add2map(content, this->client, std::string("cli"));
+//        content["lr"] =  qpidmsg_coded_as_qpid_Map(this->is_last_response);
+        __internal_add2map(content, this->is_last_response, std::string("lr"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
@@ -797,13 +967,33 @@ qpid::messaging::Message sub_request_info::qpidmsg_codded_as_qpid_message (void)
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
 
 
+    sub_request_id  __internal_get_default(sub_request_id*)
+    {
+        return sub_request_id(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    sub_request_info  __internal_get_default(sub_request_info*)
+    {
+        return sub_request_info(
+//   sub_msg_type
+   __internal_get_default((sub_request_id*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
     sub_single_product_code  __internal_get_default(sub_single_product_code*)
     {
         return sub_single_product_code(
@@ -828,33 +1018,62 @@ qpid::messaging::Message sub_request_info::qpidmsg_codded_as_qpid_message (void)
             );
     }
     
-    sub_request_id  __internal_get_default(sub_request_id*)
+    sub_request_r  __internal_get_default(sub_request_r*)
     {
-        return sub_request_id(
+        return sub_request_r(
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    sub_r_response  __internal_get_default(sub_r_response*)
+    {
+        return sub_r_response(
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((std::string*)0)
-            );
-    }
-    
-    sub_order_id  __internal_get_default(sub_order_id*)
-    {
-        return sub_order_id(
-__internal_get_default((sub_request_id*)0)
-            );
-    }
-    
-    sub_request_info  __internal_get_default(sub_request_info*)
-    {
-        return sub_request_info(
+   __internal_get_default ((int16_t*)0),
 //   sub_msg_type
-   __internal_get_default((sub_request_id*)0),
-//   field_type
-   __internal_get_default ((std::string*)0)
+   __internal_get_default((bool*)0)
             );
     }
     
+
+sub_request_id::sub_request_id (const qpid::messaging::Message& msg)
+    :  //   field_type
+   sess_id(__internal_get_default((std::string*)0)),
+//   field_type
+   req_code(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+sub_request_info::sub_request_info (const qpid::messaging::Message& msg)
+    :  //   sub_msg_type
+   req_id(__internal_get_default((sub_request_id*)0)),
+//   field_type
+   client(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
 
 sub_single_product_code::sub_single_product_code (const qpid::messaging::Message& msg)
     :  //   field_type
@@ -890,11 +1109,9 @@ sub_product_code::sub_product_code (const qpid::messaging::Message& msg)
 
 
 
-sub_request_id::sub_request_id (const qpid::messaging::Message& msg)
+sub_request_r::sub_request_r (const qpid::messaging::Message& msg)
     :  //   field_type
-   sess_id(__internal_get_default((std::string*)0)),
-//   field_type
-   req_code(__internal_get_default((std::string*)0)) 
+   request_code(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -908,26 +1125,13 @@ sub_request_id::sub_request_id (const qpid::messaging::Message& msg)
 
 
 
-sub_order_id::sub_order_id (const qpid::messaging::Message& msg)
-    :  sub_request_id(msg) 
-    {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
-                MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-sub_request_info::sub_request_info (const qpid::messaging::Message& msg)
-    :  //   sub_msg_type
-   req_id(__internal_get_default((sub_request_id*)0)),
+sub_r_response::sub_r_response (const qpid::messaging::Message& msg)
+    :  //   field_type
+   request_code(__internal_get_default((std::string*)0)),
 //   field_type
-   client(__internal_get_default((std::string*)0)) 
+   sec_number(__internal_get_default((int16_t*)0)),
+//   sub_msg_type
+   is_last_response(__internal_get_default((bool*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

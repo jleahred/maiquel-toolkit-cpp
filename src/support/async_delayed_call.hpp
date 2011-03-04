@@ -115,7 +115,7 @@
 
 
 
-#define ASYNC_DELAYED_CALL_I(METHOD_NAME, PARAM_TYPE, QTY, TIME_INTERVAL, MAX_QUEUE_SIZE) \
+#define MTK_ASYNC_DELAYED_CALL_I(METHOD_NAME, PARAM_TYPE, QTY, TIME_INTERVAL, MAX_QUEUE_SIZE) \
         __Delayed_##METHOD_NAME##QTY##MAX_QUEUE_SIZE(void)                          \
         {                                                           \
             MTK_EXEC_MAX_FREC(mtk::dtTimeQuantity(TIME_INTERVAL)-mtk::dtMilliseconds(5))\

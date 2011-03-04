@@ -10,6 +10,28 @@ END_INIT
 
 
 //---------------------------------------------------------------------
+//        REQUEST NO RESPONSE
+//
+//  as request new order
+//---------------------------------------------------------------------
+
+sub_request_id   [<V:0>]
+{
+    sess_id   (sid) :  string
+    req_code  (rqc) :  string
+}
+
+
+sub_request_info [< V:0 >]   
+{
+    req_id  (rid)  : sub_request_id
+    client  (cli)  : string
+    //...
+}
+
+
+
+//---------------------------------------------------------------------
 //        COMMON TRADING  AND  PRICES
 //---------------------------------------------------------------------
 
@@ -31,17 +53,19 @@ sub_product_code    [<V:0>]
 
 
 
-sub_request_id   [<V:0>]
+//---------------------------------------------------------------------
+//        REQUEST  < - >   RESPONSE
+//---------------------------------------------------------------------
+
+sub_request_r  [<V:0>]
 {
-    sess_id   (sid) :  string
-    req_code  (rqc) :  string
+    request_code       (rc)    :   string
 }
 
-sub_order_id   [< V:0, I:sub_request_id  >]   {}
 
-sub_request_info [< V:0 >]   
+sub_r_response [< V:0 >]   
 {
-    req_id  (rid)  : sub_request_id
-    client  (cli)  : string
-    //...
+    request_code       (rc)     :   string
+    sec_number         (sq)     :   int16       //  it will start with 0
+    is_last_response   (lr)     :   bool
 }

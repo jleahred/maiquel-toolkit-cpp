@@ -1,0 +1,37 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
+=== Request response pattern
+
+You can send and receive multiresponses in an easy way
+
+* Request response submessages are defined on...
++
+.src/components/msg_common.msg
+-------------
+include::../../../src/components/msg_common.msg[]
+-------------
++
+* The example file is using command response (on section commands) defined here
++
+-------------
+include::../../../src/components/admin/msg_admin.msg[]
+-------------
++
+* In order to use this pattern, you will have to isolate the data to be sent in multiresponses on an independent submessage as you can see on +sub_command_rd+ (command response data)
+* The example file is...
++
+.examples/onefile/components/support/request_response.cpp
+[source,{cpp}]
+-----
+include::../../../examples/onefile/components/support/request_response.cpp[]
+-----
+<1> This is de method that will receive the list with full response messages
+<2> Before sending the request (and therefore producing the response) we will susbscribe to the multiresponse +
+    Look that there are no objects to care about their scope
+<3> Here we fill a list with the full response information
+<4> Now we tell the system to send all responses +
+    They will be sent asyncronously and not very fast
++
+* In case of no response, the system will remove the resources (suscription and object)
+* The system will also check the secuences on multiresponses
+* This example requires the +admin+ component

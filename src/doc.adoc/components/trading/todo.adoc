@@ -3,4 +3,4 @@
 * Isolate global support funcions
 * Limit the number of request cancelations per order, or almost, the frecuency
 * Other orders types
-
+** Request response has to provide a mecanism to remove obsoletes request or responses (optimization)

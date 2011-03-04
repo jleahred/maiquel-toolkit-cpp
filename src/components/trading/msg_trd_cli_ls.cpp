@@ -37,11 +37,19 @@ namespace msg {
     {
         return mtk::DateTime(mtk::dtYear(2000), mtk::dtMonth(1), mtk::dtDay(1));
     }
-    inline int8_t __internal_get_default_int8_t(int8_t*)
+    inline mtk::dtTimeQuantity __internal_get_default(mtk::dtTimeQuantity*)
+    {
+        return mtk::dtTimeQuantity(mtk::dtHours(0), mtk::dtMinutes(0), mtk::dtSeconds(0), mtk::dtMilliseconds(0));
+    }
+    inline bool __internal_get_default(bool*)
+    {
+        return false;
+    }
+    inline int8_t __internal_get_default(int8_t*)
     {
         return 0;
     }
-    inline int16_t  __internal_get_default_int16_t(int16_t*)
+    inline int16_t  __internal_get_default(int16_t*)
     {
         return 0;
     }
@@ -118,9 +126,29 @@ inline void copy(mtk::DateTime& result, const qpid::types::Variant& v)
     result =  WARNING_do_not_use_it__I_coul_kill_you_for_it__get_DateTime_from_time_quantity(mtk::dtTimeQuantity(mtk::dtTimeQuantitySerialNumber(v.asDouble())));
 }
 
+inline void copy(mtk::dtTimeQuantity& result, const qpid::types::Variant& v)
+{
+    result =  mtk::dtTimeQuantity(mtk::dtTimeQuantitySerialNumber(v.asDouble()));
+}
+
+inline void copy(int8_t& result, const qpid::types::Variant& v)
+{
+    result =  v.asInt8();
+}
+
+inline void copy(int16_t& result, const qpid::types::Variant& v)
+{
+    result =  v.asInt16();
+}
+
 inline void copy(int32_t& result, const qpid::types::Variant& v)
 {
     result =  v.asInt32();
+}
+
+inline void copy(bool& result, const qpid::types::Variant& v)
+{
+    result =  v.asBool();
 }
 
 inline void copy(mtk::Double& result, const qpid::types::Variant& v)
@@ -204,6 +232,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     {
         map[key] = double(a.__WARNING_NOT_CALL_IT_internal_use_GetTimeQuantitySerialNumber().WarningDontDoThisGetInternal());
     }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::dtTimeQuantity& a, const std::string& key)
+    {
+        map[key] = double(a.GetQuantitySerialNumber().WarningDontDoThisGetInternal());
+    }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const int32_t& a, const std::string& key)
     {
@@ -222,6 +254,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     inline void __internal_add2map (qpid::types::Variant::Map& map, const int64_t& a, const std::string& key)
     {
         map[key] = int64_t(a);
+    }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const bool& a, const std::string& key)
+    {
+        map[key] = bool(a);
     }
 
 
@@ -1443,7 +1479,7 @@ __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
 qpid::messaging::Message sub_position_ls::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
@@ -1463,8 +1499,8 @@ qpid::messaging::Message sub_position_ls::qpidmsg_codded_as_qpid_message (void) 
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1472,7 +1508,7 @@ qpid::messaging::Message sub_position_ls::qpidmsg_codded_as_qpid_message (void) 
 
 qpid::messaging::Message sub_order_ls_confirmated::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
@@ -1498,8 +1534,8 @@ qpid::messaging::Message sub_order_ls_confirmated::qpidmsg_codded_as_qpid_messag
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1507,7 +1543,7 @@ qpid::messaging::Message sub_order_ls_confirmated::qpidmsg_codded_as_qpid_messag
 
 qpid::messaging::Message RQ_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
@@ -1533,8 +1569,8 @@ qpid::messaging::Message RQ_XX_LS::qpidmsg_codded_as_qpid_message (void) const
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1542,7 +1578,7 @@ qpid::messaging::Message RQ_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 
 qpid::messaging::Message RQ_NW_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1555,8 +1591,8 @@ __internal_add2map(content, static_cast<const RQ_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1564,7 +1600,7 @@ __internal_add2map(content, static_cast<const RQ_XX_LS&>(*this));
 
 qpid::messaging::Message RQ_MD_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1577,8 +1613,8 @@ __internal_add2map(content, static_cast<const RQ_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1586,7 +1622,7 @@ __internal_add2map(content, static_cast<const RQ_XX_LS&>(*this));
 
 qpid::messaging::Message RQ_CC_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1599,8 +1635,8 @@ __internal_add2map(content, static_cast<const RQ_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1608,7 +1644,7 @@ __internal_add2map(content, static_cast<const RQ_XX_LS&>(*this));
 
 qpid::messaging::Message CF_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
@@ -1625,8 +1661,8 @@ qpid::messaging::Message CF_XX_LS::qpidmsg_codded_as_qpid_message (void) const
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1634,7 +1670,7 @@ qpid::messaging::Message CF_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 
 qpid::messaging::Message CF_NW_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1647,8 +1683,8 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1656,7 +1692,7 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
 
 qpid::messaging::Message CF_MD_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1669,8 +1705,8 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1678,7 +1714,7 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
 
 qpid::messaging::Message CF_CC_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1691,8 +1727,8 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1700,7 +1736,7 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
 
 qpid::messaging::Message CF_EX_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1716,8 +1752,8 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1725,7 +1761,7 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
 
 qpid::messaging::Message RJ_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 
@@ -1745,8 +1781,8 @@ qpid::messaging::Message RJ_XX_LS::qpidmsg_codded_as_qpid_message (void) const
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1754,7 +1790,7 @@ qpid::messaging::Message RJ_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 
 qpid::messaging::Message RJ_NW_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1767,8 +1803,8 @@ __internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1776,7 +1812,7 @@ __internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
 
 qpid::messaging::Message RJ_MD_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1789,8 +1825,8 @@ __internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1798,7 +1834,7 @@ __internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
 
 qpid::messaging::Message RJ_CC_LS::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 //  parent
@@ -1811,8 +1847,8 @@ __internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 

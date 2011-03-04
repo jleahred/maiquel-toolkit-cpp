@@ -793,7 +793,7 @@ def generate_qpid_coding___codded_as_qpid_message (class_name, class_info, class
     METHOD = """
 qpid::messaging::Message ${class_name}::qpidmsg_codded_as_qpid_message (void) const
 {
-    qpid::messaging::Message message;
+    qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
 $OUTPUT_PARENT
@@ -804,8 +804,8 @@ $OUPUT_PER_FIELD
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, message);
-    return message;
+    qpid::messaging::encode(content, __message);
+    return __message;
 };
 
 
@@ -1099,11 +1099,19 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
     {
         return mtk::DateTime(mtk::dtYear(2000), mtk::dtMonth(1), mtk::dtDay(1));
     }
-    inline int8_t __internal_get_default_int8_t(int8_t*)
+    inline mtk::dtTimeQuantity __internal_get_default(mtk::dtTimeQuantity*)
+    {
+        return mtk::dtTimeQuantity(mtk::dtHours(0), mtk::dtMinutes(0), mtk::dtSeconds(0), mtk::dtMilliseconds(0));
+    }
+    inline bool __internal_get_default(bool*)
+    {
+        return false;
+    }
+    inline int8_t __internal_get_default(int8_t*)
     {
         return 0;
     }
-    inline int16_t  __internal_get_default_int16_t(int16_t*)
+    inline int16_t  __internal_get_default(int16_t*)
     {
         return 0;
     }
@@ -1180,9 +1188,29 @@ inline void copy(mtk::DateTime& result, const qpid::types::Variant& v)
     result =  WARNING_do_not_use_it__I_coul_kill_you_for_it__get_DateTime_from_time_quantity(mtk::dtTimeQuantity(mtk::dtTimeQuantitySerialNumber(v.asDouble())));
 }
 
+inline void copy(mtk::dtTimeQuantity& result, const qpid::types::Variant& v)
+{
+    result =  mtk::dtTimeQuantity(mtk::dtTimeQuantitySerialNumber(v.asDouble()));
+}
+
+inline void copy(int8_t& result, const qpid::types::Variant& v)
+{
+    result =  v.asInt8();
+}
+
+inline void copy(int16_t& result, const qpid::types::Variant& v)
+{
+    result =  v.asInt16();
+}
+
 inline void copy(int32_t& result, const qpid::types::Variant& v)
 {
     result =  v.asInt32();
+}
+
+inline void copy(bool& result, const qpid::types::Variant& v)
+{
+    result =  v.asBool();
 }
 
 inline void copy(mtk::Double& result, const qpid::types::Variant& v)
@@ -1279,6 +1307,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     {
         map[key] = double(a.__WARNING_NOT_CALL_IT_internal_use_GetTimeQuantitySerialNumber().WarningDontDoThisGetInternal());
     }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::dtTimeQuantity& a, const std::string& key)
+    {
+        map[key] = double(a.GetQuantitySerialNumber().WarningDontDoThisGetInternal());
+    }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const int32_t& a, const std::string& key)
     {
@@ -1297,6 +1329,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     inline void __internal_add2map (qpid::types::Variant::Map& map, const int64_t& a, const std::string& key)
     {
         map[key] = int64_t(a);
+    }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const bool& a, const std::string& key)
+    {
+        map[key] = bool(a);
     }
 
 
