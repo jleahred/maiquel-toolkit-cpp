@@ -11,13 +11,13 @@
 #include <QTimer>
 #include "support/timer.h"
 
-
+/*
 mtk::Signal<const mtk::Alarm&>  sig_alarm_msg;
 void mtk::AlarmMsg (const Alarm& alarm)
 {
         sig_alarm_msg.emit(alarm);
 }
-
+*/
 
 MTK_Qt_timer_and_AlarmMsg::MTK_Qt_timer_and_AlarmMsg (QWidget *parent) : QObject(parent)
 {
@@ -28,7 +28,7 @@ MTK_Qt_timer_and_AlarmMsg::MTK_Qt_timer_and_AlarmMsg (QWidget *parent) : QObject
         connect(timer, SIGNAL(timeout()), this, SLOT(check_mtk_timer()));
         timer->start(10);
 
-        sig_alarm_msg.connect(this, &MTK_Qt_timer_and_AlarmMsg::process_signalAlarm);
+        //sig_alarm_msg.connect(this, &MTK_Qt_timer_and_AlarmMsg::process_signalAlarm);
         return;
     }
     MTK_CATCH_CALLFUNCION(std::cerr << , "MTK_Qt_Prepare", "Initializing library")

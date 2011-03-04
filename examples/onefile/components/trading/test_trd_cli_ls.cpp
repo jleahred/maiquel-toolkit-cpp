@@ -225,7 +225,3 @@ int main(void)
 
 
 
-void mtk::AlarmMsg(const mtk::Alarm& error)
-{
-    std::cout << error << std::endl;
-}
