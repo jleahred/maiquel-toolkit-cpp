@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Fri Mar  4 10:20:17 2011
+// coded last modification:        Mon Mar  7 11:34:24 2011
 
 
 #include "support/nullable.hpp"
@@ -323,6 +323,43 @@ private:
 
 
 
+
+//-------------------------------
+//      central_keep_alive
+//-------------------------------    
+class central_keep_alive     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit central_keep_alive (    const sub_admin_header&  _header,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit central_keep_alive ( const qpid::messaging::Message& message );
+    virtual ~central_keep_alive (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "central_keep_alive"; };
+    static  std::string static_get_message_type_as_string(void)        { return "central_keep_alive"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    sub_admin_header                          header; 
+    mtk::dtTimeQuantity                       ka_interval_send; 
+    mtk::dtTimeQuantity                       ka_interval_check; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject ();
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
     
     
     
@@ -367,6 +404,11 @@ bool operator!= (const sub_command_rd& a, const sub_command_rd& b);
 bool operator== (const command_response& a, const command_response& b);
 bool operator!= (const command_response& a, const command_response& b);
 
+    std::ostream& operator<< (std::ostream& o, const central_keep_alive & c);
+
+bool operator== (const central_keep_alive& a, const central_keep_alive& b);
+bool operator!= (const central_keep_alive& a, const central_keep_alive& b);
+
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_admin_header& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_admin_header& a);
 void copy (sub_admin_header& a, const qpid::types::Variant& map);
@@ -391,6 +433,9 @@ void copy (sub_command_rd& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const command_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const command_response& a);
 void copy (command_response& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const central_keep_alive& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const central_keep_alive& a);
+void copy (central_keep_alive& a, const qpid::types::Variant& map);
 
     sub_admin_header  __internal_get_default(sub_admin_header *);
     
@@ -407,6 +452,8 @@ void copy (command_response& a, const qpid::types::Variant& map);
     sub_command_rd  __internal_get_default(sub_command_rd *);
     
     command_response  __internal_get_default(command_response *);
+    
+    central_keep_alive  __internal_get_default(central_keep_alive *);
     
 
 };   //namespace mtk {
@@ -430,6 +477,7 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::alarm)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::command)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::sub_command_rd)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::command_response)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::central_keep_alive)
 
 
 

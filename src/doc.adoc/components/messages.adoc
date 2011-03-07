@@ -63,6 +63,16 @@ include::../../../src/components/msg_common_support.h[]
 -----
 
 
+== Admin
+
+.components/admin/msg_admin.msg
+-----
+include::../../../src/components/admin/msg_admin.msg[]
+-----
+
+
+
+
 
 == Trading
 

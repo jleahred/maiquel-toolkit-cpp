@@ -9,7 +9,7 @@ END_INIT
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//      These messages will work on  ADMCLI   address
+//      These messages will work on  ADMCLI or ADMSRV  addresses
 //      Out messages->    ADM.<cli_code>.<machine_code>....
 //      In  messages->    ADM.CIMD....
 //
@@ -29,7 +29,8 @@ sub_admin_header  [<V:0>]
 //-------------------------------------------------------------------
 //  ENTER, KeepAlive, EXIT
 //
-//  messages from client to cimd system
+//  messages from client to cimd system (monitoring)
+//  or processes to monitoring
 //-------------------------------------------------------------------
 
 
@@ -103,4 +104,20 @@ command_response  [< V:0,  SUBJ:ADM.CIMD.${response_info.request_code}.COMMRES >
     response_data       (rd)    :   sub_command_rd
 }
 
+
+//-------------------------------------------------------------------
+//  central keep alive 
+//
+//  messages from system to clients
+//  or system to server processes
+//
+//  it will be sent by houselight
+//-------------------------------------------------------------------
+
+central_keep_alive  [< V:0, SUBJ:ADM.ALL.KA >]
+{
+    header              (h)     :   sub_admin_header
+    ka_interval_send    (ks)    :   time_quantity
+    ka_interval_check   (kc)    :   time_quantity
+}
 

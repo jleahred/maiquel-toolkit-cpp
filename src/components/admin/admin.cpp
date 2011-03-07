@@ -221,12 +221,11 @@ namespace {
         else
             throw mtk::Alarm(MTK_HERE, "invalid priority code", mtk::alPriorCritic, mtk::alTypeNoPermisions);            
         
-        location        = get_mandatory_property("ADMIN.CLIENT.location");
-        machine         = get_mandatory_property("ADMIN.CLIENT.machine_code");
-
 
         if(role=="client")
         {
+            location        = get_mandatory_property("ADMIN.CLIENT.location");
+            machine         = get_mandatory_property("ADMIN.CLIENT.machine_code");
             session_admin = mtk::admin::get_qpid_session("admin", "ADMCLI");
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
@@ -238,7 +237,11 @@ namespace {
             
         }
         else
-            session_admin = mtk::admin::get_qpid_session("admin", "ADMSRV");
+        {
+            location        = "SYS";
+            machine         = mtk::GetMachineCode();
+            session_admin   = mtk::admin::get_qpid_session("admin", "ADMSRV");
+        }
         
             
         send_enter_and_start_keepalive();

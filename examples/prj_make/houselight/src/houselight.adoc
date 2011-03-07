@@ -1,0 +1,58 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= HouseLight
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-3-7
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This is a very simple and small process
+* This process will send the cental keep alive to servers and clients
+* The centralkeep alive message can be located on...
++
+.components/admin/msg_admin.msg
+[source,{cpp}]
+----
+include::../mtk/src/components/admin/msg_admin.msg[]
+----
+
+
+* The full source code of this process is...
++
+.main.cpp
+[source,{cpp}]
+----
+include::main.cpp[]
+----
+
+
+
+== Document modifications
+* Non aply

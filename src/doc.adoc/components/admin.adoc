@@ -29,3 +29,15 @@ include::../../components/admin/admin.h[]
 ----
 include::../../../examples/onefile/components/admin/ex_admin.cpp[]
 ----
+
+
+
+==== HouseLigh
+
+* As this program is very small, it serves as an admin example
++
+.examples/prj_make/houselight/src/main.cpp
+[source,{cpp}]
+----
+include::../../../examples/prj_make/houselight/src/main.cpp[]
+----

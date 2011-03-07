@@ -25,3 +25,12 @@ include::/tmp/adoc/ls.txt[]
 * There is an especific document on +emarket/doc+ folder and compiled on +mtk/doc+
 
 
+
+=== HouseLight
+
+* This is a simple and small example
+* There are a small document (also as example) +
+  It could serve as document example
+* This program will send the central keep alive to servers and clients
+* See the document in doc and source of document on src
+
