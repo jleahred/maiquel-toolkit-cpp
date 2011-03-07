@@ -5,19 +5,14 @@
 
 #include "qorderbook.h"
 
+
+
 //-------------------------------------------------------------------------------
 //      P R E P A R I N G    M T K
 //-------------------------------------------------------------------------------
 #include <QTimer>
 #include "support/timer.h"
 
-/*
-mtk::Signal<const mtk::Alarm&>  sig_alarm_msg;
-void mtk::AlarmMsg (const Alarm& alarm)
-{
-        sig_alarm_msg.emit(alarm);
-}
-*/
 
 MTK_Qt_timer_and_AlarmMsg::MTK_Qt_timer_and_AlarmMsg (QWidget *parent) : QObject(parent)
 {
@@ -28,7 +23,6 @@ MTK_Qt_timer_and_AlarmMsg::MTK_Qt_timer_and_AlarmMsg (QWidget *parent) : QObject
         connect(timer, SIGNAL(timeout()), this, SLOT(check_mtk_timer()));
         timer->start(10);
 
-        //sig_alarm_msg.connect(this, &MTK_Qt_timer_and_AlarmMsg::process_signalAlarm);
         return;
     }
     MTK_CATCH_CALLFUNCION(std::cerr << , "MTK_Qt_Prepare", "Initializing library")
@@ -61,35 +55,26 @@ void MTK_Qt_timer_and_AlarmMsg::process_signalAlarm (const mtk::Alarm& alarm)   
 
 
 
-/*
-namespace mtk{  namespace msg  {
-sub_request_id   get_request_id (void)
-{
-    static int i=0;
-    static std::string session = MTK_SS("pending" << mtk::dtNowLocal());
-    return sub_request_id(session, MTK_SS("pending"<<++i));
-}
-
-};};  //namespace mkt{  namespace msg  {
-*/
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    MTK_Qt_timer_and_AlarmMsg* mtk_timer_alarmmsg = new MTK_Qt_timer_and_AlarmMsg(this);     // <4>
-    MTK_CONNECT_THIS(mtk_timer_alarmmsg->signalAlarm, OnAlarm);                              // <5>
 
-    ui->leReqInfo_SessionID->setText(MTK_SS(mtk::dtNowLocal()).c_str());
-    ui->leOderID_SessionID->setText(ui->leReqInfo_SessionID->text());
-    ui->leReqInfo_RequestCode->setText("1");
-    ui->leOrderID_RequestCode->setText("1");
+        ui->setupUi(this);
+        MTK_Qt_timer_and_AlarmMsg* mtk_timer_alarmmsg = new MTK_Qt_timer_and_AlarmMsg(this);     // <4>
+        MTK_CONNECT_THIS(mtk_timer_alarmmsg->signalAlarm, OnAlarm);                              // <5>
+
+        ui->leReqInfo_SessionID->setText(MTK_SS(mtk::dtNowLocal()).c_str());
+        ui->leOderID_SessionID->setText(ui->leReqInfo_SessionID->text());
+        ui->leReqInfo_RequestCode->setText("1");
+        ui->leOrderID_RequestCode->setText("1");
 
 
-    //  start listening
-    on_pbListen_clicked();
+        //  start listening
+        on_pbListen_clicked();
+
+        MTK_CONNECT_THIS(*mtk::admin::get_signal_alarm_error_critic(), OnAlarm);
+        MTK_CONNECT_THIS(*mtk::admin::get_signal_alarm_nonerror(),     OnAlarm);
 }
 
 MainWindow::~MainWindow()

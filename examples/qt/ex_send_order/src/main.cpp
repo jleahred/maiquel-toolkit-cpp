@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 
 
+#include "components/admin/admin.h"
+
 
 
 //-------------------------------------------------------------------------------
@@ -41,9 +43,19 @@
 
 int main(int argc, char *argv[])
 {
-    MTK_Qt_ExceptionCatcher a(argc, argv);                  // <3>
-    MainWindow w;
-    a.signalOnAlarm.connect(&w, &MainWindow::OnAlarm);      // <4>
-    w.show();
-    return a.exec();
+
+    try
+    {
+        if(argc==1)
+            mtk::admin::init("../etc/config.cfg");
+        else
+            mtk::admin::init(argv[1]);
+
+        MTK_Qt_ExceptionCatcher a(argc, argv);                  // <3>
+        MainWindow w;
+        a.signalOnAlarm.connect(&w, &MainWindow::OnAlarm);      // <4>
+        w.show();
+        return a.exec();
+    }
+    MTK_CATCH_CALLFUNCION(std::cerr << , MTK_HERE, "initializing application");
 }

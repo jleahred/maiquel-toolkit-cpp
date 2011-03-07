@@ -57,6 +57,10 @@ namespace {
             
             mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, const std::string& /*rqcode*/> >
             register_command(const std::string& group, const std::string& name, const std::string& description);
+
+
+            mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       signal_alarm_error_critic;
+            mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       signal_alarm_nonerror    ;
             
             
             
@@ -64,7 +68,13 @@ namespace {
     //private:
             enum en_process_priority { ppVeryLow, ppLow, ppNormal, ppHigh, ppCritical };
             en_process_priority   process_priority;
-            admin_status() : process_priority(ppVeryLow), ka_interval_send(mtk::dtSeconds(50)), ka_interval_check(mtk::dtSeconds(50)) {}
+            admin_status()  :   
+                                signal_alarm_error_critic(new mtk::Signal<const mtk::Alarm&> ),
+                                signal_alarm_nonerror(new mtk::Signal<const mtk::Alarm&> ),
+                                process_priority(ppVeryLow), 
+                                ka_interval_send(mtk::dtSeconds(50)), 
+                                ka_interval_check(mtk::dtSeconds(50))
+                                {}
     
 
             static admin_status*  admin_status_instance;
@@ -280,9 +290,15 @@ namespace {
     void admin_status::NotifyAlarm (const mtk::Alarm& alarm)
     {
         if(alarm.priority == mtk::alPriorCritic  ||  alarm.priority == mtk::alPriorError)
+        {
             NotifyAlarmErrorCritic(alarm);
+            signal_alarm_error_critic->emit(alarm);
+        }
         else
+        {
             NotifyAlarm_noerror(alarm);
+            signal_alarm_nonerror->emit(alarm);
+        }
     }
 
     void admin_status::__direct_NotifyAlarm (const mtk::Alarm& alarm)
@@ -481,6 +497,18 @@ register_command(const std::string& group, const std::string& name, const std::s
 {
     return admin_status::i()->register_command(group, name, description);
 }
+
+
+mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       get_signal_alarm_error_critic(void)
+{
+    return admin_status::i()->signal_alarm_error_critic;
+}
+
+mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       get_signal_alarm_nonerror    (void)
+{
+    return admin_status::i()->signal_alarm_nonerror;
+}
+
 
 
 

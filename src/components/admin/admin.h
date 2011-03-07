@@ -45,6 +45,15 @@ namespace mtk {
         mtk::msg::sub_request_info          client_get_request_info (void);
         
         
+        mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       get_signal_alarm_error_critic(void);
+        mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       get_signal_alarm_nonerror    (void);
+        
+        
+        
+        
+        
+        
+        
         mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, const std::string& /*rqcode*/> >
                                             register_command(const std::string& group, const std::string& name, const std::string& description);
       
