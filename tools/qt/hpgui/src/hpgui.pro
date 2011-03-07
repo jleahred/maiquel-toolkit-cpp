@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-12-12T22:42:07
 # -------------------------------------------------
-TARGET = bin/hpgui
+TARGET = hpgui
 TEMPLATE = app
 SOURCES +=     *.cpp \
     /home/maiquel/develop/mtk/src/support/*.cpp \

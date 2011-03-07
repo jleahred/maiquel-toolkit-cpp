@@ -1,8 +1,5 @@
-*/bin/*
-*/release/*
-*/debug/*
-*/qtc-gdbmacros/*
-*.pro.user.*
 *.pro.user
 Makefile*
 */*-build-desktop/*
+*/temp/*
+*/bin/

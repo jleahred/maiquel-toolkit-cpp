@@ -1,3 +1,4 @@
 *-build-desktop/
 *.pro.user
-temp/
+*temp/
+*bin/

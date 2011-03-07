@@ -2,7 +2,7 @@
 #include "ui_monitor.h"
 
 
-#include "../../../../tools/qt/logview/logview/highlighter.h"
+#include "../../../../tools/qt/logview/src/highlighter.h"
 #include "support/mtk_string.h"
 #include "components/admin/msg_admin.h"
 #include "components/request_response.hpp"

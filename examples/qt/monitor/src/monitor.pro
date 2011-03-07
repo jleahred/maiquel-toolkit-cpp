@@ -12,10 +12,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         monitor.cpp \
-        ../../../../tools/qt/logview/logview/highlighter.cpp
+        ../../../../tools/qt/logview/src/highlighter.cpp
 
 HEADERS  += monitor.h \
-        ../../../../tools/qt/logview/logview/highlighter.h
+        ../../../../tools/qt/logview/src/highlighter.h
 
 FORMS    += monitor.ui
 
