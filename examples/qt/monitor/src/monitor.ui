@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>903</width>
-    <height>650</height>
+    <width>959</width>
+    <height>676</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
-    <string notr="true">font: 11pt &quot;Monospace&quot;;</string>
+    <string notr="true">font: 9pt &quot;Monospace&quot;;</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -40,7 +40,7 @@
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <widget class="QListWidget" name="clientlist">
+           <widget class="QListProcesses" name="clientlist">
             <property name="alternatingRowColors">
              <bool>true</bool>
             </property>
@@ -60,29 +60,25 @@
             </property>
             <widget class="QTabWidget" name="tabWidget_2">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
-             <widget class="QWidget" name="tab_3">
+             <widget class="QWidget" name="tab_5">
               <attribute name="title">
-               <string>alarms</string>
+               <string>ERRORS</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_2">
                <item>
-                <widget class="QSplitter" name="splitter">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <widget class="QPlainTextEdit" name="logErrorCli">
-                  <property name="lineWrapMode">
-                   <enum>QPlainTextEdit::NoWrap</enum>
-                  </property>
-                 </widget>
-                 <widget class="QPlainTextEdit" name="logAllCli">
-                  <property name="lineWrapMode">
-                   <enum>QPlainTextEdit::NoWrap</enum>
-                  </property>
-                 </widget>
-                </widget>
+                <widget class="QTableAlarms" name="alarms_client_error"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_3">
+              <attribute name="title">
+               <string>all</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <item>
+                <widget class="QTableAlarms" name="alarms_client_all"/>
                </item>
               </layout>
              </widget>
@@ -129,13 +125,95 @@
         <attribute name="title">
          <string>servers</string>
         </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QSplitter" name="split_server">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QListProcesses" name="serverlist">
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::NoSelection</enum>
+            </property>
+            <property name="selectionRectVisible">
+             <bool>true</bool>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QSplitter" name="splitter_client2_3">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <widget class="QTabWidget" name="tabWidget_4">
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <widget class="QWidget" name="tab_9">
+              <attribute name="title">
+               <string>ERRORS</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <widget class="QTableAlarms" name="alarms_server_error"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_10">
+              <attribute name="title">
+               <string>all</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_10">
+               <item>
+                <widget class="QTableAlarms" name="alarms_server_all"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="tab_11">
+              <attribute name="title">
+               <string>commands</string>
+              </attribute>
+              <layout class="QVBoxLayout" name="verticalLayout_11">
+               <item>
+                <widget class="QSplitter" name="splitter_client_command_3">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <widget class="QPlainTextEditCommand" name="server_command">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(255, 255, 192);</string>
+                  </property>
+                  <property name="lineWrapMode">
+                   <enum>QPlainTextEdit::NoWrap</enum>
+                  </property>
+                 </widget>
+                 <widget class="QPlainTextEdit" name="server_command_response">
+                  <property name="lineWrapMode">
+                   <enum>QPlainTextEdit::NoWrap</enum>
+                  </property>
+                 </widget>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
-      <widget class="QPlainTextEdit" name="log">
-       <property name="lineWrapMode">
-        <enum>QPlainTextEdit::NoWrap</enum>
-       </property>
-      </widget>
+      <widget class="QTableAlarms" name="alarms_all_errors"/>
      </widget>
     </item>
    </layout>
@@ -145,18 +223,10 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>903</width>
+     <width>959</width>
      <height>21</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
@@ -165,7 +235,17 @@
   <customwidget>
    <class>QPlainTextEditCommand</class>
    <extends>QPlainTextEdit</extends>
-   <header>monitor.h</header>
+   <header>qplaintexteditcommand.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QListProcesses</class>
+   <extends>QListWidget</extends>
+   <header>qlistprocesses.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QTableAlarms</class>
+   <extends>QTableWidget</extends>
+   <header>qtablealarms.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

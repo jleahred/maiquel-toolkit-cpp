@@ -22,19 +22,34 @@ include::../../components/admin/admin.h[]
 ----
 
 
-==== example
+==== Examples
 
+* Source code
++
 .examples/onefile/components/admin/ex_admin.cpp
 [source,{cpp}]
 ----
 include::../../../examples/onefile/components/admin/ex_admin.cpp[]
+----
++
+* Configuration file for client
++
+.examples/onefile/components/admin/config.cfg
+----
+include::../../../examples/onefile/components/admin/config.cfg[]
+----
+* Configuration file for server
++
+.examples/prj_make/houselight/etc/config.cfg
+----
+include::../../../examples/prj_make/houselight/etc/config.cfg[]
 ----
 
 
 
 ==== HouseLigh
 
-* As this program is very small, it serves as an admin example
+* As this program is very small, it serves as an admin example working on client side
 +
 .examples/prj_make/houselight/src/main.cpp
 [source,{cpp}]

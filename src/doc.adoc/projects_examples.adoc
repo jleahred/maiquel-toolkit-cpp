@@ -1,3 +1,4 @@
+:cpp: {basebackend@docbook:c++:cpp}
 == projects_examples
 
 On +examples+ dir we have some full projects examples
@@ -33,4 +34,10 @@ include::/tmp/adoc/ls.txt[]
   It could serve as document example
 * This program will send the central keep alive to servers and clients
 * See the document in doc and source of document on src
++
+.examples/prj_make/houselight/src/main.cpp
+[source,{cpp}]
+----
+include::../../examples/prj_make/houselight/src/main.cpp[]
+----
 

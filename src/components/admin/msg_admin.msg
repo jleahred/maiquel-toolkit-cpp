@@ -17,11 +17,12 @@ END_INIT
 
 
 
-sub_admin_header  [<V:0>]
+sub_process_location  [<V:0>]
 {
-    location    (lc)  : string
-    machine     (mc)  : string
-    sent        (snt) : date_time
+    location        (lc)  : string
+    machine         (mc)  : string
+    process_name    (pn)  : string
+    process_uuid    (pi)  : string
 }
 
 
@@ -37,7 +38,7 @@ sub_admin_header  [<V:0>]
 
 enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 {
-    header              (h)     :   sub_admin_header
+    process_location    (pl)    :   sub_process_location
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }
@@ -45,14 +46,14 @@ enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 
 keep_alive  [< V:0, SUBJ:ADM.CIMD.KA >]
 {
-    header              (h)     :   sub_admin_header
+    process_location    (pl)    :   sub_process_location
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }
 
 exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 {
-    header              (h)     :   sub_admin_header
+    process_location    (pl)    :   sub_process_location
     reason              (r)     :   string
 }
 
@@ -65,7 +66,7 @@ exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 
 alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 {
-    header              (h)     :   sub_admin_header
+    process_location    (pl)    :   sub_process_location
     code_source         (cs)    :   string
     message             (ms)    :   string
     priority            (p)     :   mtk::alEnPriority
@@ -83,22 +84,21 @@ alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 //  COMMANDS
 //-------------------------------------------------------------------
 
-command  [< V:0, SUBJ:ADM.${header_destination.location}.${header_destination.machine}.COMMAND >]
+command  [< V:0, SUBJ:ADM.${proc_loc__destination.location}.${proc_loc__destination.machine}.${proc_loc__destination.process_name}.${proc_loc__destination.process_uuid}.COMMAND >]
 {
-    request_code        (ri)    :   mtk::msg::sub_request_r
+    request_code            (ri)    :   mtk::msg::sub_request_r
 
-    header_destination  (h)     :   sub_admin_header
-    command_line        (c)     :   string                  //  command and params
+    proc_loc__destination   (pd)    :   sub_process_location
+    command_line            (c)     :   string                  //  command and params
 }
 
 
 sub_command_rd [< V:0 >]
 {
-    header              (h)     :   sub_admin_header
     text                (t)     :   string
 }
 
-command_response  [< V:0,  SUBJ:ADM.CIMD.${response_info.request_code}.COMMRES >]
+command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_code} >]
 {
     response_info       (ri)    :   mtk::msg::sub_r_response
     response_data       (rd)    :   sub_command_rd
@@ -116,7 +116,7 @@ command_response  [< V:0,  SUBJ:ADM.CIMD.${response_info.request_code}.COMMRES >
 
 central_keep_alive  [< V:0, SUBJ:ADM.ALL.KA >]
 {
-    header              (h)     :   sub_admin_header
+    process_location    (pl)    :   sub_process_location
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }

@@ -4,13 +4,13 @@
  *      * sending the enter, exit and keepalive messages
  *      * giving the connections to other pieces
  *      * sending the alarms to the network
- * 
  *      * dealing with admin commands
+ * 
+ *      * basic preconfigured commands
+ *      * sending alarm stats frecuently with stats
  *      * receiving and monitoring the central keepalive
  *      * local fluct control
  *      * generating logs files
- *      * sending alarm stats frecuently with stats
- *      * basic preconfigured commands
  * 
  * */
 
@@ -26,27 +26,40 @@
 
 
 #include "components/msg_common.h"
+#include "components/admin/msg_admin.h"
+
 
 
 namespace mtk {
       namespace admin {
           
-        void                                init(const std::string& config_file);  
+        void                                                init            (const std::string& config_file_name,
+                                                                             const std::string& app_name,
+                                                                             const std::string& app_version,
+                                                                             const std::string& app_description );  
         
-        mtk::CountPtr< mtk::qpid_session >  get_qpid_session(const std::string&  url_for, const std::string& address);
+        mtk::CountPtr< mtk::qpid_session >                  get_qpid_session(const std::string&  url_for, const std::string& address);
         
-        std::string                         get_location        (void);
+        /*std::string                         get_location        (void);
         std::string                         get_machine         (void);
-        std::string                         get_session         (void);     //  with server role, this is the process name
-        std::string                         get_url             (const std::string& url_for);
+         * */
+        mtk::admin::msg::sub_process_location               get_process_location            (void);
+         
+        std::string                                         get_session                     (void);     //  with server role, this is the process name
+        
+        
+        std::string                                         get_url                         (const std::string& url_for);
 
-        std::string                         get_request_code    (void);     
+        std::string                                         get_request_code                (void);     
 
-        mtk::msg::sub_request_info          client_get_request_info (void);
+        mtk::msg::sub_request_info                          client_get_request_info         (void);
         
         
-        mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       get_signal_alarm_error_critic(void);
-        mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       get_signal_alarm_nonerror    (void);
+        mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >      get_signal_alarm_error_critic   (void);
+        mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >      get_signal_alarm_nonerror       (void);
+        
+        mtk::CountPtr<mtk::Signal<const mtk::dtTimeQuantity&> > get_signal_no_receiving_messages(void);
+        mtk::CountPtr<mtk::Signal<> >                           get_signal_receiving_messages_back(void);
         
         
         
@@ -54,8 +67,14 @@ namespace mtk {
         
         
         
-        mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, const std::string& /*rqcode*/> >
-                                            register_command(const std::string& group, const std::string& name, const std::string& description);
+        
+        
+        
+        mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*response lines*/> >
+                                            register_command(   const std::string& group, 
+                                                                const std::string& name, 
+                                                                const std::string& description, 
+                                                                bool confirmation_requiered=false);
       
       };     //namespace admin {
       

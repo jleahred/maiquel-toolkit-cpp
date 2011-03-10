@@ -61,8 +61,55 @@ namespace mtk{
     
 
 
-static long qpid_numMessgesReceived;
-inline long GetTibcoKiloNumMessagesReceived(void) { return qpid_numMessgesReceived/1000; };
+    
+//  stats info
+static long __stats_qpid_num_messages_received;
+inline long stats_qpid_num_messages_received(void) { return __stats_qpid_num_messages_received; };
+//inline long GetQpidKiloNumMessagesReceived(void) { return qpid_numMessgesReceived/1000; };
+static long __stats_qpid_num_messages_sent;
+inline long stats_qpid_num_messages_sent(void) { return __stats_qpid_num_messages_sent; };
+//inline long GetQpidKiloNumMessagesSent(void) { return qpid_numMessgesSent/1000; };
+static long __stats_qpid_num_created_suscriptions;
+inline long stats_qpid_num_created_suscriptions(void) { return __stats_qpid_num_created_suscriptions; };
+static long __stats_qpid_num_deleted_suscriptions;
+inline long stats_qpid_num_deleted_suscriptions(void) { return __stats_qpid_num_deleted_suscriptions; };
+
+static long __stats_qpid_num_created_suscriptions_no_parsing;
+inline long stats_qpid_num_created_suscriptions_no_parsing(void) { return __stats_qpid_num_created_suscriptions_no_parsing; };
+static long __stats_qpid_num_deleted_suscriptions_no_parsing;
+inline long stats_qpid_num_deleted_suscriptions_no_parsing(void) { return __stats_qpid_num_deleted_suscriptions_no_parsing; };
+
+
+static long __stats_qpid_num_created_sessions;
+inline long stats_qpid_num_created_sessions(void) { return __stats_qpid_num_created_sessions; };
+static long __stats_qpid_num_deleted_sessions;
+inline long stats_qpid_num_deleted_sessions(void) { return __stats_qpid_num_deleted_sessions; };
+
+
+inline std::string get_mtk_qpid_stats(void) {
+    return MTK_SS(
+        "mtkqpid_msgrecv:  " << stats_qpid_num_messages_received() << std::endl << 
+        "mtkqpid_msgsent:  " << stats_qpid_num_messages_sent() << std::endl << 
+        
+        "mtkqpid_newsuscr: " << stats_qpid_num_created_suscriptions() << std::endl << 
+        "mtkqpid_delsuscr: " << stats_qpid_num_deleted_suscriptions() << std::endl << 
+        
+        "mtkqpid_newsusnp: " << stats_qpid_num_created_suscriptions_no_parsing() << std::endl << 
+        "mtkqpid_delsusnp: " << stats_qpid_num_deleted_suscriptions_no_parsing() << std::endl << 
+        
+        "mtkqpid_newsess:  " << stats_qpid_num_created_sessions() << std::endl << 
+        "mtkqpid_delsess:  " << stats_qpid_num_deleted_sessions() 
+        
+    );
+}
+
+//  stats info
+
+
+static mtk::DateTime  __last_received_message=mtk::dtNowLocal();
+inline mtk::DateTime  get_last_received_message(void) { return __last_received_message; };
+
+
 
     
     
@@ -101,8 +148,9 @@ struct qpid_session
             session = connection.createSession();
             sender = session.createSender(MTK_SS(address<< "; {assert:always, node:{type:topic} }"));
             sender.setCapacity(1000);     
+            ++__stats_qpid_num_created_sessions;
     }
-    ~qpid_session() {session.close(); };
+    ~qpid_session() {session.close();   --__stats_qpid_num_deleted_sessions;  }
 };
 
 //--------------------------------------------------------------------
@@ -113,6 +161,7 @@ struct qpid_session
     template<typename T>
     void send_message (mtk::CountPtr< mtk::qpid_session > qpid_session, const T& message, std::string subject = "")
     {
+        ++__stats_qpid_num_messages_sent;
         if (subject == "")
             subject = message.get_out_subject();
         //qpid::messaging::Sender sender = qpid_session->createSender(subject);
@@ -141,7 +190,7 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
     
     public:
         explicit handle_qpid_exchange_receiver(const std::string& url, const std::string& address, const std::string& filter);
-        ~handle_qpid_exchange_receiver(void) {};
+        ~handle_qpid_exchange_receiver(void) { ++__stats_qpid_num_deleted_suscriptions_no_parsing; }
 
         CountPtr< Signal<const qpid::messaging::Message&> >       signalMessage;
 
@@ -184,11 +233,13 @@ inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const std::s
     :     signalMessage(mtk::make_cptr(new Signal<const qpid::messaging::Message&>))
         , session(get_from_factory<qpid_session>(mtk::make_tuple(url, address)))
 {
+    ++__stats_qpid_num_created_suscriptions_no_parsing;
     //std::string session_config = MTK_SS(address<< "; {assert:always, create:always}");
     //std::string session_config = MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always, filter:[control, "<< filter <<"]}");
     receiver = session->createReceiver(filter);
 
     MTK_TIMER_1C(check_queue);
+    
 }
 
 inline void handle_qpid_exchange_receiver::check_queue(void)
@@ -201,12 +252,13 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
             return;
 			
 		qpid::messaging::Message message;
-        /*while*/ (local_receiver.fetch(message, qpid::messaging::Duration(0)))
-            ;
+        while(local_receiver.fetch(message, qpid::messaging::Duration(0)))
         {
             //  pending, not too much fetches each time
             
-            ++qpid_numMessgesReceived;
+            ++__stats_qpid_num_messages_received;
+            __last_received_message = mtk::dtNowLocal();
+            
             try
             {
                 //  copiamos el estado que nos podría hacer falta por si acaso...
@@ -290,7 +342,7 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
     
     public:
         explicit handle_qpid_exchange_receiverMT(const std::string& url, const std::string& address, const std::string& filter);
-        ~handle_qpid_exchange_receiverMT(void) {};
+        ~handle_qpid_exchange_receiverMT(void) {  ++__stats_qpid_num_deleted_suscriptions;  }
 
         CountPtr< Signal<const MESSAGE_TYPE&> >       signalMessage;
 
@@ -308,6 +360,7 @@ inline handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::handle_qpid_exchange_recei
     :     signalMessage(mtk::make_cptr(new Signal<const MESSAGE_TYPE&>()))
         , hqpid_receiver( get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(url, address, filter)) )
 {
+    ++__stats_qpid_num_created_suscriptions;
     MTK_CONNECT_THIS(*(hqpid_receiver->signalMessage), on_message)
 }
 

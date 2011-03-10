@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Mon Mar  7 11:34:24 2011
+// coded last modification:        Thu Mar 10 15:33:44 2011
 
 
 #include "support/nullable.hpp"
@@ -32,27 +32,28 @@ namespace msg {
 
 
 //-------------------------------
-//      sub_admin_header
+//      sub_process_location
 //-------------------------------    
-class sub_admin_header     
+class sub_process_location     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit sub_admin_header (    const std::string&  _location,   const std::string&  _machine,   const mtk::DateTime&  _sent );
-    explicit sub_admin_header ( const qpid::messaging::Message& message );
-    virtual ~sub_admin_header (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_admin_header"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_admin_header"; };
+    explicit sub_process_location (    const std::string&  _location,   const std::string&  _machine,   const std::string&  _process_name,   const std::string&  _process_uuid );
+    explicit sub_process_location ( const qpid::messaging::Message& message );
+    virtual ~sub_process_location (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_process_location"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_process_location"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
     // fields
     std::string                               location; 
     std::string                               machine; 
-    mtk::DateTime                             sent; 
+    std::string                               process_name; 
+    std::string                               process_uuid; 
 
 
 
@@ -76,7 +77,7 @@ public:
 
     
     // constructor
-    explicit enter (    const sub_admin_header&  _header,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit enter (    const sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit enter ( const qpid::messaging::Message& message );
     virtual ~enter (){};
     virtual std::string get_message_type_as_string       (void) const  { return "enter"; };
@@ -85,7 +86,7 @@ public:
     
 
     // fields
-    sub_admin_header                          header; 
+    sub_process_location                      process_location; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
 
@@ -113,7 +114,7 @@ public:
 
     
     // constructor
-    explicit keep_alive (    const sub_admin_header&  _header,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit keep_alive (    const sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit keep_alive ( const qpid::messaging::Message& message );
     virtual ~keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "keep_alive"; };
@@ -122,7 +123,7 @@ public:
     
 
     // fields
-    sub_admin_header                          header; 
+    sub_process_location                      process_location; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
 
@@ -150,7 +151,7 @@ public:
 
     
     // constructor
-    explicit exit (    const sub_admin_header&  _header,   const std::string&  _reason );
+    explicit exit (    const sub_process_location&  _process_location,   const std::string&  _reason );
     explicit exit ( const qpid::messaging::Message& message );
     virtual ~exit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "exit"; };
@@ -159,7 +160,7 @@ public:
     
 
     // fields
-    sub_admin_header                          header; 
+    sub_process_location                      process_location; 
     std::string                               reason; 
 
 
@@ -186,7 +187,7 @@ public:
 
     
     // constructor
-    explicit alarm (    const sub_admin_header&  _header,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
+    explicit alarm (    const sub_process_location&  _process_location,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
     explicit alarm ( const qpid::messaging::Message& message );
     virtual ~alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "alarm"; };
@@ -195,7 +196,7 @@ public:
     
 
     // fields
-    sub_admin_header                          header; 
+    sub_process_location                      process_location; 
     std::string                               code_source; 
     std::string                               message; 
     mtk::alEnPriority                         priority; 
@@ -227,7 +228,7 @@ public:
 
     
     // constructor
-    explicit command (    const mtk::msg::sub_request_r&  _request_code,   const sub_admin_header&  _header_destination,   const std::string&  _command_line );
+    explicit command (    const mtk::msg::sub_request_r&  _request_code,   const sub_process_location&  _proc_loc__destination,   const std::string&  _command_line );
     explicit command ( const qpid::messaging::Message& message );
     virtual ~command (){};
     virtual std::string get_message_type_as_string       (void) const  { return "command"; };
@@ -237,13 +238,13 @@ public:
 
     // fields
     mtk::msg::sub_request_r                   request_code; 
-    sub_admin_header                          header_destination; 
+    sub_process_location                      proc_loc__destination; 
     std::string                               command_line; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& header_destination_location,const std::string& header_destination_machine);
+    static std::string  get_in_subject (const std::string& proc_loc__destination_location,const std::string& proc_loc__destination_machine,const std::string& proc_loc__destination_process_name,const std::string& proc_loc__destination_process_uuid);
 virtual std::string  get_out_subject (void) const;
 
 private:
@@ -264,7 +265,7 @@ public:
 
     
     // constructor
-    explicit sub_command_rd (    const sub_admin_header&  _header,   const std::string&  _text );
+    explicit sub_command_rd (    const std::string&  _text );
     explicit sub_command_rd ( const qpid::messaging::Message& message );
     virtual ~sub_command_rd (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_command_rd"; };
@@ -273,7 +274,6 @@ public:
     
 
     // fields
-    sub_admin_header                          header; 
     std::string                               text; 
 
 
@@ -334,7 +334,7 @@ public:
 
     
     // constructor
-    explicit central_keep_alive (    const sub_admin_header&  _header,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit central_keep_alive (    const sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit central_keep_alive ( const qpid::messaging::Message& message );
     virtual ~central_keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "central_keep_alive"; };
@@ -343,7 +343,7 @@ public:
     
 
     // fields
-    sub_admin_header                          header; 
+    sub_process_location                      process_location; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
 
@@ -364,10 +364,10 @@ private:
     
     
 //  fordward declarations-----------------------------------------------------------
-    std::ostream& operator<< (std::ostream& o, const sub_admin_header & c);
+    std::ostream& operator<< (std::ostream& o, const sub_process_location & c);
 
-bool operator== (const sub_admin_header& a, const sub_admin_header& b);
-bool operator!= (const sub_admin_header& a, const sub_admin_header& b);
+bool operator== (const sub_process_location& a, const sub_process_location& b);
+bool operator!= (const sub_process_location& a, const sub_process_location& b);
 
     std::ostream& operator<< (std::ostream& o, const enter & c);
 
@@ -409,9 +409,9 @@ bool operator!= (const command_response& a, const command_response& b);
 bool operator== (const central_keep_alive& a, const central_keep_alive& b);
 bool operator!= (const central_keep_alive& a, const central_keep_alive& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_admin_header& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_admin_header& a);
-void copy (sub_admin_header& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_process_location& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_location& a);
+void copy (sub_process_location& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const enter& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const enter& a);
 void copy (enter& a, const qpid::types::Variant& map);
@@ -437,7 +437,7 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const central_keep
 void __internal_add2map (qpid::types::Variant::Map& map, const central_keep_alive& a);
 void copy (central_keep_alive& a, const qpid::types::Variant& map);
 
-    sub_admin_header  __internal_get_default(sub_admin_header *);
+    sub_process_location  __internal_get_default(sub_process_location *);
     
     enter  __internal_get_default(enter *);
     
@@ -469,7 +469,7 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::sub_admin_header)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::sub_process_location)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::enter)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::keep_alive)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::exit)

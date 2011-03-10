@@ -1167,6 +1167,7 @@ std::ostream& operator<< (std::ostream& os, const DateTime& dt)
     if (dt.GetMillisecsDay().WarningDontDoThisGetInternal() != 0)
     {
         os << " ";
+        os.width(2); os.fill('0');
         os << dt.GetHours().WarningDontDoThisGetInternal() << ":";
         os.width(2); os.fill('0');
         os << dt.GetMinutes().WarningDontDoThisGetInternal() << ":";

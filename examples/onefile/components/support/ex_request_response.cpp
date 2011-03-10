@@ -7,6 +7,16 @@
 
 
 
+namespace
+{
+
+    const char*   APP_NAME          = "ex_request_response";
+    const char*   APP_VER           = "0.1";
+    const char*   APP_DESCRIPTION   = "Example file working with request response pattern";
+}
+
+
+
 
 void stop(const int&)
 {
@@ -43,9 +53,7 @@ void init_request_response(const int&)
     //  filling response list
     mtk::list<mtk::admin::msg::sub_command_rd>  data_list;
     for(int i=0; i < 100; ++i)
-        data_list.push_back(mtk::admin::msg::sub_command_rd(
-                                mtk::admin::msg::sub_admin_header(mtk::admin::get_location(), mtk::admin::get_machine(), mtk::dtNowLocal()),
-                                MTK_SS("response line  "  <<  i << std::endl)));
+        data_list.push_back(mtk::admin::msg::sub_command_rd(mtk::admin::get_process_location(), MTK_SS("response line  "  <<  i << std::endl)));
 
     //  sending multiresponses in asyncronous way           <4>
     MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::command_response, 
@@ -61,7 +69,7 @@ int main(int /*argc*/, char ** /*argv*/)
 {
     try
     {
-        mtk::admin::init("./config.cfg");
+        mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION);
     
     
     

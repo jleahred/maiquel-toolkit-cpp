@@ -20,10 +20,10 @@ include::../../../src/components/admin/msg_admin.msg[]
 * In order to use this pattern, you will have to isolate the data to be sent in multiresponses on an independent submessage as you can see on +sub_command_rd+ (command response data)
 * The example file is...
 +
-.examples/onefile/components/support/request_response.cpp
+.examples/onefile/components/support/ex_request_response.cpp
 [source,{cpp}]
 -----
-include::../../../examples/onefile/components/support/request_response.cpp[]
+include::../../../examples/onefile/components/support/ex_request_response.cpp[]
 -----
 <1> This is de method that will receive the list with full response messages
 <2> Before sending the request (and therefore producing the response) we will susbscribe to the multiresponse +

@@ -12,10 +12,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         monitor.cpp \
-        ../../../../tools/qt/logview/src/highlighter.cpp
+    qplaintexteditcommand.cpp \
+    qlistprocesses.cpp \
+    qtablealarms.cpp
 
 HEADERS  += monitor.h \
-        ../../../../tools/qt/logview/src/highlighter.h
+    qplaintexteditcommand.h \
+    qlistprocesses.h \
+    qtablealarms.h
 
 FORMS    += monitor.ui
 

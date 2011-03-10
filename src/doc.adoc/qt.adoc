@@ -62,3 +62,14 @@ include::../../examples/qt/ex_min_qt/src/mainwindow.cpp[]
 -----
 include::../../examples/qt/ex_send_order/src/mainwindow.cpp[]
 -----
+
+
+=== Monitor example
+
+.examples/qt/monitor/src/monitor.cpp
+[source,{cpp}]
+-----
+include::../../examples/qt/monitor/src/monitor.cpp[]
+-----
+* Look +error_connecting+ in order to show a message and closing in order in case of problems connecting to broker
+* To work with it, is convenient to have all connections together protected with a +try catch+ as in this example
