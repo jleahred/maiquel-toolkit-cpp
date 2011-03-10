@@ -17,14 +17,6 @@ END_INIT
 
 
 
-sub_process_location  [<V:0>]
-{
-    location        (lc)  : string
-    machine         (mc)  : string
-    process_name    (pn)  : string
-    process_uuid    (pi)  : string
-}
-
 
 
 //-------------------------------------------------------------------
@@ -38,7 +30,7 @@ sub_process_location  [<V:0>]
 
 enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 {
-    process_location    (pl)    :   sub_process_location
+    process_location    (pl)    :   mtk::msg::sub_process_location
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }
@@ -46,14 +38,14 @@ enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 
 keep_alive  [< V:0, SUBJ:ADM.CIMD.KA >]
 {
-    process_location    (pl)    :   sub_process_location
+    process_location    (pl)    :   mtk::msg::sub_process_location
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }
 
 exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 {
-    process_location    (pl)    :   sub_process_location
+    process_location    (pl)    :   mtk::msg::sub_process_location
     reason              (r)     :   string
 }
 
@@ -66,7 +58,7 @@ exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 
 alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 {
-    process_location    (pl)    :   sub_process_location
+    process_location    (pl)    :   mtk::msg::sub_process_location
     code_source         (cs)    :   string
     message             (ms)    :   string
     priority            (p)     :   mtk::alEnPriority
@@ -86,9 +78,9 @@ alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 
 command  [< V:0, SUBJ:ADM.${proc_loc__destination.location}.${proc_loc__destination.machine}.${proc_loc__destination.process_name}.${proc_loc__destination.process_uuid}.COMMAND >]
 {
-    request_code            (ri)    :   mtk::msg::sub_request_r
+    request_info            (ri)    :   mtk::msg::sub_request_info
 
-    proc_loc__destination   (pd)    :   sub_process_location
+    proc_loc__destination   (pd)    :   mtk::msg::sub_process_location
     command_line            (c)     :   string                  //  command and params
 }
 
@@ -98,7 +90,7 @@ sub_command_rd [< V:0 >]
     text                (t)     :   string
 }
 
-command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_code} >]
+command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_location.location} >]
 {
     response_info       (ri)    :   mtk::msg::sub_r_response
     response_data       (rd)    :   sub_command_rd
@@ -116,7 +108,7 @@ command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_code} >
 
 central_keep_alive  [< V:0, SUBJ:ADM.ALL.KA >]
 {
-    process_location    (pl)    :   sub_process_location
+    process_location    (pl)    :   mtk::msg::sub_process_location
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }

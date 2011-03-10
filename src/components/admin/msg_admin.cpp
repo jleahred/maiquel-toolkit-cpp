@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Thu Mar 10 15:33:44 2011
+// coded last modification:        Thu Mar 10 16:36:01 2011
 
 
 #include "support/mtk_double.h"
@@ -278,27 +278,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_process_location::sub_process_location (   const std::string&  _location,   const std::string&  _machine,   const std::string&  _process_name,   const std::string&  _process_uuid)
-    :     location(_location),   machine(_machine),   process_name(_process_name),   process_uuid(_process_uuid) 
-    {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
-                    MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-std::string sub_process_location::check_recomended(void) const
-{
-    std::string result;
-
-    return result;
-}
-
-
-
-enter::enter (   const sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+enter::enter (   const mtk::msg::sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
     :     process_location(_process_location),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
     {  
         std::string cr = check_recomended ();  
@@ -318,7 +298,7 @@ std::string enter::check_recomended(void) const
 
 
 
-keep_alive::keep_alive (   const sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+keep_alive::keep_alive (   const mtk::msg::sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
     :     process_location(_process_location),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
     {  
         std::string cr = check_recomended ();  
@@ -338,7 +318,7 @@ std::string keep_alive::check_recomended(void) const
 
 
 
-exit::exit (   const sub_process_location&  _process_location,   const std::string&  _reason)
+exit::exit (   const mtk::msg::sub_process_location&  _process_location,   const std::string&  _reason)
     :     process_location(_process_location),   reason(_reason) 
     {  
         std::string cr = check_recomended ();  
@@ -358,7 +338,7 @@ std::string exit::check_recomended(void) const
 
 
 
-alarm::alarm (   const sub_process_location&  _process_location,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id)
+alarm::alarm (   const mtk::msg::sub_process_location&  _process_location,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id)
     :     process_location(_process_location),   code_source(_code_source),   message(_message),   priority(_priority),   type(_type),   dateTime_generated(_dateTime_generated),   alarm_id(_alarm_id) 
     {  
         std::string cr = check_recomended ();  
@@ -378,8 +358,8 @@ std::string alarm::check_recomended(void) const
 
 
 
-command::command (   const mtk::msg::sub_request_r&  _request_code,   const sub_process_location&  _proc_loc__destination,   const std::string&  _command_line)
-    :     request_code(_request_code),   proc_loc__destination(_proc_loc__destination),   command_line(_command_line) 
+command::command (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_location&  _proc_loc__destination,   const std::string&  _command_line)
+    :     request_info(_request_info),   proc_loc__destination(_proc_loc__destination),   command_line(_command_line) 
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -438,7 +418,7 @@ std::string command_response::check_recomended(void) const
 
 
 
-central_keep_alive::central_keep_alive (   const sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+central_keep_alive::central_keep_alive (   const mtk::msg::sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
     :     process_location(_process_location),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
     {  
         std::string cr = check_recomended ();  
@@ -455,17 +435,6 @@ std::string central_keep_alive::check_recomended(void) const
 
     return result;
 }
-
-
-std::ostream& operator<< (std::ostream& o, const sub_process_location & c)
-{
-    o << "{ "
-
-        << "location:"<<   c.location << "  "        << "machine:"<<   c.machine << "  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "
-        << " }";
-    return o;
-};
-
 
 
 std::ostream& operator<< (std::ostream& o, const enter & c)
@@ -516,7 +485,7 @@ std::ostream& operator<< (std::ostream& o, const command & c)
 {
     o << "{ "
 
-        << "request_code:"<< c.request_code<<"  "        << "proc_loc__destination:"<< c.proc_loc__destination<<"  "        << "command_line:"<<   c.command_line << "  "
+        << "request_info:"<< c.request_info<<"  "        << "proc_loc__destination:"<< c.proc_loc__destination<<"  "        << "command_line:"<<   c.command_line << "  "
         << " }";
     return o;
 };
@@ -552,18 +521,6 @@ std::ostream& operator<< (std::ostream& o, const central_keep_alive & c)
         << "process_location:"<< c.process_location<<"  "        << "ka_interval_send:"<<   c.ka_interval_send << "  "        << "ka_interval_check:"<<   c.ka_interval_check << "  "
         << " }";
     return o;
-};
-
-
-
-bool operator== (const sub_process_location& a, const sub_process_location& b)
-{
-    return (          a.location ==  b.location  &&          a.machine ==  b.machine  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&   true  );
-};
-
-bool operator!= (const sub_process_location& a, const sub_process_location& b)
-{
-    return !(a==b);
 };
 
 
@@ -618,7 +575,7 @@ bool operator!= (const alarm& a, const alarm& b)
 
 bool operator== (const command& a, const command& b)
 {
-    return (          a.request_code ==  b.request_code  &&          a.proc_loc__destination ==  b.proc_loc__destination  &&          a.command_line ==  b.command_line  &&   true  );
+    return (          a.request_info ==  b.request_info  &&          a.proc_loc__destination ==  b.proc_loc__destination  &&          a.command_line ==  b.command_line  &&   true  );
 };
 
 bool operator!= (const command& a, const command& b)
@@ -661,68 +618,6 @@ bool operator!= (const central_keep_alive& a, const central_keep_alive& b)
 {
     return !(a==b);
 };
-
-
-
-
-//void  __internal_qpid_fill (sub_process_location& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_process_location& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("lc");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field location on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.location, it->second);
-                        //c.location = it->second;
-//   field_type
-
-                    it = mv.find("mc");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field machine on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.machine, it->second);
-                        //c.machine = it->second;
-//   field_type
-
-                    it = mv.find("pn");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field process_name on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.process_name, it->second);
-                        //c.process_name = it->second;
-//   field_type
-
-                    it = mv.find("pi");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field process_uuid on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.process_uuid, it->second);
-                        //c.process_uuid = it->second;
-
-    }
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_location& a)
-{
-    
-
-//  field_type
-        __internal_add2map(map, a.location, std::string("lc"));
-//  field_type
-        __internal_add2map(map, a.machine, std::string("mc"));
-//  field_type
-        __internal_add2map(map, a.process_name, std::string("pn"));
-//  field_type
-        __internal_add2map(map, a.process_uuid, std::string("pi"));
-
-
-};
-
 
 
 
@@ -975,10 +870,10 @@ void  copy (command& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_code on message command::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message command::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.request_code, it->second);
-                        //__internal_qpid_fill(c.request_code, it->second.asMap());
+                        copy(c.request_info, it->second);
+                        //__internal_qpid_fill(c.request_info, it->second.asMap());
 //   sub_msg_type
 
                     it = mv.find("pd");
@@ -1004,7 +899,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const command& a)
     
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_code, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("ri"));
 //  sub_msg_type
         __internal_add2map(map, a.proc_loc__destination, std::string("pd"));
 //  field_type
@@ -1149,39 +1044,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const central_keep_aliv
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-
-qpid::messaging::Message sub_process_location::qpidmsg_codded_as_qpid_message (void) const
-{
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
-
-
-//  field_type
-//        content["lc"] = this->location;
-        __internal_add2map(content, this->location, std::string("lc"));
-//  field_type
-//        content["mc"] = this->machine;
-        __internal_add2map(content, this->machine, std::string("mc"));
-//  field_type
-//        content["pn"] = this->process_name;
-        __internal_add2map(content, this->process_name, std::string("pn"));
-//  field_type
-//        content["pi"] = this->process_uuid;
-        __internal_add2map(content, this->process_uuid, std::string("pi"));
-
-
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
-
-    
-    qpid::messaging::encode(content, __message);
-    return __message;
-};
-
-
-
 
 qpid::messaging::Message enter::qpidmsg_codded_as_qpid_message (void) const
 {
@@ -1315,8 +1177,8 @@ qpid::messaging::Message command::qpidmsg_codded_as_qpid_message (void) const
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_code);
-        __internal_add2map(content, this->request_code, std::string("ri"));
+//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("ri"));
 //  sub_msg_type
 //        content["pd"] =  qpidmsg_coded_as_qpid_Map(this->proc_loc__destination);
         __internal_add2map(content, this->proc_loc__destination, std::string("pd"));
@@ -1415,25 +1277,11 @@ qpid::messaging::Message central_keep_alive::qpidmsg_codded_as_qpid_message (voi
 
 
 
-    sub_process_location  __internal_get_default(sub_process_location*)
-    {
-        return sub_process_location(
-//   field_type
-   __internal_get_default ((std::string*)0),
-//   field_type
-   __internal_get_default ((std::string*)0),
-//   field_type
-   __internal_get_default ((std::string*)0),
-//   field_type
-   __internal_get_default ((std::string*)0)
-            );
-    }
-    
     enter  __internal_get_default(enter*)
     {
         return enter(
 //   sub_msg_type
-   __internal_get_default((sub_process_location*)0),
+   __internal_get_default((mtk::msg::sub_process_location*)0),
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0),
 //   field_type
@@ -1445,7 +1293,7 @@ qpid::messaging::Message central_keep_alive::qpidmsg_codded_as_qpid_message (voi
     {
         return keep_alive(
 //   sub_msg_type
-   __internal_get_default((sub_process_location*)0),
+   __internal_get_default((mtk::msg::sub_process_location*)0),
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0),
 //   field_type
@@ -1457,7 +1305,7 @@ qpid::messaging::Message central_keep_alive::qpidmsg_codded_as_qpid_message (voi
     {
         return exit(
 //   sub_msg_type
-   __internal_get_default((sub_process_location*)0),
+   __internal_get_default((mtk::msg::sub_process_location*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
             );
@@ -1467,7 +1315,7 @@ qpid::messaging::Message central_keep_alive::qpidmsg_codded_as_qpid_message (voi
     {
         return alarm(
 //   sub_msg_type
-   __internal_get_default((sub_process_location*)0),
+   __internal_get_default((mtk::msg::sub_process_location*)0),
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
@@ -1487,9 +1335,9 @@ qpid::messaging::Message central_keep_alive::qpidmsg_codded_as_qpid_message (voi
     {
         return command(
 //   sub_msg_type
-   __internal_get_default((mtk::msg::sub_request_r*)0),
+   __internal_get_default((mtk::msg::sub_request_info*)0),
 //   sub_msg_type
-   __internal_get_default((sub_process_location*)0),
+   __internal_get_default((mtk::msg::sub_process_location*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
             );
@@ -1517,7 +1365,7 @@ qpid::messaging::Message central_keep_alive::qpidmsg_codded_as_qpid_message (voi
     {
         return central_keep_alive(
 //   sub_msg_type
-   __internal_get_default((sub_process_location*)0),
+   __internal_get_default((mtk::msg::sub_process_location*)0),
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0),
 //   field_type
@@ -1526,31 +1374,9 @@ qpid::messaging::Message central_keep_alive::qpidmsg_codded_as_qpid_message (voi
     }
     
 
-sub_process_location::sub_process_location (const qpid::messaging::Message& msg)
-    :  //   field_type
-   location(__internal_get_default((std::string*)0)),
-//   field_type
-   machine(__internal_get_default((std::string*)0)),
-//   field_type
-   process_name(__internal_get_default((std::string*)0)),
-//   field_type
-   process_uuid(__internal_get_default((std::string*)0)) 
-    {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
-                MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
 enter::enter (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   process_location(__internal_get_default((sub_process_location*)0)),
+   process_location(__internal_get_default((mtk::msg::sub_process_location*)0)),
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
 //   field_type
@@ -1570,7 +1396,7 @@ enter::enter (const qpid::messaging::Message& msg)
 
 keep_alive::keep_alive (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   process_location(__internal_get_default((sub_process_location*)0)),
+   process_location(__internal_get_default((mtk::msg::sub_process_location*)0)),
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
 //   field_type
@@ -1590,7 +1416,7 @@ keep_alive::keep_alive (const qpid::messaging::Message& msg)
 
 exit::exit (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   process_location(__internal_get_default((sub_process_location*)0)),
+   process_location(__internal_get_default((mtk::msg::sub_process_location*)0)),
 //   field_type
    reason(__internal_get_default((std::string*)0)) 
     {
@@ -1608,7 +1434,7 @@ exit::exit (const qpid::messaging::Message& msg)
 
 alarm::alarm (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   process_location(__internal_get_default((sub_process_location*)0)),
+   process_location(__internal_get_default((mtk::msg::sub_process_location*)0)),
 //   field_type
    code_source(__internal_get_default((std::string*)0)),
 //   field_type
@@ -1636,9 +1462,9 @@ alarm::alarm (const qpid::messaging::Message& msg)
 
 command::command (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   request_code(__internal_get_default((mtk::msg::sub_request_r*)0)),
+   request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   sub_msg_type
-   proc_loc__destination(__internal_get_default((sub_process_location*)0)),
+   proc_loc__destination(__internal_get_default((mtk::msg::sub_process_location*)0)),
 //   field_type
    command_line(__internal_get_default((std::string*)0)) 
     {
@@ -1690,7 +1516,7 @@ command_response::command_response (const qpid::messaging::Message& msg)
 
 central_keep_alive::central_keep_alive (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   process_location(__internal_get_default((sub_process_location*)0)),
+   process_location(__internal_get_default((mtk::msg::sub_process_location*)0)),
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
 //   field_type
@@ -1746,13 +1572,13 @@ std::string  enter::get_in_subject ()
     {
         return MTK_SS("ADM." << this->proc_loc__destination.location << "." << this->proc_loc__destination.machine << "." << this->proc_loc__destination.process_name << "." << this->proc_loc__destination.process_uuid << ".COMMAND");
     }
-    std::string  command_response::get_in_subject (const std::string& response_info_request_code)
+    std::string  command_response::get_in_subject (const std::string& response_info_request_info_process_location_location)
     {
-        return MTK_SS("ADM.CIMD.COMMRES." << response_info_request_code << "");
+        return MTK_SS("ADM.CIMD.COMMRES." << response_info_request_info_process_location_location << "");
     }
     std::string  command_response::get_out_subject (void) const
     {
-        return MTK_SS("ADM.CIMD.COMMRES." << this->response_info.request_code << "");
+        return MTK_SS("ADM.CIMD.COMMRES." << this->response_info.request_info.process_location.location << "");
     }
     std::string  central_keep_alive::get_in_subject ()
     {

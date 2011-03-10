@@ -181,7 +181,7 @@ mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&    >&  get_signal_request_hook     
 
 mtk::CountPtr<trd_cli_ls>   rq_nw_ls    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::client_get_request_info();
+    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
     mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
     
     mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
@@ -198,7 +198,7 @@ mtk::CountPtr<trd_cli_ls>   rq_nw_ls    (                             const mtk:
 
 mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::client_get_request_info();
+    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
     mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
 
     mtk::trd::msg::RQ_NW_LS rq(mtk::trd::msg::RQ_XX_LS(
@@ -244,7 +244,7 @@ mtk::trd::msg::RQ_XX_LS get_last_request_or_confirmation (mtk::CountPtr<trd_cli_
 
 mtk::CountPtr<trd_cli_ls>   rq_md_ls    ( const msg::sub_order_id& ord_id, const msg::sub_position_ls& rq_pos, const std::string& cli_ref)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::client_get_request_info();
+    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
     
     mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
     mtk::trd::msg::RQ_XX_LS rq = get_last_request_or_confirmation(order);
@@ -257,7 +257,7 @@ mtk::CountPtr<trd_cli_ls>   rq_md_ls    ( const msg::sub_order_id& ord_id, const
 
 mtk::CountPtr<trd_cli_ls>   rq_md_ls_manual    (const msg::sub_order_id& ord_id)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::client_get_request_info();
+    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
 
 
     mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
@@ -276,7 +276,7 @@ mtk::CountPtr<trd_cli_ls>   rq_md_ls_manual    (const msg::sub_order_id& ord_id)
 
 mtk::CountPtr<trd_cli_ls>   rq_cc_ls    ( const msg::sub_order_id& ord_id )
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::client_get_request_info();
+    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
     
     mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
 

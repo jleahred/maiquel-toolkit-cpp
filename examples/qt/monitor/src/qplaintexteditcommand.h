@@ -31,7 +31,6 @@ private:
 
 
 signals:
-    //void  signal_fill_locations_to_send(mtk::list<mtk::admin::msg::sub_process_location>& locations2fill);
 
 };
 

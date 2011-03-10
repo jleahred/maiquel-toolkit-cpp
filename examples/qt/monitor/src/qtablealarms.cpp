@@ -163,14 +163,14 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::alarm& alarm_
 
 void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
 {
-    mtk::admin::msg::alarm alarm_msg(mtk::admin::msg::sub_process_location("LOCAL", "LOCAL", "LOCAL", "LOCAL"),
+    mtk::admin::msg::alarm alarm_msg(mtk::msg::sub_process_location("LOCAL", "LOCAL", "LOCAL", "LOCAL"),
                                         alarm.codeSource, alarm.message, alarm.priority, alarm.type, mtk::dtNowLocal(), -1);
     write_alarm_msg(alarm_msg);
 
     std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
     while (it != alarm.stackAlarms.end())
     {
-        mtk::admin::msg::alarm alarm_msg(mtk::admin::msg::sub_process_location("LOCAL", "LOCAL", "LOCAL", "LOCAL"), it->codeSource, it->message, it->priority, it->type, mtk::dtNowLocal(), -1);
+        mtk::admin::msg::alarm alarm_msg(mtk::msg::sub_process_location("LOCAL", "LOCAL", "LOCAL", "LOCAL"), it->codeSource, it->message, it->priority, it->type, mtk::dtNowLocal(), -1);
         write_alarm_msg(alarm_msg);
         ++it;
     }

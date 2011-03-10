@@ -12,14 +12,15 @@
 namespace mtk {  
     namespace  msg {
         
-        
-        sub_request_info   get_request_info (void)
-        {
-            static int contador;
-            return sub_request_info(    sub_request_id("sess_id", MTK_SS(contador)),
-                                        "CLIENT");
-        }
-        
+	sub_process_location  get_process_location(void)
+	{
+	    return  mtk::msg::sub_process_location  ("CLIENT", "MACHINE", "PROCESS NAME", "UUID");
+	}
+	sub_request_info   get_request_info (void)
+	{
+	    static int i=0;
+	    return sub_request_info (sub_request_id("pending", MTK_SS("pending"<<i)), get_process_location());
+	}
         
       };   //namespace msg {
 };  //namespace mtk {

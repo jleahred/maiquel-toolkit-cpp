@@ -117,7 +117,7 @@ namespace {
             std::string                                 role;
             
             mtk::CountPtr< mtk::qpid_session >          session_admin;
-            mtk::admin::msg::sub_process_location       process_location;
+            mtk::msg::sub_process_location              process_location;
             std::string                                 session_id;
             mtk::dtTimeQuantity                         ka_interval_send;
             mtk::dtTimeQuantity                         ka_interval_check;
@@ -129,7 +129,7 @@ namespace {
             
             void                                        send_enter_and_start_keepalive(void);
             std::string                                 get_mandatory_property(const std::string& path_and_property);
-            mtk::admin::msg::sub_process_location       get_process_location(void) const { return process_location; }
+            mtk::msg::sub_process_location              get_process_location(void) const { return process_location; }
 
             void                                        send_keep_alive(void);
             void                                        check_last_received_message(void);
@@ -296,13 +296,13 @@ namespace {
         if(role=="client")
         {
             
-            process_location = mtk::admin::msg::sub_process_location(
+            process_location = mtk::msg::sub_process_location(
                                             get_mandatory_property("ADMIN.CLIENT.location"), 
                                             MTK_SS(get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()), 
                                             app_name,
                                             mtk::crc32_as_string(MTK_SS(app_name<<get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())));
             session_admin = mtk::admin::get_qpid_session("admin", "ADMCLI");
-            mtk::admin::msg::sub_process_location  temp_process_location = get_process_location();
+            mtk::msg::sub_process_location  temp_process_location = get_process_location();
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("admin"),
@@ -324,10 +324,10 @@ namespace {
         }
         else
         {
-            process_location = mtk::admin::msg::sub_process_location("SYS", mtk::GetMachineCode(), app_name, 
+            process_location = mtk::msg::sub_process_location("SYS", mtk::GetMachineCode(), app_name, 
                                                         mtk::crc32_as_string(MTK_SS(app_name<<mtk::GetMachineCode()<<mtk::rand())));
             session_admin   = mtk::admin::get_qpid_session("admin", "ADMSRV");
-            mtk::admin::msg::sub_process_location  temp_process_location = get_process_location();
+            mtk::msg::sub_process_location  temp_process_location = get_process_location();
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("admin"),
@@ -558,7 +558,7 @@ namespace {
         MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::command_response, 
                                         mtk::admin::msg::sub_command_rd, 
                                         session_admin,
-                                        command_msg.request_code,
+                                        command_msg.request_info,
                                         data_list)
     }
 
@@ -682,17 +682,17 @@ mtk::CountPtr< mtk::qpid_session >     get_qpid_session(const std::string&  url_
 
     
     
-mtk::msg::sub_request_info   client_get_request_info (void)
+mtk::msg::sub_request_info   get_request_info (void)
 {
     ADMIN_PROVISIONAL_IMPLEMENTATION
     
     static int i=0;
     static const std::string session = MTK_SS(mtk::dtNowLocal());
-    return mtk::msg::sub_request_info (mtk::msg::sub_request_id(session, MTK_SS("pending"<<++i)), "CLIENT");
+    return mtk::msg::sub_request_info (mtk::msg::sub_request_id(session, MTK_SS("pending"<<++i)), get_process_location());
 }
 
 
-mtk::admin::msg::sub_process_location         get_process_location(void)
+mtk::msg::sub_process_location         get_process_location(void)
 {
     return admin_status::i()->get_process_location();
 }
@@ -773,9 +773,3 @@ void  __internal_admin_nevercall_me____release_on_exit(void)
 
 
 
-
-namespace {
-    
-    
-    
-};

@@ -37,14 +37,14 @@ void on_command_response (const mtk::list<mtk::admin::msg::command_response>& re
 
 void init_request_response(const int&)
 {
-    mtk::msg::sub_request_r request_code(mtk::admin::get_request_code());
+    mtk::msg::sub_request_info request_info(mtk::admin::get_request_info());
     /*static*/ mtk::CountPtr<mtk::qpid_session>  qpid_session = mtk::admin::get_qpid_session("admin", "testing");
 
     //  subscription to multiresponse       <2>
-    MTK_RECEIVE_MULTI_RESPONSE_F(     mtk::admin::msg::command_response, 
+    MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::command_response, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
-                                    mtk::admin::msg::command_response::get_in_subject(request_code.request_code),
+                                    mtk::admin::msg::command_response::get_in_subject(request_info.process_location.location),
                                     on_command_response)
 
 
@@ -53,13 +53,13 @@ void init_request_response(const int&)
     //  filling response list
     mtk::list<mtk::admin::msg::sub_command_rd>  data_list;
     for(int i=0; i < 100; ++i)
-        data_list.push_back(mtk::admin::msg::sub_command_rd(mtk::admin::get_process_location(), MTK_SS("response line  "  <<  i << std::endl)));
+        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS("response line  "  <<  i << std::endl)));
 
     //  sending multiresponses in asyncronous way           <4>
     MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::command_response, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
-                                    mtk::msg::sub_request_r(request_code),
+                                    request_info,
                                     data_list)
 }
 

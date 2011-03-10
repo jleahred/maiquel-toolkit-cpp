@@ -7,7 +7,7 @@ namespace {
     const mtk::dtTimeQuantity starting_time = mtk::dtSeconds(40);
 
 
-    QString get_composed_name(const mtk::admin::msg::sub_process_location& l)
+    QString get_composed_name(const mtk::msg::sub_process_location& l)
     {
         return MTK_SS(l.location << "." << l.machine << "." << l.process_name).c_str();
     }
@@ -70,14 +70,14 @@ void QListProcesses::init(mtk::CountPtr<mtk::qpid_session> qpid_admin_session)
 class QListWidgetItem_ka  : public QListWidgetItem
 {
 public:
-    QListWidgetItem_ka(QString text, QListWidget* parent, mtk::dtDateTime   _next_ka, const mtk::admin::msg::sub_process_location& l)
+    QListWidgetItem_ka(QString text, QListWidget* parent, mtk::dtDateTime   _next_ka, const mtk::msg::sub_process_location& l)
         :     QListWidgetItem(text, parent)
             , next_ka(mtk::make_nullable(_next_ka))
             , process_location(l)
     {}
 
     mtk::nullable<mtk::dtDateTime>                  next_ka;
-    const mtk::admin::msg::sub_process_location     process_location;
+    const mtk::msg::sub_process_location     process_location;
 
 private:
 };
@@ -164,7 +164,7 @@ void QListProcesses::check_client_ka(void)
 }
 
 
-QListWidgetItem_ka*  QListProcesses::find_item(const mtk::admin::msg::sub_process_location& l)
+QListWidgetItem_ka*  QListProcesses::find_item(const mtk::msg::sub_process_location& l)
 {
     for(int i=0;i<this->count();i++)
     {
@@ -175,7 +175,7 @@ QListWidgetItem_ka*  QListProcesses::find_item(const mtk::admin::msg::sub_proces
     return 0;
 }
 
-void  QListProcesses::check_alarm_received(const mtk::admin::msg::sub_process_location& l)
+void  QListProcesses::check_alarm_received(const mtk::msg::sub_process_location& l)
 {
     MTK_EXEC_MAX_FREC(mtk::dtSeconds(5))
         QListWidgetItem_ka* item = this->find_item(l);
@@ -185,7 +185,7 @@ void  QListProcesses::check_alarm_received(const mtk::admin::msg::sub_process_lo
 }
 
 
-void  QListProcesses::fill_locations_for_selected_items(mtk::list<mtk::admin::msg::sub_process_location> &locations2fill) const
+void  QListProcesses::fill_locations_for_selected_items(mtk::list<mtk::msg::sub_process_location> &locations2fill) const
 {
     for(int i=0;i<this->count();i++)
     {

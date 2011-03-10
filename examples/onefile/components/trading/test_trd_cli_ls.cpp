@@ -3,10 +3,15 @@
 
 
 namespace mtk{  namespace msg  { 
+    
+sub_process_location  get_process_location(void)
+{
+    return  mtk::msg::sub_process_location  ("CLIENT", "MACHINE", "PROCESS NAME", "UUID");
+}
 sub_request_info   get_request_info (void)
 {
     static int i=0;
-    return sub_request_info (sub_request_id("pending", MTK_SS("pending"<<i)), "CLIENT");
+    return sub_request_info (sub_request_id("pending", MTK_SS("pending"<<i)), get_process_location());
 }
 
 };};  //namespace mkt{  namespace msg  { 
@@ -100,7 +105,7 @@ int main(void)
         order_ls.rq_nw (mtk::trd::msg::RQ_NW_LS (mtk::trd::msg::RQ_XX_LS(
                                   mtk::msg::sub_request_info(mtk::msg::sub_request_id(ord_id.sess_id, 
                                                               ord_id.req_code), 
-                                                 "CLIENT")
+                                                 mtk::msg::get_process_location())
                                   ,  ord_id
                                   , pc
                                   , mtk::trd::msg::sub_position_ls(
@@ -112,7 +117,7 @@ int main(void)
 
         //  receiving a cf_nw
         order_ls.cf_nw(mtk::trd::msg::CF_NW_LS( mtk::trd::msg::CF_XX_LS(     
-                                                                    mtk::msg::sub_request_info(mtk::msg::sub_request_id(ord_id.sess_id, ord_id.req_code), "CLIENT")
+                                                                    mtk::msg::sub_request_info(mtk::msg::sub_request_id(ord_id.sess_id, ord_id.req_code), mtk::msg::get_process_location())
                                                                   , mtk::trd::msg::sub_order_ls_confirmated(     
                                                                                                   ord_id
                                                                                                 , pc
@@ -219,9 +224,5 @@ int main(void)
     std::cout << std::endl;
     return -1;
 }
-
-
-
-
 
 

@@ -37,7 +37,7 @@ void on_command_response (const mtk::list<mtk::admin::msg::command_response>& re
 void request_command(const std::string& command)
 {
 
-    mtk::msg::sub_request_r request_code(mtk::admin::get_request_code());
+    mtk::msg::sub_request_info request_info(mtk::admin::get_request_info());
     /*static*/ mtk::CountPtr<mtk::qpid_session>  qpid_session = mtk::admin::get_qpid_session("admin", "ADMCLI");
 
 
@@ -45,11 +45,11 @@ void request_command(const std::string& command)
     MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::command_response, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
-                                    mtk::admin::msg::command_response::get_in_subject(request_code.request_code),
+                                    mtk::admin::msg::command_response::get_in_subject(request_info.process_location.location),
                                     on_command_response)
 
     //  sending hello command
-    mtk::admin::msg::command command_request_msg(   request_code, mtk::admin::get_process_location(), command);
+    mtk::admin::msg::command command_request_msg( request_info, mtk::admin::get_process_location(), command);
     mtk::send_message(qpid_session, command_request_msg);
 
 }

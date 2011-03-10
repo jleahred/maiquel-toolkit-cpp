@@ -40,19 +40,14 @@ namespace mtk {
         
         mtk::CountPtr< mtk::qpid_session >                  get_qpid_session(const std::string&  url_for, const std::string& address);
         
-        /*std::string                         get_location        (void);
-        std::string                         get_machine         (void);
-         * */
-        mtk::admin::msg::sub_process_location               get_process_location            (void);
+        mtk::msg::sub_process_location                      get_process_location            (void);
          
         std::string                                         get_session                     (void);     //  with server role, this is the process name
         
         
         std::string                                         get_url                         (const std::string& url_for);
 
-        std::string                                         get_request_code                (void);     
-
-        mtk::msg::sub_request_info                          client_get_request_info         (void);
+        mtk::msg::sub_request_info                          get_request_info                (void);
         
         
         mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >      get_signal_alarm_error_critic   (void);

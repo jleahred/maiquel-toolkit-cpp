@@ -9,10 +9,20 @@ END_INIT
 
 
 
+sub_process_location  [<V:0>]
+{
+    location        (lc)  : string
+    machine         (mc)  : string
+    process_name    (pn)  : string
+    process_uuid    (pi)  : string
+}
+
+
+
 //---------------------------------------------------------------------
-//        REQUEST NO RESPONSE
+//        REQUEST 
 //
-//  as request new order
+//  could be with no response as request new order
 //---------------------------------------------------------------------
 
 sub_request_id   [<V:0>]
@@ -24,9 +34,21 @@ sub_request_id   [<V:0>]
 
 sub_request_info [< V:0 >]   
 {
-    req_id  (rid)  : sub_request_id
-    client  (cli)  : string
-    //...
+    req_id              (rid)   :   sub_request_id
+    process_location    (pl)    :   sub_process_location
+}
+
+
+//---------------------------------------------------------------------
+//        MULTI-RESPONSE
+//---------------------------------------------------------------------
+
+
+sub_r_response [< V:0 >]   
+{
+    request_info       (ri)     :   sub_request_info
+    sec_number         (sq)     :   int16       //  it will start with 0
+    is_last_response   (lr)     :   bool
 }
 
 
@@ -53,19 +75,3 @@ sub_product_code    [<V:0>]
 
 
 
-//---------------------------------------------------------------------
-//        REQUEST  < - >   RESPONSE
-//---------------------------------------------------------------------
-
-sub_request_r  [<V:0>]
-{
-    request_code       (rc)    :   string
-}
-
-
-sub_r_response [< V:0 >]   
-{
-    request_code       (rc)     :   string
-    sec_number         (sq)     :   int16       //  it will start with 0
-    is_last_response   (lr)     :   bool
-}

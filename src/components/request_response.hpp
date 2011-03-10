@@ -53,7 +53,7 @@ class __kamikaze_r_response   :   public  mtk::SignalReceptor  {
     
 public:
 	__kamikaze_r_response(     typename mtk::list< DATA_T >&   data,
-                    const mtk::msg::sub_request_r& ri, 
+                    const mtk::msg::sub_request_info& ri, 
                     mtk::CountPtr< mtk::qpid_session >  _qpid_session, 
                     const mtk::dtTimeQuantity tq=mtk::dtMilliseconds(200), 
                     int _msg_per_tick=3)
@@ -75,7 +75,7 @@ private:
 
     typename mtk::list< DATA_T >             list;
     
-    const mtk::msg::sub_request_r       req_info;
+    const mtk::msg::sub_request_info    req_info;
     mtk::CountPtr< mtk::qpid_session >  qpid_session;
     const mtk::dtTimeQuantity           time_quantity;
     int                                 msg_per_tick;
@@ -90,7 +90,7 @@ private:
             DATA_T d = list.front();
             list.pop_front();
             mtk::send_message(  qpid_session, 
-                                MSG_T(  mtk::msg::sub_r_response(req_info.request_code, int16_t(++counter), list.size()==0), d));
+                                MSG_T(  mtk::msg::sub_r_response(req_info, int16_t(++counter), list.size()==0), d));
             
         }
         
