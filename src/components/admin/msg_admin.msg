@@ -90,7 +90,7 @@ sub_command_rd [< V:0 >]
     text                (t)     :   string
 }
 
-command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_location.location} >]
+command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.req_code} >]
 {
     response_info       (ri)    :   mtk::msg::sub_r_response
     response_data       (rd)    :   sub_command_rd
