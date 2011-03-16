@@ -45,7 +45,7 @@ void request_command(const std::string& command)
     MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::command_response, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
-                                    mtk::admin::msg::command_response::get_in_subject(request_info.process_location.location),
+                                    mtk::admin::msg::command_response::get_in_subject(request_info.process_location.process_uuid, request_info.req_id.req_code),
                                     on_command_response)
 
     //  sending hello command

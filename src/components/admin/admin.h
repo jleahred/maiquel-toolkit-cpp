@@ -42,7 +42,7 @@ namespace mtk {
         
         mtk::msg::sub_process_location                      get_process_location            (void);
          
-        std::string                                         get_session                     (void);     //  with server role, this is the process name
+        //std::string                                         get_session                     (void);     //  with server role, this is the process name
         
         
         std::string                                         get_url                         (const std::string& url_for);
@@ -55,6 +55,9 @@ namespace mtk {
         
         mtk::CountPtr<mtk::Signal<const mtk::dtTimeQuantity&> > get_signal_no_receiving_messages(void);
         mtk::CountPtr<mtk::Signal<> >                           get_signal_receiving_messages_back(void);
+        
+        
+        mtk::Nullable<std::string>                          get_config_property(const std::string& path);
         
         
         
