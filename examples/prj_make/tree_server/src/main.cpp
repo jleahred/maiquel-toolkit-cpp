@@ -13,7 +13,7 @@ namespace
 {
     
     const char*   APP_NAME          = "GEN_TREESERVER";
-    const char*   APP_VER           = "0.1";
+    const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "This process will send, the markets and groups.\n"
                                       "It also check the permisions\n"
                                       "It doesn't have the full information, there are others specific THREESERVERS cooperating.";

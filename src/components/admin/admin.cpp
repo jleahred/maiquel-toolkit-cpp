@@ -21,9 +21,7 @@
 
 
 namespace {
-    const char* VERSION = "0.1";
-    
-    
+    const char*   VERSION = "2011-03-16";
 }
 
 

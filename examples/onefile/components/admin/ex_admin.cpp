@@ -11,7 +11,7 @@ namespace
 {
 
     const char*   APP_NAME          = "ex_admin";
-    const char*   APP_VER           = "0.1";
+    const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "small example of admin component";
 }
 

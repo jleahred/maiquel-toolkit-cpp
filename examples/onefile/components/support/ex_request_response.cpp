@@ -11,7 +11,7 @@ namespace
 {
 
     const char*   APP_NAME          = "ex_request_response";
-    const char*   APP_VER           = "0.1";
+    const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "Example file working with request response pattern";
 }
 

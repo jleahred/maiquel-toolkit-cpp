@@ -11,7 +11,7 @@ namespace
 {
     
     const char*   APP_NAME          = "ADM_HOUSELIGHT";
-    const char*   APP_VER           = "0.1";
+    const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "This process will send the keep alive to servers and clients\n"
                                       "It will be checked by admin component";
 }
