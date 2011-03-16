@@ -17,6 +17,54 @@
 #include "components/trading/trd_cli_ord_book.h"
 #include "qt_components/src/qmtk_misc.h"
 
+
+
+
+
+
+
+namespace {
+    const char*   VERSION = "2011-03-16";
+
+    const char*   MODIFICATIONS =
+                        "           2011-03-16     first version\n";
+
+
+void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+{
+    response_lines.push_back(MTK_SS(__FILE__ << ":  " << VERSION));
+}
+
+void command_modifications  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
+{
+    response_lines.push_back(__FILE__);
+    response_lines.push_back(".......................................");
+    response_lines.push_back(MODIFICATIONS);
+}
+
+    struct register_global_commands
+    {
+        register_global_commands (void)
+        {
+            mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
+            mtk::admin::register_command("__GLOBAL__",  "modifs",   "")->connect(command_modifications);
+        }
+    };
+    register_global_commands rc;
+
+}       //  anonymous namespace  to register "static" commnads
+
+
+
+
+
+
+
+
+
+
+
+
 namespace  {
 
 mtk::FixedNumber get_empty_fixed_number_quantity(void)

@@ -25,7 +25,6 @@ namespace {
     
     const char*   MODIFICATIONS =
                         "           2011-03-16     first version\n";
-}
 
 
 
@@ -35,9 +34,7 @@ namespace {
 
 
 
-namespace {
-
-    
+   
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //          class admin_status
@@ -737,7 +734,7 @@ mtk::CountPtr< mtk::qpid_session >     get_qpid_session(const std::string&  url_
     
     if(admin_status::i()->role=="client")
     {
-        if(url_for != "client"  ||  address != "CLIENTTESTING")
+        if(url_for != "client"  ||  address != "CLITESTING")
         {
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("url_for: " << url_for << "  address: " << address
                         << "  weird for a client") , mtk::alPriorWarning, mtk::alTypeOverflow));
