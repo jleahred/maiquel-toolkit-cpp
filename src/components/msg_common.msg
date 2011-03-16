@@ -7,15 +7,27 @@ END_INIT
 
 
 
+sub_location  [<V:0>]
+{
+    client_code     (cc)  : string
+    machine         (mc)  : string
+}
 
 
 sub_process_location  [<V:0>]
 {
-    location        (lc)  : string
-    machine         (mc)  : string
-    process_name    (pn)  : string
-    process_uuid    (pi)  : string
+    location        (l)     :   sub_location
+    process_name    (pn)    :   string
+    process_uuid    (pi)    :   string
 }
+
+sub_process_info    [<V:0>]
+{
+    process_location    (pl)    :   sub_process_location
+    version             (pv)    :   string
+}
+
+
 
 
 

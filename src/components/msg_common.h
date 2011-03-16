@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Tue Mar 15 10:10:30 2011
+// coded last modification:        Wed Mar 16 12:27:49 2011
 
 
 #include "support/nullable.hpp"
@@ -30,6 +30,40 @@ namespace msg {
 
 
 //-------------------------------
+//      sub_location
+//-------------------------------    
+class sub_location     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_location (    const std::string&  _client_code,   const std::string&  _machine );
+    explicit sub_location ( const qpid::messaging::Message& message );
+    virtual ~sub_location (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_location"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_location"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    std::string                               client_code; 
+    std::string                               machine; 
+
+
+
+    //  subject info
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
 //      sub_process_location
 //-------------------------------    
 class sub_process_location     
@@ -39,7 +73,7 @@ public:
 
     
     // constructor
-    explicit sub_process_location (    const std::string&  _location,   const std::string&  _machine,   const std::string&  _process_name,   const std::string&  _process_uuid );
+    explicit sub_process_location (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid );
     explicit sub_process_location ( const qpid::messaging::Message& message );
     virtual ~sub_process_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_location"; };
@@ -48,10 +82,43 @@ public:
     
 
     // fields
-    std::string                               location; 
-    std::string                               machine; 
+    sub_location                              location; 
     std::string                               process_name; 
     std::string                               process_uuid; 
+
+
+
+    //  subject info
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      sub_process_info
+//-------------------------------    
+class sub_process_info     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_process_info (    const sub_process_location&  _process_location,   const std::string&  _version );
+    explicit sub_process_info ( const qpid::messaging::Message& message );
+    virtual ~sub_process_info (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_process_info"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_process_info"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    sub_process_location                      process_location; 
+    std::string                               version; 
 
 
 
@@ -305,10 +372,20 @@ private:
     
     
 //  fordward declarations-----------------------------------------------------------
+    std::ostream& operator<< (std::ostream& o, const sub_location & c);
+
+bool operator== (const sub_location& a, const sub_location& b);
+bool operator!= (const sub_location& a, const sub_location& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_process_location & c);
 
 bool operator== (const sub_process_location& a, const sub_process_location& b);
 bool operator!= (const sub_process_location& a, const sub_process_location& b);
+
+    std::ostream& operator<< (std::ostream& o, const sub_process_info & c);
+
+bool operator== (const sub_process_info& a, const sub_process_info& b);
+bool operator!= (const sub_process_info& a, const sub_process_info& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_request_id & c);
 
@@ -345,10 +422,18 @@ bool operator!= (const sub_adic_product_code& a, const sub_adic_product_code& b)
 bool operator== (const sub_product_code& a, const sub_product_code& b);
 bool operator!= (const sub_product_code& a, const sub_product_code& b);
 
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_location& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_location& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_location>& a, const std::string& field);
+void copy (sub_location& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_process_location& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_location& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_location>& a, const std::string& field);
 void copy (sub_process_location& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_process_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_info>& a, const std::string& field);
+void copy (sub_process_info& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_request_id>& a, const std::string& field);
@@ -378,7 +463,11 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code&
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_code>& a, const std::string& field);
 void copy (sub_product_code& a, const qpid::types::Variant& map);
 
+    sub_location  __internal_get_default(sub_location *);
+    
     sub_process_location  __internal_get_default(sub_process_location *);
+    
+    sub_process_info  __internal_get_default(sub_process_info *);
     
     sub_request_id  __internal_get_default(sub_request_id *);
     
@@ -407,7 +496,9 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_location)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_process_location)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_process_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_id)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_r_response)

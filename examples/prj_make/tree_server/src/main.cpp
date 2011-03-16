@@ -34,8 +34,6 @@ mtk::CountPtr<mtk::ConfigFile>   data_file;
 
 int main(int argc, char ** argv)
 {
-    mtk::gen::msg::tree_request_items(mtk::admin::get_request_info(), "ROOT");
-    
     try
     {
         if(argc==1)

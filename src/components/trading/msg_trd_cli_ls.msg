@@ -72,7 +72,7 @@ RQ_CC_LS  [< V:0, I:RQ_XX_LS  >]   {}
 //---------------------------------------------------------------------
 //	confirmations  LS
 
-CF_XX_LS  [< V:0,  SUBJ:RS.${req_info.process_location.location}.${confirmated_info.product_code.sys_code.market}.${confirmated_info.product_code.sys_code.product}  >]
+CF_XX_LS  [< V:0,  SUBJ:RS.${req_info.process_location.location.client_code}.${confirmated_info.product_code.sys_code.market}.${confirmated_info.product_code.sys_code.product}  >]
 {
     req_info         (rqid) :   mtk::msg::sub_request_info    
     confirmated_info (ci)   :   sub_order_ls_confirmated
@@ -105,7 +105,7 @@ CF_EX_LS  [< V:0, I:CF_XX_LS   >]
 //---------------------------------------------------------------------
 //	rejects  LS
 
-RJ_XX_LS  [< V:0, SUBJ:RS.${req_info.process_location.location}.${confirmated_info.product_code.sys_code.market}.${confirmated_info.product_code.sys_code.product} >]
+RJ_XX_LS  [< V:0, SUBJ:RS.${req_info.process_location.location.client_code}.${confirmated_info.product_code.sys_code.market}.${confirmated_info.product_code.sys_code.product} >]
 {
     req_info            (rqid) :   mtk::msg::sub_request_info    
     confirmated_info    (ci)   :   sub_order_ls_confirmated

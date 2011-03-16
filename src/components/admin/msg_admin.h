@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Tue Mar 15 12:41:59 2011
+// coded last modification:        Wed Mar 16 13:29:06 2011
 
 
 #include "support/nullable.hpp"
@@ -41,7 +41,7 @@ public:
 
     
     // constructor
-    explicit enter (    const mtk::msg::sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit enter (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit enter ( const qpid::messaging::Message& message );
     virtual ~enter (){};
     virtual std::string get_message_type_as_string       (void) const  { return "enter"; };
@@ -50,7 +50,7 @@ public:
     
 
     // fields
-    mtk::msg::sub_process_location            process_location; 
+    mtk::msg::sub_process_info                process_info; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
 
@@ -78,7 +78,7 @@ public:
 
     
     // constructor
-    explicit keep_alive (    const mtk::msg::sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit keep_alive ( const qpid::messaging::Message& message );
     virtual ~keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "keep_alive"; };
@@ -87,7 +87,7 @@ public:
     
 
     // fields
-    mtk::msg::sub_process_location            process_location; 
+    mtk::msg::sub_process_info                process_info; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
 
@@ -115,7 +115,7 @@ public:
 
     
     // constructor
-    explicit exit (    const mtk::msg::sub_process_location&  _process_location,   const std::string&  _reason );
+    explicit exit (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
     explicit exit ( const qpid::messaging::Message& message );
     virtual ~exit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "exit"; };
@@ -124,7 +124,7 @@ public:
     
 
     // fields
-    mtk::msg::sub_process_location            process_location; 
+    mtk::msg::sub_process_info                process_info; 
     std::string                               reason; 
 
 
@@ -151,7 +151,7 @@ public:
 
     
     // constructor
-    explicit alarm (    const mtk::msg::sub_process_location&  _process_location,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
+    explicit alarm (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
     explicit alarm ( const qpid::messaging::Message& message );
     virtual ~alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "alarm"; };
@@ -160,7 +160,7 @@ public:
     
 
     // fields
-    mtk::msg::sub_process_location            process_location; 
+    mtk::msg::sub_process_info                process_info; 
     std::string                               code_source; 
     std::string                               message; 
     mtk::alEnPriority                         priority; 
@@ -208,7 +208,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& proc_loc__destination_location,const std::string& proc_loc__destination_machine,const std::string& proc_loc__destination_process_name,const std::string& proc_loc__destination_process_uuid);
+    static std::string  get_in_subject (const std::string& proc_loc__destination_location_client_code,const std::string& proc_loc__destination_location_machine,const std::string& proc_loc__destination_process_name,const std::string& proc_loc__destination_process_uuid);
 virtual std::string  get_out_subject (void) const;
 
 private:
@@ -298,7 +298,7 @@ public:
 
     
     // constructor
-    explicit central_keep_alive (    const mtk::msg::sub_process_location&  _process_location,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit central_keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit central_keep_alive ( const qpid::messaging::Message& message );
     virtual ~central_keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "central_keep_alive"; };
@@ -307,7 +307,7 @@ public:
     
 
     // fields
-    mtk::msg::sub_process_location            process_location; 
+    mtk::msg::sub_process_info                process_info; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
 

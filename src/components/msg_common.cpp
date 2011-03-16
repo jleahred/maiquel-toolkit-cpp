@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Tue Mar 15 10:10:30 2011
+// coded last modification:        Wed Mar 16 12:27:49 2011
 
 
 #include "support/mtk_double.h"
@@ -277,8 +277,28 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_process_location::sub_process_location (   const std::string&  _location,   const std::string&  _machine,   const std::string&  _process_name,   const std::string&  _process_uuid)
-    :     location(_location),   machine(_machine),   process_name(_process_name),   process_uuid(_process_uuid) 
+sub_location::sub_location (   const std::string&  _client_code,   const std::string&  _machine)
+    :     client_code(_client_code),   machine(_machine) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_location::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
+sub_process_location::sub_process_location (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid)
+    :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid) 
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -289,6 +309,26 @@ sub_process_location::sub_process_location (   const std::string&  _location,   
 
 
 std::string sub_process_location::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
+sub_process_info::sub_process_info (   const sub_process_location&  _process_location,   const std::string&  _version)
+    :     process_location(_process_location),   version(_version) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_process_info::check_recomended(void) const
 {
     std::string result;
 
@@ -436,11 +476,33 @@ std::string sub_product_code::check_recomended(void) const
 }
 
 
+std::ostream& operator<< (std::ostream& o, const sub_location & c)
+{
+    o << "{ "
+
+        << "client_code:"<<   c.client_code << "  "        << "machine:"<<   c.machine << "  "
+        << " }";
+    return o;
+};
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_process_location & c)
 {
     o << "{ "
 
-        << "location:"<<   c.location << "  "        << "machine:"<<   c.machine << "  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "
+        << "location:"<< c.location<<"  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "
+        << " }";
+    return o;
+};
+
+
+
+std::ostream& operator<< (std::ostream& o, const sub_process_info & c)
+{
+    o << "{ "
+
+        << "process_location:"<< c.process_location<<"  "        << "version:"<<   c.version << "  "
         << " }";
     return o;
 };
@@ -524,12 +586,36 @@ std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
 
 
 
+bool operator== (const sub_location& a, const sub_location& b)
+{
+    return (          a.client_code ==  b.client_code  &&          a.machine ==  b.machine  &&   true  );
+};
+
+bool operator!= (const sub_location& a, const sub_location& b)
+{
+    return !(a==b);
+};
+
+
+
 bool operator== (const sub_process_location& a, const sub_process_location& b)
 {
-    return (          a.location ==  b.location  &&          a.machine ==  b.machine  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&   true  );
+    return (          a.location ==  b.location  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&   true  );
 };
 
 bool operator!= (const sub_process_location& a, const sub_process_location& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const sub_process_info& a, const sub_process_info& b)
+{
+    return (          a.process_location ==  b.process_location  &&          a.version ==  b.version  &&   true  );
+};
+
+bool operator!= (const sub_process_info& a, const sub_process_info& b)
 {
     return !(a==b);
 };
@@ -621,28 +707,69 @@ bool operator!= (const sub_product_code& a, const sub_product_code& b)
 
 
 
-//void  __internal_qpid_fill (sub_process_location& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_process_location& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (sub_location& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_location& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("lc");
+                    it = mv.find("cc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field location on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field client_code on message sub_location::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.location, it->second);
-                        //c.location = it->second;
+                        copy(c.client_code, it->second);
+                        //c.client_code = it->second;
 //   field_type
 
                     it = mv.find("mc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field machine on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field machine on message sub_location::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.machine, it->second);
                         //c.machine = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_location& a)
+{
+    
+
+//  field_type
+        __internal_add2map(map, a.client_code, std::string("cc"));
+//  field_type
+        __internal_add2map(map, a.machine, std::string("mc"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_location>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (sub_process_location& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_process_location& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("l");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field location on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.location, it->second);
+                        //__internal_qpid_fill(c.location, it->second.asMap());
 //   field_type
 
                     it = mv.find("pn");
@@ -667,10 +794,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_locat
 {
     
 
-//  field_type
-        __internal_add2map(map, a.location, std::string("lc"));
-//  field_type
-        __internal_add2map(map, a.machine, std::string("mc"));
+//  sub_msg_type
+        __internal_add2map(map, a.location, std::string("l"));
 //  field_type
         __internal_add2map(map, a.process_name, std::string("pn"));
 //  field_type
@@ -681,6 +806,55 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_locat
 
 
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_location>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (sub_process_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_process_info& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("pl");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field process_location on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.process_location, it->second);
+                        //__internal_qpid_fill(c.process_location, it->second.asMap());
+//   field_type
+
+                    it = mv.find("pv");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field version on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.version, it->second);
+                        //c.version = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info& a)
+{
+    
+
+//  sub_msg_type
+        __internal_add2map(map, a.process_location, std::string("pl"));
+//  field_type
+        __internal_add2map(map, a.version, std::string("pv"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_info>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1032,6 +1206,34 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+
+qpid::messaging::Message sub_location::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  field_type
+//        content["cc"] = this->client_code;
+        __internal_add2map(content, this->client_code, std::string("cc"));
+//  field_type
+//        content["mc"] = this->machine;
+        __internal_add2map(content, this->machine, std::string("mc"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
 
 qpid::messaging::Message sub_process_location::qpidmsg_codded_as_qpid_message (void) const
 {
@@ -1039,18 +1241,41 @@ qpid::messaging::Message sub_process_location::qpidmsg_codded_as_qpid_message (v
     qpid::types::Variant::Map content;
 
 
-//  field_type
-//        content["lc"] = this->location;
-        __internal_add2map(content, this->location, std::string("lc"));
-//  field_type
-//        content["mc"] = this->machine;
-        __internal_add2map(content, this->machine, std::string("mc"));
+//  sub_msg_type
+//        content["l"] =  qpidmsg_coded_as_qpid_Map(this->location);
+        __internal_add2map(content, this->location, std::string("l"));
 //  field_type
 //        content["pn"] = this->process_name;
         __internal_add2map(content, this->process_name, std::string("pn"));
 //  field_type
 //        content["pi"] = this->process_uuid;
         __internal_add2map(content, this->process_uuid, std::string("pi"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message sub_process_info::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  sub_msg_type
+//        content["pl"] =  qpidmsg_coded_as_qpid_Map(this->process_location);
+        __internal_add2map(content, this->process_location, std::string("pl"));
+//  field_type
+//        content["pv"] = this->version;
+        __internal_add2map(content, this->version, std::string("pv"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
@@ -1249,15 +1474,33 @@ qpid::messaging::Message sub_product_code::qpidmsg_codded_as_qpid_message (void)
 
 
 
+    sub_location  __internal_get_default(sub_location*)
+    {
+        return sub_location(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
     sub_process_location  __internal_get_default(sub_process_location*)
     {
         return sub_process_location(
+//   sub_msg_type
+   __internal_get_default((sub_location*)0),
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((std::string*)0),
-//   field_type
-   __internal_get_default ((std::string*)0),
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    sub_process_info  __internal_get_default(sub_process_info*)
+    {
+        return sub_process_info(
+//   sub_msg_type
+   __internal_get_default((sub_process_location*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
             );
@@ -1332,15 +1575,49 @@ __internal_get_default((sub_single_product_code*)0), //   field_type
     }
     
 
-sub_process_location::sub_process_location (const qpid::messaging::Message& msg)
+sub_location::sub_location (const qpid::messaging::Message& msg)
     :  //   field_type
-   location(__internal_get_default((std::string*)0)),
+   client_code(__internal_get_default((std::string*)0)),
 //   field_type
-   machine(__internal_get_default((std::string*)0)),
+   machine(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+sub_process_location::sub_process_location (const qpid::messaging::Message& msg)
+    :  //   sub_msg_type
+   location(__internal_get_default((sub_location*)0)),
 //   field_type
    process_name(__internal_get_default((std::string*)0)),
 //   field_type
    process_uuid(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+sub_process_info::sub_process_info (const qpid::messaging::Message& msg)
+    :  //   sub_msg_type
+   process_location(__internal_get_default((sub_process_location*)0)),
+//   field_type
+   version(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

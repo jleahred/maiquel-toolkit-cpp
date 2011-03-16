@@ -26,7 +26,7 @@ public:
 
     mtk::Signal<const mtk::Alarm&>    signal_alarm;
 
-    void  fill_locations_for_selected_items(mtk::list<mtk::msg::sub_process_location>&  locations2fill) const;
+    void  fill_process_info_for_selected_items(mtk::list<mtk::msg::sub_process_info>&  pinfo2fill) const;
 
 
 signals:
@@ -51,7 +51,7 @@ private:
 
     QListWidgetItem_ka*  find_item(const mtk::msg::sub_process_location& l);
 
-    void  check_alarm_received(const mtk::msg::sub_process_location& l);
+    void  check_alarm_received(const mtk::msg::sub_process_info& l);
     void  on_client_alarm_received(const mtk::admin::msg::alarm& alarm_msg);
 
 };

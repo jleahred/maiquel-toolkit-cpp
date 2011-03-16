@@ -30,7 +30,7 @@ END_INIT
 
 enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 {
-    process_location    (pl)    :   mtk::msg::sub_process_location
+    process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }
@@ -38,14 +38,14 @@ enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 
 keep_alive  [< V:0, SUBJ:ADM.CIMD.KA >]
 {
-    process_location    (pl)    :   mtk::msg::sub_process_location
+    process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }
 
 exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 {
-    process_location    (pl)    :   mtk::msg::sub_process_location
+    process_info        (pi)    :   mtk::msg::sub_process_info
     reason              (r)     :   string
 }
 
@@ -58,7 +58,7 @@ exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 
 alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 {
-    process_location    (pl)    :   mtk::msg::sub_process_location
+    process_info        (pi)    :   mtk::msg::sub_process_info
     code_source         (cs)    :   string
     message             (ms)    :   string
     priority            (p)     :   mtk::alEnPriority
@@ -76,7 +76,7 @@ alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 //  COMMANDS
 //-------------------------------------------------------------------
 
-command  [< V:0, SUBJ:ADM.${proc_loc__destination.location}.${proc_loc__destination.machine}.${proc_loc__destination.process_name}.${proc_loc__destination.process_uuid}.COMMAND >]
+command  [< V:0, SUBJ:ADM.${proc_loc__destination.location.client_code}.${proc_loc__destination.location.machine}.${proc_loc__destination.process_name}.${proc_loc__destination.process_uuid}.COMMAND >]
 {
     request_info            (ri)    :   mtk::msg::sub_request_info
 
@@ -108,7 +108,7 @@ command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.pr
 
 central_keep_alive  [< V:0, SUBJ:ADM.ALL.KA >]
 {
-    process_location    (pl)    :   mtk::msg::sub_process_location
+    process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }

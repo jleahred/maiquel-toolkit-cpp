@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Tue Mar 15 10:37:48 2011
+// coded last modification:        Wed Mar 16 12:44:25 2011
 
 
 #include "support/nullable.hpp"
@@ -90,7 +90,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_location_location);
+    static std::string  get_in_subject (const std::string& request_info_process_location_location_client_code);
 virtual std::string  get_out_subject (void) const;
 
 private:
@@ -126,7 +126,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_location,const std::string& response_info_request_info_process_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code);
+    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code);
 virtual std::string  get_out_subject (void) const;
 
 private:

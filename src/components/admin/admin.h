@@ -41,7 +41,7 @@ namespace mtk {
         
         mtk::CountPtr< mtk::qpid_session >                  get_qpid_session(const std::string&  url_for, const std::string& address);
         
-        mtk::msg::sub_process_location                      get_process_location            (void);
+        mtk::msg::sub_process_info                          get_process_info            (void);
          
         //std::string                                         get_session                     (void);     //  with server role, this is the process name
         

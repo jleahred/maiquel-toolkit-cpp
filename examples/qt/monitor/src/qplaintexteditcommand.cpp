@@ -154,33 +154,33 @@ void QPlainTextEditCommand::send_command(const QString& command)
 
 
 
-    mtk::list<mtk::msg::sub_process_location>  admin_locations_to_send;
+    mtk::list<mtk::msg::sub_process_info>  admin_process_info_to_send;
     //Q_EMIT signal_fill_locations_to_send(admin_locations_to_send);
     if(list_processes)
-        list_processes->fill_locations_for_selected_items(admin_locations_to_send);
+        list_processes->fill_process_info_for_selected_items(admin_process_info_to_send);
     else
         throw mtk::Alarm(MTK_HERE, "list_processes  not initialized.", mtk::alPriorError);
 
 
-    mtk::list<mtk::msg::sub_process_location>::iterator it = admin_locations_to_send.begin();
-    while(it!=admin_locations_to_send.end())
+    mtk::list<mtk::msg::sub_process_info>::iterator it = admin_process_info_to_send.begin();
+    while(it!=admin_process_info_to_send.end())
     {
-        mtk::msg::sub_request_info   request_info(mtk::msg::sub_request_id("monitor", mtk::crc32_as_string(MTK_SS(mtk::rand()))), *it);
+        mtk::msg::sub_request_info   request_info(mtk::msg::sub_request_id("monitor", mtk::crc32_as_string(MTK_SS(mtk::rand()))), it->process_location);
         //  subscription to multiresponse
         MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::admin::msg::command_response,
                                         mtk::admin::msg::sub_command_rd,
                                         qpid_admin_session,
-                                        mtk::admin::msg::command_response::get_in_subject(it->process_uuid, request_info.req_id.req_code),
+                                        mtk::admin::msg::command_response::get_in_subject(it->process_location.process_uuid, request_info.req_id.req_code),
                                         on_command_response)
 
-        mtk::admin::msg::command   command_request_msg(request_info, *it,  command.toStdString());
+        mtk::admin::msg::command   command_request_msg(request_info, it->process_location,  command.toStdString());
         mtk::send_message(qpid_admin_session, command_request_msg);
         if(write_into)
             write_into->appendPlainText(MTK_SS(std::endl << std::endl << std::endl << "SENDING COMMAND  "
-                                               << command.toStdString() << "  -->  " << it->location << "  "
-                                               << it->machine  << "  "
-                                               << it->process_name << "  "
-                                               << it->process_uuid
+                                               << command.toStdString() << "  -->  " << it->process_location.location.client_code << "  "
+                                               << it->process_location.location.machine  << "  "
+                                               << it->process_location.process_name << "  "
+                                               << it->process_location.process_uuid
                                                << std::endl << "_______________________________________________________________________________________________").c_str());
         else
             throw mtk::Alarm(MTK_HERE, "write_into not initialized.", mtk::alPriorError);

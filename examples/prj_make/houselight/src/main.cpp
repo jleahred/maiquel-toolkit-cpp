@@ -29,7 +29,7 @@ void send_central_keep_alive(void)
         
         
         
-        mtk::admin::msg::central_keep_alive msg(mtk::admin::get_process_location(), mtk::dtSeconds(3), mtk::dtSeconds(5));
+        mtk::admin::msg::central_keep_alive msg(mtk::admin::get_process_info(), mtk::dtSeconds(3), mtk::dtSeconds(5));
         
         mtk::send_message(adm_client_session, msg);
         mtk::send_message(adm_server_session , msg);

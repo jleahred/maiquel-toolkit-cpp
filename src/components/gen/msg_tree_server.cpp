@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Tue Mar 15 10:37:48 2011
+// coded last modification:        Wed Mar 16 12:44:25 2011
 
 
 #include "support/mtk_double.h"
@@ -732,21 +732,21 @@ tree_response_items::tree_response_items (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  tree_request_items::get_in_subject (const std::string& request_info_process_location_location)
+std::string  tree_request_items::get_in_subject (const std::string& request_info_process_location_location_client_code)
     {
-        return MTK_SS("REQ." << request_info_process_location_location << ".TREE_REQUEST");
+        return MTK_SS("REQ." << request_info_process_location_location_client_code << ".TREE_REQUEST");
     }
     std::string  tree_request_items::get_out_subject (void) const
     {
-        return MTK_SS("REQ." << this->request_info.process_location.location << ".TREE_REQUEST");
+        return MTK_SS("REQ." << this->request_info.process_location.location.client_code << ".TREE_REQUEST");
     }
-    std::string  tree_response_items::get_in_subject (const std::string& response_info_request_info_process_location_location,const std::string& response_info_request_info_process_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    std::string  tree_response_items::get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("REP." << response_info_request_info_process_location_location << "." << response_info_request_info_process_location_machine << "." << response_info_request_info_process_location_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << "");
+        return MTK_SS("REP." << response_info_request_info_process_location_location_client_code << "." << response_info_request_info_process_location_location_machine << "." << response_info_request_info_process_location_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << "");
     }
     std::string  tree_response_items::get_out_subject (void) const
     {
-        return MTK_SS("REP." << this->response_info.request_info.process_location.location << "." << this->response_info.request_info.process_location.machine << "." << this->response_info.request_info.process_location.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << "");
+        return MTK_SS("REP." << this->response_info.request_info.process_location.location.client_code << "." << this->response_info.request_info.process_location.location.machine << "." << this->response_info.request_info.process_location.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << "");
     }
     
 
