@@ -71,7 +71,10 @@ namespace {
             
             
             mtk::ConfigFile&      get_config_file     (void)    { return config_file;  };
-        
+
+            mtk::msg::sub_request_info   get_request_info (void);
+
+
             static admin_status*  i(void);
             static void           release(void);
 
@@ -263,6 +266,7 @@ namespace {
             process_priority = ppNormal;
         else
         {
+            app_name = get_mandatory_property("ADMIN.server_name");
             std::string priority = get_mandatory_property("ADMIN.priority");
             if(priority=="very_low")
                 process_priority = ppVeryLow;
@@ -691,6 +695,28 @@ namespace {
     {
         return config_file.GetValue(path);
     }
+    
+    
+    mtk::msg::sub_request_info   admin_status::get_request_info (void)
+    {
+        if(role=="server")
+        {
+            static int i=0;
+            return mtk::msg::sub_request_info (mtk::msg::sub_request_id(app_name, MTK_SS(++i)), get_process_location());
+        }
+        else if(role=="client")
+        {
+            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(60))
+                ADMIN_PROVISIONAL_IMPLEMENTATION
+            MTK_END_EXEC_MAX_FREC
+            static int i=0;
+            static const std::string session = mtk::crc32_as_string(MTK_SS(mtk::dtNowLocal()));
+            return mtk::msg::sub_request_info (mtk::msg::sub_request_id(session, MTK_SS("pending"<<++i)), get_process_location());
+        }
+        else
+            throw mtk::Alarm(MTK_HERE, MTK_SS(role << "  request info with invalid role"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    }
+    
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -749,13 +775,7 @@ mtk::CountPtr< mtk::qpid_session >     get_qpid_session(const std::string&  url_
     
 mtk::msg::sub_request_info   get_request_info (void)
 {
-    MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(60))
-        ADMIN_PROVISIONAL_IMPLEMENTATION
-    MTK_END_EXEC_MAX_FREC
-    
-    static int i=0;
-    static const std::string session = mtk::crc32_as_string(MTK_SS(mtk::dtNowLocal()));
-    return mtk::msg::sub_request_info (mtk::msg::sub_request_id(session, MTK_SS("pending"<<++i)), get_process_location());
+    return admin_status::i()->get_request_info();
 }
 
 
