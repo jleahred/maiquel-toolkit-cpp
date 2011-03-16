@@ -16,7 +16,7 @@ echo '+'
 echo '|=========================='
 
 echo '| # files (non externals) | '
-find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm |  grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | wc -l
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm |  grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | grep -v msg* | wc -l
 
 echo '| # external files  | '
 find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp | egrep  '/fb/|/yaml/|/pcre/' | wc -l
@@ -34,7 +34,7 @@ echo '+'
 echo '|=========================='
 
 echo '| # lines (non externals) | '
-find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | xargs cat | wc -l
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | grep -v msg* | xargs cat | wc -l
 
 
 echo '| # external lines  | '
@@ -49,7 +49,7 @@ echo ; echo
 echo 'BIGEST files::'
 echo '+'
 echo '--------------'
-find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | xargs wc -l | sort -nr -k1 | head -15
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | grep -v msg_* | xargs wc -l | sort -nr -k1 | head -15
 
 echo '--------------'
 
