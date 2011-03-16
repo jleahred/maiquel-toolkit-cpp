@@ -191,6 +191,10 @@ namespace {
             void command_ping               (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_date_time          (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_rqclose            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            
+            std::string  get_stats_simulating_command(void);
+            void         send_stats_periodically(void);
+            
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //          class admin_status
@@ -221,6 +225,10 @@ namespace {
         static bool  exit_message_sent = false;
         if(exit_message_sent==false)
         {
+            __direct_NotifyAlarm(mtk::Alarm("app_exit_stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
+            __direct_NotifyAlarm(mtk::Alarm("app_exit", MTK_SS("Exiting application  " << reason), mtk::alPriorDebug, mtk::alTypeUnknown));
+            
+            
             //  send exit message
             mtk::admin::msg::exit exit_msg(admin_status_instance->get_process_info(), reason);
             //std::cout << exit_msg << std::endl;
@@ -409,9 +417,12 @@ namespace {
         //std::cout << enter_msg << std::endl;
         mtk::send_message(session_admin, enter_msg);
         
+        mtk::AlarmMsg(mtk::Alarm("app_enter", "Entering application", mtk::alPriorDebug, mtk::alTypeUnknown));
+        
         MTK_TIMER_1S(send_keep_alive)
         MTK_TIMER_1S(check_last_received_message)
         MTK_TIMER_1S(check_central_keep_alive)
+        MTK_TIMER_1S(send_stats_periodically)
         
     }
     
@@ -508,6 +519,33 @@ namespace {
     }
 
 
+
+    void admin_status::send_stats_periodically(void)
+    {
+        MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtMinutes(45))
+            mtk::AlarmMsg(mtk::Alarm("stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
+        MTK_END_EXEC_MAX_FREC
+    }
+
+    std::string  admin_status::get_stats_simulating_command(void)
+    {
+        std::string  result;
+        mtk::list<std::string>  response_lines;
+        std::string command = "stats";
+        mtk::map<std::string, mtk::CountPtr<command_info> >::iterator it = map_commands.find(command);
+        if(it == map_commands.end())
+            throw mtk::Alarm(MTK_HERE, "not defined command stats???", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        else if( it->second->signal_command_received->emit(command, "", response_lines) == 0)
+            throw  mtk::Alarm(MTK_HERE, MTK_SS(command << "  has no signal connected"), mtk::alPriorError);
+        
+        mtk::list<std::string>::iterator  it_response_lines = response_lines.begin();
+        while (it_response_lines !=  response_lines.end())
+        {
+            result += *it_response_lines + "\n";
+            ++it_response_lines;
+        }
+        return result;
+    }
 
     void admin_status::on_command_received(const mtk::admin::msg::command& command_msg)
     {
