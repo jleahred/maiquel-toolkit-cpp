@@ -53,7 +53,7 @@ mtk::tuple<int, std::string> check_request_request(const mtk::trd::msg::RQ_XX_LS
         __INTERNAL_CHECK_EQUAL(last_request.Get().request_pos.side , rq.request_pos.side)
     }
     
-    if (nerrors >0)
+    if (nerrors >0)     //  all errors on this level are critic
     {
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rq << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
@@ -70,6 +70,8 @@ mtk::tuple<int, std::string> check_request_last_confirm(const mtk::trd::msg::RQ_
     std::string serrors;
     int nerrors=0;
 
+
+    //  critic
     if (is_valid(rq.order_id)==false)
     {
         ++nerrors;
@@ -84,17 +86,23 @@ mtk::tuple<int, std::string> check_request_last_confirm(const mtk::trd::msg::RQ_
     __INTERNAL_CHECK_EQUAL(rq.order_id          , last_conf.Get().confirmated_info.order_id        )
     __INTERNAL_CHECK_EQUAL(rq.request_pos.side  , last_conf.Get().confirmated_info.market_pos.side )
 
-    if (last_conf.HasValue()  &&  mtk::Double(last_conf.Get().confirmated_info.total_execs.quantity.GetDouble()) >= (mtk::Double(rq.request_pos.quantity.GetDouble())))
-    {
-        serrors += "  requested quantity lower or equal than executed quantity!!!  ";
-        ++nerrors;
-    }
 
     if (nerrors >0)
     {
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
+    
+    
+    
+    //  non critic
+    if (last_conf.HasValue()  &&  mtk::Double(last_conf.Get().confirmated_info.total_execs.quantity.GetDouble()) >= (mtk::Double(rq.request_pos.quantity.GetDouble())))
+    {
+        serrors += "  requested quantity lower or equal than executed quantity!!!  ";
+        ++nerrors;
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
+    }
+    
     return mtk::make_tuple(nerrors, serrors);
 }
 
@@ -107,10 +115,7 @@ mtk::tuple<int, std::string> check_request_not_modifying(const mtk::trd::msg::RQ
 
     if (last_request.HasValue()== false  ||  last_request.Get().req_info ==  last_conf.Get().req_info)         //  there are no pending request
         if (rq.request_pos == last_conf.Get().confirmated_info.market_pos  &&  rq.cli_ref == last_conf.Get().confirmated_info.cli_ref)
-        {
-            ++nerrors;
-            serrors += "  modification not modifying!!!  ";
-        }
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("modification not modifing  " << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
 
 
     if (nerrors >0)
