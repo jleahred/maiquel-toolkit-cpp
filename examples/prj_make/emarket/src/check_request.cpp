@@ -3,7 +3,7 @@
 
 
 const char* URL = "amqp:tcp:127.0.0.1:5672";
-const char* IN_ADDRESS = "CLITRD";
+const char* IN_ADDRESS = "CLITESTING";
 
 
 check_request::check_request()

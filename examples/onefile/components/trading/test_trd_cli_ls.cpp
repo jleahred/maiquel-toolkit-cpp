@@ -79,9 +79,8 @@ int main(void)
 {
     try{
         mtk::trd::msg::sub_order_id         ord_id(mtk::msg::get_request_info().req_id);
-        mtk::msg::sub_product_code          pc (    mtk::msg::sub_single_product_code  ("market", "product", mtk::nullable<std::string>()),
-                                                        mtk::nullable<mtk::msg::sub_single_product_code>(), mtk::nullable<std::string>() );
-
+        mtk::msg::sub_product_code pc (mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("market", "product"), "product"), 
+                                    mtk::nullable<mtk::msg::sub_adic_product_code>());
 
 
         mtk::trd::trd_cli_ls  order_ls;

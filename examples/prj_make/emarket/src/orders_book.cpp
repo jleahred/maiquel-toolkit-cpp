@@ -142,7 +142,7 @@ template<typename T>
 void send_to_client (const T& toclient)
 {
     static const std::string URL = "amqp:tcp:127.0.0.1:5672";
-    static const std::string OUT_ADDRESS = "CLITRD";
+    static const std::string OUT_ADDRESS = "CLITESTING";
     static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(URL, OUT_ADDRESS));
     
     send_message(qpid_session, toclient, "");
@@ -378,10 +378,10 @@ mtk::prices::msg::sub_price_level   get_emtpy_level_prices(void)
 }
 mtk::prices::msg::best_prices    get_emtpy_best_prices   (void)
 {
+    
     return mtk::prices::msg::best_prices(
-        mtk::msg::sub_product_code(     mtk::msg::sub_single_product_code("", "", mtk::nullable<std::string>()), 
-                                        mtk::nullable<mtk::msg::sub_single_product_code>(),
-                                        mtk::nullable<std::string>()),
+        mtk::msg::sub_product_code( mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("", ""), ""), 
+                                    mtk::nullable<mtk::msg::sub_adic_product_code>()),
         mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),  
                                             get_emtpy_level_prices(), 
                                             get_emtpy_level_prices(),
@@ -401,7 +401,7 @@ template<typename T>
 void send_prices (const T& mtk_msg)
 {
     static const std::string URL = "amqp:tcp:127.0.0.1:5672";
-    static const std::string OUT_ADDRESS = "PUBPRC";
+    static const std::string OUT_ADDRESS = "CLITESTING";
     static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(URL, OUT_ADDRESS));
     
     send_message(qpid_session, mtk_msg, "");

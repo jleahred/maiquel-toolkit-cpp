@@ -11,20 +11,6 @@ namespace mtk{namespace trd{
 namespace  trd_cli_ord_book {
 
 
-    //pending remove admin
-//  pending to pass it to Admin
-//mtk::msg::sub_request_info   get_request_info (void)
-//{
-//    static int i=0;
-//    static const std::string session = MTK_SS(mtk::dtNowLocal());
-//    return mtk::msg::sub_request_info (mtk::msg::sub_request_id(session, MTK_SS("pending"<<++i)), "CLIENT");
-//}
-    //pending remove admin
-//  pending to pass it to Admin
-std::string get_url(void) { return "amqp:tcp:192.168.7.1:5672"; };
-std::string get_address(void) { return "CLITRD"; };
-
-
 
 
 struct handles_qpid
@@ -75,56 +61,56 @@ s_status& get_status_ref(void)
         __internal_ptr_status = new s_status();
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.cf_nw_ls,
-                                    get_url(),
-                                    get_address(),
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject("CLIENT", "*", "*"),
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject("CIMD", "*", "*"),
                                     mtk::trd::msg::CF_NW_LS,
                                     cf_nw_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.cf_md_ls,
-                                    get_url(),
-                                    get_address(),
-                                    mtk::trd::msg::CF_MD_LS::get_in_subject("CLIENT", "*", "*"),
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::CF_MD_LS::get_in_subject("CIMD", "*", "*"),
                                     mtk::trd::msg::CF_MD_LS,
                                     cf_md_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.cf_cc_ls,
-                                    get_url(),
-                                    get_address(),
-                                    mtk::trd::msg::CF_CC_LS::get_in_subject("CLIENT", "*", "*"),
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::CF_CC_LS::get_in_subject("CIMD", "*", "*"),
                                     mtk::trd::msg::CF_CC_LS,
                                     cf_cc_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.rj_nw_ls,
-                                    get_url(),
-                                    get_address(),
-                                    mtk::trd::msg::RJ_NW_LS::get_in_subject("CLIENT", "*", "*"),
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::RJ_NW_LS::get_in_subject("CIMD", "*", "*"),
                                     mtk::trd::msg::RJ_NW_LS,
                                     rj_nw_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.rj_md_ls,
-                                    get_url(),
-                                    get_address(),
-                                    mtk::trd::msg::RJ_MD_LS::get_in_subject("CLIENT", "*", "*"),
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::RJ_MD_LS::get_in_subject("CIMD", "*", "*"),
                                     mtk::trd::msg::RJ_MD_LS,
                                     rj_md_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.rj_cc_ls,
-                                    get_url(),
-                                    get_address(),
-                                    mtk::trd::msg::RJ_CC_LS::get_in_subject("CLIENT", "*", "*"),
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::RJ_CC_LS::get_in_subject("CIMD", "*", "*"),
                                     mtk::trd::msg::RJ_CC_LS,
                                     rj_cc_ls)
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.cf_ex_ls,
-                                    get_url(),
-                                    get_address(),
-                                    mtk::trd::msg::CF_EX_LS::get_in_subject("CLIENT", "*", "*"),
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::CF_EX_LS::get_in_subject("CIMD", "*", "*"),
                                     mtk::trd::msg::CF_EX_LS,
                                     cf_ex_ls)
     }
@@ -137,7 +123,7 @@ s_status& get_status_ref(void)
 template<typename T>
 void send_request_message(const T& rq)
 {
-    static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(get_url(), get_address()));
+    static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(mtk::admin::get_url("client"), std::string("CLITESTING")));
     mtk::send_message(qpid_session, rq);
 }
 

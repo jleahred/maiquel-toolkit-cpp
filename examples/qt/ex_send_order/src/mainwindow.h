@@ -66,6 +66,7 @@ private:
     void on_message(const qpid::messaging::Message& message);
 
     mtk::trd::msg::RQ_XX_LS get_xx_request(void);
+    mtk::msg::sub_process_location   get_process_location(void);
 
 private slots:
     void on_pushButton_clicked();

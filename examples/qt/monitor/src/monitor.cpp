@@ -101,8 +101,8 @@ Monitor::Monitor(QWidget *parent) :
 
     try
     {
-        qpid_admin_session_srv = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(std::string("amqp:tcp:127.0.0.1:5672"), std::string("ADMSRV")));
-        qpid_admin_session_cli = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(std::string("amqp:tcp:127.0.0.1:5672"), std::string("ADMCLI")));
+        qpid_admin_session_srv = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(std::string("amqp:tcp:127.0.0.1:5672"), std::string("SRVTESTING")));
+        qpid_admin_session_cli = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(std::string("amqp:tcp:127.0.0.1:5672"), std::string("CLITESTING")));
     }
     MTK_CATCH_CALLFUNCION(error_connecting, "main", "")
 

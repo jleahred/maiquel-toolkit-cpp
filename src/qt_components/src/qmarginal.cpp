@@ -49,9 +49,8 @@ mtk::prices::msg::sub_price_level   get_emtpy_level_prices(void)
 
 mtk::msg::sub_product_code  get_empty_product_code (void)
 {
-    return mtk::msg::sub_product_code(     mtk::msg::sub_single_product_code("", "", mtk::nullable<std::string>()),
-                                    mtk::nullable<mtk::msg::sub_single_product_code>(),
-                                    mtk::nullable<std::string>());
+    return mtk::msg::sub_product_code(mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("", ""), ""),
+                                      mtk::nullable<mtk::msg::sub_adic_product_code>());
 }
 
 mtk::prices::msg::best_prices    get_emtpy_best_prices   (void)
@@ -198,7 +197,7 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     //QFont font(_table_widget->font());
     //font.setBold(true);
     {
-        tw_product->setText(QString(MTK_SS(product_code.sys_code.market << "." << product_code.sys_code.product).c_str()));
+        tw_product->setText(QString(MTK_SS(product_code.sys_code.market << "." << product_code.sys_code.user_name).c_str()));
         //font.setPointSize(11);
         //tw_product->setFont(font);
         tw_product->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
@@ -229,9 +228,9 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             h_best_prices,
-                            "amqp:tcp:192.168.7.1:5672",
-                            "PUBPRC",
-                            mtk::prices::msg::best_prices::get_in_subject("MARKET", product_code.sys_code.product),
+                            mtk::admin::get_url("client"),
+                            "CLITESTING",
+                            mtk::prices::msg::best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
                             mtk::prices::msg::best_prices,
                             on_message)
 

@@ -119,14 +119,19 @@ void MainWindow::on_pbPrepareNewRequest_clicked()
 }
 
 
+mtk::msg::sub_process_location   MainWindow::get_process_location(void)
+{
+    return mtk::msg::sub_process_location(ui->leReqInfo_CliCode->text().toStdString(), "machine", "ex_send_order", "ex_send_orderAA");
+}
+
 
 mtk::trd::msg::RQ_XX_LS MainWindow::get_xx_request(void)
 {
     mtk::trd::msg::sub_order_id         ord_id(mtk::msg::sub_request_id(ui->leOderID_SessionID->text().toStdString(), ui->leOrderID_RequestCode->text().toStdString()));
-    mtk::msg::sub_product_code          pc (    mtk::msg::sub_single_product_code  (    ui->leMarket->text().toStdString(),
-                                                                                        ui->leProduct->text().toStdString(),
-                                                                                        mtk::nullable<std::string>()),
-                                                    mtk::nullable<mtk::msg::sub_single_product_code>(), mtk::nullable<std::string>() );
+    mtk::msg::sub_product_code pc(mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code(ui->leMarket->text().toStdString(),
+                                                                                                ui->leProduct->text().toStdString()),
+                                                              ui->leProduct->text().toStdString()),
+                               mtk::nullable<mtk::msg::sub_adic_product_code>());
 
     mtk::trd::msg::enBuySell side;
     if (ui->buy->isChecked())
@@ -135,10 +140,9 @@ mtk::trd::msg::RQ_XX_LS MainWindow::get_xx_request(void)
         side = mtk::trd::msg::sell;
 
 
-    return mtk::trd::msg::RQ_XX_LS(
-                                              mtk::msg::sub_request_info( mtk::msg::sub_request_id(ui->leReqInfo_SessionID->text().toStdString(),
-                                                                                                   ui->leReqInfo_RequestCode->text().toStdString()),
-                                                                          ui->leReqInfo_CliCode->text().toStdString())
+    return mtk::trd::msg::RQ_XX_LS(           mtk::msg::sub_request_info(mtk::msg::sub_request_id(ui->leReqInfo_SessionID->text().toStdString(),
+                                                                                                ui->leReqInfo_RequestCode->text().toStdString()),
+                                                                       get_process_location())
                                             , ord_id
                                             , pc
                                             , mtk::trd::msg::sub_position_ls(
