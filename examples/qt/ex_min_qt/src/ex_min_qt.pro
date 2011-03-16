@@ -21,4 +21,4 @@ FORMS    += mainwindow.ui
 INCLUDEPATH = . ../../../../src/           # <1>
 
                                         # <2>
-LIBS =  -L../../../../lib  -lmtksupport  -lqpidclient -lqpidmessaging
+LIBS =  -L../../../../lib  -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging

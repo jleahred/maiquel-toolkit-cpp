@@ -10,22 +10,6 @@
 #include "qt_components/src/qcommontabledelegate.h"
 
 
-//  pending admin
-namespace mtk {
-    namespace  msg {
-
-
-        sub_request_info   get_request_info (void)
-        {
-            static int contador;
-            return sub_request_info(    sub_request_id("sess_id", MTK_SS(contador)),
-                                        "CLIENT");
-        }
-
-
-      };   //namespace msg {
-};  //namespace mtk {
-
 
 
 namespace {

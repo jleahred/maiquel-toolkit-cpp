@@ -1,6 +1,6 @@
 #
 # Output...
-OUT = bin/houseligh
+OUT = bin/houselight
 #
 #
 # Directories with source code
@@ -28,7 +28,7 @@ default__:  default
 
 .PHONY : doc
 doc:
-	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/houseligh.adoc
+	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/houselight.adoc
 
 
 

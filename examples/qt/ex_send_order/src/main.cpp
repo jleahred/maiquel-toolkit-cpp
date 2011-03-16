@@ -6,6 +6,16 @@
 
 
 
+namespace
+{
+
+    const char*   APP_NAME          = "EMARKET";
+    const char*   APP_VER           = "0.1";
+    const char*   APP_DESCRIPTION   = "This is a testing market.\n";
+}
+
+
+
 //-------------------------------------------------------------------------------
 //      P R E P A R I N G     M T K
 //-------------------------------------------------------------------------------
@@ -47,9 +57,9 @@ int main(int argc, char *argv[])
     try
     {
         if(argc==1)
-            mtk::admin::init("../etc/config.cfg");
+            mtk::admin::init("../etc/config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION);
         else
-            mtk::admin::init(argv[1]);
+            mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION);
 
         MTK_Qt_ExceptionCatcher a(argc, argv);                  // <3>
         MainWindow w;

@@ -8,32 +8,31 @@
 
 #include "check_request.h"
 #include "orders_book.h"
+#include "components/admin/admin.h"
 
-namespace mtk {  
-    namespace  msg {
-        
-	sub_process_location  get_process_location(void)
-	{
-	    return  mtk::msg::sub_process_location  ("CLIENT", "MACHINE", "PROCESS NAME", "UUID");
-	}
-	sub_request_info   get_request_info (void)
-	{
-	    static int i=0;
-	    return sub_request_info (sub_request_id("pending", MTK_SS("pending"<<i)), get_process_location());
-	}
-        
-      };   //namespace msg {
-};  //namespace mtk {
+
+
+namespace
+{
+    
+    const char*   APP_NAME          = "EMARKET";
+    const char*   APP_VER           = "0.1";
+    const char*   APP_DESCRIPTION   = "This is a testing market.\n";
+}
 
 
 
 
-
-int main(void)
+int main(int argc, char ** argv)
 {
     
     try
     {
+        if(argc==1)
+            mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION);
+        else
+            mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION);
+
         check_request  cr;
         orders_book    ob;
         
@@ -51,7 +50,3 @@ int main(void)
     return -1;
 }
 
-void mtk::AlarmMsg(const mtk::Alarm& error)
-{
-    std::cout << error << std::endl;
-}
