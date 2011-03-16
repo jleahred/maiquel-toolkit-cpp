@@ -122,7 +122,7 @@ class __kamikaze_receive_r   :   public  mtk::SignalReceptor  {
     
 public:
 	__kamikaze_receive_r(mtk::CountPtr< mtk::qpid_session >  _qpid_session, const std::string in_subject)
-                    : programed_to_delete(false), last_received(mtk::dtNowLocal()), espected_secuence(-1)
+                    : programed_to_delete(false), last_received(mtk::dtNowLocal()+mtk::dtSeconds(30)), espected_secuence(-1)
             { 
                 MTK_QPID_RECEIVER_CONNECT_THIS(
                                         hqpid_response,
@@ -168,7 +168,7 @@ private:
 
         list_received.push_back(response);
 
-        if(response.response_info.is_last_response)
+        if(response.response_info.is_last_response  &&  programed_to_delete==false)
         {
             signal_received.emit(list_received);
             MTK_CALL_LATER1S_F(mtk::dtMilliseconds(10), this, delete_later);
@@ -182,7 +182,7 @@ private:
     
     void check_timeout(void)
     {
-        if(mtk::dtNowLocal() -  last_received  > mtk::dtSeconds(10))
+        if(mtk::dtNowLocal() -  last_received  > mtk::dtSeconds(20)    &&  programed_to_delete==false)
         {
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("time out on request "), mtk::alPriorError, mtk::alTypeOverflow));
             MTK_TIMER_1S_STOP(check_timeout)

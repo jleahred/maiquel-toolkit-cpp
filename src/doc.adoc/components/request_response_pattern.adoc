@@ -4,6 +4,11 @@
 
 You can send and receive multiresponses in an easy way
 
+* The request will be sent _slowly_
+* The reception will let 40 seconds for first response and 20 seconds for consecutive responses
+* In case of not receive the next response (timeout) or we will receive an incorrect partial response (bad secuence number), the system will cancel the listener to the response and will emit an alarm
+
+
 * Request response submessages are defined on...
 +
 .src/components/msg_common.msg

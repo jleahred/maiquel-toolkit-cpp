@@ -129,6 +129,8 @@ void QPlainTextEditCommand::keyPressEvent(QKeyEvent *event)
 
 void QPlainTextEditCommand::send_command(const QString& command)
 {
+    if(command.trimmed() == "")
+        return;
     if(command=="__")
     {
         std::string result = MTK_SS(std::endl <<"Local command help..................." << std::endl <<
@@ -168,7 +170,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
         MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::admin::msg::command_response,
                                         mtk::admin::msg::sub_command_rd,
                                         qpid_admin_session,
-                                        mtk::admin::msg::command_response::get_in_subject(it->location),
+                                        mtk::admin::msg::command_response::get_in_subject(it->process_uuid, request_info.req_id.req_code),
                                         on_command_response)
 
         mtk::admin::msg::command   command_request_msg(request_info, *it,  command.toStdString());
