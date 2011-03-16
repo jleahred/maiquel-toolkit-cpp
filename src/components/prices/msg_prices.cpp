@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Tue Mar 15 12:39:00 2011
+// coded last modification:        Wed Mar 16 16:01:22 2011
 
 
 #include "support/mtk_double.h"
@@ -787,11 +787,11 @@ best_prices::best_prices (const qpid::messaging::Message& msg)
 
 std::string  best_prices::get_in_subject (const std::string& product_code_sys_code_market,const std::string& product_code_sys_code_product)
     {
-        return MTK_SS("PUBL." << product_code_sys_code_market << "." << product_code_sys_code_product << "");
+        return MTK_SS("PUB." << product_code_sys_code_market << "." << product_code_sys_code_product << "");
     }
     std::string  best_prices::get_out_subject (void) const
     {
-        return MTK_SS("PUBL." << this->product_code.sys_code.market << "." << this->product_code.sys_code.product << "");
+        return MTK_SS("PUB." << this->product_code.sys_code.market << "." << this->product_code.sys_code.product << "");
     }
     
 

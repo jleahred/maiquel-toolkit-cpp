@@ -29,7 +29,7 @@ sub_price_deph5 [<V:0>]
 
 
 
-best_prices [<V:0,  SUBJ:PUBL.${product_code.sys_code.market}.${product_code.sys_code.product}  >]
+best_prices [<V:0,  SUBJ:PUB.${product_code.sys_code.market}.${product_code.sys_code.product}  >]
 {
     product_code   (pc)         :   mtk::msg::sub_product_code     
 

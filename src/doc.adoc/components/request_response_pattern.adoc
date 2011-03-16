@@ -2,7 +2,14 @@
 
 === Request response pattern
 
+
 You can send and receive multiresponses in an easy way
+
+* Secuence
+.. Multiresponse suscription
+.. Send request
+.. Receiving responses (with secuence number)
+.. Last response or timeout received
 
 * The request will be sent _slowly_
 * The reception will let 40 seconds for first response and 20 seconds for consecutive responses

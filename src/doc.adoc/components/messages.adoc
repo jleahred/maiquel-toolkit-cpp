@@ -67,13 +67,13 @@ include::/tmp/adoc/generate_messages_doc.txt[]
 CLI ->  SYS::
 +
 |=====================
-| REQ.<from_client>.#
+| RQ.<from_client>.#
 |=====================
 
 CLI <-  SYS::
 +
 |=====================
-| REP.<client>.<machine>.<process_uuid>.<request_code>#   |    Request responses
+| RS.<client>.<machine>.<process_uuid>.<request_code>#   |    Request responses
 | CONF.<client>.#   |    Permanent topics responses (as order confirmations)
 | PUB.#   |    One direcction publications
 |=====================
@@ -91,15 +91,6 @@ CLI <-->  SYS::
 * +REP+ responses of request response pattern. _Non permanent_ suscriptions
 
 
-=== Request response pattern
-
-* It's defined on +src/components/msg_common.msg+
-* Secuence
-.. Multiresponse suscription
-.. Send request
-.. Receiving responses (with secuence number)
-.. Last response or timeout received
-* Next information is fromMore information and examples on document +mtk/Components/Request response pattern+
 include::request_response_pattern.adoc[]
 
 
