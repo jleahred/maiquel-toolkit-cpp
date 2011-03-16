@@ -17,6 +17,9 @@ namespace
     const char*   APP_DESCRIPTION   = "This process will send, the markets and groups.\n"
                                       "It also check the permisions\n"
                                       "It doesn't have the full information, there are others specific THREESERVERS cooperating.";
+
+    const char*   APP_MODIFICATIONS = "           2011-03-16     first version\n";
+
 }
 
 
@@ -36,9 +39,9 @@ int main(int argc, char ** argv)
     try
     {
         if(argc==1)
-            mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION);
+            mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
-            mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION);
+            mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
 
         cli_session =  mtk::admin::get_qpid_session("client", "CLITESTING");
         

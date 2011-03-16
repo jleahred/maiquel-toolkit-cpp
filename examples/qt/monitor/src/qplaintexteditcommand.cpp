@@ -181,7 +181,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
                                                << it->machine  << "  "
                                                << it->process_name << "  "
                                                << it->process_uuid
-                                               << std::endl << "--------------------------------------------------------------").c_str());
+                                               << std::endl << "_______________________________________________________________________________________________").c_str());
         else
             throw mtk::Alarm(MTK_HERE, "write_into not initialized.", mtk::alPriorError);
         ++it;

@@ -36,7 +36,8 @@ namespace mtk {
         void                                                init            (const std::string& config_file_name,
                                                                              const std::string& app_name,
                                                                              const std::string& app_version,
-                                                                             const std::string& app_description );  
+                                                                             const std::string& app_description,
+                                                                             const std::string& app_modifications);  
         
         mtk::CountPtr< mtk::qpid_session >                  get_qpid_session(const std::string&  url_for, const std::string& address);
         

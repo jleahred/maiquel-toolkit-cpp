@@ -14,6 +14,9 @@ namespace
     const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "This process will send the keep alive to servers and clients\n"
                                       "It will be checked by admin component";
+                                      
+    const char*   APP_MODIFICATIONS = "           2011-03-16     first version\n";
+                                      
 }
 
 
@@ -39,9 +42,9 @@ int main(int argc, char ** argv)
     try
     {
         if(argc==1)
-            mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION);
+            mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
-            mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION);
+            mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         
     
 

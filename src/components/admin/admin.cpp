@@ -22,6 +22,9 @@
 
 namespace {
     const char*   VERSION = "2011-03-16";
+    
+    const char*   MODIFICATIONS =
+                        "           2011-03-16     first version\n";
 }
 
 
@@ -63,7 +66,9 @@ namespace {
             void                  init                ( const std::string& config_file_name,
                                                         const std::string& app_name,
                                                         const std::string& app_version,
-                                                        const std::string& app_description );  
+                                                        const std::string& app_description,
+                                                        const std::string& app_modifications);  
+                                                        
             void                  close_application   ( const std::string& reason );
             
             
@@ -115,6 +120,7 @@ namespace {
             std::string                                 app_name;
             std::string                                 app_version;
             std::string                                 app_description;
+            std::string                                 app_modifications;
             std::string                                 role;
             
             mtk::CountPtr< mtk::qpid_session >          session_admin;
@@ -171,15 +177,18 @@ namespace {
             mtk::map<std::string, mtk::CountPtr<command_info> >             map_commands;
             mtk::map<std::string/*group*/, std::string/*cmds help*/ >       map_commands_groupped_help;
             
-            void on_command_received(const mtk::admin::msg::command& command_msg);
-            void command_help       (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
-            void command_version    (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
-            void command_stats      (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
-            void command_infoapp    (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
-            void command_config     (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
-            void command_ping       (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
-            void command_date_time  (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
-            void command_rqclose    (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void on_command_received        (const mtk::admin::msg::command& command_msg);
+            void command_help               (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_version            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_version_app        (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_modifications      (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_modifications_app  (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_stats              (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_infoapp            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_config             (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_ping               (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_date_time          (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_rqclose            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //          class admin_status
@@ -207,10 +216,15 @@ namespace {
     }
     void  admin_status::close_application(const std::string& reason)
     {
-        //  send exit message
-        mtk::admin::msg::exit exit_msg(admin_status_instance->get_process_location(), reason);
-        //std::cout << exit_msg << std::endl;
-        mtk::send_message(admin_status_instance->session_admin, exit_msg);
+        static bool  exit_message_sent = false;
+        if(exit_message_sent==false)
+        {
+            //  send exit message
+            mtk::admin::msg::exit exit_msg(admin_status_instance->get_process_location(), reason);
+            //std::cout << exit_msg << std::endl;
+            mtk::send_message(admin_status_instance->session_admin, exit_msg);
+            exit_message_sent = true;
+        }
         
         if(role=="server")
             mtk::stop_timer();
@@ -223,7 +237,8 @@ namespace {
     
     void admin_status::init (const std::string& config_file_name,   const std::string& _app_name,
                                                                     const std::string& _app_version,
-                                                                    const std::string& _app_description )
+                                                                    const std::string& _app_description,
+                                                                    const std::string& _app_modifications)
     {
         if(config_file.IsLoaded() == false)
             config_file.LoadFromFile(config_file_name);
@@ -245,6 +260,7 @@ namespace {
         app_name            = _app_name;
         app_version         = _app_version;
         app_description     = _app_description;
+        app_modifications   = _app_modifications;
 
         if(role=="client")
             process_priority = ppNormal;
@@ -354,15 +370,25 @@ namespace {
         send_enter_and_start_keepalive();
         
         //register_command("ADMIN", "help", "")->connect(this, &CLASS_NAME::command_help);
-        MTK_CONNECT_THIS(*register_command("ADMIN", "help", ""),                                                    command_help)
-        MTK_CONNECT_THIS(*register_command("ADMIN", "ver", ""),                                                     command_version)
-        MTK_CONNECT_THIS(*register_command("ADMIN", "stats", "some stats"),                                         command_stats)
-        MTK_CONNECT_THIS(*register_command("ADMIN", "infoapp", "info about the application"),                       command_infoapp)
-        MTK_CONNECT_THIS(*register_command("ADMIN", "config", "config information"),                                command_config)
-        MTK_CONNECT_THIS(*register_command("ADMIN", "date_time", "returns de local current time on the machine"),   command_date_time)
-        MTK_CONNECT_THIS(*register_command("ADMIN", "ping", "returns a pong"),                                      command_ping)
-        MTK_CONNECT_THIS(*register_command("ADMIN", "rqclose", "request close application (confirmation requiered)"
-                                        " on clients will produce a non ordered close", true),                      command_rqclose)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "help",         ""),                                                command_help)
+        
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "ver",          ""),                                                command_version_app)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "ver",          ""),                                                command_version)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "ver",          ""),                                                command_version)
+        
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "modifs",       "brief information about modifications"),           command_modifications_app)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "modifs",       "brief information about modifications"),           command_modifications)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "modifs",       ""),                                                command_modifications)
+
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "stats",        "some stats"),                                      command_stats)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_stats)
+        
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "infoapp",      "info about the application"),                      command_infoapp)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "config",       "config information"),                              command_config)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "date_time",    "returns de local current time on the machine"),    command_date_time)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "ping",         "returns a pong"),                                  command_ping)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "rqclose",      "request close application (confirmation requiered)"
+                                        " on clients will produce a non ordered close", true),                                  command_rqclose)
     }
 
     std::string admin_status::get_mandatory_property(const std::string& path_and_property)
@@ -534,7 +560,7 @@ namespace {
             {
                 if(confirmation_code=="")
                 {
-                    if(it->second->signal_command_received->emit(command, params, response_lines) == 0)
+                    if( it->second->signal_command_received->emit(command, params, response_lines) == 0)
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
                 }
                 else
@@ -571,7 +597,7 @@ namespace {
         while(it!=map_commands_groupped_help.end())
         {
             //std::string help_line = MTK_SS( mtk::s_AlignLeft (it->second->group, 10) << mtk::s_AlignLeft (it->second->name, 10)  <<  it->second->description << std::endl);
-            response_lines.push_back(MTK_SS(std::endl << std::endl << it->first << std::endl << "...................."));
+            response_lines.push_back(MTK_SS(std::endl << std::endl << it->first << std::endl << "------------------------------------"));
             response_lines.push_back(MTK_SS("           " << it->second));
                                     //help_line));
             ++it;
@@ -579,11 +605,28 @@ namespace {
     }
     void admin_status::command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
     {
-        response_lines.push_back(MTK_SS(app_name << ": " << app_version));
         response_lines.push_back(MTK_SS("admin: " << VERSION));
         response_lines.push_back(MTK_SS("mtk: " << mtk::MTK_VERSION));
     }
+    void admin_status::command_version_app(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back(MTK_SS(app_name << ": " << app_version));
+    }
+
+    void admin_status::command_modifications_app  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back(app_name);
+        response_lines.push_back(".......................................");
+        response_lines.push_back(app_modifications);
+    }
     
+    void admin_status::command_modifications  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back("admin");
+        response_lines.push_back(".......................................");
+        response_lines.push_back(MODIFICATIONS);
+    }
+
     void admin_status::command_stats(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string> lines = mtk::s_split(mtk::mtk_qpid_stats::get_mtk_qpid_stats_string(), "\n");
@@ -624,19 +667,25 @@ namespace {
     mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*response lines*/> >
     admin_status::register_command(const std::string& group, const std::string& name, const std::string& description, bool confirmation_requiered)
     {
-        if(map_commands.find(name) != map_commands.end())
+        std::string full_command_name;
+        if(group=="__GLOBAL__")
+            full_command_name = name;
+        else
+            full_command_name = MTK_SS(mtk::s_toLower(group) << "." << name);
+            
+        if(map_commands.find(full_command_name) != map_commands.end()  &&  group !="__GLOBAL__")
         {
             MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(name << " is already registered, ignoring group and desciption (could be more commands affected)"), mtk::alPriorDebug));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(name << " is already registered, ignoring group and desciption (could be more commands affected)"), mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
         }
-        else
+        else  if(map_commands.find(full_command_name) == map_commands.end())
         {
-            map_commands[name] = mtk::make_cptr(new command_info(group, name, description, confirmation_requiered));
-            std::string help_line = MTK_SS( "        " << mtk::s_AlignLeft (name, 10)  <<  description);
+            map_commands[full_command_name] = mtk::make_cptr(new command_info(group, full_command_name, description, confirmation_requiered));
+            std::string help_line = MTK_SS( "        " << mtk::s_AlignLeft (name, 30, '.')  <<  " " << description);
             map_commands_groupped_help[group] = MTK_SS(map_commands_groupped_help[group] << std::endl  <<  help_line);
         }
-        return map_commands[name]->signal_command_received;
+        return map_commands[full_command_name]->signal_command_received;
     }
 
 
@@ -660,9 +709,9 @@ namespace admin {
 
     
 void init(const std::string& config_file_name, const std::string& app_name, 
-            const std::string& app_version, const std::string& app_description )
+            const std::string& app_version, const std::string& app_description, const std::string& app_modifications )
 {
-    admin_status::i()->init(config_file_name, app_name, app_version, app_description);
+    admin_status::i()->init(config_file_name, app_name, app_version, app_description, app_modifications);
 }
 
 
