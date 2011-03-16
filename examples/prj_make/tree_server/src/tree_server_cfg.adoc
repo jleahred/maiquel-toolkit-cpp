@@ -1,0 +1,64 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= TreeServerCfg
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-3-7
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This is a very simple and small process to serve the products tree reading them from a file
+* The products tree is fully flexible
+
++
+.components/gen/msg_tree_server.msg
+[source,{cpp}]
+----
+include::../mtk/src/components/gen/msg_tree_server.msg[]
+----
+
+
+* The full source code of this process is...
++
+.main.cpp
+[source,{cpp}]
+----
+include::main.cpp[]
+----
+
+
+
+== Pending
+
+* permisions
+
+
+== Document modifications
+* Non aply
+

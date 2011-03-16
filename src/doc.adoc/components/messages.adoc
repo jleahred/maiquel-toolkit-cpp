@@ -50,6 +50,59 @@ include::/tmp/adoc/generate_messages_doc.txt[]
 
 
 
+== General INFO
+
+=== ADDRESSES
+
+* CLIPROD
+* SRVPROD
+
+* CLITESTING
+* SRVTESTING
+
+=== Routing keys
+* We will try to keep the +client+ on second field and +market+ on third field (specially on output messages) +
+  Ex:  PUB.PRC.<mtk>.PROD,   PUB.ADM.GEN...
+
+CLI ->  SYS::
++
+|=====================
+| REQ.<from_client>.#
+|=====================
+
+CLI <-  SYS::
++
+|=====================
+| REP.<client>.<machine>.<process_uuid>.<request_code>#   |    Request responses
+| CONF.<client>.#   |    Permanent topics responses (as order confirmations)
+| PUB.#   |    One direcction publications
+|=====================
+
+CLI <-->  SYS::
++
+|=====================
+| ADM.#   |    keep alives, request commands, response commands
+|=====================
+
+* +PUB+ will be used on messages sent to many. Broadcast with no response and therefore no end response
+* +CONF+ to send messages to many but they depend from any request or previus suscription information and the suscription is _permanent_. +
+  Orders confirmation for example
+* +REQ+ is for request responses
+* +REP+ responses of request response pattern. _Non permanent_ suscriptions
+
+
+=== Request response pattern
+
+* It's defined on +src/components/msg_common.msg+
+* Secuence
+.. Multiresponse suscription
+.. Send request
+.. Receiving responses (with secuence number)
+.. Last response or timeout received
+* Next information is fromMore information and examples on document +mtk/Components/Request response pattern+
+include::request_response_pattern.adoc[]
+
+
 == Common
 
 .Common submessages for several kind of components
