@@ -113,9 +113,11 @@ bool operator!= (const sub_total_executions& a, const sub_total_executions& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_order_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_id>& a, const std::string& field);
 void copy (sub_order_id& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_total_executions& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executions& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_total_executions>& a, const std::string& field);
 void copy (sub_total_executions& a, const qpid::types::Variant& map);
 
     sub_order_id  __internal_get_default(sub_order_id *);

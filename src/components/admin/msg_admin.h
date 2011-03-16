@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Thu Mar 10 16:36:01 2011
+// coded last modification:        Tue Mar 15 12:41:59 2011
 
 
 #include "support/nullable.hpp"
@@ -277,7 +277,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_location);
+    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_req_code);
 virtual std::string  get_out_subject (void) const;
 
 private:
@@ -370,27 +370,35 @@ bool operator!= (const central_keep_alive& a, const central_keep_alive& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const enter& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const enter& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<enter>& a, const std::string& field);
 void copy (enter& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const keep_alive& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const keep_alive& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<keep_alive>& a, const std::string& field);
 void copy (keep_alive& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const exit& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const exit& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<exit>& a, const std::string& field);
 void copy (exit& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const alarm& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const alarm& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<alarm>& a, const std::string& field);
 void copy (alarm& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const command& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const command& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<command>& a, const std::string& field);
 void copy (command& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_command_rd& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_command_rd>& a, const std::string& field);
 void copy (sub_command_rd& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const command_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const command_response& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<command_response>& a, const std::string& field);
 void copy (command_response& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const central_keep_alive& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const central_keep_alive& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<central_keep_alive>& a, const std::string& field);
 void copy (central_keep_alive& a, const qpid::types::Variant& map);
 
     enter  __internal_get_default(enter *);

@@ -6,11 +6,6 @@ INCLUDES = ['#include "components/msg_common.h"', '#include "support/mtk_double.
 END_INIT
 
 
-//#include "support/count_ptr.hpp"
-//#include "mtk_qpid/mtk_qpid.hpp"
-//MTK_QPID_PREPARE_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::best_prices)
-
-
 
 
 //---------------------------------------------------------------------

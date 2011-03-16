@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Thu Mar 10 16:37:30 2011
+// coded last modification:        Thu Mar 10 17:53:18 2011
 
 
 #include "support/nullable.hpp"
@@ -615,48 +615,63 @@ bool operator!= (const RJ_CC_LS& a, const RJ_CC_LS& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_position_ls& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_ls& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_position_ls>& a, const std::string& field);
 void copy (sub_position_ls& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_order_ls_confirmated& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_ls_confirmated& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_ls_confirmated>& a, const std::string& field);
 void copy (sub_order_ls_confirmated& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_XX_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_XX_LS>& a, const std::string& field);
 void copy (RQ_XX_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS>& a, const std::string& field);
 void copy (RQ_NW_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_MD_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_MD_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_MD_LS>& a, const std::string& field);
 void copy (RQ_MD_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_CC_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_CC_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_CC_LS>& a, const std::string& field);
 void copy (RQ_CC_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_XX_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_XX_LS>& a, const std::string& field);
 void copy (CF_XX_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_NW_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_NW_LS>& a, const std::string& field);
 void copy (CF_NW_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_MD_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_MD_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_MD_LS>& a, const std::string& field);
 void copy (CF_MD_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_CC_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_CC_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_CC_LS>& a, const std::string& field);
 void copy (CF_CC_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_EX_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EX_LS>& a, const std::string& field);
 void copy (CF_EX_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_XX_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_XX_LS>& a, const std::string& field);
 void copy (RJ_XX_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_NW_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_NW_LS>& a, const std::string& field);
 void copy (RJ_NW_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_MD_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_MD_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_MD_LS>& a, const std::string& field);
 void copy (RJ_MD_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_CC_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_CC_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_CC_LS>& a, const std::string& field);
 void copy (RJ_CC_LS& a, const qpid::types::Variant& map);
 
     sub_position_ls  __internal_get_default(sub_position_ls *);

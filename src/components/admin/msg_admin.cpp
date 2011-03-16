@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Thu Mar 10 16:36:01 2011
+// coded last modification:        Tue Mar 15 12:41:59 2011
 
 
 #include "support/mtk_double.h"
@@ -671,6 +671,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const enter& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<enter>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -723,6 +730,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const keep_alive& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<keep_alive>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -763,6 +777,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const exit& a)
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<exit>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -857,6 +878,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const alarm& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<alarm>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -909,6 +937,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const command& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<command>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -939,6 +974,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_command_rd>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -981,6 +1023,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const command_response&
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<command_response>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1033,6 +1082,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const central_keep_aliv
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<central_keep_alive>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1572,13 +1628,13 @@ std::string  enter::get_in_subject ()
     {
         return MTK_SS("ADM." << this->proc_loc__destination.location << "." << this->proc_loc__destination.machine << "." << this->proc_loc__destination.process_name << "." << this->proc_loc__destination.process_uuid << ".COMMAND");
     }
-    std::string  command_response::get_in_subject (const std::string& response_info_request_info_process_location_location)
+    std::string  command_response::get_in_subject (const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("ADM.CIMD.COMMRES." << response_info_request_info_process_location_location << "");
+        return MTK_SS("ADM.CIMD.COMMRES." << response_info_request_info_process_location_process_uuid << "." << response_info_request_info_req_id_req_code << "");
     }
     std::string  command_response::get_out_subject (void) const
     {
-        return MTK_SS("ADM.CIMD.COMMRES." << this->response_info.request_info.process_location.location << "");
+        return MTK_SS("ADM.CIMD.COMMRES." << this->response_info.request_info.process_location.process_uuid << "." << this->response_info.request_info.req_id.req_code << "");
     }
     std::string  central_keep_alive::get_in_subject ()
     {

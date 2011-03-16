@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Thu Mar 10 16:37:30 2011
+// coded last modification:        Thu Mar 10 17:53:18 2011
 
 
 #include "support/mtk_double.h"
@@ -972,6 +972,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_ls& 
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_position_ls>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -1042,6 +1049,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_ls_conf
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_ls_confirmated>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1116,6 +1130,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX_LS& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_XX_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -1138,6 +1159,13 @@ __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1164,6 +1192,13 @@ __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_MD_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -1186,6 +1221,13 @@ __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_CC_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1230,6 +1272,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX_LS& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_XX_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -1252,6 +1301,13 @@ __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_NW_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1278,6 +1334,13 @@ __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_MD_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -1300,6 +1363,13 @@ __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_CC_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1334,6 +1404,13 @@ __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EX_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1388,6 +1465,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_LS& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_XX_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -1410,6 +1494,13 @@ __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_NW_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -1436,6 +1527,13 @@ __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_MD_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -1458,6 +1556,13 @@ __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_CC_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 

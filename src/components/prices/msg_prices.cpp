@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Mon Jan 17 22:35:00 2011
+// coded last modification:        Tue Mar 15 12:39:00 2011
 
 
 #include "support/mtk_double.h"
@@ -446,6 +446,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& 
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_level>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -518,6 +525,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_deph5& 
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_deph5>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -568,6 +582,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const best_prices& a)
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<best_prices>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 

@@ -385,6 +385,13 @@ __internal_add2map(map, static_cast<const mtk::msg::sub_request_id&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_id>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -435,6 +442,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executi
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_total_executions>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 

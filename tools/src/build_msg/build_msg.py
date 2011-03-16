@@ -749,6 +749,13 @@ $OUPUT_PER_FIELD
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$class_name>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 """
 
@@ -1030,6 +1037,7 @@ $NOT_CONTROL_FIELDS
     for class_name, class_info, class_properties  in ALL_MESSAGES:
         content_file_h += Template("""qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const $class_name& a);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const $class_name& a);\n""").substitute(class_name=class_name)
+        content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$class_name>& a, const std::string& field);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void copy ($class_name& a, const qpid::types::Variant& map);\n""").substitute(class_name=class_name)
 
     for class_name, class_info, class_properties  in ALL_MESSAGES:

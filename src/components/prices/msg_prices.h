@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Mon Jan 17 22:35:00 2011
+// coded last modification:        Tue Mar 15 12:39:00 2011
 
 
 #include "support/nullable.hpp"
@@ -158,12 +158,15 @@ bool operator!= (const best_prices& a, const best_prices& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_level>& a, const std::string& field);
 void copy (sub_price_level& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_deph5& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_deph5& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_deph5>& a, const std::string& field);
 void copy (sub_price_deph5& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const best_prices& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const best_prices& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<best_prices>& a, const std::string& field);
 void copy (best_prices& a, const qpid::types::Variant& map);
 
     sub_price_level  __internal_get_default(sub_price_level *);
