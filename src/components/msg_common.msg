@@ -57,20 +57,32 @@ sub_r_response [< V:0 >]
 //        COMMON TRADING  AND  PRICES
 //---------------------------------------------------------------------
 
-sub_single_product_code   [<V:0>]
+
+//  product identification
+
+sub_single_product_code  [<V:0>]
 {
-    market   (mk)   :  string    
-    product  (pr)   :  string    
-    code     (cd)   :  string    [optional]    // codificated as...
+    market      (mk)   :  string    
+    product     (pr)   :  string    
+}
+
+sub_sys_product_code  [<V:0, I:sub_single_product_code  >]
+{
+    user_name   (un)   :  string                  //  name to show to user
+}
+
+sub_adic_product_code  [<V:0, I:sub_single_product_code>]
+{
+    aditional_code_type (act)  :    string
 }
 
 
 sub_product_code    [<V:0>]
 {
-    sys_code       (spc)   :  sub_single_product_code
-    aditional_code (apc)   :  sub_single_product_code   [optional]
-    description    (des)   :  string                    [optional]
+    sys_code            (spc)   :   sub_sys_product_code
+    aditional_code      (apc)   :   sub_adic_product_code   [optional]
 }
+
 
 
 

@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Thu Mar 10 16:35:35 2011
+// coded last modification:        Tue Mar 15 10:10:30 2011
 
 
 #include "support/mtk_double.h"
@@ -357,8 +357,8 @@ std::string sub_r_response::check_recomended(void) const
 
 
 
-sub_single_product_code::sub_single_product_code (   const std::string&  _market,   const std::string&  _product,   const mtk::nullable<std::string>&  _code)
-    :     market(_market),   product(_product),   code(_code) 
+sub_single_product_code::sub_single_product_code (   const std::string&  _market,   const std::string&  _product)
+    :     market(_market),   product(_product) 
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -377,8 +377,48 @@ std::string sub_single_product_code::check_recomended(void) const
 
 
 
-sub_product_code::sub_product_code (   const sub_single_product_code&  _sys_code,   const mtk::nullable<sub_single_product_code>&  _aditional_code,   const mtk::nullable<std::string>&  _description)
-    :     sys_code(_sys_code),   aditional_code(_aditional_code),   description(_description) 
+sub_sys_product_code::sub_sys_product_code ( const sub_single_product_code&  parent,   const std::string&  _user_name)
+    :  sub_single_product_code(parent),   user_name(_user_name) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_sys_product_code::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
+sub_adic_product_code::sub_adic_product_code ( const sub_single_product_code&  parent,   const std::string&  _aditional_code_type)
+    :  sub_single_product_code(parent),   aditional_code_type(_aditional_code_type) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_adic_product_code::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
+sub_product_code::sub_product_code (   const sub_sys_product_code&  _sys_code,   const mtk::nullable<sub_adic_product_code>&  _aditional_code)
+    :     sys_code(_sys_code),   aditional_code(_aditional_code) 
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -444,7 +484,29 @@ std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c)
 {
     o << "{ "
 
-        << "market:"<<   c.market << "  "        << "product:"<<   c.product << "  "        << "code:"<<   c.code << "  "
+        << "market:"<<   c.market << "  "        << "product:"<<   c.product << "  "
+        << " }";
+    return o;
+};
+
+
+
+std::ostream& operator<< (std::ostream& o, const sub_sys_product_code & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const sub_single_product_code&>(c)  << ")" 
+        << "user_name:"<<   c.user_name << "  "
+        << " }";
+    return o;
+};
+
+
+
+std::ostream& operator<< (std::ostream& o, const sub_adic_product_code & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const sub_single_product_code&>(c)  << ")" 
+        << "aditional_code_type:"<<   c.aditional_code_type << "  "
         << " }";
     return o;
 };
@@ -455,7 +517,7 @@ std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
 {
     o << "{ "
 
-        << "sys_code:"<< c.sys_code<<"  "        << "aditional_code:"<< c.aditional_code<<"  "        << "description:"<<   c.description << "  "
+        << "sys_code:"<< c.sys_code<<"  "        << "aditional_code:"<< c.aditional_code<<"  "
         << " }";
     return o;
 };
@@ -512,7 +574,7 @@ bool operator!= (const sub_r_response& a, const sub_r_response& b)
 
 bool operator== (const sub_single_product_code& a, const sub_single_product_code& b)
 {
-    return (          a.market ==  b.market  &&          a.product ==  b.product  &&          a.code ==  b.code  &&   true  );
+    return (          a.market ==  b.market  &&          a.product ==  b.product  &&   true  );
 };
 
 bool operator!= (const sub_single_product_code& a, const sub_single_product_code& b)
@@ -522,9 +584,33 @@ bool operator!= (const sub_single_product_code& a, const sub_single_product_code
 
 
 
+bool operator== (const sub_sys_product_code& a, const sub_sys_product_code& b)
+{
+    return ( (static_cast<const sub_single_product_code&>(a)   ==  static_cast<const sub_single_product_code&>(b))  &&           a.user_name ==  b.user_name  &&   true  );
+};
+
+bool operator!= (const sub_sys_product_code& a, const sub_sys_product_code& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const sub_adic_product_code& a, const sub_adic_product_code& b)
+{
+    return ( (static_cast<const sub_single_product_code&>(a)   ==  static_cast<const sub_single_product_code&>(b))  &&           a.aditional_code_type ==  b.aditional_code_type  &&   true  );
+};
+
+bool operator!= (const sub_adic_product_code& a, const sub_adic_product_code& b)
+{
+    return !(a==b);
+};
+
+
+
 bool operator== (const sub_product_code& a, const sub_product_code& b)
 {
-    return (          a.sys_code ==  b.sys_code  &&          a.aditional_code ==  b.aditional_code  &&          a.description ==  b.description  &&   true  );
+    return (          a.sys_code ==  b.sys_code  &&          a.aditional_code ==  b.aditional_code  &&   true  );
 };
 
 bool operator!= (const sub_product_code& a, const sub_product_code& b)
@@ -594,6 +680,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_locat
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_location>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -636,6 +729,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_request_id>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -676,6 +776,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info&
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_request_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -730,6 +837,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_r_response>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -755,12 +869,6 @@ void  copy (sub_single_product_code& c, const qpid::types::Variant& v)
                     else
                         copy(c.product, it->second);
                         //c.product = it->second;
-//   field_type
-
-                    it = mv.find("cd");
-                    if (it!= mv.end())
-                        copy(c.code, it->second);
-                        //c.code = it->second;
 
     }
 
@@ -773,12 +881,98 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_single_produc
         __internal_add2map(map, a.market, std::string("mk"));
 //  field_type
         __internal_add2map(map, a.product, std::string("pr"));
-if (a.code.HasValue())
-//  field_type
-        __internal_add2map(map, a.code, std::string("cd"));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_single_product_code>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (sub_sys_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_sys_product_code& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<sub_single_product_code&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("un");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field user_name on message sub_sys_product_code::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.user_name, it->second);
+                        //c.user_name = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_sys_product_code& a)
+{
+    
+//  parent
+__internal_add2map(map, static_cast<const sub_single_product_code&>(a));
+
+//  field_type
+        __internal_add2map(map, a.user_name, std::string("un"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_sys_product_code>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (sub_adic_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_adic_product_code& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<sub_single_product_code&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("act");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field aditional_code_type on message sub_adic_product_code::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.aditional_code_type, it->second);
+                        //c.aditional_code_type = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_adic_product_code& a)
+{
+    
+//  parent
+__internal_add2map(map, static_cast<const sub_single_product_code&>(a));
+
+//  field_type
+        __internal_add2map(map, a.aditional_code_type, std::string("act"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_adic_product_code>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -804,12 +998,6 @@ void  copy (sub_product_code& c, const qpid::types::Variant& v)
                     if (it!= mv.end())
                         copy(c.aditional_code, it->second);
                         //__internal_qpid_fill(c.aditional_code, it->second.asMap());
-//   field_type
-
-                    it = mv.find("des");
-                    if (it!= mv.end())
-                        copy(c.description, it->second);
-                        //c.description = it->second;
 
     }
 
@@ -823,15 +1011,21 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code&
 if (a.aditional_code.HasValue())
 //  sub_msg_type
         __internal_add2map(map, a.aditional_code, std::string("apc"));
-if (a.description.HasValue())
-//  field_type
-        __internal_add2map(map, a.description, std::string("des"));
 
 
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_code>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
@@ -964,10 +1158,56 @@ qpid::messaging::Message sub_single_product_code::qpidmsg_codded_as_qpid_message
 //  field_type
 //        content["pr"] = this->product;
         __internal_add2map(content, this->product, std::string("pr"));
-//if (this->code.HasValue())
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message sub_sys_product_code::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const sub_single_product_code&>(*this));
+
 //  field_type
-//        content["cd"] = this->code;
-        __internal_add2map(content, this->code, std::string("cd"));
+//        content["un"] = this->user_name;
+        __internal_add2map(content, this->user_name, std::string("un"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message sub_adic_product_code::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const sub_single_product_code&>(*this));
+
+//  field_type
+//        content["act"] = this->aditional_code_type;
+        __internal_add2map(content, this->aditional_code_type, std::string("act"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
@@ -995,10 +1235,6 @@ qpid::messaging::Message sub_product_code::qpidmsg_codded_as_qpid_message (void)
 //  sub_msg_type
 //        content["apc"] =  qpidmsg_coded_as_qpid_Map(this->aditional_code);
         __internal_add2map(content, this->aditional_code, std::string("apc"));
-//if (this->description.HasValue())
-//  field_type
-//        content["des"] = this->description;
-        __internal_add2map(content, this->description, std::string("des"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
@@ -1065,9 +1301,23 @@ qpid::messaging::Message sub_product_code::qpidmsg_codded_as_qpid_message (void)
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((std::string*)0),
-//   field_type
-   mtk::nullable<std::string>()
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    sub_sys_product_code  __internal_get_default(sub_sys_product_code*)
+    {
+        return sub_sys_product_code(
+__internal_get_default((sub_single_product_code*)0), //   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    sub_adic_product_code  __internal_get_default(sub_adic_product_code*)
+    {
+        return sub_adic_product_code(
+__internal_get_default((sub_single_product_code*)0), //   field_type
+   __internal_get_default ((std::string*)0)
             );
     }
     
@@ -1075,11 +1325,9 @@ qpid::messaging::Message sub_product_code::qpidmsg_codded_as_qpid_message (void)
     {
         return sub_product_code(
 //   sub_msg_type
-   __internal_get_default((sub_single_product_code*)0),
+   __internal_get_default((sub_sys_product_code*)0),
 //   sub_msg_type
-   mtk::nullable<sub_single_product_code>(),
-//   field_type
-   mtk::nullable<std::string>()
+   mtk::nullable<sub_adic_product_code>()
             );
     }
     
@@ -1180,9 +1428,41 @@ sub_single_product_code::sub_single_product_code (const qpid::messaging::Message
 
 
 
+sub_sys_product_code::sub_sys_product_code (const qpid::messaging::Message& msg)
+    :  sub_single_product_code(msg), //   field_type
+   user_name(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+sub_adic_product_code::sub_adic_product_code (const qpid::messaging::Message& msg)
+    :  sub_single_product_code(msg), //   field_type
+   aditional_code_type(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
 sub_product_code::sub_product_code (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   sys_code(__internal_get_default((sub_single_product_code*)0)) 
+   sys_code(__internal_get_default((sub_sys_product_code*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

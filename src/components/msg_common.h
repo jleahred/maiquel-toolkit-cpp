@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Thu Mar 10 16:35:35 2011
+// coded last modification:        Tue Mar 15 10:10:30 2011
 
 
 #include "support/nullable.hpp"
@@ -178,7 +178,7 @@ public:
 
     
     // constructor
-    explicit sub_single_product_code (    const std::string&  _market,   const std::string&  _product,   const mtk::nullable<std::string>&  _code );
+    explicit sub_single_product_code (    const std::string&  _market,   const std::string&  _product );
     explicit sub_single_product_code ( const qpid::messaging::Message& message );
     virtual ~sub_single_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_single_product_code"; };
@@ -189,7 +189,72 @@ public:
     // fields
     std::string                               market; 
     std::string                               product; 
-    mtk::nullable<std::string>                code; 
+
+
+
+    //  subject info
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      sub_sys_product_code
+//-------------------------------    
+class sub_sys_product_code        :  public  sub_single_product_code
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_sys_product_code (  const sub_single_product_code&  parent,   const std::string&  _user_name );
+    explicit sub_sys_product_code ( const qpid::messaging::Message& message );
+    virtual ~sub_sys_product_code (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_sys_product_code"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_sys_product_code"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    std::string                               user_name; 
+
+
+
+    //  subject info
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      sub_adic_product_code
+//-------------------------------    
+class sub_adic_product_code        :  public  sub_single_product_code
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_adic_product_code (  const sub_single_product_code&  parent,   const std::string&  _aditional_code_type );
+    explicit sub_adic_product_code ( const qpid::messaging::Message& message );
+    virtual ~sub_adic_product_code (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_adic_product_code"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_adic_product_code"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    std::string                               aditional_code_type; 
 
 
 
@@ -213,7 +278,7 @@ public:
 
     
     // constructor
-    explicit sub_product_code (    const sub_single_product_code&  _sys_code,   const mtk::nullable<sub_single_product_code>&  _aditional_code,   const mtk::nullable<std::string>&  _description );
+    explicit sub_product_code (    const sub_sys_product_code&  _sys_code,   const mtk::nullable<sub_adic_product_code>&  _aditional_code );
     explicit sub_product_code ( const qpid::messaging::Message& message );
     virtual ~sub_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_product_code"; };
@@ -222,9 +287,8 @@ public:
     
 
     // fields
-    sub_single_product_code                   sys_code; 
-    mtk::nullable<sub_single_product_code>    aditional_code; 
-    mtk::nullable<std::string>                description; 
+    sub_sys_product_code                      sys_code; 
+    mtk::nullable<sub_adic_product_code>      aditional_code; 
 
 
 
@@ -266,6 +330,16 @@ bool operator!= (const sub_r_response& a, const sub_r_response& b);
 bool operator== (const sub_single_product_code& a, const sub_single_product_code& b);
 bool operator!= (const sub_single_product_code& a, const sub_single_product_code& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_sys_product_code & c);
+
+bool operator== (const sub_sys_product_code& a, const sub_sys_product_code& b);
+bool operator!= (const sub_sys_product_code& a, const sub_sys_product_code& b);
+
+    std::ostream& operator<< (std::ostream& o, const sub_adic_product_code & c);
+
+bool operator== (const sub_adic_product_code& a, const sub_adic_product_code& b);
+bool operator!= (const sub_adic_product_code& a, const sub_adic_product_code& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_product_code & c);
 
 bool operator== (const sub_product_code& a, const sub_product_code& b);
@@ -273,21 +347,35 @@ bool operator!= (const sub_product_code& a, const sub_product_code& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_process_location& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_location& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_location>& a, const std::string& field);
 void copy (sub_process_location& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_request_id>& a, const std::string& field);
 void copy (sub_request_id& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_request_info>& a, const std::string& field);
 void copy (sub_request_info& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_r_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_r_response>& a, const std::string& field);
 void copy (sub_r_response& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_single_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_single_product_code& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_single_product_code>& a, const std::string& field);
 void copy (sub_single_product_code& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_sys_product_code& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_sys_product_code& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_sys_product_code>& a, const std::string& field);
+void copy (sub_sys_product_code& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_adic_product_code& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_adic_product_code& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_adic_product_code>& a, const std::string& field);
+void copy (sub_adic_product_code& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_code>& a, const std::string& field);
 void copy (sub_product_code& a, const qpid::types::Variant& map);
 
     sub_process_location  __internal_get_default(sub_process_location *);
@@ -299,6 +387,10 @@ void copy (sub_product_code& a, const qpid::types::Variant& map);
     sub_r_response  __internal_get_default(sub_r_response *);
     
     sub_single_product_code  __internal_get_default(sub_single_product_code *);
+    
+    sub_sys_product_code  __internal_get_default(sub_sys_product_code *);
+    
+    sub_adic_product_code  __internal_get_default(sub_adic_product_code *);
     
     sub_product_code  __internal_get_default(sub_product_code *);
     
@@ -320,6 +412,8 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_id)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_r_response)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_single_product_code)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_sys_product_code)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_adic_product_code)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_product_code)
 
 
