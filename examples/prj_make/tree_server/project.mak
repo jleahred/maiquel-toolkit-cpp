@@ -1,6 +1,6 @@
 #
 # Output...
-OUT = bin/treeserver
+OUT = bin/ct__treeserver
 #
 #
 # Directories with source code

@@ -1,6 +1,6 @@
 #
 # Output...
-OUT = bin/houselight
+OUT = bin/ct__houselight
 #
 #
 # Directories with source code

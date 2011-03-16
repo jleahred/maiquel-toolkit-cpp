@@ -1,6 +1,6 @@
 #
 # Output...
-OUT = bin/emarket
+OUT = bin/ct__emarket
 #
 #
 # Directories with source code
