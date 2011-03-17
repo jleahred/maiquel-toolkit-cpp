@@ -63,21 +63,21 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _o
                             hqpid_alarm1,
                             qpid_session->url,
                             qpid_session->address,
-                            mtk::admin::msg::alarm::get_in_subject(),
-                            mtk::admin::msg::alarm,
+                            mtk::admin::msg::pub_alarm::get_in_subject(),
+                            mtk::admin::msg::pub_alarm,
                             on_client_alarm_received)
 
 
 }
 
-void QTableAlarms::on_client_alarm_received(const mtk::admin::msg::alarm& alarm_msg)
+void QTableAlarms::on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg)
 {
     if(only_errors  &&  !(alarm_msg.priority==mtk::alPriorCritic  ||  alarm_msg.priority==mtk::alPriorError))
         return;
     else
         write_alarm_msg(alarm_msg);
 }
-void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::alarm& alarm_msg)
+void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& alarm_msg)
 {
     this->insertRow(this->rowCount());
     int last_row = this->rowCount()-1;
@@ -173,7 +173,7 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::alarm& alarm_
 
 void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
 {
-    mtk::admin::msg::alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
+    mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
                                      alarm.codeSource, alarm.message, alarm.priority, alarm.type, mtk::dtNowLocal(), -1);
 
     write_alarm_msg(alarm_msg);
@@ -181,7 +181,7 @@ void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
     std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
     while (it != alarm.stackAlarms.end())
     {
-        mtk::admin::msg::alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
+        mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
                                          it->codeSource, it->message, it->priority, it->type, mtk::dtNowLocal(), -1);
         write_alarm_msg(alarm_msg);
         ++it;
@@ -195,8 +195,8 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session1, mtk::C
                             hqpid_alarm2,
                             qpid_session2->url,
                             qpid_session2->address,
-                            mtk::admin::msg::alarm::get_in_subject(),
-                            mtk::admin::msg::alarm,
+                            mtk::admin::msg::pub_alarm::get_in_subject(),
+                            mtk::admin::msg::pub_alarm,
                             on_client_alarm_received)
 
 }

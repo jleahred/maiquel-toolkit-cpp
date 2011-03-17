@@ -100,9 +100,9 @@ mtk::msg::sub_product_code  get_empty_product_code (void)
                                       mtk::nullable<mtk::msg::sub_adic_product_code>());
 }
 
-mtk::prices::msg::best_prices    get_emtpy_best_prices   (void)
+mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
 {
-    return mtk::prices::msg::best_prices(
+    return mtk::prices::msg::pub_best_prices(
         get_empty_product_code(),
         mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),
                                             get_emtpy_level_prices(),
@@ -277,8 +277,8 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
                             h_best_prices,
                             mtk::admin::get_url("client"),
                             "CLITESTING",
-                            mtk::prices::msg::best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
-                            mtk::prices::msg::best_prices,
+                            mtk::prices::msg::pub_best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
+                            mtk::prices::msg::pub_best_prices,
                             on_message)
 
 }
@@ -342,7 +342,7 @@ namespace {
 };
 
 
-void marginal_in_table::on_message(const mtk::prices::msg::best_prices& msg)
+void marginal_in_table::on_message(const mtk::prices::msg::pub_best_prices& msg)
 {
 
     mtk::tuple<QString, QString>  tprice_tquantity;

@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Wed Mar 16 13:29:06 2011
+// coded last modification:        Wed Mar 16 18:36:01 2011
 
 
 #include "support/nullable.hpp"
@@ -32,20 +32,20 @@ namespace msg {
 
 
 //-------------------------------
-//      enter
+//      pub_enter
 //-------------------------------    
-class enter     
+class pub_enter     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit enter (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
-    explicit enter ( const qpid::messaging::Message& message );
-    virtual ~enter (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "enter"; };
-    static  std::string static_get_message_type_as_string(void)        { return "enter"; };
+    explicit pub_enter (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit pub_enter ( const qpid::messaging::Message& message );
+    virtual ~pub_enter (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_enter"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_enter"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -69,20 +69,20 @@ private:
 
 
 //-------------------------------
-//      keep_alive
+//      pub_keep_alive
 //-------------------------------    
-class keep_alive     
+class pub_keep_alive     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
-    explicit keep_alive ( const qpid::messaging::Message& message );
-    virtual ~keep_alive (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "keep_alive"; };
-    static  std::string static_get_message_type_as_string(void)        { return "keep_alive"; };
+    explicit pub_keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit pub_keep_alive ( const qpid::messaging::Message& message );
+    virtual ~pub_keep_alive (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -106,20 +106,20 @@ private:
 
 
 //-------------------------------
-//      exit
+//      pub_exit
 //-------------------------------    
-class exit     
+class pub_exit     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit exit (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
-    explicit exit ( const qpid::messaging::Message& message );
-    virtual ~exit (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "exit"; };
-    static  std::string static_get_message_type_as_string(void)        { return "exit"; };
+    explicit pub_exit (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
+    explicit pub_exit ( const qpid::messaging::Message& message );
+    virtual ~pub_exit (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_exit"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_exit"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -142,20 +142,20 @@ private:
 
 
 //-------------------------------
-//      alarm
+//      pub_alarm
 //-------------------------------    
-class alarm     
+class pub_alarm     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit alarm (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
-    explicit alarm ( const qpid::messaging::Message& message );
-    virtual ~alarm (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "alarm"; };
-    static  std::string static_get_message_type_as_string(void)        { return "alarm"; };
+    explicit pub_alarm (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
+    explicit pub_alarm ( const qpid::messaging::Message& message );
+    virtual ~pub_alarm (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_alarm"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_alarm"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -183,20 +183,20 @@ private:
 
 
 //-------------------------------
-//      command
+//      req_command
 //-------------------------------    
-class command     
+class req_command     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit command (    const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_location&  _proc_loc__destination,   const std::string&  _command_line );
-    explicit command ( const qpid::messaging::Message& message );
-    virtual ~command (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "command"; };
-    static  std::string static_get_message_type_as_string(void)        { return "command"; };
+    explicit req_command (    const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_location&  _proc_loc__destination,   const std::string&  _command_line );
+    explicit req_command ( const qpid::messaging::Message& message );
+    virtual ~req_command (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "req_command"; };
+    static  std::string static_get_message_type_as_string(void)        { return "req_command"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -253,20 +253,20 @@ private:
 
 
 //-------------------------------
-//      command_response
+//      res_command
 //-------------------------------    
-class command_response     
+class res_command     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit command_response (    const mtk::msg::sub_r_response&  _response_info,   const sub_command_rd&  _response_data );
-    explicit command_response ( const qpid::messaging::Message& message );
-    virtual ~command_response (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "command_response"; };
-    static  std::string static_get_message_type_as_string(void)        { return "command_response"; };
+    explicit res_command (    const mtk::msg::sub_r_response&  _response_info,   const sub_command_rd&  _response_data );
+    explicit res_command ( const qpid::messaging::Message& message );
+    virtual ~res_command (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "res_command"; };
+    static  std::string static_get_message_type_as_string(void)        { return "res_command"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -289,20 +289,20 @@ private:
 
 
 //-------------------------------
-//      central_keep_alive
+//      pub_central_keep_alive
 //-------------------------------    
-class central_keep_alive     
+class pub_central_keep_alive     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit central_keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
-    explicit central_keep_alive ( const qpid::messaging::Message& message );
-    virtual ~central_keep_alive (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "central_keep_alive"; };
-    static  std::string static_get_message_type_as_string(void)        { return "central_keep_alive"; };
+    explicit pub_central_keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit pub_central_keep_alive ( const qpid::messaging::Message& message );
+    virtual ~pub_central_keep_alive (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_central_keep_alive"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_central_keep_alive"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -328,94 +328,94 @@ private:
     
     
 //  fordward declarations-----------------------------------------------------------
-    std::ostream& operator<< (std::ostream& o, const enter & c);
+    std::ostream& operator<< (std::ostream& o, const pub_enter & c);
 
-bool operator== (const enter& a, const enter& b);
-bool operator!= (const enter& a, const enter& b);
+bool operator== (const pub_enter& a, const pub_enter& b);
+bool operator!= (const pub_enter& a, const pub_enter& b);
 
-    std::ostream& operator<< (std::ostream& o, const keep_alive & c);
+    std::ostream& operator<< (std::ostream& o, const pub_keep_alive & c);
 
-bool operator== (const keep_alive& a, const keep_alive& b);
-bool operator!= (const keep_alive& a, const keep_alive& b);
+bool operator== (const pub_keep_alive& a, const pub_keep_alive& b);
+bool operator!= (const pub_keep_alive& a, const pub_keep_alive& b);
 
-    std::ostream& operator<< (std::ostream& o, const exit & c);
+    std::ostream& operator<< (std::ostream& o, const pub_exit & c);
 
-bool operator== (const exit& a, const exit& b);
-bool operator!= (const exit& a, const exit& b);
+bool operator== (const pub_exit& a, const pub_exit& b);
+bool operator!= (const pub_exit& a, const pub_exit& b);
 
-    std::ostream& operator<< (std::ostream& o, const alarm & c);
+    std::ostream& operator<< (std::ostream& o, const pub_alarm & c);
 
-bool operator== (const alarm& a, const alarm& b);
-bool operator!= (const alarm& a, const alarm& b);
+bool operator== (const pub_alarm& a, const pub_alarm& b);
+bool operator!= (const pub_alarm& a, const pub_alarm& b);
 
-    std::ostream& operator<< (std::ostream& o, const command & c);
+    std::ostream& operator<< (std::ostream& o, const req_command & c);
 
-bool operator== (const command& a, const command& b);
-bool operator!= (const command& a, const command& b);
+bool operator== (const req_command& a, const req_command& b);
+bool operator!= (const req_command& a, const req_command& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_command_rd & c);
 
 bool operator== (const sub_command_rd& a, const sub_command_rd& b);
 bool operator!= (const sub_command_rd& a, const sub_command_rd& b);
 
-    std::ostream& operator<< (std::ostream& o, const command_response & c);
+    std::ostream& operator<< (std::ostream& o, const res_command & c);
 
-bool operator== (const command_response& a, const command_response& b);
-bool operator!= (const command_response& a, const command_response& b);
+bool operator== (const res_command& a, const res_command& b);
+bool operator!= (const res_command& a, const res_command& b);
 
-    std::ostream& operator<< (std::ostream& o, const central_keep_alive & c);
+    std::ostream& operator<< (std::ostream& o, const pub_central_keep_alive & c);
 
-bool operator== (const central_keep_alive& a, const central_keep_alive& b);
-bool operator!= (const central_keep_alive& a, const central_keep_alive& b);
+bool operator== (const pub_central_keep_alive& a, const pub_central_keep_alive& b);
+bool operator!= (const pub_central_keep_alive& a, const pub_central_keep_alive& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const enter& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const enter& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<enter>& a, const std::string& field);
-void copy (enter& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const keep_alive& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const keep_alive& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<keep_alive>& a, const std::string& field);
-void copy (keep_alive& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const exit& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const exit& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<exit>& a, const std::string& field);
-void copy (exit& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const alarm& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const alarm& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<alarm>& a, const std::string& field);
-void copy (alarm& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const command& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const command& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<command>& a, const std::string& field);
-void copy (command& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_enter& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_enter>& a, const std::string& field);
+void copy (pub_enter& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_keep_alive& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive>& a, const std::string& field);
+void copy (pub_keep_alive& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_exit& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_exit>& a, const std::string& field);
+void copy (pub_exit& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_alarm& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_alarm>& a, const std::string& field);
+void copy (pub_alarm& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_command& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command>& a, const std::string& field);
+void copy (req_command& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_command_rd& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_command_rd>& a, const std::string& field);
 void copy (sub_command_rd& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const command_response& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const command_response& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<command_response>& a, const std::string& field);
-void copy (command_response& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const central_keep_alive& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const central_keep_alive& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<central_keep_alive>& a, const std::string& field);
-void copy (central_keep_alive& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_command& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const res_command& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_command>& a, const std::string& field);
+void copy (res_command& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_central_keep_alive& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_alive& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_central_keep_alive>& a, const std::string& field);
+void copy (pub_central_keep_alive& a, const qpid::types::Variant& map);
 
-    enter  __internal_get_default(enter *);
+    pub_enter  __internal_get_default(pub_enter *);
     
-    keep_alive  __internal_get_default(keep_alive *);
+    pub_keep_alive  __internal_get_default(pub_keep_alive *);
     
-    exit  __internal_get_default(exit *);
+    pub_exit  __internal_get_default(pub_exit *);
     
-    alarm  __internal_get_default(alarm *);
+    pub_alarm  __internal_get_default(pub_alarm *);
     
-    command  __internal_get_default(command *);
+    req_command  __internal_get_default(req_command *);
     
     sub_command_rd  __internal_get_default(sub_command_rd *);
     
-    command_response  __internal_get_default(command_response *);
+    res_command  __internal_get_default(res_command *);
     
-    central_keep_alive  __internal_get_default(central_keep_alive *);
+    pub_central_keep_alive  __internal_get_default(pub_central_keep_alive *);
     
 
 };   //namespace mtk {
@@ -431,14 +431,14 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::enter)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::keep_alive)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::exit)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::alarm)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::command)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_enter)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_keep_alive)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_exit)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_alarm)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::req_command)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::sub_command_rd)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::command_response)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::central_keep_alive)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::res_command)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_central_keep_alive)
 
 
 

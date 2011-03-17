@@ -19,7 +19,7 @@ public:
     void init(QPlainTextEdit* _write_into, QListProcesses* _list_processes, mtk::CountPtr< mtk::qpid_session > qpid_admin_session);
 
 
-    void on_command_response (const mtk::list<mtk::admin::msg::command_response>& responses);
+    void on_command_response (const mtk::list<mtk::admin::msg::res_command>& responses);
 
 private:
     QPlainTextEdit*                     write_into;

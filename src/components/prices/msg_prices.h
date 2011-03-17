@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Tue Mar 15 12:39:00 2011
+// coded last modification:        Wed Mar 16 18:34:38 2011
 
 
 #include "support/nullable.hpp"
@@ -102,20 +102,20 @@ private:
 
 
 //-------------------------------
-//      best_prices
+//      pub_best_prices
 //-------------------------------    
-class best_prices     
+class pub_best_prices     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit best_prices (    const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks );
-    explicit best_prices ( const qpid::messaging::Message& message );
-    virtual ~best_prices (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "best_prices"; };
-    static  std::string static_get_message_type_as_string(void)        { return "best_prices"; };
+    explicit pub_best_prices (    const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks );
+    explicit pub_best_prices ( const qpid::messaging::Message& message );
+    virtual ~pub_best_prices (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_best_prices"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_best_prices"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -151,10 +151,10 @@ bool operator!= (const sub_price_level& a, const sub_price_level& b);
 bool operator== (const sub_price_deph5& a, const sub_price_deph5& b);
 bool operator!= (const sub_price_deph5& a, const sub_price_deph5& b);
 
-    std::ostream& operator<< (std::ostream& o, const best_prices & c);
+    std::ostream& operator<< (std::ostream& o, const pub_best_prices & c);
 
-bool operator== (const best_prices& a, const best_prices& b);
-bool operator!= (const best_prices& a, const best_prices& b);
+bool operator== (const pub_best_prices& a, const pub_best_prices& b);
+bool operator!= (const pub_best_prices& a, const pub_best_prices& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& a);
@@ -164,16 +164,16 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_de
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_deph5& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_deph5>& a, const std::string& field);
 void copy (sub_price_deph5& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const best_prices& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const best_prices& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<best_prices>& a, const std::string& field);
-void copy (best_prices& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_best_prices& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_best_prices>& a, const std::string& field);
+void copy (pub_best_prices& a, const qpid::types::Variant& map);
 
     sub_price_level  __internal_get_default(sub_price_level *);
     
     sub_price_deph5  __internal_get_default(sub_price_deph5 *);
     
-    best_prices  __internal_get_default(best_prices *);
+    pub_best_prices  __internal_get_default(pub_best_prices *);
     
 
 };   //namespace mtk {
@@ -191,7 +191,7 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::sub_price_level)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::sub_price_deph5)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::best_prices)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_best_prices)
 
 
 

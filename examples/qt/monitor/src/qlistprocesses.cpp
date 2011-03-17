@@ -31,24 +31,24 @@ void QListProcesses::init(mtk::CountPtr<mtk::qpid_session> qpid_admin_session)
                             hqpid_client_enter,
                             qpid_admin_session->url,
                             qpid_admin_session->address,
-                            mtk::admin::msg::enter::get_in_subject(),
-                            mtk::admin::msg::enter,
+                            mtk::admin::msg::pub_enter::get_in_subject(),
+                            mtk::admin::msg::pub_enter,
                             on_enter_client_received)
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_client_exit,
                             qpid_admin_session->url,
                             qpid_admin_session->address,
-                            mtk::admin::msg::exit::get_in_subject(),
-                            mtk::admin::msg::exit,
+                            mtk::admin::msg::pub_exit::get_in_subject(),
+                            mtk::admin::msg::pub_exit,
                             on_exit_client_received)
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_client_ka,
                             qpid_admin_session->url,
                             qpid_admin_session->address,
-                            mtk::admin::msg::keep_alive::get_in_subject(),
-                            mtk::admin::msg::keep_alive,
+                            mtk::admin::msg::pub_keep_alive::get_in_subject(),
+                            mtk::admin::msg::pub_keep_alive,
                             on_ka_client_received)
 
 
@@ -56,8 +56,8 @@ void QListProcesses::init(mtk::CountPtr<mtk::qpid_session> qpid_admin_session)
                             hqpid_client_alarm,
                             qpid_admin_session->url,
                             qpid_admin_session->address,
-                            mtk::admin::msg::alarm::get_in_subject(),
-                            mtk::admin::msg::alarm,
+                            mtk::admin::msg::pub_alarm::get_in_subject(),
+                            mtk::admin::msg::pub_alarm,
                             on_client_alarm_received)
 
 
@@ -84,7 +84,7 @@ private:
 
 
 
-void QListProcesses::on_enter_client_received(const mtk::admin::msg::enter& msg)
+void QListProcesses::on_enter_client_received(const mtk::admin::msg::pub_enter& msg)
 {
     QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
     if(item!=0)
@@ -105,7 +105,7 @@ void QListProcesses::on_enter_client_received(const mtk::admin::msg::enter& msg)
 }
 
 
-void QListProcesses::on_exit_client_received (const mtk::admin::msg::exit& msg)
+void QListProcesses::on_exit_client_received (const mtk::admin::msg::pub_exit& msg)
 {
     QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
     if(item==0)
@@ -115,7 +115,7 @@ void QListProcesses::on_exit_client_received (const mtk::admin::msg::exit& msg)
 }
 
 
-void QListProcesses::on_ka_client_received   (const mtk::admin::msg::keep_alive& msg)
+void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_alive& msg)
 {
     QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
     if(item==0)
@@ -200,7 +200,7 @@ void  QListProcesses::fill_process_info_for_selected_items(mtk::list<mtk::msg::s
     }
 }
 
-void QListProcesses::on_client_alarm_received(const mtk::admin::msg::alarm& alarm_msg)
+void QListProcesses::on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg)
 {
     check_alarm_received(alarm_msg.process_info);
 }

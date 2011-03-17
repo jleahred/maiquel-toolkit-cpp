@@ -13,6 +13,7 @@ namespace
     const char*   APP_NAME          = "ex_request_response";
     const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "Example file working with request response pattern";
+    const char*   APP_MODIFICATIONS = "Example file, no modifications info";
 }
 
 
@@ -23,9 +24,9 @@ void stop(const int&)
     mtk::stop_timer();
 }
 
-void on_command_response (const mtk::list<mtk::admin::msg::command_response>& responses)        //  <1>
+void on_res_command (const mtk::list<mtk::admin::msg::res_command>& responses)        //  <1>
 {
-    mtk::list<mtk::admin::msg::command_response>::const_iterator it = responses.begin();
+    mtk::list<mtk::admin::msg::res_command>::const_iterator it = responses.begin();
     while(it != responses.end())
     {
         std::cout << *it << std::endl;
@@ -41,11 +42,11 @@ void init_request_response(const int&)
     /*static*/ mtk::CountPtr<mtk::qpid_session>  qpid_session = mtk::admin::get_qpid_session("admin", "testing");
 
     //  subscription to multiresponse       <2>
-    MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::command_response, 
+    MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
-                                    mtk::admin::msg::command_response::get_in_subject(request_info.process_location.process_uuid, request_info.req_id.req_code),
-                                    on_command_response)
+                                    mtk::admin::msg::res_command::get_in_subject(request_info.process_location.process_uuid, request_info.req_id.req_code),
+                                    on_res_command)
 
 
 
@@ -56,7 +57,7 @@ void init_request_response(const int&)
         data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS("response line  "  <<  i << std::endl)));
 
     //  sending multiresponses in asyncronous way           <4>
-    MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::command_response, 
+    MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::res_command, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
                                     request_info,
@@ -69,11 +70,11 @@ int main(int /*argc*/, char ** /*argv*/)
 {
     try
     {
-        mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION);
+        mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
     
     
     
-        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::command>      >   hqpid_response;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command>      >   hqpid_response;
 
         MTK_CALL_LATER1S_F(mtk::dtSeconds(7), 0, stop);
         MTK_CALL_LATER1S_F(mtk::dtSeconds(1), 0, init_request_response);

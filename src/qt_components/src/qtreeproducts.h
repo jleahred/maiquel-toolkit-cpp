@@ -25,7 +25,7 @@ protected:
 private:
     mtk::CountPtr< mtk::qpid_session >       qpid_session;
 
-    void on_response_request_tree(const mtk::list<mtk::gen::msg::tree_response_items>& list_items);
+    void on_response_request_tree(const mtk::list<mtk::gen::msg::res_tree_items>& list_items);
 
 
     QPoint startPos;

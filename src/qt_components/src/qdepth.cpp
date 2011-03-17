@@ -89,9 +89,9 @@ mtk::msg::sub_product_code  get_empty_product_code (void)
 }
 
 
-mtk::prices::msg::best_prices    get_emtpy_best_prices   (void)
+mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
 {
-    return mtk::prices::msg::best_prices(
+    return mtk::prices::msg::pub_best_prices(
         get_empty_product_code(),
         mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),
                                             get_emtpy_level_prices(),
@@ -302,7 +302,7 @@ void write_in_cell(int row, int qty_col, const mtk::prices::msg::sub_price_level
 }
 
 
-void QDepth::on_message(const mtk::prices::msg::best_prices& msg)
+void QDepth::on_message(const mtk::prices::msg::pub_best_prices& msg)
 {
     write_in_cell(5, 0, msg.bids.level0, table_widget);
     write_in_cell(6, 0, msg.bids.level1, table_widget);
@@ -364,8 +364,8 @@ void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
                             h_best_prices,
                             mtk::admin::get_url("client"),
                             "CLITESTING",
-                            mtk::prices::msg::best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
-                            mtk::prices::msg::best_prices,
+                            mtk::prices::msg::pub_best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
+                            mtk::prices::msg::pub_best_prices,
                             on_message)
 
 }

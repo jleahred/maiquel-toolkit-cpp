@@ -133,8 +133,8 @@ namespace {
             
             mtk::DateTime                               start_date_time;
 
-            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::command>            > hqpid_commands;
-            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::central_keep_alive> > hqpid_central_keepalive;
+            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command>            > hqpid_commands;
+            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_central_keep_alive> > hqpid_central_keepalive;
             
             void                                        send_enter_and_start_keepalive(void);
             std::string                                 get_mandatory_property(const std::string& path_and_property);
@@ -154,7 +154,7 @@ namespace {
             //  central keep alive control
             void                           check_central_keep_alive(void);
             mtk::dtDateTime                next_central_keep_alive_to_receive;
-            void                           on_central_ka_received(const mtk::admin::msg::central_keep_alive& ka_msg);
+            void                           on_central_ka_received(const mtk::admin::msg::pub_central_keep_alive& ka_msg);
             //  central keep alive control
 
 
@@ -179,7 +179,7 @@ namespace {
             mtk::map<std::string, mtk::CountPtr<command_info> >             map_commands;
             mtk::map<std::string/*group*/, std::string/*cmds help*/ >       map_commands_groupped_help;
             
-            void on_command_received        (const mtk::admin::msg::command& command_msg);
+            void on_command_received        (const mtk::admin::msg::req_command& command_msg);
             void command_help               (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_version            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_version_app        (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
@@ -230,7 +230,7 @@ namespace {
             
             
             //  send exit message
-            mtk::admin::msg::exit exit_msg(admin_status_instance->get_process_info(), reason);
+            mtk::admin::msg::pub_exit exit_msg(admin_status_instance->get_process_info(), reason);
             //std::cout << exit_msg << std::endl;
             mtk::send_message(admin_status_instance->session_admin, exit_msg);
             exit_message_sent = true;
@@ -336,19 +336,19 @@ namespace {
                                     hqpid_commands,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::admin::msg::command::get_in_subject(temp_process_info.process_location.location.client_code, 
+                                    mtk::admin::msg::req_command::get_in_subject(temp_process_info.process_location.location.client_code, 
                                                                              temp_process_info.process_location.location.machine,
                                                                              temp_process_info.process_location.process_name,
                                                                              temp_process_info.process_location.process_uuid),
-                                    mtk::admin::msg::command,
+                                    mtk::admin::msg::req_command,
                                     on_command_received)
             
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::admin::msg::central_keep_alive::get_in_subject(),
-                                    mtk::admin::msg::central_keep_alive,
+                                    mtk::admin::msg::pub_central_keep_alive::get_in_subject(),
+                                    mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)
         }
         else
@@ -361,19 +361,19 @@ namespace {
                                     hqpid_commands,
                                     mtk::admin::get_url("admin"),
                                     "SRVTESTING",
-                                    mtk::admin::msg::command::get_in_subject(temp_process_info.process_location.location.client_code, 
+                                    mtk::admin::msg::req_command::get_in_subject(temp_process_info.process_location.location.client_code, 
                                                                              temp_process_info.process_location.location.machine,
                                                                              temp_process_info.process_location.process_name,
                                                                              temp_process_info.process_location.process_uuid),
-                                    mtk::admin::msg::command,
+                                    mtk::admin::msg::req_command,
                                     on_command_received)
 
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
                                     mtk::admin::get_url("admin"),
                                     "SRVTESTING",
-                                    mtk::admin::msg::central_keep_alive::get_in_subject(),
-                                    mtk::admin::msg::central_keep_alive,
+                                    mtk::admin::msg::pub_central_keep_alive::get_in_subject(),
+                                    mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)
         }
         
@@ -413,7 +413,7 @@ namespace {
 
     void admin_status::send_enter_and_start_keepalive(void)
     {
-        mtk::admin::msg::enter enter_msg(get_process_info(), ka_interval_send, ka_interval_check);
+        mtk::admin::msg::pub_enter enter_msg(get_process_info(), ka_interval_send, ka_interval_check);
         //std::cout << enter_msg << std::endl;
         mtk::send_message(session_admin, enter_msg);
         
@@ -429,7 +429,7 @@ namespace {
     void  admin_status::send_keep_alive(void)
     {
         MTK_EXEC_MAX_FREC_NO_FIRST_S(ka_interval_send)
-            mtk::admin::msg::keep_alive keep_alive_msg(get_process_info(), ka_interval_send, ka_interval_check);
+            mtk::admin::msg::pub_keep_alive keep_alive_msg(get_process_info(), ka_interval_send, ka_interval_check);
             //std::cout << keep_alive_msg << std::endl;
             mtk::send_message(session_admin, keep_alive_msg);
         MTK_END_EXEC_MAX_FREC
@@ -458,7 +458,7 @@ namespace {
         MTK_END_EXEC_MAX_FREC
     }
     
-    void  admin_status::on_central_ka_received(const mtk::admin::msg::central_keep_alive& ka_msg)
+    void  admin_status::on_central_ka_received(const mtk::admin::msg::pub_central_keep_alive& ka_msg)
     {
         next_central_keep_alive_to_receive = mtk::dtNowLocal() + ka_msg.ka_interval_check;
     }
@@ -504,14 +504,14 @@ namespace {
         //std::cout << alarm << std::endl;
         int16_t alarm_id = int16_t(alarm.alarmID);
         {
-            mtk::admin::msg::alarm alarm_msg(get_process_info(), alarm.codeSource, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
+            mtk::admin::msg::pub_alarm alarm_msg(get_process_info(), alarm.codeSource, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
             mtk::send_message(session_admin, alarm_msg);
         }
         {
             std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
             while (it != alarm.stackAlarms.end())
             {
-                mtk::admin::msg::alarm alarm_msg(get_process_info(), it->codeSource, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
+                mtk::admin::msg::pub_alarm   alarm_msg(get_process_info(), it->codeSource, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
                 mtk::send_message(session_admin, alarm_msg);
                 ++it;
             }
@@ -547,7 +547,7 @@ namespace {
         return result;
     }
 
-    void admin_status::on_command_received(const mtk::admin::msg::command& command_msg)
+    void admin_status::on_command_received(const mtk::admin::msg::req_command& command_msg)
     {
         mtk::list<std::string>  response_lines;
         std::string command;
@@ -625,7 +625,7 @@ namespace {
         }
                                     
         //  sending multiresponses in asyncronous way
-        MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::command_response, 
+        MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::res_command, 
                                         mtk::admin::msg::sub_command_rd, 
                                         session_admin,
                                         command_msg.request_info,

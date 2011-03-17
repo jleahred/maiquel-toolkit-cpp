@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Wed Mar 16 16:01:22 2011
+// coded last modification:        Wed Mar 16 18:34:38 2011
 
 
 #include "support/mtk_double.h"
@@ -318,7 +318,7 @@ std::string sub_price_deph5::check_recomended(void) const
 
 
 
-best_prices::best_prices (   const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks)
+pub_best_prices::pub_best_prices (   const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks)
     :     product_code(_product_code),   bids(_bids),   asks(_asks) 
     {  
         std::string cr = check_recomended ();  
@@ -329,7 +329,7 @@ best_prices::best_prices (   const mtk::msg::sub_product_code&  _product_code,  
 
 
 
-std::string best_prices::check_recomended(void) const
+std::string pub_best_prices::check_recomended(void) const
 {
     std::string result;
 
@@ -359,7 +359,7 @@ std::ostream& operator<< (std::ostream& o, const sub_price_deph5 & c)
 
 
 
-std::ostream& operator<< (std::ostream& o, const best_prices & c)
+std::ostream& operator<< (std::ostream& o, const pub_best_prices & c)
 {
     o << "{ "
 
@@ -394,12 +394,12 @@ bool operator!= (const sub_price_deph5& a, const sub_price_deph5& b)
 
 
 
-bool operator== (const best_prices& a, const best_prices& b)
+bool operator== (const pub_best_prices& a, const pub_best_prices& b)
 {
     return (          a.product_code ==  b.product_code  &&          a.bids ==  b.bids  &&          a.asks ==  b.asks  &&   true  );
 };
 
-bool operator!= (const best_prices& a, const best_prices& b)
+bool operator!= (const pub_best_prices& a, const pub_best_prices& b)
 {
     return !(a==b);
 };
@@ -535,8 +535,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (best_prices& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (best_prices& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (pub_best_prices& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (pub_best_prices& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
@@ -545,7 +545,7 @@ void  copy (best_prices& c, const qpid::types::Variant& v)
 
                     it = mv.find("pc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field product_code on message best_prices::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field product_code on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.product_code, it->second);
                         //__internal_qpid_fill(c.product_code, it->second.asMap());
@@ -553,7 +553,7 @@ void  copy (best_prices& c, const qpid::types::Variant& v)
 
                     it = mv.find("bid");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field bids on message best_prices::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field bids on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.bids, it->second);
                         //__internal_qpid_fill(c.bids, it->second.asMap());
@@ -561,7 +561,7 @@ void  copy (best_prices& c, const qpid::types::Variant& v)
 
                     it = mv.find("ask");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field asks on message best_prices::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field asks on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.asks, it->second);
                         //__internal_qpid_fill(c.asks, it->second.asMap());
@@ -569,7 +569,7 @@ void  copy (best_prices& c, const qpid::types::Variant& v)
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const best_prices& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& a)
 {
     
 
@@ -584,7 +584,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const best_prices& a)
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<best_prices>& a, const std::string& field)
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_best_prices>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -657,7 +657,7 @@ qpid::messaging::Message sub_price_deph5::qpidmsg_codded_as_qpid_message (void) 
 
 
 
-qpid::messaging::Message best_prices::qpidmsg_codded_as_qpid_message (void) const
+qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
@@ -712,9 +712,9 @@ qpid::messaging::Message best_prices::qpidmsg_codded_as_qpid_message (void) cons
             );
     }
     
-    best_prices  __internal_get_default(best_prices*)
+    pub_best_prices  __internal_get_default(pub_best_prices*)
     {
-        return best_prices(
+        return pub_best_prices(
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_product_code*)0),
 //   sub_msg_type
@@ -767,7 +767,7 @@ sub_price_deph5::sub_price_deph5 (const qpid::messaging::Message& msg)
 
 
 
-best_prices::best_prices (const qpid::messaging::Message& msg)
+pub_best_prices::pub_best_prices (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
 //   sub_msg_type
@@ -785,11 +785,11 @@ best_prices::best_prices (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  best_prices::get_in_subject (const std::string& product_code_sys_code_market,const std::string& product_code_sys_code_product)
+std::string  pub_best_prices::get_in_subject (const std::string& product_code_sys_code_market,const std::string& product_code_sys_code_product)
     {
         return MTK_SS("PUB." << product_code_sys_code_market << "." << product_code_sys_code_product << "");
     }
-    std::string  best_prices::get_out_subject (void) const
+    std::string  pub_best_prices::get_out_subject (void) const
     {
         return MTK_SS("PUB." << this->product_code.sys_code.market << "." << this->product_code.sys_code.product << "");
     }

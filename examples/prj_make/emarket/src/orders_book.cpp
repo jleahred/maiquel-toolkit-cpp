@@ -376,10 +376,10 @@ mtk::prices::msg::sub_price_level   get_emtpy_level_prices(void)
 {
     return mtk::prices::msg::sub_price_level(get_empty_fixed_number(), get_empty_fixed_number());
 }
-mtk::prices::msg::best_prices    get_emtpy_best_prices   (void)
+mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
 {
     
-    return mtk::prices::msg::best_prices(
+    return mtk::prices::msg::pub_best_prices(
         mtk::msg::sub_product_code( mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("", ""), ""), 
                                     mtk::nullable<mtk::msg::sub_adic_product_code>()),
         mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),  
@@ -436,7 +436,7 @@ void fill_side (const mtk::list<mtk::CountPtr<ord_ls> >& xxx_queue, mtk::prices:
 }
 void orders_in_product_queue::update_prices(const mtk::msg::sub_product_code& product_code)
 {
-    mtk::prices::msg::best_prices best =  get_emtpy_best_prices();
+    mtk::prices::msg::pub_best_prices best =  get_emtpy_best_prices();
     
     best.product_code = product_code;
     

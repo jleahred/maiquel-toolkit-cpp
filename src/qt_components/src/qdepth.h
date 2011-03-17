@@ -67,8 +67,8 @@ private:
     mtk::msg::sub_product_code   product_code;
     QTableDeph   *table_widget;
     QLabel       *title;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::best_prices> > h_best_prices;
-    void on_message(const mtk::prices::msg::best_prices& msg);
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> > h_best_prices;
+    void on_message(const mtk::prices::msg::pub_best_prices& msg);
 
     QPoint startPos;
 

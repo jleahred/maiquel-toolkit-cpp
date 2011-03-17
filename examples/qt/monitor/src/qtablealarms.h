@@ -25,11 +25,11 @@ public slots:
 private:
     bool                                                                                    only_errors;
 
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::alarm>       >     hqpid_alarm1;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::alarm>       >     hqpid_alarm2;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>       >     hqpid_alarm1;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>       >     hqpid_alarm2;
 
-    void on_client_alarm_received(const mtk::admin::msg::alarm& alarm_msg);
-    void write_alarm_msg         (const mtk::admin::msg::alarm& alarm_msg);
+    void on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);
+    void write_alarm_msg         (const mtk::admin::msg::pub_alarm& alarm_msg);
 };
 
 #endif // QTABLEALARMS_H

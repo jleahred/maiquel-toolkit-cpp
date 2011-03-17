@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Wed Mar 16 12:44:25 2011
+// coded last modification:        Wed Mar 16 18:34:08 2011
 
 
 #include "support/nullable.hpp"
@@ -66,20 +66,20 @@ private:
 
 
 //-------------------------------
-//      tree_request_items
+//      req_tree_items
 //-------------------------------    
-class tree_request_items     
+class req_tree_items     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit tree_request_items (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _branch );
-    explicit tree_request_items ( const qpid::messaging::Message& message );
-    virtual ~tree_request_items (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "tree_request_items"; };
-    static  std::string static_get_message_type_as_string(void)        { return "tree_request_items"; };
+    explicit req_tree_items (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _branch );
+    explicit req_tree_items ( const qpid::messaging::Message& message );
+    virtual ~req_tree_items (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "req_tree_items"; };
+    static  std::string static_get_message_type_as_string(void)        { return "req_tree_items"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -102,20 +102,20 @@ private:
 
 
 //-------------------------------
-//      tree_response_items
+//      res_tree_items
 //-------------------------------    
-class tree_response_items     
+class res_tree_items     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit tree_response_items (    const mtk::msg::sub_r_response&  _response_info,   const sub_tree_item&  _item );
-    explicit tree_response_items ( const qpid::messaging::Message& message );
-    virtual ~tree_response_items (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "tree_response_items"; };
-    static  std::string static_get_message_type_as_string(void)        { return "tree_response_items"; };
+    explicit res_tree_items (    const mtk::msg::sub_r_response&  _response_info,   const sub_tree_item&  _item );
+    explicit res_tree_items ( const qpid::messaging::Message& message );
+    virtual ~res_tree_items (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "res_tree_items"; };
+    static  std::string static_get_message_type_as_string(void)        { return "res_tree_items"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -145,34 +145,34 @@ private:
 bool operator== (const sub_tree_item& a, const sub_tree_item& b);
 bool operator!= (const sub_tree_item& a, const sub_tree_item& b);
 
-    std::ostream& operator<< (std::ostream& o, const tree_request_items & c);
+    std::ostream& operator<< (std::ostream& o, const req_tree_items & c);
 
-bool operator== (const tree_request_items& a, const tree_request_items& b);
-bool operator!= (const tree_request_items& a, const tree_request_items& b);
+bool operator== (const req_tree_items& a, const req_tree_items& b);
+bool operator!= (const req_tree_items& a, const req_tree_items& b);
 
-    std::ostream& operator<< (std::ostream& o, const tree_response_items & c);
+    std::ostream& operator<< (std::ostream& o, const res_tree_items & c);
 
-bool operator== (const tree_response_items& a, const tree_response_items& b);
-bool operator!= (const tree_response_items& a, const tree_response_items& b);
+bool operator== (const res_tree_items& a, const res_tree_items& b);
+bool operator!= (const res_tree_items& a, const res_tree_items& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_tree_item& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_tree_item>& a, const std::string& field);
 void copy (sub_tree_item& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const tree_request_items& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const tree_request_items& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<tree_request_items>& a, const std::string& field);
-void copy (tree_request_items& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const tree_response_items& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const tree_response_items& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<tree_response_items>& a, const std::string& field);
-void copy (tree_response_items& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_tree_items& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_tree_items>& a, const std::string& field);
+void copy (req_tree_items& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_tree_items& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_tree_items>& a, const std::string& field);
+void copy (res_tree_items& a, const qpid::types::Variant& map);
 
     sub_tree_item  __internal_get_default(sub_tree_item *);
     
-    tree_request_items  __internal_get_default(tree_request_items *);
+    req_tree_items  __internal_get_default(req_tree_items *);
     
-    tree_response_items  __internal_get_default(tree_response_items *);
+    res_tree_items  __internal_get_default(res_tree_items *);
     
 
 };   //namespace mtk {
@@ -189,8 +189,8 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::sub_tree_item)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::tree_request_items)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::tree_response_items)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::req_tree_items)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::res_tree_items)
 
 
 

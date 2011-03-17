@@ -167,13 +167,13 @@ void QPlainTextEditCommand::send_command(const QString& command)
     {
         mtk::msg::sub_request_info   request_info(mtk::msg::sub_request_id("monitor", mtk::crc32_as_string(MTK_SS(mtk::rand()))), it->process_location);
         //  subscription to multiresponse
-        MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::admin::msg::command_response,
+        MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::admin::msg::res_command,
                                         mtk::admin::msg::sub_command_rd,
                                         qpid_admin_session,
-                                        mtk::admin::msg::command_response::get_in_subject(it->process_location.process_uuid, request_info.req_id.req_code),
+                                        mtk::admin::msg::res_command::get_in_subject(it->process_location.process_uuid, request_info.req_id.req_code),
                                         on_command_response)
 
-        mtk::admin::msg::command   command_request_msg(request_info, it->process_location,  command.toStdString());
+        mtk::admin::msg::req_command   command_request_msg(request_info, it->process_location,  command.toStdString());
         mtk::send_message(qpid_admin_session, command_request_msg);
         if(write_into)
             write_into->appendPlainText(MTK_SS(std::endl << std::endl << std::endl << "SENDING COMMAND  "
@@ -189,13 +189,13 @@ void QPlainTextEditCommand::send_command(const QString& command)
 }
 
 
-void QPlainTextEditCommand::on_command_response (const mtk::list<mtk::admin::msg::command_response>& responses)
+void QPlainTextEditCommand::on_command_response (const mtk::list<mtk::admin::msg::res_command>& responses)
 {
     std::string result;
-    mtk::list<mtk::admin::msg::command_response>::const_iterator it = responses.begin();
+    mtk::list<mtk::admin::msg::res_command>::const_iterator it = responses.begin();
     while(it != responses.end())
     {
-        const mtk::admin::msg::command_response& response = *it;
+        const mtk::admin::msg::res_command& response = *it;
         result += response.response_data.text;
         ++it;
     }

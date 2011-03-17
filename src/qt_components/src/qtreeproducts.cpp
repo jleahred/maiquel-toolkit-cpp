@@ -206,14 +206,14 @@ void qTreeProducts::request_root_items(void)
         if(this->topLevelItemCount() == 0)
         {
             mtk::msg::sub_request_info   request_info = mtk::admin::get_request_info();
-            mtk::gen::msg::tree_request_items  tree_request_message(request_info, "ROOT");
+            mtk::gen::msg::req_tree_items  tree_request_message(request_info, "ROOT");
             mtk::send_message(qpid_session, tree_request_message);
 
             //  subscription to multiresponse
-            MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::tree_response_items,
+            MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::res_tree_items,
                                             mtk::gen::msg::sub_tree_item,
                                             qpid_session,
-                                            mtk::gen::msg::tree_response_items::get_in_subject( request_info.process_location.location.client_code,
+                                            mtk::gen::msg::res_tree_items::get_in_subject( request_info.process_location.location.client_code,
                                                                                                 request_info.process_location.location.machine,
                                                                                                 request_info.process_location.process_uuid,
                                                                                                 request_info.req_id.sess_id,
@@ -255,9 +255,9 @@ QTreeWidgetItem*  qTreeProducts::get_item_from_branck(QString current_branch, QS
     throw mtk::Alarm(MTK_HERE, MTK_SS(current_branch.toStdString() <<  "  item not found"), mtk::alPriorError, mtk::alTypeNoPermisions);
 }
 
-void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::tree_response_items>& list_items)
+void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::res_tree_items>& list_items)
 {
-    mtk::list<mtk::gen::msg::tree_response_items>::const_iterator it = list_items.begin();
+    mtk::list<mtk::gen::msg::res_tree_items>::const_iterator it = list_items.begin();
     QTreeWidgetItem* insert_into_item=0;
     while(it != list_items.end())
     {
@@ -300,14 +300,14 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
     if(mtk_item->childCount()==0)
     {
         mtk::msg::sub_request_info   request_info = mtk::admin::get_request_info();
-        mtk::gen::msg::tree_request_items  tree_request_message(request_info, MTK_SS(mtk_item->item.branch));
+        mtk::gen::msg::req_tree_items  tree_request_message(request_info, MTK_SS(mtk_item->item.branch));
         mtk::send_message(qpid_session, tree_request_message);
 
         //  subscription to multiresponse
-        MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::tree_response_items,
+        MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::res_tree_items,
                                         mtk::gen::msg::sub_tree_item,
                                         qpid_session,
-                                        mtk::gen::msg::tree_response_items::get_in_subject( request_info.process_location.location.client_code,
+                                        mtk::gen::msg::res_tree_items::get_in_subject( request_info.process_location.location.client_code,
                                                                                             request_info.process_location.location.machine,
                                                                                             request_info.process_location.process_uuid,
                                                                                             request_info.req_id.sess_id,

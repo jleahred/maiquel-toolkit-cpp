@@ -32,7 +32,7 @@ public:
     int  get_row(void) const {  return tw_product->row(); }
 
 private:
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::best_prices> > h_best_prices;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> > h_best_prices;
     QTableWidgetItem*  tw_product;
     QTableWidgetItem*  tw_BID;
     QTableWidgetItem*  tw_ASK;
@@ -41,7 +41,7 @@ private:
 
     QTableWidget* table_widget;
 
-    void on_message(const mtk::prices::msg::best_prices& msg);
+    void on_message(const mtk::prices::msg::pub_best_prices& msg);
 
     static int counter;
 };

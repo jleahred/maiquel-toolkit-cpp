@@ -91,6 +91,19 @@ CLI <-->  SYS::
 * +REP+ responses of request response pattern. _Non permanent_ suscriptions
 
 
+=== Message name convention
+|=====================
+| req_...   |    request (not necessarily request response, could be a request order)
+| res_...   |    responses (from request responses)
+| conf_...  |    confirmations (as order confirmations)
+| pub_...   |    publications (as prices, keepalives, etc...)
+|=====================
+
+
+
+
+
+
 include::request_response_pattern.adoc[]
 
 

@@ -25,7 +25,7 @@ namespace
 
 
 
-void on_request_tree_received(const mtk::gen::msg::tree_request_items& tree_request);
+void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request);
 mtk::CountPtr< mtk::qpid_session > cli_session;
 
 mtk::CountPtr<mtk::ConfigFile>   data_file;
@@ -47,13 +47,13 @@ int main(int argc, char ** argv)
         data_file = mtk::make_cptr(new mtk::ConfigFile(dataf));
     
         //  suscription to request
-        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::gen::msg::tree_request_items> >    hqpid_tree_request;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::gen::msg::req_tree_items> >    hqpid_tree_request;
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_tree_request,
                                 mtk::admin::get_url("client"),
                                 "CLITESTING",
-                                mtk::gen::msg::tree_request_items::get_in_subject("*"),     //  from anyone
-                                mtk::gen::msg::tree_request_items,
+                                mtk::gen::msg::req_tree_items::get_in_subject("*"),     //  from anyone
+                                mtk::gen::msg::req_tree_items,
                                 on_request_tree_received)
         
     
@@ -75,7 +75,7 @@ int main(int argc, char ** argv)
 }
  
 
-void on_request_tree_received(const mtk::gen::msg::tree_request_items& tree_request)
+void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)
 {
     mtk::list<mtk::gen::msg::sub_tree_item>  data_list;
     
@@ -101,7 +101,7 @@ void on_request_tree_received(const mtk::gen::msg::tree_request_items& tree_requ
     }
     
     //  sending multiresponses in asyncronous way
-    MTK_SEND_MULTI_RESPONSE(        mtk::gen::msg::tree_response_items,
+    MTK_SEND_MULTI_RESPONSE(        mtk::gen::msg::res_tree_items,
                                     mtk::gen::msg::sub_tree_item, 
                                     cli_session,
                                     tree_request.request_info,

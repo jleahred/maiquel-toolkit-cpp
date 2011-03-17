@@ -13,6 +13,7 @@ namespace
     const char*   APP_NAME          = "ex_admin";
     const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "small example of admin component";
+    const char*   APP_MODIFICATIONS = "example, no modifications info";
 }
 
 
@@ -23,9 +24,9 @@ void stop(const int&)
     mtk::stop_timer();
 }
 
-void on_command_response (const mtk::list<mtk::admin::msg::command_response>& responses)        //  <1>
+void on_command_response (const mtk::list<mtk::admin::msg::res_command>& responses)        //  <1>
 {
-    mtk::list<mtk::admin::msg::command_response>::const_iterator it = responses.begin();
+    mtk::list<mtk::admin::msg::res_command>::const_iterator it = responses.begin();
     while(it != responses.end())
     {
         std::cout << *it << std::endl;
@@ -42,14 +43,14 @@ void request_command(const std::string& command)
 
 
     //  subscription to multiresponse
-    MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::command_response, 
+    MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
-                                    mtk::admin::msg::command_response::get_in_subject(request_info.process_location.process_uuid, request_info.req_id.req_code),
+                                    mtk::admin::msg::res_command::get_in_subject(request_info.process_location.process_uuid, request_info.req_id.req_code),
                                     on_command_response)
 
     //  sending hello command
-    mtk::admin::msg::command command_request_msg( request_info, mtk::admin::get_process_location(), command);
+    mtk::admin::msg::req_command   command_request_msg  (request_info, mtk::admin::get_process_info().process_location, command);
     mtk::send_message(qpid_session, command_request_msg);
 
 }
@@ -67,10 +68,10 @@ int main(int /*argc*/, char ** /*argv*/)
 {
     try
     {
-        mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION);
+        mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         
     
-        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::command>      >   hqpid_response;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command>      >   hqpid_response;
 
         MTK_CALL_LATER1S_F(mtk::dtSeconds(10), 0, stop);
         MTK_CALL_LATER1S_F(mtk::dtSeconds(1),  std::string("help"),  request_command);

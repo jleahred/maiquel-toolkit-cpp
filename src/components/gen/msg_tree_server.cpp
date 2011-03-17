@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Wed Mar 16 16:00:11 2011
+// coded last modification:        Wed Mar 16 18:34:08 2011
 
 
 #include "support/mtk_double.h"
@@ -298,7 +298,7 @@ std::string sub_tree_item::check_recomended(void) const
 
 
 
-tree_request_items::tree_request_items (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _branch)
+req_tree_items::req_tree_items (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _branch)
     :     request_info(_request_info),   branch(_branch) 
     {  
         std::string cr = check_recomended ();  
@@ -309,7 +309,7 @@ tree_request_items::tree_request_items (   const mtk::msg::sub_request_info&  _r
 
 
 
-std::string tree_request_items::check_recomended(void) const
+std::string req_tree_items::check_recomended(void) const
 {
     std::string result;
 
@@ -318,7 +318,7 @@ std::string tree_request_items::check_recomended(void) const
 
 
 
-tree_response_items::tree_response_items (   const mtk::msg::sub_r_response&  _response_info,   const sub_tree_item&  _item)
+res_tree_items::res_tree_items (   const mtk::msg::sub_r_response&  _response_info,   const sub_tree_item&  _item)
     :     response_info(_response_info),   item(_item) 
     {  
         std::string cr = check_recomended ();  
@@ -329,7 +329,7 @@ tree_response_items::tree_response_items (   const mtk::msg::sub_r_response&  _r
 
 
 
-std::string tree_response_items::check_recomended(void) const
+std::string res_tree_items::check_recomended(void) const
 {
     std::string result;
 
@@ -348,7 +348,7 @@ std::ostream& operator<< (std::ostream& o, const sub_tree_item & c)
 
 
 
-std::ostream& operator<< (std::ostream& o, const tree_request_items & c)
+std::ostream& operator<< (std::ostream& o, const req_tree_items & c)
 {
     o << "{ "
 
@@ -359,7 +359,7 @@ std::ostream& operator<< (std::ostream& o, const tree_request_items & c)
 
 
 
-std::ostream& operator<< (std::ostream& o, const tree_response_items & c)
+std::ostream& operator<< (std::ostream& o, const res_tree_items & c)
 {
     o << "{ "
 
@@ -382,24 +382,24 @@ bool operator!= (const sub_tree_item& a, const sub_tree_item& b)
 
 
 
-bool operator== (const tree_request_items& a, const tree_request_items& b)
+bool operator== (const req_tree_items& a, const req_tree_items& b)
 {
     return (          a.request_info ==  b.request_info  &&          a.branch ==  b.branch  &&   true  );
 };
 
-bool operator!= (const tree_request_items& a, const tree_request_items& b)
+bool operator!= (const req_tree_items& a, const req_tree_items& b)
 {
     return !(a==b);
 };
 
 
 
-bool operator== (const tree_response_items& a, const tree_response_items& b)
+bool operator== (const res_tree_items& a, const res_tree_items& b)
 {
     return (          a.response_info ==  b.response_info  &&          a.item ==  b.item  &&   true  );
 };
 
-bool operator!= (const tree_response_items& a, const tree_response_items& b)
+bool operator!= (const res_tree_items& a, const res_tree_items& b)
 {
     return !(a==b);
 };
@@ -465,8 +465,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (tree_request_items& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (tree_request_items& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (req_tree_items& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (req_tree_items& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
@@ -475,7 +475,7 @@ void  copy (tree_request_items& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message tree_request_items::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message req_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
@@ -483,7 +483,7 @@ void  copy (tree_request_items& c, const qpid::types::Variant& v)
 
                     it = mv.find("br");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field branch on message tree_request_items::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field branch on message req_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.branch, it->second);
                         //c.branch = it->second;
@@ -491,7 +491,7 @@ void  copy (tree_request_items& c, const qpid::types::Variant& v)
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const tree_request_items& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items& a)
 {
     
 
@@ -504,7 +504,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const tree_request_item
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<tree_request_items>& a, const std::string& field)
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_tree_items>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -514,8 +514,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<tre
 
 
 
-//void  __internal_qpid_fill (tree_response_items& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (tree_response_items& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (res_tree_items& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (res_tree_items& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
@@ -524,7 +524,7 @@ void  copy (tree_response_items& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field response_info on message tree_response_items::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field response_info on message res_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.response_info, it->second);
                         //__internal_qpid_fill(c.response_info, it->second.asMap());
@@ -532,7 +532,7 @@ void  copy (tree_response_items& c, const qpid::types::Variant& v)
 
                     it = mv.find("it");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field item on message tree_response_items::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field item on message res_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.item, it->second);
                         //__internal_qpid_fill(c.item, it->second.asMap());
@@ -540,7 +540,7 @@ void  copy (tree_response_items& c, const qpid::types::Variant& v)
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const tree_response_items& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a)
 {
     
 
@@ -553,7 +553,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const tree_response_ite
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<tree_response_items>& a, const std::string& field)
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_tree_items>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -595,7 +595,7 @@ qpid::messaging::Message sub_tree_item::qpidmsg_codded_as_qpid_message (void) co
 
 
 
-qpid::messaging::Message tree_request_items::qpidmsg_codded_as_qpid_message (void) const
+qpid::messaging::Message req_tree_items::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
@@ -621,7 +621,7 @@ qpid::messaging::Message tree_request_items::qpidmsg_codded_as_qpid_message (voi
 
 
 
-qpid::messaging::Message tree_response_items::qpidmsg_codded_as_qpid_message (void) const
+qpid::messaging::Message res_tree_items::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
@@ -659,9 +659,9 @@ qpid::messaging::Message tree_response_items::qpidmsg_codded_as_qpid_message (vo
             );
     }
     
-    tree_request_items  __internal_get_default(tree_request_items*)
+    req_tree_items  __internal_get_default(req_tree_items*)
     {
-        return tree_request_items(
+        return req_tree_items(
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_info*)0),
 //   field_type
@@ -669,9 +669,9 @@ qpid::messaging::Message tree_response_items::qpidmsg_codded_as_qpid_message (vo
             );
     }
     
-    tree_response_items  __internal_get_default(tree_response_items*)
+    res_tree_items  __internal_get_default(res_tree_items*)
     {
-        return tree_response_items(
+        return res_tree_items(
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_r_response*)0),
 //   sub_msg_type
@@ -698,7 +698,7 @@ sub_tree_item::sub_tree_item (const qpid::messaging::Message& msg)
 
 
 
-tree_request_items::tree_request_items (const qpid::messaging::Message& msg)
+req_tree_items::req_tree_items (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
@@ -716,7 +716,7 @@ tree_request_items::tree_request_items (const qpid::messaging::Message& msg)
 
 
 
-tree_response_items::tree_response_items (const qpid::messaging::Message& msg)
+res_tree_items::res_tree_items (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   sub_msg_type
@@ -732,19 +732,19 @@ tree_response_items::tree_response_items (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  tree_request_items::get_in_subject (const std::string& request_info_process_location_location_client_code)
+std::string  req_tree_items::get_in_subject (const std::string& request_info_process_location_location_client_code)
     {
         return MTK_SS("RQ." << request_info_process_location_location_client_code << ".TREE_REQUEST");
     }
-    std::string  tree_request_items::get_out_subject (void) const
+    std::string  req_tree_items::get_out_subject (void) const
     {
         return MTK_SS("RQ." << this->request_info.process_location.location.client_code << ".TREE_REQUEST");
     }
-    std::string  tree_response_items::get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    std::string  res_tree_items::get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
     {
         return MTK_SS("RS." << response_info_request_info_process_location_location_client_code << "." << response_info_request_info_process_location_location_machine << "." << response_info_request_info_process_location_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << "");
     }
-    std::string  tree_response_items::get_out_subject (void) const
+    std::string  res_tree_items::get_out_subject (void) const
     {
         return MTK_SS("RS." << this->response_info.request_info.process_location.location.client_code << "." << this->response_info.request_info.process_location.location.machine << "." << this->response_info.request_info.process_location.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << "");
     }

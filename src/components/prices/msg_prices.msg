@@ -29,9 +29,9 @@ sub_price_deph5 [<V:0>]
 
 
 
-best_prices [<V:0,  SUBJ:PUB.${product_code.sys_code.market}.${product_code.sys_code.product}  >]
+pub_best_prices [<V:0,  SUBJ:PUB.${product_code.sys_code.market}.${product_code.sys_code.product}  >]
 {
-    product_code   (pc)         :   mtk::msg::sub_product_code     
+    product_code        (pc)    :   mtk::msg::sub_product_code     
 
     bids                (bid)   :  sub_price_deph5
     asks                (ask)   :  sub_price_deph5

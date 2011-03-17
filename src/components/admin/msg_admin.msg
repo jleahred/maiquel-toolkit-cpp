@@ -28,7 +28,7 @@ END_INIT
 
 
 
-enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
+pub_enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (ks)    :   time_quantity
@@ -36,14 +36,14 @@ enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 }
 
 
-keep_alive  [< V:0, SUBJ:ADM.CIMD.KA >]
+pub_keep_alive  [< V:0, SUBJ:ADM.CIMD.KA >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }
 
-exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
+pub_exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     reason              (r)     :   string
@@ -56,7 +56,7 @@ exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 //-------------------------------------------------------------------
 
 
-alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
+pub_alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     code_source         (cs)    :   string
@@ -76,7 +76,7 @@ alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 //  COMMANDS
 //-------------------------------------------------------------------
 
-command  [< V:0, SUBJ:ADM.${proc_loc__destination.location.client_code}.${proc_loc__destination.location.machine}.${proc_loc__destination.process_name}.${proc_loc__destination.process_uuid}.COMMAND >]
+req_command  [< V:0, SUBJ:ADM.${proc_loc__destination.location.client_code}.${proc_loc__destination.location.machine}.${proc_loc__destination.process_name}.${proc_loc__destination.process_uuid}.COMMAND >]
 {
     request_info            (ri)    :   mtk::msg::sub_request_info
 
@@ -90,7 +90,7 @@ sub_command_rd [< V:0 >]
     text                (t)     :   string
 }
 
-command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.req_code} >]
+res_command  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.req_code} >]
 {
     response_info       (ri)    :   mtk::msg::sub_r_response
     response_data       (rd)    :   sub_command_rd
@@ -106,7 +106,7 @@ command_response  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.pr
 //  it will be sent by houselight
 //-------------------------------------------------------------------
 
-central_keep_alive  [< V:0, SUBJ:ADM.ALL.KA >]
+pub_central_keep_alive  [< V:0, SUBJ:ADM.ALL.KA >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (ks)    :   time_quantity

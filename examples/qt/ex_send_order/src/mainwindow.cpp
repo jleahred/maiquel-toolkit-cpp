@@ -121,7 +121,7 @@ void MainWindow::on_pbPrepareNewRequest_clicked()
 
 mtk::msg::sub_process_location   MainWindow::get_process_location(void)
 {
-    return mtk::msg::sub_process_location(ui->leReqInfo_CliCode->text().toStdString(), "machine", "ex_send_order", "ex_send_orderAA");
+    return mtk::msg::sub_process_location(mtk::msg::sub_location(ui->leReqInfo_CliCode->text().toStdString(), "machine"), "ex_send_order", "ex_send_orderAA");
 }
 
 

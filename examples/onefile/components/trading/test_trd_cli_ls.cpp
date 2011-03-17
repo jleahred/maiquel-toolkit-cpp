@@ -6,7 +6,7 @@ namespace mtk{  namespace msg  {
     
 sub_process_location  get_process_location(void)
 {
-    return  mtk::msg::sub_process_location  ("CLIENT", "MACHINE", "PROCESS NAME", "UUID");
+    return mtk::msg::sub_process_location(mtk::msg::sub_location("CLIENT", "MACHINE"), "PROCESS_NAME", "UUID");
 }
 sub_request_info   get_request_info (void)
 {
