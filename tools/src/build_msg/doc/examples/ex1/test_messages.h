@@ -244,18 +244,23 @@ bool operator!= (const LimitPositionChild& a, const LimitPositionChild& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const LimitPosition& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const LimitPosition& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPosition>& a, const std::string& field);
 void copy (LimitPosition& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS>& a, const std::string& field);
 void copy (RQ_NW_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS::IC_control_fields_& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_control_fields_& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS::IC_control_fields_>& a, const std::string& field);
 void copy (RQ_NW_LS::IC_control_fields_& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS::IC_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_product_code& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS::IC_product_code>& a, const std::string& field);
 void copy (RQ_NW_LS::IC_product_code& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const LimitPositionChild& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const LimitPositionChild& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPositionChild>& a, const std::string& field);
 void copy (LimitPositionChild& a, const qpid::types::Variant& map);
 
     LimitPosition  __internal_get_default(LimitPosition *);

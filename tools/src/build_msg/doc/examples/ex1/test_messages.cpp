@@ -543,6 +543,13 @@ if (a.price.HasValue())
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPosition>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -638,6 +645,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -678,6 +692,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_cont
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS::IC_control_fields_>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
@@ -732,6 +753,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_prod
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS::IC_product_code>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 
 
@@ -764,6 +792,13 @@ __internal_add2map(map, static_cast<const LimitPosition&>(a));
 
 
 };
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPositionChild>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
 
 
 
