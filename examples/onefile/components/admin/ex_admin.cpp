@@ -14,6 +14,33 @@ namespace
     const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "small example of admin component";
     const char*   APP_MODIFICATIONS = "example, no modifications info";
+    
+    
+    
+    
+    //  testing registering static commands for this file
+    
+    void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back(MTK_SS(__FILE__ << ":  " << APP_VER));
+    }
+
+    void command_modifications  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back(__FILE__);
+        response_lines.push_back(".......................................");
+        response_lines.push_back(APP_MODIFICATIONS);
+    }
+
+
+    void register_global_commands (void)
+    {
+        mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
+        mtk::admin::register_command("__GLOBAL__",  "modifs",   "")->connect(command_modifications);
+    }
+    
+    
+    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)    
 }
 
 
@@ -39,7 +66,7 @@ void request_command(const std::string& command)
 {
 
     mtk::msg::sub_request_info request_info(mtk::admin::get_request_info());
-    /*static*/ mtk::CountPtr<mtk::qpid_session>  qpid_session = mtk::admin::get_qpid_session("admin", "ADMCLI");
+    /*static*/ mtk::CountPtr<mtk::qpid_session>  qpid_session = mtk::admin::get_qpid_session("client", "CLITESTING");
 
 
     //  subscription to multiresponse

@@ -69,7 +69,7 @@ private:
     mtk::CountPtr< mtk::qpid_session >  qpid_admin_session_cli;
     mtk::CountPtr< mtk::qpid_session >  qpid_admin_session_srv;
 
-    void on_command_response (const mtk::list<mtk::admin::msg::command_response>& responses);
+    void on_command_response (const mtk::list<mtk::admin::msg::res_command>& responses);
 
 
 private slots:

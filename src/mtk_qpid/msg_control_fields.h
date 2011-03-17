@@ -71,6 +71,7 @@ bool operator!= (const sub_control_fields& a, const sub_control_fields& b);
 
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_control_fields& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fields& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_control_fields>& a, const std::string& field);
 void copy (sub_control_fields& a, const qpid::types::Variant& map);
 
     sub_control_fields  __internal_get_default(sub_control_fields *);

@@ -37,7 +37,7 @@ namespace {
 
 
    
-    
+    mtk::Signal<>*           signal_admin_ready  = 0;
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //          class admin_status
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,6 +62,8 @@ namespace {
         };
         
     public:
+            bool                  full_initialized;
+            
             void                  init                ( const std::string& config_file_name,
                                                         const std::string& app_name,
                                                         const std::string& app_version,
@@ -98,7 +100,7 @@ namespace {
             en_process_priority   process_priority;
             
             
-            admin_status()  :   
+            admin_status()  :   full_initialized(false),
                                 signal_alarm_error_critic(new mtk::Signal<const mtk::Alarm&> ),
                                 signal_alarm_nonerror(new mtk::Signal<const mtk::Alarm&> ),
                                 process_priority(ppVeryLow), 
@@ -207,17 +209,23 @@ namespace {
     admin_status* admin_status::i(void)
     {
         if(admin_status_instance == 0)
-            admin_status_instance = new admin_status();
+        {
+            mtk::Alarm alarm = mtk::Alarm(MTK_HERE, "requested admin instace not intialized", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            std::cerr << alarm << std::endl;
+            throw alarm;
+        }
+            //  admin_status_instance = new admin_status();
         return admin_status_instance;
     }
     
     void  admin_status::release(void)
     {
-        i()->close_application("from admin_status::release");
-        if(admin_status_instance==0)        return;
+        if(admin_status_instance  &&  i()->full_initialized)
+            i()->close_application("from admin_status::release");
         
-        if(admin_status_instance != 0)
-            delete admin_status_instance;
+        delete signal_admin_ready;
+        signal_admin_ready = 0;
+        delete admin_status_instance;
         admin_status_instance = 0;
     }
     void  admin_status::close_application(const std::string& reason)
@@ -235,13 +243,6 @@ namespace {
             mtk::send_message(admin_status_instance->session_admin, exit_msg);
             exit_message_sent = true;
         }
-        
-        if(role=="server")
-            mtk::stop_timer();
-        else if(role=="client")
-            exit(-1);
-        else
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));            
     }
     
     
@@ -376,10 +377,11 @@ namespace {
                                     mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)
         }
-        
-            
+
+        full_initialized = true;
         send_enter_and_start_keepalive();
-        
+
+            
         //register_command("ADMIN", "help", "")->connect(this, &CLASS_NAME::command_help);
         MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "help",         ""),                                                command_help)
         
@@ -400,6 +402,7 @@ namespace {
         MTK_CONNECT_THIS(*register_command("ADMIN",         "ping",         "returns a pong"),                                  command_ping)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "rqclose",      "request close application (confirmation requiered)"
                                         " on clients will produce a non ordered close", true),                                  command_rqclose)
+                                        
     }
 
     std::string admin_status::get_mandatory_property(const std::string& path_and_property)
@@ -697,6 +700,13 @@ namespace {
     void admin_status::command_rqclose(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  /*response_lines*/)
     {
         close_application("requested by interactive admin command");
+        
+        if(role=="server")
+            mtk::stop_timer();
+        else if(role=="client")
+            exit(-1);
+        else
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));            
     }
 
     void admin_status::command_date_time(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
@@ -774,6 +784,7 @@ namespace admin {
 void init(const std::string& config_file_name, const std::string& app_name, 
             const std::string& app_version, const std::string& app_description, const std::string& app_modifications )
 {
+    admin_status::admin_status_instance = new admin_status();
     admin_status::i()->init(config_file_name, app_name, app_version, app_description, app_modifications);
 }
 
@@ -824,12 +835,6 @@ mtk::msg::sub_process_info         get_process_info(void)
     return admin_status::i()->get_process_info();
 }
 
-/*
-std::string                             get_session (void)
-{
-    return admin_status::i()->session_id;
-}
-*/
 
 std::string                             get_request_code    (void)
 {
@@ -841,7 +846,7 @@ std::string                             get_url             (const std::string& 
 {
     mtk::Nullable<std::string> url = admin_status::i()->get_config_file().GetValue(MTK_SS("ADMIN.URLS." << url_for));
     if(url.HasValue()==false)
-        throw mtk::Alarm(MTK_HERE, MTK_SS("requested invalid url  " << url_for), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, MTK_SS(url_for  << "   requested invalid url"), mtk::alPriorCritic);
     else
         return url.Get();
 }
@@ -882,6 +887,18 @@ mtk::Nullable<std::string>   get_config_property(const std::string& path)
 
 
 
+mtk::Signal<>*           get_signal_admin_ready(void)
+{
+    bool initialized = false;
+    if(signal_admin_ready == 0  &&  initialized==false)
+    {
+        signal_admin_ready = new mtk::Signal<>;
+        initialized = true;
+    }
+    return signal_admin_ready;
+}
+
+
 
 
 
@@ -891,7 +908,13 @@ mtk::Nullable<std::string>   get_config_property(const std::string& path)
       
 void AlarmMsg (const Alarm& alarm)
 {
-    admin_status::i()->NotifyAlarm(alarm);
+    if(admin_status::admin_status_instance!=0   &&  admin_status::i()->full_initialized)
+        admin_status::i()->NotifyAlarm(alarm);
+    else
+    {
+        std::cerr << "admin not initialized" << std::endl;
+        std::cerr << alarm << std::endl;
+    }
 }
 
 

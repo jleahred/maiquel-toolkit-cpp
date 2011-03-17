@@ -39,7 +39,7 @@ void on_res_command (const mtk::list<mtk::admin::msg::res_command>& responses)  
 void init_request_response(const int&)
 {
     mtk::msg::sub_request_info request_info(mtk::admin::get_request_info());
-    /*static*/ mtk::CountPtr<mtk::qpid_session>  qpid_session = mtk::admin::get_qpid_session("admin", "testing");
+    /*static*/ mtk::CountPtr<mtk::qpid_session>  qpid_session = mtk::admin::get_qpid_session("client", "testing");
 
     //  subscription to multiresponse       <2>
     MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command, 

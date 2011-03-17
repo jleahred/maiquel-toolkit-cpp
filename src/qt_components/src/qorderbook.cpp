@@ -32,15 +32,13 @@ void command_modifications  (const std::string& /*command*/, const std::string& 
     response_lines.push_back(MODIFICATIONS);
 }
 
-    struct register_global_commands
-    {
-        register_global_commands (void)
-        {
-            mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
-            mtk::admin::register_command("__GLOBAL__",  "modifs",   "")->connect(command_modifications);
-        }
-    };
-    register_global_commands rc;
+
+void register_global_commands (void)
+{
+    mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
+    mtk::admin::register_command("__GLOBAL__",  "modifs",   "")->connect(command_modifications);
+}
+MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
 
 }       //  anonymous namespace  to register "static" commnads
 

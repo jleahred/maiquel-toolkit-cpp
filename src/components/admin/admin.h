@@ -74,6 +74,9 @@ namespace mtk {
                                                                 const std::string& name, 
                                                                 const std::string& description, 
                                                                 bool confirmation_requiered=false);
+                                                                
+                                                                
+        mtk::Signal<>*           get_signal_admin_ready(void);
       
       };     //namespace admin {
       
@@ -84,6 +87,18 @@ namespace mtk {
 
 void  __internal_admin_nevercall_me____release_on_exit(void);
 #define     RELEASE__internal_admin_nevercall_me____release_on_exit   mtk::__internal_admin_nevercall_me____release_on_exit();
+
+
+#define  MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(__METHOD_NAME__) \
+    struct __register_global_commands__    \
+    {    \
+        __register_global_commands__()     \
+        {    \
+            mtk::admin::get_signal_admin_ready()->connect(__METHOD_NAME__);    \
+        }    \
+    };    \
+    __register_global_commands__ rc;
+
 
       
 };  //namespace mtk {

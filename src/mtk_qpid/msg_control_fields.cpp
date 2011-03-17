@@ -349,6 +349,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_field
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_control_fields>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
 
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 

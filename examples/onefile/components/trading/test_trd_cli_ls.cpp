@@ -2,6 +2,20 @@
 #include "components/trading/trd_cli_ls.h"
 
 
+
+namespace
+{
+
+    const char*   APP_NAME          = "ex_admin";
+    const char*   APP_VER           = "2011-03-16";
+    const char*   APP_DESCRIPTION   = "small example of admin component";
+    const char*   APP_MODIFICATIONS = "example, no modifications info";
+}
+
+
+
+
+
 namespace mtk{  namespace msg  { 
     
 sub_process_location  get_process_location(void)
@@ -78,6 +92,9 @@ void confirm_exec(const mtk::trd::msg::CF_EX_LS& ex)
 int main(void)
 {
     try{
+        mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
+      
+      
         mtk::trd::msg::sub_order_id         ord_id(mtk::msg::get_request_info().req_id);
         mtk::msg::sub_product_code pc (mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("market", "product"), "product"), 
                                     mtk::nullable<mtk::msg::sub_adic_product_code>());
