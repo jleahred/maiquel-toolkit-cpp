@@ -5,6 +5,38 @@ include::../../VERSION[]
 
 
 
+0.47  2010-03-18::
+
+Fixed errors;;
+* +build_msg.py+ with nullable messages from other namespace
+
+New;;
+* Admin component
+* Request response pattern
+* Monitor
+* HouseLight process
+* TreeServer on server an client sides (also messages)
+
+
+
+Modif interfaz;;
+* +mtk::msg::sub_process_location+  now is part of  +mtk::msg::sub_process_info+
+* +mtk::msg::sub_product_code+
+* Modifs routing keys
+* Adresses. Now only +CLI+ and +SRV+  (with TESTING sufix on simulation)
+* Modif messages names
+
+
+Other;;
+* Stats on mtk_qpid
+* Executables now start with +ct__+
+* Fixed errors managing orders
+
+
+
+
+
+
 0.46  2011-02-28::
 
 Fixed errors;;

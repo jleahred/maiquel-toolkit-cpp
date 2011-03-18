@@ -9,7 +9,7 @@ allall:  libs qtlibs tools clean doc check_files
 
 # time make testjustcompile  2> errors.txt
 #   time (make testrelease > full_test.txt) 2> errors.txt
-#   cat full_test.txt | grep -v '^__NR__:' | grep -v '^del._='  | grep -v ccccc  | grep  -v '^   sum..______'  |  grep  -v '^code:         '  |  grep  -v '^NODE NAME:    '| grep  -v '^[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9] '  > test.txt; rm full_test.txt
+#   cat full_test.txt | grep -v '^__NR__:' | grep -v '^del._='  | grep -v ccccc  | grep  -v '^   sum..______'  |  grep  -v '^code:         '  |  grep  -v '^NODE NAME:    '| grep  -v '^[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9] ' | grep -v sess_id:  > test.txt; rm full_test.txt
 
 
 #  conviene pasar también el test con valgrind  
@@ -51,6 +51,7 @@ allall:  libs qtlibs tools clean doc check_files
 #               ctrl-c v para visualizar 
 #                      hay que copiar la estadística de la versión actual en el histórico)
 #  OLD-----------------------
+
 # al final se ejecuta checkfiles y tiene que volver sin error y escribir un 0 (provisionalmente está escribiendo un 1)
 # commit en git
 # etiquetar la nueva versión en git

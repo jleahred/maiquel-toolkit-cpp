@@ -1974,15 +1974,27 @@ DATE_TIME  : 2011-02-10 19:10:40.088
 
 id          : 5
 SOURCE_CODE  : sc2011-02-11 8:54:22.679
-DATE_TIME  : 2011-02-11 8:54:22.679
+DATE_TIME  : 2011-02-11 08:54:22.679
 
 id          : 6
 SOURCE_CODE  : sc2011-02-11 9:00:03.132
-DATE_TIME  : 2011-02-11 9:00:03.132
+DATE_TIME  : 2011-02-11 09:00:03.132
 
 id          : 7
 SOURCE_CODE  : sc2011-02-11 9:10:35.529
-DATE_TIME  : 2011-02-11 9:10:35.529
+DATE_TIME  : 2011-02-11 09:10:35.529
+
+id          : 8
+SOURCE_CODE  : sc2011-02-28 9:50:34.529
+DATE_TIME  : 2011-02-28 09:50:34.529
+
+id          : 9
+SOURCE_CODE  : sc2011-02-28 10:03:02.286
+DATE_TIME  : 2011-02-28 10:03:02.247
+
+id          : 10
+SOURCE_CODE  : sc2011-03-04 17:16:48.589
+DATE_TIME  : 2011-03-04 17:16:48.589
 
 rm -f ./ex_fb.exec
 #make -C debug
@@ -2033,39 +2045,178 @@ FIN
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/qpid'
 make -C components/  test
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components'
+make -C support/
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components/support'
+ex_request_response.exec ----------------------------------------------------------------
+./ex_request_response.exec
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+FIN..... 
+rm -f ./ex_request_response.exec
+#make -C components
+#make -C clicompo
+echo "FIN"
+FIN
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components/support'
+make -C admin/
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components/admin'
+ex_admin.exec ----------------------------------------------------------------
+./ex_admin.exec
+
+ADMIN
+------------------------------------
+   }   }
+        ver........................... 
+        modifs........................ 
+        stats......................... some stats
+        config........................ config information
+        date_time..................... returns de local current time on the machine
+        ping.......................... returns a pong
+        rqclose....................... request close application (confirmation requiered) on clients will produce a non ordered close
+   }   }
+
+__GLOBAL__
+------------------------------------
+   }   }
+        help.......................... 
+        ver........................... 
+        modifs........................ brief information about modifications
+        stats......................... some stats
+        infoapp....................... info about the application
+   }   }
+
+testing
+------------------------------------
+   }   }
+        hello......................... 
+   }   }
+   }   }
+FIN..... 
+rm -f ./ex_admin.exec
+#make -C components
+#make -C clicompo
+echo "FIN"
+FIN
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components/admin'
 make -C trading/
 make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components/trading'
 test_trd_cli_ls.exec ----------------------------------------------------------------
 ./test_trd_cli_ls.exec
 request_new 
-{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  request_pos:{ price:100.123#1  quantity:30.#1  side:buy   }  cli_ref:cli_ref   }) }
 
 confirm_new 
-{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:100.123#1  quantity:30.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   }) }
 
 request_modif 
-{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  request_pos:{ price:100.333#1  quantity:30.#1  side:buy   }  cli_ref:cli_ref   }) }
 
 confirm_modif 
-{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:100.333#1  quantity:30.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   }) }
 
-reject_modif 
-{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:100.333#1  quantity:30.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }  description:Error: Received rq_md on status market   }) }
-
-request_canc 
-{ ({ req_info:{ req_id:{ sess_id:sess_id  req_code:0   }  client:CLIENT   }  order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  request_pos:{ price:100.333#1  quantity:30.#1  side:buy   }  cli_ref:cli_ref   }) }
+request_modif 
 
 confirm_modif 
-{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:101.222#1  quantity:45.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   }) }
 
 confirm_exec 
-{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:101.222#1  quantity:40.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   })executed_pos:{ price:101.222#1  quantity:5.#1  side:buy   }   }
 
 request_canc 
-{ ({ req_info:{ req_id:{ sess_id:sess_id  req_code:0   }  client:CLIENT   }  order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  request_pos:{ price:101.222#1  quantity:40.#1  side:buy   }  cli_ref:cli_ref   }) }
 
 confirm_canc 
-{ ({ req_info:{ req_id:{ sess_id:pending  req_code:pending0   }  client:CLIENT   }  confirmated_info:{ order_id:{ ({ sess_id:pending  req_code:pending0   }) }  product_code:{ sys_code:{ market:market  product:product  code:<null>   }  aditional_code:<null>  description:<null>   }  market_pos:{ price:101.222#1  quantity:40.#1  side:buy   }  total_execs:{ sum_price_by_qty:0  quantity:0.#1  remaining_qty:30.#1   }  cli_ref:cli_ref   }   }) }
 
 rm -f ./test_trd_cli_ls.exec
 #make -C components
@@ -4198,7 +4349,7 @@ stack:
   double:(__void__)
 
  @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:163) [2]
-        -1ms CRIT. Unkown # unknown command  push var:result @void mtk::bhvm::exec_instruction(const std::string&)(./hvm/bhvm.cpp:144)
+             CRIT. Unkown # unknown command  push var:result @void mtk::bhvm::exec_instruction(const std::string&)(./hvm/bhvm.cpp:144)
 status
 ==========
 program_counter:1
@@ -4637,12 +4788,13 @@ recibido... sending...    ping 99
  PONG... 
 -----------------------
 sending...  ping 100
+recibido... sending...    ping 100
+ PONG... 
+-----------------------
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp'
 make -C emarket this
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/emarket'
 rm -f  temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o
-mkdir -p bin
-mkdir -p temp
 received... ping 1
 received... ping 2
 received... ping 3
@@ -4744,16 +4896,66 @@ received... ping 98
 received... ping 99
 received... ping 100
 client   D I S C O N N E C T E D  __    connection down pr_server 4
-g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/check_request.o src/check_request.cpp
 
 
 ALARMA SALIDA...
              ERROR Unkown # pr_server Connection down  bytes readed 0    socket: -1 @void mtk::tcp_base_socket::check_input()(tcp_base_socket.cpp:165)
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/check_request.o src/check_request.cpp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/orders_book.o src/orders_book.cpp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/ord_ls.o src/ord_ls.cpp
-g++   temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/emarket
+g++   temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__emarket
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/emarket'
+make -C houselight this
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/houselight'
+rm -f  temp/main.o
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
+g++   temp/main.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__houselight
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/houselight'
+make -C houselight doc
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/houselight'
+a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/houselight.adoc
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+Image 'dblatex' not found
+'houselight.pdf' successfully built
+a2x: executing: asciidoc --backend docbook  --doctype book --verbose --out-file /home/maiquel/develop/mtk/examples/prj_make/houselight/doc/houselight.xml /home/maiquel/develop/mtk/examples/prj_make/houselight/src/houselight.adoc
+a2x: executing: xmllint --nonet --noout --valid /home/maiquel/develop/mtk/examples/prj_make/houselight/doc/houselight.xml
+a2x: executing: dblatex -t pdf -p /etc/asciidoc/dblatex/asciidoc-dblatex.xsl -s /etc/asciidoc/dblatex/asciidoc-dblatex.sty -T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top -V /home/maiquel/develop/mtk/examples/prj_make/houselight/doc/houselight.xml
+a2x: deleting /home/maiquel/develop/mtk/examples/prj_make/houselight/doc/houselight.xml
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/houselight'
+make -C tree_server this
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/tree_server'
+rm -f  temp/main.o
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
+g++   temp/main.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__treeserver
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/tree_server'
+make -C tree_server doc
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/tree_server'
+a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/tree_server_cfg.adoc
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+Image 'dblatex' not found
+'tree_server_cfg.pdf' successfully built
+a2x: executing: asciidoc --backend docbook  --doctype book --verbose --out-file /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml /home/maiquel/develop/mtk/examples/prj_make/tree_server/src/tree_server_cfg.adoc
+a2x: executing: xmllint --nonet --noout --valid /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
+a2x: executing: dblatex -t pdf -p /etc/asciidoc/dblatex/asciidoc-dblatex.xsl -s /etc/asciidoc/dblatex/asciidoc-dblatex.sty -T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top -V /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
+a2x: deleting /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/tree_server'
 make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make'
 make -C qt/ test
 make[2]: Entering directory `/home/maiquel/develop/mtk/examples/qt'
@@ -4773,9 +4975,9 @@ g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB 
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. -o mainwindow.o ../../ex_min_qt/src/mainwindow.cpp
 /usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. ../../ex_min_qt/src/mainwindow.h -o moc_mainwindow.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
-g++ -Wl,-O1 -o ex_min_qt main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lmtksupport -lqpidclient -lqpidmessaging -lQtGui -lQtCore -lpthread 
+g++ -Wl,-O1 -o ex_min_qt main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging -lQtGui -lQtCore -lpthread 
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
-rm -rf temp; mkdir -p temp; cd temp; mkdir -p bin; cd bin; qmake ../../ex_send_order/src/ex_send_order.pro; make; ./ex_send_order
+rm -rf temp; mkdir -p temp; cd temp; mkdir -p bin; cd bin; qmake ../../ex_send_order/src/ex_send_order.pro; make; cd ..; cp -r ../ex_send_order/etc . ; ./bin/ex_send_order etc/config.cfg
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
 /usr/bin/uic-qt4 ../../ex_send_order/src/mainwindow.ui -o ui_mainwindow.h
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o main.o ../../ex_send_order/src/main.cpp
@@ -4783,6 +4985,24 @@ g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB 
 /usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. ../../ex_send_order/src/mainwindow.h -o moc_mainwindow.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
 g++ -Wl,-O1 -o ex_send_order main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lqt_components -lmtk_components -lmtk_qpid -lmtksupport -lqpidclient -lqpidmessaging -lQtGui -lQtCore -lpthread 
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
+rm -rf temp; mkdir -p temp; cd temp; mkdir -p bin; cd bin; qmake ../../monitor/src/monitor.pro; make; ./monitor
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
+/usr/bin/uic-qt4 ../../monitor/src/monitor.ui -o ui_monitor.h
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o main.o ../../monitor/src/main.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o monitor.o ../../monitor/src/monitor.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o qplaintexteditcommand.o ../../monitor/src/qplaintexteditcommand.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o qlistprocesses.o ../../monitor/src/qlistprocesses.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o qtablealarms.o ../../monitor/src/qtablealarms.cpp
+/usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. ../../monitor/src/monitor.h -o moc_monitor.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o moc_monitor.o moc_monitor.cpp
+/usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. ../../monitor/src/qplaintexteditcommand.h -o moc_qplaintexteditcommand.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o moc_qplaintexteditcommand.o moc_qplaintexteditcommand.cpp
+/usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. ../../monitor/src/qlistprocesses.h -o moc_qlistprocesses.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o moc_qlistprocesses.o moc_qlistprocesses.cpp
+/usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. ../../monitor/src/qtablealarms.h -o moc_qtablealarms.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o moc_qtablealarms.o moc_qtablealarms.cpp
+g++ -Wl,-O1 -o monitor main.o monitor.o qplaintexteditcommand.o qlistprocesses.o qtablealarms.o moc_monitor.o moc_qplaintexteditcommand.o moc_qlistprocesses.o moc_qtablealarms.o    -L/usr/lib -L../../../../lib/ -lmtk_components -lmtk_qpid -lmtksupport -lqpidclient -lqpidmessaging -lqpidtypes -lQtGui -lQtCore -lpthread 
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
 make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/qt'
 make[1]: Leaving directory `/home/maiquel/develop/mtk/examples'

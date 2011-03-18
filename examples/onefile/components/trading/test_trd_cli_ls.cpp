@@ -234,6 +234,8 @@ int main(void)
                                                                                                 , order_ls.last_confirmation().Get().confirmated_info.total_execs
                                                                                                 , order_ls.last_request().Get().cli_ref ))));
 
+        std::cout << "FIN..... " << std::endl;
+        #include "support/release_on_exit.hpp"
         return 0;
     } MTK_CATCH_CALLFUNCION(std::cout << , "main", "nm")
     
