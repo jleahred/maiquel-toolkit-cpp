@@ -75,6 +75,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
         MTK_CONNECT_THIS(*mtk::admin::get_signal_alarm_error_critic(), OnAlarm);
         MTK_CONNECT_THIS(*mtk::admin::get_signal_alarm_nonerror(),     OnAlarm);
+
+        MTK_TIMER_1D(timer_new_cancel)
 }
 
 MainWindow::~MainWindow()
@@ -193,3 +195,45 @@ void MainWindow::on_pushButton_clicked()
         on_pbNewOrder_clicked();
     }
 }
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    double orig_price = ui->lePrice->text().toDouble();
+    for(int i=0; i<100; ++i)
+    {
+        ui->leOrderID_RequestCode->setText(QString::number(ui->leOrderID_RequestCode->text().toInt()+1));
+        ui->leReqInfo_RequestCode->setText(QString::number(ui->leReqInfo_RequestCode->text().toInt()+1));
+
+
+        ui->lePrice->setText(QString::number((orig_price*100. + (2 -mtk::rand()%4))/100.));
+        list_new.push_back(mtk::trd::msg::RQ_NW_LS (get_xx_request()));
+        ui->leReqInfo_RequestCode->setText(QString::number(ui->leReqInfo_RequestCode->text().toInt()+1));
+        list_cc.push_back(mtk::trd::msg::RQ_CC_LS (get_xx_request()));
+    }
+}
+
+void MainWindow::timer_new_cancel(void)
+{
+    static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(ui->leUrl->text().toStdString(), ui->leOutAddress->text().toStdString()));
+
+    MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(100))
+    {
+        if(list_new.size() > 0)
+        {
+            mtk::send_message(qpid_session, list_new.front(), "");
+            list_new.pop_front();
+        }
+    }
+    MTK_END_EXEC_MAX_FREC
+
+    MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(120))
+    {
+        if(list_cc.size() > 0)
+        {
+            mtk::send_message(qpid_session, list_cc.front(), "");
+            list_cc.pop_front();
+        }
+    }
+    MTK_END_EXEC_MAX_FREC
+}
+

@@ -300,7 +300,14 @@
           <item row="4" column="0" colspan="2">
            <widget class="QPushButton" name="pushButton">
             <property name="text">
-             <string>PushButton</string>
+             <string>many orders</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>MULTI new cancel</string>
             </property>
            </widget>
           </item>

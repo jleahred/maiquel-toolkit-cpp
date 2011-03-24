@@ -68,7 +68,12 @@ private:
     mtk::trd::msg::RQ_XX_LS get_xx_request(void);
     mtk::msg::sub_process_location   get_process_location(void);
 
+    mtk::list<mtk::trd::msg::RQ_NW_LS>  list_new;
+    mtk::list<mtk::trd::msg::RQ_CC_LS>  list_cc;
+    void timer_new_cancel(void);
+
 private slots:
+    void on_pushButton_2_clicked();
     void on_pushButton_clicked();
     void on_pbNewOrderFromOrderBook_clicked();
     void on_pbSendCancelOrder_clicked();
