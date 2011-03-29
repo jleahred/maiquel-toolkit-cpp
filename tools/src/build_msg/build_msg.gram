@@ -34,7 +34,7 @@ __beginrule__
 
 
 SUB_MESSAGE  ::= NR_ENDL* _  MSG_NAME _  ( _ FIELD_TAG _ ) _  NR_ENDL*  
-             _ [<            MSG_PROPERTIES         >]        NR_ENDL* 
+             _ [<            MSG_PROPERTIES      _  >]        NR_ENDL* 
              _ {                                              NR_ENDL*
                              FIELD_DEFINITION*
              _ }                                              NR_ENDL* 
