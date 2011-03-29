@@ -381,7 +381,8 @@ namespace {
         }
 
         full_initialized = true;
-        signal_admin_ready->emit();
+        if(signal_admin_ready)
+            signal_admin_ready->emit();
         send_enter_and_start_keepalive();
 
             
@@ -778,7 +779,10 @@ namespace {
         else if(role=="client")
         {
             static int contador =1;
-            return mtk::msg::sub_request_info(mtk::msg::sub_request_id(client_login_confirmation.session_id, MTK_SS(++contador)), get_process_info().process_location);
+            std::string session_id = client_login_confirmation.session_id;
+            if(session_id=="")
+                session_id = "provisional";
+            return mtk::msg::sub_request_info(mtk::msg::sub_request_id(session_id, MTK_SS(++contador)), get_process_info().process_location);
         }
         else
             throw mtk::Alarm(MTK_HERE, MTK_SS(role << "  request info with invalid role"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
