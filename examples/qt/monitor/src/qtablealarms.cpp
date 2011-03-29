@@ -23,7 +23,7 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _o
     horizontalHeader()->setStretchLastSection(true);
     //horizontalHeader()->setDefaultSectionSize(100);
 
-    setColumnCount(8);
+    setColumnCount(7);
 
     #define QTABLE_ALARMS_INIT_HEADER_ITEM(__COLUMN__, __TEXT__) \
     {   \
@@ -38,23 +38,25 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _o
         QFont font(this->font());
         font.setBold(true);
         //font.setPointSize(11);
-        QTABLE_ALARMS_INIT_HEADER_ITEM(0, "time (rec)")
-        QTABLE_ALARMS_INIT_HEADER_ITEM(1, "from")
-        QTABLE_ALARMS_INIT_HEADER_ITEM(2, "priority")
-        QTABLE_ALARMS_INIT_HEADER_ITEM(3, "source")
-        QTABLE_ALARMS_INIT_HEADER_ITEM(4, "message")
-        QTABLE_ALARMS_INIT_HEADER_ITEM(5, "type")
-        QTABLE_ALARMS_INIT_HEADER_ITEM(6, "gen.time")
-        QTABLE_ALARMS_INIT_HEADER_ITEM(7, "id")
+        int counter=0;
+        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "time (rec)")
+        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "from")
+        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "priority")
+        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "id")
+        //QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "source")
+        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "message")
+        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "type")
+        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "gen.time")
     }
-    horizontalHeader()->resizeSection(0, 105);
-    horizontalHeader()->resizeSection(1, 100);
-    horizontalHeader()->resizeSection(2, 100);
-    horizontalHeader()->resizeSection(3, 150);
-    horizontalHeader()->resizeSection(4, 1200);
-    horizontalHeader()->resizeSection(5, 100);
-    horizontalHeader()->resizeSection(6, 100);
-    horizontalHeader()->resizeSection(7, 100);
+    int counter=0;
+    horizontalHeader()->resizeSection(counter++, 105);
+    horizontalHeader()->resizeSection(counter++, 100);
+    horizontalHeader()->resizeSection(counter++, 100);
+    horizontalHeader()->resizeSection(counter++, 30);
+    //horizontalHeader()->resizeSection(counter++, 150);
+    horizontalHeader()->resizeSection(counter++, 1200);
+    horizontalHeader()->resizeSection(counter++, 100);
+    horizontalHeader()->resizeSection(counter++, 100);
     //horizontalHeader()->setMovable(true);
 
 
@@ -127,10 +129,20 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
     {
         QTableWidgetItem* new_item = new QTableWidgetItem();
+        new_item->setText(MTK_SS(alarm_msg.alarm_id).c_str());
+        new_item->setBackgroundColor(back_color);
+        new_item->setForeground(QBrush(foregroud_color));
+        this->setItem(last_row, ++column, new_item);
+    }
+
+    {
+        /*
+        QTableWidgetItem* new_item = new QTableWidgetItem();
         new_item->setText(MTK_SS(alarm_msg.code_source).c_str());
         new_item->setBackgroundColor(back_color);
         new_item->setForeground(QBrush(foregroud_color));
         this->setItem(last_row, ++column, new_item);
+        */
     }
 
     {
@@ -157,13 +169,6 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
         this->setItem(last_row, ++column, new_item);
     }
 
-    {
-        QTableWidgetItem* new_item = new QTableWidgetItem();
-        new_item->setText(MTK_SS(alarm_msg.alarm_id).c_str());
-        new_item->setBackgroundColor(back_color);
-        new_item->setForeground(QBrush(foregroud_color));
-        this->setItem(last_row, ++column, new_item);
-    }
     if(this->currentRow() == -1  ||  this->currentRow()==last_row-1)
         this->setCurrentCell(last_row, 0);
 }

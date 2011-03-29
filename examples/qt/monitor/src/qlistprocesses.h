@@ -38,21 +38,23 @@ public slots:
 private:
     mtk::dtDateTime   started_application;
 
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_enter>      > hqpid_client_enter;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_keep_alive> > hqpid_client_ka;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_exit>       > hqpid_client_exit;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>      > hqpid_client_alarm;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_enter>      >          hqpid_enter;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_keep_alive_srv> >      hqpid_server_ka;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_keep_alive_clients> >  hqpid_client_ka;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_exit>       >          hqpid_exit;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>      >          hqpid_alarm;
 
-    void on_enter_client_received(const mtk::admin::msg::pub_enter& msg);
-    void on_exit_client_received (const mtk::admin::msg::pub_exit& msg);
-    void on_ka_client_received   (const mtk::admin::msg::pub_keep_alive& msg);
+    void on_enter_received      (const mtk::admin::msg::pub_enter& msg);
+    void on_exit_received       (const mtk::admin::msg::pub_exit& msg);
+    void on_ka_client_received  (const mtk::admin::msg::pub_keep_alive_clients& msg);
+    void on_ka_server_received  (const mtk::admin::msg::pub_keep_alive_srv& msg);
 
-    void check_client_ka(void);
+    void check_ka(void);
 
     QListWidgetItem_ka*  find_item(const mtk::msg::sub_process_location& l);
 
     void  check_alarm_received(const mtk::msg::sub_process_info& l);
-    void  on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);
+    void  on_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);
 
 };
 

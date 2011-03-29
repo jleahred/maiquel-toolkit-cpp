@@ -7,7 +7,7 @@ END_INIT
 
 
 
-LimitPosition   [<V:0>]      // <2>
+LimitPosition   [< V:0 >]      // <2>
 {
    buy_sell (bs)   :  string       [optional]        // <3>
    price    (pr)   :  fix_num      [recomended]
@@ -47,13 +47,21 @@ RQ_NW_LS  [<V:0, SUBJ:hola.pajaarito >]   // <4>
       aditional_code(ac)       :  string       //[mandatory]  by default is mandatory  <9>
    }
 
-    [names]       (ln)          :  string
-    [postitions]  (poss)        :  LimitPosition
+
+    ri : sub_login_response_info (ri)  [< V:0 >]
+    {
+        accepted       (ac)     :   bool
+        session_id     (si)     :   string
+    }
+
+
+    [names]       (ns)          :  string            // <10>
+    [postitions]  (poss)        :  LimitPosition     // <11>
 }
 
 
 
-LimitPositionChild   [< V:0, I:LimitPosition >]      // <10>
+LimitPositionChild   [< V:0, I:LimitPosition >]      // <12>
 {
-   new_field   (nf)  : string 
+   new_field   (nf)  : string
 }

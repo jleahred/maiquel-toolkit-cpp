@@ -1,7 +1,7 @@
 BEGIN_INIT
 
 NAMESPACES = ['mtk', 'admin', 'msg']
-INCLUDES   = ['#include "../msg_common.h"', '#include "../msg_common_support.h"', '#include "msg_admin_support.h"']
+INCLUDES   = ['#include "../msg_common.h"', '#include "../msg_common_support.h"', '#include "msg_admin_support.h"', '#include "../acs/msg_acs.h"']
 
 END_INIT
 
@@ -9,7 +9,7 @@ END_INIT
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//      These messages will work on  ADMCLI or ADMSRV  addresses
+//      
 //      Out messages->    ADM.<cli_code>.<machine_code>....
 //      In  messages->    ADM.CIMD....
 //
@@ -36,12 +36,19 @@ pub_enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 }
 
 
-pub_keep_alive  [< V:0, SUBJ:ADM.CIMD.KA >]
+pub_keep_alive_srv  [< V:0, SUBJ:ADM.CIMD.KA >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (ks)    :   time_quantity
     ka_interval_check   (kc)    :   time_quantity
 }
+
+pub_keep_alive_clients  [< V:0, I:pub_keep_alive_srv,  SUBJ:ADM.CIMD.KA >]
+{
+    //  aditional info for ACS
+    login_confirmation  (lc)    :   mtk::acs::msg::res_login::IC_login_response_info
+}
+
 
 pub_exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 {

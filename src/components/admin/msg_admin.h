@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Wed Mar 16 18:36:01 2011
+// coded last modification:        Mon Mar 28 12:27:49 2011
 
 
 #include "support/nullable.hpp"
@@ -23,6 +23,7 @@
 #include "../msg_common.h"
 #include "../msg_common_support.h"
 #include "msg_admin_support.h"
+#include "../acs/msg_acs.h"
 
 namespace mtk { 
 namespace admin { 
@@ -69,20 +70,20 @@ private:
 
 
 //-------------------------------
-//      pub_keep_alive
+//      pub_keep_alive_srv
 //-------------------------------    
-class pub_keep_alive     
+class pub_keep_alive_srv     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit pub_keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
-    explicit pub_keep_alive ( const qpid::messaging::Message& message );
-    virtual ~pub_keep_alive (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive"; };
-    static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive"; };
+    explicit pub_keep_alive_srv (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit pub_keep_alive_srv ( const qpid::messaging::Message& message );
+    virtual ~pub_keep_alive_srv (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_srv"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_srv"; };
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
     
 
@@ -90,6 +91,41 @@ public:
     mtk::msg::sub_process_info                process_info; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject ();
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      pub_keep_alive_clients
+//-------------------------------    
+class pub_keep_alive_clients        :  public  pub_keep_alive_srv
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit pub_keep_alive_clients (  const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation );
+    explicit pub_keep_alive_clients ( const qpid::messaging::Message& message );
+    virtual ~pub_keep_alive_clients (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_clients"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_clients"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::acs::msg::res_login::IC_login_response_info  login_confirmation; 
 
 
 
@@ -333,10 +369,15 @@ private:
 bool operator== (const pub_enter& a, const pub_enter& b);
 bool operator!= (const pub_enter& a, const pub_enter& b);
 
-    std::ostream& operator<< (std::ostream& o, const pub_keep_alive & c);
+    std::ostream& operator<< (std::ostream& o, const pub_keep_alive_srv & c);
 
-bool operator== (const pub_keep_alive& a, const pub_keep_alive& b);
-bool operator!= (const pub_keep_alive& a, const pub_keep_alive& b);
+bool operator== (const pub_keep_alive_srv& a, const pub_keep_alive_srv& b);
+bool operator!= (const pub_keep_alive_srv& a, const pub_keep_alive_srv& b);
+
+    std::ostream& operator<< (std::ostream& o, const pub_keep_alive_clients & c);
+
+bool operator== (const pub_keep_alive_clients& a, const pub_keep_alive_clients& b);
+bool operator!= (const pub_keep_alive_clients& a, const pub_keep_alive_clients& b);
 
     std::ostream& operator<< (std::ostream& o, const pub_exit & c);
 
@@ -372,10 +413,14 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_enter& a
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_enter>& a, const std::string& field);
 void copy (pub_enter& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_keep_alive& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive>& a, const std::string& field);
-void copy (pub_keep_alive& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_keep_alive_srv& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_srv& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_srv>& a, const std::string& field);
+void copy (pub_keep_alive_srv& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_keep_alive_clients& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_clients& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_clients>& a, const std::string& field);
+void copy (pub_keep_alive_clients& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_exit& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_exit>& a, const std::string& field);
@@ -403,7 +448,9 @@ void copy (pub_central_keep_alive& a, const qpid::types::Variant& map);
 
     pub_enter  __internal_get_default(pub_enter *);
     
-    pub_keep_alive  __internal_get_default(pub_keep_alive *);
+    pub_keep_alive_srv  __internal_get_default(pub_keep_alive_srv *);
+    
+    pub_keep_alive_clients  __internal_get_default(pub_keep_alive_clients *);
     
     pub_exit  __internal_get_default(pub_exit *);
     
@@ -432,7 +479,8 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_enter)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_keep_alive)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_keep_alive_srv)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_keep_alive_clients)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_exit)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_alarm)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::req_command)

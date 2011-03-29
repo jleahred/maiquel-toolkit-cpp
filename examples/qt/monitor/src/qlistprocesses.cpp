@@ -28,41 +28,49 @@ void QListProcesses::init(mtk::CountPtr<mtk::qpid_session> qpid_admin_session)
 {
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
-                            hqpid_client_enter,
+                            hqpid_enter,
                             qpid_admin_session->url,
                             qpid_admin_session->address,
                             mtk::admin::msg::pub_enter::get_in_subject(),
                             mtk::admin::msg::pub_enter,
-                            on_enter_client_received)
+                            on_enter_received)
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
-                            hqpid_client_exit,
+                            hqpid_exit,
                             qpid_admin_session->url,
                             qpid_admin_session->address,
                             mtk::admin::msg::pub_exit::get_in_subject(),
                             mtk::admin::msg::pub_exit,
-                            on_exit_client_received)
+                            on_exit_received)
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_client_ka,
                             qpid_admin_session->url,
                             qpid_admin_session->address,
-                            mtk::admin::msg::pub_keep_alive::get_in_subject(),
-                            mtk::admin::msg::pub_keep_alive,
+                            mtk::admin::msg::pub_keep_alive_clients::get_in_subject(),
+                            mtk::admin::msg::pub_keep_alive_clients,
                             on_ka_client_received)
+
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            hqpid_server_ka,
+                            qpid_admin_session->url,
+                            qpid_admin_session->address,
+                            mtk::admin::msg::pub_keep_alive_srv::get_in_subject(),
+                            mtk::admin::msg::pub_keep_alive_srv,
+                            on_ka_server_received)
 
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
-                            hqpid_client_alarm,
+                            hqpid_alarm,
                             qpid_admin_session->url,
                             qpid_admin_session->address,
                             mtk::admin::msg::pub_alarm::get_in_subject(),
                             mtk::admin::msg::pub_alarm,
-                            on_client_alarm_received)
+                            on_alarm_received)
 
 
 
-    MTK_TIMER_1S(check_client_ka)
+    MTK_TIMER_1S(check_ka)
 }
 
 
@@ -84,7 +92,7 @@ private:
 
 
 
-void QListProcesses::on_enter_client_received(const mtk::admin::msg::pub_enter& msg)
+void QListProcesses::on_enter_received(const mtk::admin::msg::pub_enter& msg)
 {
     QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
     if(item!=0)
@@ -105,7 +113,7 @@ void QListProcesses::on_enter_client_received(const mtk::admin::msg::pub_enter& 
 }
 
 
-void QListProcesses::on_exit_client_received (const mtk::admin::msg::pub_exit& msg)
+void QListProcesses::on_exit_received (const mtk::admin::msg::pub_exit& msg)
 {
     QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
     if(item==0)
@@ -115,7 +123,7 @@ void QListProcesses::on_exit_client_received (const mtk::admin::msg::pub_exit& m
 }
 
 
-void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_alive& msg)
+void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_alive_clients& msg)
 {
     QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
     if(item==0)
@@ -137,8 +145,29 @@ void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_al
     }
 }
 
+void QListProcesses::on_ka_server_received   (const mtk::admin::msg::pub_keep_alive_srv& msg)
+{
+    QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
+    if(item==0)
+    {
+        if ((mtk::dtNowLocal() - started_application) > starting_time)
+            signal_alarm.emit(mtk::Alarm(MTK_HERE, "received keep alive  on a non registered client", mtk::alPriorError, mtk::alTypeNoPermisions));
+        QListWidgetItem_ka* new_item = new QListWidgetItem_ka(get_composed_name(msg.process_info.process_location), this, mtk::dtNowLocal() + msg.ka_interval_check, msg.process_info);
+        new_item->setCheckState(Qt::Unchecked);
+        addItem(new_item);
+    }
+    else
+    {
+        if (item->next_ka.HasValue() == false)
+        {
+            signal_alarm.emit(mtk::Alarm(MTK_HERE, "recovered keep alive", mtk::alPriorError, mtk::alTypeNoPermisions));
+            item->setBackgroundColor(Qt::white);
+        }
+        item->next_ka = mtk::dtNowLocal() + msg.ka_interval_check;
+    }
+}
 
-void QListProcesses::check_client_ka(void)
+void QListProcesses::check_ka(void)
 {
     for(int i=0;i<this->count();i++){
         QListWidgetItem_ka* itka = dynamic_cast<QListWidgetItem_ka*>(this->item(i));
@@ -200,7 +229,7 @@ void  QListProcesses::fill_process_info_for_selected_items(mtk::list<mtk::msg::s
     }
 }
 
-void QListProcesses::on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg)
+void QListProcesses::on_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg)
 {
     check_alarm_received(alarm_msg.process_info);
 }

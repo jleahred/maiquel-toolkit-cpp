@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Wed Mar 16 18:36:01 2011
+// coded last modification:        Mon Mar 28 12:27:49 2011
 
 
 #include "support/mtk_double.h"
@@ -298,7 +298,7 @@ std::string pub_enter::check_recomended(void) const
 
 
 
-pub_keep_alive::pub_keep_alive (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+pub_keep_alive_srv::pub_keep_alive_srv (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
     :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
     {  
         std::string cr = check_recomended ();  
@@ -309,7 +309,27 @@ pub_keep_alive::pub_keep_alive (   const mtk::msg::sub_process_info&  _process_i
 
 
 
-std::string pub_keep_alive::check_recomended(void) const
+std::string pub_keep_alive_srv::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
+pub_keep_alive_clients::pub_keep_alive_clients ( const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation)
+    :  pub_keep_alive_srv(parent),   login_confirmation(_login_confirmation) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string pub_keep_alive_clients::check_recomended(void) const
 {
     std::string result;
 
@@ -448,11 +468,22 @@ std::ostream& operator<< (std::ostream& o, const pub_enter & c)
 
 
 
-std::ostream& operator<< (std::ostream& o, const pub_keep_alive & c)
+std::ostream& operator<< (std::ostream& o, const pub_keep_alive_srv & c)
 {
     o << "{ "
 
         << "process_info:"<< c.process_info<<"  "        << "ka_interval_send:"<<   c.ka_interval_send << "  "        << "ka_interval_check:"<<   c.ka_interval_check << "  "
+        << " }";
+    return o;
+};
+
+
+
+std::ostream& operator<< (std::ostream& o, const pub_keep_alive_clients & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const pub_keep_alive_srv&>(c)  << ")" 
+        << "login_confirmation:"<< c.login_confirmation<<"  "
         << " }";
     return o;
 };
@@ -537,12 +568,24 @@ bool operator!= (const pub_enter& a, const pub_enter& b)
 
 
 
-bool operator== (const pub_keep_alive& a, const pub_keep_alive& b)
+bool operator== (const pub_keep_alive_srv& a, const pub_keep_alive_srv& b)
 {
     return (          a.process_info ==  b.process_info  &&          a.ka_interval_send ==  b.ka_interval_send  &&          a.ka_interval_check ==  b.ka_interval_check  &&   true  );
 };
 
-bool operator!= (const pub_keep_alive& a, const pub_keep_alive& b)
+bool operator!= (const pub_keep_alive_srv& a, const pub_keep_alive_srv& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const pub_keep_alive_clients& a, const pub_keep_alive_clients& b)
+{
+    return ( (static_cast<const pub_keep_alive_srv&>(a)   ==  static_cast<const pub_keep_alive_srv&>(b))  &&           a.login_confirmation ==  b.login_confirmation  &&   true  );
+};
+
+bool operator!= (const pub_keep_alive_clients& a, const pub_keep_alive_clients& b)
 {
     return !(a==b);
 };
@@ -681,8 +724,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (pub_keep_alive& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (pub_keep_alive& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (pub_keep_alive_srv& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (pub_keep_alive_srv& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
@@ -691,7 +734,7 @@ void  copy (pub_keep_alive& c, const qpid::types::Variant& v)
 
                     it = mv.find("pi");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field process_info on message pub_keep_alive::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field process_info on message pub_keep_alive_srv::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.process_info, it->second);
                         //__internal_qpid_fill(c.process_info, it->second.asMap());
@@ -699,7 +742,7 @@ void  copy (pub_keep_alive& c, const qpid::types::Variant& v)
 
                     it = mv.find("ks");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field ka_interval_send on message pub_keep_alive::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field ka_interval_send on message pub_keep_alive_srv::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.ka_interval_send, it->second);
                         //c.ka_interval_send = it->second;
@@ -707,7 +750,7 @@ void  copy (pub_keep_alive& c, const qpid::types::Variant& v)
 
                     it = mv.find("kc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field ka_interval_check on message pub_keep_alive::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field ka_interval_check on message pub_keep_alive_srv::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.ka_interval_check, it->second);
                         //c.ka_interval_check = it->second;
@@ -715,7 +758,7 @@ void  copy (pub_keep_alive& c, const qpid::types::Variant& v)
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_srv& a)
 {
     
 
@@ -730,7 +773,48 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive& a
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive>& a, const std::string& field)
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_srv>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (pub_keep_alive_clients& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (pub_keep_alive_clients& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<pub_keep_alive_srv&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("lc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field login_confirmation on message pub_keep_alive_clients::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.login_confirmation, it->second);
+                        //__internal_qpid_fill(c.login_confirmation, it->second.asMap());
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_clients& a)
+{
+    
+//  parent
+__internal_add2map(map, static_cast<const pub_keep_alive_srv&>(a));
+
+//  sub_msg_type
+        __internal_add2map(map, a.login_confirmation, std::string("lc"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_clients>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1100,6 +1184,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 
 qpid::messaging::Message pub_enter::qpidmsg_codded_as_qpid_message (void) const
 {
@@ -1130,7 +1215,7 @@ qpid::messaging::Message pub_enter::qpidmsg_codded_as_qpid_message (void) const
 
 
 
-qpid::messaging::Message pub_keep_alive::qpidmsg_codded_as_qpid_message (void) const
+qpid::messaging::Message pub_keep_alive_srv::qpidmsg_codded_as_qpid_message (void) const
 {
     qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
@@ -1145,6 +1230,31 @@ qpid::messaging::Message pub_keep_alive::qpidmsg_codded_as_qpid_message (void) c
 //  field_type
 //        content["kc"] = this->ka_interval_check;
         __internal_add2map(content, this->ka_interval_check, std::string("kc"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message pub_keep_alive_clients::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const pub_keep_alive_srv&>(*this));
+
+//  sub_msg_type
+//        content["lc"] =  qpidmsg_coded_as_qpid_Map(this->login_confirmation);
+        __internal_add2map(content, this->login_confirmation, std::string("lc"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
@@ -1345,15 +1455,23 @@ qpid::messaging::Message pub_central_keep_alive::qpidmsg_codded_as_qpid_message 
             );
     }
     
-    pub_keep_alive  __internal_get_default(pub_keep_alive*)
+    pub_keep_alive_srv  __internal_get_default(pub_keep_alive_srv*)
     {
-        return pub_keep_alive(
+        return pub_keep_alive_srv(
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_process_info*)0),
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0),
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0)
+            );
+    }
+    
+    pub_keep_alive_clients  __internal_get_default(pub_keep_alive_clients*)
+    {
+        return pub_keep_alive_clients(
+__internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
+   __internal_get_default((mtk::acs::msg::res_login::IC_login_response_info*)0)
             );
     }
     
@@ -1450,13 +1568,29 @@ pub_enter::pub_enter (const qpid::messaging::Message& msg)
 
 
 
-pub_keep_alive::pub_keep_alive (const qpid::messaging::Message& msg)
+pub_keep_alive_srv::pub_keep_alive_srv (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
 //   field_type
    ka_interval_check(__internal_get_default((mtk::dtTimeQuantity*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+pub_keep_alive_clients::pub_keep_alive_clients (const qpid::messaging::Message& msg)
+    :  pub_keep_alive_srv(msg), //   sub_msg_type
+   login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_login_response_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -1596,11 +1730,19 @@ std::string  pub_enter::get_in_subject ()
     {
         return MTK_SS("ADM.CIMD.ENTER");
     }
-    std::string  pub_keep_alive::get_in_subject ()
+    std::string  pub_keep_alive_srv::get_in_subject ()
     {
         return MTK_SS("ADM.CIMD.KA");
     }
-    std::string  pub_keep_alive::get_out_subject (void) const
+    std::string  pub_keep_alive_srv::get_out_subject (void) const
+    {
+        return MTK_SS("ADM.CIMD.KA");
+    }
+    std::string  pub_keep_alive_clients::get_in_subject ()
+    {
+        return MTK_SS("ADM.CIMD.KA");
+    }
+    std::string  pub_keep_alive_clients::get_out_subject (void) const
     {
         return MTK_SS("ADM.CIMD.KA");
     }

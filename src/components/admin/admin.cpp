@@ -62,6 +62,7 @@ namespace {
         };
         
     public:
+            mtk::acs::msg::res_login::IC_login_response_info     client_login_confirmation;
             bool                  full_initialized;
             
             void                  init                ( const std::string& config_file_name,
@@ -100,7 +101,8 @@ namespace {
             en_process_priority   process_priority;
             
             
-            admin_status()  :   full_initialized(false),
+            admin_status()  :   client_login_confirmation("", ""),
+                                full_initialized(false),
                                 signal_alarm_error_critic(new mtk::Signal<const mtk::Alarm&> ),
                                 signal_alarm_nonerror(new mtk::Signal<const mtk::Alarm&> ),
                                 process_priority(ppVeryLow), 
@@ -379,6 +381,7 @@ namespace {
         }
 
         full_initialized = true;
+        signal_admin_ready->emit();
         send_enter_and_start_keepalive();
 
             
@@ -432,9 +435,19 @@ namespace {
     void  admin_status::send_keep_alive(void)
     {
         MTK_EXEC_MAX_FREC_NO_FIRST_S(ka_interval_send)
-            mtk::admin::msg::pub_keep_alive keep_alive_msg(get_process_info(), ka_interval_send, ka_interval_check);
-            //std::cout << keep_alive_msg << std::endl;
-            mtk::send_message(session_admin, keep_alive_msg);
+            if(role=="server")
+            {
+                mtk::admin::msg::pub_keep_alive_srv keep_alive_msg(get_process_info(), ka_interval_send, ka_interval_check);
+                //std::cout << keep_alive_msg << std::endl;
+                mtk::send_message(session_admin, keep_alive_msg);
+            }
+            else if(role=="client")
+            {
+                mtk::admin::msg::pub_keep_alive_clients keep_alive_msg(mtk::admin::msg::pub_keep_alive_srv(get_process_info(), ka_interval_send, ka_interval_check), client_login_confirmation);
+                mtk::send_message(session_admin, keep_alive_msg);
+            }
+            else
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));            
         MTK_END_EXEC_MAX_FREC
     }
     void admin_status::check_last_received_message(void)
@@ -504,7 +517,8 @@ namespace {
 
     void admin_status::__direct_NotifyAlarm (const mtk::Alarm& alarm)
     {
-        //std::cout << alarm << std::endl;
+        //if(alarm.priority == mtk::alPriorCritic  ||  alarm.priority == mtk::alPriorError)
+        //    std::cout << alarm << std::endl;
         int16_t alarm_id = int16_t(alarm.alarmID);
         {
             mtk::admin::msg::pub_alarm alarm_msg(get_process_info(), alarm.codeSource, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
@@ -620,7 +634,7 @@ namespace {
             if(it2->size() > 500)
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("line too long in response to command " << command << " truncating"), mtk::alPriorError));
-                (*it2) = it2->substr(0, 200) + std::string("... truncated line");
+                (*it2) = it2->substr(0, 200) + std::string("  ... truncated line");
             }
                 
             data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(*it2 << std::endl)));
@@ -642,7 +656,14 @@ namespace {
         {
             //std::string help_line = MTK_SS( mtk::s_AlignLeft (it->second->group, 10) << mtk::s_AlignLeft (it->second->name, 10)  <<  it->second->description << std::endl);
             response_lines.push_back(MTK_SS(std::endl << std::endl << it->first << std::endl << "------------------------------------"));
-            response_lines.push_back(MTK_SS("           " << it->second));
+            {
+                mtk::vector<std::string>   lines  = mtk::s_split(it->second, "\n");
+                for(int i=0; i<lines.size(); ++i)
+                {
+                    response_lines.push_back(lines[i]);
+                }
+            }
+            //response_lines.push_back(MTK_SS("           " << it->second));
                                     //help_line));
             ++it;
         }
@@ -756,12 +777,8 @@ namespace {
         }
         else if(role=="client")
         {
-            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(60))
-                ADMIN_PROVISIONAL_IMPLEMENTATION
-            MTK_END_EXEC_MAX_FREC
-            static int counter=0;
-            static const std::string session = mtk::crc32_as_string(MTK_SS(mtk::dtNowLocal()));
-            return mtk::msg::sub_request_info (mtk::msg::sub_request_id(session, MTK_SS("pending"<<++counter)), get_process_info().process_location);
+            static int contador =1;
+            return mtk::msg::sub_request_info(mtk::msg::sub_request_id(client_login_confirmation.session_id, MTK_SS(++contador)), get_process_info().process_location);
         }
         else
             throw mtk::Alarm(MTK_HERE, MTK_SS(role << "  request info with invalid role"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -885,6 +902,18 @@ mtk::Nullable<std::string>   get_config_property(const std::string& path)
     return admin_status::i()->get_config_property(path);;    
 }
 
+
+void client_login_ok_confirmation   (const mtk::acs::msg::res_login::IC_login_response_info& client_login_confirmation)
+{
+    admin_status::i()->client_login_confirmation = client_login_confirmation;
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("registered login ok: " << client_login_confirmation), mtk::alPriorDebug));
+}
+
+void client_logout_confirmation     (const std::string& description)
+{
+    admin_status::i()->client_login_confirmation = mtk::acs::msg::res_login::IC_login_response_info("", "");
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("registered logout: " << description), mtk::alPriorDebug));
+}
 
 
 mtk::Signal<>*           get_signal_admin_ready(void)

@@ -5,10 +5,10 @@
  *      * giving the connections to other pieces
  *      * sending the alarms to the network
  *      * dealing with admin commands
- * 
  *      * basic preconfigured commands
  *      * sending alarm stats frecuently with stats
  *      * receiving and monitoring the central keepalive
+ * 
  *      * local fluct control
  *      * generating logs files
  * 
@@ -27,6 +27,7 @@
 
 #include "components/msg_common.h"
 #include "components/admin/msg_admin.h"
+#include "components/acs/msg_acs.h"
 
 
 
@@ -62,6 +63,9 @@ namespace mtk {
         
         
         
+        //  to be call from acs_client
+        void client_login_ok_confirmation   (const mtk::acs::msg::res_login::IC_login_response_info& client_login_confirmation);
+        void client_logout_confirmation     (const std::string& description);
         
         
         
