@@ -199,9 +199,13 @@ ${ACCESS_METHODS}
 
 private:
     //  current_status
-    mtk::CountPtr<${private_namespace}::abstract_status>&      current_status;
+    mtk::CountPtr<${private_namespace}::abstract_status>      current_status;
     void on_new_status (mtk::CountPtr<${private_namespace}::abstract_status>  new_status);
 
+    //  keep temp status
+    mtk::list<mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status> >     queue_temp_status;
+    void on_keep_temp_status (void);
+    void on_remove_temp_status (void);
 };
 
 
@@ -446,6 +450,8 @@ $SCI_CONSTR_INITALIZER
 $PROPERTIES
 
     mtk::Signal<mtk::CountPtr<abstract_status> > signal_new_status;
+    mtk::Signal<> signal_keep_temp_status;
+    mtk::Signal<> signal_remove_temp_status;
 
 };
 
@@ -621,13 +627,13 @@ void $STATUS_NAME::$METHOD_NAME ( $PARAMS )
     $INIT_CODE
 
     mtk::CountPtr<abstract_status> new_status;
-    
+    ci->signal_keep_temp_status();    
     try
     {
         $IMPLEMENTATION
     }
     MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
-
+    ci->signal_remove_temp_status();
 }
 """
     
@@ -905,25 +911,35 @@ def get_main_class_implementation():
     if SIGNALS != "" and  CSI_CALL_PARAMS  != "":
         CSI_CALL_PARAMS += ', '
     result =  Template("""${NESTED_NAMESPACES}$CLASSNAME::$CLASSNAME($PARAMS)
-    :  current_status(*(new mtk::CountPtr<$private_namespace::abstract_status>()))
 {
     mtk::CountPtr<$private_namespace::status_common_info> ci = mtk::make_cptr(
                             new $private_namespace::status_common_info ($CSI_CALL_PARAMS $SIGNALS));
 
     current_status = mtk::make_cptr(new $private_namespace::$INIT_STATUS(ci $INITIALIZE) );
     MTK_CONNECT_THIS(ci->signal_new_status, on_new_status)
+    MTK_CONNECT_THIS(ci->signal_keep_temp_status, on_keep_temp_status)
+    MTK_CONNECT_THIS(ci->signal_remove_temp_status, on_remove_temp_status)
 }
 
 
 ${NESTED_NAMESPACES}$CLASSNAME::~$CLASSNAME($PARAMS)
 {
-    delete (&current_status);
 }
 
 void ${NESTED_NAMESPACES}$CLASSNAME::on_new_status (mtk::CountPtr<$private_namespace::abstract_status>  new_status)
 {
     current_status = new_status;
 }
+
+void ${NESTED_NAMESPACES}$CLASSNAME::on_keep_temp_status (void)
+{
+    queue_temp_status.push_back(current_status);
+}
+void ${NESTED_NAMESPACES}$CLASSNAME::on_remove_temp_status (void)
+{
+    queue_temp_status.pop_front();
+}
+
 
 """).substitute(CLASSNAME = CLASSNAME,
                 PARAMS = get_params_from_properties(COMMON_STATUS_INFO)[:-1],
