@@ -1,6 +1,7 @@
 #include <ctype.h>      //  tolower para bcb  gcc no lo necesita??
 #include "mtk_string.h"
 #include "support/count_ptr.hpp"
+#include "support/re/RegExp.h"
 
 
 
@@ -218,8 +219,39 @@ namespace mtk {
             return make_tuple(defVal, false);
         }
     }
+    
+    
+    mtk::tuple<DateTime, bool>
+    s_TRY_stodt   (const std::string&    s, const DateTime& defVal )
+    {
+        //  formatos posibles...
+        //  2011-03-29 09:16:33.123
 
-
+        mtk::RegExp re("^ *([12][0-9]{3})-(1[0-2]|0[1-9])-([012][0-9]|[3][01]) ([01][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])\\.([0-9]{3}) *$");
+        if(re.Match(s) == false)
+        {
+            return make_tuple(defVal, false);
+        }
+        else
+        {
+            try
+            {
+                return make_tuple(
+                    DateTime(   dtYear(s_TRY_stoi           (re[0], -1)._0), 
+                                dtMonth(s_TRY_stoi          (re[1], -1)._0), 
+                                dtDay(s_TRY_stoi            (re[2], -1)._0), 
+                                dtHours(s_TRY_stoi          (re[3], -1)._0), 
+                                dtMinutes(s_TRY_stoi        (re[4], -1)._0), 
+                                dtSeconds(s_TRY_stoi        (re[5], -1)._0), 
+                                dtMilliseconds(s_TRY_stoi   (re[6], -1)._0))
+                    , true);
+            }
+            catch(...)
+            {
+                return make_tuple(defVal, false);
+            }
+        }
+    }
 
 
 

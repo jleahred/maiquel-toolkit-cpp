@@ -58,6 +58,9 @@ namespace mtk {
     mtk::tuple<dtTimeQuantity, bool>
     s_TRY_stotq   (const std::string&    s, const dtTimeQuantity& defVal );
 
+    mtk::tuple<DateTime, bool>
+    s_TRY_stodt   (const std::string&    s, const DateTime& defVal );
+
 
 
 
