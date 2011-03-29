@@ -2,6 +2,7 @@ default:
 	make -C support/
 	make -C admin/
 	make -C trading/
+	make -C acs/
 	echo "FIN"
 
 
@@ -15,5 +16,6 @@ clean:
 	make -C trading/ clean
 	make -C support/ clean
 	make -C admin/   clean
+	make -C acs/   clean
 
 

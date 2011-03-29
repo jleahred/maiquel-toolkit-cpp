@@ -1,6 +1,6 @@
 
 # Directories with source code
-DIR_SRC_CXX = . trading prices admin gen
+DIR_SRC_CXX = . trading prices admin gen acs acs/cli
 DIR_SRC_C = 
 
 

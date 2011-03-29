@@ -658,9 +658,9 @@ namespace {
             response_lines.push_back(MTK_SS(std::endl << std::endl << it->first << std::endl << "------------------------------------"));
             {
                 mtk::vector<std::string>   lines  = mtk::s_split(it->second, "\n");
-                for(int i=0; i<lines.size(); ++i)
+                for(unsigned int j=0; j<lines.size(); ++j)
                 {
-                    response_lines.push_back(lines[i]);
+                    response_lines.push_back(lines[j]);
                 }
             }
             //response_lines.push_back(MTK_SS("           " << it->second));

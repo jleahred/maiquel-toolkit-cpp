@@ -1,0 +1,394 @@
+
+#ifndef  __msg_acs__
+#define  __msg_acs__
+
+
+// generated automatically
+// coded last modification:        Mon Mar 28 12:20:08 2011
+
+
+#include "support/nullable.hpp"
+#include "support/fixed_number.h"
+#include "support/date_time.h"
+#include "support/list.hpp"
+#include "support/alarm.h"
+#include "support/exec_max_frec.h"
+#include "mtk_qpid/qpid_msg_support.hpp"
+#include "support/mtk_string.h"
+#include <qpid/messaging/Message.h>
+#include "mtk_qpid/msg_control_fields.h"
+#include "mtk_qpid/mtk_qpid.hpp"
+
+
+#include "components/msg_common.h"
+
+namespace mtk { 
+namespace acs { 
+namespace msg { 
+
+
+
+
+//-------------------------------
+//      req_login_key
+//-------------------------------    
+class req_login_key     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit req_login_key (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name );
+    explicit req_login_key ( const qpid::messaging::Message& message );
+    virtual ~req_login_key (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "req_login_key"; };
+    static  std::string static_get_message_type_as_string(void)        { return "req_login_key"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::msg::sub_request_info                request_info; 
+    std::string                               user_name; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& request_info_process_location_location_client_code);
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      res_login_key
+//-------------------------------    
+class res_login_key     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit res_login_key (    const mtk::msg::sub_r_response&  _response_info,   const std::string&  _key );
+    explicit res_login_key ( const qpid::messaging::Message& message );
+    virtual ~res_login_key (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "res_login_key"; };
+    static  std::string static_get_message_type_as_string(void)        { return "res_login_key"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::msg::sub_r_response                  response_info; 
+    std::string                               key; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code);
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      req_login
+//-------------------------------    
+class req_login     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit req_login (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _coded_pass );
+    explicit req_login ( const qpid::messaging::Message& message );
+    virtual ~req_login (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "req_login"; };
+    static  std::string static_get_message_type_as_string(void)        { return "req_login"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::msg::sub_request_info                request_info; 
+    std::string                               user_name; 
+    std::string                               key; 
+    std::string                               coded_pass; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& request_info_process_location_location_client_code);
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      res_login
+//-------------------------------    
+class res_login     
+{
+public:
+    //  inner classes
+
+    
+    //-------------------------------
+    //      IC_login_response_info
+    //-------------------------------    
+    class IC_login_response_info     
+    {
+    public:
+        //  inner classes
+    
+        
+        // constructor
+        explicit IC_login_response_info (    const std::string&  _user_name,   const std::string&  _session_id );
+        explicit IC_login_response_info ( const qpid::messaging::Message& message );
+        virtual ~IC_login_response_info (){};
+        virtual std::string get_message_type_as_string       (void) const  { return "IC_login_response_info"; };
+        static  std::string static_get_message_type_as_string(void)        { return "IC_login_response_info"; };
+        qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+        
+    
+        // fields
+        std::string                               user_name; 
+        std::string                               session_id; 
+    
+    
+    
+        //  subject info
+        
+    private:
+        std::string check_recomended(void) const;
+    };
+    
+    
+    
+    
+    
+    // constructor
+    explicit res_login (    const mtk::msg::sub_r_response&  _response_info,   const IC_login_response_info&  _login_response_info );
+    explicit res_login ( const qpid::messaging::Message& message );
+    virtual ~res_login (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "res_login"; };
+    static  std::string static_get_message_type_as_string(void)        { return "res_login"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::msg::sub_r_response                  response_info; 
+    IC_login_response_info                    login_response_info; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code);
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      conf_logout
+//-------------------------------    
+class conf_logout     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit conf_logout (    const mtk::msg::sub_location&  _location,   const std::string&  _session_id,   const std::string&  _description );
+    explicit conf_logout ( const qpid::messaging::Message& message );
+    virtual ~conf_logout (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "conf_logout"; };
+    static  std::string static_get_message_type_as_string(void)        { return "conf_logout"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::msg::sub_location                    location; 
+    std::string                               session_id; 
+    std::string                               description; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& location_client_code,const std::string& location_machine,const std::string& session_id);
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
+//      req_logout
+//-------------------------------    
+class req_logout     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit req_logout (    const mtk::msg::sub_request_info&  _request_info );
+    explicit req_logout ( const qpid::messaging::Message& message );
+    virtual ~req_logout (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "req_logout"; };
+    static  std::string static_get_message_type_as_string(void)        { return "req_logout"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    mtk::msg::sub_request_info                request_info; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& request_info_process_location_location_client_code);
+virtual std::string  get_out_subject (void) const;
+
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+    
+    
+    
+//  fordward declarations-----------------------------------------------------------
+    std::ostream& operator<< (std::ostream& o, const req_login_key & c);
+
+bool operator== (const req_login_key& a, const req_login_key& b);
+bool operator!= (const req_login_key& a, const req_login_key& b);
+
+    std::ostream& operator<< (std::ostream& o, const res_login_key & c);
+
+bool operator== (const res_login_key& a, const res_login_key& b);
+bool operator!= (const res_login_key& a, const res_login_key& b);
+
+    std::ostream& operator<< (std::ostream& o, const req_login & c);
+
+bool operator== (const req_login& a, const req_login& b);
+bool operator!= (const req_login& a, const req_login& b);
+
+    std::ostream& operator<< (std::ostream& o, const res_login & c);
+
+bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
+bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
+
+
+bool operator== (const res_login& a, const res_login& b);
+bool operator!= (const res_login& a, const res_login& b);
+
+    std::ostream& operator<< (std::ostream& o, const res_login::IC_login_response_info & c);
+
+bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
+bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
+
+    std::ostream& operator<< (std::ostream& o, const conf_logout & c);
+
+bool operator== (const conf_logout& a, const conf_logout& b);
+bool operator!= (const conf_logout& a, const conf_logout& b);
+
+    std::ostream& operator<< (std::ostream& o, const req_logout & c);
+
+bool operator== (const req_logout& a, const req_logout& b);
+bool operator!= (const req_logout& a, const req_logout& b);
+
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_login_key& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const req_login_key& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_login_key>& a, const std::string& field);
+void copy (req_login_key& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login_key& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const res_login_key& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login_key>& a, const std::string& field);
+void copy (res_login_key& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_login& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const req_login& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_login>& a, const std::string& field);
+void copy (req_login& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login>& a, const std::string& field);
+void copy (res_login& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login::IC_login_response_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_login_response_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login::IC_login_response_info>& a, const std::string& field);
+void copy (res_login::IC_login_response_info& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const conf_logout& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<conf_logout>& a, const std::string& field);
+void copy (conf_logout& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_logout& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const req_logout& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_logout>& a, const std::string& field);
+void copy (req_logout& a, const qpid::types::Variant& map);
+
+    req_login_key  __internal_get_default(req_login_key *);
+    
+    res_login_key  __internal_get_default(res_login_key *);
+    
+    req_login  __internal_get_default(req_login *);
+    
+    res_login  __internal_get_default(res_login *);
+    
+    res_login::IC_login_response_info  __internal_get_default(res_login::IC_login_response_info *);
+    
+    conf_logout  __internal_get_default(conf_logout *);
+    
+    req_logout  __internal_get_default(req_logout *);
+    
+
+};   //namespace mtk {
+};   //namespace acs {
+};   //namespace msg {
+
+
+
+
+
+    
+template<typename T>
+void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
+
+
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::req_login_key)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::res_login_key)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::req_login)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::res_login)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::res_login::IC_login_response_info)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::conf_logout)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::req_logout)
+
+
+
+
+#endif

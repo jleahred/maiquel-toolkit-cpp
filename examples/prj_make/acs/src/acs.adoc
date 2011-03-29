@@ -1,0 +1,115 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= Access Control System
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-3-28
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+* This process will control de login and logout from clients
+* Keeping the valid login sessions
+* Checking the keepalive for active sessions
+* Informing login and logout to other processes
+* Sending partial list of login sessions
+* Receiving and checking partial list from processes with their active sessions
+* On start, during 4 minutes, it will add to session list, the received keep alives (in order to let a hot start)
+
+
+== Context DFD
+
+
+.DFD
+["graphviz", "emarket_dfd.png"]
+-----------
+digraph dfd0_graph {
+ rankdir=LR;
+ nodesep=0.3
+ ranksep = 1.5
+ // Nodos
+ node [fontsize=16];
+ CLIENT [label="\n\nC\n\nL\n\nI\n\nE\n\nN\n\nT\n\n" shape=box height=4];
+ ACS [label=" ACS " shape=circle height=3]
+ SERVERS [label="\n\nS\nE\nR\nV\nE\nR\nS\n\n" shape=box height=4];
+ // Conectores
+ edge [fontsize=12];
+
+ CLIENT ->  ACS  [label = "rq_key"];
+ CLIENT ->  ACS  [label = "rq_login"];
+ CLIENT ->  ACS  [label = "rq_logout"];
+ CLIENT ->  ACS  [label = "keep_alive"];
+
+ ACS ->  CLIENT  [label = "rs_key"];
+ ACS ->  CLIENT  [label = "rs_login"];
+
+ ACS ->  SERVERS [label = "pub_login" color=red];
+ ACS ->  SERVERS [label = "pub_logout" color=red];
+ ACS ->  SERVERS [label = "pub_partial_list" color=red];
+
+ SERVERS -> ACS  [label = "pub_partial_list" color=red];
+}
+-----
+
+
+
+
+
+
+== Client status diagram
+
+.mtk/src/components/acs/cli/fsm_cli_acs.dot
+["graphviz", "fsm_cli_acs.png"]
+-----------
+include::../mtk/src/components/acs/cli/fsm_cli_acs.dot[]
+------------
+
+
+== Client Messages
+
+.mtk/src/components/acs/msg_acs.msg
+[source,{cpp}]
+----
+include::../mtk/src/components/acs/msg_acs.msg[]
+----
+
+* It will also check the keep alive messages defined on admin
+
+== Server side messages
+* PENDING
+
+
+
+
+== Pending
+
+* .
+
+
+== Document modifications
+* Non aply
+

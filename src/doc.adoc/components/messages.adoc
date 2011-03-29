@@ -44,7 +44,7 @@ process_path('{docdir}/../../../src/components')
 
 +++++++++++++++++++++++++
 
-include::/tmp/adoc/generate_messages_doc.txt[]
+i nclude::/tmp/adoc/generate_messages_doc.txt[]
 
 //////////////
 
@@ -125,6 +125,26 @@ include::../../../src/components/msg_common_support.h[]
 .components/admin/msg_admin.msg
 -----
 include::../../../src/components/admin/msg_admin.msg[]
+-----
+
+
+
+== ACS
+
+* Access Control System
+
+
+=== Client side
+
+.Orders LS status diagram
+["graphviz", "fsm_cli_acs.png"]
+-----------
+include::../../../src/components/acs/cli/fsm_cli_acs.dot[]
+------------
+
+.components/acs/msg_acs.msg
+-----
+include::../../../src/components/acs/msg_acs.msg[]
 -----
 
 

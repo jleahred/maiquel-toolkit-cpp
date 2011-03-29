@@ -1,0 +1,191 @@
+//      
+
+
+::INIT::
+        NAMESPACES=['mtk','acs_cli']
+        GENERATE_ON='.'
+        INCLUDES = ['#include "components/acs/msg_acs.h"', '#include "support/crc32.h"']
+
+
+::INPUTS::
+
+    user_rq_login       (user_name  :   std::string,  _password  : std::string )
+    user_rq_logout      ()
+    [{  std::string description =    "requested by user";  }]
+    
+    
+    srv_rs_login_key    (rs         :   mtk::acs::msg::res_login_key)            private
+    
+    srv_rs_login        (rs         :   mtk::acs::msg::res_login)                private
+    [{  std::string description =    "";  }]
+    
+    srv_cf_logout       (cf         :   mtk::acs::msg::conf_logout)              private
+    [{  std::string description =    cf.description;  }]
+
+    timeout             (__         :  int )                                     private
+    [{  std::string description =    "time out";  }]
+
+
+
+
+::OUTPUTS::
+
+    sig_confirm_login_ok    (login_conf      :   mtk::acs::msg::res_login::IC_login_response_info)
+    sig_reject_login        (description     :   std::string)
+    sig_logout_login        (description     :   std::string)
+
+
+
+
+::COMMON_STATUS_INFO::
+    qpid_session    :   mtk::CountPtr< mtk::qpid_session >   ({  mtk::admin::get_qpid_session("client", "CLITESTING")  })
+
+
+
+
+::STATUS::logout
+
+::STATUS::w_key   
+    req_key                       :     mtk::acs::msg::req_login_key                                                            ({ _ })
+    password                      :     std::string                                                                             ({ _ })
+    hqpid_confirm_login_key       :     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login_key> >     ({   })  
+    
+    [{  
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_confirm_login_key,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::res_login_key::get_in_subject(SUBJECT_RESPONSE_IN(req_key().request_info)),
+                                    mtk::acs::msg::res_login_key,
+                                    srv_rs_login_key)
+            
+            MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
+    }]
+
+::STATUS::w_login
+    req_login                       :     mtk::acs::msg::req_login                                                               ({ _ })
+    hqpid_confirm_login             :     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login> >        ({   })  
+
+    [{  
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_confirm_login,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::res_login::get_in_subject(SUBJECT_RESPONSE_IN(req_login().request_info)),
+                                    mtk::acs::msg::res_login,
+                                    srv_rs_login)
+                                    
+        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
+    }]
+    
+
+::STATUS::login_ok
+
+
+
+
+
+
+
+::TRANSITIONS::
+
+
+
+logout    --   user_rq_login                / prep_rq_login_key ,  srv_rq_login_key         -->   w_key    req, _password    //  usr included in req
+logout    --   user_rq_logout               /                   ,  error                    ''>   logout
+logout    --   srv_rs_login_key             /                   ,  error                    ''>   logout
+logout    --   srv_rs_login                 /                   ,  error                    ''>   logout
+logout    --   srv_cf_logout                /                   ,  error                    ''>   logout
+logout    --   timeout                      /                   ,  error                    ''>   logout
+
+
+w_key    --   user_rq_login                 /                   ,  error                    ''>   logout
+w_key    --   user_rq_logout                /                   ,  error                    ''>   logout
+w_key    --   srv_rs_login_key              /  prep_rq_login    ,  srv_rq_login             -->   w_login  req
+w_key    --   srv_rs_login                  /                   ,  error                    ''>   logout
+w_key    --   srv_cf_logout                 /                   ,  error                    ''>   logout
+w_key    --   timeout                       /                   ,  sig_login_rj             -->   logout
+
+
+w_login    --   user_rq_login               /                   ,  error                    ''>   logout
+w_login    --   user_rq_logout              /                   ,  error                    ''>   logout
+w_login    --   srv_rs_login_key            /                   ,  error                    ''>   logout
+w_login    --   srv_rs_login        && rlok /                   ,  sig_login_ok             -->   login_ok
+w_login    --   srv_rs_login                /                   ,  sig_login_rj             -->   logout
+w_login    --   srv_cf_logout               /                   ,  error                    ''>   logout
+w_login    --   timeout                     /                   ,  sig_login_rj             -->   logout
+
+
+login_ok    --   user_rq_login              /                   ,  error                        ''>   logout
+login_ok    --   user_rq_logout             /                   ,  srv_rq_logout & sig_logout   -->   logout
+login_ok    --   srv_rs_login_key           /                   ,  error                        ''>   logout
+login_ok    --   srv_rs_login               /                   ,  error                        ''>   logout
+login_ok    --   srv_cf_logout              /                   ,  sig_logout                   -->   logout
+login_ok    --   timeout                    /                   ,  error                        ''>   logout
+
+
+
+
+
+
+
+
+::MACROS::
+    
+    rlok        //  guard
+    [{
+        rs.login_response_info.user_name != ""
+    }]
+    
+
+    error               
+    [{  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    }]
+
+
+    prep_rq_login_key
+    [{
+        mtk::acs::msg::req_login_key req(mtk::admin::get_request_info(), user_name);
+    }]
+    srv_rq_login_key    
+    [{
+        mtk::send_message(qpid_session(), req);
+    }]
+    
+    prep_rq_login
+    [{
+        std::string  coded_pass = mtk::crc32_as_string(MTK_SS(mtk::s_toUpper(req_key().user_name) <<mtk::crc32_as_string(password())<<rs.key));
+        mtk::acs::msg::req_login req(mtk::admin::get_request_info(), req_key().user_name, rs.key, coded_pass);
+    }]
+    srv_rq_login
+    [{
+        mtk::send_message(qpid_session(), req);
+    }]
+
+    sig_login_ok    
+    [{      
+        ci->sig_confirm_login_ok.emit(rs.login_response_info);    
+        mtk::admin::client_login_ok_confirmation(rs.login_response_info);
+    }]
+    
+    sig_login_rj    
+    [{      
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        ci->sig_reject_login.emit(description);        
+        mtk::admin::client_logout_confirmation(description);
+    }]
+    
+    sig_logout
+    [{      
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        ci->sig_logout_login.emit(description);        
+    }]    
+
+
+    srv_rq_logout
+    [{
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+        mtk::send_message(qpid_session(), req);
+    }]
+
