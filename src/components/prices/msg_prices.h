@@ -4,7 +4,7 @@
 
 
 // generated automatically
-// coded last modification:        Wed Mar 16 18:34:38 2011
+// coded last modification:        _CODED_LAST_MODIF
 
 
 #include "support/nullable.hpp"

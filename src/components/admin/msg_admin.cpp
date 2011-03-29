@@ -1,6 +1,6 @@
 
 // generated automatically
-// coded last modification:        Mon Mar 28 12:27:49 2011
+// coded last modification:        $CODED_LAST_MODIF
 
 
 #include "support/mtk_double.h"
