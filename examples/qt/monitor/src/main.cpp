@@ -43,6 +43,9 @@
 
 int main(int argc, char *argv[])
 {
+    QApplication::setStyle("cleanlooks");
+
+
     //QApplication a(argc, argv);
     MTK_Qt_ExceptionCatcher a(argc, argv);
 

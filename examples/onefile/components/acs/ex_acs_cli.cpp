@@ -65,12 +65,14 @@ int main(int /*argc*/, char ** /*argv*/)
         
     
 
-        MTK_CALL_LATER1S_F(mtk::dtSeconds(1000), 0, stop);
+        MTK_CALL_LATER1S_F(mtk::dtSeconds(10), 0, stop);
         
         
 
         mtk::start_timer_wait_till_end();
-        
+
+        login_manager->user_rq_logout();
+
 
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"

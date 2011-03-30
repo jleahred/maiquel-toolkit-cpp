@@ -9,7 +9,7 @@
 namespace
 {
 
-    const char*   APP_NAME          = "EMARKET";
+    const char*   APP_NAME          = "ex_send_order";
     const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "This is a testing market.\n";
     const char*   APP_MODIFICATIONS = "testing application, no modifications details";
