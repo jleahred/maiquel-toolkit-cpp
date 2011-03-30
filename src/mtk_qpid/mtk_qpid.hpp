@@ -321,7 +321,13 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
 {
     //  get control fields
     //  if message type matches, convert and send signal
-    
+
+
+    //  to let a save handle deleting when receiving and processing a message from it selft
+    CountPtr< Signal<const MESSAGE_TYPE&> >       local_copy_signalMessage (signalMessage);;
+    CountPtr<handle_qpid_exchange_receiver>       local_copy_hqpid_receiver(hqpid_receiver);
+
+
     qpid::types::Variant::Map mv;
     qpid::messaging::decode(message, mv);
     std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
