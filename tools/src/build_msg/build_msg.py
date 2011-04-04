@@ -1294,9 +1294,9 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
         typename mtk::list<T>::const_iterator it = l.begin();
         while (it != l.end())
         {
-            qpid::types::Variant::Map m;
-            __internal_add2map(m, *it);
-            list.push_back(m);
+            //qpid::types::Variant::Map m;
+            //__internal_add2map(m, *it);
+            list.push_back(*it);
             ++it;
         }
         
