@@ -36,18 +36,22 @@ public:
     virtual ~fsm_cli_acs ();
 
     //  INPUT
-    void user_rq_login  ( const std::string&   user_name  , const std::string&   _password    );
+    void user_rq_login  ( const std::string&   _user_name , const std::string&   _password    );
     void user_rq_logout ( );
+    void user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password  );
 
 
     //  OUTPUT
     mtk::Signal< const mtk::acs::msg::res_login::IC_login_response_info&   /*login_conf*/   > sig_confirm_login_ok;
     mtk::Signal< const std::string&   /*description*/   > sig_reject_login;
     mtk::Signal< const std::string&   /*description*/   > sig_logout_login;
+    mtk::Signal<  > sig_password_changed;
+    mtk::Signal<  > sig_password_change_rj;
 
 
     //  ACCESS
     const mtk::CountPtr< mtk::qpid_session >    &  qpid_session () const;
+    const std::string                         &  user_name () const;
 
 
 

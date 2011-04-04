@@ -58,7 +58,7 @@ int main(int /*argc*/, char ** /*argv*/)
         login_manager = mtk::make_cptr(new mtk::acs_cli::fsm_cli_acs);
 
         
-        login_manager->user_rq_login("joseluis.esteban@desarrollo", "FE159856");
+        login_manager->user_rq_login("joseluis.esteban@desarrollo", "1111");
         login_manager->sig_confirm_login_ok.connect(received_login_ok);
         login_manager->sig_logout_login.connect(received_logout);
         login_manager->sig_reject_login.connect(rejected_login_request);

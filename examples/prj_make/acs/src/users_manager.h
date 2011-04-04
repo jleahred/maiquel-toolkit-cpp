@@ -18,16 +18,17 @@ public:
 	static void Release();
     
     
-    bool        check_user_password(const std::string& name, const std::string& key, const std::string& password);
-    
+    bool        check_user_password     (const std::string& name, const std::string& key, const std::string& password);
+    std::string decode_modif_password   (const std::string& name, const std::string& key, const std::string& old_password, const mtk::list<int>& new_password);
+    void        save_new_password       (const std::string& name, const std::string& password);
     
 
 private:
 	users_manager();
 	~users_manager();
 
-    std::string  get_passwordcrc32  (const std::string& user_name);
     bool         exists_user        (const std::string& user_name);
+    std::string  get_passwordcrc32  (const std::string& user_name);
 
     void command_user_list  (const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_add_user   (const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);

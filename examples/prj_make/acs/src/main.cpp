@@ -32,6 +32,7 @@ namespace
 void on_request_key_received(const mtk::acs::msg::req_login_key& req_login_key);
 void on_request_login_received(const mtk::acs::msg::req_login& req_login);
 void on_request_logout_received(const mtk::acs::msg::req_logout& req_logout);
+void on_request_change_password_received(const mtk::acs::msg::req_change_password& req_change_password);
 void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_clients&  client_keep_alive);
 void clean_timeout_requests(void);
 
@@ -127,6 +128,17 @@ int main(int argc, char ** argv)
                                 mtk::acs::msg::req_logout::get_in_subject("*"),
                                 mtk::acs::msg::req_logout,
                                 on_request_logout_received)
+
+        //  suscription to change password
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::req_change_password> >    hqpid_request_change_password;
+        MTK_QPID_RECEIVER_CONNECT_F(
+                                hqpid_request_change_password,
+                                mtk::admin::get_url("client"),
+                                "CLITESTING",
+                                mtk::acs::msg::req_change_password::get_in_subject("*"),
+                                mtk::acs::msg::req_change_password,
+                                on_request_change_password_received)
+
 
         //  suscription to keep alives
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_keep_alive_clients> >    hqpid_clients_keep_alive;
@@ -382,3 +394,63 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_clients
         }
 }
 
+
+void on_request_change_password_received(const mtk::acs::msg::req_change_password& req_change_password)
+{
+    //  look for key and remove if located
+    bool located=false;
+    for(mtk::list<keys_sent_info>::iterator it = list_key_sent->begin(); it!=list_key_sent->end(); ++it)
+    {
+        if(it->key == req_change_password.key  &&  it->user_name==req_change_password.user_name)
+        {
+            located=true;
+            list_key_sent->erase(it);
+            break;
+        }
+    }
+    
+    
+    //
+    if(located)
+    {
+        std::string decoded_new_password = users_manager::Instance()->decode_modif_password(    req_change_password.user_name, 
+                                                                                                req_change_password.key, 
+                                                                                                req_change_password.old_password, 
+                                                                                                req_change_password.new_password);
+        //  verify password
+        if(users_manager::Instance()->check_user_password(req_change_password.user_name, req_change_password.key, req_change_password.old_password))
+        {
+            users_manager::Instance()->save_new_password(req_change_password.user_name, decoded_new_password);
+            
+            mtk::list<mtk::acs::msg::res_change_password::IC_change_password_info>  data_list;
+            data_list.push_back(mtk::acs::msg::res_change_password::IC_change_password_info(true));
+            
+            //  sending multiresponses in asyncronous way
+            MTK_SEND_MULTI_RESPONSE(        mtk::acs::msg::res_change_password,
+                                            mtk::acs::msg::res_change_password::IC_change_password_info, 
+                                            qpid_cli_session,
+                                            req_change_password.request_info,
+                                            data_list)
+                                            
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("password modified to:  " << req_change_password.user_name), mtk::alPriorDebug));
+        }
+        else
+        {
+            mtk::list<mtk::acs::msg::res_change_password::IC_change_password_info>  data_list;
+            data_list.push_back(mtk::acs::msg::res_change_password::IC_change_password_info(false));
+            
+            //  sending multiresponses in asyncronous way
+            MTK_SEND_MULTI_RESPONSE(        mtk::acs::msg::res_change_password,
+                                            mtk::acs::msg::res_change_password::IC_change_password_info, 
+                                            qpid_cli_session,
+                                            req_change_password.request_info,
+                                            data_list)
+                                            
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("rejected password modif to:  " << req_change_password.user_name), mtk::alPriorDebug));
+        }
+    }
+    else
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(req_change_password.key << " for " << req_change_password.user_name << "  not located. Ignoring request"), 
+                                            mtk::alPriorError, mtk::alTypeNoPermisions));
+        
+}

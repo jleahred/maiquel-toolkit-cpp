@@ -15,12 +15,15 @@ class abstract_status;
 
 struct  status_common_info
 {
-    status_common_info ( mtk::Signal<const mtk::acs::msg::res_login::IC_login_response_info&   /*login_conf*/  >& _sig_confirm_login_ok, mtk::Signal<const std::string&   /*description*/  >& _sig_reject_login, mtk::Signal<const std::string&   /*description*/  >& _sig_logout_login)
+    status_common_info ( mtk::Signal<const mtk::acs::msg::res_login::IC_login_response_info&   /*login_conf*/  >& _sig_confirm_login_ok, mtk::Signal<const std::string&   /*description*/  >& _sig_reject_login, mtk::Signal<const std::string&   /*description*/  >& _sig_logout_login, mtk::Signal<>& _sig_password_changed, mtk::Signal<>& _sig_password_change_rj)
         :  
-        __qpid_session(mtk::admin::get_qpid_session("client", "CLITESTING")  ), 
+        __qpid_session(mtk::admin::get_qpid_session("client", "CLITESTING")  ),
+        __user_name("" ), 
         sig_confirm_login_ok (_sig_confirm_login_ok), 
         sig_reject_login (_sig_reject_login), 
-        sig_logout_login (_sig_logout_login)
+        sig_logout_login (_sig_logout_login), 
+        sig_password_changed (_sig_password_changed), 
+        sig_password_change_rj (_sig_password_change_rj)
         {};
     virtual ~status_common_info(){};
 
@@ -28,9 +31,14 @@ struct  status_common_info
     mtk::CountPtr< mtk::qpid_session >    __qpid_session;
     virtual const mtk::CountPtr< mtk::qpid_session >   &  qpid_session() const {  return __qpid_session; };
     virtual void set_qpid_session(const mtk::CountPtr< mtk::qpid_session >   &  _prop) {  __qpid_session = _prop;  };
+    std::string                         __user_name;
+    virtual const std::string                        &  user_name() const {  return __user_name; };
+    virtual void set_user_name(const std::string                        &  _prop) {  __user_name = _prop;  };
     mtk::Signal<const mtk::acs::msg::res_login::IC_login_response_info&   /*login_conf*/  >& sig_confirm_login_ok;
     mtk::Signal<const std::string&   /*description*/  >& sig_reject_login;
     mtk::Signal<const std::string&   /*description*/  >& sig_logout_login;
+    mtk::Signal<>& sig_password_changed;
+    mtk::Signal<>& sig_password_change_rj;
 
 
     mtk::Signal<mtk::CountPtr<abstract_status> > signal_new_status;
@@ -59,16 +67,19 @@ public:
     virtual std::string  GetStatusName() = 0;
 
     //  INPUTS
-    virtual void user_rq_login ( const std::string&   user_name  , const std::string&   _password    )=0;
+    virtual void user_rq_login ( const std::string&   _user_name , const std::string&   _password    )=0;
     virtual void user_rq_logout ( )=0;
+    virtual void user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password  )=0;
     virtual void srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs           )=0;
     virtual void srv_rs_login ( const mtk::acs::msg::res_login&   rs           )=0;
     virtual void srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf           )=0;
     virtual void timeout ( const int&          __           )=0;
+    virtual void srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs           )=0;
 
 
     //  ACCESS
     virtual const mtk::CountPtr< mtk::qpid_session >    &  qpid_session (void) const { return ci->qpid_session(); }; 
+    virtual const std::string                         &  user_name (void) const { return ci->user_name(); }; 
 
 };
 
@@ -88,7 +99,14 @@ public:
         : 
         abstract_status(_ci)
 
-        {  };
+        { 
+            try
+            {
+                
+        ci->set_user_name("");
+    
+            }
+            MTK_CATCH_RETHROW("logout_ctor", "rethrowed") };
     
     std::string  GetStatusName()  {  return "logout"; }
 
@@ -98,13 +116,15 @@ public:
 
     //  INPUTS
 public:
-    void user_rq_login (const std::string&   user_name  , const std::string&   _password    );
+    void user_rq_login (const std::string&   _user_name , const std::string&   _password    );
     void user_rq_logout ();
+    void user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  );
 protected:
     void srv_rs_login_key (const mtk::acs::msg::res_login_key&   rs           );
     void srv_rs_login (const mtk::acs::msg::res_login&   rs           );
     void srv_cf_logout (const mtk::acs::msg::conf_logout&   cf           );
     void timeout (const int&          __           );
+    void srv_rs_chpwd (const mtk::acs::msg::res_change_password&   rs           );
 
 
 };
@@ -159,13 +179,15 @@ public:
 
     //  INPUTS
 public:
-    void user_rq_login (const std::string&   user_name  , const std::string&   _password    );
+    void user_rq_login (const std::string&   _user_name , const std::string&   _password    );
     void user_rq_logout ();
+    void user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  );
 protected:
     void srv_rs_login_key (const mtk::acs::msg::res_login_key&   rs           );
     void srv_rs_login (const mtk::acs::msg::res_login&   rs           );
     void srv_cf_logout (const mtk::acs::msg::conf_logout&   cf           );
     void timeout (const int&          __           );
+    void srv_rs_chpwd (const mtk::acs::msg::res_change_password&   rs           );
 
 
 };
@@ -216,13 +238,15 @@ public:
 
     //  INPUTS
 public:
-    void user_rq_login (const std::string&   user_name  , const std::string&   _password    );
+    void user_rq_login (const std::string&   _user_name , const std::string&   _password    );
     void user_rq_logout ();
+    void user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  );
 protected:
     void srv_rs_login_key (const mtk::acs::msg::res_login_key&   rs           );
     void srv_rs_login (const mtk::acs::msg::res_login&   rs           );
     void srv_cf_logout (const mtk::acs::msg::conf_logout&   cf           );
     void timeout (const int&          __           );
+    void srv_rs_chpwd (const mtk::acs::msg::res_change_password&   rs           );
 
 
 };
@@ -251,13 +275,141 @@ public:
 
     //  INPUTS
 public:
-    void user_rq_login (const std::string&   user_name  , const std::string&   _password    );
+    void user_rq_login (const std::string&   _user_name , const std::string&   _password    );
     void user_rq_logout ();
+    void user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  );
 protected:
     void srv_rs_login_key (const mtk::acs::msg::res_login_key&   rs           );
     void srv_rs_login (const mtk::acs::msg::res_login&   rs           );
     void srv_cf_logout (const mtk::acs::msg::conf_logout&   cf           );
     void timeout (const int&          __           );
+    void srv_rs_chpwd (const mtk::acs::msg::res_change_password&   rs           );
+
+
+};
+
+
+
+// -----------------------------------------------------------------------
+//      w_k_chp
+class w_k_chp  :   public  abstract_status
+{
+    mtk::non_copyable  nc;
+    typedef w_k_chp  CLASS_NAME;
+
+public:
+    w_k_chp (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::req_login_key                                                            & _req_key, const std::string                                                                             & _old_password, const std::string                                                                             & _new_password)
+        : 
+        abstract_status(_ci),
+        __req_key(_req_key),
+        __old_password(_old_password),
+        __new_password(_new_password),
+        __hqpid_confirm_login_key()
+        { 
+            try
+            {
+                  
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_confirm_login_key,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::res_login_key::get_in_subject(SUBJECT_RESPONSE_IN(req_key().request_info)),
+                                    mtk::acs::msg::res_login_key,
+                                    srv_rs_login_key)
+            
+            MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
+    
+            }
+            MTK_CATCH_RETHROW("w_k_chp_ctor", "rethrowed") };
+    
+    std::string  GetStatusName()  {  return "w_k_chp"; }
+
+//private:   visibility ignored here
+    //  specific properties (good for RAII)
+    mtk::acs::msg::req_login_key                                                             __req_key;
+    virtual const mtk::acs::msg::req_login_key                                                            &  req_key() const {  return __req_key; };
+    virtual void set_req_key(const mtk::acs::msg::req_login_key                                                            &  _prop) {  __req_key = _prop;  };
+    std::string                                                                              __old_password;
+    virtual const std::string                                                                             &  old_password() const {  return __old_password; };
+    virtual void set_old_password(const std::string                                                                             &  _prop) {  __old_password = _prop;  };
+    std::string                                                                              __new_password;
+    virtual const std::string                                                                             &  new_password() const {  return __new_password; };
+    virtual void set_new_password(const std::string                                                                             &  _prop) {  __new_password = _prop;  };
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login_key> >      __hqpid_confirm_login_key;
+    virtual const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login_key> >     &  hqpid_confirm_login_key() const {  return __hqpid_confirm_login_key; };
+    virtual void set_hqpid_confirm_login_key(const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login_key> >     &  _prop) {  __hqpid_confirm_login_key = _prop;  };
+
+
+    //  INPUTS
+public:
+    void user_rq_login (const std::string&   _user_name , const std::string&   _password    );
+    void user_rq_logout ();
+    void user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  );
+protected:
+    void srv_rs_login_key (const mtk::acs::msg::res_login_key&   rs           );
+    void srv_rs_login (const mtk::acs::msg::res_login&   rs           );
+    void srv_cf_logout (const mtk::acs::msg::conf_logout&   cf           );
+    void timeout (const int&          __           );
+    void srv_rs_chpwd (const mtk::acs::msg::res_change_password&   rs           );
+
+
+};
+
+
+
+// -----------------------------------------------------------------------
+//      w_chpwd
+class w_chpwd  :   public  abstract_status
+{
+    mtk::non_copyable  nc;
+    typedef w_chpwd  CLASS_NAME;
+
+public:
+    w_chpwd (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::req_change_password                                                        & _req_change_password)
+        : 
+        abstract_status(_ci),
+        __req_change_password(_req_change_password),
+        __hqpid_confirm_change_password()
+        { 
+            try
+            {
+                  
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_confirm_change_password,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::res_change_password::get_in_subject(SUBJECT_RESPONSE_IN(req_change_password().request_info)),
+                                    mtk::acs::msg::res_change_password,
+                                    srv_rs_chpwd)
+                                    
+        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
+    
+            }
+            MTK_CATCH_RETHROW("w_chpwd_ctor", "rethrowed") };
+    
+    std::string  GetStatusName()  {  return "w_chpwd"; }
+
+//private:   visibility ignored here
+    //  specific properties (good for RAII)
+    mtk::acs::msg::req_change_password                                                         __req_change_password;
+    virtual const mtk::acs::msg::req_change_password                                                        &  req_change_password() const {  return __req_change_password; };
+    virtual void set_req_change_password(const mtk::acs::msg::req_change_password                                                        &  _prop) {  __req_change_password = _prop;  };
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_change_password> >  __hqpid_confirm_change_password;
+    virtual const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_change_password> > &  hqpid_confirm_change_password() const {  return __hqpid_confirm_change_password; };
+    virtual void set_hqpid_confirm_change_password(const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_change_password> > &  _prop) {  __hqpid_confirm_change_password = _prop;  };
+
+
+    //  INPUTS
+public:
+    void user_rq_login (const std::string&   _user_name , const std::string&   _password    );
+    void user_rq_logout ();
+    void user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  );
+protected:
+    void srv_rs_login_key (const mtk::acs::msg::res_login_key&   rs           );
+    void srv_rs_login (const mtk::acs::msg::res_login&   rs           );
+    void srv_cf_logout (const mtk::acs::msg::conf_logout&   cf           );
+    void timeout (const int&          __           );
+    void srv_rs_chpwd (const mtk::acs::msg::res_change_password&   rs           );
 
 
 };
@@ -267,16 +419,16 @@ protected:
 
 
 
-void logout::user_rq_login ( const std::string&   user_name  , const std::string&   _password     )
+void logout::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
     //  remove unused warning
-    (void) user_name;
+    (void) _user_name;
 (void) _password;
 
     
 	static const char* method_name = "logout::user_rq_login";
 
-    
+      ci->set_user_name(_user_name);  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -286,12 +438,12 @@ void logout::user_rq_login ( const std::string&   user_name  , const std::string
         if (true ) {
 //  inserting macro: prep_rq_login_key
 
-        mtk::acs::msg::req_login_key req(mtk::admin::get_request_info(), user_name);
+        mtk::acs::msg::req_login_key req(mtk::admin::get_request_info(), ci->user_name());
     
 
             new_status = mtk::make_cptr(new w_key (ci, req, _password    ));
             ci->signal_new_status.emit(new_status);
-//  inserting macro: srv_rq_login_key
+//  inserting macro: srv_rq
 
         mtk::send_message(qpid_session(), req);
     
@@ -311,6 +463,38 @@ void logout::user_rq_logout (  )
 	static const char* method_name = "logout::user_rq_logout";
 
       std::string description =    "requested by user";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void logout::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
+{
+    //  remove unused warning
+    (void) _old_password;
+(void) _new_password;
+
+    
+	static const char* method_name = "logout::user_rq_changepass";
+
+    
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -457,16 +641,47 @@ void logout::timeout ( const int&          __            )
     ci->signal_remove_temp_status();
 }
 
-void w_key::user_rq_login ( const std::string&   user_name  , const std::string&   _password     )
+void logout::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  remove unused warning
-    (void) user_name;
+    (void) rs;
+
+    
+	static const char* method_name = "logout::srv_rs_chpwd";
+
+      std::string description =    "";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_key::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
+{
+    //  remove unused warning
+    (void) _user_name;
 (void) _password;
 
     
 	static const char* method_name = "w_key::user_rq_login";
 
-    
+      ci->set_user_name(_user_name);  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -519,6 +734,38 @@ void w_key::user_rq_logout (  )
     ci->signal_remove_temp_status();
 }
 
+void w_key::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
+{
+    //  remove unused warning
+    (void) _old_password;
+(void) _new_password;
+
+    
+	static const char* method_name = "w_key::user_rq_changepass";
+
+    
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void w_key::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
     //  remove unused warning
@@ -543,7 +790,7 @@ void w_key::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs         
 
             new_status = mtk::make_cptr(new w_login (ci, req));
             ci->signal_new_status.emit(new_status);
-//  inserting macro: srv_rq_login
+//  inserting macro: srv_rq
 
         mtk::send_message(qpid_session(), req);
     
@@ -650,16 +897,47 @@ void w_key::timeout ( const int&          __            )
     ci->signal_remove_temp_status();
 }
 
-void w_login::user_rq_login ( const std::string&   user_name  , const std::string&   _password     )
+void w_key::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  remove unused warning
-    (void) user_name;
+    (void) rs;
+
+    
+	static const char* method_name = "w_key::srv_rs_chpwd";
+
+      std::string description =    "";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_login::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
+{
+    //  remove unused warning
+    (void) _user_name;
 (void) _password;
 
     
 	static const char* method_name = "w_login::user_rq_login";
 
-    
+      ci->set_user_name(_user_name);  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -690,6 +968,38 @@ void w_login::user_rq_logout (  )
 	static const char* method_name = "w_login::user_rq_logout";
 
       std::string description =    "requested by user";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_login::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
+{
+    //  remove unused warning
+    (void) _old_password;
+(void) _new_password;
+
+    
+	static const char* method_name = "w_login::user_rq_changepass";
+
+    
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -855,16 +1165,15 @@ void w_login::timeout ( const int&          __            )
     ci->signal_remove_temp_status();
 }
 
-void login_ok::user_rq_login ( const std::string&   user_name  , const std::string&   _password     )
+void w_login::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  remove unused warning
-    (void) user_name;
-(void) _password;
+    (void) rs;
 
     
-	static const char* method_name = "login_ok::user_rq_login";
+	static const char* method_name = "w_login::srv_rs_chpwd";
 
-    
+      std::string description =    "";  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -878,6 +1187,46 @@ void login_ok::user_rq_login ( const std::string&   user_name  , const std::stri
 //  inserting macro: error
   
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void login_ok::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
+{
+    //  remove unused warning
+    (void) _user_name;
+(void) _password;
+
+    
+	static const char* method_name = "login_ok::user_rq_login";
+
+      ci->set_user_name(_user_name);  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
     
 
         }
@@ -902,18 +1251,57 @@ void login_ok::user_rq_logout (  )
     {
         
         if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
 
             new_status = mtk::make_cptr(new logout (ci));
             ci->signal_new_status.emit(new_status);
-//  inserting macro: srv_rq_logout
+//  inserting macro: srv_rq
 
-        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
         mtk::send_message(qpid_session(), req);
     
 //  inserting macro: sig_logout
       
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void login_ok::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
+{
+    //  remove unused warning
+    (void) _old_password;
+(void) _new_password;
+
+    
+	static const char* method_name = "login_ok::user_rq_changepass";
+
+    
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_login_key
+
+        mtk::acs::msg::req_login_key req(mtk::admin::get_request_info(), ci->user_name());
+    
+
+            new_status = mtk::make_cptr(new w_k_chp (ci, req, _old_password, _new_password));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
     
 
         }
@@ -939,12 +1327,20 @@ void login_ok::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs      
     {
         
         if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
 
             new_status = mtk::make_cptr(new logout (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
     
 
         }
@@ -970,12 +1366,20 @@ void login_ok::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
     {
         
         if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
 
             new_status = mtk::make_cptr(new logout (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
     
 
         }
@@ -1001,13 +1405,16 @@ void login_ok::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf           
     {
         
         if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
 
             new_status = mtk::make_cptr(new logout (ci));
             ci->signal_new_status.emit(new_status);
-//  inserting macro: sig_logout
-      
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
-        ci->sig_logout_login.emit(description);        
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
     
 
         }
@@ -1033,12 +1440,669 @@ void login_ok::timeout ( const int&          __            )
     {
         
         if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
 
             new_status = mtk::make_cptr(new logout (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void login_ok::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
+{
+    //  remove unused warning
+    (void) rs;
+
+    
+	static const char* method_name = "login_ok::srv_rs_chpwd";
+
+      std::string description =    "";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
+{
+    //  remove unused warning
+    (void) _user_name;
+(void) _password;
+
+    
+	static const char* method_name = "w_k_chp::user_rq_login";
+
+      ci->set_user_name(_user_name);  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_k_chp::user_rq_logout (  )
+{
+    //  remove unused warning
+    
+    
+	static const char* method_name = "w_k_chp::user_rq_logout";
+
+      std::string description =    "requested by user";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+//  inserting macro: sig_logout
+      
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        ci->sig_logout_login.emit(description);        
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_k_chp::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
+{
+    //  remove unused warning
+    (void) _old_password;
+(void) _new_password;
+
+    
+	static const char* method_name = "w_k_chp::user_rq_changepass";
+
+    
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_k_chp::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
+{
+    //  remove unused warning
+    (void) rs;
+
+    
+	static const char* method_name = "w_k_chp::srv_rs_login_key";
+
+    
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_chpwd
+
+        std::string     old_password_crc32 = mtk::crc32_as_string(old_password());
+        std::string     old_password_coded = mtk::crc32_as_string(MTK_SS(mtk::s_toUpper(req_key().user_name) << old_password_crc32 <<rs.key));
+        std::string     new_password_crc32 = mtk::crc32_as_string(new_password());
+        mtk::list<int32_t>  new_password_coded;
+        for(unsigned i=0; i<new_password_crc32.size(); ++i)
+            new_password_coded.push_back(new_password_crc32[i] + old_password_crc32[i%(old_password_crc32.size()-1)]);
+        mtk::acs::msg::req_change_password req(mtk::admin::get_request_info(), req_key().user_name, rs.key, old_password_coded, new_password_coded);
+    
+
+            new_status = mtk::make_cptr(new w_chpwd (ci, req));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_k_chp::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
+{
+    //  remove unused warning
+    (void) rs;
+
+    
+	static const char* method_name = "w_k_chp::srv_rs_login";
+
+      std::string description =    "";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_k_chp::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
+{
+    //  remove unused warning
+    (void) cf;
+
+    
+	static const char* method_name = "w_k_chp::srv_cf_logout";
+
+      std::string description =    cf.description;  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: sig_logout
+      
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        ci->sig_logout_login.emit(description);        
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_k_chp::timeout ( const int&          __            )
+{
+    //  remove unused warning
+    (void) __;
+
+    
+	static const char* method_name = "w_k_chp::timeout";
+
+      std::string description =    "time out";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: sig_chpwd_rj
+
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password rejected"), mtk::alPriorDebug));
+        ci->sig_password_change_rj.emit();        
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_k_chp::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
+{
+    //  remove unused warning
+    (void) rs;
+
+    
+	static const char* method_name = "w_k_chp::srv_rs_chpwd";
+
+      std::string description =    "";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
+{
+    //  remove unused warning
+    (void) _user_name;
+(void) _password;
+
+    
+	static const char* method_name = "w_chpwd::user_rq_login";
+
+      ci->set_user_name(_user_name);  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_chpwd::user_rq_logout (  )
+{
+    //  remove unused warning
+    
+    
+	static const char* method_name = "w_chpwd::user_rq_logout";
+
+      std::string description =    "requested by user";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+//  inserting macro: sig_logout
+      
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        ci->sig_logout_login.emit(description);        
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_chpwd::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
+{
+    //  remove unused warning
+    (void) _old_password;
+(void) _new_password;
+
+    
+	static const char* method_name = "w_chpwd::user_rq_changepass";
+
+    
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_chpwd::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
+{
+    //  remove unused warning
+    (void) rs;
+
+    
+	static const char* method_name = "w_chpwd::srv_rs_login_key";
+
+    
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_chpwd::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
+{
+    //  remove unused warning
+    (void) rs;
+
+    
+	static const char* method_name = "w_chpwd::srv_rs_login";
+
+      std::string description =    "";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+//  inserting macro: prep_rq_logout
+
+        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
+    
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: error
+  
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+    
+//  inserting macro: srv_rq
+
+        mtk::send_message(qpid_session(), req);
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_chpwd::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
+{
+    //  remove unused warning
+    (void) cf;
+
+    
+	static const char* method_name = "w_chpwd::srv_cf_logout";
+
+      std::string description =    cf.description;  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new logout (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: sig_logout
+      
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        ci->sig_logout_login.emit(description);        
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_chpwd::timeout ( const int&          __            )
+{
+    //  remove unused warning
+    (void) __;
+
+    
+	static const char* method_name = "w_chpwd::timeout";
+
+      std::string description =    "time out";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: sig_chpwd_rj
+
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password rejected"), mtk::alPriorDebug));
+        ci->sig_password_change_rj.emit();        
+    
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_chpwd::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
+{
+    //  remove unused warning
+    (void) rs;
+
+    
+	static const char* method_name = "w_chpwd::srv_rs_chpwd";
+
+      std::string description =    "";  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (//  inserting macro: rchpwok
+
+        rs.change_password_info.accepted
+     ) {
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: sig_chpwd_ok
+
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password confirmed"), mtk::alPriorDebug));
+        ci->sig_password_changed.emit();        
+    
+
+        }
+    else 
+        if (true ) {
+
+            new_status = mtk::make_cptr(new login_ok (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: sig_chpwd_rj
+
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password rejected"), mtk::alPriorDebug));
+        ci->sig_password_change_rj.emit();        
     
 
         }
@@ -1054,7 +2118,7 @@ void login_ok::timeout ( const int&          __            )
 mtk::acs_cli::fsm_cli_acs::fsm_cli_acs()
 {
     mtk::CountPtr<fsmgen_fsm_cli_acs::status_common_info> ci = mtk::make_cptr(
-                            new fsmgen_fsm_cli_acs::status_common_info ( sig_confirm_login_ok,sig_reject_login,sig_logout_login));
+                            new fsmgen_fsm_cli_acs::status_common_info ( sig_confirm_login_ok,sig_reject_login,sig_logout_login,sig_password_changed,sig_password_change_rj));
 
     current_status = mtk::make_cptr(new fsmgen_fsm_cli_acs::logout(ci ) );
     MTK_CONNECT_THIS(ci->signal_new_status, on_new_status)
@@ -1082,17 +2146,26 @@ void mtk::acs_cli::fsm_cli_acs::on_remove_temp_status (void)
 }
 
 
-void mtk::acs_cli::fsm_cli_acs::user_rq_login (const std::string&   user_name  , const std::string&   _password    )
+void mtk::acs_cli::fsm_cli_acs::user_rq_login (const std::string&   _user_name , const std::string&   _password    )
 {
     mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
-    current_status_to_keep_alive_on_scope->user_rq_login(user_name, _password);
+    current_status_to_keep_alive_on_scope->user_rq_login(_user_name, _password);
 }
 void mtk::acs_cli::fsm_cli_acs::user_rq_logout ()
 {
     mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->user_rq_logout();
 }
+void mtk::acs_cli::fsm_cli_acs::user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  )
+{
+    mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
+    current_status_to_keep_alive_on_scope->user_rq_changepass(_old_password, _new_password);
+}
 const mtk::CountPtr< mtk::qpid_session >    & mtk::acs_cli::fsm_cli_acs::qpid_session (void) const
 {
     return current_status->qpid_session();
+}
+const std::string                         & mtk::acs_cli::fsm_cli_acs::user_name (void) const
+{
+    return current_status->user_name();
 }

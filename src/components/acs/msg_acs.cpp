@@ -211,9 +211,9 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
         typename mtk::list<T>::const_iterator it = l.begin();
         while (it != l.end())
         {
-            qpid::types::Variant::Map m;
-            __internal_add2map(m, *it);
-            list.push_back(m);
+            //qpid::types::Variant::Map m;
+            //__internal_add2map(m, *it);
+            list.push_back(*it);
             ++it;
         }
         
@@ -417,6 +417,66 @@ std::string req_logout::check_recomended(void) const
 }
 
 
+
+req_change_password::req_change_password (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _old_password,   const mtk::list<int32_t >&  _new_password)
+    :     request_info(_request_info),   user_name(_user_name),   key(_key),   old_password(_old_password),   new_password(_new_password) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string req_change_password::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
+res_change_password::res_change_password (   const mtk::msg::sub_r_response&  _response_info,   const IC_change_password_info&  _change_password_info)
+    :     response_info(_response_info),   change_password_info(_change_password_info) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string res_change_password::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
+res_change_password::IC_change_password_info::IC_change_password_info (   const bool&  _accepted)
+    :     accepted(_accepted) 
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string res_change_password::IC_change_password_info::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
 std::ostream& operator<< (std::ostream& o, const req_login_key & c)
 {
     o << "{ "
@@ -488,6 +548,39 @@ std::ostream& operator<< (std::ostream& o, const req_logout & c)
     o << "{ "
 
         << "request_info:"<< c.request_info<<"  "
+        << " }";
+    return o;
+};
+
+
+
+std::ostream& operator<< (std::ostream& o, const req_change_password & c)
+{
+    o << "{ "
+
+        << "request_info:"<< c.request_info<<"  "        << "user_name:"<<   c.user_name << "  "        << "key:"<<   c.key << "  "        << "old_password:"<<   c.old_password << "  "        << "new_password:"<<   c.new_password << "  "
+        << " }";
+    return o;
+};
+
+
+
+std::ostream& operator<< (std::ostream& o, const res_change_password::IC_change_password_info & c)
+{
+    o << "{ "
+
+        << "accepted:"<< c.accepted<<"  "
+        << " }";
+    return o;
+};
+
+
+
+std::ostream& operator<< (std::ostream& o, const res_change_password & c)
+{
+    o << "{ "
+
+        << "response_info:"<< c.response_info<<"  "        << "change_password_info:"<< c.change_password_info<<"  "
         << " }";
     return o;
 };
@@ -572,6 +665,42 @@ bool operator== (const req_logout& a, const req_logout& b)
 };
 
 bool operator!= (const req_logout& a, const req_logout& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const req_change_password& a, const req_change_password& b)
+{
+    return (          a.request_info ==  b.request_info  &&          a.user_name ==  b.user_name  &&          a.key ==  b.key  &&          a.old_password ==  b.old_password  &&          a.new_password ==  b.new_password  &&   true  );
+};
+
+bool operator!= (const req_change_password& a, const req_change_password& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b)
+{
+    return (          a.accepted ==  b.accepted  &&   true  );
+};
+
+bool operator!= (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const res_change_password& a, const res_change_password& b)
+{
+    return (          a.response_info ==  b.response_info  &&          a.change_password_info  ==  b.change_password_info  &&   true  );
+};
+
+bool operator!= (const res_change_password& a, const res_change_password& b)
 {
     return !(a==b);
 };
@@ -941,6 +1070,177 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
+
+
+//void  __internal_qpid_fill (req_change_password& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (req_change_password& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("ri");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.request_info, it->second);
+                        //__internal_qpid_fill(c.request_info, it->second.asMap());
+//   field_type
+
+                    it = mv.find("un");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field user_name on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.user_name, it->second);
+                        //c.user_name = it->second;
+//   field_type
+
+                    it = mv.find("k");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field key on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.key, it->second);
+                        //c.key = it->second;
+//   field_type
+
+                    it = mv.find("op");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field old_password on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.old_password, it->second);
+                        //c.old_password = it->second;
+//   field_type
+
+                    it = mv.find("np");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field new_password on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.new_password, it->second);
+                        //c.new_password = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const req_change_password& a)
+{
+    
+
+//  sub_msg_type
+        __internal_add2map(map, a.request_info, std::string("ri"));
+//  field_type
+        __internal_add2map(map, a.user_name, std::string("un"));
+//  field_type
+        __internal_add2map(map, a.key, std::string("k"));
+//  field_type
+        __internal_add2map(map, a.old_password, std::string("op"));
+//  field_type
+        __internal_add2map(map, a.new_password, std::string("np"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_change_password>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (res_change_password& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (res_change_password& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("ri");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field response_info on message res_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.response_info, it->second);
+                        //__internal_qpid_fill(c.response_info, it->second.asMap());
+//   IN_SUB_MSG
+
+                    it = mv.find("cp");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field change_password_info on message res_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.change_password_info, it->second);
+                        //__internal_qpid_fill(c.change_password_info, it->second.asMap());
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const res_change_password& a)
+{
+    
+
+//  sub_msg_type
+        __internal_add2map(map, a.response_info, std::string("ri"));
+//  IN_SUB_MSG
+//        map["cp"] =  qpidmsg_coded_as_qpid_Map(a.change_password_info);
+        __internal_add2map(map, a.change_password_info);
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_change_password>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (res_change_password::IC_change_password_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (res_change_password::IC_change_password_info& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("a");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "missing mandatory field accepted on message res_change_password::IC_change_password_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.accepted, it->second);
+                        //__internal_qpid_fill(c.accepted, it->second.asMap());
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const res_change_password::IC_change_password_info& a)
+{
+    
+
+//  sub_msg_type
+        __internal_add2map(map, a.accepted, std::string("a"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_change_password::IC_change_password_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
@@ -1137,6 +1437,90 @@ qpid::messaging::Message req_logout::qpidmsg_codded_as_qpid_message (void) const
 
 
 
+qpid::messaging::Message req_change_password::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  sub_msg_type
+//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("ri"));
+//  field_type
+//        content["un"] = this->user_name;
+        __internal_add2map(content, this->user_name, std::string("un"));
+//  field_type
+//        content["k"] = this->key;
+        __internal_add2map(content, this->key, std::string("k"));
+//  field_type
+//        content["op"] = this->old_password;
+        __internal_add2map(content, this->old_password, std::string("op"));
+//  field_type
+//        content["np"] = this->new_password;
+        __internal_add2map(content, this->new_password, std::string("np"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message res_change_password::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  sub_msg_type
+//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
+        __internal_add2map(content, this->response_info, std::string("ri"));
+//  IN_SUB_MSG
+//        content["cp"] =  qpidmsg_coded_as_qpid_Map(this->change_password_info);
+        __internal_add2map(content, this->change_password_info, std::string("cp"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message res_change_password::IC_change_password_info::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  sub_msg_type
+//        content["a"] =  qpidmsg_coded_as_qpid_Map(this->accepted);
+        __internal_add2map(content, this->accepted, std::string("a"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
     req_login_key  __internal_get_default(req_login_key*)
     {
         return req_login_key(
@@ -1208,6 +1592,40 @@ qpid::messaging::Message req_logout::qpidmsg_codded_as_qpid_message (void) const
         return req_logout(
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_info*)0)
+            );
+    }
+    
+    req_change_password  __internal_get_default(req_change_password*)
+    {
+        return req_change_password(
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_request_info*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((mtk::list<int32_t >*)0)
+            );
+    }
+    
+    res_change_password  __internal_get_default(res_change_password*)
+    {
+        return res_change_password(
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_r_response*)0),
+//   IN_SUB_MSG
+   __internal_get_default((res_change_password::IC_change_password_info*)0)
+            );
+    }
+    
+    res_change_password::IC_change_password_info  __internal_get_default(res_change_password::IC_change_password_info*)
+    {
+        return res_change_password::IC_change_password_info(
+//   sub_msg_type
+   __internal_get_default((bool*)0)
             );
     }
     
@@ -1340,6 +1758,64 @@ req_logout::req_logout (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
+
+
+req_change_password::req_change_password (const qpid::messaging::Message& msg)
+    :  //   sub_msg_type
+   request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
+//   field_type
+   user_name(__internal_get_default((std::string*)0)),
+//   field_type
+   key(__internal_get_default((std::string*)0)),
+//   field_type
+   old_password(__internal_get_default((std::string*)0)),
+//   field_type
+   new_password(__internal_get_default((mtk::list<int32_t >*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+res_change_password::res_change_password (const qpid::messaging::Message& msg)
+    :  //   sub_msg_type
+   response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
+//   IN_SUB_MSG
+   change_password_info(__internal_get_default((res_change_password::IC_change_password_info*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+res_change_password::IC_change_password_info::IC_change_password_info (const qpid::messaging::Message& msg)
+    :  //   sub_msg_type
+   accepted(__internal_get_default((bool*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
 std::string  req_login_key::get_in_subject (const std::string& request_info_process_location_location_client_code)
     {
         return MTK_SS("RQ." << request_info_process_location_location_client_code << ".ACS.RQK");
@@ -1387,6 +1863,22 @@ std::string  req_login_key::get_in_subject (const std::string& request_info_proc
     std::string  req_logout::get_out_subject (void) const
     {
         return MTK_SS("RQ." << this->request_info.process_location.location.client_code << ".ACS.RQK");
+    }
+    std::string  req_change_password::get_in_subject (const std::string& request_info_process_location_location_client_code)
+    {
+        return MTK_SS("RQ." << request_info_process_location_location_client_code << ".ACS.RQCP");
+    }
+    std::string  req_change_password::get_out_subject (void) const
+    {
+        return MTK_SS("RQ." << this->request_info.process_location.location.client_code << ".ACS.RQCP");
+    }
+    std::string  res_change_password::get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    {
+        return MTK_SS("RS." << response_info_request_info_process_location_location_client_code << "." << response_info_request_info_process_location_location_machine << "." << response_info_request_info_process_location_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << ".LCP");
+    }
+    std::string  res_change_password::get_out_subject (void) const
+    {
+        return MTK_SS("RS." << this->response_info.request_info.process_location.location.client_code << "." << this->response_info.request_info.process_location.location.machine << "." << this->response_info.request_info.process_location.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << ".LCP");
     }
     
 

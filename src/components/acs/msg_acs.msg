@@ -81,3 +81,34 @@ req_logout [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}
 {
     request_info    (ri)        :   mtk::msg::sub_request_info
 }
+
+
+
+
+
+
+//---------------------------------------------
+
+
+req_change_password [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}.ACS.RQCP >]
+{
+    request_info    (ri)        :   mtk::msg::sub_request_info
+    
+    user_name       (un)        :   string
+    key             (k)         :   string
+    old_password    (op)        :   string
+    [new_password]  (np)        :   int32
+}
+
+
+
+
+res_change_password    [< V:0 , SUBJ:RS.${response_info.request_info.process_location.location.client_code}.${response_info.request_info.process_location.location.machine}.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.LCP >]
+{
+    response_info   (ri)        :   mtk::msg::sub_r_response
+    
+    change_password_info (cp)  [< V:0 >]
+    {
+        accepted    (a)         :    bool
+    }
+}

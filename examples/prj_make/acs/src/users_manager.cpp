@@ -424,3 +424,29 @@ void users_manager::command_resetpwd(const std::string& /*command*/, const std::
         save_user_list();
     }
 }
+
+
+std::string  users_manager::decode_modif_password   (const std::string& user_name, const std::string& key, const std::string& old_password, const mtk::list<int>& new_password)
+{
+    std::string decoded_new_password;
+    std::string old_password_crc32 = get_passwordcrc32(user_name);
+
+    int contador=0;
+    for(mtk::list<int>::const_iterator it= new_password.begin(); it!= new_password.end(); ++it)
+        decoded_new_password += char(*it - old_password_crc32[contador++%(old_password_crc32.size()-1)]);
+        
+    return decoded_new_password;
+}
+
+void    users_manager::save_new_password       (const std::string& name, const std::string& password)
+{
+    std::string  user_name = mtk::s_toUpper(mtk::s_trim(name, " \t"));
+    if(map_user_info->find(user_name)== map_user_info->end())
+        throw mtk::Alarm(MTK_HERE, MTK_SS("Error saving new password. Unknown user " << user_name), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    else
+    {
+        map_user_info->find(user_name)->second.passwordcrc32 = password;
+        mtk::Alarm(mtk::Alarm(MTK_HERE, MTK_SS("modif password for " << user_name), mtk::alPriorDebug));
+        save_user_list();
+    }
+}

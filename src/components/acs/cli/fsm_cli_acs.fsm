@@ -9,9 +9,13 @@
 
 ::INPUTS::
 
-    user_rq_login       (user_name  :   std::string,  _password  : std::string )
+    user_rq_login       (_user_name  :   std::string,  _password  : std::string )
+    [{  ci->set_user_name(_user_name);  }]
+    
     user_rq_logout      ()
     [{  std::string description =    "requested by user";  }]
+    
+    user_rq_changepass  (_old_password  : std::string ,  _new_password  : std::string)
     
     
     srv_rs_login_key    (rs         :   mtk::acs::msg::res_login_key)            private
@@ -25,6 +29,9 @@
     timeout             (__         :  int )                                     private
     [{  std::string description =    "time out";  }]
 
+    srv_rs_chpwd        (rs         :   mtk::acs::msg::res_change_password)      private
+    [{  std::string description =    "";  }]
+    
 
 
 
@@ -33,17 +40,24 @@
     sig_confirm_login_ok    (login_conf      :   mtk::acs::msg::res_login::IC_login_response_info)
     sig_reject_login        (description     :   std::string)
     sig_logout_login        (description     :   std::string)
+    
+    sig_password_changed    ()
+    sig_password_change_rj  ()
 
 
 
 
 ::COMMON_STATUS_INFO::
     qpid_session    :   mtk::CountPtr< mtk::qpid_session >   ({  mtk::admin::get_qpid_session("client", "CLITESTING")  })
+    user_name       :     std::string                        ({ "" })
 
 
 
 
 ::STATUS::logout
+    [{
+        ci->set_user_name("");
+    }]
 
 ::STATUS::w_key   
     req_key                       :     mtk::acs::msg::req_login_key                                                            ({ _ })
@@ -83,6 +97,42 @@
 
 
 
+::STATUS::w_k_chp
+    req_key                       :     mtk::acs::msg::req_login_key                                                            ({ _ })
+    old_password                  :     std::string                                                                             ({ _ })
+    new_password                  :     std::string                                                                             ({ _ })
+    hqpid_confirm_login_key       :     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login_key> >     ({   })  
+    
+    [{  
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_confirm_login_key,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::res_login_key::get_in_subject(SUBJECT_RESPONSE_IN(req_key().request_info)),
+                                    mtk::acs::msg::res_login_key,
+                                    srv_rs_login_key)
+            
+            MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
+    }]
+
+
+::STATUS::w_chpwd
+    req_change_password             :     mtk::acs::msg::req_change_password                                                        ({ _ })
+    hqpid_confirm_change_password   :     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_change_password> > ({   })  
+
+    [{  
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_confirm_change_password,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::res_change_password::get_in_subject(SUBJECT_RESPONSE_IN(req_change_password().request_info)),
+                                    mtk::acs::msg::res_change_password,
+                                    srv_rs_chpwd)
+                                    
+        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
+    }]
+
+
 
 
 
@@ -91,40 +141,69 @@
 
 
 
-logout    --   user_rq_login                / prep_rq_login_key ,  srv_rq_login_key         -->   w_key    req, _password    //  usr included in req
-logout    --   user_rq_logout               /                   ,  error                    ''>   logout
-logout    --   srv_rs_login_key             /                   ,  error                    ''>   logout
-logout    --   srv_rs_login                 /                   ,  error                    ''>   logout
-logout    --   srv_cf_logout                /                   ,  error                    ''>   logout
-logout    --   timeout                      /                   ,  error                    ''>   logout
-
-
-w_key    --   user_rq_login                 /                   ,  error                    ''>   logout
-w_key    --   user_rq_logout                /                   ,  error                    ''>   logout
-w_key    --   srv_rs_login_key              /  prep_rq_login    ,  srv_rq_login             -->   w_login  req
-w_key    --   srv_rs_login                  /                   ,  error                    ''>   logout
-w_key    --   srv_cf_logout                 /                   ,  error                    ''>   logout
-w_key    --   timeout                       /                   ,  sig_login_rj             -->   logout
-
-
-w_login    --   user_rq_login               /                   ,  error                    ''>   logout
-w_login    --   user_rq_logout              /                   ,  error                    ''>   logout
-w_login    --   srv_rs_login_key            /                   ,  error                    ''>   logout
-w_login    --   srv_rs_login        && rlok /                   ,  sig_login_ok             -->   login_ok
-w_login    --   srv_rs_login                /                   ,  sig_login_rj             -->   logout
-w_login    --   srv_cf_logout               /                   ,  error                    ''>   logout
-w_login    --   timeout                     /                   ,  sig_login_rj             -->   logout
-
-
-login_ok    --   user_rq_login              /                   ,  error                        ''>   logout
-login_ok    --   user_rq_logout             /                   ,  srv_rq_logout & sig_logout   -->   logout
-login_ok    --   srv_rs_login_key           /                   ,  error                        ''>   logout
-login_ok    --   srv_rs_login               /                   ,  error                        ''>   logout
-login_ok    --   srv_cf_logout              /                   ,  sig_logout                   -->   logout
-login_ok    --   timeout                    /                   ,  error                        ''>   logout
+logout    --   user_rq_login                / prep_rq_login_key ,  srv_rq                           -->   w_key    req, _password    //  usr included in req
+logout    --   user_rq_logout               /                   ,  error                            ''>   logout
+logout    --   srv_rs_login_key             /                   ,  error                            ''>   logout
+logout    --   srv_rs_login                 /                   ,  error                            ''>   logout
+logout    --   srv_cf_logout                /                   ,  error                            ''>   logout
+logout    --   timeout                      /                   ,  error                            ''>   logout
+logout    --   user_rq_changepass           /                   ,  error                            ''>   logout
+logout    --   srv_rs_chpwd                 /                   ,  error                            ''>   logout
 
 
 
+w_key    --   user_rq_login                 /                   ,  error                            ''>   logout
+w_key    --   user_rq_logout                /                   ,  error                            ''>   logout
+w_key    --   srv_rs_login_key              /  prep_rq_login    ,  srv_rq                           -->   w_login  req
+w_key    --   srv_rs_login                  /                   ,  error                            ''>   logout
+w_key    --   srv_cf_logout                 /                   ,  error                            ''>   logout
+w_key    --   timeout                       /                   ,  sig_login_rj                     -->   logout
+w_key    --   user_rq_changepass            /                   ,  error                            ''>   logout
+w_key    --   srv_rs_chpwd                  /                   ,  error                            ''>   logout
+
+
+
+w_login    --   user_rq_login               /                   ,  error                            ''>   logout
+w_login    --   user_rq_logout              /                   ,  error                            ''>   logout
+w_login    --   srv_rs_login_key            /                   ,  error                            ''>   logout
+w_login    --   srv_rs_login        && rlok /                   ,  sig_login_ok                     -->   login_ok
+w_login    --   srv_rs_login                /                   ,  sig_login_rj                     -->   logout
+w_login    --   srv_cf_logout               /                   ,  error                            ''>   logout
+w_login    --   timeout                     /                   ,  sig_login_rj                     -->   logout
+w_login    --   user_rq_changepass          /                   ,  error                            ''>   logout
+w_login    --   srv_rs_chpwd                /                   ,  error                            ''>   logout
+
+
+login_ok    --   user_rq_login              / prep_rq_logout    ,  error         & srv_rq           ''>   logout
+login_ok    --   user_rq_logout             / prep_rq_logout    ,  srv_rq        & sig_logout       -->   logout
+login_ok    --   srv_rs_login_key           / prep_rq_logout    ,  error         & srv_rq           ''>   logout
+login_ok    --   srv_rs_login               / prep_rq_logout    ,  error         & srv_rq           ''>   logout
+login_ok    --   srv_cf_logout              / prep_rq_logout    ,  srv_rq                           -->   logout
+login_ok    --   timeout                    / prep_rq_logout    ,  error         & srv_rq           ''>   logout
+login_ok    --   user_rq_changepass         / prep_rq_login_key ,  srv_rq                           -->   w_k_chp  req, _old_password, _new_password
+login_ok    --   srv_rs_chpwd               / prep_rq_logout    ,  error         & srv_rq           ''>   logout
+
+
+
+w_k_chp     --   user_rq_login              /  prep_rq_logout   ,  error         & srv_rq           ''>   login_ok
+w_k_chp     --   user_rq_logout             /  prep_rq_logout   ,  srv_rq        & sig_logout       ''>   logout
+w_k_chp     --   srv_rs_login_key           /  prep_rq_chpwd    ,  srv_rq                           -->   w_chpwd  req
+w_k_chp     --   srv_rs_login               /  prep_rq_logout   ,  error         & srv_rq           ''>   login_ok
+w_k_chp     --   srv_cf_logout              /                   ,  sig_logout                       ''>   logout
+w_k_chp     --   timeout                    /                   ,  sig_chpwd_rj                     ''>   login_ok
+w_k_chp     --   user_rq_changepass         /  prep_rq_logout   ,  error         & srv_rq           ''>   login_ok
+w_k_chp     --   srv_rs_chpwd               /  prep_rq_logout   ,  error         & srv_rq           ''>   login_ok
+
+
+w_chpwd     --   user_rq_login              /  prep_rq_logout   ,  error         & srv_rq           ''>   login_ok
+w_chpwd     --   user_rq_logout             /  prep_rq_logout   ,  srv_rq        & sig_logout       ''>   logout
+w_chpwd     --   srv_rs_login_key           /  prep_rq_logout   ,  error         & srv_rq           ''>   login_ok
+w_chpwd     --   srv_rs_login               /  prep_rq_logout   ,  error         & srv_rq           ''>   login_ok
+w_chpwd     --   srv_cf_logout              /                   ,  sig_logout                       ''>   logout
+w_chpwd     --   timeout                    /                   ,  sig_chpwd_rj                     ''>   login_ok
+w_chpwd     --   user_rq_changepass         /  prep_rq_logout   ,  error         & srv_rq           ''>   login_ok
+w_chpwd     --   srv_rs_chpwd    && rchpwok /                   ,  sig_chpwd_ok                     -->   login_ok
+w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj                     -->   login_ok
 
 
 
@@ -146,11 +225,7 @@ login_ok    --   timeout                    /                   ,  error        
 
     prep_rq_login_key
     [{
-        mtk::acs::msg::req_login_key req(mtk::admin::get_request_info(), user_name);
-    }]
-    srv_rq_login_key    
-    [{
-        mtk::send_message(qpid_session(), req);
+        mtk::acs::msg::req_login_key req(mtk::admin::get_request_info(), ci->user_name());
     }]
     
     prep_rq_login
@@ -158,7 +233,7 @@ login_ok    --   timeout                    /                   ,  error        
         std::string  coded_pass = mtk::crc32_as_string(MTK_SS(mtk::s_toUpper(req_key().user_name) <<mtk::crc32_as_string(password())<<rs.key));
         mtk::acs::msg::req_login req(mtk::admin::get_request_info(), req_key().user_name, rs.key, coded_pass);
     }]
-    srv_rq_login
+    srv_rq
     [{
         mtk::send_message(qpid_session(), req);
     }]
@@ -183,9 +258,38 @@ login_ok    --   timeout                    /                   ,  error        
     }]    
 
 
-    srv_rq_logout
+    prep_rq_logout
     [{
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
-        mtk::send_message(qpid_session(), req);
     }]
 
+
+
+    prep_rq_chpwd
+    [{
+        std::string     old_password_crc32 = mtk::crc32_as_string(old_password());
+        std::string     old_password_coded = mtk::crc32_as_string(MTK_SS(mtk::s_toUpper(req_key().user_name) << old_password_crc32 <<rs.key));
+        std::string     new_password_crc32 = mtk::crc32_as_string(new_password());
+        mtk::list<int32_t>  new_password_coded;
+        for(unsigned i=0; i<new_password_crc32.size(); ++i)
+            new_password_coded.push_back(new_password_crc32[i] + old_password_crc32[i%(old_password_crc32.size()-1)]);
+        mtk::acs::msg::req_change_password req(mtk::admin::get_request_info(), req_key().user_name, rs.key, old_password_coded, new_password_coded);
+    }]
+
+
+    rchpwok
+    [{
+        rs.change_password_info.accepted
+    }]
+    
+    sig_chpwd_ok
+    [{
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password confirmed"), mtk::alPriorDebug));
+        ci->sig_password_changed.emit();        
+    }]
+    
+    sig_chpwd_rj
+    [{
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password rejected"), mtk::alPriorDebug));
+        ci->sig_password_change_rj.emit();        
+    }]    
