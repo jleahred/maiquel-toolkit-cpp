@@ -60,6 +60,7 @@ namespace mtk {
         
         
         mtk::Nullable<std::string>                          get_config_property(const std::string& path);
+        void                                                set_config_property(const std::string& path, const std::string&  property_value);
         
         
         

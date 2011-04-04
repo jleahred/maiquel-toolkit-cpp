@@ -120,6 +120,7 @@ namespace {
             
             mtk::ConfigFile                             config_file;
             mtk::Nullable<std::string>                  get_config_property(const std::string& path);
+            void                                        set_config_property(const std::string& path, const std::string&  property_value);
             
             
             
@@ -767,7 +768,13 @@ namespace {
     {
         return config_file.GetValue(path);
     }
-    
+
+    void admin_status::set_config_property(const std::string& path, const std::string& property_value)
+    {
+        config_file.ModifOrCreate(path, property_value);
+        config_file.SaveToFile();
+    }
+
     
     mtk::msg::sub_request_info   admin_status::get_request_info (void)
     {
@@ -903,7 +910,12 @@ mtk::CountPtr<mtk::Signal<> >                           get_signal_receiving_mes
 
 mtk::Nullable<std::string>   get_config_property(const std::string& path)
 {
-    return admin_status::i()->get_config_property(path);;    
+    return admin_status::i()->get_config_property(path);
+}
+
+void set_config_property(const std::string& path, const std::string& property_value)
+{
+    admin_status::i()->set_config_property(path, property_value);    
 }
 
 
