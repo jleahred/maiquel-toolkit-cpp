@@ -863,7 +863,7 @@ void WriteNode(std::ostream& out, mtk::CountPtr<AST_Node_Item> node, int depth)
         out << spaces(depth) << node->down->value << std::endl << spaces(depth) << "{" << std::endl;
         WriteNode(out, node->down, depth + 4);
         WriteNode(out, node->down->next, depth + 4);
-        out << spaces(depth) << std::endl << spaces(depth) << "}" << std::endl;
+        out << spaces(depth) << "}" << std::endl << std::endl;
     }
 
 }
