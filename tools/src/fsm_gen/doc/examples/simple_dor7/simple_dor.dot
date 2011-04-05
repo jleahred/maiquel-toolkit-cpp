@@ -1,0 +1,13 @@
+digraph automata {
+    node [shape = circle, fontsize=10, fixedsize=true width=0.7];
+    logout [ style = filled, color=lightgrey ];
+
+        logout  ->  w_rq_login  [ label = "rq_key\nGEN_KEY, ", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    w_rq_login  ->  login_ok  [ label = "rq_login & is_valid_pass\nGEN_SESS_ID, ", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
+    w_rq_login  ->  logout  [ label = "rq_login\nEMIT_LOG_REJ, ", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    w_rq_login  ->  logout  [ label = "time_out", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
+    login_ok  ->  logout  [ label = "rq_logout", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+ 
+
+    //simple_dor  [ shape = plaintext ];
+}
