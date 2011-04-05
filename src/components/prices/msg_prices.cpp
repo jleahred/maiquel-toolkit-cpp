@@ -203,6 +203,110 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     REGISTER_LIST_BASIC_TYPE(std::string)
     
     
+
+    //-----------------------------------------------------
+    // pending
+    
+    inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<mtk::DateTime>& l, const std::string& key)
+    {
+        qpid::types::Variant::List list;
+        
+        mtk::list<mtk::DateTime>::const_iterator it = l.begin();
+        while (it != l.end())
+        {
+            list.push_back(double(it->__WARNING_NOT_CALL_IT_internal_use_GetTimeQuantitySerialNumber().WarningDontDoThisGetInternal()));
+            ++it;
+        }
+        
+        map[key] = list;
+    }
+    
+    inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<mtk::dtTimeQuantity>& l, const std::string& key)
+    {
+        qpid::types::Variant::List list;
+        
+        mtk::list<mtk::dtTimeQuantity>::const_iterator it = l.begin();
+        while (it != l.end())
+        {
+            list.push_back(double(it->GetQuantitySerialNumber().WarningDontDoThisGetInternal()));
+            ++it;
+        }
+        
+        map[key] = list;
+    }
+    
+    
+    inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<int32_t>& l, const std::string& key)
+    {
+        qpid::types::Variant::List list;
+        
+        mtk::list<int32_t>::const_iterator it = l.begin();
+        while (it != l.end())
+        {
+            list.push_back(*it);
+            ++it;
+        }
+        
+        map[key] = list;
+    }
+
+    inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<int16_t>& l, const std::string& key)
+    {
+        qpid::types::Variant::List list;
+        
+        mtk::list<int16_t>::const_iterator it = l.begin();
+        while (it != l.end())
+        {
+            list.push_back(*it);
+            ++it;
+        }
+        
+        map[key] = list;
+    }
+
+    inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<int8_t>& l, const std::string& key)
+    {
+        qpid::types::Variant::List list;
+        
+        mtk::list<int8_t>::const_iterator it = l.begin();
+        while (it != l.end())
+        {
+            list.push_back(*it);
+            ++it;
+        }
+        
+        map[key] = list;
+    }
+    
+    inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<int64_t>& l, const std::string& key)
+    {
+        qpid::types::Variant::List list;
+        
+        mtk::list<int64_t>::const_iterator it = l.begin();
+        while (it != l.end())
+        {
+            list.push_back(*it);
+            ++it;
+        }
+        
+        map[key] = list;
+    }
+
+    inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<bool>& l, const std::string& key)
+    {
+        qpid::types::Variant::List list;
+        
+        mtk::list<bool>::const_iterator it = l.begin();
+        while (it != l.end())
+        {
+            list.push_back(*it);
+            ++it;
+        }
+        
+        map[key] = list;
+    }
+    
+    //  for composed types
     template<typename T>
     void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<T>& l, const std::string& key)
     {
@@ -211,9 +315,9 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
         typename mtk::list<T>::const_iterator it = l.begin();
         while (it != l.end())
         {
-            //qpid::types::Variant::Map m;
-            //__internal_add2map(m, *it);
-            list.push_back(*it);
+            qpid::types::Variant::Map m;
+            __internal_add2map(m, *it);
+            //list.push_back(*it);
             ++it;
         }
         
@@ -261,6 +365,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     }
 
 
+    //  for composed types
     template<typename T>
     void  __internal_add2map(qpid::types::Variant::Map& map, const T& t, const std::string& key)
     {
