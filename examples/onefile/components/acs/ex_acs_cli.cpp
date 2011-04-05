@@ -72,6 +72,7 @@ int main(int /*argc*/, char ** /*argv*/)
         mtk::start_timer_wait_till_end();
 
         login_manager->user_rq_logout();
+        login_manager = mtk::CountPtr<mtk::acs_cli::fsm_cli_acs>();
 
 
         std::cout << "FIN..... " << std::endl;

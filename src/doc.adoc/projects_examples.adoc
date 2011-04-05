@@ -41,3 +41,15 @@ include::/tmp/adoc/ls.txt[]
 include::../../examples/prj_make/houselight/src/main.cpp[]
 ----
 
+
+=== ACS
+
+Access Control System
+
+* It controls login
+* Users and passwords maintenance
+* Generate sessions id
+* Coordination of sessions list with others servers
+* Code on... examples/prj_make/acs/src/
+* Doc on... examples/prj_make/acs/doc/
+

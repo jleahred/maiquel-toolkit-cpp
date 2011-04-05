@@ -4,6 +4,33 @@ include::../../VERSION[]
 
 
 
+0.48  2010-04-05::
+
+Fixed errors;;
+* +fsm_generator+
+** changing status from inside
+** working with multiple files
+** deactivaded modification anotations
+* deleting handler when processing a message
+* +build_msg.py+ working with list (fixed template)
+* +config_file+, removed extra +endl+ saving files (accumulative)
+
+
+New;;
+* +ACS+  client component and server
+
+
+Modif interfaz;;
+* Keepalives now have the user name (to let hot news just in case)
+* New set_config_property on admin component
+
+
+
+Other;;
+* +ex_send_order+ to move prices on emarket
+* Fuction +try+ on mtk_string for DateTime
+
+
 
 0.47  2010-03-18::
 

@@ -1009,23 +1009,23 @@ ADMIN
         Pepe:09
         Nuevo:666
         Nuevo2:777
-    
     }
+
     PR1
     {
         Hola:9
         PR2
         {
             pajarito:sin cola
-        
         }
+
         varmercado:mercado expandido
-    
     }
+
     unaperdida:acA
     ConSim-bolo_s:8888
-
 }
+
 HOLA
 {
     seq:
@@ -1056,7 +1056,8 @@ HOLA
     [
         primer elemento lista
         1,2,3,4,5
-        ultimo elemento
+        ultimo elemento lista
+        S
 ************************************************************************************
 
 FIN..... 
@@ -2031,10 +2032,10 @@ hola.pajarito  {colours:[red, green, white], id:987654321, list:[hi, there], nam
 rm -f ./ex_qpid_direct_msg.exec
 ex_qpid_msg_parsing.exec ----------------------------------------------------------------
 ./ex_qpid_msg_parsing.exec
-{_cf_:{mt:RQ_NW_LS}, bs:b, ci:734462, cr:cli_ref, ns:[john, peter], oid:order_id, pc:{ac:aditional code, mk:market, pr:product}, pos:{bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}, poss:[{bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}], pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}, sec:123}
+{_cf_:{mt:RQ_NW_LS}, bs:b, ci:734462, cr:cli_ref, ns:[john, peter], oid:order_id, pc:{ac:aditional code, mk:market, pr:product}, pos:{bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}, poss:[], pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}, sec:123}
 {bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}-------------------
 RECEIVED----------------------------
-{ order_id:order_id  cli_ref:cli_ref  position:{ buy_sell:b  price:1.88#1  quantity:2.66#1   }  positionnn:{ buy_sell:b  price:1.88#1  quantity:2.66#1   }  control_fields_:{ clock_id:2011-01-20  secuence:123   }  product_code:{ market:market  product_code:product  aditional_code:aditional code   }  names:[john, peter, ]  postitions:[{ buy_sell:b  price:1.88#1  quantity:2.66#1   }, ]   }
+{ order_id:order_id  cli_ref:cli_ref  position:{ buy_sell:b  price:1.88#1  quantity:2.66#1   }  positionnn:{ buy_sell:b  price:1.88#1  quantity:2.66#1   }  control_fields_:{ clock_id:2011-01-20  secuence:123   }  product_code:{ market:market  product_code:product  aditional_code:aditional code   }  names:[john, peter, ]  postitions:[]   }
 
 
 
@@ -2164,29 +2165,29 @@ ex_admin.exec ----------------------------------------------------------------
 ADMIN
 ------------------------------------
    }   }
-        ver........................... 
-        modifs........................ 
-        stats......................... some stats
-        config........................ config information
-        date_time..................... returns de local current time on the machine
-        ping.......................... returns a pong
-        rqclose....................... request close application (confirmation requiered) on clients will produce a non ordered close
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
    }   }
 
 __GLOBAL__
 ------------------------------------
    }   }
-        help.......................... 
-        ver........................... 
-        modifs........................ brief information about modifications
-        stats......................... some stats
-        infoapp....................... info about the application
+   }   }
+   }   }
+   }   }
+   }   }
+   }   }
    }   }
 
 testing
 ------------------------------------
    }   }
-        hello......................... 
+   }   }
    }   }
    }   }
 FIN..... 
@@ -2218,12 +2219,27 @@ request_canc
 
 confirm_canc 
 
+FIN..... 
 rm -f ./test_trd_cli_ls.exec
 #make -C components
 #make -C clicompo
 echo "FIN"
 FIN
 make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components/trading'
+make -C acs/
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components/acs'
+ex_acs_cli.exec ----------------------------------------------------------------
+./ex_acs_cli.exec
+received login ok  { user_name:joseluis.esteban@desarrollo  session_id:2011451521251   }
+received logout
+received logout  with description... requested by user
+FIN..... 
+rm -f ./ex_acs_cli.exec
+#make -C components
+#make -C clicompo
+echo "FIN"
+FIN
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components/acs'
 echo "FIN"
 FIN
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components'
@@ -4787,14 +4803,8 @@ sending...  ping 99
 recibido... sending...    ping 99
  PONG... 
 -----------------------
-sending...  ping 100
-recibido... sending...    ping 100
- PONG... 
------------------------
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp'
 make -C emarket this
-make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/emarket'
-rm -f  temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o
 received... ping 1
 received... ping 2
 received... ping 3
@@ -4894,12 +4904,13 @@ received... ping 96
 received... ping 97
 received... ping 98
 received... ping 99
-received... ping 100
 client   D I S C O N N E C T E D  __    connection down pr_server 4
 
 
 ALARMA SALIDA...
              ERROR Unkown # pr_server Connection down  bytes readed 0    socket: -1 @void mtk::tcp_base_socket::check_input()(tcp_base_socket.cpp:165)
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/emarket'
+rm -f  temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o
 mkdir -p bin
 mkdir -p temp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/check_request.o src/check_request.cpp
@@ -4956,6 +4967,31 @@ a2x: executing: xmllint --nonet --noout --valid /home/maiquel/develop/mtk/exampl
 a2x: executing: dblatex -t pdf -p /etc/asciidoc/dblatex/asciidoc-dblatex.xsl -s /etc/asciidoc/dblatex/asciidoc-dblatex.sty -T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top -V /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
 a2x: deleting /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/tree_server'
+make -C acs this
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/acs'
+rm -f  temp/main.o  temp/users_manager.o
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/users_manager.o src/users_manager.cpp
+g++   temp/main.o  temp/users_manager.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__acs
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/acs'
+make -C acs doc
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/acs'
+a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/acs.adoc
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+Image 'dblatex' not found
+'acs.pdf' successfully built
+a2x: executing: asciidoc --backend docbook  --doctype book --verbose --out-file /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml /home/maiquel/develop/mtk/examples/prj_make/acs/src/acs.adoc
+a2x: executing: xmllint --nonet --noout --valid /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
+a2x: executing: dblatex -t pdf -p /etc/asciidoc/dblatex/asciidoc-dblatex.xsl -s /etc/asciidoc/dblatex/asciidoc-dblatex.sty -T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top -V /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
+a2x: deleting /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/acs'
 make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make'
 make -C qt/ test
 make[2]: Entering directory `/home/maiquel/develop/mtk/examples/qt'

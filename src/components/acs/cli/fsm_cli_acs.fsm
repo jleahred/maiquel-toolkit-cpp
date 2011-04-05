@@ -292,7 +292,6 @@ w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj 
     
     sig_logout
     [{
-std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     }]    

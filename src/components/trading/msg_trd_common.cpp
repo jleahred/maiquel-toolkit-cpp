@@ -205,7 +205,6 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     
 
     //-----------------------------------------------------
-    // pending
     
     inline void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::list<mtk::DateTime>& l, const std::string& key)
     {
