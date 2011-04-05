@@ -219,7 +219,7 @@ public:
                                     mtk::acs::msg::res_login,
                                     srv_rs_login)
                                     
-        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
+            MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
     
             }
             MTK_CATCH_RETHROW("w_login_ctor", "rethrowed") };
@@ -261,16 +261,39 @@ class login_ok  :   public  abstract_status
     typedef login_ok  CLASS_NAME;
 
 public:
-    login_ok (mtk::CountPtr<status_common_info> _ci)
+    login_ok (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::res_login                                                               & _login_confirmed)
         : 
-        abstract_status(_ci)
-
-        {  };
+        abstract_status(_ci),
+        __login_confirmed(_login_confirmed),
+        __hqpid_logout()
+        { 
+            try
+            {
+                  
+            std::string  client_code        = login_confirmed().response_info.request_info.process_location.location.client_code;
+            std::string  location_machine   = login_confirmed().response_info.request_info.process_location.location.machine;
+            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_logout,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::conf_logout::get_in_subject(client_code, location_machine, session_id),
+                                    mtk::acs::msg::conf_logout,
+                                    srv_cf_logout)
+    
+            }
+            MTK_CATCH_RETHROW("login_ok_ctor", "rethrowed") };
     
     std::string  GetStatusName()  {  return "login_ok"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::acs::msg::res_login                                                                __login_confirmed;
+    virtual const mtk::acs::msg::res_login                                                               &  login_confirmed() const {  return __login_confirmed; };
+    virtual void set_login_confirmed(const mtk::acs::msg::res_login                                                               &  _prop) {  __login_confirmed = _prop;  };
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >         __hqpid_logout;
+    virtual const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >        &  hqpid_logout() const {  return __hqpid_logout; };
+    virtual void set_hqpid_logout(const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >        &  _prop) {  __hqpid_logout = _prop;  };
 
 
     //  INPUTS
@@ -298,13 +321,15 @@ class w_k_chp  :   public  abstract_status
     typedef w_k_chp  CLASS_NAME;
 
 public:
-    w_k_chp (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::req_login_key                                                            & _req_key, const std::string                                                                             & _old_password, const std::string                                                                             & _new_password)
+    w_k_chp (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::res_login                                                                & _login_confirmed, const mtk::acs::msg::req_login_key                                                            & _req_key, const std::string                                                                             & _old_password, const std::string                                                                             & _new_password)
         : 
         abstract_status(_ci),
+        __login_confirmed(_login_confirmed),
         __req_key(_req_key),
         __old_password(_old_password),
         __new_password(_new_password),
-        __hqpid_confirm_login_key()
+        __hqpid_confirm_login_key(),
+        __hqpid_logout()
         { 
             try
             {
@@ -317,6 +342,17 @@ public:
                                     mtk::acs::msg::res_login_key,
                                     srv_rs_login_key)
             
+            std::string  client_code        = login_confirmed().response_info.request_info.process_location.location.client_code;
+            std::string  location_machine   = login_confirmed().response_info.request_info.process_location.location.machine;
+            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_logout,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::conf_logout::get_in_subject(client_code, location_machine, session_id),
+                                    mtk::acs::msg::conf_logout,
+                                    srv_cf_logout)
+                                    
             MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
     
             }
@@ -326,6 +362,9 @@ public:
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::acs::msg::res_login                                                                 __login_confirmed;
+    virtual const mtk::acs::msg::res_login                                                                &  login_confirmed() const {  return __login_confirmed; };
+    virtual void set_login_confirmed(const mtk::acs::msg::res_login                                                                &  _prop) {  __login_confirmed = _prop;  };
     mtk::acs::msg::req_login_key                                                             __req_key;
     virtual const mtk::acs::msg::req_login_key                                                            &  req_key() const {  return __req_key; };
     virtual void set_req_key(const mtk::acs::msg::req_login_key                                                            &  _prop) {  __req_key = _prop;  };
@@ -338,6 +377,9 @@ public:
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login_key> >      __hqpid_confirm_login_key;
     virtual const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login_key> >     &  hqpid_confirm_login_key() const {  return __hqpid_confirm_login_key; };
     virtual void set_hqpid_confirm_login_key(const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_login_key> >     &  _prop) {  __hqpid_confirm_login_key = _prop;  };
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >        __hqpid_logout;
+    virtual const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >       &  hqpid_logout() const {  return __hqpid_logout; };
+    virtual void set_hqpid_logout(const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >       &  _prop) {  __hqpid_logout = _prop;  };
 
 
     //  INPUTS
@@ -365,11 +407,13 @@ class w_chpwd  :   public  abstract_status
     typedef w_chpwd  CLASS_NAME;
 
 public:
-    w_chpwd (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::req_change_password                                                        & _req_change_password)
+    w_chpwd (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::res_login                                                                  & _login_confirmed, const mtk::acs::msg::req_change_password                                                        & _req_change_password)
         : 
         abstract_status(_ci),
+        __login_confirmed(_login_confirmed),
         __req_change_password(_req_change_password),
-        __hqpid_confirm_change_password()
+        __hqpid_confirm_change_password(),
+        __hqpid_logout()
         { 
             try
             {
@@ -382,7 +426,18 @@ public:
                                     mtk::acs::msg::res_change_password,
                                     srv_rs_chpwd)
                                     
-        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
+            std::string  client_code        = login_confirmed().response_info.request_info.process_location.location.client_code;
+            std::string  location_machine   = login_confirmed().response_info.request_info.process_location.location.machine;
+            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            MTK_QPID_RECEIVER_CONNECT_THIS(
+                                    __hqpid_logout,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::acs::msg::conf_logout::get_in_subject(client_code, location_machine, session_id),
+                                    mtk::acs::msg::conf_logout,
+                                    srv_cf_logout)
+
+            MTK_CALL_LATER1S_THIS(mtk::dtSeconds(8), 0, timeout);    
     
             }
             MTK_CATCH_RETHROW("w_chpwd_ctor", "rethrowed") };
@@ -391,12 +446,18 @@ public:
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::acs::msg::res_login                                                                   __login_confirmed;
+    virtual const mtk::acs::msg::res_login                                                                  &  login_confirmed() const {  return __login_confirmed; };
+    virtual void set_login_confirmed(const mtk::acs::msg::res_login                                                                  &  _prop) {  __login_confirmed = _prop;  };
     mtk::acs::msg::req_change_password                                                         __req_change_password;
     virtual const mtk::acs::msg::req_change_password                                                        &  req_change_password() const {  return __req_change_password; };
     virtual void set_req_change_password(const mtk::acs::msg::req_change_password                                                        &  _prop) {  __req_change_password = _prop;  };
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_change_password> >  __hqpid_confirm_change_password;
     virtual const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_change_password> > &  hqpid_confirm_change_password() const {  return __hqpid_confirm_change_password; };
     virtual void set_hqpid_confirm_change_password(const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::res_change_password> > &  _prop) {  __hqpid_confirm_change_password = _prop;  };
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >          __hqpid_logout;
+    virtual const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >         &  hqpid_logout() const {  return __hqpid_logout; };
+    virtual void set_hqpid_logout(const mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs::msg::conf_logout> >         &  _prop) {  __hqpid_logout = _prop;  };
 
 
     //  INPUTS
@@ -1073,7 +1134,7 @@ void w_login::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
         rs.login_response_info.user_name != ""
      ) {
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, rs));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_login_ok
       
@@ -1263,7 +1324,8 @@ void login_ok::user_rq_logout (  )
         mtk::send_message(qpid_session(), req);
     
 //  inserting macro: sig_logout
-      
+
+std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -1297,7 +1359,7 @@ void login_ok::user_rq_changepass ( const std::string&   _old_password, const st
         mtk::acs::msg::req_login_key req(mtk::admin::get_request_info(), ci->user_name());
     
 
-            new_status = mtk::make_cptr(new w_k_chp (ci, req, _old_password, _new_password));
+            new_status = mtk::make_cptr(new w_k_chp (ci, login_confirmed(), req, _old_password, _new_password));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
@@ -1405,16 +1467,14 @@ void login_ok::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf           
     {
         
         if (true ) {
-//  inserting macro: prep_rq_logout
-
-        mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
-    
 
             new_status = mtk::make_cptr(new logout (ci));
             ci->signal_new_status.emit(new_status);
-//  inserting macro: srv_rq
+//  inserting macro: sig_logout
 
-        mtk::send_message(qpid_session(), req);
+std::cout << "received logout" << std::endl;
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        ci->sig_logout_login.emit(description);        
     
 
         }
@@ -1524,7 +1584,7 @@ void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::strin
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
     
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
@@ -1569,7 +1629,8 @@ void w_k_chp::user_rq_logout (  )
         mtk::send_message(qpid_session(), req);
     
 //  inserting macro: sig_logout
-      
+
+std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -1603,7 +1664,7 @@ void w_k_chp::user_rq_changepass ( const std::string&   _old_password, const std
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
     
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
@@ -1644,11 +1705,12 @@ void w_k_chp::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
         std::string     new_password_crc32 = mtk::crc32_as_string(new_password());
         mtk::list<int32_t>  new_password_coded;
         for(unsigned i=0; i<new_password_crc32.size(); ++i)
-            new_password_coded.push_back(new_password_crc32[i] + old_password_crc32[i%(old_password_crc32.size()-1)]);
+            new_password_coded.push_back(new_password_crc32[i] + old_password_crc32[i%(old_password_crc32.size()-1)]
+                                                               + rs.key[i%(rs.key.size()-1)] );
         mtk::acs::msg::req_change_password req(mtk::admin::get_request_info(), req_key().user_name, rs.key, old_password_coded, new_password_coded);
     
 
-            new_status = mtk::make_cptr(new w_chpwd (ci, req));
+            new_status = mtk::make_cptr(new w_chpwd (ci, login_confirmed(), req));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
@@ -1683,7 +1745,7 @@ void w_k_chp::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
     
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
@@ -1721,7 +1783,8 @@ void w_k_chp::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
             new_status = mtk::make_cptr(new logout (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_logout
-      
+
+std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -1750,7 +1813,7 @@ void w_k_chp::timeout ( const int&          __            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_chpwd_rj
 
@@ -1786,7 +1849,7 @@ void w_k_chp::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
     
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
@@ -1826,7 +1889,7 @@ void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::strin
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
     
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
@@ -1871,7 +1934,8 @@ void w_chpwd::user_rq_logout (  )
         mtk::send_message(qpid_session(), req);
     
 //  inserting macro: sig_logout
-      
+
+std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -1905,7 +1969,7 @@ void w_chpwd::user_rq_changepass ( const std::string&   _old_password, const std
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
     
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
@@ -1944,7 +2008,7 @@ void w_chpwd::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
     
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
@@ -1983,7 +2047,7 @@ void w_chpwd::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
         mtk::acs::msg::req_logout req(mtk::admin::get_request_info());
     
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
@@ -2021,7 +2085,8 @@ void w_chpwd::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
             new_status = mtk::make_cptr(new logout (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_logout
-      
+
+std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -2050,7 +2115,7 @@ void w_chpwd::timeout ( const int&          __            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_chpwd_rj
 
@@ -2085,7 +2150,7 @@ void w_chpwd::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
         rs.change_password_info.accepted
      ) {
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_chpwd_ok
 
@@ -2097,7 +2162,7 @@ void w_chpwd::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new login_ok (ci));
+            new_status = mtk::make_cptr(new login_ok (ci, login_confirmed()));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_chpwd_rj
 

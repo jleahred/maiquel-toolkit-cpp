@@ -130,7 +130,8 @@ namespace
         response_lines.push_back(".......................................");
         response_lines.push_back(MODIFICATIONS);
     }
-    
+
+
     
     void register_global_commands (void)
     {
@@ -154,6 +155,7 @@ namespace
 
 
 users_manager::users_manager()
+  : num_check_passwords(0)
 {
     map_user_info = mtk::make_cptr(new mtk::map<std::string, user_info>);
     
@@ -166,6 +168,8 @@ users_manager::users_manager()
     MTK_CONNECT_THIS(*mtk::admin::register_command("users", "find", "<substring> look for users on all fields"),   command_user_find)
     MTK_CONNECT_THIS(*mtk::admin::register_command("users", "resetpwd", "<user_name> create a new password", true),   command_resetpwd)
     MTK_CONNECT_THIS(*mtk::admin::register_command("users", "modif", "modif user data (client_code, notes or requested by)", true),   command_modif_user)
+    MTK_CONNECT_THIS(*mtk::admin::register_command("__GLOBAL__", "stats", ""),   command_stats)
+    MTK_CONNECT_THIS(*mtk::admin::register_command("users", "stats", ""),   command_stats)
     
     
     
@@ -220,6 +224,8 @@ void users_manager::Release()
 
 bool   users_manager::check_user_password(const std::string& _user_name, const std::string& key, const std::string& password)
 {
+    ++num_check_passwords;
+    
     std::string user_name = mtk::s_toUpper(_user_name);
     if(exists_user(user_name))
     {
@@ -243,6 +249,21 @@ bool   users_manager::check_user_password(const std::string& _user_name, const s
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(user_name << " doesn't exist"), mtk::alPriorWarning));
         return false;
     }
+}
+
+bool   users_manager::check_user_client_code  (const std::string& user_name, const std::string& client_code)
+{
+    mtk::map<std::string, user_info>::iterator it = map_user_info->find(mtk::s_toUpper(user_name));
+    
+    if(it !=  map_user_info->end())
+    {
+        if(it->second.client_code ==  client_code)
+            return true;
+        else
+            return false;
+    }
+    else
+        return false;
 }
 
 
@@ -426,14 +447,18 @@ void users_manager::command_resetpwd(const std::string& /*command*/, const std::
 }
 
 
-std::string  users_manager::decode_modif_password   (const std::string& user_name, const std::string& key, const std::string& old_password, const mtk::list<int>& new_password)
+std::string  users_manager::decode_modif_password   (const std::string& user_name, const std::string& key, const mtk::list<int>& new_password)
 {
     std::string decoded_new_password;
     std::string old_password_crc32 = get_passwordcrc32(user_name);
 
     int contador=0;
     for(mtk::list<int>::const_iterator it= new_password.begin(); it!= new_password.end(); ++it)
-        decoded_new_password += char(*it - old_password_crc32[contador++%(old_password_crc32.size()-1)]);
+    {
+        decoded_new_password += char(*it    - old_password_crc32[contador%(old_password_crc32.size()-1)]
+                                            - key[contador%(key.size()-1)]);
+        ++contador;
+    }
         
     return decoded_new_password;
 }
@@ -449,4 +474,11 @@ void    users_manager::save_new_password       (const std::string& name, const s
         mtk::Alarm(mtk::Alarm(MTK_HERE, MTK_SS("modif password for " << user_name), mtk::alPriorDebug));
         save_user_list();
     }
+}
+
+
+void users_manager::command_stats      (const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+{
+    response_lines.push_back(MTK_SS("users: " << map_user_info->size()));
+    response_lines.push_back(MTK_SS("rqlogin: " << num_check_passwords));
 }

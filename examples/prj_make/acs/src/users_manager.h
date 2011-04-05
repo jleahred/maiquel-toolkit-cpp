@@ -19,7 +19,8 @@ public:
     
     
     bool        check_user_password     (const std::string& name, const std::string& key, const std::string& password);
-    std::string decode_modif_password   (const std::string& name, const std::string& key, const std::string& old_password, const mtk::list<int>& new_password);
+    bool        check_user_client_code  (const std::string& name, const std::string& client_code);
+    std::string decode_modif_password   (const std::string& name, const std::string& key, const mtk::list<int>& new_password);
     void        save_new_password       (const std::string& name, const std::string& password);
     
 
@@ -36,7 +37,9 @@ private:
     void command_user_find  (const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_resetpwd   (const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_modif_user (const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_stats      (const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
+    int num_check_passwords;
 };
 
 #endif // __acs_users_manager_h__
