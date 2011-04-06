@@ -10,6 +10,7 @@
 
 #include "support/alarm.h"
 #include "support/signalslot.hpp"
+#include "support/list.hpp"
 
 #include "components/acs/msg_acs.h"
 #include "support/crc32.h"

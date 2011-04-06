@@ -202,7 +202,7 @@ void on_request_key_received(const mtk::acs::msg::req_login_key& req_login_key)
     //  check the client code
     if(users_manager::Instance()->check_user_client_code(req_login_key.user_name, req_login_key.request_info.process_location.location.client_code) == false)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received invalid  user_name/client_code  " << req_login_key.user_name << "/" << req_login_key.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("received invalid  user_name/client_code  " << req_login_key.user_name << "/" << req_login_key.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
 
@@ -229,7 +229,7 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
     //  check the client code
     if(users_manager::Instance()->check_user_client_code(req_login.user_name, req_login.request_info.process_location.location.client_code) == false)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received invalid  user_name/client_code  " << req_login.user_name << "/" << req_login.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("received invalid  user_name/client_code  " << req_login.user_name << "/" << req_login.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
     
@@ -287,7 +287,7 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
                                             req_login.request_info,
                                             data_list)
                                             
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("created session "  << list_sessions_login_info->back().keep_alive_client_info << " for  " << req_login.request_info), mtk::alPriorDebug));
+		mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("created session "  << list_sessions_login_info->back().keep_alive_client_info << " for  " << req_login.request_info), mtk::alPriorDebug));
         }
         else
         {
@@ -303,7 +303,7 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
         }
     }
     else
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(req_login.key << " for " << req_login.user_name << "  not located. Ignoring request"), 
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS(req_login.key << " for " << req_login.user_name << "  not located. Ignoring request"), 
                                             mtk::alPriorError, mtk::alTypeNoPermisions));
         
 
@@ -323,7 +323,7 @@ void on_request_logout_received(const mtk::acs::msg::req_logout& req_logout)
             if(it->keep_alive_client_info.login_confirmation.session_id ==  req_logout.request_info.req_id.sess_id)
             {
                 list_sessions_login_info->erase(it);
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("deleting session " << req_logout.request_info.req_id.sess_id), mtk::alPriorDebug));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogoutrec", MTK_SS("deleting session " << req_logout.request_info.req_id.sess_id), mtk::alPriorDebug));
                 located = true;
                 break;
             }
@@ -332,7 +332,7 @@ void on_request_logout_received(const mtk::acs::msg::req_logout& req_logout)
         }
         
         if(located==false)
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout with invalid session " << req_logout.request_info.req_id.sess_id), mtk::alPriorCritic));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogoutrec", MTK_SS("received logout with invalid session " << req_logout.request_info.req_id.sess_id), mtk::alPriorCritic));
     }
     
 }
@@ -353,7 +353,7 @@ void clean_timeout_requests(void)
             {
                 if(it->dt_sent + mtk::dtSeconds(40) < now)
                 {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("timeout on request key for... " << it->user_name), mtk::alPriorError));
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "cleantimeout",  MTK_SS("timeout on request key for... " << it->user_name), mtk::alPriorError));
                     it = list_key_sent->erase(it);
                 }
                 else
@@ -369,7 +369,7 @@ void clean_timeout_requests(void)
             {
                 if(it->last_keep_alive_received + it->keep_alive_client_info.ka_interval_check < now)
                 {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("generated logout by timeout on session... " << it->keep_alive_client_info), mtk::alPriorError));
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"cleantimeout", MTK_SS("generated logout by timeout on session... " << it->keep_alive_client_info), mtk::alPriorError));
                     //  remove from sessionid list
                     it = list_sessions_login_info->erase(it);
                     //  send logout messages to other servers
@@ -387,7 +387,7 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_clients
         if(client_keep_alive.login_confirmation.session_id=="")     
         {
             MTK_EXEC_MAX_FREC_NO_FIRST_S(mtk::dtMinutes(1))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received keep alive with invalid session id " << client_keep_alive), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clikeepaliverec", MTK_SS("received keep alive with invalid session id " << client_keep_alive), mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
             return;
         }
@@ -402,7 +402,7 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_clients
                 if(it->keep_alive_client_info.login_confirmation.session_id ==  client_keep_alive.login_confirmation.session_id)
                 {
                     if(it->keep_alive_client_info.login_confirmation.user_name !=  client_keep_alive.login_confirmation.user_name)
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("user doesn't match on keep alive (user/ka) " << it->keep_alive_client_info  << "  /  " << client_keep_alive),
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"clikeepaliverec", MTK_SS("user doesn't match on keep alive (user/ka) " << it->keep_alive_client_info  << "  /  " << client_keep_alive),
                                         mtk::alPriorCritic));
                     else
                     {
@@ -421,10 +421,10 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_clients
                 if(*start_application + mtk::dtMinutes(3) > mtk::dtNowLocal())
                 {
                     list_sessions_login_info->push_back(sessions_login_info(client_keep_alive));
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("hot register keep alive for  " << client_keep_alive), mtk::alPriorWarning));
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"clikeepaliverec", MTK_SS("hot register keep alive for  " << client_keep_alive), mtk::alPriorWarning));
                 }
                 else
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received keep alive with invalid session id " << client_keep_alive), mtk::alPriorCritic));
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"clikeepaliverec", MTK_SS("received keep alive with invalid session id " << client_keep_alive), mtk::alPriorCritic));
             }
         }
 }
@@ -447,7 +447,7 @@ std::string  get_user_from_session_id(const std::string& session_id)
         if(it->keep_alive_client_info.login_confirmation.session_id == session_id)
             return it->keep_alive_client_info.login_confirmation.user_name;
     }
-    throw mtk::Alarm(MTK_HERE, MTK_SS("user not found for sessionid " << session_id), mtk::alPriorError);
+    throw mtk::Alarm(MTK_HERE, "clikeepaliverec", MTK_SS("user not found for sessionid " << session_id), mtk::alPriorError);
 }
 
 void on_request_change_password_received(const mtk::acs::msg::req_change_password& req_change_password)
@@ -469,7 +469,7 @@ void on_request_change_password_received(const mtk::acs::msg::req_change_passwor
     if(located)
     {
         if(get_user_from_session_id(req_change_password.request_info.req_id.sess_id) !=  req_change_password.user_name  ||  req_change_password.user_name=="")
-            throw mtk::Alarm(MTK_HERE, MTK_SS("user name " << req_change_password.user_name << " doesn't match with  user(sessionid)"), mtk::alPriorError, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "rqchangpwd", MTK_SS("user name " << req_change_password.user_name << " doesn't match with  user(sessionid)"), mtk::alPriorError, mtk::alTypeNoPermisions);
         
         std::string decoded_new_password = users_manager::Instance()->decode_modif_password(    req_change_password.user_name, 
                                                                                                 req_change_password.key, 
@@ -489,7 +489,7 @@ void on_request_change_password_received(const mtk::acs::msg::req_change_passwor
                                             req_change_password.request_info,
                                             data_list)
                                             
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("password modified to:  " << req_change_password.user_name), mtk::alPriorDebug));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"rqchangpwd", MTK_SS("password modified to:  " << req_change_password.user_name), mtk::alPriorDebug));
         }
         else
         {
@@ -503,11 +503,11 @@ void on_request_change_password_received(const mtk::acs::msg::req_change_passwor
                                             req_change_password.request_info,
                                             data_list)
                                             
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("rejected password modif to:  " << req_change_password.user_name), mtk::alPriorDebug));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"rqchangpwd", MTK_SS("rejected password modif to:  " << req_change_password.user_name), mtk::alPriorDebug));
         }
     }
     else
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(req_change_password.key << " for " << req_change_password.user_name << "  not located. Ignoring request"), 
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"rqchangpwd", MTK_SS(req_change_password.key << " for " << req_change_password.user_name << "  not located. Ignoring request"), 
                                             mtk::alPriorError, mtk::alTypeNoPermisions));
         
 }
@@ -545,7 +545,7 @@ void command_logout(const std::string& /*command*/, const std::string& params, m
             mtk::acs::msg::conf_logout conf_logout(it->keep_alive_client_info.process_info.process_location.location, session_id, "requested by command");
             mtk::send_message(qpid_cli_session, conf_logout);
             
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("logout command processed for " << session_id << "  user " << it->keep_alive_client_info.login_confirmation.user_name), mtk::alPriorWarning));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"rqchangpwd", MTK_SS("logout command processed for " << session_id << "  user " << it->keep_alive_client_info.login_confirmation.user_name), mtk::alPriorWarning));
             response_lines.push_back(MTK_SS("logout command processed for " << session_id << "  user " << it->keep_alive_client_info.login_confirmation.user_name));
             list_sessions_login_info->erase(it);
             return;

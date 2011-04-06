@@ -536,7 +536,7 @@ void logout::user_rq_logout (  )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -568,7 +568,7 @@ void logout::user_rq_changepass ( const std::string&   _old_password, const std:
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -599,7 +599,7 @@ void logout::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs        
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -630,7 +630,7 @@ void logout::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -661,7 +661,7 @@ void logout::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -692,7 +692,7 @@ void logout::timeout ( const int&          __            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -723,7 +723,7 @@ void logout::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs      
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -755,7 +755,7 @@ void w_key::user_rq_login ( const std::string&   _user_name , const std::string&
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -785,7 +785,7 @@ void w_key::user_rq_logout (  )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -817,7 +817,7 @@ void w_key::user_rq_changepass ( const std::string&   _old_password, const std::
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -884,7 +884,7 @@ void w_key::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -915,7 +915,7 @@ void w_key::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -946,7 +946,7 @@ void w_key::timeout ( const int&          __            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_login_rj
       
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_reject_login.emit(description);        
         mtk::admin::client_logout_confirmation(description);
     
@@ -979,7 +979,7 @@ void w_key::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs       
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -1011,7 +1011,7 @@ void w_login::user_rq_login ( const std::string&   _user_name , const std::strin
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -1041,7 +1041,7 @@ void w_login::user_rq_logout (  )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -1073,7 +1073,7 @@ void w_login::user_rq_changepass ( const std::string&   _old_password, const std
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -1104,7 +1104,7 @@ void w_login::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -1150,7 +1150,7 @@ void w_login::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_login_rj
       
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_reject_login.emit(description);        
         mtk::admin::client_logout_confirmation(description);
     
@@ -1183,7 +1183,7 @@ void w_login::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -1214,7 +1214,7 @@ void w_login::timeout ( const int&          __            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_login_rj
       
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_reject_login.emit(description);        
         mtk::admin::client_logout_confirmation(description);
     
@@ -1247,7 +1247,7 @@ void w_login::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 
         }
@@ -1283,7 +1283,7 @@ void login_ok::user_rq_login ( const std::string&   _user_name , const std::stri
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1325,7 +1325,7 @@ void login_ok::user_rq_logout (  )
     
 //  inserting macro: sig_logout
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
 
@@ -1397,7 +1397,7 @@ void login_ok::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs      
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1436,7 +1436,7 @@ void login_ok::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1471,7 +1471,7 @@ void login_ok::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf           
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_logout
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
 
@@ -1507,7 +1507,7 @@ void login_ok::timeout ( const int&          __            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1546,7 +1546,7 @@ void login_ok::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs    
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1586,7 +1586,7 @@ void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::strin
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1628,7 +1628,7 @@ void w_k_chp::user_rq_logout (  )
     
 //  inserting macro: sig_logout
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
 
@@ -1665,7 +1665,7 @@ void w_k_chp::user_rq_changepass ( const std::string&   _old_password, const std
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1746,7 +1746,7 @@ void w_k_chp::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1781,7 +1781,7 @@ void w_k_chp::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_logout
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
 
@@ -1813,7 +1813,7 @@ void w_k_chp::timeout ( const int&          __            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_chpwd_rj
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password rejected"), mtk::alPriorDebug));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("change password rejected"), mtk::alPriorDebug));
         ci->sig_password_change_rj.emit();        
     
 
@@ -1849,7 +1849,7 @@ void w_k_chp::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1889,7 +1889,7 @@ void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::strin
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -1931,7 +1931,7 @@ void w_chpwd::user_rq_logout (  )
     
 //  inserting macro: sig_logout
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
 
@@ -1968,7 +1968,7 @@ void w_chpwd::user_rq_changepass ( const std::string&   _old_password, const std
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -2007,7 +2007,7 @@ void w_chpwd::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -2046,7 +2046,7 @@ void w_chpwd::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: error
   
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     
 //  inserting macro: srv_rq
 
@@ -2081,7 +2081,7 @@ void w_chpwd::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_logout
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
 
@@ -2113,7 +2113,7 @@ void w_chpwd::timeout ( const int&          __            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_chpwd_rj
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password rejected"), mtk::alPriorDebug));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("change password rejected"), mtk::alPriorDebug));
         ci->sig_password_change_rj.emit();        
     
 
@@ -2148,7 +2148,7 @@ void w_chpwd::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_chpwd_ok
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password confirmed"), mtk::alPriorDebug));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("change password confirmed"), mtk::alPriorDebug));
         ci->sig_password_changed.emit();        
     
 
@@ -2160,7 +2160,7 @@ void w_chpwd::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_chpwd_rj
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password rejected"), mtk::alPriorDebug));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("change password rejected"), mtk::alPriorDebug));
         ci->sig_password_change_rj.emit();        
     
 

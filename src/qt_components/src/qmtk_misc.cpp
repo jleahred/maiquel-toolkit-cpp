@@ -42,7 +42,7 @@ mtk::msg::sub_product_code  get_product_code(QDropEvent *event)
     mtk::CodecStringProperties csp;
     mtk::CountPtr<std::map<std::string, std::string> > cptr_map_decoded =  csp.Decode(event->mimeData()->text().toStdString());
     if(cptr_map_decoded.isValid()== false)
-        throw mtk::Alarm(MTK_HERE, MTK_SS("invalid product code received on event" << event->mimeData()->text().toStdString()), mtk::alPriorWarning);
+        throw mtk::Alarm(MTK_HERE, "mtkmisc", MTK_SS("invalid product code received on event" << event->mimeData()->text().toStdString()), mtk::alPriorWarning);
 
     std::map<std::string, std::string>& map_decoded = *cptr_map_decoded;
     mtk::msg::sub_sys_product_code sys_code(mtk::msg::sub_single_product_code("", ""), "");

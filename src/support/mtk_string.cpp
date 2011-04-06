@@ -61,7 +61,7 @@ mtk::CountPtr<t_list_MTK_SS> l_os_stack;
 std::string  __internal_GetAndRelease2(std::basic_ostream <char, std::char_traits<char> >& os)
 {
     if (os != *(l_os_stack->back()._0.get2()))
-        throw mtk::Alarm(MTK_HERE, "top on stack wrong (multithread?)", mtk::alPriorError, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "string",  "top on stack wrong (multithread?)", mtk::alPriorError, mtk::alTypeNoPermisions);
     mtk::CountPtr<std::ostringstream> temp = l_os_stack->back()._0;
     l_os_stack->pop_back();
     return temp->str();

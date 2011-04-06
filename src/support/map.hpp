@@ -215,10 +215,10 @@ template <typename key_type, typename T>
 typename map<key_type, T>::iterator&  map<key_type, T>::iterator::operator++()
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "++ on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "++ on end iterator", mtk::alPriorError);
 
     ++iiterator;
     return *this;
@@ -230,10 +230,10 @@ typename map<key_type, T>::iterator  map<key_type, T>::iterator::operator++(int)
     typename map<key_type, T>::iterator  result = *this;
 
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "++ on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "++ on end iterator", mtk::alPriorError);
 
     ++iiterator;
     return result;
@@ -243,7 +243,7 @@ template <typename key_type, typename T>
 bool  map<key_type, T>::iterator::operator==(const map<key_type, T>::iterator& it) const
 {
     if(registered_owner!=0  &&  it.registered_owner != 0   &&  registered_owner !=  it.registered_owner)
-        throw mtk::Alarm(MTK_HERE, "on different owners", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "on different owners", mtk::alPriorError);
 
     return it.iiterator == iiterator;
 }
@@ -261,10 +261,10 @@ std::pair<const key_type, T>* map<key_type, T>::iterator::operator->(void)
     if (last_updated_container==0
             ||  internal_for_containers::get_registered_container_last_size_change(registered_owner) != last_updated_container
             ||  internal_for_containers::get_registered_container_last_size_change(registered_owner) == 0)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "-> on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "-> on end iterator", mtk::alPriorError);
 
     return iiterator.operator->();
 }
@@ -275,10 +275,10 @@ std::pair<const key_type, T>&   map<key_type, T>::iterator::operator*(void)
     if (last_updated_container==0
             ||  internal_for_containers::get_registered_container_last_size_change(registered_owner) != last_updated_container
             ||  internal_for_containers::get_registered_container_last_size_change(registered_owner) == 0)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "* on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "* on end iterator", mtk::alPriorError);
 
     return *iiterator;
 }
@@ -341,10 +341,10 @@ template <typename key_type, typename T>
 typename map<key_type, T>::const_iterator&  map<key_type, T>::const_iterator::operator++()
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "++ on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "++ on end iterator", mtk::alPriorError);
 
     ++iiterator;
     return *this;
@@ -356,10 +356,10 @@ typename map<key_type, T>::const_iterator  map<key_type, T>::const_iterator::ope
     typename map<key_type, T>::const_iterator  result = *this;
 
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "++ on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "++ on end iterator", mtk::alPriorError);
 
     ++iiterator;
     return result;
@@ -369,7 +369,7 @@ template <typename key_type, typename T>
 bool  map<key_type, T>::const_iterator::operator==(const const_iterator& it) const
 {
     if(registered_owner!=0  &&  it.registered_owner != 0   &&  registered_owner !=  it.registered_owner)
-        throw mtk::Alarm(MTK_HERE, "on different owners", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "on different owners", mtk::alPriorError);
 
     return it.iiterator == iiterator;
 }
@@ -385,10 +385,10 @@ template <typename key_type, typename T>
 const std::pair<const key_type, T>* map<key_type, T>::const_iterator::operator->(void)
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "-> on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "-> on end iterator", mtk::alPriorError);
 
     return iiterator.operator->();
 }
@@ -397,10 +397,10 @@ template <typename key_type, typename T>
 const std::pair<const key_type, T>&    map<key_type, T>::const_iterator::operator*(void)
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "* on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "* on end iterator", mtk::alPriorError);
 
     return *iiterator;
 }
@@ -594,11 +594,11 @@ template <typename key_type, typename T>
 typename map<key_type, T>::iterator  map<key_type, T>::erase  (iterator position)
 {
     if (position.registered_owner  != registered_as)
-        throw mtk::Alarm(MTK_HERE, "erase with extrange iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "erase with extrange iterator", mtk::alPriorError);
     if (position.iiterator  == imap.end())
-        throw mtk::Alarm(MTK_HERE, "erase over end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "erase over end iterator", mtk::alPriorError);
     if (position.IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "erase over iterator invalid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "erase over iterator invalid", mtk::alPriorError);
 
 
 
@@ -623,11 +623,11 @@ template <typename key_type, typename T>
 void   map<key_type, T>::erase  (const iterator& first, const iterator& last)
 {
     if (first.registered_owner  != registered_as  ||  last.registered_owner  != registered_as)
-        throw mtk::Alarm(MTK_HERE, "erase with extrange iterator (first or second)", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "erase with extrange iterator (first or second)", mtk::alPriorError);
     if (first.iiterator  == imap.end())
-        throw mtk::Alarm(MTK_HERE, "erase over end iterator (first)", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "erase over end iterator (first)", mtk::alPriorError);
     if (first.IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "erase over iterator invalid (first)", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "map", "erase over iterator invalid (first)", mtk::alPriorError);
 
     typename map<key_type, T>::iterator result;
 
@@ -651,7 +651,7 @@ void   map<key_type, T>::erase  (const iterator& first, const iterator& last)
         else
         {
             // False (NO ordenados last ... first)
-            throw mtk::Alarm(MTK_HERE, "erase over iterators with invalid order (first > last)", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "map", "erase over iterators with invalid order (first > last)", mtk::alPriorError);
         }
     }
 }

@@ -39,7 +39,7 @@ std::string GetString2ParseFromFile(const std::string& fileName)
     char buffer[4096];
     std::ifstream fText2Transform(fileName.c_str(), std::ios::in);
     if (fText2Transform.is_open() == false)
-        throw mtk::Alarm(MTK_HERE, MTK_SS("problem opening file "), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("problem opening file "), mtk::alPriorError);
 
     std::ostringstream ostext4parse;
     bool first = true;
@@ -69,7 +69,7 @@ std::string ReplaceVariable (const std::string& value, const ConfigFile& cf)
 	{
 		if (recdepth > 10)
 		{
-			throw mtk::Alarm(MTK_HERE, MTK_SS("too depth recursion (" << recdepth <<")  " << value << " on file " << cf.GetFileName_current()), mtk::alPriorError);
+			throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("too depth recursion (" << recdepth <<")  " << value << " on file " << cf.GetFileName_current()), mtk::alPriorError);
 		}
 		
 		mtk::RegExp re ("^([^$(]*)\\$\\(([^)]+)\\)(.*)$");
@@ -78,7 +78,7 @@ std::string ReplaceVariable (const std::string& value, const ConfigFile& cf)
 		{
 			mtk::Nullable<std::string> replaced = cf.GetValue(re.GetString(1));
 			if (replaced.HasValue() == false)
-				throw mtk::Alarm(MTK_HERE, MTK_SS("value to replace " << re.GetString(1) << "doesn't exist"), mtk::alPriorError);
+				throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("value to replace " << re.GetString(1) << "doesn't exist"), mtk::alPriorError);
 			else
 				result = MTK_SS(re.GetString(0) << replaced.Get() << re.GetString(2));
 		}
@@ -186,7 +186,7 @@ ConfigFile::ConfigFile(const std::string& _filename)
             hParser.AddLine(rules[contador]).assign(result, resultText);
             if (result == false)
             {
-                throw mtk::Alarm(MTK_HERE, resultText, mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "configfile", resultText, mtk::alPriorError);
             }
 
         }
@@ -213,7 +213,7 @@ void ConfigFile::LoadFromFile(const std::string& _filename)
         std::string parsingResultText;
         hParser.Parse(text2parse, "MAIN").assign(parsingResult, parsingResultText, *astConfigFile);
         if (parsingResult == false)
-            throw mtk::Alarm(MTK_HERE, parsingResultText, mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "configfile", parsingResultText, mtk::alPriorError);
 
         //  rellenamos los nodos del árbol AST
         astConfigFile->ExecReplace();
@@ -354,7 +354,7 @@ mtk::Nullable<std::string> ConfigFile::GetValue(const std::string& keys) const
             FindPropertyFromKeys(astConfigFile, keys).assign(result, resultNode);
             
             if (result && resultNode->down->next->name != "VALUE")
-                throw mtk::Alarm(MTK_HERE, MTK_SS("it's not a value " << resultNode->down->next->name << "  on " << keys), mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("it's not a value " << resultNode->down->next->name << "  on " << keys), mtk::alPriorError);
 
             if (result && (resultNode->down->next->value != ""))
             {
@@ -390,7 +390,7 @@ mtk::Nullable<mtk::list<std::string> > ConfigFile::GetList (const std::string& k
             
             
             if (resultNode->down->next->name != "LIST")
-                throw mtk::Alarm(MTK_HERE, MTK_SS("it's not a value " << resultNode->down->next->name << "  on " << keys), mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("it's not a value " << resultNode->down->next->name << "  on " << keys), mtk::alPriorError);
 
             {
                 mtk::CountPtr<AST_Node_Item>  current_item = resultNode->down->next->down->down;
@@ -412,18 +412,18 @@ mtk::Nullable<mtk::list<std::string> > ConfigFile::GetList (const std::string& k
 void VerifModifParams(const std::string& keys, const std::string& value, const std::string& comment, const std::string& from)
 {
     if (VerifyID(keys) == false)
-        throw Alarm(from, MTK_SS("invalid id " << keys), mtk::alPriorError);
+        throw Alarm(MTK_HERE, from, MTK_SS("invalid id " << keys), mtk::alPriorError);
     if (VerifyValue(value) == false)
-        throw Alarm(from, MTK_SS("invalid value " << value), mtk::alPriorError);
+        throw Alarm(MTK_HERE, from, MTK_SS("invalid value " << value), mtk::alPriorError);
     if (VerifyValue(comment) == false)
-        throw Alarm(from, MTK_SS("invalid comment " << comment), mtk::alPriorError);
+        throw Alarm(MTK_HERE, from, MTK_SS("invalid comment " << comment), mtk::alPriorError);
 }
 
 
 void ModifListOfNode(const std::string& keys, mtk::CountPtr<AST_Node_Item> node, const mtk::list<std::string>& list)
 {
     if (node->down->next->name != "LIST")
-        throw mtk::Alarm(MTK_HERE, MTK_SS("it's not a list " << node->down->next->name << " on " << keys), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("it's not a list " << node->down->next->name << " on " << keys), mtk::alPriorError);
     else
     {
         mtk::CountPtr<AST_Node_Item>  firstItem;
@@ -463,7 +463,7 @@ void ConfigFile::ModifList(const std::string& keys, const mtk::list<std::string>
         FindPropertyFromKeys(astConfigFile, keys).assign(result, resultNode);
 
         if (result== false)
-            throw mtk::Alarm(MTK_HERE, MTK_SS("Doesn't exist property on  [" << keys << "]"), mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Doesn't exist property on  [" << keys << "]"), mtk::alPriorError);
         else
         {
             ModifListOfNode(keys, resultNode, list);
@@ -511,7 +511,7 @@ void ConfigFile::Modif(const std::string& keys, const std::string& value, const 
         FindPropertyFromKeys(astConfigFile, keys).assign(result, resultNode);
 
         if (result== false)
-            throw mtk::Alarm(MTK_HERE, MTK_SS("Doesn't exist property on  [" << keys << "]"), mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Doesn't exist property on  [" << keys << "]"), mtk::alPriorError);
         else
             if (value=="")
                 resultNode->down->next->value = NOVALUE_SYMBOL;
@@ -578,7 +578,7 @@ void ConfigFile::Delete(const std::string& keys)
             if (result  &&  resultNode->down->next->value!= "")
                 resultNode->down->next->value = "";
             else
-                throw mtk::Alarm(MTK_HERE, MTK_SS("Cannot delete on keys.property [" << keys << "]"), mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Cannot delete on keys.property [" << keys << "]"), mtk::alPriorError);
         }
     } MTK_CATCH_RETHROW("CF_Delete", MTK_SS("on file " << filename))
 }
@@ -589,7 +589,7 @@ void   ConfigFile::Create          (const std::string& keys, const std::string& 
     try
     {
         if (value=="")
-            throw mtk::Alarm(MTK_HERE, "Emtpy value", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "configfile", "Emtpy value", mtk::alPriorError);
 
         VerifModifParams(keys, value, comment, "cf::Create");
 
@@ -602,7 +602,7 @@ void   ConfigFile::Create          (const std::string& keys, const std::string& 
             mtk::vector<std::string>  vsubkeys = s_split(keys, ".");
             //  comprobamos que no tratamos de escribir en una propiedad
             if (FindSectionFromKeys(astConfigFile, vsubkeys)._0 == true)
-                throw mtk::Alarm(MTK_HERE, MTK_SS("Cannot write a property on a node [" << keys << "] "), mtk::alPriorError, mtk::alTypeNoPermisions);
+                throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Cannot write a property on a node [" << keys << "] "), mtk::alPriorError, mtk::alTypeNoPermisions);
             
             
             //  separamos nos nodos de la propiedad buscada
@@ -611,7 +611,7 @@ void   ConfigFile::Create          (const std::string& keys, const std::string& 
 
             //  comprobamos que los nodos existen y sólo falta añadir la propiedad
             if (FindSectionFromKeys(astConfigFile, vsubkeys)._0 == false)
-                throw mtk::Alarm(MTK_HERE, MTK_SS("Cannot create property with a node key [" << keys << "]   node doesn't exists"), mtk::alPriorError, mtk::alTypeNoPermisions);
+                throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Cannot create property with a node key [" << keys << "]   node doesn't exists"), mtk::alPriorError, mtk::alTypeNoPermisions);
 
             //  creamos la propiedad
             resultNode->next = make_cptr(new AST_Node_Item("INFO_SECTION"));
@@ -625,7 +625,7 @@ void   ConfigFile::Create          (const std::string& keys, const std::string& 
                 resultNode->next->down->down->next = make_cptr(new AST_Node_Item("VALUE", value));
         }
         else
-            throw mtk::Alarm(MTK_HERE, "On existing value", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "configfile", "On existing value", mtk::alPriorError);
     } MTK_CATCH_RETHROW("CF_Create", MTK_SS("on file " << filename))
 }
 
@@ -647,7 +647,7 @@ void   ConfigFile::CreateList   (const std::string& keys, const mtk::list<std::s
             std::string               key = vsubkeys.back();
 
             if (FindSectionFromKeys(astConfigFile, vsubkeys)._0 == true)
-                throw mtk::Alarm(MTK_HERE, MTK_SS("Cannot create property with a node key [" << keys << "]"), mtk::alPriorError, mtk::alTypeNoPermisions);
+                throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Cannot create property with a node key [" << keys << "]"), mtk::alPriorError, mtk::alTypeNoPermisions);
 
             resultNode->next = make_cptr(new AST_Node_Item("INFO_SECTION"));
 
@@ -679,7 +679,7 @@ void   ConfigFile::CreateList   (const std::string& keys, const mtk::list<std::s
             resultNode->next->down->down->next->down->down = firstItem;
         }
         else
-            throw mtk::Alarm(MTK_HERE, "On existing value", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "configfile", "On existing value", mtk::alPriorError);
     } MTK_CATCH_RETHROW("CF_CreateList", MTK_SS("on file " << filename))
 }
 
@@ -696,7 +696,7 @@ mtk::list<std::string>  ConfigFile::GetNodes      (const std::string& keys) cons
         if(keys!="")
         {
             if (VerifyID(keys) == false)
-                throw Alarm(MTK_HERE, MTK_SS("invalid id " << keys), mtk::alPriorError);
+                throw Alarm(MTK_HERE, "configfile", MTK_SS("invalid id " << keys), mtk::alPriorError);
 
             mtk::vector<std::string>  vsubkeys = s_split(keys, ".");
 
@@ -741,7 +741,7 @@ mtk::list< mtk::tuple<std::string, ConfigFile::enPropertyType> >  ConfigFile::Ge
         if(keys!="")
         {
             if (VerifyID(keys) == false)
-                throw Alarm(MTK_HERE, MTK_SS("invalid id " << keys), mtk::alPriorError);
+                throw Alarm(MTK_HERE, "configfile", MTK_SS("invalid id " << keys), mtk::alPriorError);
 
             mtk::vector<std::string>  vsubkeys = s_split(keys, ".");
 
@@ -766,7 +766,7 @@ mtk::list< mtk::tuple<std::string, ConfigFile::enPropertyType> >  ConfigFile::Ge
                         result.push_back( mtk::make_tuple(astNode->down->down->value, ptList));  //   vamos hasta name
                     }
                     else
-                        throw mtk::Alarm(MTK_HERE, MTK_SS("Invalid node type  " << astNode->down->down->next->name), mtk::alPriorError);
+                        throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Invalid node type  " << astNode->down->down->next->name), mtk::alPriorError);
                 }
                 astNode = astNode->next;
             }
@@ -848,7 +848,7 @@ void WriteNode(std::ostream& out, mtk::CountPtr<AST_Node_Item> node, int depth)
             out << spaces(depth) << "]" << std::endl;
         }
         else
-            throw mtk::Alarm(MTK_HERE, MTK_SS("Invalid node type  " << node->down->next->name), mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Invalid node type  " << node->down->next->name), mtk::alPriorError);
     }
     else if (node->name == "BLANK_LINE")
     {

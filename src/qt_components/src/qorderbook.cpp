@@ -82,7 +82,7 @@ QString get_session_id_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
     else if (order->last_request().HasValue())
         return order->last_request().Get().order_id.sess_id.c_str();
     else
-        throw mtk::Alarm(MTK_HERE, "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
 
 
@@ -93,7 +93,7 @@ QString get_req_code_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
     else if (order->last_request().HasValue())
         return order->last_request().Get().order_id.req_code.c_str();
     else
-        throw mtk::Alarm(MTK_HERE, "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
 
 
@@ -206,7 +206,7 @@ public:
         else if (inner_order->last_request().HasValue())
             item->setText(inner_order->last_request().Get().product_code.sys_code.market.c_str());
         else
-            throw mtk::Alarm(MTK_HERE, "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         item->setBackgroundColor(get_default_color());
     }
 
@@ -218,7 +218,7 @@ public:
         else if (inner_order->last_request().HasValue())
             item->setText(inner_order->last_request().Get().product_code.sys_code.product.c_str());
         else
-            throw mtk::Alarm(MTK_HERE, "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         item->setBackgroundColor(get_default_color());
     }
 
@@ -236,7 +236,7 @@ public:
 
 
         if (requested.HasValue()==false  &&  confirmed.HasValue()==false)
-            throw mtk::Alarm(MTK_HERE, "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
         if (confirmed.HasValue()  &&  requested.HasValue()  &&  confirmed.Get() == requested.Get())
         {
@@ -270,7 +270,7 @@ public:
             requested = inner_order->last_request().Get().request_pos.quantity;
 
         if (requested.HasValue()==false  &&  confirmed.HasValue()==false)
-            throw mtk::Alarm(MTK_HERE, "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
         if (confirmed.HasValue()  &&  requested.HasValue()  &&  confirmed.Get() == requested.Get())
         {
@@ -302,7 +302,7 @@ public:
         else if (inner_order->last_request().HasValue())
             buy_sell = inner_order->last_request().Get().request_pos.side;
         else
-            throw mtk::Alarm(MTK_HERE, "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (buy_sell == mtk::trd::msg::buy)
         {
             item->setText("buy");
@@ -467,11 +467,11 @@ mtk::trd::msg::sub_order_id   get_order_id_from_row(QTableWidget *table_widget, 
 
     item = table_widget->item(row, col_session_id);
     if (item)   session_id = item->text().toStdString();
-    else throw mtk::Alarm(MTK_HERE, "missing item", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    else throw mtk::Alarm(MTK_HERE, "qorderbook", "missing item", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
     item = table_widget->item(row, col_req_code);
     if (item)   request_code = item->text().toStdString();
-    else throw mtk::Alarm(MTK_HERE, "missing item", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    else throw mtk::Alarm(MTK_HERE, "qorderbook", "missing item", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
     return mtk::trd::msg::sub_order_id(mtk::msg::sub_request_id(session_id, request_code));
 }

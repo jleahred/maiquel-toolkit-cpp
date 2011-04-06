@@ -176,7 +176,7 @@ namespace {
             void AsyncDelayedCall_Overflow(std::string description)
             {
                 MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(15))
-                    __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, description, mtk::alPriorError, mtk::alTypeOverflow));
+                    __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, "admin", description, mtk::alPriorError, mtk::alTypeOverflow));
                 MTK_END_EXEC_MAX_FREC
             }
 
@@ -213,7 +213,7 @@ namespace {
     {
         if(admin_status_instance == 0)
         {
-            mtk::Alarm alarm = mtk::Alarm(MTK_HERE, "requested admin instace not intialized", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            mtk::Alarm alarm = mtk::Alarm(MTK_HERE, "admin", "requested admin instace not intialized", mtk::alPriorCritic, mtk::alTypeNoPermisions);
             std::cerr << alarm << std::endl;
             throw alarm;
         }
@@ -236,8 +236,8 @@ namespace {
         static bool  exit_message_sent = false;
         if(exit_message_sent==false)
         {
-            __direct_NotifyAlarm(mtk::Alarm("app_exit_stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
-            __direct_NotifyAlarm(mtk::Alarm("app_exit", MTK_SS("Exiting application  " << reason), mtk::alPriorDebug, mtk::alTypeUnknown));
+            __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, "admin.app_exit_stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
+            __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, "admin.app_exit", MTK_SS("Exiting application  " << reason), mtk::alPriorDebug, mtk::alTypeUnknown));
             
             
             //  send exit message
@@ -257,7 +257,7 @@ namespace {
         if(config_file.IsLoaded() == false)
             config_file.LoadFromFile(config_file_name);
         else
-            throw mtk::Alarm(MTK_HERE, "file already loaded", mtk::alPriorError, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "admin.init", "file already loaded", mtk::alPriorError, mtk::alTypeNoPermisions);
             
         if(config_file.GetValue("ADMIN.role").HasValue() == false)
         {
@@ -293,7 +293,7 @@ namespace {
             else if(priority=="critical")
                 process_priority = ppCritical;
             else
-                throw mtk::Alarm(MTK_HERE, "invalid priority code", mtk::alPriorCritic, mtk::alTypeNoPermisions);            
+                throw mtk::Alarm(MTK_HERE, "admin", "invalid priority code", mtk::alPriorCritic, mtk::alTypeNoPermisions);            
         }
         
             
@@ -323,7 +323,7 @@ namespace {
             ka_interval_check = mtk::dtSeconds(5);
         }
         else
-            throw mtk::Alarm(MTK_HERE, "invalid priority code", mtk::alPriorCritic, mtk::alTypeNoPermisions);            
+            throw mtk::Alarm(MTK_HERE, "admin", "invalid priority code", mtk::alPriorCritic, mtk::alTypeNoPermisions);            
         
 
         if(role=="client")
@@ -414,7 +414,7 @@ namespace {
     {
         mtk::Nullable<std::string>  value = config_file.GetValue(path_and_property);
         if(value.HasValue() == false)
-            throw mtk::Alarm(MTK_HERE, MTK_SS("mising mandatory property " << path_and_property), mtk::alPriorError, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "admin", MTK_SS("mising mandatory property " << path_and_property), mtk::alPriorError, mtk::alTypeNoPermisions);
         else
             return value.Get();
     }
@@ -425,7 +425,7 @@ namespace {
         //std::cout << enter_msg << std::endl;
         mtk::send_message(session_admin, enter_msg);
         
-        mtk::AlarmMsg(mtk::Alarm("app_enter", "Entering application", mtk::alPriorDebug, mtk::alTypeUnknown));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.app_enter", "Entering application", mtk::alPriorDebug, mtk::alTypeUnknown));
         
         MTK_TIMER_1S(send_keep_alive)
         MTK_TIMER_1S(check_last_received_message)
@@ -449,7 +449,7 @@ namespace {
                 mtk::send_message(session_admin, keep_alive_msg);
             }
             else
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));            
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));            
         MTK_END_EXEC_MAX_FREC
     }
     void admin_status::check_last_received_message(void)
@@ -470,7 +470,7 @@ namespace {
             if(tq_no_receiving_messages > mtk::dtSeconds(10))
             {
                 MTK_EXEC_MAX_FREC_S_A(mtk::dtSeconds(10), A)
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("too long no receiving any message " << tq_no_receiving_messages), mtk::alPriorError, mtk::alTypeRealTime));
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("too long no receiving any message " << tq_no_receiving_messages), mtk::alPriorError, mtk::alTypeRealTime));
                 MTK_END_EXEC_MAX_FREC
             }
         MTK_END_EXEC_MAX_FREC
@@ -486,7 +486,7 @@ namespace {
         if(next_central_keep_alive_to_receive < mtk::dtNowLocal())
         {
             MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("missing central keep alive.     Expected on " 
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("missing central keep alive.     Expected on " 
                                             << next_central_keep_alive_to_receive  << " local time " << mtk::dtNowLocal()), 
                                             mtk::alPriorError, mtk::alTypeRealTime));
                 notified_lost_keep_alive=true;
@@ -496,7 +496,7 @@ namespace {
         else if(notified_lost_keep_alive == true)
         {
             notified_lost_keep_alive = false;
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("receiving back central keep alive.   Next expected on" 
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("receiving back central keep alive.   Next expected on" 
                                         << next_central_keep_alive_to_receive  << " local time " << mtk::dtNowLocal()), 
                                         mtk::alPriorError, mtk::alTypeRealTime));
         }
@@ -523,14 +523,14 @@ namespace {
         //    std::cout << alarm << std::endl;
         int16_t alarm_id = int16_t(alarm.alarmID);
         {
-            mtk::admin::msg::pub_alarm alarm_msg(get_process_info(), alarm.codeSource, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
+            mtk::admin::msg::pub_alarm alarm_msg(get_process_info(), alarm.codeSource, alarm.subject, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
             mtk::send_message(session_admin, alarm_msg);
         }
         {
             std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
             while (it != alarm.stackAlarms.end())
             {
-                mtk::admin::msg::pub_alarm   alarm_msg(get_process_info(), it->codeSource, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
+                mtk::admin::msg::pub_alarm   alarm_msg(get_process_info(), it->codeSource, it->subject, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
                 mtk::send_message(session_admin, alarm_msg);
                 ++it;
             }
@@ -542,7 +542,7 @@ namespace {
     void admin_status::send_stats_periodically(void)
     {
         MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtMinutes(45))
-            mtk::AlarmMsg(mtk::Alarm("stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
         MTK_END_EXEC_MAX_FREC
     }
 
@@ -553,9 +553,9 @@ namespace {
         std::string command = "stats";
         mtk::map<std::string, mtk::CountPtr<command_info> >::iterator it = map_commands.find(command);
         if(it == map_commands.end())
-            throw mtk::Alarm(MTK_HERE, "not defined command stats???", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "admin", "not defined command stats???", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         else if( it->second->signal_command_received->emit(command, "", response_lines) == 0)
-            throw  mtk::Alarm(MTK_HERE, MTK_SS(command << "  has no signal connected"), mtk::alPriorError);
+            throw  mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError);
         
         mtk::list<std::string>::iterator  it_response_lines = response_lines.begin();
         while (it_response_lines !=  response_lines.end())
@@ -589,7 +589,7 @@ namespace {
             }
             else
             {
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(command_msg.command_line << "   incorrect format"), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(command_msg.command_line << "   incorrect format"), mtk::alPriorError));
                 return;
             }
         }
@@ -614,14 +614,14 @@ namespace {
                     response_lines.push_back(MTK_SS(command_msg.command_line << "  incorrect confirmation code, expected... "  << current_confirmation_code));
                 //  else, process command
                 else if(it->second->signal_command_received->emit(command, params, response_lines) == 0)
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
             }
             else
             {
                 if(confirmation_code=="")
                 {
                     if( it->second->signal_command_received->emit(command, params, response_lines) == 0)
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
                 }
                 else
                 {
@@ -635,7 +635,7 @@ namespace {
         {
             if(it2->size() > 500)
             {
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("line too long in response to command " << command << " truncating"), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in response to command " << command << " truncating"), mtk::alPriorError));
                 (*it2) = it2->substr(0, 200) + std::string("  ... truncated line");
             }
                 
@@ -729,7 +729,7 @@ namespace {
         else if(role=="client")
             exit(-1);
         else
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));            
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));            
     }
 
     void admin_status::command_date_time(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
@@ -750,7 +750,7 @@ namespace {
         if(map_commands.find(full_command_name) != map_commands.end()  &&  group !="__GLOBAL__")
         {
             MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(name << " is already registered, ignoring group and desciption (could be more commands affected)"), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(name << " is already registered, ignoring group and desciption (could be more commands affected)"), mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
         }
         else  if(map_commands.find(full_command_name) == map_commands.end())
@@ -792,7 +792,7 @@ namespace {
             return mtk::msg::sub_request_info(mtk::msg::sub_request_id(session_id, MTK_SS(++contador)), get_process_info().process_location);
         }
         else
-            throw mtk::Alarm(MTK_HERE, MTK_SS(role << "  request info with invalid role"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "admin", MTK_SS(role << "  request info with invalid role"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
     }
     
 
@@ -827,13 +827,13 @@ mtk::CountPtr< mtk::qpid_session >     get_qpid_session(const std::string&  url_
     if(++counter > 500)
     {
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "too many calls" , mtk::alPriorError, mtk::alTypeOverflow));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", "too many calls" , mtk::alPriorError, mtk::alTypeOverflow));
         MTK_END_EXEC_MAX_FREC
     }
     else if(++counter > 100)
     {
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "too many calls" , mtk::alPriorWarning, mtk::alTypeOverflow));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", "too many calls" , mtk::alPriorWarning, mtk::alTypeOverflow));
         MTK_END_EXEC_MAX_FREC
     }
     
@@ -841,7 +841,7 @@ mtk::CountPtr< mtk::qpid_session >     get_qpid_session(const std::string&  url_
     {
         if(url_for != "client"  ||  address != "CLITESTING")
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("url_for: " << url_for << "  address: " << address
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("url_for: " << url_for << "  address: " << address
                         << "  weird for a client") , mtk::alPriorWarning, mtk::alTypeOverflow));
         }
     }
@@ -874,7 +874,7 @@ std::string                             get_url             (const std::string& 
 {
     mtk::Nullable<std::string> url = admin_status::i()->get_config_file().GetValue(MTK_SS("ADMIN.URLS." << url_for));
     if(url.HasValue()==false)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(url_for  << "   requested invalid url"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "admin", MTK_SS(url_for  << "   requested invalid url"), mtk::alPriorCritic);
     else
         return url.Get();
 }
@@ -922,13 +922,13 @@ void set_config_property(const std::string& path, const std::string& property_va
 void client_login_ok_confirmation   (const mtk::acs::msg::res_login::IC_login_response_info& client_login_confirmation)
 {
     admin_status::i()->client_login_confirmation = client_login_confirmation;
-    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("registered login ok: " << client_login_confirmation), mtk::alPriorDebug));
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("registered login ok: " << client_login_confirmation), mtk::alPriorDebug));
 }
 
 void client_logout_confirmation     (const std::string& description)
 {
     admin_status::i()->client_login_confirmation = mtk::acs::msg::res_login::IC_login_response_info("", "");
-    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("registered logout: " << description), mtk::alPriorDebug));
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("registered logout: " << description), mtk::alPriorDebug));
 }
 
 

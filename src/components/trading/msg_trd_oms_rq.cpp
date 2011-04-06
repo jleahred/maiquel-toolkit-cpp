@@ -387,7 +387,7 @@ oms_RQ_NW_LS::oms_RQ_NW_LS ( const RQ_NW_LS&  parent,   const std::string&  _rej
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -407,7 +407,7 @@ oms_RQ_MD_LS::oms_RQ_MD_LS ( const RQ_MD_LS&  parent,   const std::string&  _rej
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -427,7 +427,7 @@ oms_RQ_CC_LS::oms_RQ_CC_LS ( const RQ_CC_LS&  parent,   const std::string&  _rej
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -521,7 +521,7 @@ copy(static_cast<RQ_NW_LS&>(c), v);
 
                     it = mv.find("rd");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field reject_descr on message oms_RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_descr on message oms_RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.reject_descr, it->second);
                         //c.reject_descr = it->second;
@@ -562,7 +562,7 @@ copy(static_cast<RQ_MD_LS&>(c), v);
 
                     it = mv.find("rd");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field reject_descr on message oms_RQ_MD_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_descr on message oms_RQ_MD_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.reject_descr, it->second);
                         //c.reject_descr = it->second;
@@ -603,7 +603,7 @@ copy(static_cast<RQ_CC_LS&>(c), v);
 
                     it = mv.find("rd");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field reject_descr on message oms_RQ_CC_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_descr on message oms_RQ_CC_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.reject_descr, it->second);
                         //c.reject_descr = it->second;
@@ -746,7 +746,7 @@ oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -762,7 +762,7 @@ oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -778,7 +778,7 @@ oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 

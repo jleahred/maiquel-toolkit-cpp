@@ -387,7 +387,7 @@ sub_tree_item::sub_tree_item (   const std::string&  _branch,   const std::strin
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -407,7 +407,7 @@ req_tree_items::req_tree_items (   const mtk::msg::sub_request_info&  _request_i
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -427,7 +427,7 @@ res_tree_items::res_tree_items (   const mtk::msg::sub_r_response&  _response_in
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -521,7 +521,7 @@ void  copy (sub_tree_item& c, const qpid::types::Variant& v)
 
                     it = mv.find("b");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field branch on message sub_tree_item::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field branch on message sub_tree_item::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.branch, it->second);
                         //c.branch = it->second;
@@ -529,7 +529,7 @@ void  copy (sub_tree_item& c, const qpid::types::Variant& v)
 
                     it = mv.find("un");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field user_name on message sub_tree_item::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message sub_tree_item::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.user_name, it->second);
                         //c.user_name = it->second;
@@ -579,7 +579,7 @@ void  copy (req_tree_items& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message req_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
@@ -587,7 +587,7 @@ void  copy (req_tree_items& c, const qpid::types::Variant& v)
 
                     it = mv.find("br");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field branch on message req_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field branch on message req_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.branch, it->second);
                         //c.branch = it->second;
@@ -628,7 +628,7 @@ void  copy (res_tree_items& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field response_info on message res_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.response_info, it->second);
                         //__internal_qpid_fill(c.response_info, it->second.asMap());
@@ -636,7 +636,7 @@ void  copy (res_tree_items& c, const qpid::types::Variant& v)
 
                     it = mv.find("it");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field item on message res_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field item on message res_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.item, it->second);
                         //__internal_qpid_fill(c.item, it->second.asMap());
@@ -796,7 +796,7 @@ sub_tree_item::sub_tree_item (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -814,7 +814,7 @@ req_tree_items::req_tree_items (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -832,7 +832,7 @@ res_tree_items::res_tree_items (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 

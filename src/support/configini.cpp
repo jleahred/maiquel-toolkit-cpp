@@ -20,7 +20,7 @@ ConfigINI::ConfigINI(std::string _fileName)
     {
             throw
                         Alarm (
-                            MTK_HERE,
+                            MTK_HERE, "configini", 
                             std::string("No se pudo abrir el fichero  ") + fileName,
                             alPriorCritic,
                             alTypeNoPermisions
@@ -211,7 +211,7 @@ void ConfigINI::Write      ( void )
     {
             throw
                         Alarm (
-                            MTK_HERE,
+                            MTK_HERE, "configini", 
                             std::string("No se pudo abrir el fichero  ") + fileName,
                             alPriorCritic,
                             alTypeNoPermisions

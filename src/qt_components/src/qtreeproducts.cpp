@@ -245,7 +245,7 @@ QTreeWidgetItem*  qTreeProducts::get_item_from_branck(QString current_branch, QS
     {
         mtkQtreeItem* next_item = dynamic_cast<mtkQtreeItem*>(current_tree_item->child(i));
         if(next_item == 0)
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "invalid item type", mtk::alPriorError, mtk::alTypeNoPermisions));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qtreepreducts", "invalid item type", mtk::alPriorError, mtk::alTypeNoPermisions));
         if(current_branch == next_item->item.branch.c_str())
         {
             QString next_branch_name =  MTK_SS(current_branch.toStdString() << "." << pending_branch.front().toStdString()).c_str();
@@ -253,7 +253,7 @@ QTreeWidgetItem*  qTreeProducts::get_item_from_branck(QString current_branch, QS
             return get_item_from_branck(next_branch_name, pending_branch, next_item);
         }
     }
-    throw mtk::Alarm(MTK_HERE, MTK_SS(current_branch.toStdString() <<  "  item not found"), mtk::alPriorError, mtk::alTypeNoPermisions);
+    throw mtk::Alarm(MTK_HERE, "qtreepreducts", MTK_SS(current_branch.toStdString() <<  "  item not found"), mtk::alPriorError, mtk::alTypeNoPermisions);
 }
 
 void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::res_tree_items>& list_items)
@@ -270,10 +270,10 @@ void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::res_
         full_path_branch.pop_front();
         QTreeWidgetItem* start_item = dynamic_cast<QTreeWidgetItem*>(this->invisibleRootItem());
         if(start_item==0)
-            throw mtk::Alarm(MTK_HERE, "invalid start item", mtk::alPriorError, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "qtreepreducts", "invalid start item", mtk::alPriorError, mtk::alTypeNoPermisions);
         insert_into_item = get_item_from_branck(next_branch_name, full_path_branch, start_item);
         if(insert_into_item==0)
-            throw mtk::Alarm(MTK_HERE, MTK_SS(item.branch << "  item not found"), mtk::alPriorError, mtk::alTypeNoPermisions);
+            throw mtk::Alarm(MTK_HERE, "qtreepreducts", MTK_SS(item.branch << "  item not found"), mtk::alPriorError, mtk::alTypeNoPermisions);
         else
         {
             if(insert_into_item == start_item)
@@ -296,7 +296,7 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
 {
     mtkQtreeItem* mtk_item = dynamic_cast<mtkQtreeItem*>(item);
     if(mtk_item==0)
-        throw mtk::Alarm(MTK_HERE, "invalid item type", mtk::alPriorError, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "qtreepreducts", "invalid item type", mtk::alPriorError, mtk::alTypeNoPermisions);
 
     if(mtk_item->childCount()==0)
     {

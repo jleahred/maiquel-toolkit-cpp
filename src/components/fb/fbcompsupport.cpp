@@ -30,7 +30,7 @@ IBPP::Database  	fbDatabaseFromConfig(const std::string& configPath)
 	if(server.HasValue() == false  ||  name.HasValue()==false  ||  user.HasValue()==false)
 		throw 
 					mtk::Alarm (
-						"fbDatabaseFromConfig",
+						MTK_HERE, "fbDatabaseFromConfig",
 						MTK_SS("mising server, name or user in config  from path " <<  configPath),
 						mtk::alPriorCritic,
 						mtk::alTypeNoPermisions

@@ -330,7 +330,7 @@ namespace {
                 return mtk::make_tuple(QString(), QString());
             else
             {
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received quantity 0 with price not 0 on "
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qmarginal", MTK_SS("received quantity 0 with price not 0 on "
                                                           << product_code.sys_code.market << "." << product_code.sys_code.product), mtk::alPriorError, mtk::alTypeNoPermisions));
                 return mtk::make_tuple(fn_as_QString(marginal.price), fn_as_QString(marginal.quantity));
             }

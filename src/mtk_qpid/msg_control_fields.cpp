@@ -386,7 +386,7 @@ sub_control_fields::sub_control_fields (   const std::string&  _message_type)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -434,7 +434,7 @@ void  copy (sub_control_fields& c, const qpid::types::Variant& v)
 
                     it = mv.find("mt");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field message_type on message sub_control_fields::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field message_type on message sub_control_fields::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.message_type, it->second);
                         //c.message_type = it->second;
@@ -505,7 +505,7 @@ sub_control_fields::sub_control_fields (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 

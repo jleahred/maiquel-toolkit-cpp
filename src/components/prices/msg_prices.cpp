@@ -387,7 +387,7 @@ sub_price_level::sub_price_level (   const mtk::FixedNumber&  _price,   const mt
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -407,7 +407,7 @@ sub_price_deph5::sub_price_deph5 (   const sub_price_level&  _level0,   const su
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -427,7 +427,7 @@ pub_best_prices::pub_best_prices (   const mtk::msg::sub_product_code&  _product
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -521,7 +521,7 @@ void  copy (sub_price_level& c, const qpid::types::Variant& v)
 
                     it = mv.find("pr");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field price on message sub_price_level::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field price on message sub_price_level::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.price, it->second);
                         //c.price = it->second;
@@ -529,7 +529,7 @@ void  copy (sub_price_level& c, const qpid::types::Variant& v)
 
                     it = mv.find("qt");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field quantity on message sub_price_level::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field quantity on message sub_price_level::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.quantity, it->second);
                         //c.quantity = it->second;
@@ -570,7 +570,7 @@ void  copy (sub_price_deph5& c, const qpid::types::Variant& v)
 
                     it = mv.find("b0");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field level0 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field level0 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.level0, it->second);
                         //__internal_qpid_fill(c.level0, it->second.asMap());
@@ -578,7 +578,7 @@ void  copy (sub_price_deph5& c, const qpid::types::Variant& v)
 
                     it = mv.find("b1");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field level1 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field level1 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.level1, it->second);
                         //__internal_qpid_fill(c.level1, it->second.asMap());
@@ -586,7 +586,7 @@ void  copy (sub_price_deph5& c, const qpid::types::Variant& v)
 
                     it = mv.find("b2");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field level2 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field level2 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.level2, it->second);
                         //__internal_qpid_fill(c.level2, it->second.asMap());
@@ -594,7 +594,7 @@ void  copy (sub_price_deph5& c, const qpid::types::Variant& v)
 
                     it = mv.find("b3");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field level3 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field level3 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.level3, it->second);
                         //__internal_qpid_fill(c.level3, it->second.asMap());
@@ -602,7 +602,7 @@ void  copy (sub_price_deph5& c, const qpid::types::Variant& v)
 
                     it = mv.find("b4");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field level4 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field level4 on message sub_price_deph5::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.level4, it->second);
                         //__internal_qpid_fill(c.level4, it->second.asMap());
@@ -649,7 +649,7 @@ void  copy (pub_best_prices& c, const qpid::types::Variant& v)
 
                     it = mv.find("pc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field product_code on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_code on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.product_code, it->second);
                         //__internal_qpid_fill(c.product_code, it->second.asMap());
@@ -657,7 +657,7 @@ void  copy (pub_best_prices& c, const qpid::types::Variant& v)
 
                     it = mv.find("bid");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field bids on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field bids on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.bids, it->second);
                         //__internal_qpid_fill(c.bids, it->second.asMap());
@@ -665,7 +665,7 @@ void  copy (pub_best_prices& c, const qpid::types::Variant& v)
 
                     it = mv.find("ask");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field asks on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field asks on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.asks, it->second);
                         //__internal_qpid_fill(c.asks, it->second.asMap());
@@ -841,7 +841,7 @@ sub_price_level::sub_price_level (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -865,7 +865,7 @@ sub_price_deph5::sub_price_deph5 (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -885,7 +885,7 @@ pub_best_prices::pub_best_prices (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 

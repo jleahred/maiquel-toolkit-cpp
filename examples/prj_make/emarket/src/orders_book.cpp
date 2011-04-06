@@ -172,13 +172,13 @@ void internal_orders_book::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
 
 #define CHECK_CACHTED_ORDER(ACTION)  \
     if (cached_last_request.isValid()==false)  \
-        throw mtk::Alarm("orders_book::" ACTION "_order", MTK_SS("empty cached_last_request" << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);  \
+        throw mtk::Alarm(MTK_HERE, "orders_book::" ACTION "_order", MTK_SS("empty cached_last_request" << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);  \
     if (cached_last_request->last_request().HasValue() == false)  \
-        throw mtk::Alarm("orders_book::" ACTION "_order", MTK_SS("empty cached_last_request request" << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);  \
+        throw mtk::Alarm(MTK_HERE, "orders_book::" ACTION "_order", MTK_SS("empty cached_last_request request" << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);  \
     if (cached_last_request->last_confirmation().HasValue() == false)  \
-        throw mtk::Alarm("orders_book::" ACTION "_order", MTK_SS("empty cached_last_request confirmation " << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);  \
+        throw mtk::Alarm(MTK_HERE, "orders_book::" ACTION "_order", MTK_SS("empty cached_last_request confirmation " << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);  \
     else if (cached_last_request->last_request().Get().order_id != order_info.confirmated_info.order_id)  \
-        throw mtk::Alarm("orders_book::" ACTION "_order", MTK_SS("cached_last_request doesn't math with order to " ACTION   \
+        throw mtk::Alarm(MTK_HERE, "orders_book::" ACTION "_order", MTK_SS("cached_last_request doesn't math with order to " ACTION   \
                         << cached_last_request->last_request().Get() << "  " << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
 void internal_orders_book::add_order  (const mtk::trd::msg::CF_XX_LS& order_info)
@@ -230,7 +230,7 @@ mtk::tuple<mtk::list<mtk::CountPtr<ord_ls> >*/*queue*/, int/*adjust_comparation*
         return mtk::make_tuple(&ask_queue,-1);
     }
     else
-        throw mtk::Alarm("orders_in_product_queue::", MTK_SS("invalid order side " << order->last_request()), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "orders_in_product_queue::", MTK_SS("invalid order side " << order->last_request()), mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
 
 void orders_in_product_queue::add_order(mtk::CountPtr<ord_ls> order)
@@ -422,7 +422,7 @@ void fill_side (const mtk::list<mtk::CountPtr<ord_ls> >& xxx_queue, mtk::prices:
             else if (cf.confirmated_info.market_pos.price == levels.front().price)
                 levels.front().quantity.SetDouble( levels.front().quantity.GetDouble() + cf.confirmated_info.total_execs.remaining_qty.GetDouble() );
             else
-                throw mtk::Alarm(MTK_HERE, "imposible!?!", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                throw mtk::Alarm(MTK_HERE, "ordersbook", "imposible!?!", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
                 
             ++it;

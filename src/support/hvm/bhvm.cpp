@@ -27,7 +27,7 @@ void bhvm::define_label  (const std::string& label)
 {
     std::map   <std::string, int >::iterator it = labels.find(label);
     if (it != labels.end())
-        signal_warning (Alarm(MTK_HERE, MTK_SS("repitied label " << label), alPriorCritic));
+        signal_warning (Alarm(MTK_HERE, "bhvm", MTK_SS("repitied label " << label), alPriorCritic));
 
     labels[label] = int(program.size()-1);
 }
@@ -74,7 +74,7 @@ void bhvm::exec_pop    (void)
         stack.pop_back();
     else
     {
-        signal_error(mtk::Alarm(MTK_HERE, MTK_SS("empty stack, endind program " << get_status()), mtk::alPriorCritic));
+        signal_error(mtk::Alarm(MTK_HERE, "bhvm",  MTK_SS("empty stack, endind program " << get_status()), mtk::alPriorCritic));
         program_counter = int(program.size());
     }
 }
@@ -92,7 +92,7 @@ void bhvm::exec_calle  (void)
     std::map<std::string, CountPtr< Signal<bhvm*> > >::iterator it = map_signal_external_commands.find(command);
 
     if (it == map_signal_external_commands.end()  ||  it->second.isValid()==false)
-        throw Alarm(MTK_HERE, MTK_SS("command not registered " << command), alPriorCritic);
+        throw Alarm(MTK_HERE, "bhvm",  MTK_SS("command not registered " << command), alPriorCritic);
 
     it->second->emit(this);
 
@@ -108,14 +108,14 @@ void bhvm::exec_jump   (void)
         exec_pop();
         if (labels.find(label2jump) == labels.end())
         {
-            signal_error (Alarm(MTK_HERE, MTK_SS("inexistent label " << label2jump), alPriorCritic));
-            throw Alarm(MTK_HERE, MTK_SS("inexistent label " << label2jump), alPriorCritic);
+            signal_error (Alarm(MTK_HERE, "bhvm",  MTK_SS("inexistent label " << label2jump), alPriorCritic));
+            throw Alarm(MTK_HERE, "bhvm",  MTK_SS("inexistent label " << label2jump), alPriorCritic);
         }
         else
             program_counter = labels[label2jump];
     }
     else
-        throw Alarm(MTK_HERE, MTK_SS("no label to jump (empty stack)"), alPriorCritic);
+        throw Alarm(MTK_HERE, "bhvm",  MTK_SS("no label to jump (empty stack)"), alPriorCritic);
 }
 
 void bhvm::exec_instruction (const std::string& instruction)
@@ -141,7 +141,7 @@ void bhvm::exec_instruction (const std::string& instruction)
         exec_push(instruction.substr(5));
     }
     else
-        throw Alarm(MTK_HERE, MTK_SS("unknown command " << instruction), alPriorCritic);
+        throw Alarm(MTK_HERE, "bhvm",  MTK_SS("unknown command " << instruction), alPriorCritic);
 }
 
 
@@ -156,17 +156,17 @@ void bhvm::execute_program (void)
             exec_instruction(program[program_counter]);
             ++program_counter;
         }
-        signal_debug(Alarm(MTK_HERE, MTK_SS("end of program." << std::endl << get_status()), alPriorDebug));
+        signal_debug(Alarm(MTK_HERE, "bhvm",  MTK_SS("end of program." << std::endl << get_status()), alPriorDebug));
 
 
     } catch(const mtk::Alarm& error) {
-        Alarm al(MTK_HERE, get_status(), alPriorCritic);
+        Alarm al(MTK_HERE, "bhvm",  get_status(), alPriorCritic);
         al.Add(error);
         signal_error(al);
     } catch (std::exception& e) {
-        signal_error(Alarm(MTK_HERE, MTK_SS("c++ exception " << e.what()  << get_status()), alPriorCritic));
+        signal_error(Alarm(MTK_HERE, "bhvm",  MTK_SS("c++ exception " << e.what()  << get_status()), alPriorCritic));
     } catch(...) {
-        signal_error(Alarm(MTK_HERE, MTK_SS("unknown error  " << get_status()), alPriorCritic));
+        signal_error(Alarm(MTK_HERE, "bhvm",  MTK_SS("unknown error  " << get_status()), alPriorCritic));
     }
 }
 
@@ -178,7 +178,7 @@ void bhvm::execute_program (void)
 std::string  bhvm::get_top        (void) const
 {
     if (stack.size()==0)
-        throw Alarm(MTK_HERE, MTK_SS("empty stack"), alPriorCritic);
+        throw Alarm(MTK_HERE, "bhvm",  MTK_SS("empty stack"), alPriorCritic);
 
     return stack.back();
 }
@@ -214,7 +214,7 @@ bhvm::register_external_command (const std::string& command)
         map_signal_external_commands[command].DANGEROUS_ThisInstance_NOT_Delete();
     }
     else
-        throw Alarm(MTK_HERE, MTK_SS("command already registered "), alPriorCritic);
+        throw Alarm(MTK_HERE, "bhvm",  MTK_SS("command already registered "), alPriorCritic);
 
     return new_signal;
 }

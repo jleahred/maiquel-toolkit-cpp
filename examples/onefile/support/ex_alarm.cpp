@@ -16,7 +16,7 @@ int main()
     //  simple throw catch    --------------------------------------------------
     try
     {
-        throw mtk::Alarm(MTK_HERE, "throwing", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "exalarm", "throwing", mtk::alPriorError);
     }
     catch(const mtk::Alarm& alarm)
     {
@@ -30,7 +30,7 @@ int main()
     {
         try
         {
-            throw mtk::Alarm(MTK_HERE, "throwing", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "exalarm", "throwing", mtk::alPriorError);
         }
         MTK_CATCH_RETHROW(MTK_HERE, "MTK_CATCH_RETHROW")
     }
@@ -46,7 +46,7 @@ int main()
     {
         try
         {
-            throw mtk::Alarm(MTK_HERE, "throwing", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "exalarm", "throwing", mtk::alPriorError);
         }
         MTK_CATCH_CALLFUNCION(std::cout << "__NR__:  "<<, MTK_HERE, "testing call function")
     }
@@ -58,13 +58,13 @@ int main()
 
     //  notifying with no flow interuption   ------------------------------
     std::cout << std::endl;
-    mtk::AlarmMsg( mtk::Alarm(MTK_HERE, "no interuption notification", mtk::alPriorWarning, mtk::alTypeUnknown) );
+    mtk::AlarmMsg( mtk::Alarm(MTK_HERE, "exalarm",  "no interuption notification", mtk::alPriorWarning, mtk::alTypeUnknown) );
     
     
     //  stacking alarms   --------------------------------------------------
     std::cout << std::endl;
-    mtk::Alarm a7 = mtk::Alarm(MTK_HERE, "stacking", mtk::alPriorWarning, mtk::alTypeUnknown);
-    a7.Add( mtk::Alarm(MTK_HERE, "stacked", mtk::alPriorWarning, mtk::alTypeUnknown) );
+    mtk::Alarm a7 = mtk::Alarm(MTK_HERE, "exalarm",  "stacking", mtk::alPriorWarning, mtk::alTypeUnknown);
+    a7.Add( mtk::Alarm(MTK_HERE, "exalarm",  "stacked", mtk::alPriorWarning, mtk::alTypeUnknown) );
     mtk::AlarmMsg(a7);
 
 

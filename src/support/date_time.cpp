@@ -80,13 +80,13 @@ dtTimeQuantity::dtTimeQuantity (dtMillisecsDay        _millisecsDay     )
 {
     if (_millisecsDay.WarningDontDoThisGetInternal()  >  MILLISECS_ON_DAY)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Inicialización   _millisecsDay  > un día",
                         alPriorError, alTypeNoPermisions
                 );
     if (_millisecsDay.WarningDontDoThisGetInternal()  <  0)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Inicialización   _millisecsDay  < 0",
                         alPriorError, alTypeNoPermisions
                 );
@@ -108,21 +108,21 @@ dtTimeQuantity::dtTimeQuantity (dtDays                   _days          ,
 {
     if (_millisecsDay.WarningDontDoThisGetInternal() <0)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Inicialización   millisecsDay  < 0",
                         alPriorError, alTypeNoPermisions
                 );
 
     if (_millisecsDay.WarningDontDoThisGetInternal()  >  MILLISECS_ON_DAY)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Inicialización   millisecsDay  > un día",
                         alPriorError, alTypeNoPermisions
                 );
 
     if (_days.WarningDontDoThisGetInternal() <0)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Inicialización   days  < 0",
                         alPriorError, alTypeNoPermisions
                 );
@@ -146,14 +146,14 @@ dtTimeQuantity::dtTimeQuantity (dtDays                   _days          ,
 {
     if (_hours.WarningDontDoThisGetInternal()>=24  ||  _minutes.WarningDontDoThisGetInternal()>=60  ||  _secs.WarningDontDoThisGetInternal()>=60   ||  _millisecs.WarningDontDoThisGetInternal()>=1000)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Error  dtTimeQuantity   values out of rage init",
                         alPriorError, alTypeNoPermisions
                 );
 
     if (_days.WarningDontDoThisGetInternal() <0  || _hours.WarningDontDoThisGetInternal()<0    ||  _minutes.WarningDontDoThisGetInternal()<0    ||  _secs.WarningDontDoThisGetInternal()<0     ||  _millisecs.WarningDontDoThisGetInternal()<0    )
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Error  dtTimeQuantity   values out of rage init <0",
                         alPriorError, alTypeNoPermisions
                 );
@@ -188,14 +188,14 @@ dtTimeQuantity::dtTimeQuantity (dtHours                 _hours          ,
 {
     if (_hours.WarningDontDoThisGetInternal()>=24  ||  _minutes.WarningDontDoThisGetInternal()>=60  ||  _secs.WarningDontDoThisGetInternal()>=60   ||  _millisecs.WarningDontDoThisGetInternal()>=1000)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Error  dtTimeQuantity   values out of rage init",
                         alPriorError, alTypeNoPermisions
                 );
 
     if (_hours.WarningDontDoThisGetInternal()<0    ||  _minutes.WarningDontDoThisGetInternal()<0    ||  _secs.WarningDontDoThisGetInternal()<0     ||  _millisecs.WarningDontDoThisGetInternal()<0    )
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Error  dtTimeQuantity   values out of rage init <0",
                         alPriorError, alTypeNoPermisions
                 );
@@ -637,7 +637,7 @@ DateTime::DateTime( dtYear                        _year                 ,
     DecodeDate();
     if (year != _year  ||  month != _month  ||  day != _day)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Invalid argument DateTime(dtYear _year, dtMonth _month, dtDay _day",
                         alPriorError, alTypeNoPermisions
                 );
@@ -664,7 +664,7 @@ DateTime::DateTime( dtYear                        _year                 ,
     DecodeDate();       //  esto reajustará las horas, minutos, etc...
     if (year != _year  ||  month != _month  ||  day != _day)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Invalid argument DateTime(dtYear _year, dtMonth _month, dtDay _day",
                         alPriorError, alTypeNoPermisions
                 );
@@ -696,13 +696,13 @@ DateTime::DateTime     (dtYear                        _year                 ,
     DecodeDate();
     if (year != _year  ||  month != _month  ||  day != _day)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Invalid argument DateTime(dtYear _year, dtMonth _month, dtDay _day",
                         alPriorError, alTypeNoPermisions
                 );
     if (hours != _hour  ||  minutes != _minutes  ||  seconds != _seconds)
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Invalid argument DateTime(h,m,s,ms",
                         alPriorError, alTypeNoPermisions
                 );
@@ -711,7 +711,7 @@ DateTime::DateTime     (dtYear                        _year                 ,
             || milliseconds.WarningDontDoThisGetInternal()-_milliseconds.WarningDontDoThisGetInternal() < -1)
         )
         throw   Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "datetime",
                         "Invalid argument DateTime(h,m,s,ms",
                         alPriorError, alTypeNoPermisions
                 );

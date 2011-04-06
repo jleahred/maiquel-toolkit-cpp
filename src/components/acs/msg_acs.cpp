@@ -387,7 +387,7 @@ req_login_key::req_login_key (   const mtk::msg::sub_request_info&  _request_inf
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -407,7 +407,7 @@ res_login_key::res_login_key (   const mtk::msg::sub_r_response&  _response_info
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -427,7 +427,7 @@ req_login::req_login (   const mtk::msg::sub_request_info&  _request_info,   con
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -447,7 +447,7 @@ res_login::res_login (   const mtk::msg::sub_r_response&  _response_info,   cons
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -467,7 +467,7 @@ res_login::IC_login_response_info::IC_login_response_info (   const std::string&
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -487,7 +487,7 @@ conf_logout::conf_logout (   const mtk::msg::sub_location&  _location,   const s
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -507,7 +507,7 @@ req_logout::req_logout (   const mtk::msg::sub_request_info&  _request_info)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -527,7 +527,7 @@ req_change_password::req_change_password (   const mtk::msg::sub_request_info&  
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -547,7 +547,7 @@ res_change_password::res_change_password (   const mtk::msg::sub_r_response&  _r
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -567,7 +567,7 @@ res_change_password::IC_change_password_info::IC_change_password_info (   const 
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -822,7 +822,7 @@ void  copy (req_login_key& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message req_login_key::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_login_key::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
@@ -830,7 +830,7 @@ void  copy (req_login_key& c, const qpid::types::Variant& v)
 
                     it = mv.find("u");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field user_name on message req_login_key::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message req_login_key::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.user_name, it->second);
                         //c.user_name = it->second;
@@ -871,7 +871,7 @@ void  copy (res_login_key& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field response_info on message res_login_key::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_login_key::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.response_info, it->second);
                         //__internal_qpid_fill(c.response_info, it->second.asMap());
@@ -879,7 +879,7 @@ void  copy (res_login_key& c, const qpid::types::Variant& v)
 
                     it = mv.find("k");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field key on message res_login_key::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field key on message res_login_key::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.key, it->second);
                         //c.key = it->second;
@@ -920,7 +920,7 @@ void  copy (req_login& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
@@ -928,7 +928,7 @@ void  copy (req_login& c, const qpid::types::Variant& v)
 
                     it = mv.find("u");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field user_name on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.user_name, it->second);
                         //c.user_name = it->second;
@@ -936,7 +936,7 @@ void  copy (req_login& c, const qpid::types::Variant& v)
 
                     it = mv.find("k");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field key on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field key on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.key, it->second);
                         //c.key = it->second;
@@ -944,7 +944,7 @@ void  copy (req_login& c, const qpid::types::Variant& v)
 
                     it = mv.find("cp");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field coded_pass on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field coded_pass on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.coded_pass, it->second);
                         //c.coded_pass = it->second;
@@ -989,7 +989,7 @@ void  copy (res_login& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field response_info on message res_login::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.response_info, it->second);
                         //__internal_qpid_fill(c.response_info, it->second.asMap());
@@ -997,7 +997,7 @@ void  copy (res_login& c, const qpid::types::Variant& v)
 
                     it = mv.find("lr");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field login_response_info on message res_login::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field login_response_info on message res_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.login_response_info, it->second);
                         //__internal_qpid_fill(c.login_response_info, it->second.asMap());
@@ -1039,7 +1039,7 @@ void  copy (res_login::IC_login_response_info& c, const qpid::types::Variant& v)
 
                     it = mv.find("u");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field user_name on message res_login::IC_login_response_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message res_login::IC_login_response_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.user_name, it->second);
                         //c.user_name = it->second;
@@ -1047,7 +1047,7 @@ void  copy (res_login::IC_login_response_info& c, const qpid::types::Variant& v)
 
                     it = mv.find("si");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field session_id on message res_login::IC_login_response_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_id on message res_login::IC_login_response_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.session_id, it->second);
                         //c.session_id = it->second;
@@ -1088,7 +1088,7 @@ void  copy (conf_logout& c, const qpid::types::Variant& v)
 
                     it = mv.find("lc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field location on message conf_logout::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field location on message conf_logout::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.location, it->second);
                         //__internal_qpid_fill(c.location, it->second.asMap());
@@ -1096,7 +1096,7 @@ void  copy (conf_logout& c, const qpid::types::Variant& v)
 
                     it = mv.find("si");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field session_id on message conf_logout::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_id on message conf_logout::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.session_id, it->second);
                         //c.session_id = it->second;
@@ -1104,7 +1104,7 @@ void  copy (conf_logout& c, const qpid::types::Variant& v)
 
                     it = mv.find("si");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field description on message conf_logout::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field description on message conf_logout::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.description, it->second);
                         //c.description = it->second;
@@ -1147,7 +1147,7 @@ void  copy (req_logout& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message req_logout::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_logout::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
@@ -1186,7 +1186,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field request_info on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
@@ -1194,7 +1194,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
 
                     it = mv.find("un");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field user_name on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.user_name, it->second);
                         //c.user_name = it->second;
@@ -1202,7 +1202,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
 
                     it = mv.find("k");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field key on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field key on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.key, it->second);
                         //c.key = it->second;
@@ -1210,7 +1210,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
 
                     it = mv.find("op");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field old_password on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field old_password on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.old_password, it->second);
                         //c.old_password = it->second;
@@ -1218,7 +1218,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
 
                     it = mv.find("np");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field new_password on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field new_password on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.new_password, it->second);
                         //c.new_password = it->second;
@@ -1265,7 +1265,7 @@ void  copy (res_change_password& c, const qpid::types::Variant& v)
 
                     it = mv.find("ri");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field response_info on message res_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.response_info, it->second);
                         //__internal_qpid_fill(c.response_info, it->second.asMap());
@@ -1273,7 +1273,7 @@ void  copy (res_change_password& c, const qpid::types::Variant& v)
 
                     it = mv.find("cp");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field change_password_info on message res_change_password::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field change_password_info on message res_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.change_password_info, it->second);
                         //__internal_qpid_fill(c.change_password_info, it->second.asMap());
@@ -1315,7 +1315,7 @@ void  copy (res_change_password::IC_change_password_info& c, const qpid::types::
 
                     it = mv.find("a");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field accepted on message res_change_password::IC_change_password_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field accepted on message res_change_password::IC_change_password_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.accepted, it->second);
                         //__internal_qpid_fill(c.accepted, it->second.asMap());
@@ -1746,7 +1746,7 @@ req_login_key::req_login_key (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1764,7 +1764,7 @@ res_login_key::res_login_key (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1786,7 +1786,7 @@ req_login::req_login (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1804,7 +1804,7 @@ res_login::res_login (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1822,7 +1822,7 @@ res_login::IC_login_response_info::IC_login_response_info (const qpid::messaging
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1842,7 +1842,7 @@ conf_logout::conf_logout (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1858,7 +1858,7 @@ req_logout::req_logout (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1882,7 +1882,7 @@ req_change_password::req_change_password (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1900,7 +1900,7 @@ res_change_password::res_change_password (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1916,7 +1916,7 @@ res_change_password::IC_change_password_info::IC_change_password_info (const qpi
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 

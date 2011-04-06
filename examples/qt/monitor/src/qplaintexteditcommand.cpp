@@ -138,7 +138,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
         if(write_into)
             write_into->appendPlainText(result.c_str());
         else
-            throw mtk::Alarm(MTK_HERE, "write_into not initialized.", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "monitor", "write_into not initialized.", mtk::alPriorError);
         return;
     }
     if(command=="__clear")
@@ -147,7 +147,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
         if(write_into)
             write_into->clear();
         else
-            throw mtk::Alarm(MTK_HERE, "write_into not initialized.", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "monitor", "write_into not initialized.", mtk::alPriorError);
         return;
     }
 
@@ -159,7 +159,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
     if(list_processes)
         list_processes->fill_process_info_for_selected_items(admin_process_info_to_send);
     else
-        throw mtk::Alarm(MTK_HERE, "list_processes  not initialized.", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "monitor", "list_processes  not initialized.", mtk::alPriorError);
 
 
     mtk::list<mtk::msg::sub_process_info>::iterator it = admin_process_info_to_send.begin();
@@ -183,7 +183,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
                                                << it->process_location.process_uuid
                                                << std::endl << "_______________________________________________________________________________________________").c_str());
         else
-            throw mtk::Alarm(MTK_HERE, "write_into not initialized.", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "monitor","write_into not initialized.", mtk::alPriorError);
         ++it;
     }
 }
@@ -202,7 +202,7 @@ void QPlainTextEditCommand::on_command_response (const mtk::list<mtk::admin::msg
     if(write_into)
         write_into->appendPlainText(result.c_str());
     else
-        throw mtk::Alarm(MTK_HERE, "write_into not initialized.", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "monitor","write_into not initialized.", mtk::alPriorError);
 }
 
 

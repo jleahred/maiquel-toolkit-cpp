@@ -81,7 +81,7 @@ void tcp_base_socket::close(const std::string& reason)
     {
         int error = mtk::socket_get_last_error(handle_socket);
         handle_socket = -1;
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  Error closing socket " <<  strerror(error) << " " << error), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  Error closing socket " <<  strerror(error) << " " << error), mtk::alPriorError);
     }
     else
     {
@@ -94,7 +94,7 @@ void tcp_base_socket::close(const std::string& reason)
 void tcp_base_socket::__write(const char* data, size_t bytes)
 {
     if (handle_socket<=0)   
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  __write on not initialized/conected socket"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE,  "socket", MTK_SS(name << "  __write on not initialized/conected socket"), mtk::alPriorError);
     
 
     if (fast_producer_queue.size()>0)
@@ -123,7 +123,7 @@ void tcp_base_socket::__write(const char* data, size_t bytes)
         else
         {
             close(MTK_SS(strerror(error) << handle_socket));
-            throw mtk::Alarm(MTK_HERE, MTK_SS(name << " __write error " << strerror(error) << handle_socket), mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE,  "socket", MTK_SS(name << " __write error " << strerror(error) << handle_socket), mtk::alPriorError);
         }
     }
     else
@@ -138,7 +138,7 @@ void tcp_base_socket::__write(const char* data, size_t bytes)
             }
             else
             {
-                throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  Error sending bytes, partial send with not EAGAIN error  sent " << number_of_bytes_transferred << " of " << bytes << "   with error " << strerror(error) << " code: " << error << "   EAGAIN code is" << EAGAIN), mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  Error sending bytes, partial send with not EAGAIN error  sent " << number_of_bytes_transferred << " of " << bytes << "   with error " << strerror(error) << " code: " << error << "   EAGAIN code is" << EAGAIN), mtk::alPriorError);
             }
         }
 
@@ -162,7 +162,7 @@ void tcp_base_socket::check_input(void)
         else if (bytes_readed == 0)     //  conexión cerrada
         {
             close(MTK_SS(" connection down " << name << " " << handle_socket));
-            throw mtk::Alarm(MTK_HERE, MTK_SS(name << " Connection down  bytes readed " << bytes_readed << "  " <<  "  socket: " << handle_socket), mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << " Connection down  bytes readed " << bytes_readed << "  " <<  "  socket: " << handle_socket), mtk::alPriorError);
         }
         else    //  sólo puede ser == -1   IDIDMTK_ET_ERROR
         {
@@ -172,7 +172,7 @@ void tcp_base_socket::check_input(void)
             else
             {
                 close(MTK_SS(strerror(error) << handle_socket));
-                throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  bytes readed " << bytes_readed << "  " << strerror(error) << " " << error << "  socket: " << handle_socket), mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  bytes readed " << bytes_readed << "  " << strerror(error) << " " << error << "  socket: " << handle_socket), mtk::alPriorError);
             }
         }
     }
@@ -191,7 +191,7 @@ void tcp_base_socket::check_fast_producer_queue(void)
 	
 		if(mtk::dtNowLocal() - since_fast_producer_queue.Get()  > mtk::dtMilliseconds(700))
 		{
-			mtk::AlarmMsg(mtk::Alarm(MTK_HERE, 
+			mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "socket", 
 								MTK_SS(name << "  fast producer since " << mtk::dtNowLocal() - since_fast_producer_queue.Get()), 
 								mtk::alPriorError));
 		}
@@ -233,7 +233,7 @@ void tcp_base_socket::insert_fast_producer(const char*data, size_t bytes)
         
 	MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
 		if(fast_producer_queue.size() > 15000)
-			mtk::AlarmMsg(mtk::Alarm(MTK_HERE, 
+			mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "socket",  
 								MTK_SS(name << "  too big fast producer queue  size " << fast_producer_queue.size()), 
 								mtk::alPriorError));
 	MTK_END_EXEC_MAX_FREC

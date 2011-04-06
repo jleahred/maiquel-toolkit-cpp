@@ -91,7 +91,7 @@
       description        :  std::string                                 ({_})  
       [{  
             ci->__serrors += std::string(", ") + description();   
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, description(), mtk::alPriorCritic, mtk::alTypeNoPermisions));  
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", description(), mtk::alPriorCritic, mtk::alTypeNoPermisions));  
       }]
 
 
@@ -330,7 +330,7 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
                                                                 last_request().Get().request_pos,
                                                                 last_request().Get().cli_ref)));
                     else
-                        throw mtk::Alarm(MTK_HERE, "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                        throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 }]
 
 

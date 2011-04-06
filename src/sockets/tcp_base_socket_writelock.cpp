@@ -72,7 +72,7 @@ void tcp_base_socket_writelock::close(const std::string& reason)
     {
         int error = mtk::socket_get_last_error(handle_socket);
         handle_socket = -1;
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  Error closing socket " <<  strerror(error) << " " << error), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  Error closing socket " <<  strerror(error) << " " << error), mtk::alPriorError);
     }
     else
     {
@@ -85,7 +85,7 @@ void tcp_base_socket_writelock::close(const std::string& reason)
 void tcp_base_socket_writelock::__write(const char* data, size_t bytes)
 {
 	if (handle_socket<=0)   
-		throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  __write on not initialized/conected socket"), mtk::alPriorError);
+		throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  __write on not initialized/conected socket"), mtk::alPriorError);
 	
 
     mtk::DateTime  start = mtk::dtNowLocal();
@@ -99,19 +99,19 @@ void tcp_base_socket_writelock::__write(const char* data, size_t bytes)
 	if (result == 0)
 	{
 		close("detected ordered disconection on write");
-		throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  __write disconnected socket"), mtk::alPriorError);
+		throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  __write disconnected socket"), mtk::alPriorError);
 	}
 	else if (result < 0)      //  sólo puede ser -1 error  o   0 si se ha cortado la conexión en el otro extremo
     {
         close(MTK_SS(strerror(errno) << handle_socket));
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  "  << strerror(errno) << handle_socket), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  "  << strerror(errno) << handle_socket), mtk::alPriorError);
     }
 	else
 	{
 		if (size_t(result) != bytes)
         {
             close ("partial write");
-			throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  Error sending bytes, partial send???"), mtk::alPriorError);
+			throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  Error sending bytes, partial send???"), mtk::alPriorError);
         }
 	}
 }
@@ -145,7 +145,7 @@ void tcp_base_socket_writelock::check_input(void)
 		{
             int error = mtk::socket_get_last_error(handle_socket);
             close(MTK_SS(strerror(error) << handle_socket));
-            throw mtk::Alarm(MTK_HERE, MTK_SS(name <<  "reading error " << strerror(error) << handle_socket), mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name <<  "reading error " << strerror(error) << handle_socket), mtk::alPriorError);
         }
 	}
 }

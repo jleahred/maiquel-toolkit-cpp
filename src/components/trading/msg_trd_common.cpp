@@ -387,7 +387,7 @@ sub_order_id::sub_order_id ( const mtk::msg::sub_request_id&  parent)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -407,7 +407,7 @@ sub_total_executions::sub_total_executions (   const mtk::Double&  _sum_price_by
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -509,7 +509,7 @@ void  copy (sub_total_executions& c, const qpid::types::Variant& v)
 
                     it = mv.find("spq");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field sum_price_by_qty on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sum_price_by_qty on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.sum_price_by_qty, it->second);
                         //c.sum_price_by_qty = it->second;
@@ -517,7 +517,7 @@ void  copy (sub_total_executions& c, const qpid::types::Variant& v)
 
                     it = mv.find("aqt");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field quantity on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field quantity on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.quantity, it->second);
                         //c.quantity = it->second;
@@ -525,7 +525,7 @@ void  copy (sub_total_executions& c, const qpid::types::Variant& v)
 
                     it = mv.find("rq");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field remaining_qty on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field remaining_qty on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.remaining_qty, it->second);
                         //c.remaining_qty = it->second;
@@ -639,7 +639,7 @@ sub_order_id::sub_order_id (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -659,7 +659,7 @@ sub_total_executions::sub_total_executions (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 

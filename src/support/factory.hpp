@@ -39,7 +39,7 @@ get_from_factory(const TKEY& key, CountPtr< TRETURN > result = CountPtr< TRETURN
         if (factory_map.size()>2000)
         {
             AlarmMsg  (Alarm(
-                        MTK_HERE,
+                        MTK_HERE, "factory", 
                         MTK_SS (" too many suscriptions " << factory_map.size()),
                         alPriorError, alTypeNoPermisions));
         }

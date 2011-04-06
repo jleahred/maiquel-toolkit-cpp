@@ -46,7 +46,7 @@ struct user_info
         if(minimum_params)
         {
             #define  CHECK_FIELD(__FIELD_NAME__) \
-                if(__FIELD_NAME__=="")    throw mtk::Alarm(MTK_HERE, "mising " #__FIELD_NAME__, mtk::alPriorError);
+                if(__FIELD_NAME__=="")    throw mtk::Alarm(MTK_HERE, "userinfo", "mising " #__FIELD_NAME__, mtk::alPriorError);
             CHECK_FIELD((*properties)["name"])
             CHECK_FIELD((*properties)["client_code"])
             CHECK_FIELD((*properties)["requested_by"])
@@ -67,23 +67,23 @@ struct user_info
             mtk::DateTime  converted(mtk::dtNowLocal());
             mtk::s_TRY_stodt((*properties)["created_on"], mtk::dtNowLocal()).assign(converted, converted_ok);
             if(converted_ok==false)
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("error converting created_on " << (*properties)["created_on"]), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "userinfo", MTK_SS("error converting created_on " << (*properties)["created_on"]), mtk::alPriorError));
             created_on = converted;
             
             mtk::s_TRY_stodt((*properties)["last_access"], mtk::dtNowLocal()).assign(converted, converted_ok);
             if(converted_ok==false)
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("error converting last_access " << (*properties)["last_access"]), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "userinfo", MTK_SS("error converting last_access " << (*properties)["last_access"]), mtk::alPriorError));
             last_access = converted;
             
             int converted_int=0;
             mtk::s_TRY_stoi((*properties)["check_pass_ok"], 0).assign(converted_int, converted_ok);
             if(converted_ok==false)
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("error converting check_pass_ok " << (*properties)["check_pass_ok"]), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "userinfo", MTK_SS("error converting check_pass_ok " << (*properties)["check_pass_ok"]), mtk::alPriorError));
             check_pass_ok = converted_int;
 
             mtk::s_TRY_stoi((*properties)["check_pass_wrong"], 0).assign(converted_int, converted_ok);
             if(converted_ok==false)
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("error converting check_pass_wrong " << (*properties)["check_pass_wrong"]), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "userinfo", MTK_SS("error converting check_pass_wrong " << (*properties)["check_pass_wrong"]), mtk::alPriorError));
             check_pass_wrong = converted_int;
         }
     }
@@ -190,12 +190,12 @@ users_manager::users_manager()
             }
             catch (const mtk::Alarm& error)
             {
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("error reading... "  << line), mtk::alPriorCritic));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "usersmanager", MTK_SS("error reading... "  << line), mtk::alPriorCritic));
             }
         }
     }
     fusers.close();
-    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("readed "  << counter << " users from file"), mtk::alPriorDebug));
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "usersmanager", MTK_SS("readed "  << counter << " users from file"), mtk::alPriorDebug));
     
     MTK_TIMER_1SF(check_delayed_save);
 }
@@ -238,7 +238,7 @@ bool   users_manager::check_user_password(const std::string& _user_name, const s
         }
         else
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(user_name << " trying to connect with invalid password"), mtk::alPriorWarning));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "checkpassw", MTK_SS(user_name << " trying to connect with invalid password"), mtk::alPriorWarning));
             map_user_info->find(user_name)->second.check_pass_wrong += 1;
             delayed_save = true;
             return false;
@@ -246,7 +246,7 @@ bool   users_manager::check_user_password(const std::string& _user_name, const s
     }
     else
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(user_name << " doesn't exist"), mtk::alPriorWarning));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "checkpassw", MTK_SS(user_name << " doesn't exist"), mtk::alPriorWarning));
         return false;
     }
 }
@@ -272,7 +272,7 @@ std::string users_manager::get_passwordcrc32(const std::string& user_name)
     if(map_user_info->find(mtk::s_toUpper(user_name)) !=  map_user_info->end())
         return map_user_info->find(mtk::s_toUpper(user_name))->second.passwordcrc32;
     else
-        throw mtk::Alarm(MTK_HERE, MTK_SS(user_name << "  doesn't exists"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "getpwd32", MTK_SS(user_name << "  doesn't exists"), mtk::alPriorError);
 }
 
 bool users_manager::exists_user(const std::string& user_name)
@@ -467,11 +467,11 @@ void    users_manager::save_new_password       (const std::string& name, const s
 {
     std::string  user_name = mtk::s_toUpper(mtk::s_trim(name, " \t"));
     if(map_user_info->find(user_name)== map_user_info->end())
-        throw mtk::Alarm(MTK_HERE, MTK_SS("Error saving new password. Unknown user " << user_name), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "savenewpassw", MTK_SS("Error saving new password. Unknown user " << user_name), mtk::alPriorCritic, mtk::alTypeNoPermisions);
     else
     {
         map_user_info->find(user_name)->second.passwordcrc32 = password;
-        mtk::Alarm(mtk::Alarm(MTK_HERE, MTK_SS("modif password for " << user_name), mtk::alPriorDebug));
+        mtk::Alarm(mtk::Alarm(MTK_HERE, "savenewpassw", MTK_SS("modif password for " << user_name), mtk::alPriorDebug));
         save_user_list();
     }
 }

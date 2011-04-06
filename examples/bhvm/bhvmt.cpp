@@ -297,9 +297,9 @@ int main()
     } catch(const mtk::Alarm& error) {
         std::cout << error;
     } catch (std::exception& e) {
-        std::cout << mtk::Alarm("execute_program", MTK_SS("c++ exception " << e.what()), mtk::alPriorCritic);
+        std::cout << mtk::Alarm(MTK_HERE, "execute_program", MTK_SS("c++ exception " << e.what()), mtk::alPriorCritic);
     } catch(...) {
-        std::cout << mtk::Alarm("execute_program", "unknown error", mtk::alPriorCritic);
+        std::cout << mtk::Alarm(MTK_HERE, "execute_program", "unknown error", mtk::alPriorCritic);
     }
 
     #include "support/release_on_exit.hpp"
@@ -505,7 +505,7 @@ mtk::nullable<double> s_read_double (mtk::bhvm* basic_machine)
     s_get_val_type_and_value(top).assign(type, value);
 
     if (type != code_type_double)
-        throw mtk::Alarm("read_double", MTK_SS(top << " is not a number"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "read_double", MTK_SS(top << " is not a number"), mtk::alPriorCritic);
 
 
     if (value == code_val_void)
@@ -517,7 +517,7 @@ mtk::nullable<double> s_read_double (mtk::bhvm* basic_machine)
     double result;
     mtk::s_TRY_stod                (value, 0.).assign(result, conversionResult);
     if (conversionResult == false)
-        throw mtk::Alarm("s_read_double", MTK_SS("invalid conversion from " << value << " to double"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "s_read_double", MTK_SS("invalid conversion from " << value << " to double"), mtk::alPriorCritic);
 
     return mtk::make_nullable(result);
 }
@@ -545,7 +545,7 @@ mtk::nullable<bool> s_read_bool (mtk::bhvm* basic_machine)
     s_get_val_type_and_value(top).assign(type, value);
 
     if (type != code_type_bool)
-        throw mtk::Alarm("s_read_bool", MTK_SS(top << " is not a boolean"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "s_read_bool", MTK_SS(top << " is not a boolean"), mtk::alPriorCritic);
 
 
     if (value == code_val_void)
@@ -556,7 +556,7 @@ mtk::nullable<bool> s_read_bool (mtk::bhvm* basic_machine)
     else if (value=="false")
         return mtk::make_nullable(false);
     else
-        throw mtk::Alarm("s_read_bool", MTK_SS("invalid bool value in " << value), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "s_read_bool", MTK_SS("invalid bool value in " << value), mtk::alPriorCritic);
 
 }
 
@@ -590,7 +590,7 @@ std::string s_read_var_name (mtk::bhvm* basic_machine)
         varname = top.substr(4);
     }
     else
-        throw mtk::Alarm("read_varname", MTK_SS(top << " is not a var"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "read_varname", MTK_SS(top << " is not a var"), mtk::alPriorCritic);
 
 
     return varname;
@@ -616,13 +616,13 @@ void s_save_value_in_var(const std::string& var_name, const std::string& value)
     //  verificar existencia previa de la variable
     std::map< std::string, std::string >::iterator it = map_var_value.find(var_name);
     if (it == map_var_value.end())
-        throw mtk::Alarm("s_save_value_in_var", MTK_SS(var_name << " doesn't exists"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "s_save_value_in_var", MTK_SS(var_name << " doesn't exists"), mtk::alPriorCritic);
 
     std::string current_value = it->second;
 
     //  verificar tipos de variables
     if (s_get_val_type_and_value(value)._0 != s_get_val_type_and_value(current_value)._0)
-        throw mtk::Alarm("s_save_value_in_var", MTK_SS(value << ", " << current_value << " type doesn't match, cannot assing"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "s_save_value_in_var", MTK_SS(value << ", " << current_value << " type doesn't match, cannot assing"), mtk::alPriorCritic);
 
     it->second = value;
 }
@@ -633,7 +633,7 @@ std::string s_get_value_from_var    (const std::string& var_name)
     //  verificar existencia previa de la variable
     std::map< std::string, std::string >::iterator it = map_var_value.find(var_name);
     if (it == map_var_value.end())
-        throw mtk::Alarm("s_get_value_from_var", MTK_SS(var_name << " doesn't exists"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "s_get_value_from_var", MTK_SS(var_name << " doesn't exists"), mtk::alPriorCritic);
 
     return it->second;
 }
@@ -650,7 +650,7 @@ void s_def_variable(const std::string& var_name, const std::string& var_type)
     //  verificar existencia previa de la variable
     std::map< std::string, std::string >::iterator it = map_var_value.find(var_name);
     if (it != map_var_value.end())
-        throw mtk::Alarm("s_def_variable", MTK_SS(var_name << " already exists"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "s_def_variable", MTK_SS(var_name << " already exists"), mtk::alPriorCritic);
 
     map_var_value[var_name] = MTK_SS(var_type << code_val_void);
 }

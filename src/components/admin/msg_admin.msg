@@ -67,6 +67,7 @@ pub_alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     code_source         (cs)    :   string
+    subject             (sb)    :   string
     message             (ms)    :   string
     priority            (p)     :   mtk::alEnPriority
     type                (t)     :   mtk::alEnType

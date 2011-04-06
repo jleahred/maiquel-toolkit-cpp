@@ -385,7 +385,7 @@ LimitPosition::LimitPosition (   const mtk::nullable<std::string>&  _buy_sell,  
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -410,7 +410,7 @@ RQ_NW_LS::RQ_NW_LS (   const std::string&  _order_id,   const std::string&  _cli
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -430,7 +430,7 @@ RQ_NW_LS::IC_control_fields_::IC_control_fields_ (   const mtk::DateTime&  _cloc
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -450,7 +450,7 @@ RQ_NW_LS::IC_product_code::IC_product_code (   const std::string&  _market,   co
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -470,7 +470,7 @@ LimitPositionChild::LimitPositionChild ( const LimitPosition&  parent,   const s
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -622,7 +622,7 @@ void  copy (LimitPosition& c, const qpid::types::Variant& v)
 
                     it = mv.find("qt");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field quantity on message LimitPosition::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field quantity on message LimitPosition::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.quantity, it->second);
                         //c.quantity = it->second;
@@ -667,7 +667,7 @@ void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
 
                     it = mv.find("oid");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field order_id on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field order_id on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.order_id, it->second);
                         //c.order_id = it->second;
@@ -675,7 +675,7 @@ void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
 
                     it = mv.find("cr");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field cli_ref on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_ref on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.cli_ref, it->second);
                         //c.cli_ref = it->second;
@@ -683,7 +683,7 @@ void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
 
                     it = mv.find("pos");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field position on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field position on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.position, it->second);
                         //__internal_qpid_fill(c.position, it->second.asMap());
@@ -699,7 +699,7 @@ void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
 
                     it = mv.find("pc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field product_code on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_code on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.product_code, it->second);
                         //__internal_qpid_fill(c.product_code, it->second.asMap());
@@ -707,7 +707,7 @@ void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
 
                     it = mv.find("ns");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field names on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field names on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.names, it->second);
                         //c.names = it->second;
@@ -715,7 +715,7 @@ void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
 
                     it = mv.find("poss");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field postitions on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field postitions on message RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.postitions, it->second);
                         //__internal_qpid_fill(c.postitions, it->second.asMap());
@@ -769,7 +769,7 @@ void  copy (RQ_NW_LS::IC_control_fields_& c, const qpid::types::Variant& v)
 
                     it = mv.find("ci");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field clock_id on message RQ_NW_LS::IC_control_fields_::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field clock_id on message RQ_NW_LS::IC_control_fields_::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.clock_id, it->second);
                         //c.clock_id = it->second;
@@ -777,7 +777,7 @@ void  copy (RQ_NW_LS::IC_control_fields_& c, const qpid::types::Variant& v)
 
                     it = mv.find("sec");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field secuence on message RQ_NW_LS::IC_control_fields_::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field secuence on message RQ_NW_LS::IC_control_fields_::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.secuence, it->second);
                         //c.secuence = it->second;
@@ -818,7 +818,7 @@ void  copy (RQ_NW_LS::IC_product_code& c, const qpid::types::Variant& v)
 
                     it = mv.find("mk");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field market on message RQ_NW_LS::IC_product_code::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market on message RQ_NW_LS::IC_product_code::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.market, it->second);
                         //c.market = it->second;
@@ -826,7 +826,7 @@ void  copy (RQ_NW_LS::IC_product_code& c, const qpid::types::Variant& v)
 
                     it = mv.find("pr");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field product_code on message RQ_NW_LS::IC_product_code::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_code on message RQ_NW_LS::IC_product_code::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.product_code, it->second);
                         //c.product_code = it->second;
@@ -834,7 +834,7 @@ void  copy (RQ_NW_LS::IC_product_code& c, const qpid::types::Variant& v)
 
                     it = mv.find("ac");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field aditional_code on message RQ_NW_LS::IC_product_code::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field aditional_code on message RQ_NW_LS::IC_product_code::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.aditional_code, it->second);
                         //c.aditional_code = it->second;
@@ -877,7 +877,7 @@ copy(static_cast<LimitPosition&>(c), v);
 
                     it = mv.find("nf");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field new_field on message LimitPositionChild::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field new_field on message LimitPositionChild::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.new_field, it->second);
                         //c.new_field = it->second;
@@ -1140,7 +1140,7 @@ LimitPosition::LimitPosition (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1170,7 +1170,7 @@ RQ_NW_LS::RQ_NW_LS (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1188,7 +1188,7 @@ RQ_NW_LS::IC_control_fields_::IC_control_fields_ (const qpid::messaging::Message
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1208,7 +1208,7 @@ RQ_NW_LS::IC_product_code::IC_product_code (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -1224,7 +1224,7 @@ LimitPositionChild::LimitPositionChild (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 

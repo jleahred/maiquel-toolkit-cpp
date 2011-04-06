@@ -88,7 +88,7 @@ void cf_ex_ls(const mtk::trd::msg::CF_EX_LS& ex);
 
 s_status& get_status_ref(void)
 {
-    if (deleted)    throw mtk::Alarm(MTK_HERE, "on deleted module", mtk::alPriorWarning, mtk::alTypeNoPermisions);
+    if (deleted)    throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "on deleted module", mtk::alPriorWarning, mtk::alTypeNoPermisions);
     if (__internal_ptr_status==0)
     {
         __internal_ptr_status = new s_status();
@@ -246,7 +246,7 @@ mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (                             con
 mtk::trd::msg::RQ_XX_LS get_last_request_or_confirmation (mtk::CountPtr<trd_cli_ls> order)
 {
     if (order.isValid()==false)
-        throw mtk::Alarm(MTK_HERE, "missing order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
     if (order->last_request().HasValue())
         return order->last_request().Get();
@@ -256,7 +256,7 @@ mtk::trd::msg::RQ_XX_LS get_last_request_or_confirmation (mtk::CountPtr<trd_cli_
         return mtk::trd::msg::RQ_XX_LS( lc.req_info, lc.confirmated_info.order_id, lc.confirmated_info.product_code, lc.confirmated_info.market_pos, lc.confirmated_info.cli_ref);
     }
    else
-        throw mtk::Alarm(MTK_HERE, "missing product code in order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing product code in order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
 
 

@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    contExample* ex = new contExample(this);
+    //contExample* ex = new contExample(this);
 
 
     QCalendarWidget* calendar =  new QCalendarWidget(ui->mtk_contw);

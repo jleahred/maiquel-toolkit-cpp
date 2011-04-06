@@ -52,6 +52,7 @@ void write_body (std::ostream& os, const BaseAlarm& a)
 
 
     os  << " # " << a.message
+        << " >" << a.subject
         << " @" << a.codeSource;
 }
 

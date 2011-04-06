@@ -51,7 +51,7 @@ void CodecStringList::InitEncode  (void)
     if (internalList2Encode.size() !=0) {
         AlarmMsg(
             Alarm (
-                MTK_HERE,
+                MTK_HERE, "stringcodec",
                 "Init in non empty list",
                 mtk::alPriorError,
                 mtk::alTypeNoPermisions
@@ -135,7 +135,7 @@ CodecStringList::Decode      (const std::string& s)
     if (rStartCode != startCoded) {
         AlarmMsg(
             Alarm (
-                MTK_HERE,
+                MTK_HERE, "stringcodec",
                 "It's not a coded list, return empty list",
                 mtk::alPriorError,
                 mtk::alTypeNoPermisions
@@ -166,7 +166,7 @@ CodecStringList::Decode      (const std::string& s)
             {
                 AlarmMsg(
                     Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "stringcodec",
                         "Incorrect scape code",
                         mtk::alPriorError,
                         mtk::alTypeNoPermisions
@@ -249,7 +249,7 @@ void CodecStringProperties::InitEncode  (void)
     if (internalMap2Encode.size() !=0) {
         AlarmMsg(
             Alarm (
-                MTK_HERE,
+                MTK_HERE, "stringcodec",
                 "Init in non empty list",
                 mtk::alPriorError,
                 mtk::alTypeNoPermisions
@@ -327,7 +327,7 @@ CodecStringProperties::Decode      (const std::string& s)
     if (rStartCode != startCoded) {
         AlarmMsg(
             Alarm (
-                MTK_HERE,
+                MTK_HERE, "stringcodec",
                 "It's not a coded map, return empty map",
                 mtk::alPriorError,
                 mtk::alTypeNoPermisions

@@ -119,7 +119,7 @@ void  tcp_server_mono<LOW_SOCKET>::listen           (short unsigned int _port)
     socket2accept_connections =socket(AF_INET, SOCK_STREAM, 0);
 
     if(socket2accept_connections == MTK_SOCKET_ERROR)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(LOW_SOCKET::name << "  Could not create a server socket"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(LOW_SOCKET::name << "  Could not create a server socket"), mtk::alPriorError);
 	memset(&sockaddr, 0, sizeof(sockaddr_in));
     sockaddr.sin_addr.s_addr=INADDR_ANY;
     sockaddr.sin_port= in_port_t(MTK_HTONS(port));
@@ -128,18 +128,18 @@ void  tcp_server_mono<LOW_SOCKET>::listen           (short unsigned int _port)
 
     // bind to a port 
     if(bind(socket2accept_connections,(struct sockaddr*)&sockaddr,sizeof(sockaddr)) == MTK_SOCKET_ERROR)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(LOW_SOCKET::name << "  Could not bind a socket"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(LOW_SOCKET::name << "  Could not bind a socket"), mtk::alPriorError);
 
 	#if (MTK_PLATFORM == MTK_WIN_PLATFORM)
 
 		unsigned long val = 1;
 		if (ioctlsocket( socket2accept_connections, FIONBIO, &val ) != 0)
-			throw mtk::Alarm(MTK_HERE, MTK_SS(LOW_SOCKET::name << "  Error configuring non blocking socket"), mtk::alPriorError);
+			throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(LOW_SOCKET::name << "  Error configuring non blocking socket"), mtk::alPriorError);
 
 	#elif MTK_PLATFORM == MTK_LINUX_PLATFORM
 
 		if ( fcntl(socket2accept_connections, F_SETFL, O_NONBLOCK) != 0)
-			throw mtk::Alarm(MTK_HERE, MTK_SS(LOW_SOCKET::name << "  Error configuring non blocking socket"), mtk::alPriorError);
+			throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(LOW_SOCKET::name << "  Error configuring non blocking socket"), mtk::alPriorError);
 
 	#endif
 
@@ -147,7 +147,7 @@ void  tcp_server_mono<LOW_SOCKET>::listen           (short unsigned int _port)
 
     // establish listen queue 
     if(::listen(socket2accept_connections, 1/*queue of connections*/) == MTK_SOCKET_ERROR)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(LOW_SOCKET::name << "  Could not start listening"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(LOW_SOCKET::name << "  Could not start listening"), mtk::alPriorError);
 
 }
 

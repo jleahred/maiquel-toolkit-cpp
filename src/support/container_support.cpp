@@ -37,7 +37,7 @@ namespace mtk {
         void   register_container_size_change(int reg_code)
         {
             if (GetMapRegCounter().find(reg_code) == GetMapRegCounter().end())
-                throw mtk::Alarm(MTK_HERE, "container is not registered", mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "containersupport", "container is not registered", mtk::alPriorError);
             else
                 GetMapRegCounter()[reg_code] = GetMapRegCounter()[reg_code]+1;
         }
@@ -45,7 +45,7 @@ namespace mtk {
         int  get_registered_container_last_size_change(int reg_code)
         {
             if (GetMapRegCounter().find(reg_code) == GetMapRegCounter().end())
-                throw mtk::Alarm(MTK_HERE, "container is not registered", mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "containersupport", "container is not registered", mtk::alPriorError);
             else
                 return GetMapRegCounter()[reg_code];
         }
@@ -64,7 +64,7 @@ namespace mtk {
                 return;
             
             if (GetMapRegCounter().find(reg_code) == GetMapRegCounter().end())
-                throw mtk::Alarm(MTK_HERE, "container is not registered", mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "containersupport", "container is not registered", mtk::alPriorError);
             else
                 GetMapRegCounter().erase(reg_code);
         }

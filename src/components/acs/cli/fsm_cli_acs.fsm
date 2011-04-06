@@ -258,7 +258,7 @@ w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj 
 
     error               
     [{  
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS(method_name << "  invalid call for this status"), mtk::alPriorError, mtk::alTypeNoPermisions));
     }]
 
 
@@ -285,14 +285,14 @@ w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj 
     
     sig_login_rj    
     [{      
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("login rejected "  << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_reject_login.emit(description);        
         mtk::admin::client_logout_confirmation(description);
     }]
     
     sig_logout
     [{
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     }]    
 
@@ -324,12 +324,12 @@ w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj 
     
     sig_chpwd_ok
     [{
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password confirmed"), mtk::alPriorDebug));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("change password confirmed"), mtk::alPriorDebug));
         ci->sig_password_changed.emit();        
     }]
     
     sig_chpwd_rj
     [{
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("change password rejected"), mtk::alPriorDebug));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "fsm_cli_acs", MTK_SS("change password rejected"), mtk::alPriorDebug));
         ci->sig_password_change_rj.emit();        
     }]    

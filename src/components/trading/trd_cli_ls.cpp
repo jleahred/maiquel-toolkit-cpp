@@ -55,7 +55,7 @@ mtk::tuple<int, std::string> check_request_request(const mtk::trd::msg::RQ_XX_LS
     
     if (nerrors >0)     //  all errors on this level are critic
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rq << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << rq << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
     return mtk::make_tuple(nerrors, serrors);
@@ -89,7 +89,7 @@ mtk::tuple<int, std::string> check_request_last_confirm(const mtk::trd::msg::RQ_
 
     if (nerrors >0)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
     
@@ -100,7 +100,7 @@ mtk::tuple<int, std::string> check_request_last_confirm(const mtk::trd::msg::RQ_
     {
         serrors += "  requested quantity lower or equal than executed quantity!!!  ";
         ++nerrors;
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
     }
     
     return mtk::make_tuple(nerrors, serrors);
@@ -115,12 +115,12 @@ mtk::tuple<int, std::string> check_request_not_modifying(const mtk::trd::msg::RQ
 
     if (last_request.HasValue()== false  ||  last_request.Get().req_info ==  last_conf.Get().req_info)         //  there are no pending request
         if (rq.request_pos == last_conf.Get().confirmated_info.market_pos  &&  rq.cli_ref == last_conf.Get().confirmated_info.cli_ref)
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("modification not modifing  " << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS("modification not modifing  " << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
 
 
     if (nerrors >0)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
     return mtk::make_tuple(nerrors, serrors);
@@ -170,7 +170,7 @@ mtk::tuple<int, std::string> check_confirm_request(const mtk::trd::msg::CF_XX_LS
     
     if (nerrors >0)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << cf << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << cf << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
     return mtk::make_tuple(nerrors, serrors);
@@ -197,7 +197,7 @@ mtk::tuple<int, std::string> check_confirm__last_confirm(const mtk::trd::msg::CF
     }
     if (nerrors >0)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << cf << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << cf << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
     return mtk::make_tuple(nerrors, serrors);
@@ -231,7 +231,7 @@ mtk::tuple<int, std::string> check_reject_request(const mtk::trd::msg::RJ_XX_LS&
     
     if (nerrors >0)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rj << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << rj << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
     return mtk::make_tuple(nerrors, serrors);
@@ -253,7 +253,7 @@ mtk::tuple<int, std::string> check_reject__last_confirm(const mtk::trd::msg::RJ_
 
     if (nerrors >0)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << rj << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << rj << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
     return mtk::make_tuple(nerrors, serrors);
@@ -278,7 +278,7 @@ mtk::tuple<int, std::string>  check_exec__last_confirm(const mtk::trd::msg::CF_E
     if (last_conf.HasValue() == false)    
     {
         std::string serrors = MTK_SS("execution received on non confirmated order  " << ex << " / " << last_conf);
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, serrors, mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", serrors, mtk::alPriorCritic, mtk::alTypeNoPermisions));
         return mtk::make_tuple(1, serrors);
     }
     
@@ -301,7 +301,7 @@ mtk::tuple<int, std::string>  check_exec__last_confirm(const mtk::trd::msg::CF_E
 
     if (nerrors >0)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS(serrors << "  " << ex << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", MTK_SS(serrors << "  " << ex << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
         ++nerrors;
     }
     return mtk::make_tuple(nerrors, serrors);
@@ -330,7 +330,7 @@ mtk::tuple<int, std::string>  check_exec__last_confirm(const mtk::trd::msg::CF_E
             ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, to_confirm, MTK_SS("Error: Local reject. Order not sent. Received rq_md on status " << GetStatusName()))));    \
         }    \
         else     \
-            throw mtk::Alarm("SEND_REJECT", MTK_SS("Missing last_request trying to reject "), mtk::alPriorCritic, mtk::alTypeNoPermisions);    \
+            throw mtk::Alarm("SEND_REJECT", "trd_cli_ls.cpp", MTK_SS("Missing last_request trying to reject "), mtk::alPriorCritic, mtk::alTypeNoPermisions);    \
     }
 
 

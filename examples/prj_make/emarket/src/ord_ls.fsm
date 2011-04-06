@@ -111,7 +111,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
 
             LE
                 [{
-                    mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -122,7 +122,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_nw.emit(mtk::trd::msg::CF_NW_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to send confirm new. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm new. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << rq  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -134,7 +134,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_md.emit(mtk::trd::msg::CF_MD_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to send confirm modification. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm modification. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << rq  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -146,7 +146,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_cc.emit(mtk::trd::msg::CF_CC_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << rq  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -158,7 +158,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_ex.emit(ex);
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << ex  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -178,7 +178,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_ob_add_order.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << rq  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -190,7 +190,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_ob_del_order.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << rq  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -201,7 +201,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_ob_modif_order.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << rq  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -213,7 +213,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_ob_check_execs.emit(mtk::trd::msg::CF_NW_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << rq  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -225,7 +225,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                         ci->sig_ob_update_prices.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
                                                                 << method_name << "  received:  "  << "  " << rq  
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
@@ -242,7 +242,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                         lc.confirmated_info.market_pos = rq.request_pos;
                         lc.confirmated_info.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.confirmated_info.total_execs.quantity.GetDouble());
                         if (lc.confirmated_info.total_execs.remaining_qty.GetIntCode() <= 0)
-                            throw mtk::Alarm(method_name, MTK_SS("pending quantity lower than executed quantity " 
+                            throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity " 
                                                                     << method_name << "  received:  "  << "  " << rq  
                                                                     <<  "  last request: " << last_request()
                                                                     <<  "  last confirmed: " << last_confirmation()),

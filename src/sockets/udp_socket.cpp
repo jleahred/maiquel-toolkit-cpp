@@ -52,14 +52,14 @@ udp_socket::udp_socket(const std::string& _name)
     #endif
 	
 	if (handle_socket > 0)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  The socket is already connected"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  The socket is already connected"), mtk::alPriorError);
 	
     // create socket
     handle_socket=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     //handle_socket=socket(PF_INET, SOCK_DGRAM, 0);
 
     if(handle_socket == MTK_SOCKET_ERROR)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "Could not create a socket"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "Could not create a socket"), mtk::alPriorError);
 
     configure_socket();
 	
@@ -99,7 +99,7 @@ void udp_socket::close(const std::string& reason)
     {
         handle_socket = -1;
         get_socket_error();
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  Error closing socket " <<  strerror(errno)), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  Error closing socket " <<  strerror(errno)), mtk::alPriorError);
     }
     else
     {
@@ -140,7 +140,7 @@ void udp_socket::check_input(void)
             else
             {
                 close(MTK_SS(strerror(error) << handle_socket));
-                throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  bytes readed " << bytes_readed << "  " << strerror(error)  << " code: " << error << " socket: " << handle_socket), mtk::alPriorError);
+                throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  bytes readed " << bytes_readed << "  " << strerror(error)  << " code: " << error << " socket: " << handle_socket), mtk::alPriorError);
             }
         }
     }
@@ -181,12 +181,12 @@ void  udp_socket::configure_socket()
 		if (ioctlsocket( handle_socket, FIONBIO, &val ) != 0)
 		{
 			get_socket_error();
-			throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  Error configuring non blocking socket " << strerror(errno)), mtk::alPriorError);
+			throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  Error configuring non blocking socket " << strerror(errno)), mtk::alPriorError);
 		}
 	#elif MTK_PLATFORM == MTK_LINUX_PLATFORM
 
 		if ( fcntl(handle_socket, F_SETFL, O_NONBLOCK) != 0)
-			throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  Error configuring non blocking socket"), mtk::alPriorError);
+			throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  Error configuring non blocking socket"), mtk::alPriorError);
 
 	#endif
 }
@@ -201,7 +201,7 @@ void udp_socket::bind(int port)
     server.sin_port= in_port_t(MTK_HTONS(port));
 
     if (::bind(handle_socket,(struct sockaddr *)&server, sizeof(server))<0) 
-       throw mtk::Alarm(MTK_HERE, MTK_SS(name << "Could not bind socket on port "  << port), mtk::alPriorError);
+       throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "Could not bind socket on port "  << port), mtk::alPriorError);
 
 	binded_port = port;
 	signal_connect.emit();
@@ -211,20 +211,20 @@ void udp_socket::bind(int port)
 void udp_socket::send_to    (const sockaddr* destination, const char*data, size_t bytes)
 {
     if (bytes == 0)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  sent_to 0 bytes"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  sent_to 0 bytes"), mtk::alPriorError);
     if (bytes > 2000)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  too big packet " << bytes), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  too big packet " << bytes), mtk::alPriorCritic);
 
     ssize_t number_of_bytes_transferred = ::sendto(handle_socket, data, bytes, 0, destination, sizeof(struct sockaddr_in));
     if (number_of_bytes_transferred == 0)        //  se cortó la conexión en el otro lado
-        throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  0 bytes sent from " << bytes), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  0 bytes sent from " << bytes), mtk::alPriorCritic);
 }
 
 
 void udp_socket::send_to    (unsigned long address, const char*data, size_t bytes)
 {
 	if (binded_port == 0)
-		throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  send_to without port and not binded port"), mtk::alPriorError);
+		throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  send_to without port and not binded port"), mtk::alPriorError);
 		
 	send_to    (address, binded_port, data, bytes);
 }
@@ -259,7 +259,7 @@ void udp_socket::join_multicast (const std::string& multicast_address, const std
     else
         mreq.imr_interface.s_addr = in_addr_t(mtk::socket_resolv_url(source_address.c_str()));
     if (setsockopt(handle_socket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&mreq, sizeof(mreq)) == MTK_SOCKET_ERROR)
-		throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  joining multicast " << multicast_address), mtk::alPriorCritic);
+		throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(name << "  joining multicast " << multicast_address), mtk::alPriorCritic);
 }
 
 

@@ -68,7 +68,7 @@ void   vector<T>::check_limits 		( unsigned n, const char* text ) const
     {
         std::ostringstream oss;
         oss << "out of limits " << "ivector.size() " << ivector.size() << " < " << n << " on... " << text;
-		throw mtk::Alarm(MTK_HERE, std::string("out of limits ") +
+		throw mtk::Alarm(MTK_HERE, "vector", std::string("out of limits ") +
                     oss.str() , mtk::alPriorError);
     }
 }

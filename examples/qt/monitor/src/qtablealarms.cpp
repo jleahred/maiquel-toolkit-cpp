@@ -23,7 +23,7 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _o
     horizontalHeader()->setStretchLastSection(true);
     //horizontalHeader()->setDefaultSectionSize(100);
 
-    setColumnCount(7);
+    setColumnCount(8);
 
     #define QTABLE_ALARMS_INIT_HEADER_ITEM(__COLUMN__, __TEXT__) \
     {   \
@@ -43,7 +43,7 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _o
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "from")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "priority")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "id")
-        //QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "source")
+        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "subject")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "message")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "type")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "gen.time")
@@ -53,7 +53,7 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _o
     horizontalHeader()->resizeSection(counter++, 100);
     horizontalHeader()->resizeSection(counter++, 100);
     horizontalHeader()->resizeSection(counter++, 30);
-    //horizontalHeader()->resizeSection(counter++, 150);
+    horizontalHeader()->resizeSection(counter++, 100);
     horizontalHeader()->resizeSection(counter++, 1200);
     horizontalHeader()->resizeSection(counter++, 100);
     horizontalHeader()->resizeSection(counter++, 100);
@@ -136,13 +136,13 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
     }
 
     {
-        /*
+
         QTableWidgetItem* new_item = new QTableWidgetItem();
-        new_item->setText(MTK_SS(alarm_msg.code_source).c_str());
+        new_item->setText(MTK_SS(alarm_msg.subject).c_str());
         new_item->setBackgroundColor(back_color);
         new_item->setForeground(QBrush(foregroud_color));
         this->setItem(last_row, ++column, new_item);
-        */
+
     }
 
     {
@@ -178,8 +178,9 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
 void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
 {
+    std::cout << alarm << std::endl;
     mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
-                                     alarm.codeSource, alarm.message, alarm.priority, alarm.type, mtk::dtNowLocal(), -1);
+                                     alarm.codeSource, "monitor", alarm.message, alarm.priority, alarm.type, mtk::dtNowLocal(), -1);
 
     write_alarm_msg(alarm_msg);
 
@@ -187,7 +188,7 @@ void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
     while (it != alarm.stackAlarms.end())
     {
         mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
-                                         it->codeSource, it->message, it->priority, it->type, mtk::dtNowLocal(), -1);
+                                         "monitor", it->codeSource, it->message, it->priority, it->type, mtk::dtNowLocal(), -1);
         write_alarm_msg(alarm_msg);
         ++it;
     }

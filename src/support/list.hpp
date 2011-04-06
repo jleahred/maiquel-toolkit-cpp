@@ -232,10 +232,10 @@ template <typename T>
 typename list<T>::iterator&  list<T>::iterator::operator++()
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "++ on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "++ on end iterator", mtk::alPriorError);
 
     ++iiterator;
     return *this;
@@ -246,10 +246,10 @@ typename list<T>::iterator  list<T>::iterator::operator++(int)
 {
     typename list<T>::iterator  result = *this;
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "++ on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "++ on end iterator", mtk::alPriorError);
 
     ++iiterator;
     return result;
@@ -261,7 +261,7 @@ template <typename T>
 bool  list<T>::iterator::operator==(const list<T>::iterator& it) const
 {
     if (registered_owner!=0  &&  it.registered_owner != 0   &&  registered_owner !=  it.registered_owner)
-        throw mtk::Alarm(MTK_HERE, "on different owners", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "on different owners", mtk::alPriorError);
 
     return it.iiterator == iiterator;
 }
@@ -277,10 +277,10 @@ template <typename T>
 T* list<T>::iterator::operator->(void)
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "-> on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "-> on end iterator", mtk::alPriorError);
 
     return iiterator.operator->();
 }
@@ -289,10 +289,10 @@ template <typename T>
 T& list<T>::iterator::operator*(void)
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "* on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "* on end iterator", mtk::alPriorError);
 
     return *iiterator;
 }
@@ -343,10 +343,10 @@ template <typename T>
 typename list<T>::const_iterator&  list<T>::const_iterator::operator++()
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "++ on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "++ on end iterator", mtk::alPriorError);
 
     ++iiterator;
     return *this;
@@ -357,10 +357,10 @@ typename list<T>::const_iterator  list<T>::const_iterator::operator++(int)
 {
     typename list<T>::const_iterator result = *this;
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "++ on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "++ on end iterator", mtk::alPriorError);
 
     ++iiterator;
     return result;
@@ -371,7 +371,7 @@ template <typename T>
 bool  list<T>::const_iterator::operator==(const const_iterator& it) const
 {
     if(registered_owner!=0  &&  it.registered_owner != 0   &&  registered_owner !=  it.registered_owner)
-        throw mtk::Alarm(MTK_HERE, "on different owners", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "on different owners", mtk::alPriorError);
 
     return it.iiterator == iiterator;
 }
@@ -387,10 +387,10 @@ template <typename T>
 const T* list<T>::const_iterator::operator->(void)
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "-> on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "-> on end iterator", mtk::alPriorError);
 
     return iiterator.operator->();
 }
@@ -399,10 +399,10 @@ template <typename T>
 const T& list<T>::const_iterator::operator*(void)
 {
     if (IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "iterator not valid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "iterator not valid", mtk::alPriorError);
 
     if (i_end_iterator == iiterator)
-        throw mtk::Alarm(MTK_HERE, "* on end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "* on end iterator", mtk::alPriorError);
 
     return *iiterator;
 }
@@ -448,7 +448,7 @@ template<typename T>
 T&       list<T>::front ( )
 {
     if (size()==0)
-        throw mtk::Alarm(MTK_HERE, "front on empty list", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "front on empty list", mtk::alPriorError);
 
     return ilist.front();
 }
@@ -457,7 +457,7 @@ template<typename T>
 const T& list<T>::front ( ) const
 {
     if (size()==0)
-        throw mtk::Alarm(MTK_HERE, "front on empty list", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "front on empty list", mtk::alPriorError);
 
     return ilist.front();
 }
@@ -466,7 +466,7 @@ template<typename T>
 T&       list<T>::back ( )
 {
     if (size()==0)
-        throw mtk::Alarm(MTK_HERE, "back on empty list", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "back on empty list", mtk::alPriorError);
 
     return ilist.back();
 }
@@ -475,7 +475,7 @@ template<typename T>
 const T& list<T>::back ( ) const
 {
     if (size()==0)
-        throw mtk::Alarm(MTK_HERE, "back on empty list", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "back on empty list", mtk::alPriorError);
 
     return ilist.back();
 }
@@ -501,7 +501,7 @@ template<typename T>
 void     list<T>::pop_front   ( )
 {
     if (size()==0)
-        throw mtk::Alarm(MTK_HERE, "pop_front on empty list", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list",  "pop_front on empty list", mtk::alPriorError);
     internal_for_containers::register_container_size_change(registered_as);
     ilist.pop_front();
 }
@@ -518,7 +518,7 @@ template<typename T>
 void     list<T>::pop_back    ( )
 {
     if (size()==0)
-        throw mtk::Alarm(MTK_HERE, "pop_back on empty list", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "pop_back on empty list", mtk::alPriorError);
     internal_for_containers::register_container_size_change(registered_as);
     ilist.pop_back();
 }
@@ -527,11 +527,11 @@ template<typename T>
 typename list<T>::iterator list<T>::insert      ( const typename list<T>::iterator& position, const T& x )
 {
     if (position.registered_owner  != registered_as)
-        throw mtk::Alarm(MTK_HERE, "insert with extrange iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "insert with extrange iterator", mtk::alPriorError);
 
     if (position.iiterator != position.i_end_iterator)
         if (internal_for_containers::get_registered_container_last_size_change(position.registered_owner) != position.last_updated_container)
-            throw mtk::Alarm(MTK_HERE, "insert with invalid iterator", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "list", "insert with invalid iterator", mtk::alPriorError);
 
     internal_for_containers::register_container_size_change(registered_as);
     typename list<T>::iterator result;
@@ -549,11 +549,11 @@ template<typename T>
 void     list<T>::insert      ( const typename list<T>::iterator& position, unsigned n, const T& x )
 {
     if (position.registered_owner  != registered_as)
-        throw mtk::Alarm(MTK_HERE, "insert with extrange iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "insert with extrange iterator", mtk::alPriorError);
 
     if (position.iiterator != position.i_end_iterator)
         if (internal_for_containers::get_registered_container_last_size_change(position.registered_owner) != position.last_updated_container)
-            throw mtk::Alarm(MTK_HERE, "insert with invalid iterator", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "list", "insert with invalid iterator", mtk::alPriorError);
 
     // unsigned n
     // . si n = número negativo, al ser unsigned lo transforma en el positivo sin signo y
@@ -568,11 +568,11 @@ template<typename T>
 typename list<T>::iterator list<T>::erase       ( const typename list<T>::iterator& position )
 {
     if (position.registered_owner  != registered_as)
-        throw mtk::Alarm(MTK_HERE, "erase with extrange iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "erase with extrange iterator", mtk::alPriorError);
     if (position.iiterator  == ilist.end())
-        throw mtk::Alarm(MTK_HERE, "erase over end iterator", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "erase over end iterator", mtk::alPriorError);
     if (position.IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "erase over iterator invalid", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "erase over iterator invalid", mtk::alPriorError);
 
     internal_for_containers::register_container_size_change(registered_as);
 
@@ -594,11 +594,11 @@ template<typename T>
 typename list<T>::iterator list<T>::erase       ( const typename list<T>::iterator& first, const typename list<T>::iterator& last )
 {
     if (first.registered_owner  != registered_as  ||  last.registered_owner  != registered_as)
-        throw mtk::Alarm(MTK_HERE, "erase with extrange iterator (first or second)", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "erase with extrange iterator (first or second)", mtk::alPriorError);
     if (first.iiterator  == ilist.end())
-        throw mtk::Alarm(MTK_HERE, "erase over end iterator (first)", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "erase over end iterator (first)", mtk::alPriorError);
     if (first.IsValid() == false)
-        throw mtk::Alarm(MTK_HERE, "erase over iterator invalid (first)", mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "list", "erase over iterator invalid (first)", mtk::alPriorError);
 
     typename list<T>::iterator result;
 
@@ -636,7 +636,7 @@ typename list<T>::iterator list<T>::erase       ( const typename list<T>::iterat
 
 
         if ((last.iiterator != ilist.end()) && (bFindLastIterator == false))
-            throw mtk::Alarm(MTK_HERE, "erase from first iterator to end of container (last iterator not found)", mtk::alPriorError);
+            throw mtk::Alarm(MTK_HERE, "list", "erase from first iterator to end of container (last iterator not found)", mtk::alPriorError);
 
     }
     return result;

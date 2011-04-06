@@ -73,6 +73,7 @@ public:
         else
             throw Alarm (
                     MTK_HERE,
+                    "nullable", 
                     "Have NO Value",
                     alPriorError, alTypeNoPermisions
             );
@@ -233,6 +234,7 @@ public:
             //MMA
             throw Alarm (
                     MTK_HERE,
+                    "Nullable", 
                     "Have NO Value",
                     alPriorError, alTypeNoPermisions
             );

@@ -70,7 +70,7 @@ void  asoc_mem0::write_var  (const std::string& var_name, const std::string& var
 
     if (found.isValid()==false)
     {
-        signal_error(mtk::Alarm(MTK_HERE, MTK_SS("non existing var " << var_name), mtk::alPriorError));
+        signal_error(mtk::Alarm(MTK_HERE, "ascocmem0", MTK_SS("non existing var " << var_name), mtk::alPriorError));
     }
     else
     {
@@ -81,7 +81,7 @@ void  asoc_mem0::write_var  (const std::string& var_name, const std::string& var
         if (processed==0)
         {
             *found = "";
-            signal_error(mtk::Alarm(MTK_HERE, MTK_SS("not connected assing signal " << var_name), mtk::alPriorError));
+            signal_error(mtk::Alarm(MTK_HERE, "ascocmem0", MTK_SS("not connected assing signal " << var_name), mtk::alPriorError));
         }
         else
         {
@@ -101,7 +101,7 @@ std::string asoc_mem0::read_var  (const std::string& var_name)
         return *found;
     else
     {
-        signal_error(mtk::Alarm(MTK_HERE, MTK_SS("non existing var " << var_name), mtk::alPriorError));
+        signal_error(mtk::Alarm(MTK_HERE, "ascocmem0", MTK_SS("non existing var " << var_name), mtk::alPriorError));
         return "";
     }
 }
@@ -136,7 +136,7 @@ void  asoc_mem0::declare_var(const std::string& var_name, const std::string& var
     }
     else
     {
-        signal_error(mtk::Alarm(MTK_HERE, MTK_SS("already existing var " << var_name), mtk::alPriorError));
+        signal_error(mtk::Alarm(MTK_HERE, "ascocmem0", MTK_SS("already existing var " << var_name), mtk::alPriorError));
     }
 }
 

@@ -198,7 +198,7 @@ ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} ($CONSTRUCTOR_PARAMS_DEBUG_DECL)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                     MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -398,7 +398,7 @@ ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} (const qpid::messaging::Message& msg)
         copy(*this, map);
         std::string cr = check_recomended ();  
         if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
@@ -497,7 +497,7 @@ $FILL_FIELDS
                 FILL_FIELDS += Template("""
                     it = mv.find("$FIELD_TAG");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field ${FIELD_NAME} on message ${CLASS_NAME}::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ${FIELD_NAME} on message ${CLASS_NAME}::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.${FIELD_NAME}, it->second);
                         //c.${FIELD_NAME} = ${preMorph}it->second${postMorph};\n""").substitute(
@@ -526,7 +526,7 @@ $FILL_FIELDS
                 FILL_FIELDS += Template("""
                     it = mv.find("$FIELD_TAG");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field ${FIELD_NAME} on message ${CLASS_NAME}::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ${FIELD_NAME} on message ${CLASS_NAME}::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.${FIELD_NAME}, it->second);
                         //__internal_qpid_fill(c.${FIELD_NAME}, ${preMorph}it->second.asMap()${postMorph});\n""").substitute(
@@ -577,7 +577,7 @@ $FILL_FIELDS
                 FILL_FIELDS += Template("""
                     it = mv.find("$FIELD_TAG");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "missing mandatory field ${FIELD_NAME} on message ${CLASS_NAME}::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ${FIELD_NAME} on message ${CLASS_NAME}::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.${FIELD_NAME}, it->second);
                         //__internal_qpid_fill(c.${FIELD_NAME}, ${preMorph}it->second.asMap()${postMorph});\n""").substitute(

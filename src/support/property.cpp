@@ -24,7 +24,7 @@ Property& Property::operator=(const Property& value) {
     }
     else
         throw Alarm (
-                    MTK_HERE,
+                    MTK_HERE, "property",
                     "Tipos no compatibles",
                     alPriorError, alTypeNoPermisions
                 );
@@ -79,7 +79,7 @@ std::string         Property::AsString     () const
         return text;
     else
         throw Alarm (
-                            MTK_HERE,
+                            MTK_HERE, "property",
                             "Is not a text",
                             alPriorError, alTypeNoPermisions
                 );
@@ -91,7 +91,7 @@ mtk::DateTime       Property::AsDateTime   () const
         return date.Get();
     else
         throw Alarm (
-                            MTK_HERE,
+                            MTK_HERE, "property",
                             "Is not a date",
                             alPriorError, alTypeNoPermisions
                 );
@@ -103,7 +103,7 @@ mtk::FixedNumber    Property::AsFixedNumber() const
         return number.Get();
     else
         throw Alarm (
-                            MTK_HERE,
+                            MTK_HERE, "property",
                             "Is not a number",
                             alPriorError, alTypeNoPermisions
                 );

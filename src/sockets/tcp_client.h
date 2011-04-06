@@ -59,7 +59,7 @@ template <typename LOW_SOCKET>
 void tcp_client<LOW_SOCKET>::connect(const std::string& _dest_name, short unsigned int _dest_port)
 {
 	if (LOW_SOCKET::handle_socket > 0)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(LOW_SOCKET::name << "  The socket is already connected"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(LOW_SOCKET::name << "  The socket is already connected"), mtk::alPriorError);
 	
     struct hostent* pdest_info=0;   /* holds info about a machine */
     struct sockaddr_in dest_sockaddr_in;  /* Internet socket address stuct */
@@ -73,7 +73,7 @@ void tcp_client<LOW_SOCKET>::connect(const std::string& _dest_name, short unsign
     LOW_SOCKET::handle_socket=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 
     if(LOW_SOCKET::handle_socket == MTK_SOCKET_ERROR)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(LOW_SOCKET::name << "Could not create a socket"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(LOW_SOCKET::name << "Could not create a socket"), mtk::alPriorError);
 
 
     // get IP address from name
@@ -91,7 +91,7 @@ void tcp_client<LOW_SOCKET>::connect(const std::string& _dest_name, short unsign
     // connect to host 
     if(::connect(LOW_SOCKET::handle_socket,(struct sockaddr*)&dest_sockaddr_in,sizeof(dest_sockaddr_in))
                     == MTK_SOCKET_ERROR)
-        throw mtk::Alarm(MTK_HERE, MTK_SS(LOW_SOCKET::name << "  Could not connect a socket"), mtk::alPriorError);
+        throw mtk::Alarm(MTK_HERE, "socket", MTK_SS(LOW_SOCKET::name << "  Could not connect a socket"), mtk::alPriorError);
 
     mtk::socket_configure_nonblocking(LOW_SOCKET::handle_socket, LOW_SOCKET::name);
     LOW_SOCKET::signal_connect.emit();

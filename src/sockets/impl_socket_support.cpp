@@ -38,14 +38,14 @@ void  socket_configure_nonblocking(int handle_socket, const std::string& socket_
 		if (ioctlsocket( handle_socket, FIONBIO, &val ) != 0)
 		{
             int error = mtk::socket_get_last_error(handle_socket);
-			throw mtk::Alarm(MTK_HERE, MTK_SS(socket_name << "  Error configuring non blocking socket " << strerror(error)), mtk::alPriorError);
+			throw mtk::Alarm(MTK_HERE, "sockect", MTK_SS(socket_name << "  Error configuring non blocking socket " << strerror(error)), mtk::alPriorError);
 		}
 	#elif MTK_PLATFORM == MTK_LINUX_PLATFORM
 
 		if ( fcntl(handle_socket, F_SETFL, O_NONBLOCK) != 0)
         {
             int error = mtk::socket_get_last_error(handle_socket);
-			throw mtk::Alarm(MTK_HERE, MTK_SS(socket_name << "  Error configuring non blocking socket" <<  strerror(error)), mtk::alPriorError);
+	    throw mtk::Alarm(MTK_HERE, "sockect",  MTK_SS(socket_name << "  Error configuring non blocking socket" <<  strerror(error)), mtk::alPriorError);
         }
 
 	#endif

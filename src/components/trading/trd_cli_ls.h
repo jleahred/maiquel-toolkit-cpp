@@ -10,6 +10,7 @@
 
 #include "support/alarm.h"
 #include "support/signalslot.hpp"
+#include "support/list.hpp"
 
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/admin/admin.h"

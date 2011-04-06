@@ -233,31 +233,31 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
                     MTK_HANDLE_DIV0_END
                 } catch (const Alarm& alError) {
                     Alarm  qpid_error(
-                                "handle_qpid_exchange_receiver",
+                                MTK_HERE, "handle_qpid_exchange_receiver",  
                                 std::string(" address>") + "pending",
                                 alPriorCritic
                         );
                     qpid::types::Variant::Map mv;
                     qpid::messaging::decode(message, mv);
-                    qpid_error.Add(mtk::Alarm(MTK_HERE, MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
                     qpid_error.Add(alError);
                     mtk::AlarmMsg(qpid_error);
                 }
                 catch (std::exception& e) {
-                    Alarm  qpid_error("handle_qpid_exchange_receiver",
+                    Alarm  qpid_error(MTK_HERE, "handle_qpid_exchange_receiver",
                                 MTK_SS (" SUBJ>" << message.getSubject() << "  " << e.what()),
                                 alPriorCritic);
                     qpid::types::Variant::Map mv;
                     qpid::messaging::decode(message, mv);
-                    qpid_error.Add(mtk::Alarm(MTK_HERE, MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
                     mtk::AlarmMsg(qpid_error);
                 } catch (...) {
-                    Alarm  qpid_error("handle_qpid_exchange_receiver",
+                    Alarm  qpid_error(MTK_HERE, "handle_qpid_exchange_receiver",
                                 MTK_SS (" SUBJ>" << message.getSubject() << "  ... unkown exception"),
                                 alPriorCritic);
                     qpid::types::Variant::Map mv;
                     qpid::messaging::decode(message, mv);
-                    qpid_error.Add(mtk::Alarm(MTK_HERE, MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
                     mtk::AlarmMsg(qpid_error);
                 }
                     
@@ -333,7 +333,7 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
     std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
     
     if (mv.find("_cf_") == mv.end())
-        throw mtk::Alarm(MTK_HERE, "missing control fileds", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiverMT<>", "missing control fileds", mtk::alPriorCritic, mtk::alTypeNoPermisions);
     else
     {
         msg::sub_control_fields cf(__internal_get_default((msg::sub_control_fields*)0));

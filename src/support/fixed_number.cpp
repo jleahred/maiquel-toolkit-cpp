@@ -35,7 +35,7 @@ fnExt::fnExt(   const fnDec&            dec,
     if (dec<0)
         throw   fnErrorFixedNumber (
                     Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "fixednumber",
                         "num decimales no válido (<0)",
                         alPriorError, alTypeNoPermisions
                     )
@@ -43,7 +43,7 @@ fnExt::fnExt(   const fnDec&            dec,
     else if (inc<=0)
         throw   fnErrorFixedNumber (
                     Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "fixednumber",
                         "incremento no válido (<=0)",
                         alPriorError, alTypeNoPermisions
                     )
@@ -224,13 +224,13 @@ FixedNumber& FixedNumber::SetIntCode(int value, const fnEnRound round)
                 intValue = value/inc*inc;
                 if (intValue!=value)
                     throw   fnErrorFixedNumber (Alarm (
-                                MTK_HERE,
+                                MTK_HERE, "fixednumber",
                                 "red not allowed",
                                 alPriorError, alTypeNoPermisions));
                 break;
         default:
 	        throw   fnErrorFixedNumber (Alarm (
-						    MTK_HERE,
+						    MTK_HERE, "fixednumber",
 						    "red not allowed. default??",
 						    alPriorError, alTypeNoPermisions));
     };
@@ -243,7 +243,7 @@ FixedNumber& FixedNumber::SetDouble (mtk::Double value, const fnEnRound round  )
 {
     if (value.IsValid()==false)
 	        throw   fnErrorFixedNumber (Alarm (
-						    MTK_HERE,
+						    MTK_HERE, "fixednumber",
 						    "Invalid value to set",
 						    alPriorError, alTypeNoPermisions));
     SetDouble(value.get()._0, round);
@@ -261,7 +261,7 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
 
         if (log10(positivValue) >=0   &&  int(log10(positivValue) +0.5) + ext.GetDec() >=9)
                 throw fnErrorFixedNumber (Alarm (
-                        MTK_HERE,
+                        MTK_HERE, "fixednumber",
                         MTK_SS("desbordamiento" << value << " d" << ext.GetDec()),
                         alPriorError, alTypeNoPermisions
                     ));
@@ -335,13 +335,13 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
                 intValue = int(valuePow10/inc)*inc;
                 if (intValue!=int(valuePow10))
                     throw   fnErrorFixedNumber (Alarm (
-                                MTK_HERE,
+                                MTK_HERE, "fixednumber",
                                 "red not allowed",
                                 alPriorError, alTypeNoPermisions));
                 break;
         default:
 	        throw   fnErrorFixedNumber (Alarm (
-						    MTK_HERE,
+						    MTK_HERE, "fixednumber",
 						    "red not allowed. default??",
 						    alPriorError, alTypeNoPermisions));
     };
@@ -373,7 +373,7 @@ bool    FixedNumber::operator <   (const FixedNumber&  other)  const
         return  intValue < other.intValue;
     } else {
         throw   fnErrorFixedNumber (Alarm (
-                    MTK_HERE,
+                    MTK_HERE, "fixednumber",
                     "non comparable types",
                     alPriorError, alTypeNoPermisions));
 
@@ -387,7 +387,7 @@ bool    FixedNumber::operator <=  (const FixedNumber&  other)  const
         return  intValue <= other.intValue;
     } else {
         throw   fnErrorFixedNumber (Alarm (
-                    MTK_HERE,
+                    MTK_HERE, "fixednumber",
                     "non comparable types",
                     alPriorError, alTypeNoPermisions));
 
@@ -402,7 +402,7 @@ bool    FixedNumber::operator >   (const FixedNumber&  other)  const
         return  intValue > other.intValue;
     } else {
         throw   fnErrorFixedNumber (Alarm (
-                    MTK_HERE,
+                    MTK_HERE, "fixednumber",
                     "non comparable types",
                     alPriorError, alTypeNoPermisions));
 
@@ -416,7 +416,7 @@ bool    FixedNumber::operator >=  (const FixedNumber&  other)  const
         return  intValue >= other.intValue;
     } else {
         throw   fnErrorFixedNumber (Alarm (
-                    MTK_HERE,
+                    MTK_HERE, "fixednumber",
                     "non comparable types",
                     alPriorError, alTypeNoPermisions));
 

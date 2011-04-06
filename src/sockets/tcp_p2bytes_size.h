@@ -93,7 +93,7 @@ void tcp_p2bytes_size<PARENT>::on_received_bytes(const char* data, ssize_t size)
             posInMessage=-1;
             sizeCurrentMessage=-1;
             posInSizeMessage = -1;
-            throw mtk::Alarm(MTK_HERE, MTK_SS("message received too long >" << tempPosInMessage << " . Ignoring it"), 
+            throw mtk::Alarm(MTK_HERE, "socket", MTK_SS("message received too long >" << tempPosInMessage << " . Ignoring it"), 
                                                         mtk::alPriorCritic, mtk::alTypeOverflow);
         }
 

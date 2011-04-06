@@ -187,7 +187,7 @@ public:
 
     
     // constructor
-    explicit pub_alarm (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
+    explicit pub_alarm (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
     explicit pub_alarm ( const qpid::messaging::Message& message );
     virtual ~pub_alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_alarm"; };
@@ -198,6 +198,7 @@ public:
     // fields
     mtk::msg::sub_process_info                process_info; 
     std::string                               code_source; 
+    std::string                               subject; 
     std::string                               message; 
     mtk::alEnPriority                         priority; 
     mtk::alEnType                             type; 

@@ -56,6 +56,7 @@ private:
     void  check_alarm_received(const mtk::msg::sub_process_info& l);
     void  on_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);
 
+    void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
 #endif // QLISTPROCESSES_H
