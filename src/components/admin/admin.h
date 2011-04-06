@@ -40,6 +40,8 @@ namespace mtk {
                                                                              const std::string& app_description,
                                                                              const std::string& app_modifications);  
         
+        bool                                                is_production(void);
+        
         mtk::CountPtr< mtk::qpid_session >                  get_qpid_session(const std::string&  url_for, const std::string& address);
         
         mtk::msg::sub_process_info                          get_process_info            (void);

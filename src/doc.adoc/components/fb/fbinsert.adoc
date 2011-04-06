@@ -1,0 +1,26 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
+=== Components / fb /fbinsert
+
+* It will write in +firebird+ database
+* Controlling the write speed
+* Many params configurable
+* Commands to check status, read and write params configuration 
+
+* The interfaz is...
++
+.components/fb/fbinsert.h
+[source,{cpp}]
+----
+include::../../../components/fb/fbinsert.h[]
+----
+
+
+* Small example
++
+.components/fb/fbinsert.h
+[source,{cpp}]
+----
+include::../../../../examples/onefile/components/fb/ex_fbinsert.cpp[]
+----
+

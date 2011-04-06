@@ -19,5 +19,9 @@ include::trading/trading.adoc[]
 
 
 
+include::fb/fbinsert.adoc[]
+
+
+
 === Todo
 include::trading/todo.adoc[]

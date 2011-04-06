@@ -1325,7 +1325,6 @@ void login_ok::user_rq_logout (  )
     
 //  inserting macro: sig_logout
 
-std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -1472,7 +1471,6 @@ void login_ok::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf           
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_logout
 
-std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -1630,7 +1628,6 @@ void w_k_chp::user_rq_logout (  )
     
 //  inserting macro: sig_logout
 
-std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -1784,7 +1781,6 @@ void w_k_chp::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_logout
 
-std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -1935,7 +1931,6 @@ void w_chpwd::user_rq_logout (  )
     
 //  inserting macro: sig_logout
 
-std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     
@@ -2086,7 +2081,6 @@ void w_chpwd::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_logout
 
-std::cout << "received logout" << std::endl;
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("received logout  " << description), mtk::alPriorError, mtk::alTypeNoPermisions));
         ci->sig_logout_login.emit(description);        
     

@@ -945,6 +945,12 @@ mtk::Signal<>*           get_signal_admin_ready(void)
 
 
 
+bool   is_production(void)
+{
+    return false;
+}
+
+
 
 
 };     //namespace admin {
