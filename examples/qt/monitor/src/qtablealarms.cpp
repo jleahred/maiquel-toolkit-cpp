@@ -1,7 +1,8 @@
 #include "qtablealarms.h"
 
 #include <QHeaderView>
-
+#include <QMouseEvent>
+#include <QScrollBar>
 
 
 
@@ -67,9 +68,12 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _o
                             qpid_session->address,
                             mtk::admin::msg::pub_alarm::get_in_subject(),
                             mtk::admin::msg::pub_alarm,
-                            on_client_alarm_received)
+                            on_client_alarm_received);
 
 
+
+    MTK_TIMER_1S(timer_check_number_of_rows);
+    MTK_TIMER_1S(timer_check_last_alarms_received);
 }
 
 void QTableAlarms::on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg)
@@ -77,12 +81,22 @@ void QTableAlarms::on_client_alarm_received(const mtk::admin::msg::pub_alarm& al
     if(only_errors  &&  !(alarm_msg.priority==mtk::alPriorCritic  ||  alarm_msg.priority==mtk::alPriorError))
         return;
     else
+    {
+        last_alarms.push_back(mtk::make_tuple(mtk::dtNowLocal(), alarm_msg));
         write_alarm_msg(alarm_msg);
+    }
 }
 void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& alarm_msg)
 {
+    bool go_to_bottom=false;
+    if(this->visualItemRect(this->item(this->rowCount()-1, 0)).top() < this->height()-this->horizontalHeader()->height()-this->horizontalScrollBar()->height())
+        go_to_bottom = true;
+
     this->insertRow(this->rowCount());
     int last_row = this->rowCount()-1;
+
+    //this->insertRow(0);
+    //int last_row = 0;
 
     QColor back_color = Qt::white;
     QColor foregroud_color = Qt::black;
@@ -169,8 +183,8 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
         this->setItem(last_row, ++column, new_item);
     }
 
-    if(this->currentRow() == -1  ||  this->currentRow()==last_row-1)
-        this->setCurrentCell(last_row, 0);
+    if(go_to_bottom)
+        this->verticalScrollBar()->setSliderPosition(verticalScrollBar()->maximum());
 }
 
 
@@ -178,7 +192,6 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
 void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
 {
-    std::cout << alarm << std::endl;
     mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
                                      alarm.codeSource, "monitor", alarm.message, alarm.priority, alarm.type, mtk::dtNowLocal(), -1);
 
@@ -205,4 +218,36 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session1, mtk::C
                             mtk::admin::msg::pub_alarm,
                             on_client_alarm_received)
 
+}
+
+
+void QTableAlarms::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if(event->modifiers() &&  Qt::ControlModifier)
+    {
+        this->setRowCount(0);
+        mtk::list< mtk::tuple<mtk::DateTime, mtk::admin::msg::pub_alarm> >::iterator it=last_alarms.begin();
+        for(; it!=last_alarms.end(); ++it)
+        {
+            std::cout << it->_1 << std::endl;
+            write_alarm_msg(it->_1);
+        }
+    }
+}
+
+
+void QTableAlarms::timer_check_number_of_rows(void)
+{
+    MTK_EXEC_MAX_FREC(mtk::dtSeconds(45))
+        if(this->rowCount() > 1000)
+            this->setRowCount(500);
+    MTK_END_EXEC_MAX_FREC
+}
+
+void QTableAlarms::timer_check_last_alarms_received(void)
+{
+    MTK_EXEC_MAX_FREC(mtk::dtSeconds(45))
+        while(last_alarms.size()>0   &&  last_alarms.front()._0 + mtk::dtSeconds(15) < mtk::dtNowLocal())
+                last_alarms.pop_front();
+    MTK_END_EXEC_MAX_FREC
 }

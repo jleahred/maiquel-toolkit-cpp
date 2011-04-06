@@ -23,13 +23,20 @@ signals:
 public slots:
 
 private:
-    bool                                                                                    only_errors;
+    bool                                                                                        only_errors;
 
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>       >     hqpid_alarm1;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>       >     hqpid_alarm2;
 
     void on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);
     void write_alarm_msg         (const mtk::admin::msg::pub_alarm& alarm_msg);
+
+    void mouseDoubleClickEvent(QMouseEvent *event);
+
+    void timer_check_number_of_rows(void);
+
+    mtk::list< mtk::tuple<mtk::DateTime, mtk::admin::msg::pub_alarm> >       last_alarms;
+    void timer_check_last_alarms_received(void);
 };
 
 #endif // QTABLEALARMS_H
