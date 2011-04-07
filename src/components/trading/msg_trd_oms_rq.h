@@ -56,6 +56,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -89,6 +92,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -122,6 +128,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };

@@ -61,6 +61,9 @@ public:
     static std::string  get_in_subject ();
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -98,6 +101,9 @@ public:
     static std::string  get_in_subject ();
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -133,6 +139,9 @@ public:
     static std::string  get_in_subject ();
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -169,6 +178,9 @@ public:
     static std::string  get_in_subject ();
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -211,6 +223,9 @@ public:
     static std::string  get_in_subject ();
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -248,6 +263,9 @@ public:
     static std::string  get_in_subject (const std::string& proc_loc__destination_location_client_code,const std::string& proc_loc__destination_location_machine,const std::string& proc_loc__destination_process_name,const std::string& proc_loc__destination_process_uuid);
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -281,6 +299,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -317,6 +338,9 @@ public:
     static std::string  get_in_subject (const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_req_code);
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -354,6 +378,9 @@ public:
     static std::string  get_in_subject ();
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };

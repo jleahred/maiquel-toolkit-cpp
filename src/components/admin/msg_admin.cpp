@@ -384,6 +384,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 pub_enter::pub_enter (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
     :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -404,6 +405,7 @@ std::string pub_enter::check_recomended(void) const
 
 pub_keep_alive_srv::pub_keep_alive_srv (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
     :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -424,6 +426,7 @@ std::string pub_keep_alive_srv::check_recomended(void) const
 
 pub_keep_alive_clients::pub_keep_alive_clients ( const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation)
     :  pub_keep_alive_srv(parent),   login_confirmation(_login_confirmation) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -444,6 +447,7 @@ std::string pub_keep_alive_clients::check_recomended(void) const
 
 pub_exit::pub_exit (   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason)
     :     process_info(_process_info),   reason(_reason) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -464,6 +468,7 @@ std::string pub_exit::check_recomended(void) const
 
 pub_alarm::pub_alarm (   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id)
     :     process_info(_process_info),   code_source(_code_source),   subject(_subject),   message(_message),   priority(_priority),   type(_type),   dateTime_generated(_dateTime_generated),   alarm_id(_alarm_id) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -484,6 +489,7 @@ std::string pub_alarm::check_recomended(void) const
 
 req_command::req_command (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_location&  _proc_loc__destination,   const std::string&  _command_line)
     :     request_info(_request_info),   proc_loc__destination(_proc_loc__destination),   command_line(_command_line) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -504,6 +510,7 @@ std::string req_command::check_recomended(void) const
 
 sub_command_rd::sub_command_rd (   const std::string&  _text)
     :     text(_text) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -524,6 +531,7 @@ std::string sub_command_rd::check_recomended(void) const
 
 res_command::res_command (   const mtk::msg::sub_r_response&  _response_info,   const sub_command_rd&  _response_data)
     :     response_info(_response_info),   response_data(_response_data) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -544,6 +552,7 @@ std::string res_command::check_recomended(void) const
 
 pub_central_keep_alive::pub_central_keep_alive (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
     :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -1317,7 +1326,7 @@ qpid::messaging::Message pub_enter::qpidmsg_codded_as_qpid_message (void) const
         __internal_add2map(content, this->ka_interval_check, std::string("kc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1346,7 +1355,7 @@ qpid::messaging::Message pub_keep_alive_srv::qpidmsg_codded_as_qpid_message (voi
         __internal_add2map(content, this->ka_interval_check, std::string("kc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1371,7 +1380,7 @@ __internal_add2map(content, static_cast<const pub_keep_alive_srv&>(*this));
         __internal_add2map(content, this->login_confirmation, std::string("lc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1397,7 +1406,7 @@ qpid::messaging::Message pub_exit::qpidmsg_codded_as_qpid_message (void) const
         __internal_add2map(content, this->reason, std::string("r"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1441,7 +1450,7 @@ qpid::messaging::Message pub_alarm::qpidmsg_codded_as_qpid_message (void) const
         __internal_add2map(content, this->alarm_id, std::string("ai"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1470,7 +1479,7 @@ qpid::messaging::Message req_command::qpidmsg_codded_as_qpid_message (void) cons
         __internal_add2map(content, this->command_line, std::string("c"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1493,7 +1502,7 @@ qpid::messaging::Message sub_command_rd::qpidmsg_codded_as_qpid_message (void) c
         __internal_add2map(content, this->text, std::string("t"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1519,7 +1528,7 @@ qpid::messaging::Message res_command::qpidmsg_codded_as_qpid_message (void) cons
         __internal_add2map(content, this->response_data, std::string("rd"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1548,7 +1557,7 @@ qpid::messaging::Message pub_central_keep_alive::qpidmsg_codded_as_qpid_message 
         __internal_add2map(content, this->ka_interval_check, std::string("kc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

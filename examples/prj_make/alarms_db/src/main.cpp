@@ -30,7 +30,7 @@ void  on_alarm_received_cli(const mtk::admin::msg::pub_alarm&  ar)
                     "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
 
         mtk::fbInsertParams params;
-            params.Add(ar.dateTime_generated);
+            params.Add(ar.__internal_warning_control_fields->sent_date_time);
             params.Add(ar.dateTime_generated);
             params.Add(ar.alarm_id);
             params.Add(ar.process_info.process_location.location.client_code);
@@ -55,7 +55,7 @@ void  on_alarm_received_srv(const mtk::admin::msg::pub_alarm&  ar)
                     "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
 
         mtk::fbInsertParams params;
-            params.Add(ar.dateTime_generated);
+            params.Add(ar.__internal_warning_control_fields->sent_date_time);
             params.Add(ar.dateTime_generated);
             params.Add(ar.alarm_id);
             params.Add(ar.process_info.process_location.location.client_code);

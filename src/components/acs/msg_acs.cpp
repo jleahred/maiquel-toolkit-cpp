@@ -384,6 +384,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 req_login_key::req_login_key (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name)
     :     request_info(_request_info),   user_name(_user_name) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -404,6 +405,7 @@ std::string req_login_key::check_recomended(void) const
 
 res_login_key::res_login_key (   const mtk::msg::sub_r_response&  _response_info,   const std::string&  _key)
     :     response_info(_response_info),   key(_key) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -424,6 +426,7 @@ std::string res_login_key::check_recomended(void) const
 
 req_login::req_login (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _coded_pass)
     :     request_info(_request_info),   user_name(_user_name),   key(_key),   coded_pass(_coded_pass) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -444,6 +447,7 @@ std::string req_login::check_recomended(void) const
 
 res_login::res_login (   const mtk::msg::sub_r_response&  _response_info,   const IC_login_response_info&  _login_response_info)
     :     response_info(_response_info),   login_response_info(_login_response_info) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -464,6 +468,7 @@ std::string res_login::check_recomended(void) const
 
 res_login::IC_login_response_info::IC_login_response_info (   const std::string&  _user_name,   const std::string&  _session_id)
     :     user_name(_user_name),   session_id(_session_id) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -484,6 +489,7 @@ std::string res_login::IC_login_response_info::check_recomended(void) const
 
 conf_logout::conf_logout (   const mtk::msg::sub_location&  _location,   const std::string&  _session_id,   const std::string&  _description)
     :     location(_location),   session_id(_session_id),   description(_description) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -504,6 +510,7 @@ std::string conf_logout::check_recomended(void) const
 
 req_logout::req_logout (   const mtk::msg::sub_request_info&  _request_info)
     :     request_info(_request_info) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -524,6 +531,7 @@ std::string req_logout::check_recomended(void) const
 
 req_change_password::req_change_password (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _old_password,   const mtk::list<int32_t >&  _new_password)
     :     request_info(_request_info),   user_name(_user_name),   key(_key),   old_password(_old_password),   new_password(_new_password) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -544,6 +552,7 @@ std::string req_change_password::check_recomended(void) const
 
 res_change_password::res_change_password (   const mtk::msg::sub_r_response&  _response_info,   const IC_change_password_info&  _change_password_info)
     :     response_info(_response_info),   change_password_info(_change_password_info) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -564,6 +573,7 @@ std::string res_change_password::check_recomended(void) const
 
 res_change_password::IC_change_password_info::IC_change_password_info (   const bool&  _accepted)
     :     accepted(_accepted) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -1367,7 +1377,7 @@ qpid::messaging::Message req_login_key::qpidmsg_codded_as_qpid_message (void) co
         __internal_add2map(content, this->user_name, std::string("u"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1393,7 +1403,7 @@ qpid::messaging::Message res_login_key::qpidmsg_codded_as_qpid_message (void) co
         __internal_add2map(content, this->key, std::string("k"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1425,7 +1435,7 @@ qpid::messaging::Message req_login::qpidmsg_codded_as_qpid_message (void) const
         __internal_add2map(content, this->coded_pass, std::string("cp"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1451,7 +1461,7 @@ qpid::messaging::Message res_login::qpidmsg_codded_as_qpid_message (void) const
         __internal_add2map(content, this->login_response_info, std::string("lr"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1477,7 +1487,7 @@ qpid::messaging::Message res_login::IC_login_response_info::qpidmsg_codded_as_qp
         __internal_add2map(content, this->session_id, std::string("si"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1506,7 +1516,7 @@ qpid::messaging::Message conf_logout::qpidmsg_codded_as_qpid_message (void) cons
         __internal_add2map(content, this->description, std::string("si"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1529,7 +1539,7 @@ qpid::messaging::Message req_logout::qpidmsg_codded_as_qpid_message (void) const
         __internal_add2map(content, this->request_info, std::string("ri"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1564,7 +1574,7 @@ qpid::messaging::Message req_change_password::qpidmsg_codded_as_qpid_message (vo
         __internal_add2map(content, this->new_password, std::string("np"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1590,7 +1600,7 @@ qpid::messaging::Message res_change_password::qpidmsg_codded_as_qpid_message (vo
         __internal_add2map(content, this->change_password_info, std::string("cp"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1613,7 +1623,7 @@ qpid::messaging::Message res_change_password::IC_change_password_info::qpidmsg_c
         __internal_add2map(content, this->accepted, std::string("a"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

@@ -339,7 +339,11 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
         msg::sub_control_fields cf(__internal_get_default((msg::sub_control_fields*)0));
         msg::copy(cf, mv["_cf_"].asMap());
         if (cf.message_type == MESSAGE_TYPE::static_get_message_type_as_string())
-            signalMessage->emit(MESSAGE_TYPE(message));
+        {
+            MESSAGE_TYPE mt(message);
+            mt.__internal_warning_control_fields = &cf;
+            signalMessage->emit(mt);
+        }
 //        nullable<msg::sub_control_fields> cf;
 //        msg::copy(cf, mv["_cf_"].asMap());
 //        if (cf.HasValue() == false)

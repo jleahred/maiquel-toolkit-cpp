@@ -384,6 +384,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 sub_tree_item::sub_tree_item (   const std::string&  _branch,   const std::string&  _user_name,   const mtk::nullable<mtk::msg::sub_product_code>&  _product_code)
     :     branch(_branch),   user_name(_user_name),   product_code(_product_code) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -404,6 +405,7 @@ std::string sub_tree_item::check_recomended(void) const
 
 req_tree_items::req_tree_items (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _branch)
     :     request_info(_request_info),   branch(_branch) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -424,6 +426,7 @@ std::string req_tree_items::check_recomended(void) const
 
 res_tree_items::res_tree_items (   const mtk::msg::sub_r_response&  _response_info,   const sub_tree_item&  _item)
     :     response_info(_response_info),   item(_item) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -687,7 +690,7 @@ qpid::messaging::Message sub_tree_item::qpidmsg_codded_as_qpid_message (void) co
         __internal_add2map(content, this->product_code, std::string("pc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -713,7 +716,7 @@ qpid::messaging::Message req_tree_items::qpidmsg_codded_as_qpid_message (void) c
         __internal_add2map(content, this->branch, std::string("br"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -739,7 +742,7 @@ qpid::messaging::Message res_tree_items::qpidmsg_codded_as_qpid_message (void) c
         __internal_add2map(content, this->item, std::string("it"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

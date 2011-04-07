@@ -384,6 +384,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 oms_RQ_NW_LS::oms_RQ_NW_LS ( const RQ_NW_LS&  parent,   const std::string&  _reject_descr)
     :  RQ_NW_LS(parent),   reject_descr(_reject_descr) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -404,6 +405,7 @@ std::string oms_RQ_NW_LS::check_recomended(void) const
 
 oms_RQ_MD_LS::oms_RQ_MD_LS ( const RQ_MD_LS&  parent,   const std::string&  _reject_descr)
     :  RQ_MD_LS(parent),   reject_descr(_reject_descr) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -424,6 +426,7 @@ std::string oms_RQ_MD_LS::check_recomended(void) const
 
 oms_RQ_CC_LS::oms_RQ_CC_LS ( const RQ_CC_LS&  parent,   const std::string&  _reject_descr)
     :  RQ_CC_LS(parent),   reject_descr(_reject_descr) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -649,7 +652,7 @@ __internal_add2map(content, static_cast<const RQ_NW_LS&>(*this));
         __internal_add2map(content, this->reject_descr, std::string("rd"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -674,7 +677,7 @@ __internal_add2map(content, static_cast<const RQ_MD_LS&>(*this));
         __internal_add2map(content, this->reject_descr, std::string("rd"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -699,7 +702,7 @@ __internal_add2map(content, static_cast<const RQ_CC_LS&>(*this));
         __internal_add2map(content, this->reject_descr, std::string("rd"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

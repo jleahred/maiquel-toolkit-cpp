@@ -57,6 +57,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -94,6 +97,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -133,6 +139,9 @@ public:
     static std::string  get_in_subject (const std::string& req_info_process_location,const std::string& product_code_sys_code_market,const std::string& product_code_sys_code_product);
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -165,6 +174,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -197,6 +209,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -229,6 +244,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -265,6 +283,9 @@ public:
     static std::string  get_in_subject (const std::string& req_info_process_location_location_client_code,const std::string& confirmated_info_product_code_sys_code_market,const std::string& confirmated_info_product_code_sys_code_product);
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -297,6 +318,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -329,6 +353,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -361,6 +388,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -394,6 +424,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -431,6 +464,9 @@ public:
     static std::string  get_in_subject (const std::string& req_info_process_location_location_client_code,const std::string& confirmated_info_product_code_sys_code_market,const std::string& confirmated_info_product_code_sys_code_product);
 virtual std::string  get_out_subject (void) const;
 
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -463,6 +499,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -495,6 +534,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -527,6 +569,9 @@ public:
 
     //  subject info
     
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };

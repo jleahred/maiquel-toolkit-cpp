@@ -382,6 +382,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 LimitPosition::LimitPosition (   const mtk::nullable<std::string>&  _buy_sell,   const mtk::nullable<mtk::FixedNumber>&  _price,   const mtk::FixedNumber&  _quantity)
     :     buy_sell(_buy_sell),   price(_price),   quantity(_quantity) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -407,6 +408,7 @@ std::string LimitPosition::check_recomended(void) const
 
 RQ_NW_LS::RQ_NW_LS (   const std::string&  _order_id,   const std::string&  _cli_ref,   const LimitPosition&  _position,   const LimitPosition&  _positionnn,   const IC_control_fields_&  _control_fields_,   const IC_product_code&  _product_code,   const mtk::list<std::string >&  _names,   const mtk::list<LimitPosition >&  _postitions)
     :     order_id(_order_id),   cli_ref(_cli_ref),   position(_position),   positionnn(_positionnn),   control_fields_(_control_fields_),   product_code(_product_code),   names(_names),   postitions(_postitions) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -427,6 +429,7 @@ std::string RQ_NW_LS::check_recomended(void) const
 
 RQ_NW_LS::IC_control_fields_::IC_control_fields_ (   const mtk::DateTime&  _clock_id,   const int32_t&  _secuence)
     :     clock_id(_clock_id),   secuence(_secuence) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -447,6 +450,7 @@ std::string RQ_NW_LS::IC_control_fields_::check_recomended(void) const
 
 RQ_NW_LS::IC_product_code::IC_product_code (   const std::string&  _market,   const std::string&  _product_code,   const std::string&  _aditional_code)
     :     market(_market),   product_code(_product_code),   aditional_code(_aditional_code) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -467,6 +471,7 @@ std::string RQ_NW_LS::IC_product_code::check_recomended(void) const
 
 LimitPositionChild::LimitPositionChild ( const LimitPosition&  parent,   const std::string&  _new_field)
     :  LimitPosition(parent),   new_field(_new_field) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -931,7 +936,7 @@ qpid::messaging::Message LimitPosition::qpidmsg_codded_as_qpid_message (void) co
         __internal_add2map(content, this->quantity, std::string("qt"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -973,7 +978,7 @@ qpid::messaging::Message RQ_NW_LS::qpidmsg_codded_as_qpid_message (void) const
         __internal_add2map(content, this->postitions, std::string("poss"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -999,7 +1004,7 @@ qpid::messaging::Message RQ_NW_LS::IC_control_fields_::qpidmsg_codded_as_qpid_me
         __internal_add2map(content, this->secuence, std::string("sec"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1028,7 +1033,7 @@ qpid::messaging::Message RQ_NW_LS::IC_product_code::qpidmsg_codded_as_qpid_messa
         __internal_add2map(content, this->aditional_code, std::string("ac"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1053,7 +1058,7 @@ __internal_add2map(content, static_cast<const LimitPosition&>(*this));
         __internal_add2map(content, this->new_field, std::string("nf"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

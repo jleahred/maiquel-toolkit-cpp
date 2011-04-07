@@ -384,6 +384,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 sub_order_id::sub_order_id ( const mtk::msg::sub_request_id&  parent)
     :  mtk::msg::sub_request_id(parent) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -404,6 +405,7 @@ std::string sub_order_id::check_recomended(void) const
 
 sub_total_executions::sub_total_executions (   const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _quantity,   const mtk::FixedNumber&  _remaining_qty)
     :     sum_price_by_qty(_sum_price_by_qty),   quantity(_quantity),   remaining_qty(_remaining_qty) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -569,7 +571,7 @@ __internal_add2map(content, static_cast<const mtk::msg::sub_request_id&>(*this))
 
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -598,7 +600,7 @@ qpid::messaging::Message sub_total_executions::qpidmsg_codded_as_qpid_message (v
         __internal_add2map(content, this->remaining_qty, std::string("rq"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

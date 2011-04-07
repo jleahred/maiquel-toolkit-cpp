@@ -383,6 +383,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 sub_location::sub_location (   const std::string&  _client_code,   const std::string&  _machine)
     :     client_code(_client_code),   machine(_machine) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -403,6 +404,7 @@ std::string sub_location::check_recomended(void) const
 
 sub_process_location::sub_process_location (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid)
     :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -423,6 +425,7 @@ std::string sub_process_location::check_recomended(void) const
 
 sub_process_info::sub_process_info (   const sub_process_location&  _process_location,   const std::string&  _version)
     :     process_location(_process_location),   version(_version) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -443,6 +446,7 @@ std::string sub_process_info::check_recomended(void) const
 
 sub_request_id::sub_request_id (   const std::string&  _sess_id,   const std::string&  _req_code)
     :     sess_id(_sess_id),   req_code(_req_code) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -463,6 +467,7 @@ std::string sub_request_id::check_recomended(void) const
 
 sub_request_info::sub_request_info (   const sub_request_id&  _req_id,   const sub_process_location&  _process_location)
     :     req_id(_req_id),   process_location(_process_location) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -483,6 +488,7 @@ std::string sub_request_info::check_recomended(void) const
 
 sub_r_response::sub_r_response (   const sub_request_info&  _request_info,   const int16_t&  _sec_number,   const bool&  _is_last_response)
     :     request_info(_request_info),   sec_number(_sec_number),   is_last_response(_is_last_response) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -503,6 +509,7 @@ std::string sub_r_response::check_recomended(void) const
 
 sub_single_product_code::sub_single_product_code (   const std::string&  _market,   const std::string&  _product)
     :     market(_market),   product(_product) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -523,6 +530,7 @@ std::string sub_single_product_code::check_recomended(void) const
 
 sub_sys_product_code::sub_sys_product_code ( const sub_single_product_code&  parent,   const std::string&  _user_name)
     :  sub_single_product_code(parent),   user_name(_user_name) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -543,6 +551,7 @@ std::string sub_sys_product_code::check_recomended(void) const
 
 sub_adic_product_code::sub_adic_product_code ( const sub_single_product_code&  parent,   const std::string&  _aditional_code_type)
     :  sub_single_product_code(parent),   aditional_code_type(_aditional_code_type) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -563,6 +572,7 @@ std::string sub_adic_product_code::check_recomended(void) const
 
 sub_product_code::sub_product_code (   const sub_sys_product_code&  _sys_code,   const mtk::nullable<sub_adic_product_code>&  _aditional_code)
     :     sys_code(_sys_code),   aditional_code(_aditional_code) 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -1327,7 +1337,7 @@ qpid::messaging::Message sub_location::qpidmsg_codded_as_qpid_message (void) con
         __internal_add2map(content, this->machine, std::string("mc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1356,7 +1366,7 @@ qpid::messaging::Message sub_process_location::qpidmsg_codded_as_qpid_message (v
         __internal_add2map(content, this->process_uuid, std::string("pi"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1382,7 +1392,7 @@ qpid::messaging::Message sub_process_info::qpidmsg_codded_as_qpid_message (void)
         __internal_add2map(content, this->version, std::string("pv"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1408,7 +1418,7 @@ qpid::messaging::Message sub_request_id::qpidmsg_codded_as_qpid_message (void) c
         __internal_add2map(content, this->req_code, std::string("rqc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1434,7 +1444,7 @@ qpid::messaging::Message sub_request_info::qpidmsg_codded_as_qpid_message (void)
         __internal_add2map(content, this->process_location, std::string("pl"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1463,7 +1473,7 @@ qpid::messaging::Message sub_r_response::qpidmsg_codded_as_qpid_message (void) c
         __internal_add2map(content, this->is_last_response, std::string("lr"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1489,7 +1499,7 @@ qpid::messaging::Message sub_single_product_code::qpidmsg_codded_as_qpid_message
         __internal_add2map(content, this->product, std::string("pr"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1514,7 +1524,7 @@ __internal_add2map(content, static_cast<const sub_single_product_code&>(*this));
         __internal_add2map(content, this->user_name, std::string("un"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1539,7 +1549,7 @@ __internal_add2map(content, static_cast<const sub_single_product_code&>(*this));
         __internal_add2map(content, this->aditional_code_type, std::string("act"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1566,7 +1576,7 @@ qpid::messaging::Message sub_product_code::qpidmsg_codded_as_qpid_message (void)
         __internal_add2map(content, this->aditional_code, std::string("apc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

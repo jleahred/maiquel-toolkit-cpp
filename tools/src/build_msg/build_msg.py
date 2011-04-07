@@ -128,6 +128,9 @@ $CLASS_FIELDS
 
     //  subject info
     $SUBJECT_METHODS
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
 private:
     std::string check_recomended(void) const;
 };
@@ -195,6 +198,7 @@ def generate_class_in_impl(class_name, class_info, class_properties):
 
 ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} ($CONSTRUCTOR_PARAMS_DEBUG_DECL)
     :  $CONSTRUCTOR_PARAMS_DEBUG_INIT 
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -806,7 +810,7 @@ qpid::messaging::Message ${class_name}::qpidmsg_codded_as_qpid_message (void) co
 $OUTPUT_PARENT
 $OUPUT_PER_FIELD
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
