@@ -1,0 +1,57 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= AlarmsDB
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-4-7
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This process will write alarms on db using +fbinsert+
+* It will listen the +pub_alarm+ defined on...
++
+.components/admin/msg_admin.msg
+[source,{cpp}]
+----
+include::../mtk/src/components/admin/msg_admin.msg[]
+----
+
+
+* The full source code of this process is...
++
+.main.cpp
+[source,{cpp}]
+----
+include::main.cpp[]
+----
+
+
+
+== Document modifications
+* Non aply
