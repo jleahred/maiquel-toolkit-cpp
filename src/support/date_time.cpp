@@ -505,10 +505,20 @@ dtTimeQuantitySerialNumber  dtTimeQuantity::GetQuantitySerialNumber (void) const
 
 bool dtTimeQuantity::IsNegative                (void) const
 {
-    if (sign<0)
-        return true;
+    if(decodedTime)
+    {
+        if (sign<0)
+            return true;
+        else
+            return false;
+    }
     else
-        return false;
+    {
+        if(timeQuantitySerialNumber.WarningDontDoThisGetInternal() < -1./24./60./60./1000.)
+            return true;
+        else
+            return false;
+    }
 }
 
 bool dtTimeQuantity::IsPositive                (void) const
