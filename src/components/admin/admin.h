@@ -72,10 +72,6 @@ namespace mtk {
         
         
         
-        
-        
-        
-        
         mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*response lines*/> >
                                             register_command(   const std::string& group, 
                                                                 const std::string& name, 
@@ -85,6 +81,8 @@ namespace mtk {
                                                                 
         mtk::Signal<>*           get_signal_admin_ready(void);
       
+        mtk::msg::sub_control_fluct     get_control_fluct_info(void);
+        void  check_control_fluct(const mtk::msg::sub_control_fluct&  cf);
       };     //namespace admin {
       
       

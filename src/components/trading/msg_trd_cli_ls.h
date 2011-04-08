@@ -118,7 +118,7 @@ public:
 
     
     // constructor
-    explicit RQ_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const sub_position_ls&  _request_pos,   const std::string&  _cli_ref );
+    explicit RQ_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const sub_position_ls&  _request_pos,   const std::string&  _cli_ref,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit RQ_XX_LS ( const qpid::messaging::Message& message );
     virtual ~RQ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX_LS"; };
@@ -132,6 +132,7 @@ public:
     mtk::msg::sub_product_code                product_code; 
     sub_position_ls                           request_pos; 
     std::string                               cli_ref; 
+    mtk::msg::sub_control_fluct               orig_control_fluct; 
 
 
 
@@ -265,7 +266,7 @@ public:
 
     
     // constructor
-    explicit CF_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info );
+    explicit CF_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit CF_XX_LS ( const qpid::messaging::Message& message );
     virtual ~CF_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX_LS"; };
@@ -276,6 +277,7 @@ public:
     // fields
     mtk::msg::sub_request_info                req_info; 
     sub_order_ls_confirmated                  confirmated_info; 
+    mtk::msg::sub_control_fluct               orig_control_fluct; 
 
 
 
@@ -445,7 +447,7 @@ public:
 
     
     // constructor
-    explicit RJ_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const std::string&  _description );
+    explicit RJ_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const std::string&  _description,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit RJ_XX_LS ( const qpid::messaging::Message& message );
     virtual ~RJ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_LS"; };
@@ -457,6 +459,7 @@ public:
     mtk::msg::sub_request_info                req_info; 
     sub_order_ls_confirmated                  confirmated_info; 
     std::string                               description; 
+    mtk::msg::sub_control_fluct               orig_control_fluct; 
 
 
 

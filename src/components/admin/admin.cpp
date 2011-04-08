@@ -125,7 +125,10 @@ namespace {
             mtk::Nullable<std::string>                  get_config_property(const std::string& path);
             void                                        set_config_property(const std::string& path, const std::string&  property_value);
             
-            
+
+            mtk::msg::sub_control_fluct                 get_control_fluct_info(void);
+            void                                        check_control_fluct(const mtk::msg::sub_control_fluct&  cf);
+
             
             std::string                                 app_name;
             std::string                                 app_version;
@@ -416,9 +419,9 @@ namespace {
         MTK_CONNECT_THIS(*register_command("ADMIN",         "rqclose",      "request close application (confirmation requiered)"
                                         " on clients will produce a non ordered close", true),                                  command_rqclose)
                                         
-        MTK_CONNECT_THIS(*register_command("__GOBLAL__",    "stats",        "some stats"),                                      command_realtime)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_realtime)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "realtime",     "some realtime stats"),                             command_realtime)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "stats",        "some stats"),                                      command_realtime)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_realtime)
     }
 
     std::string admin_status::get_mandatory_property(const std::string& path_and_property)
@@ -924,6 +927,18 @@ namespace {
     {
         return config_file.GetValue(path);
     }
+    
+    mtk::msg::sub_control_fluct     admin_status::get_control_fluct_info(void)
+    {
+        return mtk::msg::sub_control_fluct(MTK_SS(process_info.process_location.location.client_code << "." << process_info.process_location.location.machine), mtk::dtNowLocal());
+    }
+    void  admin_status::check_control_fluct(const mtk::msg::sub_control_fluct&  cf)
+    {
+        MTK_EXEC_MAX_FREC_S(mtk::dtMilliseconds(500))
+            check_fluct(cf.key,  cf.datetime);
+        MTK_END_EXEC_MAX_FREC
+    }
+    
 
     void admin_status::set_config_property(const std::string& path, const std::string& property_value)
     {
@@ -1090,13 +1105,25 @@ void client_logout_confirmation     (const std::string& description)
 
 mtk::Signal<>*           get_signal_admin_ready(void)
 {
-    bool initialized = false;
+    static bool initialized = false;
     if(signal_admin_ready == 0  &&  initialized==false)
     {
         signal_admin_ready = new mtk::Signal<>;
         initialized = true;
     }
     return signal_admin_ready;
+}
+
+
+
+mtk::msg::sub_control_fluct     get_control_fluct_info(void)
+{
+    return admin_status::i()->get_control_fluct_info();
+}
+
+void  check_control_fluct(const mtk::msg::sub_control_fluct&  cf)
+{
+    return admin_status::i()->check_control_fluct(cf);
 }
 
 

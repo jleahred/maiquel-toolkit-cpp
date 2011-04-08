@@ -5,6 +5,7 @@
 #include "support/map.hpp"
 
 #include "components/prices/msg_prices.h"
+#include "components/admin/admin.h"
 
 
 //----------------------------------------------------------------------------------------
@@ -391,7 +392,8 @@ mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
                                             get_emtpy_level_prices(), 
                                             get_emtpy_level_prices(),
                                             get_emtpy_level_prices(),
-                                            get_emtpy_level_prices())
+                                            get_emtpy_level_prices()),
+        mtk::admin::get_control_fluct_info()
     );
 }
 

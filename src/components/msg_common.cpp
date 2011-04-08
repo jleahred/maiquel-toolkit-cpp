@@ -444,6 +444,27 @@ std::string sub_process_info::check_recomended(void) const
 
 
 
+sub_control_fluct::sub_control_fluct (   const std::string&  _key,   const mtk::DateTime&  _datetime)
+    :     key(_key),   datetime(_datetime) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_control_fluct::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+
+
 sub_request_id::sub_request_id (   const std::string&  _sess_id,   const std::string&  _req_code)
     :     sess_id(_sess_id),   req_code(_req_code) 
        , __internal_warning_control_fields(0)
@@ -623,6 +644,17 @@ std::ostream& operator<< (std::ostream& o, const sub_process_info & c)
 
 
 
+std::ostream& operator<< (std::ostream& o, const sub_control_fluct & c)
+{
+    o << "{ "
+
+        << "key:"<<   c.key << "  "        << "datetime:"<<   c.datetime << "  "
+        << " }";
+    return o;
+};
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_request_id & c)
 {
     o << "{ "
@@ -730,6 +762,18 @@ bool operator== (const sub_process_info& a, const sub_process_info& b)
 };
 
 bool operator!= (const sub_process_info& a, const sub_process_info& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const sub_control_fluct& a, const sub_control_fluct& b)
+{
+    return (          a.key ==  b.key  &&          a.datetime ==  b.datetime  &&   true  );
+};
+
+bool operator!= (const sub_control_fluct& a, const sub_control_fluct& b)
 {
     return !(a==b);
 };
@@ -969,6 +1013,55 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info&
 
 
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (sub_control_fluct& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_control_fluct& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("k");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field key on message sub_control_fluct::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.key, it->second);
+                        //c.key = it->second;
+//   field_type
+
+                    it = mv.find("dt");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field datetime on message sub_control_fluct::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.datetime, it->second);
+                        //c.datetime = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fluct& a)
+{
+    
+
+//  field_type
+        __internal_add2map(map, a.key, std::string("k"));
+//  field_type
+        __internal_add2map(map, a.datetime, std::string("dt"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_control_fluct>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1322,6 +1415,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 
 qpid::messaging::Message sub_location::qpidmsg_codded_as_qpid_message (void) const
 {
@@ -1390,6 +1484,32 @@ qpid::messaging::Message sub_process_info::qpidmsg_codded_as_qpid_message (void)
 //  field_type
 //        content["pv"] = this->version;
         __internal_add2map(content, this->version, std::string("pv"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message sub_control_fluct::qpidmsg_codded_as_qpid_message (void) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  field_type
+//        content["k"] = this->key;
+        __internal_add2map(content, this->key, std::string("k"));
+//  field_type
+//        content["dt"] = this->datetime;
+        __internal_add2map(content, this->datetime, std::string("dt"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
@@ -1620,6 +1740,16 @@ qpid::messaging::Message sub_product_code::qpidmsg_codded_as_qpid_message (void)
             );
     }
     
+    sub_control_fluct  __internal_get_default(sub_control_fluct*)
+    {
+        return sub_control_fluct(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0)
+            );
+    }
+    
     sub_request_id  __internal_get_default(sub_request_id*)
     {
         return sub_request_id(
@@ -1732,6 +1862,24 @@ sub_process_info::sub_process_info (const qpid::messaging::Message& msg)
    process_location(__internal_get_default((sub_process_location*)0)),
 //   field_type
    version(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+sub_control_fluct::sub_control_fluct (const qpid::messaging::Message& msg)
+    :  //   field_type
+   key(__internal_get_default((std::string*)0)),
+//   field_type
+   datetime(__internal_get_default((mtk::DateTime*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

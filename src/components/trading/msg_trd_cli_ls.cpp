@@ -424,8 +424,8 @@ std::string sub_order_ls_confirmated::check_recomended(void) const
 
 
 
-RQ_XX_LS::RQ_XX_LS (   const mtk::msg::sub_request_info&  _req_info,   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const sub_position_ls&  _request_pos,   const std::string&  _cli_ref)
-    :     req_info(_req_info),   order_id(_order_id),   product_code(_product_code),   request_pos(_request_pos),   cli_ref(_cli_ref) 
+RQ_XX_LS::RQ_XX_LS (   const mtk::msg::sub_request_info&  _req_info,   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const sub_position_ls&  _request_pos,   const std::string&  _cli_ref,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     req_info(_req_info),   order_id(_order_id),   product_code(_product_code),   request_pos(_request_pos),   cli_ref(_cli_ref),   orig_control_fluct(_orig_control_fluct) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -508,8 +508,8 @@ std::string RQ_CC_LS::check_recomended(void) const
 
 
 
-CF_XX_LS::CF_XX_LS (   const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info)
-    :     req_info(_req_info),   confirmated_info(_confirmated_info) 
+CF_XX_LS::CF_XX_LS (   const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     req_info(_req_info),   confirmated_info(_confirmated_info),   orig_control_fluct(_orig_control_fluct) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -613,8 +613,8 @@ std::string CF_EX_LS::check_recomended(void) const
 
 
 
-RJ_XX_LS::RJ_XX_LS (   const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const std::string&  _description)
-    :     req_info(_req_info),   confirmated_info(_confirmated_info),   description(_description) 
+RJ_XX_LS::RJ_XX_LS (   const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const std::string&  _description,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     req_info(_req_info),   confirmated_info(_confirmated_info),   description(_description),   orig_control_fluct(_orig_control_fluct) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -722,7 +722,7 @@ std::ostream& operator<< (std::ostream& o, const RQ_XX_LS & c)
 {
     o << "{ "
 
-        << "req_info:"<< c.req_info<<"  "        << "order_id:"<< c.order_id<<"  "        << "product_code:"<< c.product_code<<"  "        << "request_pos:"<< c.request_pos<<"  "        << "cli_ref:"<<   c.cli_ref << "  "
+        << "req_info:"<< c.req_info<<"  "        << "order_id:"<< c.order_id<<"  "        << "product_code:"<< c.product_code<<"  "        << "request_pos:"<< c.request_pos<<"  "        << "cli_ref:"<<   c.cli_ref << "  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
         << " }";
     return o;
 };
@@ -766,7 +766,7 @@ std::ostream& operator<< (std::ostream& o, const CF_XX_LS & c)
 {
     o << "{ "
 
-        << "req_info:"<< c.req_info<<"  "        << "confirmated_info:"<< c.confirmated_info<<"  "
+        << "req_info:"<< c.req_info<<"  "        << "confirmated_info:"<< c.confirmated_info<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
         << " }";
     return o;
 };
@@ -821,7 +821,7 @@ std::ostream& operator<< (std::ostream& o, const RJ_XX_LS & c)
 {
     o << "{ "
 
-        << "req_info:"<< c.req_info<<"  "        << "confirmated_info:"<< c.confirmated_info<<"  "        << "description:"<<   c.description << "  "
+        << "req_info:"<< c.req_info<<"  "        << "confirmated_info:"<< c.confirmated_info<<"  "        << "description:"<<   c.description << "  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
         << " }";
     return o;
 };
@@ -887,7 +887,7 @@ bool operator!= (const sub_order_ls_confirmated& a, const sub_order_ls_confirmat
 
 bool operator== (const RQ_XX_LS& a, const RQ_XX_LS& b)
 {
-    return (          a.req_info ==  b.req_info  &&          a.order_id ==  b.order_id  &&          a.product_code ==  b.product_code  &&          a.request_pos ==  b.request_pos  &&          a.cli_ref ==  b.cli_ref  &&   true  );
+    return (          a.req_info ==  b.req_info  &&          a.order_id ==  b.order_id  &&          a.product_code ==  b.product_code  &&          a.request_pos ==  b.request_pos  &&          a.cli_ref ==  b.cli_ref  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
 };
 
 bool operator!= (const RQ_XX_LS& a, const RQ_XX_LS& b)
@@ -935,7 +935,7 @@ bool operator!= (const RQ_CC_LS& a, const RQ_CC_LS& b)
 
 bool operator== (const CF_XX_LS& a, const CF_XX_LS& b)
 {
-    return (          a.req_info ==  b.req_info  &&          a.confirmated_info ==  b.confirmated_info  &&   true  );
+    return (          a.req_info ==  b.req_info  &&          a.confirmated_info ==  b.confirmated_info  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
 };
 
 bool operator!= (const CF_XX_LS& a, const CF_XX_LS& b)
@@ -995,7 +995,7 @@ bool operator!= (const CF_EX_LS& a, const CF_EX_LS& b)
 
 bool operator== (const RJ_XX_LS& a, const RJ_XX_LS& b)
 {
-    return (          a.req_info ==  b.req_info  &&          a.confirmated_info ==  b.confirmated_info  &&          a.description ==  b.description  &&   true  );
+    return (          a.req_info ==  b.req_info  &&          a.confirmated_info ==  b.confirmated_info  &&          a.description ==  b.description  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
 };
 
 bool operator!= (const RJ_XX_LS& a, const RJ_XX_LS& b)
@@ -1226,6 +1226,14 @@ void  copy (RQ_XX_LS& c, const qpid::types::Variant& v)
                     else
                         copy(c.cli_ref, it->second);
                         //c.cli_ref = it->second;
+//   sub_msg_type
+
+                    it = mv.find("ocf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field orig_control_fluct on message RQ_XX_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.orig_control_fluct, it->second);
+                        //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
 
     }
 
@@ -1244,6 +1252,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX_LS& a)
         __internal_add2map(map, a.request_pos, std::string("rp"));
 //  field_type
         __internal_add2map(map, a.cli_ref, std::string("cr"));
+//  sub_msg_type
+        __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
 
 
 };
@@ -1374,6 +1384,14 @@ void  copy (CF_XX_LS& c, const qpid::types::Variant& v)
                     else
                         copy(c.confirmated_info, it->second);
                         //__internal_qpid_fill(c.confirmated_info, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("ocf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field orig_control_fluct on message CF_XX_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.orig_control_fluct, it->second);
+                        //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
 
     }
 
@@ -1386,6 +1404,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX_LS& a)
         __internal_add2map(map, a.req_info, std::string("rqid"));
 //  sub_msg_type
         __internal_add2map(map, a.confirmated_info, std::string("ci"));
+//  sub_msg_type
+        __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
 
 
 };
@@ -1565,6 +1585,14 @@ void  copy (RJ_XX_LS& c, const qpid::types::Variant& v)
                     else
                         copy(c.description, it->second);
                         //c.description = it->second;
+//   sub_msg_type
+
+                    it = mv.find("ocf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field orig_control_fluct on message RJ_XX_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.orig_control_fluct, it->second);
+                        //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
 
     }
 
@@ -1579,6 +1607,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_LS& a)
         __internal_add2map(map, a.confirmated_info, std::string("ci"));
 //  field_type
         __internal_add2map(map, a.description, std::string("ds"));
+//  sub_msg_type
+        __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
 
 
 };
@@ -1786,6 +1816,9 @@ qpid::messaging::Message RQ_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 //  field_type
 //        content["cr"] = this->cli_ref;
         __internal_add2map(content, this->cli_ref, std::string("cr"));
+//  sub_msg_type
+//        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
+        __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
@@ -1878,6 +1911,9 @@ qpid::messaging::Message CF_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 //  sub_msg_type
 //        content["ci"] =  qpidmsg_coded_as_qpid_Map(this->confirmated_info);
         __internal_add2map(content, this->confirmated_info, std::string("ci"));
+//  sub_msg_type
+//        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
+        __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
@@ -1998,6 +2034,9 @@ qpid::messaging::Message RJ_XX_LS::qpidmsg_codded_as_qpid_message (void) const
 //  field_type
 //        content["ds"] = this->description;
         __internal_add2map(content, this->description, std::string("ds"));
+//  sub_msg_type
+//        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
+        __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
@@ -2118,7 +2157,9 @@ __internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
 //   sub_msg_type
    __internal_get_default((sub_position_ls*)0),
 //   field_type
-   __internal_get_default ((std::string*)0)
+   __internal_get_default ((std::string*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_control_fluct*)0)
             );
     }
     
@@ -2149,7 +2190,9 @@ __internal_get_default((RQ_XX_LS*)0)
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_info*)0),
 //   sub_msg_type
-   __internal_get_default((sub_order_ls_confirmated*)0)
+   __internal_get_default((sub_order_ls_confirmated*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_control_fluct*)0)
             );
     }
     
@@ -2190,7 +2233,9 @@ __internal_get_default((CF_XX_LS*)0), //   sub_msg_type
 //   sub_msg_type
    __internal_get_default((sub_order_ls_confirmated*)0),
 //   field_type
-   __internal_get_default ((std::string*)0)
+   __internal_get_default ((std::string*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_control_fluct*)0)
             );
     }
     
@@ -2270,7 +2315,9 @@ RQ_XX_LS::RQ_XX_LS (const qpid::messaging::Message& msg)
 //   sub_msg_type
    request_pos(__internal_get_default((sub_position_ls*)0)),
 //   field_type
-   cli_ref(__internal_get_default((std::string*)0)) 
+   cli_ref(__internal_get_default((std::string*)0)),
+//   sub_msg_type
+   orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2333,7 +2380,9 @@ CF_XX_LS::CF_XX_LS (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    req_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   sub_msg_type
-   confirmated_info(__internal_get_default((sub_order_ls_confirmated*)0)) 
+   confirmated_info(__internal_get_default((sub_order_ls_confirmated*)0)),
+//   sub_msg_type
+   orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2414,7 +2463,9 @@ RJ_XX_LS::RJ_XX_LS (const qpid::messaging::Message& msg)
 //   sub_msg_type
    confirmated_info(__internal_get_default((sub_order_ls_confirmated*)0)),
 //   field_type
-   description(__internal_get_default((std::string*)0)) 
+   description(__internal_get_default((std::string*)0)),
+//   sub_msg_type
+   orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

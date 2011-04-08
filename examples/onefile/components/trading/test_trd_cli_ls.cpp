@@ -128,7 +128,8 @@ int main(void)
                                                    mtk::FixedNumber(mtk::fnDouble(100.123),  mtk::fnDec(3),  mtk::fnInc(1))
                                                    , mtk::FixedNumber(mtk::fnDouble(30)   ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                    , mtk::trd::msg::buy)
-                                  , "cli_ref")));
+                                  , "cli_ref"
+                                  , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))));
 
 
         //  receiving a cf_nw
@@ -145,8 +146,8 @@ int main(void)
                                                                                                           0.
                                                                                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                                                                         , mtk::FixedNumber(mtk::fnDouble(30),  mtk::fnDec(0),  mtk::fnInc(1)))
-                                                                                                , "cli_ref"
-                                                                    ))));
+                                                                                                , "cli_ref")
+                                                                    , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))));
 
         //  we receive a request modification
         order_ls.rq_md(mtk::trd::msg::RQ_MD_LS(mtk::trd::msg::RQ_XX_LS( 
@@ -157,7 +158,8 @@ int main(void)
                                                                           mtk::FixedNumber(mtk::fnDouble(100.333),  mtk::fnDec(3),  mtk::fnInc(1))
                                                                         , mtk::FixedNumber(mtk::fnDouble(30)     ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                                         , mtk::trd::msg::buy)
-                                                                , "cli_ref")));
+                                                                , "cli_ref"
+                                                                , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))));
 
 
         //  receiving a cf_md
@@ -168,7 +170,8 @@ int main(void)
                                                                                                 , order_ls.last_request().Get().product_code
                                                                                                 , order_ls.last_request().Get().request_pos
                                                                                                 , order_ls.last_confirmation().Get().confirmated_info.total_execs
-                                                                                                , order_ls.last_request().Get().cli_ref ))));
+                                                                                                , order_ls.last_request().Get().cli_ref)
+                                                                  , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))));
 
         //  receiving a modification with no modifications
         order_ls.rq_md(mtk::trd::msg::RQ_MD_LS(mtk::trd::msg::RQ_XX_LS( 
@@ -179,7 +182,8 @@ int main(void)
                                                                           mtk::FixedNumber(mtk::fnDouble(100.333),  mtk::fnDec(3),  mtk::fnInc(1))
                                                                         , mtk::FixedNumber(mtk::fnDouble(30)     ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                                         , mtk::trd::msg::buy)
-                                                                , "cli_ref")));
+                                                                , "cli_ref"
+                                                                , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))));
 
         //  receiving a non requested cf_md
         order_ls.cf_md(mtk::trd::msg::CF_MD_LS(mtk::trd::msg::CF_XX_LS(
@@ -192,7 +196,8 @@ int main(void)
                                                                                                         , mtk::FixedNumber(mtk::fnDouble(45)     ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                                                                         , mtk::trd::msg::buy)
                                                                                                 , order_ls.last_confirmation().Get().confirmated_info.total_execs
-                                                                                                , order_ls.last_request().Get().cli_ref ))));
+                                                                                                , order_ls.last_request().Get().cli_ref)
+                                                                  , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))));
 
 
 
@@ -208,7 +213,8 @@ int main(void)
                                                                                                         , mtk::FixedNumber(mtk::fnDouble(40)     ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                                                                         , mtk::trd::msg::buy)
                                                                                                 , order_ls.last_confirmation().Get().confirmated_info.total_execs
-                                                                                                , order_ls.last_request().Get().cli_ref))
+                                                                                                , order_ls.last_request().Get().cli_ref)
+                                                                    , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
                                                     //  executed
                                                     , mtk::trd::msg::sub_position_ls(
                                                               mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
@@ -232,7 +238,8 @@ int main(void)
                                                                                                         , mtk::FixedNumber(mtk::fnDouble(40)     ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                                                                         , mtk::trd::msg::buy)
                                                                                                 , order_ls.last_confirmation().Get().confirmated_info.total_execs
-                                                                                                , order_ls.last_request().Get().cli_ref ))));
+                                                                                                , order_ls.last_request().Get().cli_ref)
+                                                                  , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))));
 
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"

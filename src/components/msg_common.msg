@@ -7,6 +7,11 @@ END_INIT
 
 
 
+//---------------------------------------------------------------------
+//        PROCESS INFO
+//
+//---------------------------------------------------------------------
+
 sub_location  [<V:0>]
 {
     client_code     (cc)  : string
@@ -25,6 +30,20 @@ sub_process_info    [<V:0>]
 {
     process_location    (pl)    :   sub_process_location
     version             (pv)    :   string
+}
+
+
+
+
+//---------------------------------------------------------------------
+//        CONTROL FLUCT
+//
+//---------------------------------------------------------------------
+
+sub_control_fluct    [<V:0>]
+{
+    key         (k)    :   string
+    datetime    (dt)   :   date_time
 }
 
 

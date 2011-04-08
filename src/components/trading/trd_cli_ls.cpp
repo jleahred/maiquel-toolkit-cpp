@@ -314,7 +314,7 @@ mtk::tuple<int, std::string>  check_exec__last_confirm(const mtk::trd::msg::CF_E
 
 #define SEND_REJECT(__SIGNAL_TYPE__, __MSG_TYPE__) \
     if (last_confirmation().HasValue())    \
-        ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, last_confirmation().Get().confirmated_info, MTK_SS("Error: Received rq_md on status " << GetStatusName()))));     \
+        ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, last_confirmation().Get().confirmated_info, MTK_SS("Error: Received rq_md on status " << GetStatusName()), mtk::admin::get_control_fluct_info())));     \
     else      \
     {      \
         if (last_request().HasValue()==true)      \
@@ -327,7 +327,7 @@ mtk::tuple<int, std::string>  check_exec__last_confirm(const mtk::trd::msg::CF_E
                                                                                     mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)),    \
                                                                                     mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)) ),    \
                                                 _last_request.cli_ref);    \
-            ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, to_confirm, MTK_SS("Error: Local reject. Order not sent. Received rq_md on status " << GetStatusName()))));    \
+            ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, to_confirm, MTK_SS("Error: Local reject. Order not sent. Received rq_md on status " << GetStatusName()), mtk::admin::get_control_fluct_info())));    \
         }    \
         else     \
             throw mtk::Alarm("SEND_REJECT", "trd_cli_ls.cpp", MTK_SS("Missing last_request trying to reject "), mtk::alPriorCritic, mtk::alTypeNoPermisions);    \

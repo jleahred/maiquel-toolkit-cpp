@@ -142,6 +142,43 @@ private:
 
 
 //-------------------------------
+//      sub_control_fluct
+//-------------------------------    
+class sub_control_fluct     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_control_fluct (    const std::string&  _key,   const mtk::DateTime&  _datetime );
+    explicit sub_control_fluct ( const qpid::messaging::Message& message );
+    virtual ~sub_control_fluct (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fluct"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_control_fluct"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
+
+    // fields
+    std::string                               key; 
+    mtk::DateTime                             datetime; 
+
+
+
+    //  subject info
+    
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+
+//-------------------------------
 //      sub_request_id
 //-------------------------------    
 class sub_request_id     
@@ -417,6 +454,11 @@ bool operator!= (const sub_process_location& a, const sub_process_location& b);
 bool operator== (const sub_process_info& a, const sub_process_info& b);
 bool operator!= (const sub_process_info& a, const sub_process_info& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_control_fluct & c);
+
+bool operator== (const sub_control_fluct& a, const sub_control_fluct& b);
+bool operator!= (const sub_control_fluct& a, const sub_control_fluct& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_request_id & c);
 
 bool operator== (const sub_request_id& a, const sub_request_id& b);
@@ -464,6 +506,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_process_
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_info>& a, const std::string& field);
 void copy (sub_process_info& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_control_fluct& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fluct& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_control_fluct>& a, const std::string& field);
+void copy (sub_control_fluct& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_request_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_request_id>& a, const std::string& field);
@@ -499,6 +545,8 @@ void copy (sub_product_code& a, const qpid::types::Variant& map);
     
     sub_process_info  __internal_get_default(sub_process_info *);
     
+    sub_control_fluct  __internal_get_default(sub_control_fluct *);
+    
     sub_request_id  __internal_get_default(sub_request_id *);
     
     sub_request_info  __internal_get_default(sub_request_info *);
@@ -529,6 +577,7 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_location)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_process_location)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_process_info)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_control_fluct)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_id)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_r_response)

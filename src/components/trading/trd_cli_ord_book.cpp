@@ -201,6 +201,7 @@ mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&    >&  get_signal_request_hook     
 mtk::CountPtr<trd_cli_ls>   rq_nw_ls    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref)
 {
     mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
+    
     mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
     
     mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
@@ -210,7 +211,8 @@ mtk::CountPtr<trd_cli_ls>   rq_nw_ls    (                             const mtk:
                                         ord_id,
                                         pc,
                                         rq_pos,
-                                        cli_ref));
+                                        cli_ref,
+                                        mtk::admin::get_control_fluct_info()));
     order->rq_nw(rq);
     return order;
 }
@@ -225,7 +227,8 @@ mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (                             con
                                         ord_id,
                                         pc,
                                         rq_pos,
-                                        cli_ref));
+                                        cli_ref,
+                                        mtk::admin::get_control_fluct_info()));
     bool canceled=false;
     get_status_ref().sig_request_hook.emit(rq, canceled);
     if (!canceled)
@@ -253,7 +256,12 @@ mtk::trd::msg::RQ_XX_LS get_last_request_or_confirmation (mtk::CountPtr<trd_cli_
     else if (order->last_confirmation().HasValue())
     {
         mtk::trd::msg::CF_XX_LS lc (order->last_confirmation().Get());
-        return mtk::trd::msg::RQ_XX_LS( lc.req_info, lc.confirmated_info.order_id, lc.confirmated_info.product_code, lc.confirmated_info.market_pos, lc.confirmated_info.cli_ref);
+        return mtk::trd::msg::RQ_XX_LS(     lc.req_info, 
+                                            lc.confirmated_info.order_id, 
+                                            lc.confirmated_info.product_code, 
+                                            lc.confirmated_info.market_pos, 
+                                            lc.confirmated_info.cli_ref,
+                                            mtk::msg::sub_control_fluct(MTK_SS(lc.req_info.process_location.location.machine << "." << lc.req_info.process_location.location.client_code), mtk::dtNowLocal()));
     }
    else
         throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing product code in order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -308,42 +316,56 @@ mtk::CountPtr<trd_cli_ls>   rq_cc_ls    ( const msg::sub_order_id& ord_id )
 
 void cf_nw_ls(const mtk::trd::msg::CF_NW_LS& cf)
 {
+    mtk::admin::check_control_fluct(cf.orig_control_fluct);
+    
     mtk::CountPtr<trd_cli_ls>  order = get_order_ls(cf.confirmated_info.order_id);
     order->cf_nw(cf);
     //get_status_ref().sig_order_ls_status_modif.emit(order);
 }
 void cf_md_ls(const mtk::trd::msg::CF_MD_LS& cf)
 {
+    mtk::admin::check_control_fluct(cf.orig_control_fluct);
+    
     mtk::CountPtr<trd_cli_ls>  order = get_order_ls(cf.confirmated_info.order_id);
     order->cf_md(cf);
 }
 
 void cf_cc_ls(const mtk::trd::msg::CF_CC_LS& cf)
 {
+    mtk::admin::check_control_fluct(cf.orig_control_fluct);
+    
     mtk::CountPtr<trd_cli_ls>  order = get_order_ls(cf.confirmated_info.order_id);
     order->cf_cc(cf);
 }
 
 void rj_nw_ls(const mtk::trd::msg::RJ_NW_LS& rj)
 {
+    mtk::admin::check_control_fluct( rj.orig_control_fluct);
+    
     mtk::CountPtr<trd_cli_ls>  order = get_order_ls(rj.confirmated_info.order_id);
     order->rj_nw(rj);
 }
 
 void rj_md_ls(const mtk::trd::msg::RJ_MD_LS& rj)
 {
+    mtk::admin::check_control_fluct( rj.orig_control_fluct);
+    
     mtk::CountPtr<trd_cli_ls>  order = get_order_ls(rj.confirmated_info.order_id);
     order->rj_md(rj);
 }
 
 void rj_cc_ls(const mtk::trd::msg::RJ_CC_LS& rj)
 {
+    mtk::admin::check_control_fluct( rj.orig_control_fluct);
+    
     mtk::CountPtr<trd_cli_ls>  order = get_order_ls(rj.confirmated_info.order_id);
     order->rj_cc(rj);
 }
 
 void cf_ex_ls(const mtk::trd::msg::CF_EX_LS& ex)
 {
+    mtk::admin::check_control_fluct(ex.orig_control_fluct);
+    
     mtk::CountPtr<trd_cli_ls>  order = get_order_ls(ex.confirmated_info.order_id);
     order->cf_ex(ex);
 }

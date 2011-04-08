@@ -112,7 +112,8 @@ mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
                                             get_emtpy_level_prices(),
                                             get_emtpy_level_prices(),
                                             get_emtpy_level_prices(),
-                                            get_emtpy_level_prices())
+                                            get_emtpy_level_prices()),
+        mtk::admin::get_control_fluct_info()
     );
 }
 

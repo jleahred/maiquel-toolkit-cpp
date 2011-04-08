@@ -49,12 +49,14 @@ sub_order_ls_confirmated [<V:0>]
 
 RQ_XX_LS  [<V:0,   SUBJ:RQ.${req_info.process_location}.${product_code.sys_code.market}.${product_code.sys_code.product} >]
 {
-    req_info       (rqid) :   mtk::msg::sub_request_info
-    order_id       (oid)  :   sub_order_id
-    product_code   (pc)   :   mtk::msg::sub_product_code     
-    request_pos    (rp)   :   sub_position_ls      
+    req_info            (rqid) :   mtk::msg::sub_request_info
+    order_id            (oid)  :   sub_order_id
+    product_code        (pc)   :   mtk::msg::sub_product_code     
+    request_pos         (rp)   :   sub_position_ls      
     
-    cli_ref        (cr)   :   string
+    cli_ref             (cr)   :   string
+    
+    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
 
 
@@ -74,8 +76,10 @@ RQ_CC_LS  [< V:0, I:RQ_XX_LS  >]   {}
 
 CF_XX_LS  [< V:0,  SUBJ:RS.${req_info.process_location.location.client_code}.${confirmated_info.product_code.sys_code.market}.${confirmated_info.product_code.sys_code.product}  >]
 {
-    req_info         (rqid) :   mtk::msg::sub_request_info    
-    confirmated_info (ci)   :   sub_order_ls_confirmated
+    req_info            (rqid) :   mtk::msg::sub_request_info    
+    confirmated_info    (ci)   :   sub_order_ls_confirmated
+
+    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
 
 
@@ -110,6 +114,8 @@ RJ_XX_LS  [< V:0, SUBJ:RS.${req_info.process_location.location.client_code}.${co
     req_info            (rqid) :   mtk::msg::sub_request_info    
     confirmated_info    (ci)   :   sub_order_ls_confirmated
     description         (ds)   :   string
+    
+    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
 
 

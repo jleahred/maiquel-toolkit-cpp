@@ -151,7 +151,8 @@ mtk::trd::msg::RQ_XX_LS MainWindow::get_xx_request(void)
                                                       mtk::FixedNumber(mtk::fnDouble(ui->lePrice->text().toDouble()),  mtk::fnDec(2),  mtk::fnInc(1))
                                                     , mtk::FixedNumber(mtk::fnDouble(ui->leQuantity->text().toDouble())     ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                     , side)
-                                            , ui->leCliRef->text().toStdString());
+                                            , ui->leCliRef->text().toStdString()
+                                            , mtk::admin::get_control_fluct_info());
 }
 
 void MainWindow::on_pbNewOrder_clicked()

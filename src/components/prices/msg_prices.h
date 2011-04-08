@@ -117,7 +117,7 @@ public:
 
     
     // constructor
-    explicit pub_best_prices (    const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks );
+    explicit pub_best_prices (    const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit pub_best_prices ( const qpid::messaging::Message& message );
     virtual ~pub_best_prices (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_best_prices"; };
@@ -129,6 +129,7 @@ public:
     mtk::msg::sub_product_code                product_code; 
     sub_price_deph5                           bids; 
     sub_price_deph5                           asks; 
+    mtk::msg::sub_control_fluct               orig_control_fluct; 
 
 
 

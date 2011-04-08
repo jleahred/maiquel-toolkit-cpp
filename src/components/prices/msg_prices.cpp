@@ -424,8 +424,8 @@ std::string sub_price_deph5::check_recomended(void) const
 
 
 
-pub_best_prices::pub_best_prices (   const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks)
-    :     product_code(_product_code),   bids(_bids),   asks(_asks) 
+pub_best_prices::pub_best_prices (   const mtk::msg::sub_product_code&  _product_code,   const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     product_code(_product_code),   bids(_bids),   asks(_asks),   orig_control_fluct(_orig_control_fluct) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -470,7 +470,7 @@ std::ostream& operator<< (std::ostream& o, const pub_best_prices & c)
 {
     o << "{ "
 
-        << "product_code:"<< c.product_code<<"  "        << "bids:"<< c.bids<<"  "        << "asks:"<< c.asks<<"  "
+        << "product_code:"<< c.product_code<<"  "        << "bids:"<< c.bids<<"  "        << "asks:"<< c.asks<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
         << " }";
     return o;
 };
@@ -503,7 +503,7 @@ bool operator!= (const sub_price_deph5& a, const sub_price_deph5& b)
 
 bool operator== (const pub_best_prices& a, const pub_best_prices& b)
 {
-    return (          a.product_code ==  b.product_code  &&          a.bids ==  b.bids  &&          a.asks ==  b.asks  &&   true  );
+    return (          a.product_code ==  b.product_code  &&          a.bids ==  b.bids  &&          a.asks ==  b.asks  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
 };
 
 bool operator!= (const pub_best_prices& a, const pub_best_prices& b)
@@ -672,6 +672,14 @@ void  copy (pub_best_prices& c, const qpid::types::Variant& v)
                     else
                         copy(c.asks, it->second);
                         //__internal_qpid_fill(c.asks, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("ocf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field orig_control_fluct on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.orig_control_fluct, it->second);
+                        //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
 
     }
 
@@ -686,6 +694,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& 
         __internal_add2map(map, a.bids, std::string("bid"));
 //  sub_msg_type
         __internal_add2map(map, a.asks, std::string("ask"));
+//  sub_msg_type
+        __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
 
 
 };
@@ -779,6 +789,9 @@ qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (void) 
 //  sub_msg_type
 //        content["ask"] =  qpidmsg_coded_as_qpid_Map(this->asks);
         __internal_add2map(content, this->asks, std::string("ask"));
+//  sub_msg_type
+//        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
+        __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
@@ -827,7 +840,9 @@ qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (void) 
 //   sub_msg_type
    __internal_get_default((sub_price_deph5*)0),
 //   sub_msg_type
-   __internal_get_default((sub_price_deph5*)0)
+   __internal_get_default((sub_price_deph5*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_control_fluct*)0)
             );
     }
     
@@ -880,7 +895,9 @@ pub_best_prices::pub_best_prices (const qpid::messaging::Message& msg)
 //   sub_msg_type
    bids(__internal_get_default((sub_price_deph5*)0)),
 //   sub_msg_type
-   asks(__internal_get_default((sub_price_deph5*)0)) 
+   asks(__internal_get_default((sub_price_deph5*)0)),
+//   sub_msg_type
+   orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

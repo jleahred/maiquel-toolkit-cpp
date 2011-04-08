@@ -897,14 +897,16 @@ void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -948,14 +950,16 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1003,14 +1007,16 @@ void w_cfnw::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1054,14 +1060,16 @@ void w_cfnw::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1111,14 +1119,16 @@ void w_cfnw::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1217,14 +1227,16 @@ void w_cfnw::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1265,14 +1277,16 @@ void w_cfnw::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1317,14 +1331,16 @@ void w_cfnw::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1365,14 +1381,16 @@ void market::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1416,14 +1434,16 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1471,14 +1491,16 @@ void market::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1519,14 +1541,16 @@ void market::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1599,14 +1623,16 @@ void market::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1656,14 +1682,16 @@ void market::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1704,14 +1732,16 @@ void market::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1752,14 +1782,16 @@ void market::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1847,14 +1879,16 @@ void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1898,14 +1932,16 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -1953,14 +1989,16 @@ void w_cfmd::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2001,14 +2039,16 @@ void w_cfmd::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2052,14 +2092,16 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2130,14 +2172,16 @@ void w_cfmd::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2187,14 +2231,16 @@ void w_cfmd::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2264,14 +2310,16 @@ void w_cfmd::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2359,14 +2407,16 @@ void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2434,14 +2484,16 @@ void w_cfcc::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2482,14 +2534,16 @@ void w_cfcc::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2562,14 +2616,16 @@ void w_cfcc::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2619,14 +2675,16 @@ void w_cfcc::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2667,14 +2725,16 @@ void w_cfcc::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2791,14 +2851,16 @@ void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2851,14 +2913,16 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2897,14 +2961,16 @@ void w_cfmdcc::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2945,14 +3011,16 @@ void w_cfmdcc::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -2996,14 +3064,16 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3074,14 +3144,16 @@ void w_cfmdcc::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3131,14 +3203,16 @@ void w_cfmdcc::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3284,14 +3358,16 @@ void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3335,14 +3411,16 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3390,14 +3468,16 @@ void w_cfnwmd::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3441,14 +3521,16 @@ void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3498,14 +3580,16 @@ void w_cfnwmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3546,14 +3630,16 @@ void w_cfnwmd::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3623,14 +3709,16 @@ void w_cfnwmd::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3671,14 +3759,16 @@ void w_cfnwmd::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3723,14 +3813,16 @@ void w_cfnwmd::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3771,14 +3863,16 @@ void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3819,14 +3913,16 @@ void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3865,14 +3961,16 @@ void w_cfnwcc::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3916,14 +4014,16 @@ void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -3973,14 +4073,16 @@ void w_cfnwcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4021,14 +4123,16 @@ void w_cfnwcc::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4098,14 +4202,16 @@ void w_cfnwcc::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4146,14 +4252,16 @@ void w_cfnwcc::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4198,14 +4306,16 @@ void w_cfnwcc::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4246,14 +4356,16 @@ void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4352,14 +4464,16 @@ void canceled::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4400,14 +4514,16 @@ void canceled::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4448,14 +4564,16 @@ void canceled::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4496,14 +4614,16 @@ void canceled::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4544,14 +4664,16 @@ void canceled::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4625,14 +4747,16 @@ void canceled::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4673,14 +4797,16 @@ void executed::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4779,14 +4905,16 @@ void executed::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4827,14 +4955,16 @@ void executed::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4875,14 +5005,16 @@ void executed::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4923,14 +5055,16 @@ void executed::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -4971,14 +5105,16 @@ void executed::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5019,14 +5155,16 @@ void executed::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5071,14 +5209,16 @@ void executed::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5119,14 +5259,16 @@ void error::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5194,14 +5336,16 @@ void error::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5242,14 +5386,16 @@ void error::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5290,14 +5436,16 @@ void error::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5338,14 +5486,16 @@ void error::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5386,14 +5536,16 @@ void error::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5434,14 +5586,16 @@ void error::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
@@ -5515,14 +5669,16 @@ void error::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                                                                 last_confirmation().Get().confirmated_info.order_id,
                                                                 last_confirmation().Get().confirmated_info.product_code,
                                                                 last_confirmation().Get().confirmated_info.market_pos,
-                                                                last_confirmation().Get().confirmated_info.cli_ref)));
+                                                                last_confirmation().Get().confirmated_info.cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else if (last_request().HasValue())
                         ci->sig_rq_cc(mtk::trd::msg::RQ_CC_LS(mtk::trd::msg::RQ_XX_LS(
                                                                 mtk::admin::get_request_info(),
                                                                 last_request().Get().order_id,
                                                                 last_request().Get().product_code,
                                                                 last_request().Get().request_pos,
-                                                                last_request().Get().cli_ref)));
+                                                                last_request().Get().cli_ref,
+                                                                mtk::admin::get_control_fluct_info())));
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 

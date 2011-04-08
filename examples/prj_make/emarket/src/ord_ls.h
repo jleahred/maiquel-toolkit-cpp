@@ -14,6 +14,7 @@
 
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/trading/msg_trd_oms_rq.h"
+#include "components/admin/admin.h"
 
 namespace fsmgen_ord_ls {
     class abstract_status;

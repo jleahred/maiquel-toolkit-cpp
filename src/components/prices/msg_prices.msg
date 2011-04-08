@@ -35,6 +35,8 @@ pub_best_prices [<V:0,  SUBJ:PUB.${product_code.sys_code.market}.${product_code.
 
     bids                (bid)   :  sub_price_deph5
     asks                (ask)   :  sub_price_deph5
+    
+    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
 
 
