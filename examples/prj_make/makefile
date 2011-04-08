@@ -8,3 +8,5 @@ test:
 	make -C tree_server doc
 	make -C acs this
 	make -C acs doc
+	make -C alarms_db this
+	make -C alarms_db doc

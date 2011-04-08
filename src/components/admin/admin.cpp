@@ -416,6 +416,7 @@ namespace {
         MTK_CONNECT_THIS(*register_command("ADMIN",         "rqclose",      "request close application (confirmation requiered)"
                                         " on clients will produce a non ordered close", true),                                  command_rqclose)
                                         
+        MTK_CONNECT_THIS(*register_command("__GOBLAL__",    "stats",        "some stats"),                                      command_realtime)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_realtime)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "realtime",     "some realtime stats"),                             command_realtime)
     }

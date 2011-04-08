@@ -1,6 +1,6 @@
 #
 # Output...
-OUT = bin/ct__alarmsdb
+OUT = bin/ct__alarms_db
 #
 #
 # Directories with source code
@@ -8,7 +8,7 @@ DIR_SRC_CXX = src
 #
 #
 # library paths
-LIBS = -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging
+LIBS = -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtkfirebird -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging -lfbclient64
 #
 #
 # include directories
@@ -28,7 +28,7 @@ default__:  default
 
 .PHONY : doc
 doc:
-	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/houselight.adoc
+	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/alarms_db.adoc
 
 
 
