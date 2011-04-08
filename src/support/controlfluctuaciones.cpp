@@ -131,9 +131,10 @@ ControlFluctuacionesSingle::CheckFluctuacion(dtTimeQuantity  milisecRefSender)
 
 
 
-tuple<bool, Alarm>
+mtk::CountPtr<mtk::Alarm>
 CheckAlarmFluctuation(
             tuple<dtTimeQuantity, dtTimeQuantity>   prev_5min_flucts,
+            dtTimeQuantity                          criticInterval,
             dtTimeQuantity                          errorInterval,
             dtTimeQuantity                          waringInterval,
             std::string                             codOrigen
@@ -156,41 +157,45 @@ CheckAlarmFluctuation(
     if (maxFluct < dtMilliseconds(0))   //  negativo
         absFluct = -absFluct;
 
-    if (absFluct > errorInterval)
+    if (absFluct > criticInterval)
     {
 
-                return make_tuple (
-                        true,
-                        Alarm (
+                return make_cptr (
+                        new Alarm (
                             MTK_HERE, codOrigen,
-                            MTK_SS("Error fluctuación  " << maxFluct
+                            MTK_SS("fluctuation  " << maxFluct
                                             <<  " " << tipoFluctuacion),
-                            alPriorError
+                            alPriorCritic, alTypeRealTime
+                        )
+                );
+
+    }
+    else if (absFluct > errorInterval)
+    {
+
+                return make_cptr (
+                        new Alarm (
+                            MTK_HERE, codOrigen,
+                            MTK_SS("fluctuation  " << maxFluct
+                                            <<  " " << tipoFluctuacion),
+                            alPriorError, alTypeRealTime
                         )
                 );
 
     }
     else if (absFluct > waringInterval)
     {
-                return make_tuple (
-                        true,
-                        Alarm (
+                return make_cptr (
+                        new Alarm (
                             MTK_HERE, codOrigen,
-                            MTK_SS("Warning fluctuación  " << maxFluct
+                            MTK_SS("fluctuation  " << maxFluct
                                                 << " " << tipoFluctuacion),
-                            alPriorWarning
+                            alPriorWarning, alTypeRealTime
                         )
                 );
     }
     else
-                return make_tuple (
-                        false,
-                        Alarm (
-                                MTK_HERE, codOrigen,
-                                std::string("NO fluctuación  este mensaje no debería salir"),
-                                alPriorError
-                        )
-                );
+                return mtk::CountPtr<mtk::Alarm>();
 }
 
 

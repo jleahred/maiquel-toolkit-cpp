@@ -8,6 +8,9 @@
 #include "support/re/RegExp.h"
 #include "components/request_response.hpp"
 #include "support/version.hpp"
+#include "support/misc.h"
+#include "support/controlfluctuaciones.h"
+
 
 
 #include "msg_admin.h"
@@ -191,6 +194,7 @@ namespace {
             void command_modifications      (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_modifications_app  (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_stats              (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_realtime           (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_infoapp            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_config             (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_ping               (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
@@ -199,7 +203,11 @@ namespace {
             
             std::string  get_stats_simulating_command(void);
             void         send_stats_periodically(void);
-            
+
+            mtk::ControlFluctuacionesMulti<std::string>     control_flucts;
+            void                                            check_fluct(const std::string&  id,  const mtk::DateTime&  dt);
+            void                                            check_fluct(const std::string&  id,  const mtk::dtTimeQuantity&  tq);
+            void                                            check_local_fluct(void);
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //          class admin_status
@@ -408,6 +416,8 @@ namespace {
         MTK_CONNECT_THIS(*register_command("ADMIN",         "rqclose",      "request close application (confirmation requiered)"
                                         " on clients will produce a non ordered close", true),                                  command_rqclose)
                                         
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_realtime)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "realtime",     "some realtime stats"),                             command_realtime)
     }
 
     std::string admin_status::get_mandatory_property(const std::string& path_and_property)
@@ -432,6 +442,7 @@ namespace {
         MTK_TIMER_1S(check_central_keep_alive)
         MTK_TIMER_1S(send_stats_periodically)
         
+        MTK_TIMER_1S(check_local_fluct)
     }
     
     void  admin_status::send_keep_alive(void)
@@ -479,6 +490,7 @@ namespace {
     void  admin_status::on_central_ka_received(const mtk::admin::msg::pub_central_keep_alive& ka_msg)
     {
         next_central_keep_alive_to_receive = mtk::dtNowLocal() + ka_msg.ka_interval_check;
+        check_fluct("central.ka",  ka_msg.__internal_warning_control_fields->sent_date_time);
     }
     void  admin_status::check_central_keep_alive(void)
     {
@@ -544,6 +556,140 @@ namespace {
         MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtMinutes(45))
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
         MTK_END_EXEC_MAX_FREC
+    }
+
+
+    void admin_status::check_fluct(const std::string&  ref,  const mtk::DateTime&  dt)
+    {
+        static mtk::DateTime  _init (mtk::dtNowLocal());
+        check_fluct(ref, dt - _init);
+    }
+    
+    void admin_status::check_fluct(const std::string&  _ref,  const mtk::dtTimeQuantity&  tq)
+    {
+        std::string ref = MTK_SS("fluct." << _ref);
+        mtk::tuple<mtk::dtTimeQuantity, mtk::dtTimeQuantity> flucts = control_flucts.CheckFluctuacion(MTK_SS("fluct." << ref), tq);
+
+        //enum en_process_priority { ppVeryLow, ppLow, ppNormal, ppHigh, ppCritical };
+        //en_process_priority   process_priority;
+        
+        static mtk::dtTimeQuantity  max_prev_fluct = mtk::dtSeconds(0);
+        static mtk::dtTimeQuantity  max_5min_fluct = mtk::dtSeconds(0);
+        
+        if(max_prev_fluct < mtk::abs(flucts._0))
+        {
+            max_prev_fluct = mtk::abs(flucts._0);
+            
+            if(process_priority == ppCritical)
+            {
+                if(max_prev_fluct > mtk::dtMilliseconds(1000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorCritic, mtk::alTypeRealTime));
+                }
+                else if(max_prev_fluct > mtk::dtMilliseconds(200))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorError, mtk::alTypeRealTime));
+                }
+                if(max_prev_fluct > mtk::dtMilliseconds(150))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorWarning, mtk::alTypeRealTime));
+                }
+            }
+            else if(process_priority == ppHigh  ||  process_priority == ppNormal )
+            {
+                if(max_prev_fluct > mtk::dtMilliseconds(5000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorCritic, mtk::alTypeRealTime));
+                }
+                else if(max_prev_fluct > mtk::dtMilliseconds(500))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorError, mtk::alTypeRealTime));
+                }
+                if(max_prev_fluct > mtk::dtMilliseconds(200))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorWarning, mtk::alTypeRealTime));
+                }
+            }
+            else
+            {
+                if(max_prev_fluct > mtk::dtMilliseconds(20000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorCritic, mtk::alTypeRealTime));
+                }
+                else if(max_prev_fluct > mtk::dtMilliseconds(2000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorError, mtk::alTypeRealTime));
+                }
+                if(max_prev_fluct > mtk::dtMilliseconds(1000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorWarning, mtk::alTypeRealTime));
+                }
+            }
+            
+        }
+
+        if(max_5min_fluct < mtk::abs(flucts._1))
+        {
+            max_5min_fluct = mtk::abs(flucts._1);
+            
+            if(process_priority == ppCritical)
+            {
+                if(max_5min_fluct > mtk::dtMilliseconds(1000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorCritic, mtk::alTypeRealTime));
+                }
+                else if(max_5min_fluct > mtk::dtMilliseconds(200))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorError, mtk::alTypeRealTime));
+                }
+                if(max_5min_fluct > mtk::dtMilliseconds(150))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorWarning, mtk::alTypeRealTime));
+                }
+            }
+            else if(process_priority == ppHigh  ||  process_priority == ppNormal )
+            {
+                if(max_5min_fluct > mtk::dtMilliseconds(5000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorCritic, mtk::alTypeRealTime));
+                }
+                else if(max_5min_fluct > mtk::dtMilliseconds(500))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorError, mtk::alTypeRealTime));
+                }
+                if(max_5min_fluct > mtk::dtMilliseconds(200))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorWarning, mtk::alTypeRealTime));
+                }
+            }
+            else
+            {
+                if(max_5min_fluct > mtk::dtMilliseconds(20000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorCritic, mtk::alTypeRealTime));
+                }
+                else if(max_5min_fluct > mtk::dtMilliseconds(2000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorError, mtk::alTypeRealTime));
+                }
+                if(max_5min_fluct > mtk::dtMilliseconds(1000))
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorWarning, mtk::alTypeRealTime));
+                }
+            }
+            
+        }
+
+        MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
+            max_prev_fluct = mtk::dtSeconds(0);
+            max_5min_fluct = mtk::dtSeconds(0);
+        MTK_END_EXEC_MAX_FREC
+    }
+
+    void admin_status::check_local_fluct(void)
+    {
+        static std::string  ref = MTK_SS("local_pp:" << int(process_priority));
+        check_fluct(ref,  mtk::dtMachineGetTotalMillisecs());
     }
 
     std::string  admin_status::get_stats_simulating_command(void)
@@ -702,7 +848,16 @@ namespace {
         response_lines.push_back(MTK_SS("adm_start : " << start_date_time));
         response_lines.push_back(MTK_SS("adm_runing: " << mtk::dtNowLocal() - start_date_time));
     }
-    
+
+    void admin_status::command_realtime(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back("realtime-----------------------------------");
+        mtk::list<std::string>  partial_result = control_flucts.GetReport();
+        for(mtk::list<std::string>::iterator it2=partial_result.begin(); it2!=partial_result.end(); ++it2)
+            response_lines.push_back(*it2);
+    }
+
+
     void admin_status::command_infoapp(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
     {
         response_lines.push_back(app_description);
@@ -980,3 +1135,4 @@ void  __internal_admin_nevercall_me____release_on_exit(void)
 
       
 };  //namespace mtk {
+

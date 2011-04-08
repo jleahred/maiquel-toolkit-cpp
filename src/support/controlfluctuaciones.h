@@ -9,6 +9,8 @@
 #include "support/alarm.h"
 //#include "support/foreach.hpp"
 #include "support/mtk_string.h"
+#include "support/count_ptr.hpp"
+#include "support/list.hpp"
 
 #include <map>
 #include <string>
@@ -39,7 +41,7 @@ struct TimeStats {
         _1_5s_counter(0)        ,       _5_15s_counter(0)       ,
         _more_15s_counter(0)            {};
     void AddTime(const dtTimeQuantity& tq) {
-        if (tq <= dtMilliseconds(40))   return;
+        //if (tq <= dtMilliseconds(40))   return;
         if (tq > maxTime)      maxTime = tq;
         ++totalCounter;
         if      (tq < dtMilliseconds(200))      ++_0_02s_counter;
@@ -48,16 +50,17 @@ struct TimeStats {
         else if (tq < dtSeconds(15))            ++_5_15s_counter;
         else                                    ++_more_15s_counter;
     }
-    std::string GetReport(void) const {
-        return  MTK_SS(
-               "\nmaxTime            :" <<  maxTime
-            << "\ntotalCounter       :" <<  totalCounter
-            << "\n_0_02s_counter     :" <<  _0_02s_counter
-            << "\n_02_1s_counter     :" <<  _02_1s_counter
-            << "\n_1_5s_counter      :" <<  _1_5s_counter
-            << "\n_5_15s_counter     :" <<  _5_15s_counter
-            << "\n_more_15s_counter  :" <<  _more_15s_counter
-        );
+    mtk::list<std::string> GetReport(void) const {
+        mtk::list<std::string>  result;
+        result.push_back(MTK_SS("        maxTime            :" <<  maxTime));
+        result.push_back(MTK_SS("        totalCounter       :" <<  totalCounter));
+        result.push_back(MTK_SS("        _0_02s_counter     :" <<  _0_02s_counter));
+        result.push_back(MTK_SS("        _02_1s_counter     :" <<  _02_1s_counter));
+        result.push_back(MTK_SS("        _1_5s_counter      :" <<  _1_5s_counter));
+        result.push_back(MTK_SS("        _5_15s_counter     :" <<  _5_15s_counter));
+        result.push_back(MTK_SS("        _more_15s_counter  :" <<  _more_15s_counter));
+    
+        return result;
     }
 };
 
@@ -81,14 +84,34 @@ public:
 
     tuple<dtTimeQuantity, dtTimeQuantity>       //  prevFluct,  5minFluct
     CheckFluctuacion(dtTimeQuantity  tqSender);
+    
+    tuple<dtTimeQuantity, dtTimeQuantity>       //  prevFluct,  5minFluct
+    CheckFluctuacion(DateTime  dtSender)
+    {
+        static DateTime  init (dtNowLocal());
+        return CheckFluctuacion(dtSender - init);
+    }
 
 
     TimeStats  statFluctsPrev;
     TimeStats  statFlucts5min;
 
 
-    std::string GetReport(void) const {
-        return  "prev..." + statFluctsPrev.GetReport() + "\n" +  "5min..." + statFlucts5min.GetReport();
+    mtk::list<std::string> GetReport(void) const {
+        mtk::list<std::string>  result;
+        result.push_back("    prev.....................");
+        mtk::list<std::string>  partial_result;
+        
+        partial_result = statFluctsPrev.GetReport();
+        for(mtk::list<std::string>::iterator it=partial_result.begin(); it!=partial_result.end(); ++it)
+            result.push_back(*it);
+        
+        result.push_back("    5min.....................");
+        partial_result = statFlucts5min.GetReport();
+        for(mtk::list<std::string>::iterator it=partial_result.begin(); it!=partial_result.end(); ++it)
+            result.push_back(*it);
+    
+        return result;
     }
 };
 
@@ -98,6 +121,17 @@ class ControlFluctuacionesMulti {
     std::map<T , ControlFluctuacionesSingle> mapControlFluctuaciones;
 
 public:
+
+    tuple<dtTimeQuantity, dtTimeQuantity>       //  prevFluct,  5minFluct
+    CheckFluctuacion(           T               id,
+                                DateTime        dtSender)
+    {
+        static DateTime  init (dtNowLocal());
+        return CheckFluctuacion(id, dtSender - init);
+    }
+
+
+
     tuple<dtTimeQuantity, dtTimeQuantity>       //  prevFluct,  5minFluct
     CheckFluctuacion(           T               id,
                                 dtTimeQuantity  tqSender)
@@ -113,6 +147,9 @@ public:
                 mapControlFluctuaciones.size() > 20
                )
             {
+                    MTK_EXEC_MAX_FREC_A(mtk::dtSeconds(50), A)
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "ControlFluctuacionesMulti", "too many flucts to control", mtk::alPriorError));
+                    MTK_END_EXEC_MAX_FREC
                     return make_tuple(dtTimeQuantity(dtSeconds(0)), dtTimeQuantity(dtSeconds(0)));
             }
             else
@@ -137,20 +174,23 @@ public:
 
     size_t size() const  { return  mapControlFluctuaciones.size();  }
 
-    std::string GetReport(void) const {
-        std::ostringstream result;
+    mtk::list<std::string> GetReport(void) const {
+        mtk::list<std::string> result;
 
-        result << "size:   " << mapControlFluctuaciones.size();
+        result.push_back(MTK_SS("size: " << mapControlFluctuaciones.size()));
 
         typename std::map<T , ControlFluctuacionesSingle>::const_iterator it = mapControlFluctuaciones.begin();
         while (it!= mapControlFluctuaciones.end())
         {
 
-            result << std::endl << "[" << it->first << std::string("]\n");
-            result << it->second.GetReport();
+            result.push_back(MTK_SS("[" << it->first << std::string("]  _______________________")));
+            
+            mtk::list<std::string>  partial_result = it->second.GetReport();
+            for(mtk::list<std::string>::iterator it2=partial_result.begin(); it2!=partial_result.end(); ++it2)
+                result.push_back(*it2);
             ++it;
         }
-        return result.str();
+        return result;
     }
 
 };
@@ -158,9 +198,10 @@ public:
 
 
 
-tuple<bool, Alarm>
+mtk::CountPtr<mtk::Alarm>
 CheckAlarmFluctuation(
             tuple<dtTimeQuantity, dtTimeQuantity>   prev_5min_flucts,
+            dtTimeQuantity                          criticInterval,
             dtTimeQuantity                          errorInterval,
             dtTimeQuantity                          waringInterval,
             std::string                             codOrigen
