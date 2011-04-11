@@ -47,7 +47,7 @@ public:
     virtual ~pub_enter (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_enter"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_enter"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -67,7 +67,6 @@ virtual std::string  get_out_subject (void) const;
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -87,7 +86,7 @@ public:
     virtual ~pub_keep_alive_srv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_srv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_srv"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -111,7 +110,6 @@ private:
 
 
 
-
 //-------------------------------
 //      pub_keep_alive_clients
 //-------------------------------    
@@ -127,7 +125,7 @@ public:
     virtual ~pub_keep_alive_clients (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_clients"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_clients"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -149,7 +147,6 @@ private:
 
 
 
-
 //-------------------------------
 //      pub_exit
 //-------------------------------    
@@ -165,7 +162,7 @@ public:
     virtual ~pub_exit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_exit"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_exit"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -188,7 +185,6 @@ private:
 
 
 
-
 //-------------------------------
 //      pub_alarm
 //-------------------------------    
@@ -204,7 +200,7 @@ public:
     virtual ~pub_alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_alarm"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_alarm"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -233,7 +229,6 @@ private:
 
 
 
-
 //-------------------------------
 //      req_command
 //-------------------------------    
@@ -249,7 +244,7 @@ public:
     virtual ~req_command (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -273,7 +268,6 @@ private:
 
 
 
-
 //-------------------------------
 //      sub_command_rd
 //-------------------------------    
@@ -289,7 +283,7 @@ public:
     virtual ~sub_command_rd (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_command_rd"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_command_rd"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -301,11 +295,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -325,7 +318,7 @@ public:
     virtual ~res_command (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_command"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_command"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -348,7 +341,6 @@ private:
 
 
 
-
 //-------------------------------
 //      pub_central_keep_alive
 //-------------------------------    
@@ -364,7 +356,7 @@ public:
     virtual ~pub_central_keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_central_keep_alive"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_central_keep_alive"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -384,7 +376,6 @@ virtual std::string  get_out_subject (void) const;
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -512,7 +503,6 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_keep_alive_c
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_exit)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_alarm)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::req_command)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::sub_command_rd)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::res_command)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_central_keep_alive)
 

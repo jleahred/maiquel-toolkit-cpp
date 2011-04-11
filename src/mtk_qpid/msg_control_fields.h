@@ -38,16 +38,17 @@ public:
 
     
     // constructor
-    explicit sub_control_fields (    const std::string&  _message_type,   const mtk::DateTime&  _sent_date_time );
+    explicit sub_control_fields (    const std::string&  _message_type,   const std::string&  _control_fluct_key,   const mtk::DateTime&  _sent_date_time );
     explicit sub_control_fields ( const qpid::messaging::Message& message );
     virtual ~sub_control_fields (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fields"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fields"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
     std::string                               message_type; 
+    std::string                               control_fluct_key; 
     mtk::DateTime                             sent_date_time; 
 
 
@@ -56,11 +57,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 

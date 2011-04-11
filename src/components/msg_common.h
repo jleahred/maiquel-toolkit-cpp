@@ -44,7 +44,7 @@ public:
     virtual ~sub_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_location"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_location"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -57,11 +57,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -81,7 +80,7 @@ public:
     virtual ~sub_process_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_location"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_process_location"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -95,11 +94,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -119,7 +117,7 @@ public:
     virtual ~sub_process_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_process_info"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -132,11 +130,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -156,7 +153,7 @@ public:
     virtual ~sub_control_fluct (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fluct"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fluct"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -169,11 +166,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -193,7 +189,7 @@ public:
     virtual ~sub_request_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_id"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -206,11 +202,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -230,7 +225,7 @@ public:
     virtual ~sub_request_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_info"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -243,11 +238,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -267,7 +261,7 @@ public:
     virtual ~sub_r_response (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_r_response"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_r_response"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -281,11 +275,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -305,7 +298,7 @@ public:
     virtual ~sub_single_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_single_product_code"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_single_product_code"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -318,11 +311,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -342,7 +334,7 @@ public:
     virtual ~sub_sys_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_sys_product_code"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_sys_product_code"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -354,11 +346,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -378,7 +369,7 @@ public:
     virtual ~sub_adic_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_adic_product_code"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_adic_product_code"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -390,11 +381,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -414,7 +404,7 @@ public:
     virtual ~sub_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_product_code"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_product_code"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -427,11 +417,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -574,17 +563,6 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_location)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_process_location)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_process_info)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_control_fluct)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_id)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_request_info)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_r_response)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_single_product_code)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_sys_product_code)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_adic_product_code)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::msg::sub_product_code)
 
 
 

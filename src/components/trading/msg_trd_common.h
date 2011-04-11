@@ -46,7 +46,7 @@ public:
     virtual ~sub_order_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_order_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_order_id"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -57,11 +57,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -81,7 +80,7 @@ public:
     virtual ~sub_total_executions (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_total_executions"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_total_executions"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -95,11 +94,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -144,8 +142,6 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::sub_order_id)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::sub_total_executions)
 
 
 

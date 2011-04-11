@@ -391,7 +391,12 @@ namespace {
                                     mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)
         }
-
+        if(role == "server")
+            mtk::set_control_fluct_key(MTK_SS(process_info.process_location.location.client_code << "." << process_info.process_location.location.machine));
+        else
+            mtk::set_control_fluct_key(MTK_SS("_" << process_info.process_location.location.client_code << "." << process_info.process_location.location.machine));
+        
+        
         full_initialized = true;
         if(signal_admin_ready)
             signal_admin_ready->emit();
@@ -906,13 +911,7 @@ namespace {
         else
             full_command_name = MTK_SS(mtk::s_toLower(group) << "." << name);
             
-        if(map_commands.find(full_command_name) != map_commands.end()  &&  group !="__GLOBAL__")
-        {
-            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(name << " is already registered, ignoring group and desciption (could be more commands affected)"), mtk::alPriorError));
-            MTK_END_EXEC_MAX_FREC
-        }
-        else  if(map_commands.find(full_command_name) == map_commands.end())
+        if(map_commands.find(full_command_name) == map_commands.end())
         {
             map_commands[full_command_name] = mtk::make_cptr(new command_info(group, full_command_name, description, confirmation_requiered));
             std::string help_line = MTK_SS( "        " << mtk::s_AlignLeft (name, 30, '.')  <<  " " << description);
@@ -1149,6 +1148,13 @@ void AlarmMsg (const Alarm& alarm)
         std::cerr << "admin not initialized" << std::endl;
         std::cerr << alarm << std::endl;
     }
+}
+
+
+void check_control_flields_flucts    (const std::string&  key, const mtk::DateTime&  dt)
+{
+    if(key!= ""   &&  key[0] != '_')
+        mtk::admin::check_control_fluct(mtk::msg::sub_control_fluct(key, dt));
 }
 
 

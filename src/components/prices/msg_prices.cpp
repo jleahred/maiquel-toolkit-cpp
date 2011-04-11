@@ -384,7 +384,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 sub_price_level::sub_price_level (   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity)
     :     price(_price),   quantity(_quantity) 
-       , __internal_warning_control_fields(0)
+       
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -405,7 +405,7 @@ std::string sub_price_level::check_recomended(void) const
 
 sub_price_deph5::sub_price_deph5 (   const sub_price_level&  _level0,   const sub_price_level&  _level1,   const sub_price_level&  _level2,   const sub_price_level&  _level3,   const sub_price_level&  _level4)
     :     level0(_level0),   level1(_level1),   level2(_level2),   level3(_level3),   level4(_level4) 
-       , __internal_warning_control_fields(0)
+       
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -713,68 +713,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 
-qpid::messaging::Message sub_price_level::qpidmsg_codded_as_qpid_message (void) const
-{
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
-
-
-//  field_type
-//        content["pr"] = this->price;
-        __internal_add2map(content, this->price, std::string("pr"));
-//  field_type
-//        content["qt"] = this->quantity;
-        __internal_add2map(content, this->quantity, std::string("qt"));
-
-
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
-
-    
-    qpid::messaging::encode(content, __message);
-    return __message;
-};
-
-
-
-
-qpid::messaging::Message sub_price_deph5::qpidmsg_codded_as_qpid_message (void) const
-{
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
-
-
-//  sub_msg_type
-//        content["b0"] =  qpidmsg_coded_as_qpid_Map(this->level0);
-        __internal_add2map(content, this->level0, std::string("b0"));
-//  sub_msg_type
-//        content["b1"] =  qpidmsg_coded_as_qpid_Map(this->level1);
-        __internal_add2map(content, this->level1, std::string("b1"));
-//  sub_msg_type
-//        content["b2"] =  qpidmsg_coded_as_qpid_Map(this->level2);
-        __internal_add2map(content, this->level2, std::string("b2"));
-//  sub_msg_type
-//        content["b3"] =  qpidmsg_coded_as_qpid_Map(this->level3);
-        __internal_add2map(content, this->level3, std::string("b3"));
-//  sub_msg_type
-//        content["b4"] =  qpidmsg_coded_as_qpid_Map(this->level4);
-        __internal_add2map(content, this->level4, std::string("b4"));
-
-
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
-
-    
-    qpid::messaging::encode(content, __message);
-    return __message;
-};
-
-
-
-
-qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (void) const
+qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {
     qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
@@ -794,7 +733,7 @@ qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (void) 
         __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

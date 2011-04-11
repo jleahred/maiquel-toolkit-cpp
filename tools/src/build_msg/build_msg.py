@@ -34,7 +34,16 @@ if TESTING:
 
 
 
-
+def is_message_not_submessage(class_properties) :
+    if class_properties.has_key('SUBJ'):
+        return True
+    elif class_properties.has_key('I'):
+        for class_name, class_info, __class_properties  in ALL_MESSAGES:
+            if class_name == class_properties['I']:
+                return is_message_not_submessage (__class_properties)
+        return False
+    else:
+        return False
 
 
 
@@ -119,7 +128,7 @@ $INNER_CLASSES
     virtual ~${CLASS_NAME} (){};
     virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
     static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    $CODE_AS_QPID_MESSAGE
     
 
     // fields
@@ -130,11 +139,10 @@ $CLASS_FIELDS
     $SUBJECT_METHODS
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    $POINTER_TO_CONTROL_FIELDS
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 """
@@ -173,18 +181,24 @@ private:
     INNER_CLASSES = INNER_CLASSES.replace('\n', '\n    ')
 
 
+    pointer_to_control_fields = ''
+    code_as_qpid_message = ''
     # SUBJECT_METHODS
     if class_properties.has_key('SUBJ'):
         SUBJECT_METHODS += get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties)   
         SUBJECT_METHODS += Template("""virtual std::string  get_out_subject (void) const;\n""").substitute(class_name=class_name)
-
+    if is_message_not_submessage(class_properties):
+        pointer_to_control_fields = 'mtk::msg::sub_control_fields*   __internal_warning_control_fields;'
+        code_as_qpid_message = 'qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;'
 
     return Template(CLASS_TEMPLATE).substitute(   CLASS_NAME = class_name, 
                                                     CLASS_FIELDS = CLASS_FIELDS,
                                                     CONSTRUCTOR_PARAMS_DEBUG_DECL = CONSTRUCTOR_PARAMS_DEBUG_DECL,
                                                     INNER_CLASSES = INNER_CLASSES,
                                                     INHERITS_FROM = INHERITS_FROM,
-                                                    SUBJECT_METHODS = SUBJECT_METHODS
+                                                    SUBJECT_METHODS = SUBJECT_METHODS,
+                                                    POINTER_TO_CONTROL_FIELDS = pointer_to_control_fields,
+                                                    CODE_AS_QPID_MESSAGE = code_as_qpid_message
                                                 )
 
 
@@ -198,7 +212,7 @@ def generate_class_in_impl(class_name, class_info, class_properties):
 
 ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} ($CONSTRUCTOR_PARAMS_DEBUG_DECL)
     :  $CONSTRUCTOR_PARAMS_DEBUG_INIT 
-       , __internal_warning_control_fields(0)
+       $CONTROL_FIELD_INITIALIZER
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -270,12 +284,18 @@ $CHECK_RECOMENDED
                                                     class_name = class_name
                                                     )
 
+    control_field_initializer = ''
+    if is_message_not_submessage(class_properties):
+        control_field_initializer = ', __internal_warning_control_fields(0)'
+    
+
     return Template(IMPL_TEMPLATE).substitute(
             CLASS_NAME = class_name, 
             CONSTRUCTOR_PARAMS_DEBUG_INIT = CONSTRUCTOR_PARAMS_DEBUG_INIT,
             CHECK_RECOMENDED = CHECK_RECOMENDED,
             CONSTRUCTOR_PARAMS_DEBUG_DECL = CONSTRUCTOR_PARAMS_DEBUG_DECL,
-            CLASS_NAME_NOT_NESTED = CLASS_NAME_NOT_NESTED
+            CLASS_NAME_NOT_NESTED = CLASS_NAME_NOT_NESTED,
+            CONTROL_FIELD_INITIALIZER = control_field_initializer
         )
 
 
@@ -797,12 +817,15 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$cl
 
 
 def generate_qpid_coding___codded_as_qpid_message (class_name, class_info, class_properties) :
+    if is_message_not_submessage(class_properties) == False:
+        return ''
+    
     OUPUT_PER_FIELD = ''
     RECURSION_OUTPUT = ''
     OUTPUT_PARENT = ''
 
     METHOD = """
-qpid::messaging::Message ${class_name}::qpidmsg_codded_as_qpid_message (void) const
+qpid::messaging::Message ${class_name}::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {
     qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
@@ -810,7 +833,7 @@ qpid::messaging::Message ${class_name}::qpidmsg_codded_as_qpid_message (void) co
 $OUTPUT_PARENT
 $OUPUT_PER_FIELD
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1059,7 +1082,8 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 """
     
     for class_name, class_info, class_properties  in ALL_MESSAGES:
-        if class_name != 'sub_control_fields' :
+        if is_message_not_submessage(class_properties):
+            ##if class_name != 'sub_control_fields' :
             content_file_h += 'MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(' + '::'.join(NAMESPACES) + '::' + class_name +')\n'
     content_file_h += '\n\n'
 

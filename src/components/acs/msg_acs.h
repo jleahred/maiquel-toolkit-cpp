@@ -44,7 +44,7 @@ public:
     virtual ~req_login_key (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login_key"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -67,7 +67,6 @@ private:
 
 
 
-
 //-------------------------------
 //      res_login_key
 //-------------------------------    
@@ -83,7 +82,7 @@ public:
     virtual ~res_login_key (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login_key"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -106,7 +105,6 @@ private:
 
 
 
-
 //-------------------------------
 //      req_login
 //-------------------------------    
@@ -122,7 +120,7 @@ public:
     virtual ~req_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -143,7 +141,6 @@ virtual std::string  get_out_subject (void) const;
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -172,7 +169,7 @@ public:
         virtual ~IC_login_response_info (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_login_response_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_login_response_info"; };
-        qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+        
         
     
         // fields
@@ -185,11 +182,10 @@ public:
         
         
         
-        mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        
     private:
         std::string check_recomended(void) const;
     };
-    
     
     
     
@@ -200,7 +196,7 @@ public:
     virtual ~res_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -223,7 +219,6 @@ private:
 
 
 
-
 //-------------------------------
 //      conf_logout
 //-------------------------------    
@@ -239,7 +234,7 @@ public:
     virtual ~conf_logout (){};
     virtual std::string get_message_type_as_string       (void) const  { return "conf_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_logout"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -263,7 +258,6 @@ private:
 
 
 
-
 //-------------------------------
 //      req_logout
 //-------------------------------    
@@ -279,7 +273,7 @@ public:
     virtual ~req_logout (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_logout"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -301,7 +295,6 @@ private:
 
 
 
-
 //-------------------------------
 //      req_change_password
 //-------------------------------    
@@ -317,7 +310,7 @@ public:
     virtual ~req_change_password (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_change_password"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -339,7 +332,6 @@ virtual std::string  get_out_subject (void) const;
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -368,7 +360,7 @@ public:
         virtual ~IC_change_password_info (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_change_password_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_change_password_info"; };
-        qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+        
         
     
         // fields
@@ -380,11 +372,10 @@ public:
         
         
         
-        mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        
     private:
         std::string check_recomended(void) const;
     };
-    
     
     
     
@@ -395,7 +386,7 @@ public:
     virtual ~res_change_password (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_change_password"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -414,7 +405,6 @@ virtual std::string  get_out_subject (void) const;
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -559,12 +549,10 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::req_login_key)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::res_login_key)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::req_login)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::res_login)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::res_login::IC_login_response_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::conf_logout)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::req_logout)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::req_change_password)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::res_change_password)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::acs::msg::res_change_password::IC_change_password_info)
 
 
 

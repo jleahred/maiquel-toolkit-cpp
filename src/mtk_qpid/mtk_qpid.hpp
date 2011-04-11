@@ -63,6 +63,10 @@ namespace mtk{
     
 
     
+    //  to be defined externally  (when not using admin)
+    void check_control_flields_flucts    (const std::string&  key, const mtk::DateTime&  dt);
+    
+    
     
 namespace  OUT_CONFIG {
     void SetIdReloj         (int idReloj);
@@ -109,14 +113,27 @@ struct qpid_session
 //      O U T
 
 //--------------------------------------------------------------------
+
+
+    std::string  get_control_fluct_key(void);       //  defined in mtk_qpid_stats.cpp
+    void         set_control_fluct_key(const std::string& control_fluct_key);   //  defined in mtk_qpid_stats.cpp
+    
+
     template<typename T>
     void send_message (mtk::CountPtr< mtk::qpid_session > qpid_session, const T& message, std::string subject = "")
     {
+        static std::string  control_fluct_key="";
+        
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(40))
+            if(control_fluct_key == "")
+                control_fluct_key = get_control_fluct_key();
+        MTK_END_EXEC_MAX_FREC
+        
         ++mtk_qpid_stats::num_messages_sent();
         if (subject == "")
             subject = message.get_out_subject();
         //qpid::messaging::Sender sender = qpid_session->createSender(subject);
-        qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message());
+        qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message(control_fluct_key));
         msg.setSubject(subject);
         qpid_session->sender.send(msg);
     }
@@ -343,6 +360,9 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
             MESSAGE_TYPE mt(message);
             mt.__internal_warning_control_fields = &cf;
             signalMessage->emit(mt);
+            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
+                check_control_flields_flucts(cf.control_fluct_key, cf.sent_date_time);
+            MTK_END_EXEC_MAX_FREC
         }
 //        nullable<msg::sub_control_fields> cf;
 //        msg::copy(cf, mv["_cf_"].asMap());

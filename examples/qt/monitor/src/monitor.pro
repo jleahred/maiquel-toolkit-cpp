@@ -14,16 +14,22 @@ SOURCES += main.cpp\
         monitor.cpp \
     qplaintexteditcommand.cpp \
     qlistprocesses.cpp \
-    qtablealarms.cpp
+    qtablealarms.cpp \
+    ../../../../src/components/*.cpp \
+    ../../../../src/components/acs/*.cpp* \
+    ../../../../src/components/admin/msg*.cpp
 
 HEADERS  += monitor.h \
     qplaintexteditcommand.h \
     qlistprocesses.h \
-    qtablealarms.h
+    qtablealarms.h \
+    ../../../../src/components/*.h* \
+    ../../../../src/components/acs/*.h* \
+    ../../../../src/components/admin/msg*.h
 
 FORMS    += monitor.ui
 
 
 INCLUDEPATH = .   ../../../../src/
 
-LIBS =  -L../../../../lib/  -lmtk_components -lmtk_qpid -lmtksupport  -lqpidclient -lqpidmessaging -lqpidtypes
+LIBS =  -L../../../../lib/  -lmtk_qpid -lmtksupport  -lqpidclient -lqpidmessaging -lqpidtypes

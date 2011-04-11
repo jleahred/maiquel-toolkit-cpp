@@ -12,8 +12,10 @@ END_INIT
 //---------------------------------------------------------------------
 sub_control_fields [<V:0>]
 {
-    message_type    (mt)    :   string
-    sent_date_time  (sdt)   :   date_time
+    message_type        (mt)        :   string
+    
+    control_fluct_key   (cfk)       :   string          //  if empty, it will be ignored. Clients will have to start with '_'
+    sent_date_time      (sdt)       :   date_time
 }
 
 

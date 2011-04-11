@@ -45,7 +45,7 @@ public:
     virtual ~sub_tree_item (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_tree_item"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_tree_item"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -59,11 +59,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -83,7 +82,7 @@ public:
     virtual ~req_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_tree_items"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -106,7 +105,6 @@ private:
 
 
 
-
 //-------------------------------
 //      res_tree_items
 //-------------------------------    
@@ -122,7 +120,7 @@ public:
     virtual ~res_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_tree_items"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -141,7 +139,6 @@ virtual std::string  get_out_subject (void) const;
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -197,7 +194,6 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::sub_tree_item)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::req_tree_items)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::res_tree_items)
 

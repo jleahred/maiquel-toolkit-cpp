@@ -45,7 +45,7 @@ public:
     virtual ~sub_position_ls (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_position_ls"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_position_ls"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -59,11 +59,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -83,7 +82,7 @@ public:
     virtual ~sub_order_ls_confirmated (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_order_ls_confirmated"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_order_ls_confirmated"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -99,11 +98,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -123,7 +121,7 @@ public:
     virtual ~RQ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -150,7 +148,6 @@ private:
 
 
 
-
 //-------------------------------
 //      RQ_NW_LS
 //-------------------------------    
@@ -166,7 +163,7 @@ public:
     virtual ~RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -181,7 +178,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -201,7 +197,7 @@ public:
     virtual ~RQ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_MD_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -216,7 +212,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -236,7 +231,7 @@ public:
     virtual ~RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_CC_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -251,7 +246,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -271,7 +265,7 @@ public:
     virtual ~CF_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -295,7 +289,6 @@ private:
 
 
 
-
 //-------------------------------
 //      CF_NW_LS
 //-------------------------------    
@@ -311,7 +304,7 @@ public:
     virtual ~CF_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_NW_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -326,7 +319,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -346,7 +338,7 @@ public:
     virtual ~CF_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_MD_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -361,7 +353,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -381,7 +372,7 @@ public:
     virtual ~CF_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_CC_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -396,7 +387,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -416,7 +406,7 @@ public:
     virtual ~CF_EX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_EX_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -436,7 +426,6 @@ private:
 
 
 
-
 //-------------------------------
 //      RJ_XX_LS
 //-------------------------------    
@@ -452,7 +441,7 @@ public:
     virtual ~RJ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_XX_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -477,7 +466,6 @@ private:
 
 
 
-
 //-------------------------------
 //      RJ_NW_LS
 //-------------------------------    
@@ -493,7 +481,7 @@ public:
     virtual ~RJ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_NW_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -508,7 +496,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -528,7 +515,7 @@ public:
     virtual ~RJ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_MD_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -543,7 +530,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -563,7 +549,7 @@ public:
     virtual ~RJ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_CC_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -578,7 +564,6 @@ public:
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -766,8 +751,6 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::sub_position_ls)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::sub_order_ls_confirmated)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_XX_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_NW_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_MD_LS)

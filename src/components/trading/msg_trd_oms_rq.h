@@ -46,7 +46,7 @@ public:
     virtual ~oms_RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -58,11 +58,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -82,7 +81,7 @@ public:
     virtual ~oms_RQ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -94,11 +93,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -118,7 +116,7 @@ public:
     virtual ~oms_RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -130,11 +128,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -190,9 +187,6 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_NW_LS)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_MD_LS)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_CC_LS)
 
 
 

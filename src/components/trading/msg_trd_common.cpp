@@ -384,7 +384,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 sub_order_id::sub_order_id ( const mtk::msg::sub_request_id&  parent)
     :  mtk::msg::sub_request_id(parent) 
-       , __internal_warning_control_fields(0)
+       
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -405,7 +405,7 @@ std::string sub_order_id::check_recomended(void) const
 
 sub_total_executions::sub_total_executions (   const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _quantity,   const mtk::FixedNumber&  _remaining_qty)
     :     sum_price_by_qty(_sum_price_by_qty),   quantity(_quantity),   remaining_qty(_remaining_qty) 
-       , __internal_warning_control_fields(0)
+       
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -560,57 +560,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-
-qpid::messaging::Message sub_order_id::qpidmsg_codded_as_qpid_message (void) const
-{
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
-
-//  parent
-__internal_add2map(content, static_cast<const mtk::msg::sub_request_id&>(*this));
-
-
-
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
-
-    
-    qpid::messaging::encode(content, __message);
-    return __message;
-};
-
-
-
-
-qpid::messaging::Message sub_total_executions::qpidmsg_codded_as_qpid_message (void) const
-{
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
-
-
-//  field_type
-//        content["spq"] = this->sum_price_by_qty;
-        __internal_add2map(content, this->sum_price_by_qty, std::string("spq"));
-//  field_type
-//        content["aqt"] = this->quantity;
-        __internal_add2map(content, this->quantity, std::string("aqt"));
-//  field_type
-//        content["rq"] = this->remaining_qty;
-        __internal_add2map(content, this->remaining_qty, std::string("rq"));
-
-
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
-
-    
-    qpid::messaging::encode(content, __message);
-    return __message;
-};
-
-
-
 
     sub_order_id  __internal_get_default(sub_order_id*)
     {

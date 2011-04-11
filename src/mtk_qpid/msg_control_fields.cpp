@@ -381,9 +381,9 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_control_fields::sub_control_fields (   const std::string&  _message_type,   const mtk::DateTime&  _sent_date_time)
-    :     message_type(_message_type),   sent_date_time(_sent_date_time) 
-       , __internal_warning_control_fields(0)
+sub_control_fields::sub_control_fields (   const std::string&  _message_type,   const std::string&  _control_fluct_key,   const mtk::DateTime&  _sent_date_time)
+    :     message_type(_message_type),   control_fluct_key(_control_fluct_key),   sent_date_time(_sent_date_time) 
+       
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -405,7 +405,7 @@ std::ostream& operator<< (std::ostream& o, const sub_control_fields & c)
 {
     o << "{ "
 
-        << "message_type:"<<   c.message_type << "  "        << "sent_date_time:"<<   c.sent_date_time << "  "
+        << "message_type:"<<   c.message_type << "  "        << "control_fluct_key:"<<   c.control_fluct_key << "  "        << "sent_date_time:"<<   c.sent_date_time << "  "
         << " }";
     return o;
 };
@@ -414,7 +414,7 @@ std::ostream& operator<< (std::ostream& o, const sub_control_fields & c)
 
 bool operator== (const sub_control_fields& a, const sub_control_fields& b)
 {
-    return (          a.message_type ==  b.message_type  &&          a.sent_date_time ==  b.sent_date_time  &&   true  );
+    return (          a.message_type ==  b.message_type  &&          a.control_fluct_key ==  b.control_fluct_key  &&          a.sent_date_time ==  b.sent_date_time  &&   true  );
 };
 
 bool operator!= (const sub_control_fields& a, const sub_control_fields& b)
@@ -441,6 +441,14 @@ void  copy (sub_control_fields& c, const qpid::types::Variant& v)
                         //c.message_type = it->second;
 //   field_type
 
+                    it = mv.find("cfk");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field control_fluct_key on message sub_control_fields::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.control_fluct_key, it->second);
+                        //c.control_fluct_key = it->second;
+//   field_type
+
                     it = mv.find("sdt");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sent_date_time on message sub_control_fields::__internal_qpid_fill", mtk::alPriorCritic);
@@ -458,6 +466,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_field
 //  field_type
         __internal_add2map(map, a.message_type, std::string("mt"));
 //  field_type
+        __internal_add2map(map, a.control_fluct_key, std::string("cfk"));
+//  field_type
         __internal_add2map(map, a.sent_date_time, std::string("sdt"));
 
 
@@ -474,35 +484,11 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
 
-qpid::messaging::Message sub_control_fields::qpidmsg_codded_as_qpid_message (void) const
-{
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
-
-
-//  field_type
-//        content["mt"] = this->message_type;
-        __internal_add2map(content, this->message_type, std::string("mt"));
-//  field_type
-//        content["sdt"] = this->sent_date_time;
-        __internal_add2map(content, this->sent_date_time, std::string("sdt"));
-
-
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), mtk::dtNowLocal());
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
-
-    
-    qpid::messaging::encode(content, __message);
-    return __message;
-};
-
-
-
-
     sub_control_fields  __internal_get_default(sub_control_fields*)
     {
         return sub_control_fields(
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
@@ -514,6 +500,8 @@ qpid::messaging::Message sub_control_fields::qpidmsg_codded_as_qpid_message (voi
 sub_control_fields::sub_control_fields (const qpid::messaging::Message& msg)
     :  //   field_type
    message_type(__internal_get_default((std::string*)0)),
+//   field_type
+   control_fluct_key(__internal_get_default((std::string*)0)),
 //   field_type
    sent_date_time(__internal_get_default((mtk::DateTime*)0)) 
     {

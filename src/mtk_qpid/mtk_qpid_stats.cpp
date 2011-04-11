@@ -7,6 +7,18 @@
 
 namespace mtk
 {
+    std::string  control_fluct_key;
+    std::string  get_control_fluct_key(void)
+    {
+        return control_fluct_key;
+    }
+    
+    void         set_control_fluct_key(const std::string& _control_fluct_key)
+    {
+        control_fluct_key = _control_fluct_key;
+    }
+    
+    
 namespace mtk_qpid_stats {
 
     

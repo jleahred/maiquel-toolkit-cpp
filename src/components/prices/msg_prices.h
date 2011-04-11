@@ -45,7 +45,7 @@ public:
     virtual ~sub_price_level (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_level"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_level"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -58,11 +58,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -82,7 +81,7 @@ public:
     virtual ~sub_price_deph5 (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_deph5"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_deph5"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -98,11 +97,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -122,7 +120,7 @@ public:
     virtual ~pub_best_prices (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_best_prices"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_best_prices"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -143,7 +141,6 @@ virtual std::string  get_out_subject (void) const;
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -199,8 +196,6 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::sub_price_level)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::sub_price_deph5)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_best_prices)
 
 
