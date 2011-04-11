@@ -13,6 +13,9 @@
 #include "components/prices/msg_prices.h"
 
 #include "support/list.hpp"
+#include "components/prices/cli/price_manager.h"
+
+
 
 
 class QTableWidget;
@@ -32,7 +35,8 @@ public:
     int  get_row(void) const {  return tw_product->row(); }
 
 private:
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> > h_best_prices;
+    mtk::CountPtr<mtk::prices::price_manager>       price_manager;
+
     QTableWidgetItem*  tw_product;
     QTableWidgetItem*  tw_BID;
     QTableWidgetItem*  tw_ASK;

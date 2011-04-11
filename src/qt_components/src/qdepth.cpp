@@ -68,46 +68,6 @@ MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
 
 namespace  {
 
-mtk::FixedNumber get_empty_fixed_number_quantity(void)
-{
-    return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(0), mtk::fnInc(1));
-}
-mtk::FixedNumber get_empty_fixed_number_price(void)
-{
-    return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(2), mtk::fnInc(1));
-}
-mtk::prices::msg::sub_price_level   get_emtpy_level_prices(void)
-{
-    return mtk::prices::msg::sub_price_level(get_empty_fixed_number_price(), get_empty_fixed_number_quantity());
-}
-
-
-
-mtk::msg::sub_product_code  get_empty_product_code (void)
-{
-    return mtk::msg::sub_product_code(mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("", ""), ""),
-                                      mtk::nullable<mtk::msg::sub_adic_product_code>());
-}
-
-
-mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
-{
-    return mtk::prices::msg::pub_best_prices(
-        get_empty_product_code(),
-        mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices()),
-        mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices()),
-        mtk::admin::get_control_fluct_info()
-    );
-}
-
 
 
 
@@ -174,7 +134,6 @@ private:
 
 QDepth::QDepth(QWidget *parent) :
     mtkContainerWidget(parent),
-    product_code(get_empty_product_code()),
     table_widget(new QTableDeph(this))
 {
     this->setGeometry(QRect(5, 5, 290, 300));
@@ -266,8 +225,6 @@ QDepth::QDepth(QWidget *parent) :
 
     this->inserting_components_ended();
 
-    on_message(get_emtpy_best_prices());
-
     connect(this, SIGNAL(signal_start_moving()), SLOT(make_transparent()));
     connect(this, SIGNAL(signal_stop_moving()), SLOT(remove_transparecy()));
 
@@ -323,26 +280,26 @@ void QDepth::on_message(const mtk::prices::msg::pub_best_prices& msg)
 
 void QDepth::request_buy(void)
 {
-    if (mtk::msg::is_valid(product_code)==false)      return;
+    if (price_manager.isValid() == false)      return;
 
     mtk::trd::msg::sub_position_ls     pos(
                                                       mtk::FixedNumber(mtk::fnDouble(100.),  mtk::fnDec(2),  mtk::fnInc(1))
                                                     , mtk::FixedNumber(mtk::fnDouble(10)  ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                     , mtk::trd::msg::buy);
 
-    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, pos, "cli_ref");
+    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
 }
 
 void QDepth::request_sell(void)
 {
-    if (mtk::msg::is_valid(product_code)==false)      return;
+    if (price_manager.isValid() == false)      return;
 
     mtk::trd::msg::sub_position_ls     pos(
                                                       mtk::FixedNumber(mtk::fnDouble(100.),  mtk::fnDec(2),  mtk::fnInc(1))
                                                     , mtk::FixedNumber(mtk::fnDouble(10)  ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                     , mtk::trd::msg::sell);
 
-    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, pos, "cli_ref");
+    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
 }
 
 
@@ -360,16 +317,11 @@ void QDepth::dropEvent(QDropEvent *event)
 
 void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
 {
-    product_code = _product_code;
-    title->setText(MTK_SS(product_code.sys_code.market << "."<<product_code.sys_code.user_name).c_str());
-    MTK_QPID_RECEIVER_CONNECT_THIS(
-                            h_best_prices,
-                            mtk::admin::get_url("client"),
-                            "CLITESTING",
-                            mtk::prices::msg::pub_best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
-                            mtk::prices::msg::pub_best_prices,
-                            on_message)
+    price_manager = mtk::get_from_factory<mtk::prices::price_manager>(_product_code);
+    MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
+    on_message(price_manager->get_best_prices());
+    title->setText(MTK_SS(price_manager->get_product_code().sys_code.market << "."<< price_manager->get_product_code().sys_code.user_name).c_str());
 }
 
 
@@ -390,10 +342,10 @@ void QDepth::mouseMoveEvent(QMouseEvent *event)
     if ((event->buttons() & Qt::LeftButton)  &&  startPos.x()>=0  &&  startPos.y()>=0)
     {
         int distance = (event->pos() - startPos).manhattanLength();
-        if (distance >= QApplication::startDragDistance()+5  &&  mtk::msg::is_valid(product_code))
+        if (distance >= QApplication::startDragDistance()+5  &&  mtk::msg::is_valid(price_manager->get_product_code()))
         {
             QMimeData* mimeData = new QMimeData;
-            mimeData->setText(dragProductText(product_code));
+            mimeData->setText(dragProductText(price_manager->get_product_code()));
             QDrag* drag = new QDrag(this);
             drag->setMimeData(mimeData);
 
@@ -408,7 +360,7 @@ void QDepth::mouseMoveEvent(QMouseEvent *event)
 
 void QDepth::contextMenuEvent ( QContextMenuEvent * event )
 {
-    if (mtk::msg::is_valid(product_code)== false)  return;
+    if (price_manager.isValid() == false)      return;
 
     QMenu menu(this);
     QAction* action;

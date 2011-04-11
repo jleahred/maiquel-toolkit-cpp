@@ -1,0 +1,18 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
+=== Components -> Prices
+
+
+
+==== prices_manager
+
+* It will request for load
+* It will mantein the last received value
+* It will signal updates
++
+[source,{cpp}]
+----
+include::../../../components/prices/cli/price_manager.h[]
+----
++
+* It works with factory

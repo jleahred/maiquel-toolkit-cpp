@@ -136,3 +136,7 @@ void mtk::AlarmMsg(const mtk::Alarm& error)
 {
     std::cout << error << std::endl;
 } 
+
+void mtk::check_control_flields_flucts(const std::string &, const mtk::DateTime&)
+{
+}

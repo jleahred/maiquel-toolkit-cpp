@@ -577,7 +577,7 @@ namespace {
     void admin_status::check_fluct(const std::string&  _ref,  const mtk::dtTimeQuantity&  tq)
     {
         std::string ref = MTK_SS("fluct." << _ref);
-        mtk::tuple<mtk::dtTimeQuantity, mtk::dtTimeQuantity> flucts = control_flucts.CheckFluctuacion(MTK_SS("fluct." << ref), tq);
+        mtk::tuple<mtk::dtTimeQuantity, mtk::dtTimeQuantity> flucts = control_flucts.CheckFluctuacion(ref, tq);
 
         //enum en_process_priority { ppVeryLow, ppLow, ppNormal, ppHigh, ppCritical };
         //en_process_priority   process_priority;

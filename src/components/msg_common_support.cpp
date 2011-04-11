@@ -32,6 +32,11 @@ bool operator< (const sub_single_product_code& p1, const sub_single_product_code
     return false;
 }
 
+bool operator< (const sub_product_code& p1, const sub_product_code& p2)
+{
+    return p1.sys_code < p2.sys_code;
+}
+
 
 
       };   //namespace msg {

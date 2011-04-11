@@ -42,7 +42,7 @@ public:
     virtual ~LimitPosition (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPosition"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPosition"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -56,11 +56,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -89,7 +88,7 @@ public:
         virtual ~IC_control_fields_ (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_control_fields_"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_control_fields_"; };
-        qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+        
         
     
         // fields
@@ -102,11 +101,10 @@ public:
         
         
         
-        mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        
     private:
         std::string check_recomended(void) const;
     };
-    
     
     
     
@@ -126,7 +124,7 @@ public:
         virtual ~IC_product_code (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_product_code"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_product_code"; };
-        qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+        
         
     
         // fields
@@ -140,11 +138,10 @@ public:
         
         
         
-        mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        
     private:
         std::string check_recomended(void) const;
     };
-    
     
     
     
@@ -155,7 +152,7 @@ public:
     virtual ~RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -184,7 +181,6 @@ private:
 
 
 
-
 //-------------------------------
 //      LimitPositionChild
 //-------------------------------    
@@ -200,7 +196,7 @@ public:
     virtual ~LimitPositionChild (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPositionChild"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPositionChild"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (void) const;
+    
     
 
     // fields
@@ -212,11 +208,10 @@ public:
     
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
 private:
     std::string check_recomended(void) const;
 };
-
 
 
 
@@ -300,11 +295,7 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(testing::LimitPosition)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(testing::RQ_NW_LS)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(testing::RQ_NW_LS::IC_control_fields_)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(testing::RQ_NW_LS::IC_product_code)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(testing::LimitPositionChild)
 
 
 

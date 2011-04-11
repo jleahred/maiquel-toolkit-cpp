@@ -293,7 +293,7 @@ int   check_exec__last_confirm(const mtk::trd::msg::CF_EX_LS& ex, const mtk::nul
 
 #define SEND_REJECT(__SIGNAL_TYPE__, __MSG_TYPE__) \
     if (last_confirmation().HasValue())    \
-        ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, last_confirmation().Get().confirmated_info, serrors, mtk::admin::get_control_fluct_info())));     \
+        ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, last_confirmation().Get().confirmated_info, serrors, mtk::msg::sub_control_fluct("EMARKET.PRC", mtk::dtNowLocal()))));     \
     else      \
     {      \
         if (last_request().HasValue()==true)      \
@@ -306,7 +306,7 @@ int   check_exec__last_confirm(const mtk::trd::msg::CF_EX_LS& ex, const mtk::nul
                                                                                     mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)),    \
                                                                                     mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)) ),    \
                                                 _last_request.cli_ref);    \
-            ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, to_confirm, MTK_SS("Error: Received " << serrors << "  " #__MSG_TYPE__ " on status " << GetStatusName()), mtk::admin::get_control_fluct_info())));    \
+            ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, to_confirm, MTK_SS("Error: Received " << serrors << "  " #__MSG_TYPE__ " on status " << GetStatusName()), mtk::msg::sub_control_fluct("EMARKET.PRC", mtk::dtNowLocal()))));    \
         }    \
         else     \
             throw mtk::Alarm(MTK_HERE, "SEND_REJECT", MTK_SS("Missing last_request trying to reject "), mtk::alPriorCritic, mtk::alTypeNoPermisions);    \

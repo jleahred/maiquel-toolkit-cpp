@@ -80,43 +80,6 @@ namespace {
     const QColor  color_price   = mtk_yellow;
 
 
-mtk::FixedNumber get_empty_fixed_number_quantity(void)
-{
-    return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(0), mtk::fnInc(1));
-}
-mtk::FixedNumber get_empty_fixed_number_price(void)
-{
-    return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(2), mtk::fnInc(1));
-}
-mtk::prices::msg::sub_price_level   get_emtpy_level_prices(void)
-{
-    return mtk::prices::msg::sub_price_level(get_empty_fixed_number_price(), get_empty_fixed_number_quantity());
-}
-
-mtk::msg::sub_product_code  get_empty_product_code (void)
-{
-    return mtk::msg::sub_product_code(mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("", ""), ""),
-                                      mtk::nullable<mtk::msg::sub_adic_product_code>());
-}
-
-mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
-{
-    return mtk::prices::msg::pub_best_prices(
-        get_empty_product_code(),
-        mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices()),
-        mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices(),
-                                            get_emtpy_level_prices()),
-        mtk::admin::get_control_fluct_info()
-    );
-}
-
 
 };  //namespace  {
 
@@ -272,15 +235,10 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     }
 
 
+    price_manager = mtk::get_from_factory<mtk::prices::price_manager>(product_code);
+    MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
-    MTK_QPID_RECEIVER_CONNECT_THIS(
-                            h_best_prices,
-                            mtk::admin::get_url("client"),
-                            "CLITESTING",
-                            mtk::prices::msg::pub_best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
-                            mtk::prices::msg::pub_best_prices,
-                            on_message)
-
+    on_message(price_manager->get_best_prices());
 }
 
 

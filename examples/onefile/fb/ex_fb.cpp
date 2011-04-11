@@ -24,7 +24,7 @@ int main()
 
         try
         {
-            IBPP::Database db = IBPP::DatabaseFactory("127.0.0.1", "testing", "SYSDBA", "mtkmtk");
+            IBPP::Database db = IBPP::DatabaseFactory("127.0.0.1", "testing", "SYSDBA", "pruebas");
             db->Connect();
             IBPP::Transaction tr = IBPP::TransactionFactory(db);
             tr->Start();
@@ -72,7 +72,7 @@ int main()
 
         try
         {
-            IBPP::Database db = IBPP::DatabaseFactory("127.0.0.1", "testing", "SYSDBA", "mtkmtk");
+            IBPP::Database db = IBPP::DatabaseFactory("127.0.0.1", "testing", "SYSDBA", "pruebas");
             db->Connect();
             IBPP::Transaction tr = IBPP::TransactionFactory(db);
             tr->Start();

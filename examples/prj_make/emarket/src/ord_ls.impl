@@ -297,7 +297,7 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                                                     , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                     , rq.request_pos.quantity)
                                         , rq.cli_ref)
-                                , mtk::admin::get_control_fluct_info());
+                                , mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                 
@@ -582,7 +582,7 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                                                     , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                                     , rq.request_pos.quantity)
                                         , rq.cli_ref)
-                                , mtk::admin::get_control_fluct_info());
+                                , mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                 
