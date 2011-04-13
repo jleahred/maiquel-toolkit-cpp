@@ -63,17 +63,29 @@ get_from_factory(const TKEY& key, CountPtr< TRETURN > result = CountPtr< TRETURN
     MTK_END_EXEC_MAX_FREC
 
 
-
-
     typename std::map< TKEY, CountPtr< TRETURN > >::iterator it = factory_map.find(key);
-    if (it == factory_map.end()  ||  it->second.isValid()==false)
+    if (it == factory_map.end())//  ||  it->second.isValid()==false)
     {
         result = create_instance_for_factory<TRETURN> (key);
+        
+        if(factory_map.find(key) != factory_map.end())
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "factory", MTK_SS("nested factory on " << key), mtk::alPriorError));
+            
         typename std::map< TKEY,  CountPtr< TRETURN > >::iterator itNew =
                 factory_map.insert(
                         std::make_pair(key, result))
                                 .first;
         itNew->second.DANGEROUS_ThisInstance_NOT_Delete();
+    }
+    else if (it->second.isValid()==false)
+    {
+        result = create_instance_for_factory<TRETURN> (key);
+
+        if(factory_map.find(key)->second.isValid() != false)
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "factory", MTK_SS("nested factory on " << key), mtk::alPriorError));
+
+        it->second = result;
+        it->second.DANGEROUS_ThisInstance_NOT_Delete();
     }
     else
     {
