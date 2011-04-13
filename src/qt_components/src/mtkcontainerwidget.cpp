@@ -34,7 +34,8 @@ void mtk_uTitle::updateBackground(bool show)
 void mtk_uTitle::mousePressEvent(QMouseEvent* event)
 {
     if (event->pos().x()  >  this->width()-image_close.width())
-        dynamic_cast<mtkContainerWidget*>(this->parent())->close();
+        //dynamic_cast<mtkContainerWidget*>(this->parent())->close();
+        dynamic_cast<mtkContainerWidget*>(this->parent())->deleteLater();
     moving = true;
     updateBackground(true);
     event->accept(); // do not propagate
