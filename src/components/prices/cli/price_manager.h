@@ -40,12 +40,15 @@ public:
     mtk::Signal<const mtk::prices::msg::pub_best_prices&>   signal_best_prices_update;
 
 private:
-    const mtk::msg::sub_product_code  product_code;
+    const mtk::msg::sub_product_code            product_code;
+    mtk::prices::msg::pub_best_prices           best_prices;
+
+    mtk::CountPtr< mtk::qpid_session >          req_session;
     
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> > h_best_prices;
-    mtk::prices::msg::pub_best_prices  best_prices;    
     void on_price_update(const mtk::prices::msg::pub_best_prices& msg);
-    
+
+    void on_res_product_info(const mtk::list<mtk::prices::msg::res_product_info>& res_pi);
 };
 
 

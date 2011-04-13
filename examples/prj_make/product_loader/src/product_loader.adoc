@@ -1,0 +1,51 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= Product loader
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-4-12
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This process will listen for products updates
+* Prices i.e.
+* It will be ready to response to clients and other servers with product info (bestprices i.e.)
+* It can be locked and unlocked by command
++
+.components/prices/msg_prices.msg
+[source,{cpp}]
+----
+include::../mtk/src/components/prices/msg_prices.msg[]
+----
+
+
+
+
+== Document modifications
+* Non aply

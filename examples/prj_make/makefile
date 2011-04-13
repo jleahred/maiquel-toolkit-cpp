@@ -10,3 +10,5 @@ test:
 	make -C acs doc
 	make -C alarms_db this
 	make -C alarms_db doc
+	make -C product_loader this
+	make -C product_loader doc

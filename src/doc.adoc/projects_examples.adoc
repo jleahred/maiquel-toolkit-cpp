@@ -1,7 +1,10 @@
 :cpp: {basebackend@docbook:c++:cpp}
 == projects_examples
 
-On +examples+ dir we have some full projects examples
+On +examples/pr_make+ dir we have some full projects examples
+
+On each example there are detailed documentation
+
 
 [NOTE]
 To avoid loops on directory tree, instead of linking mtk, it's linked folders and files inside mtk
@@ -53,3 +56,8 @@ Access Control System
 * Code on... examples/prj_make/acs/src/
 * Doc on... examples/prj_make/acs/doc/
 
+=== Product loader
+
+
+* It will listen information from products (as prices i.e.) and will keep in memory this information
+* Clients and other servers, can request for product status

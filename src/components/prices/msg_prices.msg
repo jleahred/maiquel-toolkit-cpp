@@ -40,3 +40,26 @@ pub_best_prices [<V:0,  SUBJ:PUB.${product_code.sys_code.market}.${product_code.
 }
 
 
+
+//---------------------------------------------------------------------
+//    REQUEST/RESPONSE
+//---------------------------------------------------------------------
+
+req_prod_info [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}.PRC.PI >]
+{
+    request_info        (ri)        :   mtk::msg::sub_request_info
+    
+    sys_product_code    (spc)       :   mtk::msg::sub_sys_product_code
+}
+
+
+
+res_product_info   [< V:0 , SUBJ:RS.${response_info.request_info.process_location.location.client_code}.${response_info.request_info.process_location.location.machine}.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.PRC.PI >]
+{
+    response_info   (ri)        :   mtk::msg::sub_r_response
+    
+    response        (rs)  [< V:0 >]
+    {
+        best_prices     (bp)    :   pub_best_prices
+    }
+}
