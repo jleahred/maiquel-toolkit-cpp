@@ -4,6 +4,7 @@
 #include "support/mtk_string.h"
 #include "support/list.hpp"
 #include "components/admin/admin.h"
+#include "components/request_response.hpp"
 
 
 
@@ -113,7 +114,21 @@ price_manager::price_manager(const mtk::msg::sub_product_code&  _product_code)
                             "CLITESTING",
                             mtk::prices::msg::pub_best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
                             mtk::prices::msg::pub_best_prices,
-                            on_price_update)
+                            on_price_update);
+
+    req_session = mtk::admin::get_qpid_session("client", "CLITESTING");
+    mtk::msg::sub_request_info  request_info = mtk::admin::get_request_info();
+    mtk::prices::msg::req_prod_info req_load_product_info(request_info, product_code.sys_code);
+    mtk::send_message(req_session, req_load_product_info);
+    MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::prices::msg::res_product_info,
+                                    mtk::prices::msg::res_product_info::IC_response,
+                                    req_session,
+                                    mtk::prices::msg::res_product_info::get_in_subject( request_info.process_location.location.client_code,
+                                                                                        request_info.process_location.location.machine,
+                                                                                        request_info.process_location.process_uuid,
+                                                                                        request_info.req_id.sess_id,
+                                                                                        request_info.req_id.req_code),
+                                    on_res_product_info)
 }
 
 price_manager::~price_manager()
@@ -134,6 +149,15 @@ void price_manager::on_price_update(const mtk::prices::msg::pub_best_prices& msg
 }
 
 
+void price_manager::on_res_product_info(const mtk::list<mtk::prices::msg::res_product_info>& res_pi)
+{
+    const mtk::prices::msg::pub_best_prices local_best_prices = res_pi.front().response.best_prices;
+    if(local_best_prices.product_code.sys_code != product_code.sys_code)
+        throw mtk::Alarm(MTK_HERE, "product_manager", MTK_SS("invalid product code on response r/s  " << local_best_prices.product_code.sys_code << " " << product_code.sys_code), mtk::alPriorError, mtk::alTypeNoPermisions);
+    best_prices = local_best_prices;
+    if(signal_best_prices_update.emit(best_prices) ==0)
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_manager", MTK_SS("received load " << local_best_prices.product_code << " with no suscription"), mtk::alPriorError, mtk::alTypeNoPermisions));
+}
 
 
 

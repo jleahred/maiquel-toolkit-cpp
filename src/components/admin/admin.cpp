@@ -124,7 +124,9 @@ namespace {
             mtk::ConfigFile                             config_file;
             mtk::Nullable<std::string>                  get_config_property(const std::string& path);
             void                                        set_config_property(const std::string& path, const std::string&  property_value);
-            
+
+            mtk::list<std::string>                      get_config_nodes    (const std::string& path);
+
 
             mtk::msg::sub_control_fluct                 get_control_fluct_info(void);
             void                                        check_control_fluct(const mtk::msg::sub_control_fluct&  cf);
@@ -927,6 +929,12 @@ namespace {
         return config_file.GetValue(path);
     }
     
+    mtk::list<std::string>   admin_status::get_config_nodes    (const std::string& path)
+    {
+        return config_file.GetNodes(path);
+    }
+    
+    
     mtk::msg::sub_control_fluct     admin_status::get_control_fluct_info(void)
     {
         return mtk::msg::sub_control_fluct(MTK_SS(process_info.process_location.location.client_code << "." << process_info.process_location.location.machine), mtk::dtNowLocal());
@@ -1082,6 +1090,12 @@ mtk::Nullable<std::string>   get_config_property(const std::string& path)
 {
     return admin_status::i()->get_config_property(path);
 }
+
+mtk::list<std::string>     get_config_nodes    (const std::string& path)
+{
+    return admin_status::i()->get_config_nodes(path);
+}
+
 
 void set_config_property(const std::string& path, const std::string& property_value)
 {

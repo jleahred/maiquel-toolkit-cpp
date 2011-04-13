@@ -61,9 +61,10 @@ namespace mtk {
         mtk::CountPtr<mtk::Signal<> >                           get_signal_receiving_messages_back(void);
         
         
-        mtk::Nullable<std::string>                          get_config_property(const std::string& path);
-        void                                                set_config_property(const std::string& path, const std::string&  property_value);
-        
+        mtk::Nullable<std::string>                          get_config_property (const std::string& path);
+        void                                                set_config_property (const std::string& path, const std::string&  property_value);
+
+        mtk::list<std::string>                              get_config_nodes    (const std::string& path);
         
         
         //  to be call from acs_client
