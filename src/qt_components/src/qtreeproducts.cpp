@@ -298,7 +298,7 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
     if(mtk_item==0)
         throw mtk::Alarm(MTK_HERE, "qtreepreducts", "invalid item type", mtk::alPriorError, mtk::alTypeNoPermisions);
 
-    if(mtk_item->childCount()==0)
+    if(mtk_item->childCount()==0  &&  mtk_item->item.product_code.HasValue()==false)
     {
         mtk::msg::sub_request_info   request_info = mtk::admin::get_request_info();
         mtk::gen::msg::req_tree_items  tree_request_message(request_info, MTK_SS(mtk_item->item.branch));
