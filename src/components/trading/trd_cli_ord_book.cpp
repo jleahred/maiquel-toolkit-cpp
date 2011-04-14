@@ -66,7 +66,7 @@ struct s_status
     mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_ls> >     ls_orders;
 
     mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls>&  >       sig_order_ls_new;
-    mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&    >                                           sig_request_hook;
+    mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&    >                                    sig_request_hook;
 };
 
 
@@ -187,6 +187,20 @@ mtk::CountPtr<trd_cli_ls>  get_order_ls(const mtk::trd::msg::sub_order_id& ord_i
     else    
         order = it->second;
     return order;
+}
+
+
+mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void)
+{
+    mtk::list<mtk::trd::msg::sub_order_id>  result;
+    if(__internal_ptr_status == 0)        return result;
+    
+    
+    //mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_ls> >     ls_orders;
+    for(mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_ls> >::const_iterator it = __internal_ptr_status->ls_orders.begin(); it!=__internal_ptr_status->ls_orders.end(); ++it)
+        result.push_back(it->first);
+    
+    return result;
 }
 
 

@@ -1,48 +1,15 @@
-#include "qorderbook.h"
+#include "qorder_table.h"
 
-#include <QTableWidget>
-#include <QVBoxLayout>
+
 #include <QHeaderView>
 #include <QAction>
+#include <QHBoxLayout>
 
-#include "qeditorder.h"
+
+
 #include "qmtk_misc.h"
 #include "qt_components/src/qcommontabledelegate.h"
-
-
-
-
-
-namespace {
-    const char*   VERSION = "2011-03-16";
-
-    const char*   MODIFICATIONS =
-                        "           2011-03-16     first version\n";
-
-
-void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
-{
-    response_lines.push_back(MTK_SS(__FILE__ << ":  " << VERSION));
-}
-
-void command_modifications  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
-{
-    response_lines.push_back(__FILE__);
-    response_lines.push_back(".......................................");
-    response_lines.push_back(MODIFICATIONS);
-}
-
-
-void register_global_commands (void)
-{
-    mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
-    mtk::admin::register_command("__GLOBAL__",  "modifs",   "")->connect(command_modifications);
-}
-MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
-
-}       //  anonymous namespace  to register "static" commnads
-
-
+#include "components/trading/trd_cli_support.h"
 
 
 
@@ -63,15 +30,8 @@ namespace {
 };
 
 
-void on_request_with_user_check(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled)
-{
-    QEditOrder eo(rq);
-    if (eo.exec())
-    {
-        rq = eo.get_request();
-    }
-    else canceled =true;
-}
+
+
 
 
 
@@ -133,6 +93,7 @@ public:
         MTK_CONNECT_THIS(inner_order->sig_rq_cc, update_on_rq);
         MTK_CONNECT_THIS(inner_order->sig_rq_md, update_on_rq);
         MTK_CONNECT_THIS(inner_order->sig_rq_nw, update_on_rq);
+        update();
     }
     ~order_in_qbook() { delete [] items; }
 
@@ -374,11 +335,25 @@ public:
 
 
 
-QOrderBook::QOrderBook(QWidget *parent) :
-    QWidget(parent),
-    table_widget(new QTableWidget(this)),
-    orders(new mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >)
+qorder_table::qorder_table(QWidget *parent) :
+        QWidget(parent),
+        table_widget(new QTableWidget(this)),
+        orders(new mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >),
+        filterf (new filter_form(this))
 {
+    QHBoxLayout *hl= new QHBoxLayout(this);
+    hl->setSpacing(0);
+    hl->setContentsMargins(0, 0, 0, 0);
+    hl->addWidget(table_widget);
+
+    hl->addWidget(filterf);
+    hl->setStretch(0,1);
+    filterf->hide();
+
+    connect(filterf, SIGNAL(signal_filter_modified(filter_data)), this, SLOT(slot_apply_filter(filter_data)));
+
+
+
     QStringList headers_captions;
     {
         int counter;
@@ -387,10 +362,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
         table_widget->setColumnCount(counter);
     }
     table_widget->setHorizontalHeaderLabels(headers_captions);
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    layout->addWidget(table_widget);
-    layout->setMargin(0);
-    this->setLayout(layout);
+
     table_widget->verticalHeader()->setVisible(false);
     //table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.4);  moved on_new_order
     //table_widget->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -405,26 +377,26 @@ QOrderBook::QOrderBook(QWidget *parent) :
     table_widget->setShowGrid(false);
 
     //  setting up actions
-    table_widget->setContextMenuPolicy(Qt::ActionsContextMenu);
+    setContextMenuPolicy(Qt::ActionsContextMenu);
     {
         QAction* action = new QAction("cancel", this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
-        table_widget->addAction(action);
+        addAction(action);
     }
     {
         QAction* action = new QAction("modif", this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_modif()));
-        table_widget->addAction(action);
+        addAction(action);
     }
     {
         QAction* action = new QAction(this);
         action->setSeparator(true);
-        table_widget->addAction(action);
+        addAction(action);
     }
     {
         QAction* action = new QAction("filter", this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
-        table_widget->addAction(action);
+        addAction(action);
     }
 
 
@@ -432,20 +404,22 @@ QOrderBook::QOrderBook(QWidget *parent) :
 
 
     MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_order_ls_new(), on_new_order);
-    mtk::trd::trd_cli_ord_book::get_signal_request_hook().connect(on_request_with_user_check);
+    MTK_TIMER_1C(timer_get_orders2add);
+
+    slot_apply_filter(filter_data());
     //setContentsMargins(0,0,0,0);
 }
 
-QOrderBook::~QOrderBook()
-{
-}
 
-
-
-
-void QOrderBook::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+void qorder_table::__direct_add_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 {
     orders->insert(std::make_pair(order_id, mtk::make_cptr(new order_in_qbook(table_widget, order))));
+}
+
+void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& /*order*/)
+{
+    orders2add_online.push_back(order_id);
+    //orders->insert(std::make_pair(order_id, mtk::make_cptr(new order_in_qbook(this, order))));
 /*
     static int size = QFontMetrics(this->font()).height()*1.4;
     static bool initialized=false;
@@ -476,7 +450,7 @@ mtk::trd::msg::sub_order_id   get_order_id_from_row(QTableWidget *table_widget, 
     return mtk::trd::msg::sub_order_id(mtk::msg::sub_request_id(session_id, request_code));
 }
 
-void QOrderBook::request_modif(void)
+void qorder_table::request_modif(void)
 {
     int row = table_widget->currentRow();
     if (row==-1)        return;
@@ -484,7 +458,7 @@ void QOrderBook::request_modif(void)
     mtk::trd::trd_cli_ord_book::rq_md_ls_manual(ord_id);
 }
 
-void QOrderBook::request_cancel(void)
+void qorder_table::request_cancel(void)
 {
     int row = table_widget->currentRow();
     if (row==-1)        return;
@@ -493,7 +467,87 @@ void QOrderBook::request_cancel(void)
 }
 
 
-void QOrderBook::update_sizes(void)
+bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order_id& order_id)
+{
+    mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
+    mtk::msg::sub_product_code pc = mtk::trd::get_product_code(*order);
+    int matches = 0;
+    if((pc.sys_code.user_name.find(fd.product.toStdString())!=std::string::npos  ||  pc.sys_code.product.find(fd.product.toStdString())!=std::string::npos))
+        ++matches;
+    if(pc.sys_code.market.find(fd.market.toStdString())!=std::string::npos)
+        ++matches;
+    if(matches==2)  return true;
+    else            return false;
+}
+
+void qorder_table::slot_apply_filter(const filter_data& fd)
+{
+    //if(fd.name == current_filter.name  &&  fd.client_code  ==  current_filter.client_code
+    //                        &&  fd.market  ==  current_filter.market  &&  fd.product == current_filter.product)
+    //    return;
+
+    Q_EMIT(signal_named_changed(fd.name));
+    orders->clear();
+    table_widget->setRowCount(0);
+    mtk::list<mtk::trd::msg::sub_order_id> all_orders = mtk::trd::trd_cli_ord_book::get_all_order_ids();
+    for(mtk::list<mtk::trd::msg::sub_order_id>::const_iterator it= all_orders.begin(); it!=all_orders.end(); ++it)
+    {
+        if(check_filter_order(current_filter, *it))
+            orders2add_loading.push_back(*it);
+    }
+
+    current_filter = fd;
+}
+
+void   qorder_table::timer_get_orders2add(void)
+{
+    int counter=0;
+    while(orders2add_loading.size()>0)
+    {
+        mtk::trd::msg::sub_order_id order_id = orders2add_loading.front();
+        orders2add_loading.pop_front();
+        if(check_filter_order(current_filter, order_id))
+        {
+            mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
+            __direct_add_new_order(order_id, order);
+            ++counter;
+            if(counter%5==0)
+                return;
+        }
+    }
+    while(orders2add_online.size()>0)
+    {
+        mtk::trd::msg::sub_order_id order_id = orders2add_online.front();
+        orders2add_online.pop_front();
+        if(check_filter_order(current_filter, order_id))
+        {
+            mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
+            __direct_add_new_order(order_id, order);
+            ++counter;
+            if(counter%5==0)
+                return;
+        }
+    }
+}
+
+void qorder_table::update_sizes()
 {
     table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.4);
+}
+
+void qorder_table::show_filter(bool show)
+{
+    if(show)
+    {
+        filterf->set_filter_conf(current_filter);
+        filterf->show();
+    }
+    else
+        filterf->hide();
+}
+
+
+bool qorder_table::is_filter_visible(void)
+{
+    return filterf->isVisible();
 }

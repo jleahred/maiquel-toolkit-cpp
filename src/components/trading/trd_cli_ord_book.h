@@ -32,6 +32,7 @@ namespace mtk{namespace trd{
 
         //  ACCESS
         mtk::CountPtr<trd_cli_ls>                   get_order_ls            (const msg::sub_order_id& ord_id);
+        mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void);
         
         //  hooks
         mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool& /* canceled */    >&   get_signal_request_hook         (void);
