@@ -5,9 +5,10 @@
 #include <QTabWidget>
 
 
-#include "qorder_table.h"
 
 
+class  QExecsTable;
+class  QPushButton;
 
 
 class QOrderBook : public QWidget//, public mtk::SignalReceptor
@@ -28,14 +29,14 @@ public slots:
 
 private slots:
     void slot_request_new_tab(void);
-    void slot_request_close_tab();
+    void slot_request_close_tab(void);
     void slot_request_showfilter(void);
     void slot_current_tab_name_changed(const QString& new_name);
     void slot_tab_index_changed(int);
 
 private:
     QTabWidget      *tab_widget;
-    QTableWidget    *table_executions;
+    QExecsTable     *table_executions;
 
 
     QPushButton* new_button;

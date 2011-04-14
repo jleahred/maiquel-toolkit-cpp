@@ -27,7 +27,8 @@ namespace mtk{namespace trd{
 
 
         //  OUTPUT
-        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls>&  >& get_sig_order_ls_new    (void);
+        mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_position_ls& >& get_sig_execution       (void);
+        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls>&  >&          get_sig_order_ls_new    (void);
 
 
         //  ACCESS

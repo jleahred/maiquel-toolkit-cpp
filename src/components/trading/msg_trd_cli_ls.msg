@@ -34,7 +34,7 @@ sub_position_ls   [<V:0>]
 sub_order_ls_confirmated [<V:0>]
 {
     order_id       (oid)  :   sub_order_id
-    product_code   (pc)   :   mtk::msg::sub_product_code     
+    product_code   (pc)   :   mtk::msg::sub_product_code
     market_pos     (mp)   :   sub_position_ls      
     total_execs    (exp)  :   sub_total_executions      
     

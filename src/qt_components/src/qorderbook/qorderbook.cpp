@@ -10,7 +10,8 @@
 
 #include "components/admin/admin.h"
 #include "qeditorder.h"
-
+#include "qorder_table.h"
+#include "qexecs_table.h"
 
 
 
@@ -59,8 +60,9 @@ void on_request_with_user_check(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled)
 
 QOrderBook::QOrderBook(QWidget *parent) :
     QWidget(parent),
-    table_executions(new QTableWidget(this))
+    table_executions(new QExecsTable(this))
 {
+    table_executions->setMinimumWidth(350);
     QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
     tab_widget = new QTabWidget(this);
     tab_widget->setMovable(true);
@@ -70,7 +72,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
         tab_widget->addTab(order_table, ".");
         connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
     }
-    connect(tab_widget, SIGNAL(tabCloseRequested(int)), SLOT(slot_request_close_tab(int)));
+    //connect(tab_widget, SIGNAL(tabCloseRequested(int)), SLOT(slot_request_close_tab()));
     connect(tab_widget, SIGNAL(currentChanged(int)), SLOT(slot_tab_index_changed(int)));
 
     {
@@ -144,7 +146,9 @@ void QOrderBook::slot_request_new_tab(void)
         new_button->setEnabled(false);
     if(tab_widget->count() > 1)
         close_button->setEnabled(true);
-    filter_button->setChecked(false);
+    filter_button->setChecked(true);
+    if(tw != 0)
+        tw->show_filter(filter_button->isChecked());
 }
 
 void QOrderBook::slot_request_close_tab(void)

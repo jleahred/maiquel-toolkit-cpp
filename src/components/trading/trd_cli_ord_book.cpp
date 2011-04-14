@@ -65,8 +65,10 @@ struct s_status
     //  ls
     mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_ls> >     ls_orders;
 
-    mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls>&  >       sig_order_ls_new;
-    mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&    >                                    sig_request_hook;
+    mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls>&  >          sig_order_ls_new;
+    mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&    >                                       sig_request_hook;
+    mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_position_ls&>  sig_execution;
+    
 };
 
 
@@ -165,6 +167,11 @@ void send_request_message(const T& rq)
 mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls>&  >& get_sig_order_ls_new    (void)
 {
     return get_status_ref().sig_order_ls_new;
+}
+
+mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_position_ls& >& get_sig_execution       (void)
+{
+    return get_status_ref().sig_execution;
 }
 
 
@@ -382,6 +389,8 @@ void cf_ex_ls(const mtk::trd::msg::CF_EX_LS& ex)
     
     mtk::CountPtr<trd_cli_ls>  order = get_order_ls(ex.confirmated_info.order_id);
     order->cf_ex(ex);
+    
+    get_status_ref().sig_execution.emit(ex.confirmated_info.product_code, ex.executed_pos);
 }
 
 

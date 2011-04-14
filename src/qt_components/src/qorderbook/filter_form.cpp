@@ -30,6 +30,13 @@ filter_form::~filter_form()
 
 void filter_form::showEvent(QShowEvent *)
 {
+    if(ui->buttonBox->button(QDialogButtonBox::Cancel)->text() != "")
+    {
+        ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("");
+        ui->buttonBox->button(QDialogButtonBox::Cancel)->setFlat(true);
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setText("");
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setFlat(true);
+    }
     ui->name->setFocus();
     ui->name->selectAll();
 }

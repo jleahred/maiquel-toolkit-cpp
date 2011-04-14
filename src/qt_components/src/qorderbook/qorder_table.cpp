@@ -4,7 +4,7 @@
 #include <QHeaderView>
 #include <QAction>
 #include <QHBoxLayout>
-
+#include <QMenu>
 
 
 #include "qmtk_misc.h"
@@ -377,16 +377,19 @@ qorder_table::qorder_table(QWidget *parent) :
     table_widget->setShowGrid(false);
 
     //  setting up actions
+    /*
     setContextMenuPolicy(Qt::ActionsContextMenu);
     {
         QAction* action = new QAction("cancel", this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
         addAction(action);
+        action_cancel = action;
     }
     {
         QAction* action = new QAction("modif", this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_modif()));
         addAction(action);
+        action_modif = action;
     }
     {
         QAction* action = new QAction(this);
@@ -394,13 +397,11 @@ qorder_table::qorder_table(QWidget *parent) :
         addAction(action);
     }
     {
-        QAction* action = new QAction("filter", this);
-        connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
+        QAction* action = new QAction("empty", this);
+        action->setEnabled(false);
         addAction(action);
     }
-
-
-
+    */
 
 
     MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_order_ls_new(), on_new_order);
@@ -550,4 +551,57 @@ void qorder_table::show_filter(bool show)
 bool qorder_table::is_filter_visible(void)
 {
     return filterf->isVisible();
+}
+
+void qorder_table::contextMenuEvent(QContextMenuEvent *e)
+{
+    bool enabled_cancel=false;
+    bool enabled_modif = false;
+    int row = table_widget->currentRow();
+    if (row==-1)
+    {
+        enabled_cancel = false;
+        enabled_modif = false;
+    }
+    else
+    {
+        mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
+
+        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
+        if(order->is_canceled()  ||  order->is_full_executed())
+        {
+            enabled_cancel = false;
+            enabled_modif = false;
+        }
+        else
+        {
+            enabled_cancel = true;
+            enabled_modif = true;
+        }
+    }
+    QMenu  menu;
+    {
+        QAction* action = new QAction("cancel", this);
+        connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
+        action->setEnabled(enabled_cancel);
+        menu.addAction(action);
+    }
+    {
+        QAction* action = new QAction("modif", this);
+        connect(action, SIGNAL(triggered()), this, SLOT(request_modif()));
+        action->setEnabled(enabled_modif);
+        menu.addAction(action);
+    }
+    {
+        QAction* action = new QAction(this);
+        action->setSeparator(true);
+        menu.addAction(action);
+    }
+    {
+        QAction* action = new QAction("empty", this);
+        action->setEnabled(false);
+        menu.addAction(action);
+    }
+    menu.setStyleSheet(this->styleSheet());
+    menu.exec(this->mapToGlobal(e->pos()));
 }

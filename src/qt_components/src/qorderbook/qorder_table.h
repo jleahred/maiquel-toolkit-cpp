@@ -36,6 +36,7 @@ private slots:
     void request_cancel(void);
     void request_modif (void);
     void slot_apply_filter(const filter_data& fd);
+    void slot_custom_menu_requested(QPoint);
 
 private:
     QTableWidget*        table_widget;
@@ -50,6 +51,9 @@ private:
     filter_form*    filterf;
     void            timer_get_orders2add(void);
 
+    //QAction*  action_cancel;
+    //QAction*  action_modif;
+    void contextMenuEvent(QContextMenuEvent *);
 };
 
 #endif // QORDER_TABLE_H
