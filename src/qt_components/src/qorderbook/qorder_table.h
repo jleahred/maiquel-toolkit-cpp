@@ -22,7 +22,7 @@ class qorder_table : public QWidget , public mtk::SignalReceptor
 
 public:
     explicit qorder_table(QWidget *parent = 0);
-    ~qorder_table() {};
+    ~qorder_table();
 
     void update_sizes();
     void show_filter(bool);
@@ -36,7 +36,6 @@ private slots:
     void request_cancel(void);
     void request_modif (void);
     void slot_apply_filter(const filter_data& fd);
-    void slot_custom_menu_requested(QPoint);
 
 private:
     QTableWidget*        table_widget;

@@ -10,11 +10,13 @@ TARGET = ../../../lib/qt_components
 TEMPLATE = lib
 CONFIG += staticlib
 
-SOURCES += *.cpp
+SOURCES += *.cpp \
+        ../src/qorderbook/*.cpp
 
-HEADERS += *.h
+HEADERS += *.h \
+        ../src/qorderbook/*.h
 
-FORMS    += *.ui
+FORMS    += *.ui ../src/qorderbook/*.ui
 
 
 INCLUDEPATH = . ../../../src/

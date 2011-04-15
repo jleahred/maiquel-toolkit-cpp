@@ -95,7 +95,9 @@ public:
         MTK_CONNECT_THIS(inner_order->sig_rq_nw, update_on_rq);
         update();
     }
-    ~order_in_qbook() { delete [] items; }
+    ~order_in_qbook() {
+        delete [] items;
+    }
 
     mtk::CountPtr<mtk::trd::trd_cli_ls> inner_order;
     QTableWidgetItem**                  items;
@@ -411,6 +413,11 @@ qorder_table::qorder_table(QWidget *parent) :
     //setContentsMargins(0,0,0,0);
 }
 
+qorder_table::~qorder_table()
+{
+    delete orders;
+}
+
 
 void qorder_table::__direct_add_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 {
@@ -473,10 +480,12 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
     mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
     mtk::msg::sub_product_code pc = mtk::trd::get_product_code(*order);
     int matches = 0;
-    if((pc.sys_code.user_name.find(fd.product.toStdString())!=std::string::npos  ||  pc.sys_code.product.find(fd.product.toStdString())!=std::string::npos))
+    if(mtk::s_toUpper(pc.sys_code.user_name).find(fd.product.toUpper().toStdString())!=std::string::npos
+                ||  mtk::s_toUpper(pc.sys_code.product).find(fd.product.toUpper().toStdString())!=std::string::npos)
         ++matches;
-    if(pc.sys_code.market.find(fd.market.toStdString())!=std::string::npos)
+    if(mtk::s_toUpper(pc.sys_code.market).find(fd.market.toUpper().toStdString())!=std::string::npos)
         ++matches;
+
     if(matches==2)  return true;
     else            return false;
 }
@@ -492,10 +501,7 @@ void qorder_table::slot_apply_filter(const filter_data& fd)
     table_widget->setRowCount(0);
     mtk::list<mtk::trd::msg::sub_order_id> all_orders = mtk::trd::trd_cli_ord_book::get_all_order_ids();
     for(mtk::list<mtk::trd::msg::sub_order_id>::const_iterator it= all_orders.begin(); it!=all_orders.end(); ++it)
-    {
-        if(check_filter_order(current_filter, *it))
             orders2add_loading.push_back(*it);
-    }
 
     current_filter = fd;
 }

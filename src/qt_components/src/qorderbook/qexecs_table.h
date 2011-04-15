@@ -24,7 +24,7 @@ class QExecsTable : public QWidget , public mtk::SignalReceptor
 
 public:
     explicit QExecsTable(QWidget *parent = 0);
-    ~QExecsTable() {};
+    ~QExecsTable() {  delete  exec_in_table; };
 
     void update_sizes();
 

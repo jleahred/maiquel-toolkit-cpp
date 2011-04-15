@@ -157,10 +157,9 @@ void QOrderBook::slot_request_close_tab(void)
 
     if(tab_widget->count()==1)      return;
     tab_widget->widget(tab_widget->currentIndex())->deleteLater();
-    tab_widget->removeTab(tab_widget->currentIndex());
     if(tab_widget->count() <= 5)
         new_button->setEnabled(true);
-    if(tab_widget->count() == 1)
+    if(tab_widget->count() == 2)        //  2 because of deletelater  IMPORTANT
         close_button->setEnabled(false);
 }
 
