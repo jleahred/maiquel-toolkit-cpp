@@ -3,8 +3,9 @@
 
 #include "support/date_time.h"
 
-#include "qorderbook.h"
-
+#include "qorderbook/qorderbook.h"
+#include "components/admin/admin.h"
+#include "components/trading/trd_cli_ord_book.h"
 
 
 //-------------------------------------------------------------------------------

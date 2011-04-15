@@ -30,5 +30,5 @@ FORMS    += mainwindow.ui \
 INCLUDEPATH = . ../../../../src/ \
     ../../../../src/qt_components/src
 
-LIBS =  -L../../../../lib  -lqt_components -lmtk_components -lmtk_qpid -lmtksupport  -lqpidclient -lqpidmessaging
+LIBS =  -L../../../../lib  -lqt_components -lmtk_components -lmtk_qpid -lmtksupport  -lqpidclient -lqpidmessaging -lphonon
 #LIBS =  -L../../../../lib  -lmtksupport  -lqpidclient  # for debug

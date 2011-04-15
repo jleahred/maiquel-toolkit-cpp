@@ -550,7 +550,7 @@
   <customwidget>
    <class>QOrderBook</class>
    <extends>QTableWidget</extends>
-   <header>qorderbook.h</header>
+   <header>qorderbook/qorderbook.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
