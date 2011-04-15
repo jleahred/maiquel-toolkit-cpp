@@ -66,7 +66,7 @@ public:
         return  ptrValue != 0 ? true : false;
     };
 
-    T Get (void) const
+    const T Get (void) const
     {
         if (HasValue())
             return *ptrValue;
@@ -226,7 +226,7 @@ public:
         return  hasValue;
     };
 
-    T Get (void) const
+    const T Get (void) const
     {
         if (HasValue())
             return value;
