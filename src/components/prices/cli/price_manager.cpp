@@ -117,9 +117,9 @@ price_manager::price_manager(const mtk::msg::sub_product_code&  _product_code)
                             on_price_update);
 
     req_session = mtk::admin::get_qpid_session("client", "CLITESTING");
+
+
     mtk::msg::sub_request_info  request_info = mtk::admin::get_request_info();
-    mtk::prices::msg::req_prod_info req_load_product_info(request_info, product_code.sys_code);
-    mtk::send_message(req_session, req_load_product_info);
     MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::prices::msg::res_product_info,
                                     mtk::prices::msg::res_product_info::IC_response,
                                     req_session,
@@ -129,6 +129,10 @@ price_manager::price_manager(const mtk::msg::sub_product_code&  _product_code)
                                                                                         request_info.req_id.sess_id,
                                                                                         request_info.req_id.req_code),
                                     on_res_product_info)
+
+
+    mtk::prices::msg::req_prod_info req_load_product_info(request_info, product_code.sys_code);
+    mtk::send_message(req_session, req_load_product_info);
 }
 
 price_manager::~price_manager()
