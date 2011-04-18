@@ -401,6 +401,12 @@ std::string sub_position_ls::check_recomended(void) const
     return result;
 }
 
+void sub_position_ls::before_send(void) const
+{
+
+}
+
+
 
 
 sub_order_ls_confirmated::sub_order_ls_confirmated (   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const sub_position_ls&  _market_pos,   const sub_total_executions&  _total_execs,   const std::string&  _cli_ref)
@@ -421,6 +427,12 @@ std::string sub_order_ls_confirmated::check_recomended(void) const
 
     return result;
 }
+
+void sub_order_ls_confirmated::before_send(void) const
+{
+
+}
+
 
 
 
@@ -443,6 +455,12 @@ std::string RQ_XX_LS::check_recomended(void) const
     return result;
 }
 
+void RQ_XX_LS::before_send(void) const
+{
+
+}
+
+
 
 
 RQ_NW_LS::RQ_NW_LS ( const RQ_XX_LS&  parent)
@@ -463,6 +481,12 @@ std::string RQ_NW_LS::check_recomended(void) const
 
     return result;
 }
+
+void RQ_NW_LS::before_send(void) const
+{
+
+}
+
 
 
 
@@ -485,6 +509,12 @@ std::string RQ_MD_LS::check_recomended(void) const
     return result;
 }
 
+void RQ_MD_LS::before_send(void) const
+{
+
+}
+
+
 
 
 RQ_CC_LS::RQ_CC_LS ( const RQ_XX_LS&  parent)
@@ -505,6 +535,12 @@ std::string RQ_CC_LS::check_recomended(void) const
 
     return result;
 }
+
+void RQ_CC_LS::before_send(void) const
+{
+
+}
+
 
 
 
@@ -527,6 +563,12 @@ std::string CF_XX_LS::check_recomended(void) const
     return result;
 }
 
+void CF_XX_LS::before_send(void) const
+{
+
+}
+
+
 
 
 CF_NW_LS::CF_NW_LS ( const CF_XX_LS&  parent)
@@ -547,6 +589,12 @@ std::string CF_NW_LS::check_recomended(void) const
 
     return result;
 }
+
+void CF_NW_LS::before_send(void) const
+{
+
+}
+
 
 
 
@@ -569,6 +617,12 @@ std::string CF_MD_LS::check_recomended(void) const
     return result;
 }
 
+void CF_MD_LS::before_send(void) const
+{
+
+}
+
+
 
 
 CF_CC_LS::CF_CC_LS ( const CF_XX_LS&  parent)
@@ -589,6 +643,12 @@ std::string CF_CC_LS::check_recomended(void) const
 
     return result;
 }
+
+void CF_CC_LS::before_send(void) const
+{
+
+}
+
 
 
 
@@ -611,6 +671,12 @@ std::string CF_EX_LS::check_recomended(void) const
     return result;
 }
 
+void CF_EX_LS::before_send(void) const
+{
+
+}
+
+
 
 
 RJ_XX_LS::RJ_XX_LS (   const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const std::string&  _description,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
@@ -631,6 +697,12 @@ std::string RJ_XX_LS::check_recomended(void) const
 
     return result;
 }
+
+void RJ_XX_LS::before_send(void) const
+{
+
+}
+
 
 
 
@@ -653,6 +725,12 @@ std::string RJ_NW_LS::check_recomended(void) const
     return result;
 }
 
+void RJ_NW_LS::before_send(void) const
+{
+
+}
+
+
 
 
 RJ_MD_LS::RJ_MD_LS ( const RJ_XX_LS&  parent)
@@ -674,6 +752,12 @@ std::string RJ_MD_LS::check_recomended(void) const
     return result;
 }
 
+void RJ_MD_LS::before_send(void) const
+{
+
+}
+
+
 
 
 RJ_CC_LS::RJ_CC_LS ( const RJ_XX_LS&  parent)
@@ -694,6 +778,12 @@ std::string RJ_CC_LS::check_recomended(void) const
 
     return result;
 }
+
+void RJ_CC_LS::before_send(void) const
+{
+
+}
+
 
 
 std::ostream& operator<< (std::ostream& o, const sub_position_ls & c)
@@ -1078,7 +1168,9 @@ void  copy (sub_position_ls& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_ls& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.price, std::string("pr"));
@@ -1153,7 +1245,9 @@ void  copy (sub_order_ls_confirmated& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_ls_confirmated& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.order_id, std::string("oid"));
@@ -1240,7 +1334,9 @@ void  copy (RQ_XX_LS& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX_LS& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.req_info, std::string("rqid"));
@@ -1281,7 +1377,9 @@ copy(static_cast<RQ_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 
@@ -1312,7 +1410,9 @@ copy(static_cast<RQ_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_MD_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 
@@ -1343,7 +1443,9 @@ copy(static_cast<RQ_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_CC_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 
@@ -1398,7 +1500,9 @@ void  copy (CF_XX_LS& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX_LS& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.req_info, std::string("rqid"));
@@ -1433,7 +1537,9 @@ copy(static_cast<CF_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_NW_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1464,7 +1570,9 @@ copy(static_cast<CF_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_MD_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1495,7 +1603,9 @@ copy(static_cast<CF_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_CC_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1534,7 +1644,9 @@ copy(static_cast<CF_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1599,7 +1711,9 @@ void  copy (RJ_XX_LS& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_LS& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.req_info, std::string("rqid"));
@@ -1636,7 +1750,9 @@ copy(static_cast<RJ_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_NW_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
@@ -1667,7 +1783,9 @@ copy(static_cast<RJ_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_MD_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
@@ -1698,7 +1816,9 @@ copy(static_cast<RJ_XX_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_CC_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
@@ -1715,21 +1835,21 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message RQ_XX_LS::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {

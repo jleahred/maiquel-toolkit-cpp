@@ -400,6 +400,12 @@ std::string sub_control_fields::check_recomended(void) const
     return result;
 }
 
+void sub_control_fields::before_send(void) const
+{
+
+}
+
+
 
 std::ostream& operator<< (std::ostream& o, const sub_control_fields & c)
 {
@@ -461,7 +467,9 @@ void  copy (sub_control_fields& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fields& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.message_type, std::string("mt"));
@@ -482,7 +490,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
     sub_control_fields  __internal_get_default(sub_control_fields*)
     {

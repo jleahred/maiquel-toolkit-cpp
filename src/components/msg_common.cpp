@@ -400,6 +400,12 @@ std::string sub_location::check_recomended(void) const
     return result;
 }
 
+void sub_location::before_send(void) const
+{
+
+}
+
+
 
 
 sub_process_location::sub_process_location (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid)
@@ -420,6 +426,12 @@ std::string sub_process_location::check_recomended(void) const
 
     return result;
 }
+
+void sub_process_location::before_send(void) const
+{
+
+}
+
 
 
 
@@ -442,6 +454,12 @@ std::string sub_process_info::check_recomended(void) const
     return result;
 }
 
+void sub_process_info::before_send(void) const
+{
+
+}
+
+
 
 
 sub_control_fluct::sub_control_fluct (   const std::string&  _key,   const mtk::DateTime&  _datetime)
@@ -462,6 +480,12 @@ std::string sub_control_fluct::check_recomended(void) const
 
     return result;
 }
+
+void sub_control_fluct::before_send(void) const
+{
+  const_cast<sub_control_fluct*>(this)->datetime = mtk::dtNowLocal();    
+}
+
 
 
 
@@ -484,6 +508,12 @@ std::string sub_request_id::check_recomended(void) const
     return result;
 }
 
+void sub_request_id::before_send(void) const
+{
+
+}
+
+
 
 
 sub_request_info::sub_request_info (   const sub_request_id&  _req_id,   const sub_process_location&  _process_location)
@@ -504,6 +534,12 @@ std::string sub_request_info::check_recomended(void) const
 
     return result;
 }
+
+void sub_request_info::before_send(void) const
+{
+
+}
+
 
 
 
@@ -526,6 +562,12 @@ std::string sub_r_response::check_recomended(void) const
     return result;
 }
 
+void sub_r_response::before_send(void) const
+{
+
+}
+
+
 
 
 sub_single_product_code::sub_single_product_code (   const std::string&  _market,   const std::string&  _product)
@@ -546,6 +588,12 @@ std::string sub_single_product_code::check_recomended(void) const
 
     return result;
 }
+
+void sub_single_product_code::before_send(void) const
+{
+
+}
+
 
 
 
@@ -568,6 +616,12 @@ std::string sub_sys_product_code::check_recomended(void) const
     return result;
 }
 
+void sub_sys_product_code::before_send(void) const
+{
+
+}
+
+
 
 
 sub_adic_product_code::sub_adic_product_code ( const sub_single_product_code&  parent,   const std::string&  _aditional_code_type)
@@ -589,6 +643,12 @@ std::string sub_adic_product_code::check_recomended(void) const
     return result;
 }
 
+void sub_adic_product_code::before_send(void) const
+{
+
+}
+
+
 
 
 sub_product_code::sub_product_code (   const sub_sys_product_code&  _sys_code,   const mtk::nullable<sub_adic_product_code>&  _aditional_code)
@@ -609,6 +669,12 @@ std::string sub_product_code::check_recomended(void) const
 
     return result;
 }
+
+void sub_product_code::before_send(void) const
+{
+
+}
+
 
 
 std::ostream& operator<< (std::ostream& o, const sub_location & c)
@@ -893,7 +959,9 @@ void  copy (sub_location& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_location& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.client_code, std::string("cc"));
@@ -950,7 +1018,9 @@ void  copy (sub_process_location& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_location& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.location, std::string("l"));
@@ -1001,7 +1071,9 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.process_location, std::string("pl"));
@@ -1050,7 +1122,9 @@ void  copy (sub_control_fluct& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fluct& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.key, std::string("k"));
@@ -1099,7 +1173,9 @@ void  copy (sub_request_id& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.sess_id, std::string("sid"));
@@ -1148,7 +1224,9 @@ void  copy (sub_request_info& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.req_id, std::string("rid"));
@@ -1205,7 +1283,9 @@ void  copy (sub_r_response& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
@@ -1256,7 +1336,9 @@ void  copy (sub_single_product_code& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_single_product_code& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.market, std::string("mk"));
@@ -1297,7 +1379,9 @@ copy(static_cast<sub_single_product_code&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_sys_product_code& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const sub_single_product_code&>(a));
 
@@ -1338,7 +1422,9 @@ copy(static_cast<sub_single_product_code&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_adic_product_code& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const sub_single_product_code&>(a));
 
@@ -1385,7 +1471,9 @@ void  copy (sub_product_code& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.sys_code, std::string("spc"));
@@ -1405,17 +1493,17 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
     sub_location  __internal_get_default(sub_location*)
     {

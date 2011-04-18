@@ -21,9 +21,10 @@ __beginrule__
 MESSAGE  ::= NR_ENDL* _  MSG_NAME                             NR_ENDL*  
              _ [<            MSG_PROPERTIES       _  >]       NR_ENDL* 
              _ {                                              NR_ENDL*
-                             FIELD_DEFINITION*
+                             FIELD_DEFINITION*                NR_ENDL*
+                             SEND                             NR_ENDL*
              _ }                                              NR_ENDL* 
-             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)} ) ,
+             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)} , $(SEND) ) ,
 
 __endrule__
 
@@ -36,9 +37,10 @@ __beginrule__
 SUB_MESSAGE  ::= NR_ENDL* _  MSG_NAME _  ( _ FIELD_TAG _ ) _  NR_ENDL*  
              _ [<            MSG_PROPERTIES      _  >]        NR_ENDL* 
              _ {                                              NR_ENDL*
-                             FIELD_DEFINITION*
+                             FIELD_DEFINITION*                NR_ENDL*
+                             SEND                             NR_ENDL*
              _ }                                              NR_ENDL* 
-             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)}, '$(FIELD_TAG)' ) ,
+             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)}, $(SEND), '$(FIELD_TAG)' ) ,
 
 __endrule__
 
@@ -130,6 +132,13 @@ __endrule__
 
 
 
+//	SEND
+SEND ::= _ #send _  [{  code*  }]     ##transf2->'$(code*)'
+SEND ::= _                            ##transf2->''
+#send ::= '#send'
+[{  ::= '[{'
+}]  ::= '}]'
+code ::= !(\}\])
 
 
 

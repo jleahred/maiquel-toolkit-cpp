@@ -401,6 +401,12 @@ std::string sub_price_level::check_recomended(void) const
     return result;
 }
 
+void sub_price_level::before_send(void) const
+{
+
+}
+
+
 
 
 sub_price_deph5::sub_price_deph5 (   const sub_price_level&  _level0,   const sub_price_level&  _level1,   const sub_price_level&  _level2,   const sub_price_level&  _level3,   const sub_price_level&  _level4)
@@ -421,6 +427,12 @@ std::string sub_price_deph5::check_recomended(void) const
 
     return result;
 }
+
+void sub_price_deph5::before_send(void) const
+{
+
+}
+
 
 
 
@@ -443,6 +455,12 @@ std::string pub_best_prices::check_recomended(void) const
     return result;
 }
 
+void pub_best_prices::before_send(void) const
+{
+
+}
+
+
 
 
 req_prod_info::req_prod_info (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_sys_product_code&  _sys_product_code)
@@ -463,6 +481,12 @@ std::string req_prod_info::check_recomended(void) const
 
     return result;
 }
+
+void req_prod_info::before_send(void) const
+{
+
+}
+
 
 
 
@@ -485,6 +509,12 @@ std::string res_product_info::check_recomended(void) const
     return result;
 }
 
+void res_product_info::before_send(void) const
+{
+
+}
+
+
 
 
 res_product_info::IC_response::IC_response (   const pub_best_prices&  _best_prices)
@@ -505,6 +535,12 @@ std::string res_product_info::IC_response::check_recomended(void) const
 
     return result;
 }
+
+void res_product_info::IC_response::before_send(void) const
+{
+
+}
+
 
 
 std::ostream& operator<< (std::ostream& o, const sub_price_level & c)
@@ -674,7 +710,9 @@ void  copy (sub_price_level& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.price, std::string("pr"));
@@ -747,7 +785,9 @@ void  copy (sub_price_deph5& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_deph5& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.level0, std::string("b0"));
@@ -818,7 +858,9 @@ void  copy (pub_best_prices& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.product_code, std::string("pc"));
@@ -871,7 +913,9 @@ void  copy (req_prod_info& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_prod_info& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
@@ -920,7 +964,9 @@ void  copy (res_product_info& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("ri"));
@@ -962,7 +1008,9 @@ void  copy (res_product_info::IC_response& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info::IC_response& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.best_prices, std::string("bp"));
@@ -979,12 +1027,12 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {

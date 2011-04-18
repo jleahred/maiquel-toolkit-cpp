@@ -38,12 +38,15 @@ sub_process_info    [<V:0>]
 //---------------------------------------------------------------------
 //        CONTROL FLUCT
 //
+//      Next submessage has to be used only on real time messages
 //---------------------------------------------------------------------
 
 sub_control_fluct    [<V:0>]
 {
     key         (k)    :   string
     datetime    (dt)   :   date_time
+    
+    #send [{  const_cast<sub_control_fluct*>(this)->datetime = mtk::dtNowLocal();    }]
 }
 
 

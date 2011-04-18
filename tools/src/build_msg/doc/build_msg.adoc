@@ -31,6 +31,8 @@
 |====================================================================
 | Date | Desciption
 
+| 2011-04-18 | NEW  #send section
+
 | 2010-11-30 | Added inheritance and  message properties +
 BEGIN_NAMESPACE and END_NAMESPACE
 
@@ -86,6 +88,7 @@ include::examples/ex1/test_messages.msg[]
 <10> a list of names of type strings
 <11> A list of positions of type limit position
 <12> +LimitPositionChild+ inherits from +LimitPosition+
+<13> This code will be executed on building message just before send
 +
 * Using the generated code in our program
 +

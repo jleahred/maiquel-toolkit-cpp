@@ -401,6 +401,12 @@ std::string req_login_key::check_recomended(void) const
     return result;
 }
 
+void req_login_key::before_send(void) const
+{
+
+}
+
+
 
 
 res_login_key::res_login_key (   const mtk::msg::sub_r_response&  _response_info,   const std::string&  _key)
@@ -421,6 +427,12 @@ std::string res_login_key::check_recomended(void) const
 
     return result;
 }
+
+void res_login_key::before_send(void) const
+{
+
+}
+
 
 
 
@@ -443,6 +455,12 @@ std::string req_login::check_recomended(void) const
     return result;
 }
 
+void req_login::before_send(void) const
+{
+
+}
+
+
 
 
 res_login::res_login (   const mtk::msg::sub_r_response&  _response_info,   const IC_login_response_info&  _login_response_info)
@@ -463,6 +481,12 @@ std::string res_login::check_recomended(void) const
 
     return result;
 }
+
+void res_login::before_send(void) const
+{
+
+}
+
 
 
 
@@ -485,6 +509,12 @@ std::string res_login::IC_login_response_info::check_recomended(void) const
     return result;
 }
 
+void res_login::IC_login_response_info::before_send(void) const
+{
+
+}
+
+
 
 
 conf_logout::conf_logout (   const mtk::msg::sub_location&  _location,   const std::string&  _session_id,   const std::string&  _description)
@@ -505,6 +535,12 @@ std::string conf_logout::check_recomended(void) const
 
     return result;
 }
+
+void conf_logout::before_send(void) const
+{
+
+}
+
 
 
 
@@ -527,6 +563,12 @@ std::string req_logout::check_recomended(void) const
     return result;
 }
 
+void req_logout::before_send(void) const
+{
+
+}
+
+
 
 
 req_change_password::req_change_password (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _old_password,   const mtk::list<int32_t >&  _new_password)
@@ -547,6 +589,12 @@ std::string req_change_password::check_recomended(void) const
 
     return result;
 }
+
+void req_change_password::before_send(void) const
+{
+
+}
+
 
 
 
@@ -569,6 +617,12 @@ std::string res_change_password::check_recomended(void) const
     return result;
 }
 
+void res_change_password::before_send(void) const
+{
+
+}
+
+
 
 
 res_change_password::IC_change_password_info::IC_change_password_info (   const bool&  _accepted)
@@ -589,6 +643,12 @@ std::string res_change_password::IC_change_password_info::check_recomended(void)
 
     return result;
 }
+
+void res_change_password::IC_change_password_info::before_send(void) const
+{
+
+}
+
 
 
 std::ostream& operator<< (std::ostream& o, const req_login_key & c)
@@ -850,7 +910,9 @@ void  copy (req_login_key& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_login_key& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
@@ -899,7 +961,9 @@ void  copy (res_login_key& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login_key& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("ri"));
@@ -964,7 +1028,9 @@ void  copy (req_login& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_login& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
@@ -1017,7 +1083,9 @@ void  copy (res_login& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("ri"));
@@ -1067,7 +1135,9 @@ void  copy (res_login::IC_login_response_info& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_login_response_info& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.user_name, std::string("u"));
@@ -1124,7 +1194,9 @@ void  copy (conf_logout& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.location, std::string("lc"));
@@ -1167,7 +1239,9 @@ void  copy (req_logout& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_logout& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
@@ -1238,7 +1312,9 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_change_password& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
@@ -1293,7 +1369,9 @@ void  copy (res_change_password& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_change_password& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("ri"));
@@ -1335,7 +1413,9 @@ void  copy (res_change_password::IC_change_password_info& c, const qpid::types::
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_change_password::IC_change_password_info& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.accepted, std::string("a"));
@@ -1352,16 +1432,16 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message req_login_key::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {

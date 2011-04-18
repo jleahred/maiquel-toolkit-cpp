@@ -38,7 +38,7 @@ def is_message_not_submessage(class_properties) :
     if class_properties.has_key('SUBJ'):
         return True
     elif class_properties.has_key('I'):
-        for class_name, class_info, __class_properties  in ALL_MESSAGES:
+        for class_name, class_info, __class_properties, send_code  in ALL_MESSAGES:
             if class_name == class_properties['I']:
                 return is_message_not_submessage (__class_properties)
         return False
@@ -47,7 +47,7 @@ def is_message_not_submessage(class_properties) :
 
 
 
-def get_constructor_params(class_name, class_info, class_properties) :
+def get_constructor_params(class_name, class_info, class_properties, send_code) :
     CONSTRUCTOR_PARAMS_DEBUG_DECL = ''
     
     if class_properties.has_key('I'):
@@ -101,7 +101,7 @@ def get_constructor_params(class_name, class_info, class_properties) :
 
 
 
-def generate_class(class_name, class_info, class_properties):
+def generate_class(class_name, class_info, class_properties, send_code):
     CLASS_FIELDS = ''
     CONSTRUCTOR_PARAMS_DEBUG_DECL = ''
     INNER_CLASSES = ''
@@ -140,6 +140,9 @@ $CLASS_FIELDS
     
     
     $POINTER_TO_CONTROL_FIELDS
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -148,7 +151,7 @@ private:
 """
     #   constructor params
             
-    CONSTRUCTOR_PARAMS_DEBUG_DECL = get_constructor_params(class_name, class_info, class_properties)[:-1]
+    CONSTRUCTOR_PARAMS_DEBUG_DECL = get_constructor_params(class_name, class_info, class_properties, send_code)[:-1]
 
     #   member definitions
     for field in class_info:
@@ -174,10 +177,10 @@ private:
     # INNER CLASSES
     for field in class_info:
         if field.has_key('IN_MSG'):
-            INNER_CLASSES += generate_class('IC_' + field['IN_MSG'][0], field['IN_MSG'][1], field['IN_MSG'][2])
+            INNER_CLASSES += generate_class('IC_' + field['IN_MSG'][0], field['IN_MSG'][1], field['IN_MSG'][2], field['IN_SUB_MSG'][3])
     for field in class_info:
         if field.has_key('IN_SUB_MSG'):
-            INNER_CLASSES += generate_class('IC_' + field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], field['IN_SUB_MSG'][2])
+            INNER_CLASSES += generate_class('IC_' + field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], field['IN_SUB_MSG'][2], field['IN_SUB_MSG'][3])
     INNER_CLASSES = INNER_CLASSES.replace('\n', '\n    ')
 
 
@@ -185,7 +188,7 @@ private:
     code_as_qpid_message = ''
     # SUBJECT_METHODS
     if class_properties.has_key('SUBJ'):
-        SUBJECT_METHODS += get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties)   
+        SUBJECT_METHODS += get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties, send_code)   
         SUBJECT_METHODS += Template("""virtual std::string  get_out_subject (void) const;\n""").substitute(class_name=class_name)
     if is_message_not_submessage(class_properties):
         pointer_to_control_fields = 'mtk::msg::sub_control_fields*   __internal_warning_control_fields;'
@@ -203,7 +206,7 @@ private:
 
 
 
-def generate_class_in_impl(class_name, class_info, class_properties):
+def generate_class_in_impl(class_name, class_info, class_properties, send_code):
     CONSTRUCTOR_PARAMS_DEBUG_INIT = ''
     CHECK_RECOMENDED = ''
     CONSTRUCTOR_PARAMS_DEBUG_DECL = ''
@@ -229,12 +232,18 @@ $CHECK_RECOMENDED
     return result;
 }
 
+void ${CLASS_NAME}::before_send(void) const
+{
+$SEND_CODE
+}
+
+
 """
 
     if class_properties.has_key('I'):
         CONSTRUCTOR_PARAMS_DEBUG_INIT += class_properties['I']+'(parent),'
 
-    CONSTRUCTOR_PARAMS_DEBUG_DECL = get_constructor_params (class_name, class_info, class_properties)
+    CONSTRUCTOR_PARAMS_DEBUG_DECL = get_constructor_params (class_name, class_info, class_properties, send_code)
     CONSTRUCTOR_PARAMS_DEBUG_DECL = CONSTRUCTOR_PARAMS_DEBUG_DECL[:-1]
 
     #CONSTRUCTOR_PARAMS_DEBUG_INIT
@@ -295,19 +304,20 @@ $CHECK_RECOMENDED
             CHECK_RECOMENDED = CHECK_RECOMENDED,
             CONSTRUCTOR_PARAMS_DEBUG_DECL = CONSTRUCTOR_PARAMS_DEBUG_DECL,
             CLASS_NAME_NOT_NESTED = CLASS_NAME_NOT_NESTED,
-            CONTROL_FIELD_INITIALIZER = control_field_initializer
+            CONTROL_FIELD_INITIALIZER = control_field_initializer,
+            SEND_CODE = send_code
         )
 
 
 def look_for_type(type):
-    for class_name, class_info, class_properties in ALL_MESSAGES:
+    for class_name, class_info, class_properties, send_code in ALL_MESSAGES:
         if class_name == type:
-            return class_name, class_info, class_properties
+            return class_name, class_info, class_properties, send_code
     return None
 
 
 
-def qpid_generate__internal_get_default_forward(class_name, class_info, class_properties):
+def qpid_generate__internal_get_default_forward(class_name, class_info, class_properties, send_code):
     INITIALITATION = ''
     template = """
     $class_name  __internal_get_default($class_name *);
@@ -315,7 +325,7 @@ def qpid_generate__internal_get_default_forward(class_name, class_info, class_pr
     return Template(template).substitute(class_name=class_name)
     
     
-def qpid_generate__internal_get_default(class_name, class_info, class_properties):
+def qpid_generate__internal_get_default(class_name, class_info, class_properties, send_code):
     CLASS_NAME_NOT_NESTED = class_name
     INITIALITATION = ''
     template = """
@@ -408,7 +418,7 @@ $INITIALITATION
 
 
 
-def ctor_conversion_from_qpid_msg(class_name, class_info, class_properties):
+def ctor_conversion_from_qpid_msg(class_name, class_info, class_properties, send_code):
     CONSTRUCTOR_PARAMS_DEBUG_INIT = ''
     CLASS_NAME_NOT_NESTED = class_name.split('::')[-1]
     IMPL_TEMPLATE = """
@@ -489,7 +499,7 @@ ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} (const qpid::messaging::Message& msg)
 
 
 
-def generate__internal_qpid_fill(class_name, class_info, class_properties):
+def generate__internal_qpid_fill(class_name, class_info, class_properties, send_code):
     CLASS_NAME_NOT_NESTED = class_name.split('::')[-1]
     PARENT = ''
     if class_properties.has_key('I'):
@@ -605,7 +615,7 @@ $FILL_FIELDS
                     else
                         copy(c.${FIELD_NAME}, it->second);
                         //__internal_qpid_fill(c.${FIELD_NAME}, ${preMorph}it->second.asMap()${postMorph});\n""").substitute(
-                                                        FIELD_TAG = field['IN_SUB_MSG'][3],
+                                                        FIELD_TAG = field['IN_SUB_MSG'][4],
                                                         FIELD_NAME = field['IN_SUB_MSG'][0],
                                                         preMorph = preMorph,
                                                         postMorph = postMorph,
@@ -617,7 +627,7 @@ $FILL_FIELDS
                     if (it!= mv.end())
                         copy(c.${FIELD_NAME}, it->second);
                         //__internal_qpid_fill(c.${FIELD_NAME}, ${preMorph}it->second.asMap()${postMorph});\n""").substitute(
-                                                        FIELD_TAG = field['IN_SUB_MSG'][3],
+                                                        FIELD_TAG = field['IN_SUB_MSG'][4],
                                                         FIELD_NAME = field['IN_SUB_MSG'][0],
                                                         preMorph = preMorph,
                                                         postMorph = postMorph,
@@ -635,11 +645,11 @@ $FILL_FIELDS
         )
 
 
-def generate_output_stream_operator_forward(class_name, class_info, class_properties) :
+def generate_output_stream_operator_forward(class_name, class_info, class_properties, send_code) :
     METHOD = """    std::ostream& operator<< (std::ostream& o, const $class_name & c);\n"""
     return Template(METHOD).substitute(class_name=class_name)
 
-def generate_output_stream_operator(class_name, class_info, class_properties) :
+def generate_output_stream_operator(class_name, class_info, class_properties, send_code) :
     OUPUT_PER_FIELD = ''
     RECURSION_OUTPUT = ''
     OUTPUT_PARENT = ''
@@ -674,17 +684,17 @@ $OUPUT_PER_FIELD
             OUPUT_PER_FIELD += '        << "'+field['FIELD_NAME']+':"<< c.' + field['FIELD_NAME'] + '<<"  "'
         elif field.has_key('IN_MSG'):
             OUPUT_PER_FIELD += '        << "'+field['IN_MSG'][0]+':"<< c.' + field['IN_MSG'][0] + '<<"  "'
-            RECURSION_OUTPUT += generate_output_stream_operator(class_name+'::IC_'+field['IN_MSG'][0], field['IN_MSG'][1], class_properties)
+            RECURSION_OUTPUT += generate_output_stream_operator(class_name+'::IC_'+field['IN_MSG'][0], field['IN_MSG'][1], class_properties, send_code)
         elif field.has_key('IN_SUB_MSG'):
             OUPUT_PER_FIELD += '        << "'+field['IN_SUB_MSG'][0]+':"<< c.' + field['IN_SUB_MSG'][0] + '<<"  "'
-            RECURSION_OUTPUT += generate_output_stream_operator(class_name+'::IC_'+field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], class_properties)
+            RECURSION_OUTPUT += generate_output_stream_operator(class_name+'::IC_'+field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], class_properties, send_code)
         else:
             print "error 7--------------------------------\n" +  str(field)
     return RECURSION_OUTPUT + Template(METHOD).substitute(class_name=class_name, OUPUT_PER_FIELD=OUPUT_PER_FIELD, OUTPUT_PARENT=OUTPUT_PARENT)
 
 
 
-def generate_equal_operator_forward_declaration(class_name, class_info, class_properties) :
+def generate_equal_operator_forward_declaration(class_name, class_info, class_properties, send_code) :
     OUPUT_PER_FIELD = ''
     RECURSION_OUTPUT = ''
     OUTPUT_PARENT = ''
@@ -706,17 +716,17 @@ bool operator!= (const $class_name& a, const $class_name& b);
             OUPUT_PER_FIELD += '        a.'+field['FIELD_NAME']+' ==  b.' + field['FIELD_NAME']  + '  &&  '
         elif field.has_key('IN_MSG'):
             OUPUT_PER_FIELD += '        a.'+field['IN_MSG'][0] +' ==  b.' + field['IN_MSG'][0]   + '  &&  '
-            RECURSION_OUTPUT += generate_equal_operator_forward_declaration(class_name+'::IC_'+field['IN_MSG'][0], field['IN_MSG'][1], class_properties)
+            RECURSION_OUTPUT += generate_equal_operator_forward_declaration(class_name+'::IC_'+field['IN_MSG'][0], field['IN_MSG'][1], class_properties, send_code)
         elif field.has_key('IN_SUB_MSG'):
             OUPUT_PER_FIELD += '        a.'+field['IN_SUB_MSG'][0]+'  ==  b.' + field['IN_SUB_MSG'][0] + '  &&  '
-            RECURSION_OUTPUT += generate_equal_operator_forward_declaration(class_name+'::IC_'+field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], class_properties)
+            RECURSION_OUTPUT += generate_equal_operator_forward_declaration(class_name+'::IC_'+field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], class_properties, send_code)
         else:
             print "error 7--------------------------------\n" +  str(field)
     OUPUT_PER_FIELD += ' true '
     return RECURSION_OUTPUT + Template(METHOD).substitute(class_name=class_name, OUPUT_PER_FIELD=OUPUT_PER_FIELD, OUTPUT_PARENT=OUTPUT_PARENT)
 
 
-def generate_equal_operator(class_name, class_info, class_properties) :
+def generate_equal_operator(class_name, class_info, class_properties, send_code) :
     OUPUT_PER_FIELD = ''
     RECURSION_OUTPUT = ''
     OUTPUT_PARENT = ''
@@ -746,10 +756,10 @@ bool operator!= (const $class_name& a, const $class_name& b)
             OUPUT_PER_FIELD += '        a.'+field['FIELD_NAME']+' ==  b.' + field['FIELD_NAME']  + '  &&  '
         elif field.has_key('IN_MSG'):
             OUPUT_PER_FIELD += '        a.'+field['IN_MSG'][0] +' ==  b.' + field['IN_MSG'][0]   + '  &&  '
-            RECURSION_OUTPUT += generate_equal_operator(class_name+'::IC_'+field['IN_MSG'][0], field['IN_MSG'][1], class_properties)
+            RECURSION_OUTPUT += generate_equal_operator(class_name+'::IC_'+field['IN_MSG'][0], field['IN_MSG'][1], class_properties, send_code)
         elif field.has_key('IN_SUB_MSG'):
             OUPUT_PER_FIELD += '        a.'+field['IN_SUB_MSG'][0]+'  ==  b.' + field['IN_SUB_MSG'][0] + '  &&  '
-            RECURSION_OUTPUT += generate_equal_operator(class_name+'::IC_'+field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], class_properties)
+            RECURSION_OUTPUT += generate_equal_operator(class_name+'::IC_'+field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], class_properties, send_code)
         else:
             print "error 7--------------------------------\n" +  str(field)
     OUPUT_PER_FIELD += ' true '
@@ -758,7 +768,7 @@ bool operator!= (const $class_name& a, const $class_name& b)
 
 
 
-def generate_qpid_coding___fill_qpid_Map (class_name, class_info, class_properties) :
+def generate_qpid_coding___fill_qpid_Map (class_name, class_info, class_properties, send_code) :
     OUPUT_PER_FIELD = ''
     RECURSION_OUTPUT = ''
     OUTPUT_PARENT = ''
@@ -766,7 +776,9 @@ def generate_qpid_coding___fill_qpid_Map (class_name, class_info, class_properti
     METHOD = """
 void __internal_add2map (qpid::types::Variant::Map& map, const $class_name& a)
 {
-    
+
+    a.before_send();
+
 $OUTPUT_PARENT
 $OUPUT_PER_FIELD
 
@@ -807,7 +819,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$cl
             OUPUT_PER_FIELD += '        __internal_add2map(map, ' + 'a.' + field['IN_MSG'][0] + get_optional  + ');\n'
         elif field.has_key('IN_SUB_MSG'):
             OUPUT_PER_FIELD += '//  IN_SUB_MSG\n'
-            OUPUT_PER_FIELD += '//        map["'+ field['IN_SUB_MSG'][3] +'"] =  qpidmsg_coded_as_qpid_Map(' + 'a.' + field['IN_SUB_MSG'][0] + get_optional + ');\n'
+            OUPUT_PER_FIELD += '//        map["'+ field['IN_SUB_MSG'][4] +'"] =  qpidmsg_coded_as_qpid_Map(' + 'a.' + field['IN_SUB_MSG'][0] + get_optional + ');\n'
             OUPUT_PER_FIELD += '        __internal_add2map(map, ' + 'a.' + field['IN_SUB_MSG'][0] + ');\n'
         else:
             print "error 7--------------------------------\n" +  str(field)
@@ -816,7 +828,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$cl
 
 
 
-def generate_qpid_coding___codded_as_qpid_message (class_name, class_info, class_properties) :
+def generate_qpid_coding___codded_as_qpid_message (class_name, class_info, class_properties, send_code) :
     if is_message_not_submessage(class_properties) == False:
         return ''
     
@@ -872,8 +884,8 @@ $OUPUT_PER_FIELD
             OUPUT_PER_FIELD += '        __internal_add2map(content, '+'this->' + field['IN_MSG'][0] + get_optional+ ');\n'
         elif field.has_key('IN_SUB_MSG'):
             OUPUT_PER_FIELD += '//  IN_SUB_MSG\n'
-            OUPUT_PER_FIELD += '//        content["'+ field['IN_SUB_MSG'][3] +'"] =  qpidmsg_coded_as_qpid_Map('+ 'this->' + field['IN_SUB_MSG'][0] + get_optional+ ');\n'
-            OUPUT_PER_FIELD += '        __internal_add2map(content, this->'+field['IN_SUB_MSG'][0] + ', std::string("'+ field['IN_SUB_MSG'][3] +'"));\n'
+            OUPUT_PER_FIELD += '//        content["'+ field['IN_SUB_MSG'][4] +'"] =  qpidmsg_coded_as_qpid_Map('+ 'this->' + field['IN_SUB_MSG'][0] + get_optional+ ');\n'
+            OUPUT_PER_FIELD += '        __internal_add2map(content, this->'+field['IN_SUB_MSG'][0] + ', std::string("'+ field['IN_SUB_MSG'][4] +'"));\n'
         else:
             print "error 7--------------------------------\n" +  str(field)
     return RECURSION_OUTPUT + Template(METHOD).substitute(class_name=class_name, OUPUT_PER_FIELD=OUPUT_PER_FIELD, OUTPUT_PARENT=OUTPUT_PARENT)
@@ -889,41 +901,41 @@ def generate_msg_to_qpid() :
     
     
     # implementation
-    for class_name, class_info, class_properties  in ALL_MESSAGES :
-        result += generate__internal_qpid_fill(class_name, class_info, class_properties)
-        result += generate_qpid_coding___fill_qpid_Map(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES :
+        result += generate__internal_qpid_fill(class_name, class_info, class_properties, send_code)
+        result += generate_qpid_coding___fill_qpid_Map(class_name, class_info, class_properties, send_code)
         
-    for class_name, class_info, class_properties  in ALL_MESSAGES :
-        result += '//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)\n'
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES :
+        result += '//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)\n'
 
 
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
-        result += generate_qpid_coding___codded_as_qpid_message(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
+        result += generate_qpid_coding___codded_as_qpid_message(class_name, class_info, class_properties, send_code)
     return result
 
 
 
-def get_inner_classes(class_name, class_info, class_properties) :
+def get_inner_classes(class_name, class_info, class_properties, send_code) :
     result =[]
-    result.append((class_name, class_info, class_properties))
+    result.append((class_name, class_info, class_properties, send_code))
     # INNER CLASSES
     for field in class_info:
         if field.has_key('IN_MSG'):
-            result += get_inner_classes(class_name + '::IC_' + field['IN_MSG'][0], field['IN_MSG'][1], field['IN_MSG'][2])
+            result += get_inner_classes(class_name + '::IC_' + field['IN_MSG'][0], field['IN_MSG'][1], field['IN_MSG'][2], field['IN_SUB_MSG'][3])
     for field in class_info:
         if field.has_key('IN_SUB_MSG'):
-            result += get_inner_classes(class_name + '::IC_' + field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], field['IN_SUB_MSG'][2])
+            result += get_inner_classes(class_name + '::IC_' + field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], field['IN_SUB_MSG'][2], field['IN_SUB_MSG'][3])
     return result
 
 def get_all_classes_included_inner() :
     result =[]
-    for class_name, class_info, class_properties  in MESSAGES:
-        result += get_inner_classes (class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in MESSAGES:
+        result += get_inner_classes (class_name, class_info, class_properties, send_code)
     return result
 
 
 
-def get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties) :
+def get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties, send_code) :
     result = ''
     qpidmsg_get_in_subject_params = []
     if class_properties.has_key('SUBJ'):
@@ -933,7 +945,7 @@ def get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties)
         result += Template("""static std::string  get_in_subject ($PARAMS);\n""").substitute(class_name=class_name, PARAMS=','.join(qpidmsg_get_in_subject_params))
     return result
 
-def get_qpidmsg_get_in_subject(class_name, class_info, class_properties) :
+def get_qpidmsg_get_in_subject(class_name, class_info, class_properties, send_code) :
     result = ''
     qpidmsg_get_in_subject_params = []
     if class_properties.has_key('SUBJ'):
@@ -949,7 +961,7 @@ def get_qpidmsg_get_in_subject(class_name, class_info, class_properties) :
     """).substitute(class_name=class_name, PARAMS=','.join(qpidmsg_get_in_subject_params), BUILD_STRING=subject.replace('${','" << ').replace('}',' << "').replace('(','').replace(')',''))
     return result
 
-def get_qpidmsg_get_out_subject(class_name, class_info, class_properties) :
+def get_qpidmsg_get_out_subject(class_name, class_info, class_properties, send_code) :
     result = ''
     if class_properties.has_key('SUBJ'):
         result += Template("""std::string  ${class_name}::get_out_subject (void) const
@@ -1047,8 +1059,8 @@ $NOT_CONTROL_FIELDS
     content_file_h += BEGIN_NAMESPACE    
 
 
-    for class_name, class_info, class_properties in MESSAGES:
-        content_file_h += generate_class(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code in MESSAGES:
+        content_file_h += generate_class(class_name, class_info, class_properties, send_code)
         
 
     # public forward declarations
@@ -1057,18 +1069,18 @@ $NOT_CONTROL_FIELDS
     
     
 //  fordward declarations-----------------------------------------------------------\n"""
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
-        content_file_h += generate_output_stream_operator_forward(class_name, class_info, class_properties)
-        content_file_h += generate_equal_operator_forward_declaration(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
+        content_file_h += generate_output_stream_operator_forward(class_name, class_info, class_properties, send_code)
+        content_file_h += generate_equal_operator_forward_declaration(class_name, class_info, class_properties, send_code)
 
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
         content_file_h += Template("""qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const $class_name& a);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const $class_name& a);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$class_name>& a, const std::string& field);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void copy ($class_name& a, const qpid::types::Variant& map);\n""").substitute(class_name=class_name)
 
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
-        content_file_h += qpid_generate__internal_get_default_forward(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
+        content_file_h += qpid_generate__internal_get_default_forward(class_name, class_info, class_properties, send_code)
 
     content_file_h +=  END_NAMESPACE 
     
@@ -1081,7 +1093,7 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 """
     
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
         if is_message_not_submessage(class_properties):
             ##if class_name != 'sub_control_fields' :
             content_file_h += 'MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(' + '::'.join(NAMESPACES) + '::' + class_name +')\n'
@@ -1496,26 +1508,26 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     
 
     
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
-        content_file_cpp += generate_class_in_impl(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code in ALL_MESSAGES:
+        content_file_cpp += generate_class_in_impl(class_name, class_info, class_properties, send_code)
 
-    for class_name, class_info, class_properties  in MESSAGES:
-        content_file_cpp += generate_output_stream_operator(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in MESSAGES:
+        content_file_cpp += generate_output_stream_operator(class_name, class_info, class_properties, send_code)
 
-    for class_name, class_info, class_properties  in MESSAGES:
-        content_file_cpp += generate_equal_operator(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in MESSAGES:
+        content_file_cpp += generate_equal_operator(class_name, class_info, class_properties, send_code)
 
     content_file_cpp += generate_msg_to_qpid()
 
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
-        content_file_cpp += qpid_generate__internal_get_default(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
+        content_file_cpp += qpid_generate__internal_get_default(class_name, class_info, class_properties, send_code)
 
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
-        content_file_cpp += ctor_conversion_from_qpid_msg(class_name, class_info, class_properties)
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
+        content_file_cpp += ctor_conversion_from_qpid_msg(class_name, class_info, class_properties, send_code)
 
-    for class_name, class_info, class_properties  in ALL_MESSAGES:
-        content_file_cpp += get_qpidmsg_get_in_subject(class_name, class_info, class_properties)   
-        content_file_cpp += get_qpidmsg_get_out_subject(class_name, class_info, class_properties)   
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
+        content_file_cpp += get_qpidmsg_get_in_subject(class_name, class_info, class_properties, send_code)   
+        content_file_cpp += get_qpidmsg_get_out_subject(class_name, class_info, class_properties, send_code)   
     content_file_cpp +=  END_NAMESPACE
 
 

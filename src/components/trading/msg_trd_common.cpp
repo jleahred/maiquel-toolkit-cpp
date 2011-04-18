@@ -401,6 +401,12 @@ std::string sub_order_id::check_recomended(void) const
     return result;
 }
 
+void sub_order_id::before_send(void) const
+{
+
+}
+
+
 
 
 sub_total_executions::sub_total_executions (   const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _quantity,   const mtk::FixedNumber&  _remaining_qty)
@@ -421,6 +427,12 @@ std::string sub_total_executions::check_recomended(void) const
 
     return result;
 }
+
+void sub_total_executions::before_send(void) const
+{
+
+}
+
 
 
 std::ostream& operator<< (std::ostream& o, const sub_order_id & c)
@@ -482,7 +494,9 @@ copy(static_cast<mtk::msg::sub_request_id&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const mtk::msg::sub_request_id&>(a));
 
@@ -537,7 +551,9 @@ void  copy (sub_total_executions& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executions& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.sum_price_by_qty, std::string("spq"));
@@ -558,8 +574,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
     sub_order_id  __internal_get_default(sub_order_id*)
     {

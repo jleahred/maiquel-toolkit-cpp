@@ -401,6 +401,12 @@ std::string oms_RQ_NW_LS::check_recomended(void) const
     return result;
 }
 
+void oms_RQ_NW_LS::before_send(void) const
+{
+
+}
+
+
 
 
 oms_RQ_MD_LS::oms_RQ_MD_LS ( const RQ_MD_LS&  parent,   const std::string&  _reject_descr)
@@ -422,6 +428,12 @@ std::string oms_RQ_MD_LS::check_recomended(void) const
     return result;
 }
 
+void oms_RQ_MD_LS::before_send(void) const
+{
+
+}
+
+
 
 
 oms_RQ_CC_LS::oms_RQ_CC_LS ( const RQ_CC_LS&  parent,   const std::string&  _reject_descr)
@@ -442,6 +454,12 @@ std::string oms_RQ_CC_LS::check_recomended(void) const
 
     return result;
 }
+
+void oms_RQ_CC_LS::before_send(void) const
+{
+
+}
+
 
 
 std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_LS & c)
@@ -534,7 +552,9 @@ copy(static_cast<RQ_NW_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RQ_NW_LS&>(a));
 
@@ -575,7 +595,9 @@ copy(static_cast<RQ_MD_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RQ_MD_LS&>(a));
 
@@ -616,7 +638,9 @@ copy(static_cast<RQ_CC_LS&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_LS& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const RQ_CC_LS&>(a));
 
@@ -635,9 +659,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
     oms_RQ_NW_LS  __internal_get_default(oms_RQ_NW_LS*)
     {

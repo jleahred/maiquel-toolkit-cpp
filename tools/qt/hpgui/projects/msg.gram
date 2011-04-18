@@ -21,9 +21,10 @@ __beginrule__
 MESSAGE  ::= NR_ENDL* _  MSG_NAME                             NR_ENDL*  
              _ [<            MSG_PROPERTIES       _  >]       NR_ENDL* 
              _ {                                              NR_ENDL*
-                             FIELD_DEFINITION*
+                             FIELD_DEFINITION*                NR_ENDL*
+                             SEND                             NR_ENDL*
              _ }                                              NR_ENDL* 
-             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)} ) ,
+             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)} , $(SEND) ) ,
 
 __endrule__
 
@@ -34,11 +35,12 @@ __beginrule__
 
 
 SUB_MESSAGE  ::= NR_ENDL* _  MSG_NAME _  ( _ FIELD_TAG _ ) _  NR_ENDL*  
-             _ [<            MSG_PROPERTIES         >]        NR_ENDL* 
+             _ [<            MSG_PROPERTIES      _  >]        NR_ENDL* 
              _ {                                              NR_ENDL*
-                             FIELD_DEFINITION*
+                             FIELD_DEFINITION*                NR_ENDL*
+                             SEND                             NR_ENDL*
              _ }                                              NR_ENDL* 
-             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)}, '$(FIELD_TAG)' ) ,
+             ##transf2->$(__endl__)$(__space__)$(__space__)('$(MSG_NAME)', [ $(FIELD_DEFINITION*)], {$(MSG_PROPERTIES)}, $(SEND), '$(FIELD_TAG)' ) ,
 
 __endrule__
 
@@ -130,6 +132,13 @@ __endrule__
 
 
 
+//	SEND
+SEND ::= _ #send _  [{  code*  }]     ##transf2->'$(code*)'
+SEND ::= _                            ##transf2->''
+#send ::= '#send'
+[{  ::= '[{'
+}]  ::= '}]'
+code ::= !(\}\])
 
 
 
@@ -139,14 +148,15 @@ FIELD_NAME  ::=  id
 FIELD_TAG   ::=  id
 
 
-field_type  ::= 'string'    ##transf2->std::string
-field_type  ::= 'int8'      ##transf2->int8_t
-field_type  ::= 'int16'     ##transf2->int16_t
-field_type  ::= 'int32'     ##transf2->int32_t
-field_type  ::= 'int64'     ##transf2->int64_t
-field_type  ::= 'double'    ##transf2->mtk::Double
-field_type  ::= 'fix_num'   ##transf2->mtk::FixedNumber
-field_type  ::= 'date_time' ##transf2->mtk::DateTime
+field_type  ::= 'string'         ##transf2->std::string
+field_type  ::= 'int8'           ##transf2->int8_t
+field_type  ::= 'int16'          ##transf2->int16_t
+field_type  ::= 'int32'          ##transf2->int32_t
+field_type  ::= 'int64'          ##transf2->int64_t
+field_type  ::= 'double'         ##transf2->mtk::Double
+field_type  ::= 'fix_num'        ##transf2->mtk::FixedNumber
+field_type  ::= 'date_time'      ##transf2->mtk::DateTime
+field_type  ::= 'time_quantity'  ##transf2->mtk::dtTimeQuantity
 
 
 SUB_MSG_TYPE ::= id  ::  SUB_MSG_TYPE

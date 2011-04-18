@@ -58,6 +58,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -95,6 +98,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -130,6 +136,9 @@ public:
     
     
     
+    
+    
+    void        before_send(void) const;
     
 private:
     std::string check_recomended(void) const;
@@ -167,6 +176,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -203,6 +215,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -238,6 +253,9 @@ public:
     
     
     
+    
+    
+    void        before_send(void) const;
     
 private:
     std::string check_recomended(void) const;
@@ -276,6 +294,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -312,6 +333,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -346,6 +370,9 @@ public:
     
     
     
+    
+    
+    void        before_send(void) const;
     
 private:
     std::string check_recomended(void) const;
@@ -382,6 +409,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -417,6 +447,9 @@ public:
     
     
     
+    
+    
+    void        before_send(void) const;
     
 private:
     std::string check_recomended(void) const;

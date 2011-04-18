@@ -60,6 +60,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -98,6 +101,9 @@ public:
     
     
     
+    
+    
+    void        before_send(void) const;
     
 private:
     std::string check_recomended(void) const;
@@ -141,6 +147,9 @@ virtual std::string  get_out_subject (void) const;
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -175,6 +184,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -209,6 +221,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -243,6 +258,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -282,6 +300,9 @@ virtual std::string  get_out_subject (void) const;
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -316,6 +337,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -350,6 +374,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -384,6 +411,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -419,6 +449,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -459,6 +492,9 @@ virtual std::string  get_out_subject (void) const;
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -493,6 +529,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -527,6 +566,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -561,6 +603,9 @@ public:
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };

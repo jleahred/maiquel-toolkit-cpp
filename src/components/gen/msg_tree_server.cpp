@@ -401,6 +401,12 @@ std::string sub_tree_item::check_recomended(void) const
     return result;
 }
 
+void sub_tree_item::before_send(void) const
+{
+
+}
+
+
 
 
 req_tree_items::req_tree_items (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _branch)
@@ -422,6 +428,12 @@ std::string req_tree_items::check_recomended(void) const
     return result;
 }
 
+void req_tree_items::before_send(void) const
+{
+
+}
+
+
 
 
 res_tree_items::res_tree_items (   const mtk::msg::sub_r_response&  _response_info,   const sub_tree_item&  _item)
@@ -442,6 +454,12 @@ std::string res_tree_items::check_recomended(void) const
 
     return result;
 }
+
+void res_tree_items::before_send(void) const
+{
+
+}
+
 
 
 std::ostream& operator<< (std::ostream& o, const sub_tree_item & c)
@@ -548,7 +566,9 @@ void  copy (sub_tree_item& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.branch, std::string("b"));
@@ -600,7 +620,9 @@ void  copy (req_tree_items& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
@@ -649,7 +671,9 @@ void  copy (res_tree_items& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("ri"));
@@ -668,9 +692,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message req_tree_items::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {

@@ -401,6 +401,12 @@ std::string pub_enter::check_recomended(void) const
     return result;
 }
 
+void pub_enter::before_send(void) const
+{
+
+}
+
+
 
 
 pub_keep_alive_srv::pub_keep_alive_srv (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
@@ -421,6 +427,12 @@ std::string pub_keep_alive_srv::check_recomended(void) const
 
     return result;
 }
+
+void pub_keep_alive_srv::before_send(void) const
+{
+
+}
+
 
 
 
@@ -443,6 +455,12 @@ std::string pub_keep_alive_clients::check_recomended(void) const
     return result;
 }
 
+void pub_keep_alive_clients::before_send(void) const
+{
+
+}
+
+
 
 
 pub_exit::pub_exit (   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason)
@@ -463,6 +481,12 @@ std::string pub_exit::check_recomended(void) const
 
     return result;
 }
+
+void pub_exit::before_send(void) const
+{
+
+}
+
 
 
 
@@ -485,6 +509,12 @@ std::string pub_alarm::check_recomended(void) const
     return result;
 }
 
+void pub_alarm::before_send(void) const
+{
+
+}
+
+
 
 
 req_command::req_command (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_location&  _proc_loc__destination,   const std::string&  _command_line)
@@ -505,6 +535,12 @@ std::string req_command::check_recomended(void) const
 
     return result;
 }
+
+void req_command::before_send(void) const
+{
+
+}
+
 
 
 
@@ -527,6 +563,12 @@ std::string sub_command_rd::check_recomended(void) const
     return result;
 }
 
+void sub_command_rd::before_send(void) const
+{
+
+}
+
+
 
 
 res_command::res_command (   const mtk::msg::sub_r_response&  _response_info,   const sub_command_rd&  _response_data)
@@ -548,6 +590,12 @@ std::string res_command::check_recomended(void) const
     return result;
 }
 
+void res_command::before_send(void) const
+{
+
+}
+
+
 
 
 pub_central_keep_alive::pub_central_keep_alive (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
@@ -568,6 +616,12 @@ std::string pub_central_keep_alive::check_recomended(void) const
 
     return result;
 }
+
+void pub_central_keep_alive::before_send(void) const
+{
+
+}
+
 
 
 std::ostream& operator<< (std::ostream& o, const pub_enter & c)
@@ -814,7 +868,9 @@ void  copy (pub_enter& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
@@ -873,7 +929,9 @@ void  copy (pub_keep_alive_srv& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_srv& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
@@ -916,7 +974,9 @@ copy(static_cast<pub_keep_alive_srv&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_clients& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const pub_keep_alive_srv&>(a));
 
@@ -965,7 +1025,9 @@ void  copy (pub_exit& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
@@ -1062,7 +1124,9 @@ void  copy (pub_alarm& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
@@ -1131,7 +1195,9 @@ void  copy (req_command& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
@@ -1174,7 +1240,9 @@ void  copy (sub_command_rd& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.text, std::string("t"));
@@ -1221,7 +1289,9 @@ void  copy (res_command& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const res_command& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("ri"));
@@ -1278,7 +1348,9 @@ void  copy (pub_central_keep_alive& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_alive& a)
 {
-    
+
+    a.before_send();
+
 
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
@@ -1299,15 +1371,15 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message pub_enter::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {

@@ -48,7 +48,7 @@ RQ_NW_LS  [<V:0, SUBJ:hola.pajaarito >]   // <4>
    }
 
 
-    ri : sub_login_response_info (ri)  [< V:0 >]
+    resopnse_info  (ri)    [<V:0>]
     {
         accepted       (ac)     :   bool
         session_id     (si)     :   string
@@ -63,5 +63,7 @@ RQ_NW_LS  [<V:0, SUBJ:hola.pajaarito >]   // <4>
 
 LimitPositionChild   [< V:0, I:LimitPosition >]      // <12>
 {
-   new_field   (nf)  : string
+   new_field   (nf)  : string 
+
+   #send [{  std::cout << "here" << std::endl;  }]
 }
