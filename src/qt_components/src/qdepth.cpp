@@ -338,6 +338,9 @@ void QDepth::mouseReleaseEvent(QMouseEvent * /*event*/)
 
 void QDepth::mouseMoveEvent(QMouseEvent *event)
 {
+    if(price_manager.isValid() == false)        return;
+
+
     mtkContainerWidget::mouseMoveEvent(event);
     if ((event->buttons() & Qt::LeftButton)  &&  startPos.x()>=0  &&  startPos.y()>=0)
     {

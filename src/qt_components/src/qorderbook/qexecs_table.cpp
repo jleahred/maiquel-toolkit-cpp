@@ -158,10 +158,10 @@ QExecsTable::QExecsTable(QWidget *parent) :
     table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
     table_widget->setShowGrid(false);
 
-    table_widget->setColumnWidth(col_market_product, 120);
-    table_widget->setColumnWidth(col_side, 40);
-    table_widget->setColumnWidth(col_exec_price, 80);
-    //table_widget->setColumnWidth(col_exec_quantity, 50);
+    table_widget->setColumnWidth(col_market_product, 100);
+    table_widget->setColumnWidth(col_side, 30);
+    table_widget->setColumnWidth(col_exec_price, 60);
+    table_widget->setColumnWidth(col_exec_quantity, 60);
 
     connect(table_widget, SIGNAL(cellDoubleClicked(int,int)), SLOT(slot_clean_execs()));
     table_widget->setToolTip("Double click to clean executions");
