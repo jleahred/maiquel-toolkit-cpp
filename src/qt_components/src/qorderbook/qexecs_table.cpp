@@ -208,7 +208,9 @@ void QExecsTable::__direct_add_new_execution(const mtk::msg::sub_product_code& p
 void QExecsTable::on_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_position_ls& exec)
 {
     execs2add_online.push_back(mtk::make_tuple(pc, exec));
-    mediaObject->play();
+    MTK_EXEC_MAX_FREC(mtk::dtSeconds(1))
+        mediaObject->play();
+    MTK_END_EXEC_MAX_FREC
     /*
     if(mediaObject->remainingTime()==0)
     {

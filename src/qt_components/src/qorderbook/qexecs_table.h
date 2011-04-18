@@ -8,7 +8,7 @@
 #include "components/trading/trd_cli_ls.h"
 #include "components/trading/trd_cli_ord_book.h"
 #include "qorderbook/filter_form.h"
-#include <phonon/phonon>
+#include <Phonon/MediaObject>
 
 
 class QTableWidget;

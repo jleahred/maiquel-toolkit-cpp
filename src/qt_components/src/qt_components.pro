@@ -5,6 +5,8 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += phonon
+
 
 TARGET = ../../../lib/qt_components
 TEMPLATE = lib

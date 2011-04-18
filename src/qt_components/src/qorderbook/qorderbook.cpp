@@ -64,6 +64,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
 {
     table_executions->setMinimumWidth(350);
     QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
+    splitter->setChildrenCollapsible(false);
     tab_widget = new QTabWidget(this);
     tab_widget->setMovable(true);
     //tab_widget->setTabsClosable(true);
