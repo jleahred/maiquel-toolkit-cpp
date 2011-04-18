@@ -22,6 +22,9 @@ _def:  default
 
 
 
+
+
 .PHONY : fsm
 fsm:
+	mkdir -p generated
 	./tools/fsm_gen.py simple_dor.fsm
