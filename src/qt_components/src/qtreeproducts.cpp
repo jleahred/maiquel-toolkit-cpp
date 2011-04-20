@@ -208,7 +208,6 @@ void qTreeProducts::request_root_items(void)
         {
             mtk::msg::sub_request_info   request_info = mtk::admin::get_request_info();
             mtk::gen::msg::req_tree_items  tree_request_message(request_info, "ROOT");
-            mtk::send_message(qpid_session, tree_request_message);
 
             //  subscription to multiresponse
             MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::res_tree_items,
@@ -220,6 +219,7 @@ void qTreeProducts::request_root_items(void)
                                                                                                 request_info.req_id.sess_id,
                                                                                                 request_info.req_id.req_code),
                                             on_response_request_tree)
+            mtk::send_message(qpid_session, tree_request_message);
         }
         else
             MTK_TIMER_1S_STOP(request_root_items)
@@ -302,7 +302,6 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
     {
         mtk::msg::sub_request_info   request_info = mtk::admin::get_request_info();
         mtk::gen::msg::req_tree_items  tree_request_message(request_info, MTK_SS(mtk_item->item.branch));
-        mtk::send_message(qpid_session, tree_request_message);
 
         //  subscription to multiresponse
         MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::res_tree_items,
@@ -314,5 +313,6 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
                                                                                             request_info.req_id.sess_id,
                                                                                             request_info.req_id.req_code),
                                         on_response_request_tree)
+        mtk::send_message(qpid_session, tree_request_message);
     }
 }
