@@ -643,7 +643,7 @@ public:
                 ++it2ptrBaseConnection
             )
         {
-            Connection<TReceiver, TP1>* pconnection = dynamic_cast<Connection<TReceiver, TP1>* > (it2ptrBaseConnection->get());
+            Connection<TReceiver, TP1>* pconnection = dynamic_cast<Connection<TReceiver, TP1>* > (it2ptrBaseConnection->get2());
             if  (
                     pconnection
                     &&
