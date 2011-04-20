@@ -539,7 +539,7 @@ void   qorder_table::timer_get_orders2add(void)
 
 void qorder_table::update_sizes()
 {
-    table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.4);
+    table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.2);
 }
 
 void qorder_table::show_filter(bool show)

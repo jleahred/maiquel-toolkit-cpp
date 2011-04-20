@@ -123,8 +123,8 @@ QMarginal::~QMarginal()
 QTableMarginal::QTableMarginal(QWidget *parent)
     : QTableWidget(parent), startPos(-1,-1)
 {
-    this->setStyleSheet("background-color: rgb(191,219,255);");
-    color_product = QColor(191,219,255);
+    //this->setStyleSheet("background-color: rgb(191,219,255);");
+    //color_product = QColor(191,219,255);
 
 
     //color_product = this->horizontalHeader()->palette().background().color();
@@ -524,7 +524,7 @@ void QTableMarginal::request_sell(void)
 
 void QTableMarginal::make_transparent(void)
 {
-    this->setStyleSheet("background-color: rgb(191,219,255, 150);");
+    //this->setStyleSheet("background-color: rgb(191,219,255, 150);");
     mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it =  marginals.begin();
     while (it != marginals.end())
     {
@@ -535,7 +535,7 @@ void QTableMarginal::make_transparent(void)
 
 void QTableMarginal::remove_transparency(void)
 {
-    this->setStyleSheet("background-color: rgb(191,219,255);");
+    //this->setStyleSheet("background-color: rgb(191,219,255);");
     mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it =  marginals.begin();
     while (it != marginals.end())
     {

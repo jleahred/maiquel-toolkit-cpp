@@ -247,7 +247,7 @@ void   QExecsTable::timer_get_execs2add(void)
 
 void QExecsTable::update_sizes()
 {
-    table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.4);
+    table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.2);
 }
 
 void  QExecsTable::slot_clean_execs(void)
