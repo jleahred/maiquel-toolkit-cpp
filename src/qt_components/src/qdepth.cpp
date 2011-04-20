@@ -317,6 +317,8 @@ void QDepth::dropEvent(QDropEvent *event)
 
 void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
 {
+    if(price_manager.isValid())
+        price_manager->signal_best_prices_update.disconnect(this, &QDepth::on_message);
     price_manager = mtk::get_from_factory<mtk::prices::price_manager>(_product_code);
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
