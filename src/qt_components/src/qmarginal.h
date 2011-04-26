@@ -75,10 +75,12 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *);
     void contextMenuEvent ( QContextMenuEvent * event );
+    //void resizeEvent(QResizeEvent *event);
 
 private slots:
     void request_buy (void);
     void request_sell(void);
+    void slot_column_resized(int, int, int);
 
 private:
     QPoint startPos;

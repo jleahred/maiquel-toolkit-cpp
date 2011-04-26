@@ -33,7 +33,8 @@ void mtk_uTitle::updateBackground(bool show)
 
 void mtk_uTitle::mousePressEvent(QMouseEvent* event)
 {
-    if (event->pos().x()  >  this->width()-image_close.width())
+    if (event->pos().x()  <  image_close.width())
+    //if (event->pos().x()  >  this->width()-image_close.width())
         //dynamic_cast<mtkContainerWidget*>(this->parent())->close();
         dynamic_cast<mtkContainerWidget*>(this->parent())->deleteLater();
     moving = true;
@@ -71,7 +72,8 @@ void mtk_uTitle::paintEvent(QPaintEvent *event)
     if(this->autoFillBackground())
     {
         QPainter qpainter(this);
-        qpainter.drawImage(this->width()-image_close.width(), 0, image_close);
+        //qpainter.drawImage(this->width()-image_close.width(), 0, image_close);
+        qpainter.drawImage(0, 0, image_close);
     }
 }
 

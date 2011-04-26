@@ -20,7 +20,7 @@
 #include "qt_components/src/qmtk_misc.h"
 #include "qt_components/src/qcommontabledelegate.h"
 
-
+#include "support/vector.hpp"
 
 
 
@@ -172,10 +172,41 @@ QTableMarginal::QTableMarginal(QWidget *parent)
         }
         horizontalHeader()->setMovable(true);
     }
-
+    this->setFrameShape(QFrame::NoFrame);
+    connect(this->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), SLOT(slot_column_resized(int,int,int)));
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
+void QTableMarginal::slot_column_resized(int li, int, int)
+{
+    if(li == this->columnCount()-1)
+        this->horizontalHeader()->resizeSection(li, 20);
+}
 
+/*
+void QTableMarginal::resizeEvent(QResizeEvent *event)
+{
+    static mtk::vector<int>  previus_size;
+    double total_size=0.;
+
+    //  get proportions
+    for(int i=0; i<this->columnCount(); ++i)
+    {
+        if(previus_size.size() < this->columnCount())
+            previus_size.push_back(this->horizontalHeader()->sectionSize(i));
+        else
+            previus_size[i] = this->horizontalHeader()->sectionSize(i);
+        total_size += double(this->horizontalHeader()->sectionSize(i));
+    }
+    QTableWidget::resizeEvent(event);
+
+    for(int i=0; i<this->columnCount(); ++i)
+    {
+        double prev_proportion = double(previus_size[i]) / total_size;
+        this->horizontalHeader()->resizeSection(i, int(prev_proportion * total_size));
+    }
+}
+*/
 
 
 
@@ -204,32 +235,41 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     table_widget->setItem(row, 4, tw_qty_ask);
 
 
-    //QFont font(_table_widget->font());
+    //QFont font(table_widget->font());
     //font.setBold(true);
     {
         tw_product->setText(QString(MTK_SS(product_code.sys_code.market << "." << product_code.sys_code.user_name).c_str()));
-        //font.setPointSize(11);
-        //tw_product->setFont(font);
+        QFont font(tw_product->font());
+        font.setBold(true);
+        tw_product->setFont(font);
         tw_product->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
     //font.setPointSize(10);
     {
-        //tw_BID->setFont(font);
+        QFont font(tw_BID->font());
+        font.setBold(true);
+        tw_BID->setFont(font);
         tw_BID->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         tw_BID->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
     {
-        //tw_ASK->setFont(font);
+        QFont font(tw_ASK->font());
+        font.setBold(true);
+        tw_ASK->setFont(font);
         tw_ASK->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         tw_ASK->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
     {
-        //tw_qty_bid->setFont(font);
+        QFont font(tw_qty_bid->font());
+        font.setBold(true);
+        tw_qty_bid->setFont(font);
         tw_qty_bid->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         tw_qty_bid->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
     {
-        //tw_qty_ask->setFont(font);
+        QFont font(tw_qty_ask->font());
+        font.setBold(true);
+        tw_qty_ask->setFont(font);
         tw_qty_ask->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         tw_qty_ask->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }

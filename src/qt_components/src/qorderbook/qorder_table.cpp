@@ -93,6 +93,8 @@ public:
         MTK_CONNECT_THIS(inner_order->sig_rq_cc, update_on_rq);
         MTK_CONNECT_THIS(inner_order->sig_rq_md, update_on_rq);
         MTK_CONNECT_THIS(inner_order->sig_rq_nw, update_on_rq);
+
+        table_widget->scrollToBottom();
         update();
     }
     ~order_in_qbook() {
@@ -409,7 +411,7 @@ qorder_table::qorder_table(QWidget *parent) :
     MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_order_ls_new(), on_new_order);
     MTK_TIMER_1C(timer_get_orders2add);
 
-    slot_apply_filter(filter_data());
+    //slot_apply_filter(filter_data());
     //setContentsMargins(0,0,0,0);
 }
 
@@ -486,7 +488,16 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
     if(mtk::s_toUpper(pc.sys_code.market).find(fd.market.toUpper().toStdString())!=std::string::npos)
         ++matches;
 
-    if(matches==2)  return true;
+    if(fd.liveFilter == filter_data::lfAll)
+        ++matches;
+    else if(fd.liveFilter == filter_data::lfLive  &&   order->in_market())
+        ++matches;
+    else if(fd.liveFilter == filter_data::lfLiveExecuted  &&
+                    ((order->last_confirmation().HasValue() &&  order->last_confirmation().Get().confirmated_info.total_execs.quantity.GetIntCode() > 0)
+                    || order->in_market()))
+        ++matches;
+
+    if(matches==3)  return true;
     else            return false;
 }
 
@@ -504,6 +515,7 @@ void qorder_table::slot_apply_filter(const filter_data& fd)
             orders2add_loading.push_back(*it);
 
     current_filter = fd;
+    Q_EMIT(signal_filter_changed());
 }
 
 void   qorder_table::timer_get_orders2add(void)
@@ -550,7 +562,9 @@ void qorder_table::show_filter(bool show)
         filterf->show();
     }
     else
+    {
         filterf->hide();
+    }
 }
 
 
@@ -604,10 +618,57 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction("empty", this);
-        action->setEnabled(false);
+        QAction* action = new QAction("live orders", this);
+        connect(action, SIGNAL(triggered()), this, SLOT(slot_live_orders()));
+        action->setEnabled(true);
+        action->setCheckable(true);
+        if(current_filter.liveFilter == filter_data::lfLive)
+            action->setChecked(true);
+        else
+            action->setChecked(false);
+        menu.addAction(action);
+    }
+    {
+        QAction* action = new QAction("live and exec orders", this);
+        connect(action, SIGNAL(triggered()), this, SLOT(slot_live_and_exec_orders()));
+        action->setEnabled(true);
+        action->setCheckable(true);
+        if(current_filter.liveFilter == filter_data::lfLiveExecuted)
+            action->setChecked(true);
+        else
+            action->setChecked(false);
+        menu.addAction(action);
+    }
+    {
+        QAction* action = new QAction("all orders", this);
+        connect(action, SIGNAL(triggered()), this, SLOT(slot_all_orders()));
+        action->setEnabled(true);
+        action->setCheckable(true);
+        if(current_filter.liveFilter == filter_data::lfAll)
+            action->setChecked(true);
+        else
+            action->setChecked(false);
         menu.addAction(action);
     }
     menu.setStyleSheet(this->styleSheet());
     menu.exec(this->mapToGlobal(e->pos()));
+}
+
+
+void qorder_table::slot_live_orders(void)
+{
+    current_filter.liveFilter = filter_data::lfLive;
+    slot_apply_filter(current_filter);
+}
+
+void qorder_table::slot_live_and_exec_orders(void)
+{
+    current_filter.liveFilter = filter_data::lfLiveExecuted;
+    slot_apply_filter(current_filter);
+}
+
+void qorder_table::slot_all_orders(void)
+{
+    current_filter.liveFilter = filter_data::lfAll;
+    slot_apply_filter(current_filter);
 }

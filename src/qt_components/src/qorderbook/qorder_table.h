@@ -31,11 +31,16 @@ public:
 
 signals:
     void signal_named_changed(const QString& name);
+    void signal_filter_changed(void);
 
 private slots:
     void request_cancel(void);
     void request_modif (void);
     void slot_apply_filter(const filter_data& fd);
+    void slot_live_orders(void);
+    void slot_live_and_exec_orders(void);
+    void slot_all_orders(void);
+
 
 private:
     QTableWidget*        table_widget;

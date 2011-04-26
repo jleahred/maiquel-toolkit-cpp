@@ -155,6 +155,7 @@ QDepth::QDepth(QWidget *parent) :
         //titlePalette.setColor(QPalette::Text, QColor(0,0,0));
         //title->setPalette(titlePalette);
         layout->addWidget(title);
+        title->setBackgroundRole(QPalette::Light);
         title->setAlignment(Qt::AlignCenter);
         title->setAutoFillBackground(true);
         title->setFrameShape(QFrame::Box);
@@ -227,7 +228,6 @@ QDepth::QDepth(QWidget *parent) :
 
     connect(this, SIGNAL(signal_start_moving()), SLOT(make_transparent()));
     connect(this, SIGNAL(signal_stop_moving()), SLOT(remove_transparecy()));
-
 }
 
 QDepth::~QDepth()
@@ -246,17 +246,17 @@ void	QDepth::resizeEvent ( QResizeEvent *  event )
 
 
 
-void write_in_cell(int row, int qty_col, const mtk::prices::msg::sub_price_level& level, QTableWidget* table_widget)
+void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_level& level, QTableWidget* table_widget)
 {
     if (level.price.GetIntCode()!=0  &&  level.quantity.GetIntCode() != 0)
     {
-        table_widget->item(row, 1)->setText(fn_as_QString(level.price));
-        table_widget->item(row, qty_col)->setText(fn_as_QString(level.quantity));
+        table_widget->item(row, price_col)->setText(fn_as_QString(level.price));
+        table_widget->item(row, 1)->setText(fn_as_QString(level.quantity));
     }
     else
     {
+        table_widget->item(row, price_col)->setText("");
         table_widget->item(row, 1)->setText("");
-        table_widget->item(row, qty_col)->setText("");
     }
 }
 

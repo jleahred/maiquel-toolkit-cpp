@@ -1,22 +1,20 @@
 #include "qcontainer.h"
 
 
+#include <QMouseEvent>
+#include <QVBoxLayout>
+
 #include "qt_components/src/qdepth.h"
 #include "qt_components/src/qmarginal.h"
 
 
 
+
+
 qContainer::qContainer(QWidget *parent) :
-    QScrollArea(parent), last_inserted_pos(5,5)
+    QScrollArea(parent), last_inserted_pos(7, 7)
 {
-
-    //QPalette p(this->palette());
-    ////p.setColor(QPalette::Window, QColor(62,96,111));
-    //p.setColor(QPalette::Window, QColor(Qt::darkGray).darker(150));
-    //this->setPalette(p);
-    //this->setBackgroundRole(QPalette::Dark);
-
-    //this->setBackgroundRole(QPalette::Dark);
+    this->viewport()->setBackgroundRole(QPalette::Dark);
 }
 
 
@@ -35,3 +33,5 @@ void qContainer::insert_qdepth()
     last_inserted_pos += QPoint(20, 20);
     depth->show();
 }
+
+

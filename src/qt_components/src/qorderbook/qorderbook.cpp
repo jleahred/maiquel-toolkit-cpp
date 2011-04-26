@@ -74,6 +74,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
         qorder_table* order_table = new qorder_table(this);
         tab_widget->addTab(order_table, ".");
         connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
+        connect(order_table, SIGNAL(signal_filter_changed()), this, SLOT(slot_filter_changed()));
     }
     //connect(tab_widget, SIGNAL(tabCloseRequested(int)), SLOT(slot_request_close_tab()));
     connect(tab_widget, SIGNAL(currentChanged(int)), SLOT(slot_tab_index_changed(int)));
@@ -139,6 +140,7 @@ void QOrderBook::slot_request_new_tab(void)
         qorder_table* order_table = new qorder_table(this);
         tab_widget->addTab(order_table, ".");
         connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
+        connect(order_table, SIGNAL(signal_filter_changed()), this, SLOT(slot_filter_changed()));
     }
 
     qorder_table* tw = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->count()-1));
@@ -189,3 +191,12 @@ void QOrderBook::slot_tab_index_changed(int)
         filter_button->setChecked(false);
 }
 
+void QOrderBook::slot_filter_changed()
+{
+    qorder_table* tw = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->currentIndex()));
+    if(tw != 0)
+    {
+        filter_button->setChecked(false);
+        tw->show_filter(filter_button->isChecked());
+    }
+}

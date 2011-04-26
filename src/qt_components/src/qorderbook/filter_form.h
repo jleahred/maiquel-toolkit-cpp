@@ -14,11 +14,16 @@ namespace Ui {
 
 struct  filter_data
 {
+    filter_data() : liveFilter(lfAll) {};
     QString   name;
     QString   client_code;
     QString   market;
     QString   product;
     QString   account;
+
+    enum enLiveFilter { lfAll, lfLive, lfLiveExecuted };
+    enLiveFilter  liveFilter;
+
 };
 
 

@@ -32,6 +32,7 @@ private slots:
     void slot_request_close_tab(void);
     void slot_request_showfilter(void);
     void slot_current_tab_name_changed(const QString& new_name);
+    void slot_filter_changed();
     void slot_tab_index_changed(int);
 
 private:
