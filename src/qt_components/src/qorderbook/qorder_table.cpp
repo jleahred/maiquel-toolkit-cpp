@@ -638,7 +638,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction(this);
+        QAction* action = new QAction(&menu);
         action->setSeparator(true);
         menu.addAction(action);
     }

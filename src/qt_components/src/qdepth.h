@@ -8,6 +8,7 @@
 #include "mtk_qpid/mtk_qpid.hpp"
 #include "components/prices/msg_prices.h"
 #include "components/prices/cli/price_manager.h"
+#include "components/trading/msg_trd_common_support.h"
 
 
 
@@ -61,6 +62,13 @@ private slots:
     void request_buy (void);
     void request_sell(void);
 
+    void request_hit_the_bid(void);
+    void request_lift_the_offer(void);
+
+    void request_side(mtk::trd::msg::enBuySell bs);
+    void request_aggression(mtk::trd::msg::enBuySell bs);
+
+
     void make_transparent(void);
     void remove_transparecy(void);
 
@@ -73,6 +81,10 @@ private:
 
     QPoint startPos;
 
+    QAction* action_buy;
+    QAction* action_sell;
+    QAction* action_hit_the_bid;
+    QAction* action_lift_the_offer;
 };
 
 #endif // QDEPTH_H

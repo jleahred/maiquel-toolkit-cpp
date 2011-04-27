@@ -134,7 +134,8 @@ private:
 
 QDepth::QDepth(QWidget *parent) :
     mtkContainerWidget(parent),
-    table_widget(new QTableDeph(this))
+    table_widget(new QTableDeph(this)),
+    action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0)
 {
     this->setGeometry(QRect(5, 5, 290, 300));
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -228,6 +229,29 @@ QDepth::QDepth(QWidget *parent) :
 
     connect(this, SIGNAL(signal_start_moving()), SLOT(make_transparent()));
     connect(this, SIGNAL(signal_stop_moving()), SLOT(remove_transparecy()));
+
+
+
+    action_buy = new QAction(tr("buy"), this);
+    action_buy->setShortcut(Qt::Key_Plus);
+    connect(action_buy, SIGNAL(triggered()), this, SLOT(request_buy()));
+    this->addAction(action_buy);
+
+    action_sell = new QAction(tr("sell"), this);
+    action_sell->setShortcut(Qt::Key_Minus);
+    connect(action_sell, SIGNAL(triggered()), this, SLOT(request_sell()));
+    this->addAction(action_sell);
+
+    action_hit_the_bid = new QAction(tr("hit the bid"), this);
+    action_hit_the_bid->setShortcut(Qt::Key_F8);
+    connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
+    this->addAction(action_hit_the_bid);
+
+    action_lift_the_offer = new QAction(tr("lift the offer"), this);
+    action_lift_the_offer->setShortcut(Qt::Key_F12);
+    connect(action_lift_the_offer, SIGNAL(triggered()), this, SLOT(request_lift_the_offer()));
+    this->addAction(action_lift_the_offer);
+
 }
 
 QDepth::~QDepth()
@@ -278,28 +302,98 @@ void QDepth::on_message(const mtk::prices::msg::pub_best_prices& msg)
 }
 
 
+void QDepth::request_side(mtk::trd::msg::enBuySell bs)
+{
+    //  proposed price
+    if(price_manager.isValid() == false)
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
+    else
+    {
+        mtk::FixedNumber price(price_manager->get_best_prices().bids.level0.price);
+        mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+        if(bs == mtk::trd::msg::sell)
+        {
+            price = price_manager->get_best_prices().asks.level0.price;
+            quantity= price_manager->get_best_prices().asks.level0.quantity;
+        }
+        if(quantity.GetIntCode() != 0)
+        {
+            quantity.SetIntCode(1);
+            mtk::trd::msg::sub_position_ls     pos(
+                                                              price
+                                                            , quantity
+                                                            , bs);
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
+        }
+        else
+        {
+            mtk::trd::msg::sub_position_ls     pos(
+                                                              mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(2),  mtk::fnInc(1))
+                                                            , mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                                            , bs);
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
+        }
+    }
+
+}
+
+
 void QDepth::request_buy(void)
 {
-    if (price_manager.isValid() == false)      return;
-
-    mtk::trd::msg::sub_position_ls     pos(
-                                                      mtk::FixedNumber(mtk::fnDouble(100.),  mtk::fnDec(2),  mtk::fnInc(1))
-                                                    , mtk::FixedNumber(mtk::fnDouble(10)  ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                    , mtk::trd::msg::buy);
-
-    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
+    request_side(mtk::trd::msg::buy);
 }
 
 void QDepth::request_sell(void)
 {
-    if (price_manager.isValid() == false)      return;
+    request_side(mtk::trd::msg::sell);
+}
 
-    mtk::trd::msg::sub_position_ls     pos(
-                                                      mtk::FixedNumber(mtk::fnDouble(100.),  mtk::fnDec(2),  mtk::fnInc(1))
-                                                    , mtk::FixedNumber(mtk::fnDouble(10)  ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                    , mtk::trd::msg::sell);
 
-    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
+
+void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
+{
+    //  proposed price
+    if(price_manager.isValid() == false)
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "marginal", "marginal not located", mtk::alPriorError));
+    else
+    {
+        mtk::FixedNumber price(price_manager->get_best_prices().bids.level0.price);
+        mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+        if(bs == mtk::trd::msg::buy)
+        {
+            price = price_manager->get_best_prices().asks.level0.price;
+            quantity= price_manager->get_best_prices().asks.level0.quantity;
+        }
+        if(quantity.GetIntCode() != 0)
+        {
+            quantity.SetIntCode(1);
+            mtk::trd::msg::sub_position_ls     pos(
+                                                              price
+                                                            , quantity
+                                                            , bs);
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
+        }
+        else
+        {
+            mtk::trd::msg::sub_position_ls     pos(
+                                                              mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(2),  mtk::fnInc(1))
+                                                            , mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                                            , bs);
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
+        }
+    }
+}
+
+
+
+void QDepth::request_hit_the_bid(void)
+{
+    request_aggression(mtk::trd::msg::sell);
+}
+
+void QDepth::request_lift_the_offer(void)
+{
+    request_aggression(mtk::trd::msg::buy);
 }
 
 
@@ -368,14 +462,18 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     if (price_manager.isValid() == false)      return;
 
     QMenu menu(this);
-    QAction* action;
-    action = new QAction(tr("buy"), this);
-    connect(action, SIGNAL(triggered()), this, SLOT(request_buy()));
-    menu.addAction(action);
+    menu.addAction(action_buy);
+    menu.addAction(action_sell);
 
-    action = new QAction(tr("sell"), this);
-    connect(action, SIGNAL(triggered()), this, SLOT(request_sell()));
-    menu.addAction(action);
+
+    {
+        QAction* action = new QAction(&menu);
+        action->setSeparator(true);
+        menu.addAction(action);
+    }
+
+    menu.addAction(action_hit_the_bid);
+    menu.addAction(action_lift_the_offer);
     menu.exec(event->globalPos());
 }
 

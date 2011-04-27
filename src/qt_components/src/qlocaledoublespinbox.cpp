@@ -11,20 +11,17 @@ qLocaleDoubleSpinBox::qLocaleDoubleSpinBox(QWidget *parent) :
 }
 
 
-/*
-QString qLocaleDoubleSpinBox::textFromValue(double value) const
+void qLocaleDoubleSpinBox::keyPressEvent(QKeyEvent *event)
 {
-    return QLocale::system().toString(value, 'f', this->decimals());
+    QDoubleSpinBox::keyPressEvent(event);
+    Q_EMIT(this->valueChanged(this->text()));
 }
-
-double qLocaleDoubleSpinBox::valueFromText(const QString& text) const
-{
-    return QLocale::system().toDouble(this->text());
-}
-*/
 
 QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) const
 {
+    if(input.isEmpty())
+        return QValidator::Intermediate;
+
     QString new_input = QLocale::system().toString(valueFromText(input), 'f', this->decimals());
     pos += new_input.size() - input.size();
     if(new_input != QLatin1String("0"))

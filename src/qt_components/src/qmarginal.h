@@ -15,6 +15,7 @@
 #include "support/list.hpp"
 #include "components/prices/cli/price_manager.h"
 
+#include "components/trading/msg_trd_common_support.h"
 
 
 
@@ -34,8 +35,9 @@ public:
     void set_dark_color(void);
     int  get_row(void) const {  return tw_product->row(); }
 
-private:
     mtk::CountPtr<mtk::prices::price_manager>       price_manager;
+
+private:
 
     QTableWidgetItem*  tw_product;
     QTableWidgetItem*  tw_BID;
@@ -63,6 +65,7 @@ public:
     ~QTableMarginal(){}
     void make_transparent(void);
     void remove_transparency(void);
+    std::string  get_config(void);
 
 
 protected:
@@ -80,6 +83,12 @@ protected:
 private slots:
     void request_buy (void);
     void request_sell(void);
+    void request_hit_the_bid(void);
+    void request_lift_the_offer(void);
+
+    void request_side(mtk::trd::msg::enBuySell bs);
+    void request_aggression(mtk::trd::msg::enBuySell bs);
+
     void slot_column_resized(int, int, int);
 
 private:
@@ -95,6 +104,12 @@ private:
     void remove_row(int id);
     void adjust_pajama(void);
 
+
+
+    QAction* action_buy;
+    QAction* action_sell;
+    QAction* action_hit_the_bid;
+    QAction* action_lift_the_offer;
 };
 
 
@@ -111,6 +126,7 @@ public:
     explicit QMarginal(QWidget *parent = 0);
     ~QMarginal();
 
+    std::string  get_config(void);
 
 signals:
 

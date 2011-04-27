@@ -4,6 +4,13 @@
 
 #include "qt_components/src/qmtk_misc.h"
 
+
+
+#include <QPushButton>
+
+
+
+
 /*
 QEditOrder::QEditOrder(QWidget *parent) :
     QDialog(parent),
@@ -43,14 +50,61 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, QWidget *parent) :
     }
     ui->market->setText(QLatin1String(rq.product_code.sys_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.product_code.sys_code.product.c_str()));
-    ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
     ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
     ui->price->setSingleStep(1./pow(10.,rq.request_pos.price.GetExt().GetDec())*rq.request_pos.price.GetExt().GetInc());
-    ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
+    if(rq.request_pos.quantity.GetIntCode()!=0)
+        ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
+    else
+        ui->price->clear();
     ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
     ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
+    if(rq.request_pos.quantity.GetIntCode()!=0)
+        ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
+    else
+        ui->quantity->clear();
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
+
+    this->check_if_order_can_be_sent();
+    ui->price->setFocus();
+    ui->price->selectAll();
 }
+
+void QEditOrder::check_if_order_can_be_sent(void)
+{
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+    ui->message->setText(QLatin1String(""));
+
+    int pos = 0;
+    QString text = ui->price->text();
+    if(ui->price->validate(text, pos) != QValidator::Acceptable)
+    {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->message->setText(tr("invalid price"));
+    }
+    text = ui->quantity->text();
+    if(ui->quantity->validate(text, pos) != QValidator::Acceptable)
+    {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->message->setText(tr("invalid quantity"));
+    }
+    if(ui->market->text().isEmpty())
+    {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->message->setText(tr("empty market"));
+    }
+    if(ui->product->text().isEmpty())
+    {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->message->setText(tr("empty product"));
+    }
+    if(ui->account->currentIndex() == -1)
+    {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->message->setText(tr("empty account"));
+    }
+
+}
+
 
 mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request(void)
 {
@@ -61,3 +115,20 @@ mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request(void)
     rq.cli_ref = ui->cliref->text().toStdString();
     return rq;
 }
+
+
+void QEditOrder::on_account_currentIndexChanged(QString )
+{
+    check_if_order_can_be_sent();
+}
+
+void QEditOrder::on_price_valueChanged(QString )
+{
+    check_if_order_can_be_sent();
+}
+
+void QEditOrder::on_quantity_valueChanged(QString )
+{
+    check_if_order_can_be_sent();
+}
+

@@ -11,10 +11,10 @@ class qLocaleDoubleSpinBox : public QDoubleSpinBox
 public:
     explicit qLocaleDoubleSpinBox(QWidget *parent = 0);
 
-private:
-    //QString  textFromValue(double val) const;
-    //double   valueFromText(const QString &text) const;
     QValidator::State validate(QString &input, int &pos) const;
+
+private:
+    void keyPressEvent(QKeyEvent *event);
 
 signals:
 

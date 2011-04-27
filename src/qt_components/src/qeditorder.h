@@ -26,6 +26,14 @@ private:
     Ui::QEditOrder *ui;
 
     mtk::trd::msg::RQ_XX_LS  rq;
+
+
+    void check_if_order_can_be_sent(void);
+
+private slots:
+    void on_account_currentIndexChanged(QString );
+    void on_price_valueChanged(QString );
+    void on_quantity_valueChanged(QString );
 };
 
 #endif // QEDITORDER_H
