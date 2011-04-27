@@ -18,9 +18,9 @@ mtk_uTitle::mtk_uTitle(QWidget *parent) :
     */
     this->setMouseTracking(true);
     updateBackground(false);
-    this->setStyleSheet("background-color: rgba(0, 0, 255, 200);");
+    this->setStyleSheet(QLatin1String("background-color: rgba(0, 0, 255, 200);"));
 
-    image_close.load(":/small_icons/image_close");
+    image_close.load(QLatin1String(":/small_icons/image_close"));
 }
 
 

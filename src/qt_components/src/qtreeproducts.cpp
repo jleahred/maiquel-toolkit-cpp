@@ -90,7 +90,7 @@ public:
         //this->setStyleSheet("background-color: rgba(0,0,255,160, 0);");
         raise();
         setMouseTracking(true);
-        this->setStyleSheet("background-color: rgba(0, 0, 255, 0); color:rgba(255,255,255)");
+        this->setStyleSheet(QLatin1String("background-color: rgba(0, 0, 255, 0); color:rgba(255,255,255)"));
     }
 
     void paintEvent(QPaintEvent /**event*/)
@@ -105,7 +105,7 @@ public:
             painter.rotate(270);
             painter.setPen(Qt::white);
             painter.setBrush(QBrush(QColor(Qt::white)));
-            painter.drawText(0, 0, "tree prods");
+            painter.drawText(0, 0, QLatin1String("tree prods"));
             painter.restore();
         }
     }
@@ -116,9 +116,9 @@ public:
             signal_click.emit();
     }
 
-    void mouseMoveEvent(QMouseEvent *event) { QWidget::mouseMoveEvent(event); this->setAutoFillBackground(true); this->setStyleSheet("background-color: rgba(0,0,255,160, 160); color:rgba(255,255,255,255)");}
+    void mouseMoveEvent(QMouseEvent *event) { QWidget::mouseMoveEvent(event); this->setAutoFillBackground(true); this->setStyleSheet(QLatin1String("background-color: rgba(0,0,255,160, 160); color:rgba(255,255,255,255)"));}
 
-    void leaveEvent(QEvent *)  { setAutoFillBackground(false);  this->setStyleSheet("background-color: rgba(0, 0, 255, 0); color:rgba(255,255,255,255)");  }
+    void leaveEvent(QEvent *)  { setAutoFillBackground(false);  this->setStyleSheet(QLatin1String("background-color: rgba(0, 0, 255, 0); color:rgba(255,255,255,255)"));  }
 
     mtk::Signal<>  signal_click;
 };
@@ -233,9 +233,9 @@ QTreeWidgetItem*  qTreeProducts::get_item_from_branck(QString current_branch, QS
     if(pending_branch.size()==0)
         return current_tree_item;
 
-    if(current_branch == "ROOT")
+    if(current_branch == QLatin1String("ROOT"))
     {
-        QString next_branch_name =  MTK_SS(current_branch.toStdString() << "." << pending_branch.front().toStdString()).c_str();
+        QString next_branch_name =  QLatin1String(MTK_SS(current_branch.toStdString() << "." << pending_branch.front().toStdString()).c_str());
         pending_branch.pop_front();
         return get_item_from_branck(next_branch_name, pending_branch, this->invisibleRootItem());
     }
@@ -246,9 +246,9 @@ QTreeWidgetItem*  qTreeProducts::get_item_from_branck(QString current_branch, QS
         mtkQtreeItem* next_item = dynamic_cast<mtkQtreeItem*>(current_tree_item->child(i));
         if(next_item == 0)
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qtreepreducts", "invalid item type", mtk::alPriorError, mtk::alTypeNoPermisions));
-        if(current_branch == next_item->item.branch.c_str())
+        if(current_branch == QLatin1String(next_item->item.branch.c_str()))
         {
-            QString next_branch_name =  MTK_SS(current_branch.toStdString() << "." << pending_branch.front().toStdString()).c_str();
+            QString next_branch_name =  QLatin1String(MTK_SS(current_branch.toStdString() << "." << pending_branch.front().toStdString()).c_str());
             pending_branch.pop_front();
             return get_item_from_branck(next_branch_name, pending_branch, next_item);
         }
@@ -265,7 +265,7 @@ void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::res_
         mtk::gen::msg::sub_tree_item   item = it->item;
         mtkQtreeItem* new_item;
 
-        QStringList full_path_branch = QString(item.branch.c_str()).split(".");
+        QStringList full_path_branch = QString(QLatin1String(item.branch.c_str())).split(QLatin1String("."));
         QString next_branch_name =  full_path_branch.front();
         full_path_branch.pop_front();
         QTreeWidgetItem* start_item = dynamic_cast<QTreeWidgetItem*>(this->invisibleRootItem());
@@ -281,7 +281,7 @@ void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::res_
             else
                 new_item = new mtkQtreeItem(insert_into_item, item);
         }
-        new_item->setText(0, item.user_name.c_str());
+        new_item->setText(0, QLatin1String(item.user_name.c_str()));
         if(item.product_code.HasValue())
             new_item->setForeground(0, QBrush(Qt::blue));
         ++it;

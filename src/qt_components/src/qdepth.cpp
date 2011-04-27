@@ -161,7 +161,7 @@ QDepth::QDepth(QWidget *parent) :
         title->setFrameShape(QFrame::Box);
         title->setFrameShadow(QFrame::Plain);
         //title->setStyleSheet("color: rgba(30,0,100); background-color: rgba(207,213,235, 200);");
-        title->setStyleSheet("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;");
+        title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
         //QFont font=title->font();
         //font.setBold(true);
         //title->setFont(font);
@@ -255,8 +255,8 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
     }
     else
     {
-        table_widget->item(row, price_col)->setText("");
-        table_widget->item(row, 1)->setText("");
+        table_widget->item(row, price_col)->setText(QLatin1String(""));
+        table_widget->item(row, 1)->setText(QLatin1String(""));
     }
 }
 
@@ -323,7 +323,7 @@ void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
     on_message(price_manager->get_best_prices());
-    title->setText(MTK_SS(price_manager->get_product_code().sys_code.market << "."<< price_manager->get_product_code().sys_code.user_name).c_str());
+    title->setText(QLatin1String(MTK_SS(price_manager->get_product_code().sys_code.market << "."<< price_manager->get_product_code().sys_code.user_name).c_str()));
 }
 
 
@@ -369,11 +369,11 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
 
     QMenu menu(this);
     QAction* action;
-    action = new QAction("buy", this);
+    action = new QAction(tr("buy"), this);
     connect(action, SIGNAL(triggered()), this, SLOT(request_buy()));
     menu.addAction(action);
 
-    action = new QAction("sell", this);
+    action = new QAction(tr("sell"), this);
     connect(action, SIGNAL(triggered()), this, SLOT(request_sell()));
     menu.addAction(action);
     menu.exec(event->globalPos());
@@ -382,13 +382,13 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
 
 void QDepth::make_transparent(void)
 {
-    title->setStyleSheet("color: rgba(30,0,100); background-color: rgba(191,219,255, 150); font-weight: 400;");
+    title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 150); font-weight: 400;"));
     table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0,0,30, 150);\n" "color: rgb(0, 220, 0);"));
 }
 
 void QDepth::remove_transparecy(void)
 {
-    title->setStyleSheet("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;");
+    title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
     table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0,0,30);\n" "color: rgb(0, 220, 0);"));
 }
 

@@ -164,11 +164,11 @@ QTableMarginal::QTableMarginal(QWidget *parent)
             QFont font(this->font());
             font.setBold(true);
             //font.setPointSize(11);
-            QMARG_INIT_HEADER_ITEM(0, "Product")
-            QMARG_INIT_HEADER_ITEM(1, "Qty bid")
-            QMARG_INIT_HEADER_ITEM(2, "BID")
-            QMARG_INIT_HEADER_ITEM(3, "ASK")
-            QMARG_INIT_HEADER_ITEM(4, "Qty ask")
+            QMARG_INIT_HEADER_ITEM(0, tr("Product"))
+            QMARG_INIT_HEADER_ITEM(1, tr("Qty bid"))
+            QMARG_INIT_HEADER_ITEM(2, tr("BID"))
+            QMARG_INIT_HEADER_ITEM(3, tr("ASK"))
+            QMARG_INIT_HEADER_ITEM(4, tr("Qty ask"))
         }
         horizontalHeader()->setMovable(true);
     }
@@ -238,7 +238,7 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     //QFont font(table_widget->font());
     //font.setBold(true);
     {
-        tw_product->setText(QString(MTK_SS(product_code.sys_code.market << "." << product_code.sys_code.user_name).c_str()));
+        tw_product->setText(QLatin1String(MTK_SS(product_code.sys_code.market << "." << product_code.sys_code.user_name).c_str()));
         QFont font(tw_product->font());
         font.setBold(true);
         tw_product->setFont(font);
@@ -517,11 +517,11 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
 
     QMenu menu(this);
     QAction* action;
-    action = new QAction("buy", this);
+    action = new QAction(tr("buy"), this);
     connect(action, SIGNAL(triggered()), this, SLOT(request_buy()));
     menu.addAction(action);
 
-    action = new QAction("sell", this);
+    action = new QAction(tr("sell"), this);
     connect(action, SIGNAL(triggered()), this, SLOT(request_sell()));
     menu.addAction(action);
     menu.exec(event->globalPos());

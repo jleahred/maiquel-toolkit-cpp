@@ -72,7 +72,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
     //tab_widget->setTabsClosable(true);
     {
         qorder_table* order_table = new qorder_table(this);
-        tab_widget->addTab(order_table, ".");
+        tab_widget->addTab(order_table, QLatin1String("."));
         connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
         connect(order_table, SIGNAL(signal_filter_changed()), this, SLOT(slot_filter_changed()));
     }
@@ -85,18 +85,18 @@ QOrderBook::QOrderBook(QWidget *parent) :
         hl->setSpacing(0);
         hl->setContentsMargins(0, 0, 0, 0);
 
-        new_button = new QPushButton(QIcon(":/small_icons/new"), "", w);
+        new_button = new QPushButton(QIcon(QLatin1String(":/small_icons/new")), QLatin1String(""), w);
         connect(new_button, SIGNAL(clicked()), this, SLOT(slot_request_new_tab()));
         new_button->setFlat(true);
         hl->addWidget(new_button);
 
-        filter_button = new QPushButton(QIcon(":/small_icons/filter"), "", w);
+        filter_button = new QPushButton(QIcon(QLatin1String(":/small_icons/filter")), QLatin1String(""), w);
         connect(filter_button, SIGNAL(clicked()), this, SLOT(slot_request_showfilter()));
         filter_button->setFlat(true);
         filter_button->setCheckable(true);
         hl->addWidget(filter_button);
 
-        close_button = new QPushButton(QIcon(":/small_icons/image_close"), "", w);
+        close_button = new QPushButton(QIcon(QLatin1String(":/small_icons/image_close")), QLatin1String(""), w);
         connect(close_button, SIGNAL(clicked()), this, SLOT(slot_request_close_tab()));
         close_button->setFlat(true);
         close_button->setEnabled(false);
@@ -138,7 +138,7 @@ void QOrderBook::slot_request_new_tab(void)
 {
     {
         qorder_table* order_table = new qorder_table(this);
-        tab_widget->addTab(order_table, ".");
+        tab_widget->addTab(order_table, QLatin1String("."));
         connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
         connect(order_table, SIGNAL(signal_filter_changed()), this, SLOT(slot_filter_changed()));
     }
@@ -158,7 +158,7 @@ void QOrderBook::slot_request_new_tab(void)
 
 void QOrderBook::slot_request_close_tab(void)
 {
-    if(QMessageBox::warning(this, "CimdTrade", "Do you want to close current tab?", QMessageBox::Ok, QMessageBox::Cancel)!=QMessageBox::Ok)     return;
+    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to close current tab?"), QMessageBox::Ok, QMessageBox::Cancel)!=QMessageBox::Ok)     return;
 
     if(tab_widget->count()==1)      return;
     tab_widget->widget(tab_widget->currentIndex())->deleteLater();

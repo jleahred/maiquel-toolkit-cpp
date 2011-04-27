@@ -35,7 +35,7 @@ QString  dragProductText (const mtk::msg::sub_product_code& product)
 
     csp.AddProperty("user_name", product.sys_code.user_name);
 
-    return csp.Encode().c_str();
+    return QLatin1String(csp.Encode().c_str());
 }
 
 mtk::msg::sub_product_code  get_product_code(QDropEvent *event)

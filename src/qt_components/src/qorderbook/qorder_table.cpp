@@ -26,7 +26,19 @@ namespace {
     const int col_exec_price    = 7;
     const int col_exec_quantity = 8;
     const int col_observs       = 9;
-    const char* col_captions[] = { "sess_id", "req_code", "market", "product","side","price","qty","exec price", "exec qty", "observs" , 0};
+    /*
+    const char* const col_captions[] = {    "sess_id",            defined later for translations
+                                        QObject::tr("req_code"),
+                                        QObject::tr("market"),
+                                        QObject::tr("product"),
+                                        QObject::tr("side"),
+                                        QObject::tr("price"),
+                                        QObject::tr("qty"),
+                                        QObject::tr("exec price"),
+                                        QObject::tr("exec qty"),
+                                        QObject::tr("observs"),
+                                        QObject::tr("")                 };
+    */
 };
 
 
@@ -38,9 +50,9 @@ namespace {
 QString get_session_id_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 {
     if (order->last_confirmation().HasValue())
-        return order->last_confirmation().Get().confirmated_info.order_id.sess_id.c_str();
+        return QLatin1String(order->last_confirmation().Get().confirmated_info.order_id.sess_id.c_str());
     else if (order->last_request().HasValue())
-        return order->last_request().Get().order_id.sess_id.c_str();
+        return QLatin1String(order->last_request().Get().order_id.sess_id.c_str());
     else
         throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
@@ -49,9 +61,9 @@ QString get_session_id_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 QString get_req_code_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 {
     if (order->last_confirmation().HasValue())
-        return order->last_confirmation().Get().confirmated_info.order_id.req_code.c_str();
+        return QLatin1String(order->last_confirmation().Get().confirmated_info.order_id.req_code.c_str());
     else if (order->last_request().HasValue())
-        return order->last_request().Get().order_id.req_code.c_str();
+        return QLatin1String(order->last_request().Get().order_id.req_code.c_str());
     else
         throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
@@ -167,9 +179,9 @@ public:
     {
         QTableWidgetItem* item = items[col_market];
         if (inner_order->last_confirmation().HasValue())
-            item->setText(inner_order->last_confirmation().Get().confirmated_info.product_code.sys_code.market.c_str());
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().confirmated_info.product_code.sys_code.market.c_str()));
         else if (inner_order->last_request().HasValue())
-            item->setText(inner_order->last_request().Get().product_code.sys_code.market.c_str());
+            item->setText(QLatin1String(inner_order->last_request().Get().product_code.sys_code.market.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         item->setBackgroundColor(get_default_color());
@@ -179,9 +191,9 @@ public:
     {
         QTableWidgetItem* item = items[col_product];
         if (inner_order->last_confirmation().HasValue())
-            item->setText(inner_order->last_confirmation().Get().confirmated_info.product_code.sys_code.product.c_str());
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().confirmated_info.product_code.sys_code.product.c_str()));
         else if (inner_order->last_request().HasValue())
-            item->setText(inner_order->last_request().Get().product_code.sys_code.product.c_str());
+            item->setText(QLatin1String(inner_order->last_request().Get().product_code.sys_code.product.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         item->setBackgroundColor(get_default_color());
@@ -215,7 +227,7 @@ public:
             if (confirmed.HasValue())
                 text_price += fn_as_QString(confirmed.Get());
             if (requested.HasValue())
-                text_price += QString(" (") + fn_as_QString(requested.Get()) + QString(")");
+                text_price += QLatin1String(" (") + fn_as_QString(requested.Get()) + QLatin1String(")");
             item->setText(text_price);
         }
         //item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -249,7 +261,7 @@ public:
             if (confirmed.HasValue())
                 text_price += fn_as_QString(confirmed.Get());
             if (requested.HasValue())
-                text_price += QString(" (") + fn_as_QString(requested.Get()) + QString(")");
+                text_price += QLatin1String(" (") + fn_as_QString(requested.Get()) + QLatin1String(")");
             item->setText(text_price);
         }
         if (inner_order->is_canceled())
@@ -270,12 +282,12 @@ public:
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (buy_sell == mtk::trd::msg::buy)
         {
-            item->setText("buy");
+            item->setText(QObject::tr("buy"));
             item->setBackgroundColor(mtk_green);
         }
         else
         {
-            item->setText("sell");
+            item->setText(QObject::tr("sell"));
             item->setBackgroundColor(mtk_red);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
@@ -297,7 +309,7 @@ public:
         }
         else
         {
-            item->setText("");
+            item->setText(QLatin1String(""));
             item->setBackgroundColor(get_default_color());
         }
     }
@@ -319,7 +331,7 @@ public:
         }
         else
         {
-            item->setText("");
+            item->setText(QLatin1String(""));
             item->setBackgroundColor(get_default_color());
         }
     }
@@ -328,7 +340,7 @@ public:
     {
         QTableWidgetItem* item = items[col_observs];
         item->setBackgroundColor(get_default_color());
-        item->setText(inner_order->serrors().c_str());
+        item->setText(QLatin1String(inner_order->serrors().c_str()));
     }
 
 
@@ -360,9 +372,22 @@ qorder_table::qorder_table(QWidget *parent) :
 
     QStringList headers_captions;
     {
+        static  const char* const col_captions[] = {     "sess_id",
+                                                         QT_TR_NOOP("req_code"),
+                                                         QT_TR_NOOP("market"),
+                                                         QT_TR_NOOP("product"),
+                                                         QT_TR_NOOP("side"),
+                                                         QT_TR_NOOP("price"),
+                                                         QT_TR_NOOP("qty"),
+                                                         QT_TR_NOOP("exec price"),
+                                                         QT_TR_NOOP("exec qty"),
+                                                         QT_TR_NOOP("observs"),
+                                                         0                 };
+
+
         int counter;
         for (counter=0; col_captions[counter]!=0; ++counter)
-            headers_captions.append(col_captions[counter]);
+            headers_captions.append(tr(col_captions[counter]));
         table_widget->setColumnCount(counter);
     }
     table_widget->setHorizontalHeaderLabels(headers_captions);
@@ -601,13 +626,13 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
     }
     QMenu  menu;
     {
-        QAction* action = new QAction("cancel", this);
+        QAction* action = new QAction(tr("cancel"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
         action->setEnabled(enabled_cancel);
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction("modif", this);
+        QAction* action = new QAction(tr("modif"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_modif()));
         action->setEnabled(enabled_modif);
         menu.addAction(action);
@@ -618,7 +643,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction("live orders", this);
+        QAction* action = new QAction(tr("live orders"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_live_orders()));
         action->setEnabled(true);
         action->setCheckable(true);
@@ -629,7 +654,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction("live and exec orders", this);
+        QAction* action = new QAction(tr("live and exec orders"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_live_and_exec_orders()));
         action->setEnabled(true);
         action->setCheckable(true);
@@ -640,7 +665,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction("all orders", this);
+        QAction* action = new QAction(tr("all orders"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_all_orders()));
         action->setEnabled(true);
         action->setCheckable(true);

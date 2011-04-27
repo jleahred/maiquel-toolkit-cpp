@@ -20,7 +20,11 @@ namespace {
     const int col_side          = 1;
     const int col_exec_price    = 2;
     const int col_exec_quantity = 3;
-    const char* col_captions[] = { "product", "side", "price", "qty", 0};
+    /*const char* col_captions[] = {    "product",            defined later for translations
+                                        "side",
+                                        "price",
+                                        "qty",
+                                        0          };*/
 };
 
 
@@ -38,6 +42,7 @@ class Exec_in_table  : public mtk::SignalReceptor
 {
     typedef Exec_in_table  CLASS_NAME;
 public:
+
     QTableWidgetItem**                  items;
     mtk::msg::sub_product_code          product_code;
     mtk::trd::msg::sub_position_ls      exec;
@@ -86,7 +91,7 @@ public:
     void update_item_market_product(void)
     {
         QTableWidgetItem* item = items[col_market_product];
-        item->setText(MTK_SS(product_code.sys_code.market << "." <<product_code.sys_code.user_name).c_str());
+        item->setText(QLatin1String(MTK_SS(product_code.sys_code.market << "." <<product_code.sys_code.user_name).c_str()));
         item->setBackgroundColor(get_default_color());
     }
 
@@ -96,12 +101,12 @@ public:
         QTableWidgetItem* item = items[col_side];
         if (exec.side == mtk::trd::msg::buy)
         {
-            item->setText("buy");
+            item->setText(QObject::tr("buy"));
             item->setBackgroundColor(mtk_green);
         }
         else
         {
-            item->setText("sell");
+            item->setText(QObject::tr("sell"));
             item->setBackgroundColor(mtk_red);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
@@ -132,7 +137,7 @@ QExecsTable::QExecsTable(QWidget *parent) :
         QWidget(parent),
         table_widget(new QTableWidget(this)),
         exec_in_table(new mtk::list<Exec_in_table*>),
-        mediaObject (Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource("../data/execution.wav")))
+        mediaObject (Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("../data/execution.wav"))))
 {
     QHBoxLayout *hl= new QHBoxLayout(this);
     hl->setSpacing(0);
@@ -141,9 +146,16 @@ QExecsTable::QExecsTable(QWidget *parent) :
 
     QStringList headers_captions;
     {
+        static const char* const col_captions[] = {     QT_TR_NOOP("product"),
+                                                        QT_TR_NOOP("side"),
+                                                        QT_TR_NOOP("price"),
+                                                        QT_TR_NOOP("qty"),
+                                                        0          };
+
+
         int counter;
         for (counter=0; col_captions[counter]!=0; ++counter)
-            headers_captions.append(col_captions[counter]);
+            headers_captions.append(tr(col_captions[counter]));
         table_widget->setColumnCount(counter);
     }
     table_widget->setHorizontalHeaderLabels(headers_captions);
@@ -164,7 +176,7 @@ QExecsTable::QExecsTable(QWidget *parent) :
     table_widget->setColumnWidth(col_exec_quantity, 60);
 
     connect(table_widget, SIGNAL(cellDoubleClicked(int,int)), SLOT(slot_clean_execs()));
-    table_widget->setToolTip("Double click to clean executions");
+    table_widget->setToolTip(tr("Double click to clean executions"));
 
     //  setting up actions
     /*

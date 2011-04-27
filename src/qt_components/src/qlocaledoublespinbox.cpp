@@ -27,7 +27,7 @@ QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) con
 {
     QString new_input = QLocale::system().toString(valueFromText(input), 'f', this->decimals());
     pos += new_input.size() - input.size();
-    if(new_input != "0")
+    if(new_input != QLatin1String("0"))
         input = new_input;
     return QDoubleSpinBox::validate(input, pos);
 }

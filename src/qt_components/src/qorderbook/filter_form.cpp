@@ -16,9 +16,9 @@ filter_form::filter_form(QWidget *parent) :
 {
     ui->setupUi(this);
     set_status_filter_not_modified();
-    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("");
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(QLatin1String(""));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setFlat(true);
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setText("");
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(QLatin1String(""));
     ui->buttonBox->button(QDialogButtonBox::Ok)->setFlat(true);
 }
 
@@ -30,11 +30,11 @@ filter_form::~filter_form()
 
 void filter_form::showEvent(QShowEvent *)
 {
-    if(ui->buttonBox->button(QDialogButtonBox::Cancel)->text() != "")
+    if(ui->buttonBox->button(QDialogButtonBox::Cancel)->text() != QLatin1String(""))
     {
-        ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("");
+        ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(QLatin1String(""));
         ui->buttonBox->button(QDialogButtonBox::Cancel)->setFlat(true);
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setText("");
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setText(QLatin1String(""));
         ui->buttonBox->button(QDialogButtonBox::Ok)->setFlat(true);
     }
     ui->name->setFocus();
@@ -50,7 +50,7 @@ void filter_form::filter_modified(void)
 
     QLineEdit*  le = dynamic_cast<QLineEdit*>(this->focusWidget());
     if(le!=0)
-        le->setStyleSheet("background-color: rgb(255, 255, 192);");
+        le->setStyleSheet(QLatin1String("background-color: rgb(255, 255, 192);"));
 }
 
 
@@ -115,9 +115,9 @@ void filter_form::set_status_filter_not_modified(void)
 {
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setEnabled(false);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->name->setStyleSheet("");
-    ui->account->setStyleSheet("");
-    ui->client_code->setStyleSheet("");
-    ui->market->setStyleSheet("");
-    ui->product->setStyleSheet("");
+    ui->name->setStyleSheet(QLatin1String(""));
+    ui->account->setStyleSheet(QLatin1String(""));
+    ui->client_code->setStyleSheet(QLatin1String(""));
+    ui->market->setStyleSheet(QLatin1String(""));
+    ui->product->setStyleSheet(QLatin1String(""));
 }
