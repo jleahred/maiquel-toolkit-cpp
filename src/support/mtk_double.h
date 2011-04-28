@@ -6,6 +6,12 @@
 #include "tuples.hpp"
 
 
+
+namespace YAML  {  class Emitter;  };
+
+
+
+
 namespace mtk {
 //---------------------------------------------------------------------------
 
@@ -23,7 +29,8 @@ class Double {
     friend bool   operator> (const Double& d1, const Double& d2);
     friend bool   operator>=(const Double& d1, const Double& d2);
 
-    friend std::ostream& operator<< (std::ostream& os, const Double& d);
+    friend std::ostream & operator<< (std::ostream & os, const Double& d);
+    friend YAML::Emitter& operator<< (YAML::Emitter& os, const Double& d);
 
 
 

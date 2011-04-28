@@ -7,6 +7,7 @@
 // coded last modification:        _CODED_LAST_MODIF
 
 
+#include "yaml/yaml.h"
 #include "support/nullable.hpp"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
@@ -17,6 +18,7 @@
 #include "support/mtk_string.h"
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
+
 #include "mtk_qpid/mtk_qpid.hpp"
 
 
@@ -443,21 +445,25 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const req_login_key & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const req_login_key & c);
 
 bool operator== (const req_login_key& a, const req_login_key& b);
 bool operator!= (const req_login_key& a, const req_login_key& b);
 
     std::ostream& operator<< (std::ostream& o, const res_login_key & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const res_login_key & c);
 
 bool operator== (const res_login_key& a, const res_login_key& b);
 bool operator!= (const res_login_key& a, const res_login_key& b);
 
     std::ostream& operator<< (std::ostream& o, const req_login & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const req_login & c);
 
 bool operator== (const req_login& a, const req_login& b);
 bool operator!= (const req_login& a, const req_login& b);
 
     std::ostream& operator<< (std::ostream& o, const res_login & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const res_login & c);
 
 bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
 bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
@@ -467,26 +473,31 @@ bool operator== (const res_login& a, const res_login& b);
 bool operator!= (const res_login& a, const res_login& b);
 
     std::ostream& operator<< (std::ostream& o, const res_login::IC_login_response_info & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const res_login::IC_login_response_info & c);
 
 bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
 bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
 
     std::ostream& operator<< (std::ostream& o, const conf_logout & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const conf_logout & c);
 
 bool operator== (const conf_logout& a, const conf_logout& b);
 bool operator!= (const conf_logout& a, const conf_logout& b);
 
     std::ostream& operator<< (std::ostream& o, const req_logout & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const req_logout & c);
 
 bool operator== (const req_logout& a, const req_logout& b);
 bool operator!= (const req_logout& a, const req_logout& b);
 
     std::ostream& operator<< (std::ostream& o, const req_change_password & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const req_change_password & c);
 
 bool operator== (const req_change_password& a, const req_change_password& b);
 bool operator!= (const req_change_password& a, const req_change_password& b);
 
     std::ostream& operator<< (std::ostream& o, const res_change_password & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const res_change_password & c);
 
 bool operator== (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);
 bool operator!= (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);
@@ -496,6 +507,7 @@ bool operator== (const res_change_password& a, const res_change_password& b);
 bool operator!= (const res_change_password& a, const res_change_password& b);
 
     std::ostream& operator<< (std::ostream& o, const res_change_password::IC_change_password_info & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const res_change_password::IC_change_password_info & c);
 
 bool operator== (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);
 bool operator!= (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);

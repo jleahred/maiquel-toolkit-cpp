@@ -7,6 +7,7 @@
 // coded last modification:        _CODED_LAST_MODIF
 
 
+#include "yaml/yaml.h"
 #include "support/nullable.hpp"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
@@ -17,6 +18,7 @@
 #include "support/mtk_string.h"
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
+
 #include "mtk_qpid/mtk_qpid.hpp"
 
 
@@ -156,16 +158,19 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const sub_tree_item & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_tree_item & c);
 
 bool operator== (const sub_tree_item& a, const sub_tree_item& b);
 bool operator!= (const sub_tree_item& a, const sub_tree_item& b);
 
     std::ostream& operator<< (std::ostream& o, const req_tree_items & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const req_tree_items & c);
 
 bool operator== (const req_tree_items& a, const req_tree_items& b);
 bool operator!= (const req_tree_items& a, const req_tree_items& b);
 
     std::ostream& operator<< (std::ostream& o, const res_tree_items & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const res_tree_items & c);
 
 bool operator== (const res_tree_items& a, const res_tree_items& b);
 bool operator!= (const res_tree_items& a, const res_tree_items& b);

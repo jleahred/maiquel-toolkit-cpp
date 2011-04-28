@@ -83,6 +83,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
 }
 
 
+
 template<typename T>
 bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 {
@@ -662,6 +663,16 @@ std::ostream& operator<< (std::ostream& o, const req_login_key & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const req_login_key & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const res_login_key & c)
 {
     o << "{ "
@@ -671,6 +682,16 @@ std::ostream& operator<< (std::ostream& o, const res_login_key & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const res_login_key & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "key"  << YAML::Value <<   c.key
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const req_login & c)
@@ -684,6 +705,16 @@ std::ostream& operator<< (std::ostream& o, const req_login & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const req_login & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "key"  << YAML::Value <<   c.key        << YAML::Key << "coded_pass"  << YAML::Value <<   c.coded_pass
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const res_login::IC_login_response_info & c)
 {
     o << "{ "
@@ -692,7 +723,6 @@ std::ostream& operator<< (std::ostream& o, const res_login::IC_login_response_in
         << " }";
     return o;
 };
-
 
 
 std::ostream& operator<< (std::ostream& o, const res_login & c)
@@ -706,6 +736,27 @@ std::ostream& operator<< (std::ostream& o, const res_login & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const res_login::IC_login_response_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const res_login & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "login_response_info"   << YAML::Value << c.login_response_info
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const conf_logout & c)
 {
     o << "{ "
@@ -715,6 +766,16 @@ std::ostream& operator<< (std::ostream& o, const conf_logout & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const conf_logout & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "description"  << YAML::Value <<   c.description
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const req_logout & c)
@@ -728,6 +789,16 @@ std::ostream& operator<< (std::ostream& o, const req_logout & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const req_logout & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_change_password & c)
 {
     o << "{ "
@@ -737,6 +808,16 @@ std::ostream& operator<< (std::ostream& o, const req_change_password & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const req_change_password & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "key"  << YAML::Value <<   c.key        << YAML::Key << "old_password"  << YAML::Value <<   c.old_password        << YAML::Key << "new_password"  << YAML::Value <<   c.new_password
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const res_change_password::IC_change_password_info & c)
@@ -749,7 +830,6 @@ std::ostream& operator<< (std::ostream& o, const res_change_password::IC_change_
 };
 
 
-
 std::ostream& operator<< (std::ostream& o, const res_change_password & c)
 {
     o << "{ "
@@ -759,6 +839,27 @@ std::ostream& operator<< (std::ostream& o, const res_change_password & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const res_change_password::IC_change_password_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "accepted"  << YAML::Value << c.accepted
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const res_change_password & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "change_password_info"   << YAML::Value << c.change_password_info
+        << YAML::EndMap;
+    return o;
+};
 
 
 bool operator== (const req_login_key& a, const req_login_key& b)

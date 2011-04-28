@@ -647,6 +647,7 @@ $FILL_FIELDS
 
 def generate_output_stream_operator_forward(class_name, class_info, class_properties, send_code) :
     METHOD = """    std::ostream& operator<< (std::ostream& o, const $class_name & c);\n"""
+    METHOD += """   YAML::Emitter& operator << (YAML::Emitter& o, const $class_name & c);\n"""
     return Template(METHOD).substitute(class_name=class_name)
 
 def generate_output_stream_operator(class_name, class_info, class_properties, send_code) :
@@ -666,7 +667,6 @@ $OUPUT_PER_FIELD
         << " }";
     return o;
 };
-
 
 """
     for field in class_info:
@@ -688,6 +688,50 @@ $OUPUT_PER_FIELD
         elif field.has_key('IN_SUB_MSG'):
             OUPUT_PER_FIELD += '        << "'+field['IN_SUB_MSG'][0]+':"<< c.' + field['IN_SUB_MSG'][0] + '<<"  "'
             RECURSION_OUTPUT += generate_output_stream_operator(class_name+'::IC_'+field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], class_properties, send_code)
+        else:
+            print "error 7--------------------------------\n" +  str(field)
+    return RECURSION_OUTPUT + Template(METHOD).substitute(class_name=class_name, OUPUT_PER_FIELD=OUPUT_PER_FIELD, OUTPUT_PARENT=OUTPUT_PARENT)
+
+
+def generate_output_yaml_operator(class_name, class_info, class_properties, send_code) :
+    OUPUT_PER_FIELD = ''
+    RECURSION_OUTPUT = ''
+    OUTPUT_PARENT = ''
+
+    if class_properties.has_key('I'):
+        OUTPUT_PARENT = '    << YAML::Key << "'+class_properties['I'] +'" <<  YAML::Value << static_cast<const ' + class_properties['I'] + '&>(c)  '
+    
+    METHOD = """
+
+YAML::Emitter& operator << (YAML::Emitter& o, const $class_name & c)
+{
+    o << YAML::BeginMap
+$OUTPUT_PARENT
+$OUPUT_PER_FIELD
+        << YAML::EndMap;
+    return o;
+};
+
+"""
+    for field in class_info:
+        if field.has_key('field_type'):
+            if field['OPTIONS'].count('optional') > 0  or  field['OPTIONS'].count('recomended') > 0 :
+                OUPUT_PER_FIELD += '        << YAML::Key << "'+field['FIELD_NAME']+'"  << YAML::Value <<   c.' + field['FIELD_NAME']
+            else :
+                OUPUT_PER_FIELD += '        << YAML::Key << "'+field['FIELD_NAME']+'"  << YAML::Value <<   c.' + field['FIELD_NAME']
+        elif field.has_key('sub_msg_type'):
+            if field['OPTIONS'].count('optional') > 0  or  field['OPTIONS'].count('recomended') > 0 :
+                OUPUT_PER_FIELD += '        << YAML::Key << "'+field['FIELD_NAME']+'"  << YAML::Value << c.' + field['FIELD_NAME']
+            else :
+                OUPUT_PER_FIELD += '        << YAML::Key << "'+field['FIELD_NAME']+'"  << YAML::Value << c.' + field['FIELD_NAME']
+        elif field.has_key('sub_msg_type_not_nested'):
+            OUPUT_PER_FIELD += '        << YAML::Key << "'+field['FIELD_NAME']+'"    << YAML::Value << c.' + field['FIELD_NAME']
+        elif field.has_key('IN_MSG'):
+            OUPUT_PER_FIELD += '        << YAML::Key << "'+field['IN_MSG'][0]+'"   << YAML::Value << c.' + field['IN_MSG'][0]
+            RECURSION_OUTPUT += generate_output_yaml_operator(class_name+'::IC_'+field['IN_MSG'][0], field['IN_MSG'][1], class_properties, send_code)
+        elif field.has_key('IN_SUB_MSG'):
+            OUPUT_PER_FIELD += '        << YAML::Key << "'+field['IN_SUB_MSG'][0]+'"   << YAML::Value << c.' + field['IN_SUB_MSG'][0]
+            RECURSION_OUTPUT += generate_output_yaml_operator(class_name+'::IC_'+field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], class_properties, send_code)
         else:
             print "error 7--------------------------------\n" +  str(field)
     return RECURSION_OUTPUT + Template(METHOD).substitute(class_name=class_name, OUPUT_PER_FIELD=OUPUT_PER_FIELD, OUTPUT_PARENT=OUTPUT_PARENT)
@@ -1037,6 +1081,7 @@ for file in sys.argv[1:] :
 // coded last modification:        _CODED_LAST_MODIF
 
 
+#include "yaml/yaml.h"
 #include "support/nullable.hpp"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
@@ -1047,6 +1092,7 @@ for file in sys.argv[1:] :
 #include "support/mtk_string.h"
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
+
 $NOT_CONTROL_FIELDS
 
 
@@ -1191,6 +1237,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
     o << "]";
     return o;
 }
+
 
 
 template<typename T>
@@ -1513,6 +1560,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
     for class_name, class_info, class_properties, send_code  in MESSAGES:
         content_file_cpp += generate_output_stream_operator(class_name, class_info, class_properties, send_code)
+        content_file_cpp += generate_output_yaml_operator(class_name, class_info, class_properties, send_code)
 
     for class_name, class_info, class_properties, send_code  in MESSAGES:
         content_file_cpp += generate_equal_operator(class_name, class_info, class_properties, send_code)

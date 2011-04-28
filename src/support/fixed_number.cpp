@@ -6,6 +6,7 @@
 #include <iomanip>
 
 #include "mtk_string.h"
+#include "yaml/yaml.h"
 
 
 
@@ -515,6 +516,23 @@ std::ostream& operator<< (std::ostream& os, const fnExt& fnExt)
     os.precision(old_precision);
     return os;
 }
+
+
+
+YAML::Emitter& operator<< (YAML::Emitter& os, const FixedNumber& fn)
+{
+    return os << YAML::BeginSeq << YAML::Flow
+        << fn.GetDouble() << fn.GetExt()
+        << YAML::EndSeq;
+}
+
+YAML::Emitter& operator<< (YAML::Emitter& os, const fnExt& fnExt)
+{
+    return os << YAML::BeginSeq << YAML::Flow
+        << fnExt.GetDec() << fnExt.GetInc()
+        << YAML::EndSeq;
+}
+
 
 
 

@@ -82,6 +82,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
 }
 
 
+
 template<typename T>
 bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 {
@@ -416,6 +417,16 @@ std::ostream& operator<< (std::ostream& o, const sub_control_fields & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fields & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "message_type"  << YAML::Value <<   c.message_type        << YAML::Key << "control_fluct_key"  << YAML::Value <<   c.control_fluct_key        << YAML::Key << "sent_date_time"  << YAML::Value <<   c.sent_date_time
+        << YAML::EndMap;
+    return o;
+};
 
 
 bool operator== (const sub_control_fields& a, const sub_control_fields& b)

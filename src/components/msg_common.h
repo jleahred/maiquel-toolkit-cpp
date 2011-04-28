@@ -7,6 +7,7 @@
 // coded last modification:        _CODED_LAST_MODIF
 
 
+#include "yaml/yaml.h"
 #include "support/nullable.hpp"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
@@ -17,6 +18,7 @@
 #include "support/mtk_string.h"
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
+
 #include "mtk_qpid/mtk_qpid.hpp"
 
 
@@ -462,56 +464,67 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const sub_location & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_location & c);
 
 bool operator== (const sub_location& a, const sub_location& b);
 bool operator!= (const sub_location& a, const sub_location& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_process_location & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_location & c);
 
 bool operator== (const sub_process_location& a, const sub_process_location& b);
 bool operator!= (const sub_process_location& a, const sub_process_location& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_process_info & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_info & c);
 
 bool operator== (const sub_process_info& a, const sub_process_info& b);
 bool operator!= (const sub_process_info& a, const sub_process_info& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_control_fluct & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fluct & c);
 
 bool operator== (const sub_control_fluct& a, const sub_control_fluct& b);
 bool operator!= (const sub_control_fluct& a, const sub_control_fluct& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_request_id & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_request_id & c);
 
 bool operator== (const sub_request_id& a, const sub_request_id& b);
 bool operator!= (const sub_request_id& a, const sub_request_id& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_request_info & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_request_info & c);
 
 bool operator== (const sub_request_info& a, const sub_request_info& b);
 bool operator!= (const sub_request_info& a, const sub_request_info& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_r_response & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_r_response & c);
 
 bool operator== (const sub_r_response& a, const sub_r_response& b);
 bool operator!= (const sub_r_response& a, const sub_r_response& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_single_product_code & c);
 
 bool operator== (const sub_single_product_code& a, const sub_single_product_code& b);
 bool operator!= (const sub_single_product_code& a, const sub_single_product_code& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_sys_product_code & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_sys_product_code & c);
 
 bool operator== (const sub_sys_product_code& a, const sub_sys_product_code& b);
 bool operator!= (const sub_sys_product_code& a, const sub_sys_product_code& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_adic_product_code & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_adic_product_code & c);
 
 bool operator== (const sub_adic_product_code& a, const sub_adic_product_code& b);
 bool operator!= (const sub_adic_product_code& a, const sub_adic_product_code& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_product_code & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_product_code & c);
 
 bool operator== (const sub_product_code& a, const sub_product_code& b);
 bool operator!= (const sub_product_code& a, const sub_product_code& b);

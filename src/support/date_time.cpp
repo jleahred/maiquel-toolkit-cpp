@@ -4,6 +4,7 @@
 
 #include "date_time.h"
 #include "alarm.h"
+#include "yaml/yaml.h"
 
 
 
@@ -611,6 +612,10 @@ std::ostream& operator<< (std::ostream& o, const dtTimeQuantity& tq)
     return o;
 };
 
+YAML::Emitter& operator<< (YAML::Emitter& os, const dtTimeQuantity& d)
+{
+    return os << MTK_SS(d);
+}
 
 
 
@@ -1190,6 +1195,13 @@ std::ostream& operator<< (std::ostream& os, const DateTime& dt)
     return os;
 
 }
+
+YAML::Emitter& operator<< (YAML::Emitter& os, const DateTime& d)
+{
+    return os << MTK_SS(d);
+}
+
+
 
 
 

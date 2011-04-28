@@ -7,6 +7,7 @@
 // coded last modification:        _CODED_LAST_MODIF
 
 
+#include "yaml/yaml.h"
 #include "support/nullable.hpp"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
@@ -17,6 +18,7 @@
 #include "support/mtk_string.h"
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
+
 #include "mtk_qpid/mtk_qpid.hpp"
 
 
@@ -411,46 +413,55 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const pub_enter & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const pub_enter & c);
 
 bool operator== (const pub_enter& a, const pub_enter& b);
 bool operator!= (const pub_enter& a, const pub_enter& b);
 
     std::ostream& operator<< (std::ostream& o, const pub_keep_alive_srv & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const pub_keep_alive_srv & c);
 
 bool operator== (const pub_keep_alive_srv& a, const pub_keep_alive_srv& b);
 bool operator!= (const pub_keep_alive_srv& a, const pub_keep_alive_srv& b);
 
     std::ostream& operator<< (std::ostream& o, const pub_keep_alive_clients & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const pub_keep_alive_clients & c);
 
 bool operator== (const pub_keep_alive_clients& a, const pub_keep_alive_clients& b);
 bool operator!= (const pub_keep_alive_clients& a, const pub_keep_alive_clients& b);
 
     std::ostream& operator<< (std::ostream& o, const pub_exit & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const pub_exit & c);
 
 bool operator== (const pub_exit& a, const pub_exit& b);
 bool operator!= (const pub_exit& a, const pub_exit& b);
 
     std::ostream& operator<< (std::ostream& o, const pub_alarm & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const pub_alarm & c);
 
 bool operator== (const pub_alarm& a, const pub_alarm& b);
 bool operator!= (const pub_alarm& a, const pub_alarm& b);
 
     std::ostream& operator<< (std::ostream& o, const req_command & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const req_command & c);
 
 bool operator== (const req_command& a, const req_command& b);
 bool operator!= (const req_command& a, const req_command& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_command_rd & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_command_rd & c);
 
 bool operator== (const sub_command_rd& a, const sub_command_rd& b);
 bool operator!= (const sub_command_rd& a, const sub_command_rd& b);
 
     std::ostream& operator<< (std::ostream& o, const res_command & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const res_command & c);
 
 bool operator== (const res_command& a, const res_command& b);
 bool operator!= (const res_command& a, const res_command& b);
 
     std::ostream& operator<< (std::ostream& o, const pub_central_keep_alive & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const pub_central_keep_alive & c);
 
 bool operator== (const pub_central_keep_alive& a, const pub_central_keep_alive& b);
 bool operator!= (const pub_central_keep_alive& a, const pub_central_keep_alive& b);

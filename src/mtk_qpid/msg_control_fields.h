@@ -7,6 +7,7 @@
 // coded last modification:        _CODED_LAST_MODIF
 
 
+#include "yaml/yaml.h"
 #include "support/nullable.hpp"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
@@ -17,6 +18,7 @@
 #include "support/mtk_string.h"
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
+
 
 
 
@@ -72,6 +74,7 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const sub_control_fields & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fields & c);
 
 bool operator== (const sub_control_fields& a, const sub_control_fields& b);
 bool operator!= (const sub_control_fields& a, const sub_control_fields& b);

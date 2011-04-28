@@ -12,6 +12,9 @@ public:
     void insert_qmarginal(void);
     void insert_qdepth(void);
 
+    void save_config(void);
+    void load_config(void);
+
 private:
     QPoint  last_inserted_pos;
 

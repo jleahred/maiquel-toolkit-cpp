@@ -2,6 +2,7 @@
 
 
 #include "mtk_double.h"
+#include "yaml/yaml.h"
 
 
 
@@ -252,6 +253,18 @@ std::ostream& operator<< (std::ostream& os, const Double& d)
 
     return os;
 };
+
+YAML::Emitter& operator<< (YAML::Emitter& os, const Double& d)
+{
+    if (d.IsValid() == false)
+        os << YAML::Null;
+    else
+        os << d.value;
+
+    return os;
+    
+}
+
 
 
 

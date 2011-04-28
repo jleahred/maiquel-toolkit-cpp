@@ -7,6 +7,7 @@
 // coded last modification:        _CODED_LAST_MODIF
 
 
+#include "yaml/yaml.h"
 #include "support/nullable.hpp"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
@@ -17,6 +18,7 @@
 #include "support/mtk_string.h"
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
+
 #include "mtk_qpid/mtk_qpid.hpp"
 
 
@@ -149,16 +151,19 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_LS & c);
 
 bool operator== (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b);
 bool operator!= (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_LS & c);
 
 bool operator== (const oms_RQ_MD_LS& a, const oms_RQ_MD_LS& b);
 bool operator!= (const oms_RQ_MD_LS& a, const oms_RQ_MD_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_LS & c);
 
 bool operator== (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b);
 bool operator!= (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b);

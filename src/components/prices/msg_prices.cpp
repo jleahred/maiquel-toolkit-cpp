@@ -83,6 +83,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
 }
 
 
+
 template<typename T>
 bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 {
@@ -554,6 +555,16 @@ std::ostream& operator<< (std::ostream& o, const sub_price_level & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_price_level & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "price"  << YAML::Value <<   c.price        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_price_deph5 & c)
 {
     o << "{ "
@@ -563,6 +574,16 @@ std::ostream& operator<< (std::ostream& o, const sub_price_deph5 & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_price_deph5 & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "level0"  << YAML::Value << c.level0        << YAML::Key << "level1"  << YAML::Value << c.level1        << YAML::Key << "level2"  << YAML::Value << c.level2        << YAML::Key << "level3"  << YAML::Value << c.level3        << YAML::Key << "level4"  << YAML::Value << c.level4
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const pub_best_prices & c)
@@ -576,6 +597,16 @@ std::ostream& operator<< (std::ostream& o, const pub_best_prices & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_best_prices & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "bids"  << YAML::Value << c.bids        << YAML::Key << "asks"  << YAML::Value << c.asks        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_prod_info & c)
 {
     o << "{ "
@@ -585,6 +616,16 @@ std::ostream& operator<< (std::ostream& o, const req_prod_info & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const req_prod_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "sys_product_code"  << YAML::Value << c.sys_product_code
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const res_product_info::IC_response & c)
@@ -597,7 +638,6 @@ std::ostream& operator<< (std::ostream& o, const res_product_info::IC_response &
 };
 
 
-
 std::ostream& operator<< (std::ostream& o, const res_product_info & c)
 {
     o << "{ "
@@ -607,6 +647,27 @@ std::ostream& operator<< (std::ostream& o, const res_product_info & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const res_product_info::IC_response & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const res_product_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "response"   << YAML::Value << c.response
+        << YAML::EndMap;
+    return o;
+};
 
 
 bool operator== (const sub_price_level& a, const sub_price_level& b)

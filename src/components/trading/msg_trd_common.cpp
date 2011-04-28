@@ -83,6 +83,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
 }
 
 
+
 template<typename T>
 bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 {
@@ -446,6 +447,16 @@ std::ostream& operator<< (std::ostream& o, const sub_order_id & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_order_id & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "mtk::msg::sub_request_id" <<  YAML::Value << static_cast<const mtk::msg::sub_request_id&>(c)  
+
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_total_executions & c)
 {
     o << "{ "
@@ -455,6 +466,16 @@ std::ostream& operator<< (std::ostream& o, const sub_total_executions & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_total_executions & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "sum_price_by_qty"  << YAML::Value <<   c.sum_price_by_qty        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity        << YAML::Key << "remaining_qty"  << YAML::Value <<   c.remaining_qty
+        << YAML::EndMap;
+    return o;
+};
 
 
 bool operator== (const sub_order_id& a, const sub_order_id& b)

@@ -83,6 +83,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
 }
 
 
+
 template<typename T>
 bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 {
@@ -473,6 +474,16 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_LS & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_LS & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "RQ_NW_LS" <<  YAML::Value << static_cast<const RQ_NW_LS&>(c)  
+        << YAML::Key << "reject_descr"  << YAML::Value <<   c.reject_descr
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_LS & c)
 {
     o << "{ "
@@ -484,6 +495,16 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_LS & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_LS & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "RQ_MD_LS" <<  YAML::Value << static_cast<const RQ_MD_LS&>(c)  
+        << YAML::Key << "reject_descr"  << YAML::Value <<   c.reject_descr
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_LS & c)
 {
     o << "{ "
@@ -493,6 +514,16 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_LS & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_LS & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "RQ_CC_LS" <<  YAML::Value << static_cast<const RQ_CC_LS&>(c)  
+        << YAML::Key << "reject_descr"  << YAML::Value <<   c.reject_descr
+        << YAML::EndMap;
+    return o;
+};
 
 
 bool operator== (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b)

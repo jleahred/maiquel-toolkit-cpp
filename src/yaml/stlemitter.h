@@ -7,16 +7,22 @@
 #include "support/vector.hpp"
 #include "support/list.hpp"
 #include "support/map.hpp"
+#include "support/date_time.h"
+#include "support/mtk_string.h"
+#include "support/fixed_number.h"
+#include "support/mtk_double.h"
+
+
 
 namespace YAML
 {
 	template <typename T>
 	inline Emitter& operator << (Emitter& emitter, const mtk::vector <T>& v) {
 		typedef typename std::vector <T> vec;
-		emitter << BeginSeq;
+		emitter << YAML::BeginSeq;
 		for(unsigned i=0; i<= v.size() ;++i)
 			emitter << v[i];
-		emitter << EndSeq;
+		emitter << YAML::EndSeq;
 		return emitter;
         /*
 		typedef typename std::vector <T> vec;
@@ -47,6 +53,7 @@ namespace YAML
 		emitter << EndMap;
 		return emitter;
 	}
+
 }
 
 #endif // STLEMITTER_H_62B23520_7C8E_11DE_8A39_0800200C9A66

@@ -82,6 +82,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
 }
 
 
+
 template<typename T>
 bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 {
@@ -688,6 +689,16 @@ std::ostream& operator<< (std::ostream& o, const sub_location & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_location & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code        << YAML::Key << "machine"  << YAML::Value <<   c.machine
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_process_location & c)
 {
     o << "{ "
@@ -697,6 +708,16 @@ std::ostream& operator<< (std::ostream& o, const sub_process_location & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_location & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "process_name"  << YAML::Value <<   c.process_name        << YAML::Key << "process_uuid"  << YAML::Value <<   c.process_uuid
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const sub_process_info & c)
@@ -710,6 +731,16 @@ std::ostream& operator<< (std::ostream& o, const sub_process_info & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "process_location"  << YAML::Value << c.process_location        << YAML::Key << "version"  << YAML::Value <<   c.version
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_control_fluct & c)
 {
     o << "{ "
@@ -719,6 +750,16 @@ std::ostream& operator<< (std::ostream& o, const sub_control_fluct & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fluct & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "key"  << YAML::Value <<   c.key        << YAML::Key << "datetime"  << YAML::Value <<   c.datetime
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const sub_request_id & c)
@@ -732,6 +773,16 @@ std::ostream& operator<< (std::ostream& o, const sub_request_id & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_request_id & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "sess_id"  << YAML::Value <<   c.sess_id        << YAML::Key << "req_code"  << YAML::Value <<   c.req_code
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_request_info & c)
 {
     o << "{ "
@@ -741,6 +792,16 @@ std::ostream& operator<< (std::ostream& o, const sub_request_info & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_request_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "process_location"  << YAML::Value << c.process_location
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const sub_r_response & c)
@@ -754,6 +815,16 @@ std::ostream& operator<< (std::ostream& o, const sub_r_response & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_r_response & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "sec_number"  << YAML::Value <<   c.sec_number        << YAML::Key << "is_last_response"  << YAML::Value << c.is_last_response
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c)
 {
     o << "{ "
@@ -763,6 +834,16 @@ std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_single_product_code & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "market"  << YAML::Value <<   c.market        << YAML::Key << "product"  << YAML::Value <<   c.product
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const sub_sys_product_code & c)
@@ -776,6 +857,16 @@ std::ostream& operator<< (std::ostream& o, const sub_sys_product_code & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_sys_product_code & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "sub_single_product_code" <<  YAML::Value << static_cast<const sub_single_product_code&>(c)  
+        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_adic_product_code & c)
 {
     o << "{ "
@@ -787,6 +878,16 @@ std::ostream& operator<< (std::ostream& o, const sub_adic_product_code & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_adic_product_code & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "sub_single_product_code" <<  YAML::Value << static_cast<const sub_single_product_code&>(c)  
+        << YAML::Key << "aditional_code_type"  << YAML::Value <<   c.aditional_code_type
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
 {
     o << "{ "
@@ -796,6 +897,16 @@ std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_product_code & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "sys_code"  << YAML::Value << c.sys_code        << YAML::Key << "aditional_code"  << YAML::Value << c.aditional_code
+        << YAML::EndMap;
+    return o;
+};
 
 
 bool operator== (const sub_location& a, const sub_location& b)

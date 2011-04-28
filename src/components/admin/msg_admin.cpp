@@ -83,6 +83,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
 }
 
 
+
 template<typename T>
 bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 {
@@ -635,6 +636,16 @@ std::ostream& operator<< (std::ostream& o, const pub_enter & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_enter & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const pub_keep_alive_srv & c)
 {
     o << "{ "
@@ -644,6 +655,16 @@ std::ostream& operator<< (std::ostream& o, const pub_keep_alive_srv & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_keep_alive_srv & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const pub_keep_alive_clients & c)
@@ -657,6 +678,16 @@ std::ostream& operator<< (std::ostream& o, const pub_keep_alive_clients & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_keep_alive_clients & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "pub_keep_alive_srv" <<  YAML::Value << static_cast<const pub_keep_alive_srv&>(c)  
+        << YAML::Key << "login_confirmation"  << YAML::Value << c.login_confirmation
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const pub_exit & c)
 {
     o << "{ "
@@ -666,6 +697,16 @@ std::ostream& operator<< (std::ostream& o, const pub_exit & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_exit & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "reason"  << YAML::Value <<   c.reason
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const pub_alarm & c)
@@ -679,6 +720,16 @@ std::ostream& operator<< (std::ostream& o, const pub_alarm & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_alarm & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "code_source"  << YAML::Value <<   c.code_source        << YAML::Key << "subject"  << YAML::Value <<   c.subject        << YAML::Key << "message"  << YAML::Value <<   c.message        << YAML::Key << "priority"  << YAML::Value << c.priority        << YAML::Key << "type"  << YAML::Value << c.type        << YAML::Key << "dateTime_generated"  << YAML::Value <<   c.dateTime_generated        << YAML::Key << "alarm_id"  << YAML::Value <<   c.alarm_id
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_command & c)
 {
     o << "{ "
@@ -688,6 +739,16 @@ std::ostream& operator<< (std::ostream& o, const req_command & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const req_command & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "proc_loc__destination"  << YAML::Value << c.proc_loc__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
+        << YAML::EndMap;
+    return o;
+};
 
 
 std::ostream& operator<< (std::ostream& o, const sub_command_rd & c)
@@ -701,6 +762,16 @@ std::ostream& operator<< (std::ostream& o, const sub_command_rd & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_command_rd & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "text"  << YAML::Value <<   c.text
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const res_command & c)
 {
     o << "{ "
@@ -712,6 +783,16 @@ std::ostream& operator<< (std::ostream& o, const res_command & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const res_command & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "response_data"  << YAML::Value << c.response_data
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const pub_central_keep_alive & c)
 {
     o << "{ "
@@ -721,6 +802,16 @@ std::ostream& operator<< (std::ostream& o, const pub_central_keep_alive & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_central_keep_alive & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
+        << YAML::EndMap;
+    return o;
+};
 
 
 bool operator== (const pub_enter& a, const pub_enter& b)

@@ -83,6 +83,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
 }
 
 
+
 template<typename T>
 bool operator== (const mtk::list<T>& l1, const mtk::list<T>& l2)
 {
@@ -473,6 +474,16 @@ std::ostream& operator<< (std::ostream& o, const sub_tree_item & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_tree_item & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "branch"  << YAML::Value <<   c.branch        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "product_code"  << YAML::Value << c.product_code
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_tree_items & c)
 {
     o << "{ "
@@ -484,6 +495,16 @@ std::ostream& operator<< (std::ostream& o, const req_tree_items & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const req_tree_items & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "branch"  << YAML::Value <<   c.branch
+        << YAML::EndMap;
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const res_tree_items & c)
 {
     o << "{ "
@@ -493,6 +514,16 @@ std::ostream& operator<< (std::ostream& o, const res_tree_items & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const res_tree_items & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "item"  << YAML::Value << c.item
+        << YAML::EndMap;
+    return o;
+};
 
 
 bool operator== (const sub_tree_item& a, const sub_tree_item& b)

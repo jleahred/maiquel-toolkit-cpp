@@ -15,6 +15,7 @@
 
 
 #include "alarm.h"
+#include "yaml/yaml.h"
 
 
 
@@ -187,6 +188,16 @@ std::ostream& operator<< (std::ostream& o, const nullable<T>& n)
         o << n.Get();
     else
         o << "<null>";
+    return o;
+};
+
+template<typename T>
+YAML::Emitter& operator<< (YAML::Emitter& o, const nullable<T>& n)
+{
+    if (n.HasValue())
+        o << n.Get();
+    else
+        o << YAML::Null;
     return o;
 };
 
