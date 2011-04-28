@@ -74,10 +74,11 @@ int marginal_in_table::counter = 0;
 namespace {
 
 
-    QColor  color_product = QColor(Qt::lightGray).lighter(115);
+    QColor  color_product = mtk_color_header;
     const QColor  color_qty     = Qt::white;
     //const QColor  color_qty     = QColor(237,240,249);
-    const QColor  color_price   = mtk_yellow;
+    //const QColor  color_price   = mtk_color_header;
+    const QColor  color_price   = QColor(Qt::lightGray).lighter(125);
 
 
 

@@ -33,3 +33,10 @@ QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) con
     return QDoubleSpinBox::validate(input, pos);
 }
 
+QString qLocaleDoubleSpinBox::textFromValue(double val) const
+{
+    if(this->text().isEmpty()  &&  abs(val) < 0.00000001)
+        return QString();
+    else
+        return QDoubleSpinBox::textFromValue(val);
+}

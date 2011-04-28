@@ -3,6 +3,7 @@
 
 
 #include "qt_components/src/qmtk_misc.h"
+#include "components/admin/admin.h"
 
 
 
@@ -40,12 +41,12 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     if (rq.request_pos.side == mtk::trd::msg::buy)
     {
         ui->BuySell->setText(tr("BUY"));
-        setPalette( mtk_green );
+        setPalette( mtk_color_buy );
     }
     else
     {
         ui->BuySell->setText(tr("SELL"));
-        setPalette( QPalette(mtk_red));
+        setPalette( QPalette(mtk_color_problem));
         //setPalette( QPalette( Qt::red ) );
     }
     ui->market->setText(QLatin1String(rq.product_code.sys_code.market.c_str()));
@@ -75,10 +76,24 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
         ui->quantity->setFocus();
         ui->quantity->selectAll();
     }
+
+    mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
+    if(s_default_qty.HasValue()==false)
+    {
+        ui->message->setText(tr("you can configure default qty with ctrl-dblclick on qty label"));
+    }
+    else
+    {
+        QLatin1String default_q (s_default_qty.Get().c_str());
+        ui->quantity->setValue(QString(default_q).toDouble());
+        std::cout << QString(default_q).toDouble() << std::endl;
+    }
 }
 
-void QEditOrder::check_if_order_can_be_sent(void)
+bool QEditOrder::check_if_order_can_be_sent(void)
 {
+    bool result = true;
+
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
     ui->message->setText(QLatin1String(""));
 
@@ -90,6 +105,7 @@ void QEditOrder::check_if_order_can_be_sent(void)
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->message->setText(tr("invalid quantity"));
+        result = false;
     }
 
     text = ui->price->text();
@@ -97,25 +113,31 @@ void QEditOrder::check_if_order_can_be_sent(void)
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->message->setText(tr("invalid price"));
+        result = false;
     }
 
     if(ui->account->currentIndex() == -1)
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->message->setText(tr("empty account"));
+        result = false;
     }
 
     if(ui->product->text().isEmpty())
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->message->setText(tr("empty product"));
+        result = false;
     }
 
     if(ui->market->text().isEmpty())
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->message->setText(tr("empty market"));
+        result = false;
     }
+
+    return result;
 }
 
 
@@ -145,3 +167,21 @@ void QEditOrder::on_quantity_valueChanged(QString )
     check_if_order_can_be_sent();
 }
 
+void QEditOrder::done(int d)
+{
+    if(d==0)
+        QDialog::done(d);
+    else if(check_if_order_can_be_sent())
+        QDialog::done(d);
+}
+
+void QEditOrder::mouseDoubleClickEvent(QMouseEvent *e)
+{
+    QLabel* lb = dynamic_cast<QLabel*>(this->childAt(e->pos()));
+    if(lb == ui->label_quantity  &&  ui->quantity->text().isEmpty()==false)
+    {
+        std::string default_qty = MTK_SS(ui->quantity->value());
+        mtk::admin::set_config_property("MISC.default_qty",default_qty);
+        ui->message->setText(tr("configured new default qty with %1").arg(QLatin1String(default_qty.c_str())));
+    }
+}

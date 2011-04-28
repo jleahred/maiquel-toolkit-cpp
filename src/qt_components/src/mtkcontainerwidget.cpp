@@ -199,7 +199,9 @@ void mtkContainerWidget::resize_mouseMoveEvent(QMouseEvent* event)
         newsize.setWidth(100);
     if (newsize.height() < 100)
         newsize.setHeight(100);
-    resize(newsize/10*10);
+    newsize = newsize/10*10;
+    newsize.setWidth(newsize.width()-1);
+    resize(newsize);
 }
 
 void mtkContainerWidget::inserting_components_ended(void)
@@ -213,7 +215,7 @@ void mtkContainerWidget::paintEvent   (QPaintEvent *event)
     QWidget::paintEvent(event);
     QPainter qpainter(this);
 
-    QColor color = mtk_yellow;
+    QColor color = mtk_color_header;
     if (this->hasFocus())
         color = Qt::blue;
     QPen pen = QPen(color, 1, Qt::SolidLine);

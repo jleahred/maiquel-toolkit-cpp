@@ -33,6 +33,8 @@ signals:
 
 private slots:
     void  slot_clean_execs(void);
+    void  slot_show_all_execs(void);
+
 
 private:
     QTableWidget*        table_widget;
@@ -42,10 +44,13 @@ private:
     mtk::list<Exec_in_table*>*                                                          exec_in_table;
     mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> >  execs2add_loading;
     mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> >  execs2add_online;
+    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> >  execs_all;
 
     void            timer_get_execs2add(void);
 
     Phonon::MediaObject *mediaObject;
+
+    void contextMenuEvent(QContextMenuEvent *);
 };
 
 #endif // QORDER_TABLE_H

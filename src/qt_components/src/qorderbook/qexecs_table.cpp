@@ -4,6 +4,7 @@
 #include <QHeaderView>
 #include <QAction>
 #include <QHBoxLayout>
+#include <QMenu>
 
 
 
@@ -102,12 +103,12 @@ public:
         if (exec.side == mtk::trd::msg::buy)
         {
             item->setText(QObject::tr("buy"));
-            item->setBackgroundColor(mtk_green);
+            item->setBackgroundColor(mtk_color_buy);
         }
         else
         {
             item->setText(QObject::tr("sell"));
-            item->setBackgroundColor(mtk_red);
+            item->setBackgroundColor(mtk_color_problem);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }
@@ -175,9 +176,6 @@ QExecsTable::QExecsTable(QWidget *parent) :
     table_widget->setColumnWidth(col_exec_price, 60);
     table_widget->setColumnWidth(col_exec_quantity, 60);
 
-    connect(table_widget, SIGNAL(cellDoubleClicked(int,int)), SLOT(slot_clean_execs()));
-    table_widget->setToolTip(tr("Double click to clean executions"));
-
     //  setting up actions
     /*
     setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -220,6 +218,7 @@ void QExecsTable::__direct_add_new_execution(const mtk::msg::sub_product_code& p
 void QExecsTable::on_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_position_ls& exec)
 {
     execs2add_online.push_back(mtk::make_tuple(pc, exec));
+    execs_all.push_back(mtk::make_tuple(pc, exec));
     MTK_EXEC_MAX_FREC(mtk::dtSeconds(1))
         mediaObject->play();
     MTK_END_EXEC_MAX_FREC
@@ -265,4 +264,33 @@ void QExecsTable::update_sizes()
 void  QExecsTable::slot_clean_execs(void)
 {
     table_widget->setRowCount(0);
+    exec_in_table->clear();
+}
+
+void  QExecsTable::slot_show_all_execs(void)
+{
+    slot_clean_execs();
+    if(execs2add_loading.size()!=0)
+        execs2add_loading.clear();
+
+    for(mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> >::iterator it = execs_all.begin();  it != execs_all.end(); ++it)
+        execs2add_loading.push_back(*it);
+}
+
+
+void QExecsTable::contextMenuEvent(QContextMenuEvent *e)
+{
+    QMenu  menu;
+    {
+        QAction* action = new QAction(tr("clear"), this);
+        connect(action, SIGNAL(triggered()), this, SLOT(slot_clean_execs()));
+        menu.addAction(action);
+    }
+    {
+        QAction* action = new QAction(tr("show all execs"), this);
+        connect(action, SIGNAL(triggered()), this, SLOT(slot_show_all_execs()));
+        menu.addAction(action);
+    }
+    //menu.setStyleSheet(this->styleSheet());
+    menu.exec(this->mapToGlobal(e->pos()));
 }

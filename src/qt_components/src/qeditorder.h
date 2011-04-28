@@ -28,7 +28,9 @@ private:
     mtk::trd::msg::RQ_XX_LS  rq;
 
 
-    void check_if_order_can_be_sent(void);
+    bool check_if_order_can_be_sent(void);
+    void done(int);
+    void mouseDoubleClickEvent(QMouseEvent *);
 
 private slots:
     void on_account_currentIndexChanged(QString );

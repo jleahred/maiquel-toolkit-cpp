@@ -164,6 +164,7 @@ QDepth::QDepth(QWidget *parent) :
         title->setFrameShadow(QFrame::Plain);
         //title->setStyleSheet("color: rgba(30,0,100); background-color: rgba(207,213,235, 200);");
         title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
+        title->setLineWidth(2);
         //QFont font=title->font();
         //font.setBold(true);
         //title->setFont(font);
@@ -540,9 +541,11 @@ void QDepth::paint_focus(void)
 {
     //title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(191,219,255, 230); font-weight: 1000;"));
     title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(255,255,255); font-weight: 1000;"));
+    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 50);\n" "color: rgb(0, 220, 0);"));
 }
 
 void QDepth::remove_focus(void)
 {
     title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
+    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
 }

@@ -146,7 +146,7 @@ public:
     QColor  get_default_color(void)
     {
         if      (inner_order->serrors() != "")
-            return mtk_red;
+            return mtk_color_problem;
         else if (inner_order->in_market())
             //return mtk_yellow;
             return Qt::white;
@@ -283,12 +283,12 @@ public:
         if (buy_sell == mtk::trd::msg::buy)
         {
             item->setText(QObject::tr("buy"));
-            item->setBackgroundColor(mtk_green);
+            item->setBackgroundColor(mtk_color_buy);
         }
         else
         {
             item->setText(QObject::tr("sell"));
-            item->setBackgroundColor(mtk_red);
+            item->setBackgroundColor(mtk_color_problem);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }
@@ -538,6 +538,8 @@ void qorder_table::slot_apply_filter(const filter_data& fd)
     //if(fd.name == current_filter.name  &&  fd.client_code  ==  current_filter.client_code
     //                        &&  fd.market  ==  current_filter.market  &&  fd.product == current_filter.product)
     //    return;
+
+    orders2add_loading.clear();
 
     Q_EMIT(signal_named_changed(fd.name));
     orders->clear();

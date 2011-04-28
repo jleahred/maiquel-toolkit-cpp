@@ -15,6 +15,7 @@ public:
 
 private:
     void keyPressEvent(QKeyEvent *event);
+    QString textFromValue(double val) const;
 
 signals:
 
