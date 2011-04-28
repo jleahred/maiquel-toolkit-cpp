@@ -3,6 +3,8 @@
 
 #include <QMouseEvent>
 #include <QPainter>
+#include <QMessageBox>
+
 
 #include "qt_components/src/qmtk_misc.h"
 
@@ -34,9 +36,14 @@ void mtk_uTitle::updateBackground(bool show)
 void mtk_uTitle::mousePressEvent(QMouseEvent* event)
 {
     if (event->pos().x()  <  image_close.width())
+    {
     //if (event->pos().x()  >  this->width()-image_close.width())
         //dynamic_cast<mtkContainerWidget*>(this->parent())->close();
-        dynamic_cast<mtkContainerWidget*>(this->parent())->deleteLater();
+        if(QMessageBox::warning(this->parentWidget(), QLatin1String("CimdTrade"), tr("Do you want to remove the component?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+            dynamic_cast<mtkContainerWidget*>(this->parent())->deleteLater();
+        else
+            return;
+    }
     moving = true;
     updateBackground(true);
     event->accept(); // do not propagate

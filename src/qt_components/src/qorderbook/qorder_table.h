@@ -58,6 +58,8 @@ private:
     //QAction*  action_cancel;
     //QAction*  action_modif;
     void contextMenuEvent(QContextMenuEvent *);
+
+    void keyPressEvent(QKeyEvent *);
 };
 
 #endif // QORDER_TABLE_H

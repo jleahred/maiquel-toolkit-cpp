@@ -53,8 +53,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void contextMenuEvent ( QContextMenuEvent * event );
     //void paintEvent(QPaintEvent *);
-    void focusInEvent (QFocusEvent *) { raise(); this->update(); }
-    void focusOutEvent(QFocusEvent *) { raise(); this->update(); }
+    void focusInEvent (QFocusEvent *e) { raise(); this->update(); enable_actions();   mtkContainerWidget::focusInEvent(e);}
+    void focusOutEvent(QFocusEvent *e) { raise(); this->update(); disable_actions();  mtkContainerWidget::focusOutEvent(e);}
 
 
 
@@ -85,6 +85,10 @@ private:
     QAction* action_sell;
     QAction* action_hit_the_bid;
     QAction* action_lift_the_offer;
+
+    bool showing_menu;
+    void disable_actions(void);
+    void enable_actions(void);
 };
 
 #endif // QDEPTH_H

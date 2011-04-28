@@ -121,7 +121,9 @@ QMarginal::~QMarginal()
 
 
 QTableMarginal::QTableMarginal(QWidget *parent)
-    : QTableWidget(parent), startPos(-1,-1), action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0)
+    : QTableWidget(parent), startPos(-1,-1),
+      action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
+      showing_menu(false)
 {
     //this->setStyleSheet("background-color: rgb(191,219,255);");
     //color_product = QColor(191,219,255);
@@ -548,7 +550,11 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
 
     menu.addAction(action_hit_the_bid);
     menu.addAction(action_lift_the_offer);
+    showing_menu = true;
     menu.exec(event->globalPos());
+    showing_menu = false;
+    this->setFocus();
+    enable_actions();
 }
 
 
@@ -658,11 +664,7 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
             }
             else
             {
-                mtk::trd::msg::sub_position_ls     pos(
-                                                                  mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(2),  mtk::fnInc(1))
-                                                                , mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                , bs);
-                mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, pos, "cli_ref");
+                //   nothing
             }
         }
 
@@ -703,6 +705,31 @@ void QTableMarginal::remove_transparency(void)
     }
 }
 
+void QTableMarginal::disable_actions(void)
+{
+    if(showing_menu==false)
+    {
+        if(action_buy)
+        {
+            action_buy->setEnabled(false);
+            action_sell->setEnabled(false);
+            action_hit_the_bid->setEnabled(false);
+            action_lift_the_offer->setEnabled(false);
+        }
+    }
+}
+
+void QTableMarginal::enable_actions(void)
+{
+    if(action_buy)
+    {
+        action_buy->setEnabled(true);
+        action_sell->setEnabled(true);
+        action_hit_the_bid->setEnabled(true);
+        action_lift_the_offer->setEnabled(true);
+    }
+}
+
 
 
 YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
@@ -730,3 +757,5 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
         out     << *(m.table_marginals);
     return out;
 }
+
+

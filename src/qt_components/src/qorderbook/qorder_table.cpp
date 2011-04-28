@@ -5,7 +5,7 @@
 #include <QAction>
 #include <QHBoxLayout>
 #include <QMenu>
-
+#include <QMessageBox>
 
 #include "qmtk_misc.h"
 #include "qt_components/src/qcommontabledelegate.h"
@@ -497,8 +497,13 @@ void qorder_table::request_cancel(void)
 {
     int row = table_widget->currentRow();
     if (row==-1)        return;
-    const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
-    mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+
+    //  ask for cancelation
+    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to cancel the order?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+    {
+        const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
+        mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+    }
 }
 
 
@@ -515,11 +520,13 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
 
     if(fd.liveFilter == filter_data::lfAll)
         ++matches;
-    else if(fd.liveFilter == filter_data::lfLive  &&   order->in_market())
+    else if(fd.liveFilter == filter_data::lfLive  &&   (order->is_canceled()== false  &&  order->is_full_executed()==false))
         ++matches;
     else if(fd.liveFilter == filter_data::lfLiveExecuted  &&
-                    ((order->last_confirmation().HasValue() &&  order->last_confirmation().Get().confirmated_info.total_execs.quantity.GetIntCode() > 0)
-                    || order->in_market()))
+                    ( (order->is_canceled()== false  &&  order->is_full_executed()==false)       //  alive
+                      ||
+                      (order->last_confirmation().HasValue() &&  order->last_confirmation().Get().confirmated_info.total_execs.quantity.GetIntCode() > 0)
+                      ))
         ++matches;
 
     if(matches==3)  return true;
@@ -629,12 +636,14 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         QAction* action = new QAction(tr("cancel"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
         action->setEnabled(enabled_cancel);
+        action->setShortcut(Qt::Key_Delete);
         menu.addAction(action);
     }
     {
         QAction* action = new QAction(tr("modif"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(request_modif()));
         action->setEnabled(enabled_modif);
+        action->setShortcut(Qt::Key_Enter  |  Qt::Key_Return);
         menu.addAction(action);
     }
     {
@@ -696,4 +705,38 @@ void qorder_table::slot_all_orders(void)
 {
     current_filter.liveFilter = filter_data::lfAll;
     slot_apply_filter(current_filter);
+}
+
+
+void qorder_table::keyPressEvent(QKeyEvent *e)
+{
+    bool enabled_cancel=false;
+    bool enabled_modif = false;
+    int row = table_widget->currentRow();
+    if (row==-1)
+    {
+        enabled_cancel = false;
+        enabled_modif = false;
+    }
+    else
+    {
+        mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
+
+        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
+        if(order->is_canceled()  ||  order->is_full_executed())
+        {
+            enabled_cancel = false;
+            enabled_modif = false;
+        }
+        else
+        {
+            enabled_cancel = true;
+            enabled_modif = true;
+        }
+    }
+
+    if(enabled_modif  &&  e->key() == Qt::Key_Enter  ||  e->key() == Qt::Key_Return)
+        request_modif();
+    else if(enabled_cancel  &&  e->key() == Qt::Key_Delete)
+        request_cancel();
 }

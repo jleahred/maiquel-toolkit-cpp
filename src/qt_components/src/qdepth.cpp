@@ -135,7 +135,8 @@ private:
 QDepth::QDepth(QWidget *parent) :
     mtkContainerWidget(parent),
     table_widget(new QTableDeph(this)),
-    action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0)
+    action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
+    showing_menu(false)
 {
     this->setGeometry(QRect(5, 5, 290, 300));
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -375,11 +376,7 @@ void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
         }
         else
         {
-            mtk::trd::msg::sub_position_ls     pos(
-                                                              mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(2),  mtk::fnInc(1))
-                                                            , mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                            , bs);
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
+               //   nothing
         }
     }
 }
@@ -407,6 +404,7 @@ void QDepth::dragEnterEvent(QDragEnterEvent *event)
 void QDepth::dropEvent(QDropEvent *event)
 {
     subscribe_to(get_product_code(event));
+    this->setFocus();
 }
 
 void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
@@ -474,7 +472,11 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
 
     menu.addAction(action_hit_the_bid);
     menu.addAction(action_lift_the_offer);
+    showing_menu = true;
     menu.exec(event->globalPos());
+    showing_menu = false;
+    this->setFocus();
+    enable_actions();
 }
 
 
@@ -509,3 +511,28 @@ void QDepth::paintEvent   (QPaintEvent *event)
     qpainter.drawLine(4, this->height()-5, this->width()-5, this->height()-5);
 }
 */
+
+void QDepth::disable_actions(void)
+{
+    if(showing_menu==false)
+    {
+        if(action_buy)
+        {
+            action_buy->setEnabled(false);
+            action_sell->setEnabled(false);
+            action_hit_the_bid->setEnabled(false);
+            action_lift_the_offer->setEnabled(false);
+        }
+    }
+}
+
+void QDepth::enable_actions(void)
+{
+    if(action_buy)
+    {
+        action_buy->setEnabled(true);
+        action_sell->setEnabled(true);
+        action_hit_the_bid->setEnabled(true);
+        action_lift_the_offer->setEnabled(true);
+    }
+}

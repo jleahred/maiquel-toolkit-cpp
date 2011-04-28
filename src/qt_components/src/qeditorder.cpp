@@ -75,34 +75,39 @@ void QEditOrder::check_if_order_can_be_sent(void)
     ui->message->setText(QLatin1String(""));
 
     int pos = 0;
-    QString text = ui->price->text();
-    if(ui->price->validate(text, pos) != QValidator::Acceptable)
-    {
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-        ui->message->setText(tr("invalid price"));
-    }
+    QString text;
+
     text = ui->quantity->text();
     if(ui->quantity->validate(text, pos) != QValidator::Acceptable)
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->message->setText(tr("invalid quantity"));
     }
-    if(ui->market->text().isEmpty())
+
+    text = ui->price->text();
+    if(ui->price->validate(text, pos) != QValidator::Acceptable)
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-        ui->message->setText(tr("empty market"));
+        ui->message->setText(tr("invalid price"));
     }
-    if(ui->product->text().isEmpty())
-    {
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-        ui->message->setText(tr("empty product"));
-    }
+
     if(ui->account->currentIndex() == -1)
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
         ui->message->setText(tr("empty account"));
     }
 
+    if(ui->product->text().isEmpty())
+    {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->message->setText(tr("empty product"));
+    }
+
+    if(ui->market->text().isEmpty())
+    {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->message->setText(tr("empty market"));
+    }
 }
 
 

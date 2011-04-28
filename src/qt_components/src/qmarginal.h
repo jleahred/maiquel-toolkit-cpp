@@ -110,10 +110,17 @@ private:
 
 
 
+
+    void focusInEvent (QFocusEvent *e) { this->update(); enable_actions();  QTableWidget::focusInEvent(e);}
+    void focusOutEvent(QFocusEvent *e) { this->update(); disable_actions(); QTableWidget::focusOutEvent(e); }
     QAction* action_buy;
     QAction* action_sell;
     QAction* action_hit_the_bid;
     QAction* action_lift_the_offer;
+
+    bool showing_menu;
+    void disable_actions(void);
+    void enable_actions(void);
 };
 
 
