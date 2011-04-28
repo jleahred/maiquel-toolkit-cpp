@@ -735,7 +735,7 @@ void qorder_table::keyPressEvent(QKeyEvent *e)
         }
     }
 
-    if(enabled_modif  &&  e->key() == Qt::Key_Enter  ||  e->key() == Qt::Key_Return)
+    if(enabled_modif  &&  (e->key() == Qt::Key_Enter  ||  e->key() == Qt::Key_Return))
         request_modif();
     else if(enabled_cancel  &&  e->key() == Qt::Key_Delete)
         request_cancel();

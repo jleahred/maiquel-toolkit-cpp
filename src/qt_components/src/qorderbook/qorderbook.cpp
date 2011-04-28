@@ -46,9 +46,9 @@ namespace {
 
 
 
-void on_request_with_user_check(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled)
+void on_request_with_user_check(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq);
+    QEditOrder eo(rq, agressive);
     if (eo.exec())
     {
         rq = eo.get_request();

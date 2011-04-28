@@ -66,7 +66,7 @@ struct s_status
     mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_ls> >     ls_orders;
 
     mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls>&  >          sig_order_ls_new;
-    mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&    >                                       sig_request_hook;
+    mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool& /*canceled*/, bool  /*aggre*/   >          sig_request_hook;
     mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_position_ls&>  sig_execution;
     
 };
@@ -212,7 +212,7 @@ mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void)
 
 
 
-mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&    >&  get_signal_request_hook         (void)
+mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool&, bool    >&  get_signal_request_hook         (void)
 {
     return get_status_ref().sig_request_hook;
 }
@@ -238,7 +238,7 @@ mtk::CountPtr<trd_cli_ls>   rq_nw_ls    (                             const mtk:
     return order;
 }
 
-mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref)
+mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref, bool agressive)
 {
     mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
     mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
@@ -251,7 +251,7 @@ mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (                             con
                                         cli_ref,
                                         mtk::admin::get_control_fluct_info()));
     bool canceled=false;
-    get_status_ref().sig_request_hook.emit(rq, canceled);
+    get_status_ref().sig_request_hook.emit(rq, canceled, agressive);
     if (!canceled)
     {
         mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
@@ -312,7 +312,7 @@ mtk::CountPtr<trd_cli_ls>   rq_md_ls_manual    (const msg::sub_order_id& ord_id)
     mtk::trd::msg::RQ_MD_LS rq(get_last_request_or_confirmation(order));
 
     bool canceled=false;
-    get_status_ref().sig_request_hook.emit(rq, canceled);
+    get_status_ref().sig_request_hook.emit(rq, canceled, false);
     if (!canceled)
     {
         order->rq_md(rq);

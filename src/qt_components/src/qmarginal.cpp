@@ -127,6 +127,7 @@ QTableMarginal::QTableMarginal(QWidget *parent)
 {
     //this->setStyleSheet("background-color: rgb(191,219,255);");
     //color_product = QColor(191,219,255);
+    this->horizontalHeader()->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
 
 
     //color_product = this->horizontalHeader()->palette().background().color();
@@ -188,15 +189,16 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     connect(action_sell, SIGNAL(triggered()), this, SLOT(request_sell()));
     this->addAction(action_sell);
 
+    action_lift_the_offer = new QAction(tr("lift the offer"), this);
+    action_lift_the_offer->setShortcut(Qt::Key_F8);
+    connect(action_lift_the_offer, SIGNAL(triggered()), this, SLOT(request_lift_the_offer()));
+    this->addAction(action_lift_the_offer);
+
     action_hit_the_bid = new QAction(tr("hit the bid"), this);
-    action_hit_the_bid->setShortcut(Qt::Key_F8);
+    action_hit_the_bid->setShortcut(Qt::Key_F12);
     connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
     this->addAction(action_hit_the_bid);
 
-    action_lift_the_offer = new QAction(tr("lift the offer"), this);
-    action_lift_the_offer->setShortcut(Qt::Key_F12);
-    connect(action_lift_the_offer, SIGNAL(triggered()), this, SLOT(request_lift_the_offer()));
-    this->addAction(action_lift_the_offer);
 }
 
 void QTableMarginal::slot_column_resized(int li, int, int)
@@ -548,8 +550,8 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
         menu.addAction(action);
     }
 
-    menu.addAction(action_hit_the_bid);
     menu.addAction(action_lift_the_offer);
+    menu.addAction(action_hit_the_bid);
     showing_menu = true;
     menu.exec(event->globalPos());
     showing_menu = false;
@@ -660,7 +662,7 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
                                                                   price
                                                                 , quantity
                                                                 , bs);
-                mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, pos, "cli_ref");
+                mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, pos, "cli_ref", true);
             }
             else
             {

@@ -15,7 +15,7 @@ class QEditOrder : public QDialog
 
 public:
     //explicit QEditOrder(QWidget *parent = 0);
-    explicit QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, QWidget *parent = 0);
+    explicit QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidget *parent = 0);
 
     ~QEditOrder();
 

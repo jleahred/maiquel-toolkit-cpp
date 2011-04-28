@@ -53,8 +53,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void contextMenuEvent ( QContextMenuEvent * event );
     //void paintEvent(QPaintEvent *);
-    void focusInEvent (QFocusEvent *e) { raise(); this->update(); enable_actions();   mtkContainerWidget::focusInEvent(e);}
-    void focusOutEvent(QFocusEvent *e) { raise(); this->update(); disable_actions();  mtkContainerWidget::focusOutEvent(e);}
+    void focusInEvent (QFocusEvent *e) { paint_focus();  raise(); this->update(); enable_actions();   mtkContainerWidget::focusInEvent(e);}
+    void focusOutEvent(QFocusEvent *e) { remove_focus(); raise(); this->update(); disable_actions();  mtkContainerWidget::focusOutEvent(e);}
 
 
 
@@ -89,6 +89,9 @@ private:
     bool showing_menu;
     void disable_actions(void);
     void enable_actions(void);
+
+    void paint_focus(void);
+    void remove_focus(void);
 };
 
 #endif // QDEPTH_H

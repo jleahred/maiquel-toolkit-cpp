@@ -243,16 +243,15 @@ QDepth::QDepth(QWidget *parent) :
     connect(action_sell, SIGNAL(triggered()), this, SLOT(request_sell()));
     this->addAction(action_sell);
 
-    action_hit_the_bid = new QAction(tr("hit the bid"), this);
-    action_hit_the_bid->setShortcut(Qt::Key_F8);
-    connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
-    this->addAction(action_hit_the_bid);
-
     action_lift_the_offer = new QAction(tr("lift the offer"), this);
-    action_lift_the_offer->setShortcut(Qt::Key_F12);
+    action_lift_the_offer->setShortcut(Qt::Key_F8);
     connect(action_lift_the_offer, SIGNAL(triggered()), this, SLOT(request_lift_the_offer()));
     this->addAction(action_lift_the_offer);
 
+    action_hit_the_bid = new QAction(tr("hit the bid"), this);
+    action_hit_the_bid->setShortcut(Qt::Key_F12);
+    connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
+    this->addAction(action_hit_the_bid);
 }
 
 QDepth::~QDepth()
@@ -372,7 +371,7 @@ void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
                                                               price
                                                             , quantity
                                                             , bs);
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref", true);
         }
         else
         {
@@ -470,8 +469,8 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
         menu.addAction(action);
     }
 
-    menu.addAction(action_hit_the_bid);
     menu.addAction(action_lift_the_offer);
+    menu.addAction(action_hit_the_bid);
     showing_menu = true;
     menu.exec(event->globalPos());
     showing_menu = false;
@@ -535,4 +534,15 @@ void QDepth::enable_actions(void)
         action_hit_the_bid->setEnabled(true);
         action_lift_the_offer->setEnabled(true);
     }
+}
+
+void QDepth::paint_focus(void)
+{
+    //title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(191,219,255, 230); font-weight: 1000;"));
+    title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(255,255,255); font-weight: 1000;"));
+}
+
+void QDepth::remove_focus(void)
+{
+    title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
 }

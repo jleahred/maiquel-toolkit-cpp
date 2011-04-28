@@ -20,7 +20,7 @@ namespace mtk{namespace trd{
         
         //  INPUT
         mtk::CountPtr<trd_cli_ls>   rq_nw_ls        (                                   const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref);
-        mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual (                                   const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual (                                   const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref, bool agressive=false);
         mtk::CountPtr<trd_cli_ls>   rq_md_ls        ( const msg::sub_order_id& ord_id,                                          const msg::sub_position_ls& rq_pos, const std::string& cli_ref);
         mtk::CountPtr<trd_cli_ls>   rq_md_ls_manual ( const msg::sub_order_id& ord_id);
         mtk::CountPtr<trd_cli_ls>   rq_cc_ls        ( const msg::sub_order_id& ord_id);
@@ -36,7 +36,7 @@ namespace mtk{namespace trd{
         mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void);
         
         //  hooks
-        mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool& /* canceled */    >&   get_signal_request_hook         (void);
+        mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool& /* canceled */, bool /*agress*/    >&   get_signal_request_hook         (void);
         
         
     };  //  namespace  trd_cli_ord_book {

@@ -26,14 +26,14 @@ QEditOrder::~QEditOrder()
 }
 
 
-QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, QWidget *parent) :
+QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidget *parent) :
         QDialog(parent),
         ui(new Ui::QEditOrder),
         rq(_rq)
 {
     ui->setupUi(this);
     QFont font(this->font());
-    font.setPixelSize(get_base_font_size());
+    font.setPixelSize(get_base_font_size()+2);
     this->setFont(font);
 
     rq = _rq;
@@ -65,8 +65,16 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, QWidget *parent) :
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
 
     this->check_if_order_can_be_sent();
-    ui->price->setFocus();
-    ui->price->selectAll();
+    if(agressive==false)
+    {
+        ui->price->setFocus();
+        ui->price->selectAll();
+    }
+    else
+    {
+        ui->quantity->setFocus();
+        ui->quantity->selectAll();
+    }
 }
 
 void QEditOrder::check_if_order_can_be_sent(void)
