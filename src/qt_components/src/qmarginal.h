@@ -16,6 +16,9 @@
 #include "components/prices/cli/price_manager.h"
 
 #include "components/trading/msg_trd_common_support.h"
+#include "yaml/yaml.h"
+
+
 
 
 
@@ -59,13 +62,14 @@ class QTableMarginal : public QTableWidget
 {
     Q_OBJECT
     typedef  QTableMarginal CLASS_NAME;
+    friend YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m);
+
 
 public:
     explicit QTableMarginal(QWidget *parent = 0);
     ~QTableMarginal(){}
     void make_transparent(void);
     void remove_transparency(void);
-    std::string  get_config(void);
 
 
 protected:
@@ -121,12 +125,13 @@ class QMarginal : public mtkContainerWidget
 {
     Q_OBJECT
     typedef  QMarginal CLASS_NAME;
+    friend YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m);
 
 public:
     explicit QMarginal(QWidget *parent = 0);
     ~QMarginal();
 
-    std::string  get_config(void);
+
 
 signals:
 
@@ -144,6 +149,10 @@ private:
     QTableMarginal *table_marginals;
 
 };
+
+
+
+
 
 #endif // QMARGINAL_H
 

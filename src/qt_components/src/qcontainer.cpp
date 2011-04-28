@@ -7,6 +7,8 @@
 
 #include <QMouseEvent>
 #include <QVBoxLayout>
+#include <QMessageBox>
+
 
 #include "qt_components/src/qdepth.h"
 #include "qt_components/src/qmarginal.h"
@@ -50,22 +52,43 @@ void qContainer::save_config(void)
     config_file.open ("cimdtrade.cfg");
 
 
-   YAML::Emitter out;
-   out
-    <<  YAML::BeginMap
-                <<  YAML::Key << "version"   <<  YAML::Value << 1
-                << YAML::Key  << "marginals"  << YAML::Value
-                                                        << YAML::BeginSeq
-                                                            << 111
-                                                            << 222
-                                                        << YAML::EndSeq
-
-    <<  YAML::EndMap;
+    try
+    {
+        YAML::Emitter out;
+        out
+        <<  YAML::BeginMap
+                    <<  YAML::Key << "version"   <<  YAML::Value << 1;
 
 
+                    out << YAML::Key  << "marginals"  << YAML::Value
+                                                            << YAML::BeginSeq;
+            int located_marginals=0;
+            for(int i=0; i<this->widget()->children().count(); ++i)
+            {
+                QMarginal* marginal = dynamic_cast<QMarginal*>(this->widget()->children().at(i));
+                if(marginal!=0)
+                {
+                    out << *marginal;
+                    ++located_marginals;
+                }
+            }
+            if(located_marginals==0)        out << YAML::Null;
+                                                    out    << YAML::EndSeq;
 
-    config_file << out.c_str();
-    config_file.close();
+                    out << YAML::Key  << "depths"  << YAML::Value
+                                                            << YAML::Flow
+                                                            << YAML::BeginSeq
+                                                            << YAML::EndSeq
+        <<  YAML::EndMap;
+
+        config_file << out.c_str();
+        config_file.close();
+    }
+    catch(...)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "save_config", "error saving config", mtk::alPriorError));
+        QMessageBox(QMessageBox::Critical, tr("Error"), tr("Error saving configuration")).exec();
+    }
 }
 
 void qContainer::load_config(void)

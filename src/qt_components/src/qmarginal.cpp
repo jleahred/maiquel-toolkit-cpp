@@ -704,18 +704,29 @@ void QTableMarginal::remove_transparency(void)
 }
 
 
-std::string  QMarginal::get_config(void)
+
+YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
 {
-    if(table_marginals)
+    out     << YAML::BeginMap
+            << YAML::Key   <<  "version"  << YAML::Value << "1"
+            << YAML::Key   <<  "products"
+            << YAML::Value << YAML::BeginSeq;
+
+    for(mtk::list< mtk::CountPtr<marginal_in_table> >::const_iterator it = m.marginals.begin(); it!= m.marginals.end(); ++it)
     {
-        return table_marginals->get_config();
+        if((*it)->price_manager.isValid())
+            out <<  (*it)->price_manager->get_product_code();
     }
+
+
+    out << YAML::EndSeq;
+    return out;
 }
 
-std::string  QTableMarginal::get_config(void)
-{
-    for(mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it= marginals.begin(); it != marginals.end(); ++it)
-    {
 
-    }
+YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
+{
+    if(m.table_marginals)
+        out     << *(m.table_marginals);
+    return out;
 }
