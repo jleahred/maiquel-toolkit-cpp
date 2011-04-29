@@ -737,27 +737,59 @@ void QTableMarginal::enable_actions(void)
 
 YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
 {
-    out     << YAML::BeginMap
-            << YAML::Key   <<  "version"  << YAML::Value << "1"
-            << YAML::Key   <<  "products"
-            << YAML::Value << YAML::BeginSeq;
+    out     << YAML::BeginMap;
+    //  writing products
+    out << YAML::Key   <<  "products"
+        << YAML::Value << YAML::BeginSeq;
 
-    for(mtk::list< mtk::CountPtr<marginal_in_table> >::const_iterator it = m.marginals.begin(); it!= m.marginals.end(); ++it)
+        for(int i=0; i<m.rowCount(); ++i)
     {
-        if((*it)->price_manager.isValid())
-            out <<  (*it)->price_manager->get_product_code();
+        QTableWidgetItemProduct* iproduct = dynamic_cast<QTableWidgetItemProduct*>(m.item(m.rowAt(i), 0));
+        if(iproduct!=0)
+        {
+            out <<  iproduct->product_code;
+        }
+
     }
-
-
     out << YAML::EndSeq;
+    //  end products
+
+
+    //  writing sections sizes
+    out << YAML::Key   <<  "sect_sizes"
+            << YAML::Value << YAML::Flow  << YAML::BeginSeq;
+    for(int i=0; i<m.horizontalHeader()->count(); ++i)
+    {
+        out << m.horizontalHeader()->sectionSize(i);
+    }
+    out << YAML::EndSeq;
+    //  writing sections sizes
+
+    out << YAML::EndMap;
     return out;
 }
 
 
 YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
 {
+    std::cout << m.table_marginals->rowCount() << std::endl;
+    if(m.table_marginals->rowCount() == 0)      return out;
+
+
+    out     << YAML::BeginMap;
+
+    //  writing component
+    out << YAML::Key   <<  "component" << YAML::Value << static_cast<const mtkContainerWidget&>(m);
+    //  end component
+
+    //  writing QTableMarginal
     if(m.table_marginals)
-        out     << *(m.table_marginals);
+        out << YAML::Key   <<  "qtablemarginal"  << YAML::Value   << *(m.table_marginals);
+    //  end QTableMarginal
+
+
+    out << YAML::EndMap;
+
     return out;
 }
 

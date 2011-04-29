@@ -80,7 +80,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
     if(s_default_qty.HasValue()==false)
     {
-        ui->message->setText(tr("you can configure default qty with ctrl-dblclick on qty label"));
+        ui->message->setText(tr("you can configure default qty with dblclick on qty label"));
     }
     else
     {

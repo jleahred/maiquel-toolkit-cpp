@@ -9,6 +9,7 @@
 #include "components/prices/msg_prices.h"
 #include "components/prices/cli/price_manager.h"
 #include "components/trading/msg_trd_common_support.h"
+#include "yaml/yaml.h"
 
 
 
@@ -27,6 +28,7 @@ class QDepth : public mtkContainerWidget, public mtk::SignalReceptor
     Q_OBJECT
     typedef  QDepth CLASS_NAME;
     friend class QTableDeph;
+    friend YAML::Emitter& operator << (YAML::Emitter& out, const QDepth& m);
 
 public:
     explicit QDepth(QWidget *parent = 0);
@@ -93,5 +95,9 @@ private:
     void paint_focus(void);
     void remove_focus(void);
 };
+
+
+YAML::Emitter& operator << (YAML::Emitter& out, const QDepth& m);
+
 
 #endif // QDEPTH_H

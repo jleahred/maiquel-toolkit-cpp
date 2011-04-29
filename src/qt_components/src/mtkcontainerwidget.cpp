@@ -225,3 +225,20 @@ void mtkContainerWidget::paintEvent   (QPaintEvent *event)
     qpainter.drawLine(this->width()-5, 4, this->width()-5, this->height()-5);
     qpainter.drawLine(4, this->height()-5, this->width()-5, this->height()-5);
 }
+
+
+YAML::Emitter& operator << (YAML::Emitter& out, const mtkContainerWidget& m)
+{
+    out     << YAML::BeginMap;
+
+    //  writing geometry
+    out << YAML::Key   <<  "geometry";
+    out << YAML::Value << YAML::Flow << YAML::BeginSeq;
+    out << m.geometry().top() << m.geometry().left() << m.geometry().width() << m.geometry().height();
+    out << YAML::EndSeq;
+    //  end geometry
+
+    out << YAML::EndMap;
+
+    return out;
+}

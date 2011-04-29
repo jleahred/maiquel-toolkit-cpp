@@ -57,10 +57,10 @@ void qContainer::save_config(void)
         YAML::Emitter out;
         out
         <<  YAML::BeginMap
-                    <<  YAML::Key << "version"   <<  YAML::Value << 1;
+                    <<  YAML::Key << "v"   <<  YAML::Value << 1;
 
 
-                    out << YAML::Key  << "marginals"  << YAML::Value
+                    out << YAML::Key  << "tables_marginal"  << YAML::Value
                                                             << YAML::BeginSeq;
             int located_marginals=0;
             for(int i=0; i<this->widget()->children().count(); ++i)
@@ -72,14 +72,27 @@ void qContainer::save_config(void)
                     ++located_marginals;
                 }
             }
-            if(located_marginals==0)        out << YAML::Null;
+            out << YAML::Null;
                                                     out    << YAML::EndSeq;
 
-                    out << YAML::Key  << "depths"  << YAML::Value
-                                                            << YAML::Flow
-                                                            << YAML::BeginSeq
-                                                            << YAML::EndSeq
-        <<  YAML::EndMap;
+                    out << YAML::Key  << "tables_depths"  << YAML::Value
+                                                            << YAML::BeginSeq;
+
+                                                            int located_depths=0;
+                                                            for(int i=0; i<this->widget()->children().count(); ++i)
+                                                            {
+                                                                QDepth* depth = dynamic_cast<QDepth*>(this->widget()->children().at(i));
+                                                                if(depth!=0)
+                                                                {
+                                                                    out << *depth;
+                                                                    ++located_depths;
+                                                                }
+                                                            }
+                                                            if(located_depths==0)        out << YAML::Null;
+
+
+                                                            out << YAML::EndSeq;
+        out <<  YAML::EndMap;
 
         config_file << out.c_str();
         config_file.close();

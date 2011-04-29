@@ -6,6 +6,9 @@
 #include <QImage>
 
 
+#include "yaml/yaml.h"
+
+
 class QMouseEvent;
 
 
@@ -75,6 +78,8 @@ protected:
 class mtkContainerWidget : public QWidget
 {
     Q_OBJECT
+    friend YAML::Emitter& operator << (YAML::Emitter& out, const mtkContainerWidget& m);
+
 public:
     explicit mtkContainerWidget(QWidget *parent = 0);
     virtual ~mtkContainerWidget(){}
@@ -109,6 +114,11 @@ private slots:
     void resize_mouseMoveEvent(QMouseEvent* event);
 
 };
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& out, const mtkContainerWidget& m);
+
 
 
 

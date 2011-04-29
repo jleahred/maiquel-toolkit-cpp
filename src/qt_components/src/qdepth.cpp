@@ -549,3 +549,23 @@ void QDepth::remove_focus(void)
     title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
     table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
 }
+
+
+YAML::Emitter& operator << (YAML::Emitter& out, const QDepth& m)
+{
+    out     << YAML::BeginMap;
+
+    //  writing component
+    out << YAML::Key   <<  "component" << YAML::Value << static_cast<const mtkContainerWidget&>(m);
+    //  end component
+
+    //  writing product
+    if(m.price_manager.isValid())
+        out << YAML::Key   <<  "product_code"  << YAML::Value   << m.price_manager->get_product_code();
+    //  end product
+
+
+    out << YAML::EndMap;
+
+    return out;
+}
