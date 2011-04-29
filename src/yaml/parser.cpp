@@ -1,63 +1,67 @@
-#include "crt.h"
-#include "parser.h"
+#include "yaml/parser.h"
+#include "directives.h"
+#include "yaml/eventhandler.h"
+#include "yaml/exceptions.h"
+#include "yaml/node.h"
+#include "nodebuilder.h"
 #include "scanner.h"
+#include "singledocparser.h"
+#include "tag.h"
 #include "token.h"
-#include "exceptions.h"
 #include <sstream>
 #include <cstdio>
 
 namespace YAML
 {
-	Parser::Parser(std::istream& in): m_pScanner(0)
+	Parser::Parser()
+	{
+	}
+	
+	Parser::Parser(std::istream& in)
 	{
 		Load(in);
 	}
 
 	Parser::~Parser()
 	{
-		delete m_pScanner;
 	}
 
 	Parser::operator bool() const
 	{
-		return !m_pScanner->empty();
+		return m_pScanner.get() && !m_pScanner->empty();
 	}
 
 	void Parser::Load(std::istream& in)
 	{
-		delete m_pScanner;
-		m_pScanner = new Scanner(in);
-		m_state.Reset();
+		m_pScanner.reset(new Scanner(in));
+		m_pDirectives.reset(new Directives);
+	}
+
+	// HandleNextDocument
+	// . Handles the next document
+	// . Throws a ParserException on error.
+	// . Returns false if there are no more documents
+	bool Parser::HandleNextDocument(EventHandler& eventHandler)
+	{
+		if(!m_pScanner.get())
+			return false;
+
+		ParseDirectives();
+		if(m_pScanner->empty())
+			return false;
+		
+		SingleDocParser sdp(*m_pScanner, *m_pDirectives);
+		sdp.HandleDocument(eventHandler);
+		return true;
 	}
 
 	// GetNextDocument
 	// . Reads the next document in the queue (of tokens).
 	// . Throws a ParserException on error.
-	void Parser::GetNextDocument(Node& document)
+	bool Parser::GetNextDocument(Node& document)
 	{
-		// clear node
-		document.Clear();
-
-		// first read directives
-		ParseDirectives();
-
-		// we better have some tokens in the queue
-		if(m_pScanner->empty())
-			return;
-
-		// first eat doc start (optional)
-		if(m_pScanner->peek().type == Token::DOC_START)
-			m_pScanner->pop();
-
-		// now parse our root node
-		document.Parse(m_pScanner, m_state);
-
-		// and finally eat any doc ends we see
-		while(!m_pScanner->empty() && m_pScanner->peek().type == Token::DOC_END)
-			m_pScanner->pop();
-
-		// clear anchors from the scanner, which are no longer relevant
-		m_pScanner->ClearAnchors();
+		NodeBuilder builder(document);
+		return HandleNextDocument(builder);
 	}
 
 	// ParseDirectives
@@ -77,55 +81,66 @@ namespace YAML
 			// we keep the directives from the last document if none are specified;
 			// but if any directives are specific, then we reset them
 			if(!readDirective)
-				m_state.Reset();
+				m_pDirectives.reset(new Directives);
 
 			readDirective = true;
-			HandleDirective(&token);
+			HandleDirective(token);
 			m_pScanner->pop();
 		}
 	}
 
-	void Parser::HandleDirective(Token *pToken)
+	void Parser::HandleDirective(const Token& token)
 	{
-		if(pToken->value == "YAML")
-			HandleYamlDirective(pToken);
-		else if(pToken->value == "TAG")
-			HandleTagDirective(pToken);
+		if(token.value == "YAML")
+			HandleYamlDirective(token);
+		else if(token.value == "TAG")
+			HandleTagDirective(token);
 	}
 
 	// HandleYamlDirective
 	// . Should be of the form 'major.minor' (like a version number)
-	void Parser::HandleYamlDirective(Token *pToken)
+	void Parser::HandleYamlDirective(const Token& token)
 	{
-		if(pToken->params.size() != 1)
-			throw ParserException(pToken->mark, ErrorMsg::YAML_DIRECTIVE_ARGS);
+		if(token.params.size() != 1)
+			throw ParserException(token.mark, ErrorMsg::YAML_DIRECTIVE_ARGS);
+		
+		if(!m_pDirectives->version.isDefault)
+			throw ParserException(token.mark, ErrorMsg::REPEATED_YAML_DIRECTIVE);
 
-		std::stringstream str(pToken->params[0]);
-		str >> m_state.version.major;
+		std::stringstream str(token.params[0]);
+		str >> m_pDirectives->version.major;
 		str.get();
-		str >> m_state.version.minor;
+		str >> m_pDirectives->version.minor;
 		if(!str || str.peek() != EOF)
-			throw ParserException(pToken->mark, ErrorMsg::YAML_VERSION + pToken->params[0]);
+			throw ParserException(token.mark, std::string(ErrorMsg::YAML_VERSION) + token.params[0]);
 
-		if(m_state.version.major > 1)
-			throw ParserException(pToken->mark, ErrorMsg::YAML_MAJOR_VERSION);
+		if(m_pDirectives->version.major > 1)
+			throw ParserException(token.mark, ErrorMsg::YAML_MAJOR_VERSION);
 
+		m_pDirectives->version.isDefault = false;
 		// TODO: warning on major == 1, minor > 2?
 	}
 
 	// HandleTagDirective
 	// . Should be of the form 'handle prefix', where 'handle' is converted to 'prefix' in the file.
-	void Parser::HandleTagDirective(Token *pToken)
+	void Parser::HandleTagDirective(const Token& token)
 	{
-		if(pToken->params.size() != 2)
-			throw ParserException(pToken->mark, ErrorMsg::TAG_DIRECTIVE_ARGS);
+		if(token.params.size() != 2)
+			throw ParserException(token.mark, ErrorMsg::TAG_DIRECTIVE_ARGS);
 
-		std::string handle = pToken->params[0], prefix = pToken->params[1];
-		m_state.tags[handle] = prefix;
+		const std::string& handle = token.params[0];
+		const std::string& prefix = token.params[1];
+		if(m_pDirectives->tags.find(handle) != m_pDirectives->tags.end())
+			throw ParserException(token.mark, ErrorMsg::REPEATED_TAG_DIRECTIVE);
+		
+		m_pDirectives->tags[handle] = prefix;
 	}
 
 	void Parser::PrintTokens(std::ostream& out)
 	{
+		if(!m_pScanner.get())
+			return;
+		
 		while(1) {
 			if(m_pScanner->empty())
 				break;

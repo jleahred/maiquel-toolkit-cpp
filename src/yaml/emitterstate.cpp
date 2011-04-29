@@ -1,14 +1,15 @@
 #include "emitterstate.h"
-#include "exceptions.h"
+#include "yaml/exceptions.h"
 
 namespace YAML
 {
-	EmitterState::EmitterState(): m_isGood(true), m_curIndent(0), m_requiresSeparation(false)
+	EmitterState::EmitterState(): m_isGood(true), m_curIndent(0), m_requiresSoftSeparation(false), m_requiresHardSeparation(false)
 	{
 		// start up
 		m_stateStack.push(ES_WAITING_FOR_DOC);
 		
 		// set default global manipulators
+		m_charset.set(EmitNonAscii);
 		m_strFmt.set(Auto);
 		m_boolFmt.set(TrueFalseBool);
 		m_boolLengthFmt.set(LongBool);
@@ -24,18 +25,6 @@ namespace YAML
 	
 	EmitterState::~EmitterState()
 	{
-		while(!m_groups.empty())
-			_PopGroup();
-	}
-	
-	std::auto_ptr <EmitterState::Group> EmitterState::_PopGroup()
-	{
-		if(m_groups.empty())
-			return std::auto_ptr <Group> (0);
-		
-		std::auto_ptr <Group> pGroup(m_groups.top());
-		m_groups.pop();
-		return pGroup;
 	}
 
 	// SetLocalValue
@@ -43,6 +32,7 @@ namespace YAML
 	// . Only the ones that make sense will be accepted
 	void EmitterState::SetLocalValue(EMITTER_MANIP value)
 	{
+		SetOutputCharset(value, LOCAL);
 		SetStringFormat(value, LOCAL);
 		SetBoolFormat(value, LOCAL);
 		SetBoolCaseFormat(value, LOCAL);
@@ -55,10 +45,10 @@ namespace YAML
 	
 	void EmitterState::BeginGroup(GROUP_TYPE type)
 	{
-		unsigned lastIndent = (m_groups.empty() ? 0 : m_groups.top()->indent);
+		unsigned lastIndent = (m_groups.empty() ? 0 : m_groups.top().indent);
 		m_curIndent += lastIndent;
 		
-		std::auto_ptr <Group> pGroup(new Group(type));
+		std::auto_ptr<Group> pGroup(new Group(type));
 		
 		// transfer settings (which last until this group is done)
 		pGroup->modifiedSettings = m_modifiedSettings;
@@ -68,7 +58,7 @@ namespace YAML
 		pGroup->indent = GetIndent();
 		pGroup->usingLongKey = (GetMapKeyFormat() == LongKey ? true : false);
 
-		m_groups.push(pGroup.release());
+		m_groups.push(pGroup);
 	}
 	
 	void EmitterState::EndGroup(GROUP_TYPE type)
@@ -78,13 +68,13 @@ namespace YAML
 		
 		// get rid of the current group
 		{
-			std::auto_ptr <Group> pFinishedGroup = _PopGroup();
+			std::auto_ptr<Group> pFinishedGroup = m_groups.pop();
 			if(pFinishedGroup->type != type)
 				return SetError(ErrorMsg::UNMATCHED_GROUP_TAG);
 		}
 
 		// reset old settings
-		unsigned lastIndent = (m_groups.empty() ? 0 : m_groups.top()->indent);
+		unsigned lastIndent = (m_groups.empty() ? 0 : m_groups.top().indent);
 		assert(m_curIndent >= lastIndent);
 		m_curIndent -= lastIndent;
 		
@@ -98,7 +88,7 @@ namespace YAML
 		if(m_groups.empty())
 			return GT_NONE;
 		
-		return m_groups.top()->type;
+		return m_groups.top().type;
 	}
 	
 	FLOW_TYPE EmitterState::GetCurGroupFlowType() const
@@ -106,31 +96,43 @@ namespace YAML
 		if(m_groups.empty())
 			return FT_NONE;
 		
-		return (m_groups.top()->flow == Flow ? FT_FLOW : FT_BLOCK);
+		return (m_groups.top().flow == Flow ? FT_FLOW : FT_BLOCK);
 	}
 	
 	bool EmitterState::CurrentlyInLongKey()
 	{
 		if(m_groups.empty())
 			return false;
-		return m_groups.top()->usingLongKey;
+		return m_groups.top().usingLongKey;
 	}
 	
 	void EmitterState::StartLongKey()
 	{
 		if(!m_groups.empty())
-			m_groups.top()->usingLongKey = true;
+			m_groups.top().usingLongKey = true;
 	}
 	
 	void EmitterState::StartSimpleKey()
 	{
 		if(!m_groups.empty())
-			m_groups.top()->usingLongKey = false;
+			m_groups.top().usingLongKey = false;
 	}
 
 	void EmitterState::ClearModifiedSettings()
 	{
 		m_modifiedSettings.clear();
+	}
+
+	bool EmitterState::SetOutputCharset(EMITTER_MANIP value, FMT_SCOPE scope)
+	{
+		switch(value) {
+			case EmitNonAscii:
+			case EscapeNonAscii:
+				_Set(m_charset, value, scope);
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	bool EmitterState::SetStringFormat(EMITTER_MANIP value, FMT_SCOPE scope)

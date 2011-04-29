@@ -3,6 +3,9 @@
 #define  __msg_trd_common_support__
 
 
+#include "yaml/yaml.h"
+
+
 
 namespace mtk {
 
@@ -36,6 +39,20 @@ inline std::ostream& operator<< (std::ostream& os, const enBuySell& d)
     else                os << "ERROR";
 
     return os;
+
+}
+
+inline YAML::Emitter& operator<< (YAML::Emitter& o, const enBuySell& s)
+
+{
+
+    if      (s==buy)    o << "buy";
+
+    else if (s==sell)   o << "sell";
+
+    else                o << "ERROR";
+
+    return o;
 
 }
 

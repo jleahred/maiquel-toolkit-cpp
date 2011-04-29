@@ -1,11 +1,14 @@
-#pragma once
-
 #ifndef EMITTERSTATE_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 #define EMITTERSTATE_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 
+#if !defined(__GNUC__) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || (__GNUC__ >= 4) // GCC supports "pragma once" correctly since 3.4
+#pragma once
+#endif
 
+
+#include "ptr_stack.h"
 #include "setting.h"
-#include "emittermanip.h"
+#include "yaml/emittermanip.h"
 #include <cassert>
 #include <vector>
 #include <stack>
@@ -101,13 +104,19 @@ namespace YAML
 		void StartLongKey();
 		void StartSimpleKey();
 
-		bool RequiresSeparation() const { return m_requiresSeparation; }
-		void RequireSeparation() { m_requiresSeparation = true; }
-		void UnsetSeparation() { m_requiresSeparation = false; }
+		bool RequiresSoftSeparation() const { return m_requiresSoftSeparation; }
+		bool RequiresHardSeparation() const { return m_requiresHardSeparation; }
+		void RequireSoftSeparation() { m_requiresSoftSeparation = true; }
+		void RequireHardSeparation() { m_requiresSoftSeparation = true; m_requiresHardSeparation = true; }
+		void ForceHardSeparation() { m_requiresSoftSeparation = false; }
+		void UnsetSeparation() { m_requiresSoftSeparation = false; m_requiresHardSeparation = false; }
 
 		void ClearModifiedSettings();
 
 		// formatters
+		bool SetOutputCharset(EMITTER_MANIP value, FMT_SCOPE scope);
+		EMITTER_MANIP GetOutputCharset() const { return m_charset.get(); }
+
 		bool SetStringFormat(EMITTER_MANIP value, FMT_SCOPE scope);
 		EMITTER_MANIP GetStringFormat() const { return m_strFmt.get(); }
 		
@@ -147,18 +156,19 @@ namespace YAML
 		std::string m_lastError;
 		
 		// other state
-		std::stack <EMITTER_STATE> m_stateStack;
+		std::stack<EMITTER_STATE> m_stateStack;
 		
-		Setting <EMITTER_MANIP> m_strFmt;
-		Setting <EMITTER_MANIP> m_boolFmt;
-		Setting <EMITTER_MANIP> m_boolLengthFmt;
-		Setting <EMITTER_MANIP> m_boolCaseFmt;
-		Setting <EMITTER_MANIP> m_intFmt;
-		Setting <unsigned> m_indent;
-		Setting <unsigned> m_preCommentIndent, m_postCommentIndent;
-		Setting <EMITTER_MANIP> m_seqFmt;
-		Setting <EMITTER_MANIP> m_mapFmt;
-		Setting <EMITTER_MANIP> m_mapKeyFmt;
+		Setting<EMITTER_MANIP> m_charset;
+		Setting<EMITTER_MANIP> m_strFmt;
+		Setting<EMITTER_MANIP> m_boolFmt;
+		Setting<EMITTER_MANIP> m_boolLengthFmt;
+		Setting<EMITTER_MANIP> m_boolCaseFmt;
+		Setting<EMITTER_MANIP> m_intFmt;
+		Setting<unsigned> m_indent;
+		Setting<unsigned> m_preCommentIndent, m_postCommentIndent;
+		Setting<EMITTER_MANIP> m_seqFmt;
+		Setting<EMITTER_MANIP> m_mapFmt;
+		Setting<EMITTER_MANIP> m_mapKeyFmt;
 		
 		SettingChanges m_modifiedSettings;
 		SettingChanges m_globalModifiedSettings;
@@ -173,12 +183,11 @@ namespace YAML
 			
 			SettingChanges modifiedSettings;
 		};
-		
-		std::auto_ptr <Group> _PopGroup();
-		
-		std::stack <Group *> m_groups;
+
+		ptr_stack<Group> m_groups;
 		unsigned m_curIndent;
-		bool m_requiresSeparation;
+		bool m_requiresSoftSeparation;
+		bool m_requiresHardSeparation;
 	};
 
 	template <typename T>

@@ -3,11 +3,43 @@
 #include "mtk_string.h"
 
 
+#include "yaml/yaml.h"
+
+
+
 
 namespace mtk {
 //---------------------------------------------------------------------------
 
 int Alarm::classAlarmId=0;
+
+
+YAML::Emitter& operator<< (YAML::Emitter& o, const alEnPriority& a)
+{
+    switch(a)
+    {
+        case alPriorCritic  :       o << "critic" ; break;
+        case alPriorError   :       o << "error"  ; break;
+        case alPriorWarning :       o << "warning"; break;
+        case alPriorDebug   :       o << "debug"  ; break;
+        case alPriorStats   :       o << "stats"  ; break;
+        default             :       o << "???"    ; break;
+    }
+    return o;
+}
+
+YAML::Emitter& operator<< (YAML::Emitter& o, const alEnType& a)
+{
+    switch(a)
+    {
+        case alTypeUnknown      :       o << "unknown" ; break;
+        case alTypeNoPermisions :       o << "no perm" ; break;
+        case alTypeOverflow     :       o << "overflow"; break;
+        case alTypeRealTime     :       o << "realtime"; break;
+        default                 :       o << "???"     ; break;
+    }
+    return o;
+}
 
 
 

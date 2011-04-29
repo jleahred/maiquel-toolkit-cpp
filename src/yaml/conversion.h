@@ -1,10 +1,13 @@
-#pragma once
-
 #ifndef CONVERSION_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 #define CONVERSION_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 
+#if !defined(__GNUC__) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || (__GNUC__ >= 4) // GCC supports "pragma once" correctly since 3.4
+#pragma once
+#endif
 
-#include "null.h"
+
+#include "yaml/null.h"
+#include "yaml/traits.h"
 #include <string>
 #include <sstream>
 
@@ -15,29 +18,16 @@ namespace YAML
 		return true;
 	}
 	
-	bool Convert(const std::string& input, bool& output);
-	bool Convert(const std::string& input, _Null& output);
+	YAML_CPP_API bool Convert(const std::string& input, bool& output);
+	YAML_CPP_API bool Convert(const std::string& input, _Null& output);
 	
-#define YAML_MAKE_STREAM_CONVERT(type) \
-	inline bool Convert(const std::string& input, type& output) { \
-		std::stringstream stream(input); \
-		stream >> output; \
-		return !stream.fail(); \
+	template <typename T> 
+	inline bool Convert(const std::string& input, T& output, typename enable_if<is_numeric<T> >::type * = 0) {
+		std::stringstream stream(input);
+		stream.unsetf(std::ios::dec);
+		stream >> output;
+		return !!stream;
 	}
-	
-	YAML_MAKE_STREAM_CONVERT(char)
-	YAML_MAKE_STREAM_CONVERT(unsigned char)
-	YAML_MAKE_STREAM_CONVERT(int)
-	YAML_MAKE_STREAM_CONVERT(unsigned int)
-	YAML_MAKE_STREAM_CONVERT(short)
-	YAML_MAKE_STREAM_CONVERT(unsigned short)
-	YAML_MAKE_STREAM_CONVERT(long)
-	YAML_MAKE_STREAM_CONVERT(unsigned long)
-	YAML_MAKE_STREAM_CONVERT(float)
-	YAML_MAKE_STREAM_CONVERT(double)
-	YAML_MAKE_STREAM_CONVERT(long double)
-	
-#undef YAML_MAKE_STREAM_CONVERT
 }
 
 #endif // CONVERSION_H_62B23520_7C8E_11DE_8A39_0800200C9A66

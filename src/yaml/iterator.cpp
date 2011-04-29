@@ -1,22 +1,19 @@
-#include "crt.h"
-#include "node.h"
-#include "exceptions.h"
+#include "yaml/node.h"
+#include "yaml/exceptions.h"
 #include "iterpriv.h"
 
 namespace YAML
 {
-	Iterator::Iterator(): m_pData(0)
-	{
-		m_pData = new IterPriv;
-	}
-
-	Iterator::Iterator(IterPriv *pData): m_pData(pData)
+	Iterator::Iterator(): m_pData(new IterPriv)
 	{
 	}
 
-	Iterator::Iterator(const Iterator& rhs): m_pData(0)
+	Iterator::Iterator(std::auto_ptr<IterPriv> pData): m_pData(pData)
 	{
-		m_pData = new IterPriv(*rhs.m_pData);
+	}
+
+	Iterator::Iterator(const Iterator& rhs): m_pData(new IterPriv(*rhs.m_pData))
+	{
 	}
 
 	Iterator& Iterator::operator = (const Iterator& rhs)
@@ -24,14 +21,12 @@ namespace YAML
 		if(this == &rhs)
 			return *this;
 
-		delete m_pData;
-		m_pData = new IterPriv(*rhs.m_pData);
+		m_pData.reset(new IterPriv(*rhs.m_pData));
 		return *this;
 	}
 
 	Iterator::~Iterator()
 	{
-		delete m_pData;
 	}
 
 	Iterator& Iterator::operator ++ ()

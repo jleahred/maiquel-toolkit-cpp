@@ -1,6 +1,5 @@
-#include "crt.h"
 #include "exp.h"
-#include "exceptions.h"
+#include "yaml/exceptions.h"
 #include <sstream>
 
 namespace YAML
@@ -28,9 +27,9 @@ namespace YAML
 			return value;
 		}
 
-		std::string Str(char ch)
+		std::string Str(unsigned ch)
 		{
-			return std::string("") + ch;
+			return std::string(1, static_cast<char>(ch));
 		}
 
 		// Escape
@@ -108,7 +107,7 @@ namespace YAML
 			}
 
 			std::stringstream msg;
-			throw ParserException(in.mark(), ErrorMsg::INVALID_ESCAPE + ch);
+			throw ParserException(in.mark(), std::string(ErrorMsg::INVALID_ESCAPE) + ch);
 		}
 	}
 }

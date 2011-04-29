@@ -1,4 +1,4 @@
-#include "conversion.h"
+#include "yaml/conversion.h"
 #include <algorithm>
 
 ////////////////////////////////////////////////////////////////
@@ -9,7 +9,7 @@ namespace
 	// we're not gonna mess with the mess that is all the isupper/etc. functions
 	bool IsLower(char ch) { return 'a' <= ch && ch <= 'z'; }
 	bool IsUpper(char ch) { return 'A' <= ch && ch <= 'Z'; }
-        char ToLower(char ch) { return IsUpper(ch) ? char(ch + 'a' - 'A') : ch; }
+	char ToLower(char ch) { return IsUpper(ch) ? ch + 'a' - 'A' : ch; }
 
 	std::string tolower(const std::string& str)
 	{
