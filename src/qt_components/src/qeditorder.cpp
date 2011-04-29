@@ -86,7 +86,6 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     {
         QLatin1String default_q (s_default_qty.Get().c_str());
         ui->quantity->setValue(QString(default_q).toDouble());
-        std::cout << QString(default_q).toDouble() << std::endl;
     }
 }
 

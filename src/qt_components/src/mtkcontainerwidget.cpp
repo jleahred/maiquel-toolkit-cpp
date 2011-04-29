@@ -123,7 +123,7 @@ mtkContainerWidget::mtkContainerWidget(QWidget *parent) :
     QWidget(parent)
 {
     title = new mtk_uTitle(this);
-    title->setGeometry(0,0,60,15);
+    title->setGeometry(0,0,80,15);
     connect(title, SIGNAL(on_mouseMoveEvent(QMouseEvent*)), this, SLOT(title_mouseMoveEvent(QMouseEvent*)));
     connect(title, SIGNAL(on_mousePressEvent(QMouseEvent*)), this, SLOT(title_mousePressEvent(QMouseEvent*)));
     connect(title, SIGNAL(on_mouseReleaseEvent(QMouseEvent*)), this, SLOT(title_mouseReleaseEvent(QMouseEvent*)));

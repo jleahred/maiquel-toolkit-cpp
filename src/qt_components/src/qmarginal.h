@@ -24,7 +24,7 @@
 
 class QTableWidget;
 class QTableWidgetItem;
-
+class QCommonTableDelegate;
 
 
 class marginal_in_table : public mtk::SignalReceptor
@@ -94,6 +94,7 @@ private slots:
     void request_aggression(mtk::trd::msg::enBuySell bs);
 
     void slot_column_resized(int, int, int);
+    void slot_remove_current_row(void);
 
 private:
     QPoint startPos;
@@ -117,7 +118,9 @@ private:
     QAction* action_sell;
     QAction* action_hit_the_bid;
     QAction* action_lift_the_offer;
+    QAction* action_remove_product;
 
+    QCommonTableDelegate* paint_delegate;
     bool showing_menu;
     void disable_actions(void);
     void enable_actions(void);

@@ -13,6 +13,8 @@ class QTableWidget;
 class QTableWidgetItem;
 class order_in_qbook;
 class filter_form;
+class QCommonTableDelegate;
+
 
 
 class qorder_table : public QWidget , public mtk::SignalReceptor
@@ -60,6 +62,8 @@ private:
     void contextMenuEvent(QContextMenuEvent *);
 
     void keyPressEvent(QKeyEvent *);
+
+    QCommonTableDelegate* delegate_paint;
 };
 
 #endif // QORDER_TABLE_H

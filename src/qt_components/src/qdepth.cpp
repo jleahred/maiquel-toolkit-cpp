@@ -136,7 +136,8 @@ QDepth::QDepth(QWidget *parent) :
     mtkContainerWidget(parent),
     table_widget(new QTableDeph(this)),
     action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
-    showing_menu(false)
+    showing_menu(false),
+    keep_paint_focus(false)
 {
     this->setGeometry(QRect(5, 5, 290, 300));
     QVBoxLayout* layout = new QVBoxLayout(this);
@@ -341,12 +342,16 @@ void QDepth::request_side(mtk::trd::msg::enBuySell bs)
 
 void QDepth::request_buy(void)
 {
+    keep_paint_focus = true;
     request_side(mtk::trd::msg::buy);
+    keep_paint_focus = false;
 }
 
 void QDepth::request_sell(void)
 {
+    keep_paint_focus = true;
     request_side(mtk::trd::msg::sell);
+    keep_paint_focus = false;
 }
 
 
@@ -385,12 +390,16 @@ void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
 
 void QDepth::request_hit_the_bid(void)
 {
+    keep_paint_focus = true;
     request_aggression(mtk::trd::msg::sell);
+    keep_paint_focus = false;
 }
 
 void QDepth::request_lift_the_offer(void)
 {
+    keep_paint_focus = true;
     request_aggression(mtk::trd::msg::buy);
+    keep_paint_focus = false;
 }
 
 
@@ -473,7 +482,9 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_lift_the_offer);
     menu.addAction(action_hit_the_bid);
     showing_menu = true;
+    keep_paint_focus = true;
     menu.exec(event->globalPos());
+    keep_paint_focus = false;
     showing_menu = false;
     this->setFocus();
     enable_actions();
@@ -488,8 +499,8 @@ void QDepth::make_transparent(void)
 
 void QDepth::remove_transparecy(void)
 {
-    title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
-    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0,0,30);\n" "color: rgb(0, 220, 0);"));
+    this->setFocus();
+    paint_focus();
 }
 
 
@@ -541,13 +552,16 @@ void QDepth::paint_focus(void)
 {
     //title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(191,219,255, 230); font-weight: 1000;"));
     title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(255,255,255); font-weight: 1000;"));
-    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 50);\n" "color: rgb(0, 220, 0);"));
+    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 70);\n" "color: rgb(0, 220, 0);"));
 }
 
 void QDepth::remove_focus(void)
 {
-    title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
-    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
+    if(keep_paint_focus==false)
+    {
+        title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
+        table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
+    }
 }
 
 

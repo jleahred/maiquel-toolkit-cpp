@@ -21,9 +21,12 @@ mtk::msg::sub_product_code          get_product_code(QDropEvent *event);
 
 //const QColor mtk_yellow(QColor(Qt::yellow).lighter(150));
 //const QColor mtk_yellow(QColor(227,233,255));
-const QColor mtk_color_header(QColor(191,219,255));
-const QColor mtk_color_problem   (QColor(Qt::red).lighter());
-const QColor mtk_color_buy (QColor(Qt::green).lighter());
+const QColor mtk_color_header       (QColor(191,219,255));
+const QColor mtk_color_problem      (QColor(Qt::red).lighter());
+const QColor mtk_color_buy          (QColor(Qt::green).lighter());
+const QColor mtk_color_executed     (QColor(Qt::cyan).lighter());
+
+
 
 int get_base_font_size(void);
 void set_base_font_size(int new_size);

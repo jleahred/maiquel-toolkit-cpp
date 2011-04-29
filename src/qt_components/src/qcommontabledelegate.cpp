@@ -15,7 +15,9 @@ QCommonTableDelegate::QCommonTableDelegate(QObject *parent) :
 
 QCommonTableDelegate::QCommonTableDelegate(QTableWidget* _tableView)
     : QStyledItemDelegate(_tableView),
-      tableView(_tableView)
+      tableView(_tableView),
+      focus_paint(false),
+      horiz_line_each_xrows(3)
 {
     // create grid pen
     int gridHint = tableView->style()->styleHint(QStyle::SH_Table_GridLineColor, new QStyleOptionViewItemV4());
@@ -29,7 +31,7 @@ void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 {
     if (tableView->currentRow()==index.row())
     {
-        if (tableView->hasFocus())
+        if (tableView->hasFocus()  ||  focus_paint)
         {
             QStyleOptionViewItem ViewOption(option);
             //  remove focus
@@ -84,8 +86,7 @@ void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
             QStyledItemDelegate::paint(painter, ViewOption, index);
 
             ///////////////////////////////////////////////
-            //if ((index.row()+1)%3!=0  &&  (index.row()+2)%3!=0)
-            if ((index.row()+2)%3!=0  &&  (index.row()+3)%3!=0)
+            if ((index.row()+1)%horiz_line_each_xrows==0)
             {
                 QColor bluer(tableView->item(index.row(), index.column())->background().color());
                 bluer = QColor(bluer.red()-40, bluer.green()-40, bluer.blue());
@@ -112,8 +113,7 @@ void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
         QStyledItemDelegate::paint(painter, ViewOption, index);
 
         ///////////////////////////////////////////////
-        //if ((index.row()+1)%3!=0  &&  (index.row()+2)%3!=0)
-        if ((index.row()+2)%3!=0  &&  (index.row()+3)%3!=0)
+        if ((index.row()+1)%horiz_line_each_xrows==0)
         {
             QColor bluer(tableView->item(index.row(), index.column())->background().color());
             bluer = QColor(bluer.red()-40, bluer.green()-40, bluer.blue());
@@ -133,4 +133,11 @@ void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
 
         //QStyledItemDelegate::paint(painter, option, index);
     }
+}
+
+
+void  QCommonTableDelegate::keep_focus_paint(bool keep)
+{
+
+    focus_paint = keep;
 }

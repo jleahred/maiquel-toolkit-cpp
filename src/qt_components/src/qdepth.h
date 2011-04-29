@@ -92,6 +92,7 @@ private:
     void disable_actions(void);
     void enable_actions(void);
 
+    bool keep_paint_focus;
     void paint_focus(void);
     void remove_focus(void);
 };

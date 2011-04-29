@@ -11,6 +11,7 @@
 #include <QPainter>
 #include <QApplication>
 #include <QMenu>
+#include <QMessageBox>
 
 
 #include <iostream>
@@ -123,7 +124,8 @@ QMarginal::~QMarginal()
 
 QTableMarginal::QTableMarginal(QWidget *parent)
     : QTableWidget(parent), startPos(-1,-1),
-      action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
+      action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0), action_remove_product(0),
+      paint_delegate(new QCommonTableDelegate(this)),
       showing_menu(false)
 {
     //this->setStyleSheet("background-color: rgb(191,219,255);");
@@ -134,7 +136,7 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     //color_product = this->horizontalHeader()->palette().background().color();
     this->setAcceptDrops(true);
 
-    setItemDelegate(new QCommonTableDelegate(this));
+    setItemDelegate(paint_delegate);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
     setShowGrid(false);
@@ -200,6 +202,10 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
     this->addAction(action_hit_the_bid);
 
+    action_remove_product = new QAction(tr("remove product"), this);
+    action_remove_product->setShortcut(Qt::Key_Delete);
+    connect(action_remove_product, SIGNAL(triggered()), this, SLOT(slot_remove_current_row()));
+    this->addAction(action_remove_product);
 }
 
 void QTableMarginal::slot_column_resized(int li, int, int)
@@ -544,17 +550,21 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_buy);
     menu.addAction(action_sell);
 
-
-    {
-        QAction* action = new QAction(&menu);
-        action->setSeparator(true);
-        menu.addAction(action);
-    }
+    menu.addSeparator();
 
     menu.addAction(action_lift_the_offer);
     menu.addAction(action_hit_the_bid);
+
+
+    menu.addSeparator();
+    menu.addAction(action_remove_product);
+
+
+
     showing_menu = true;
+    //paint_delegate->keep_focus_paint(true);
     menu.exec(event->globalPos());
+    //paint_delegate->keep_focus_paint(false);
     showing_menu = false;
     this->setFocus();
     enable_actions();
@@ -623,12 +633,16 @@ void QTableMarginal::request_side(mtk::trd::msg::enBuySell bs)
 
 void QTableMarginal::request_buy (void)
 {
+    paint_delegate->keep_focus_paint(true);
     request_side(mtk::trd::msg::buy);
+    paint_delegate->keep_focus_paint(false);
 }
 
 void QTableMarginal::request_sell(void)
 {
+    paint_delegate->keep_focus_paint(true);
     request_side(mtk::trd::msg::sell);
+    paint_delegate->keep_focus_paint(false);
 }
 
 
@@ -677,12 +691,16 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
 
 void QTableMarginal::request_hit_the_bid(void)
 {
+    paint_delegate->keep_focus_paint(true);
     request_aggression(mtk::trd::msg::sell);
+    paint_delegate->keep_focus_paint(false);
 }
 
 void QTableMarginal::request_lift_the_offer(void)
 {
+    paint_delegate->keep_focus_paint(true);
     request_aggression(mtk::trd::msg::buy);
+    paint_delegate->keep_focus_paint(false);
 }
 
 
@@ -718,6 +736,7 @@ void QTableMarginal::disable_actions(void)
             action_sell->setEnabled(false);
             action_hit_the_bid->setEnabled(false);
             action_lift_the_offer->setEnabled(false);
+            action_remove_product->setEnabled(false);
         }
     }
 }
@@ -730,6 +749,18 @@ void QTableMarginal::enable_actions(void)
         action_sell->setEnabled(true);
         action_hit_the_bid->setEnabled(true);
         action_lift_the_offer->setEnabled(true);
+        action_remove_product->setEnabled(true);
+    }
+}
+
+
+void QTableMarginal::slot_remove_current_row(void)
+{
+    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove the current product from this table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+    {
+        QTableWidgetItemProduct* i = dynamic_cast<QTableWidgetItemProduct*>(this->item(this->currentRow(), 0));
+        if (i)
+            this->remove_row(i->id);
     }
 }
 
@@ -772,7 +803,6 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
 
 YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
 {
-    std::cout << m.table_marginals->rowCount() << std::endl;
     if(m.table_marginals->rowCount() == 0)      return out;
 
 

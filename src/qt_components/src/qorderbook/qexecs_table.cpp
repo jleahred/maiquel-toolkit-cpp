@@ -85,7 +85,7 @@ public:
 
     QColor  get_default_color(void)
     {
-        return Qt::cyan;
+        return mtk_color_executed;
     }
 
 
@@ -166,7 +166,12 @@ QExecsTable::QExecsTable(QWidget *parent) :
     //table_widget->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     table_widget->horizontalHeader()->setStretchLastSection(true);
 
-    table_widget->setItemDelegate(new QCommonTableDelegate(table_widget));
+
+    {
+        QCommonTableDelegate* delegate_paint = new QCommonTableDelegate(table_widget);
+        delegate_paint->set_horiz_line_each(1);
+        table_widget->setItemDelegate(delegate_paint);
+    }
     table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
     table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
     table_widget->setShowGrid(false);

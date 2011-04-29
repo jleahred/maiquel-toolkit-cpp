@@ -153,7 +153,7 @@ public:
         else if (inner_order->is_canceled())
             return Qt::gray;
         else if (inner_order->is_full_executed())
-            return Qt::cyan;
+            return mtk_color_executed;
         else
             return Qt::white;
     }
@@ -305,7 +305,7 @@ public:
         }
         if (confirmed.HasValue()  &&  confirmed.Get().GetIntCode() != 0)
         {
-            item->setBackgroundColor(Qt::cyan);
+            item->setBackgroundColor(mtk_color_executed);
         }
         else
         {
@@ -327,7 +327,7 @@ public:
         }
         if (confirmed >= mtk::Double(1.))
         {
-            item->setBackgroundColor(Qt::cyan);
+            item->setBackgroundColor(mtk_color_executed);
         }
         else
         {
@@ -355,7 +355,8 @@ qorder_table::qorder_table(QWidget *parent) :
         QWidget(parent),
         table_widget(new QTableWidget(this)),
         orders(new mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >),
-        filterf (new filter_form(this))
+        filterf (new filter_form(this)),
+        delegate_paint(new QCommonTableDelegate(table_widget))
 {
     QHBoxLayout *hl= new QHBoxLayout(this);
     hl->setSpacing(0);
@@ -400,7 +401,8 @@ qorder_table::qorder_table(QWidget *parent) :
     table_widget->setColumnWidth(col_observs, 400);
     table_widget->horizontalHeader()->setStretchLastSection(true);
 
-    table_widget->setItemDelegate(new QCommonTableDelegate(table_widget));
+    delegate_paint->set_horiz_line_each(1);
+    table_widget->setItemDelegate(delegate_paint);
     table_widget->setSelectionBehavior(QAbstractItemView::SelectRows);
     table_widget->setSelectionMode(QAbstractItemView::SingleSelection);
     table_widget->setShowGrid(false);
@@ -487,23 +489,45 @@ mtk::trd::msg::sub_order_id   get_order_id_from_row(QTableWidget *table_widget, 
 
 void qorder_table::request_modif(void)
 {
-    int row = table_widget->currentRow();
-    if (row==-1)        return;
-    const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
-    mtk::trd::trd_cli_ord_book::rq_md_ls_manual(ord_id);
+    delegate_paint->keep_focus_paint(true);
+    try
+    {
+        int row = table_widget->currentRow();
+        if (row==-1)        return;
+        const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
+        mtk::trd::trd_cli_ord_book::rq_md_ls_manual(ord_id);
+    }
+    catch(...)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", "controling focus paint on error managing request", mtk::alPriorError));
+        delegate_paint->keep_focus_paint(false);
+        throw;
+    }
+    delegate_paint->keep_focus_paint(false);
 }
 
 void qorder_table::request_cancel(void)
 {
-    int row = table_widget->currentRow();
-    if (row==-1)        return;
-
-    //  ask for cancelation
-    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to cancel the order?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+    delegate_paint->keep_focus_paint(true);
+    try
     {
-        const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
-        mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+        int row = table_widget->currentRow();
+        if (row==-1)        return;
+
+        //  ask for cancelation
+        if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to cancel the order?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+        {
+            const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
+            mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+        }
     }
+    catch(...)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", "controling focus paint on error managing request", mtk::alPriorError));
+        delegate_paint->keep_focus_paint(false);
+        throw;
+    }
+    delegate_paint->keep_focus_paint(false);
 }
 
 
