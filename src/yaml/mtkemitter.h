@@ -56,6 +56,20 @@ namespace YAML
 		emitter << EndMap;
 		return emitter;
 	}
+    
+    /*
+	template <typename T>
+	inline void  operator >> (const Node& seq, mtk::list <T>& v) {
+        for(int i=0; i<seq.size(); ++i)
+        {
+            T t;
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+    */
+    
 }
 
 #endif // MTKEMITTER_H_62B23520_7C8E_11DE_8A39_0800200C9A66
+

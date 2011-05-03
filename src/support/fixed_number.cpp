@@ -535,5 +535,28 @@ YAML::Emitter& operator<< (YAML::Emitter& os, const fnExt& fnExt)
 
 
 
+void           operator>> (const YAML::Node   & i ,       FixedNumber& fn)
+{
+    int int_code;
+    
+    i[0] >> int_code;
+    
+    fnExt ext(fnDec(0), fnInc(1));     //  temporary value
+    i[1] >> ext;
+    fn = FixedNumber(fnIntCode(int_code), ext);
+}
+void           operator>> (const YAML::Node   & i ,       fnExt& d)
+{
+    int decimals;
+    int increment;
+    
+    i[0] >> decimals;
+    i[1] >> increment;
+    
+    d = fnExt(fnDec(decimals), fnInc(increment));
+}
+
+
+
 
 };      //  namespace mtk {

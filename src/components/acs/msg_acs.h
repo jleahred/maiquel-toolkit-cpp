@@ -445,25 +445,29 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const req_login_key & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const req_login_key & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const req_login_key & c);
+   void           operator >> (const YAML::Node& n,       req_login_key & c);
 
 bool operator== (const req_login_key& a, const req_login_key& b);
 bool operator!= (const req_login_key& a, const req_login_key& b);
 
     std::ostream& operator<< (std::ostream& o, const res_login_key & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const res_login_key & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const res_login_key & c);
+   void           operator >> (const YAML::Node& n,       res_login_key & c);
 
 bool operator== (const res_login_key& a, const res_login_key& b);
 bool operator!= (const res_login_key& a, const res_login_key& b);
 
     std::ostream& operator<< (std::ostream& o, const req_login & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const req_login & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const req_login & c);
+   void           operator >> (const YAML::Node& n,       req_login & c);
 
 bool operator== (const req_login& a, const req_login& b);
 bool operator!= (const req_login& a, const req_login& b);
 
     std::ostream& operator<< (std::ostream& o, const res_login & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const res_login & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const res_login & c);
+   void           operator >> (const YAML::Node& n,       res_login & c);
 
 bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
 bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
@@ -473,31 +477,36 @@ bool operator== (const res_login& a, const res_login& b);
 bool operator!= (const res_login& a, const res_login& b);
 
     std::ostream& operator<< (std::ostream& o, const res_login::IC_login_response_info & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const res_login::IC_login_response_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const res_login::IC_login_response_info & c);
+   void           operator >> (const YAML::Node& n,       res_login::IC_login_response_info & c);
 
 bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
 bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
 
     std::ostream& operator<< (std::ostream& o, const conf_logout & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const conf_logout & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const conf_logout & c);
+   void           operator >> (const YAML::Node& n,       conf_logout & c);
 
 bool operator== (const conf_logout& a, const conf_logout& b);
 bool operator!= (const conf_logout& a, const conf_logout& b);
 
     std::ostream& operator<< (std::ostream& o, const req_logout & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const req_logout & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const req_logout & c);
+   void           operator >> (const YAML::Node& n,       req_logout & c);
 
 bool operator== (const req_logout& a, const req_logout& b);
 bool operator!= (const req_logout& a, const req_logout& b);
 
     std::ostream& operator<< (std::ostream& o, const req_change_password & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const req_change_password & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const req_change_password & c);
+   void           operator >> (const YAML::Node& n,       req_change_password & c);
 
 bool operator== (const req_change_password& a, const req_change_password& b);
 bool operator!= (const req_change_password& a, const req_change_password& b);
 
     std::ostream& operator<< (std::ostream& o, const res_change_password & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const res_change_password & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const res_change_password & c);
+   void           operator >> (const YAML::Node& n,       res_change_password & c);
 
 bool operator== (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);
 bool operator!= (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);
@@ -507,7 +516,8 @@ bool operator== (const res_change_password& a, const res_change_password& b);
 bool operator!= (const res_change_password& a, const res_change_password& b);
 
     std::ostream& operator<< (std::ostream& o, const res_change_password::IC_change_password_info & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const res_change_password::IC_change_password_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const res_change_password::IC_change_password_info & c);
+   void           operator >> (const YAML::Node& n,       res_change_password::IC_change_password_info & c);
 
 bool operator== (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);
 bool operator!= (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);

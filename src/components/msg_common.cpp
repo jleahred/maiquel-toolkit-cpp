@@ -64,6 +64,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -699,6 +722,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_location & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_location & c)
+{
+
+
+        node["client_code"]  >> c.client_code;
+        node["machine"]  >> c.machine;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_process_location & c)
 {
     o << "{ "
@@ -717,6 +752,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_location & c)
         << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "process_name"  << YAML::Value <<   c.process_name        << YAML::Key << "process_uuid"  << YAML::Value <<   c.process_uuid
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_process_location & c)
+{
+
+
+        node["location"]  >> c.location;
+        node["process_name"]  >> c.process_name;
+        node["process_uuid"]  >> c.process_uuid;
+
+
 };
 
 
@@ -741,6 +789,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_info & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_process_info & c)
+{
+
+
+        node["process_location"]  >> c.process_location;
+        node["version"]  >> c.version;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_control_fluct & c)
 {
     o << "{ "
@@ -759,6 +819,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fluct & c)
         << YAML::Key << "key"  << YAML::Value <<   c.key        << YAML::Key << "datetime"  << YAML::Value <<   c.datetime
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_control_fluct & c)
+{
+
+
+        node["key"]  >> c.key;
+        node["datetime"]  >> c.datetime;
+
+
 };
 
 
@@ -783,6 +855,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_request_id & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_request_id & c)
+{
+
+
+        node["sess_id"]  >> c.sess_id;
+        node["req_code"]  >> c.req_code;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_request_info & c)
 {
     o << "{ "
@@ -801,6 +885,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_request_info & c)
         << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "process_location"  << YAML::Value << c.process_location
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_request_info & c)
+{
+
+
+        node["req_id"]  >> c.req_id;
+        node["process_location"]  >> c.process_location;
+
+
 };
 
 
@@ -825,6 +921,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_r_response & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_r_response & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+        node["sec_number"]  >> c.sec_number;
+        node["is_last_response"]  >> c.is_last_response;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c)
 {
     o << "{ "
@@ -843,6 +952,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_single_product_code & c)
         << YAML::Key << "market"  << YAML::Value <<   c.market        << YAML::Key << "product"  << YAML::Value <<   c.product
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_single_product_code & c)
+{
+
+
+        node["market"]  >> c.market;
+        node["product"]  >> c.product;
+
+
 };
 
 
@@ -867,6 +988,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_sys_product_code & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_sys_product_code & c)
+{
+
+    node["sub_single_product_code"]   >>   static_cast<sub_single_product_code&>(c)  ;
+
+        node["user_name"]  >> c.user_name;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_adic_product_code & c)
 {
     o << "{ "
@@ -888,6 +1021,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_adic_product_code & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_adic_product_code & c)
+{
+
+    node["sub_single_product_code"]   >>   static_cast<sub_single_product_code&>(c)  ;
+
+        node["aditional_code_type"]  >> c.aditional_code_type;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
 {
     o << "{ "
@@ -906,6 +1051,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_product_code & c)
         << YAML::Key << "sys_code"  << YAML::Value << c.sys_code        << YAML::Key << "aditional_code"  << YAML::Value << c.aditional_code
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_product_code & c)
+{
+
+
+        node["sys_code"]  >> c.sys_code;
+        node["aditional_code"]  >> c.aditional_code;
+
+
 };
 
 

@@ -612,11 +612,23 @@ std::ostream& operator<< (std::ostream& o, const dtTimeQuantity& tq)
     return o;
 };
 
-YAML::Emitter& operator<< (YAML::Emitter& os, const dtTimeQuantity& d)
+YAML::Emitter& operator<< (YAML::Emitter& os, const dtTimeQuantity& tq)
 {
-    return os << MTK_SS(d);
+    os << MTK_SS(tq);
+    
+    return os;
 }
 
+void    operator>> (const YAML::Node   & i , dtTimeQuantity& tq)
+{
+    std::string  stq;
+    i >> stq;
+    bool    completed_ok;
+    mtk::s_TRY_stotq(stq, mtk::dtSeconds(0)).assign(tq, completed_ok);
+    
+    if(completed_ok == false)
+        throw mtk::Alarm(MTK_HERE, "date_time", "Error parsing time quantity", mtk::alPriorError, mtk::alTypeNoPermisions);
+}
 
 
 
@@ -1201,6 +1213,17 @@ YAML::Emitter& operator<< (YAML::Emitter& os, const DateTime& d)
     return os << MTK_SS(d);
 }
 
+
+void   operator>> (const YAML::Node   & i , DateTime& d)
+{
+    std::string  sd;
+    i >> sd;
+    bool    completed_ok;
+    mtk::s_TRY_stodt(sd, mtk::dtNowLocal()).assign(d, completed_ok);
+    
+    if(completed_ok == false)
+        throw mtk::Alarm(MTK_HERE, "date_time", "Error parsing datetime", mtk::alPriorError, mtk::alTypeNoPermisions);
+}
 
 
 

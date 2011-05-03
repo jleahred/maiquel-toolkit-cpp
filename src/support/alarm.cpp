@@ -41,6 +41,29 @@ YAML::Emitter& operator<< (YAML::Emitter& o, const alEnType& a)
     return o;
 }
 
+void            operator>> (const YAML::Node& o, alEnPriority& a)
+{
+    std::string val;
+    o >> val;
+    if      (val=="critic" )       a = alPriorCritic;
+    else if (val=="error"  )       a = alPriorError;
+    else if (val=="warning")       a = alPriorWarning;
+    else if (val=="debug"  )       a = alPriorDebug;
+    else if (val=="stats"  )       a = alPriorStats;
+    else                           a = alPriorCritic;
+    
+}
+void            operator>> (const YAML::Node& o, alEnType& a)
+{
+    std::string val;
+    o >> val;
+    if      (val=="unknown" )       a = alTypeUnknown;
+    else if (val=="perm"    )       a = alTypeNoPermisions;
+    else if (val=="overflow")       a = alTypeOverflow;
+    else if (val=="realtime")       a = alTypeRealTime;
+    else                            a = alTypeUnknown;
+}
+
 
 
 void write_time (std::ostream& os, const DateTime& dt)

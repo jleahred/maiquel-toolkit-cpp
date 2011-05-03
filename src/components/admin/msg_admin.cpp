@@ -65,6 +65,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -646,6 +669,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_enter & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, pub_enter & c)
+{
+
+
+        node["process_info"]  >> c.process_info;
+        node["ka_interval_send"]  >> c.ka_interval_send;
+        node["ka_interval_check"]  >> c.ka_interval_check;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const pub_keep_alive_srv & c)
 {
     o << "{ "
@@ -664,6 +700,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_keep_alive_srv & c)
         << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, pub_keep_alive_srv & c)
+{
+
+
+        node["process_info"]  >> c.process_info;
+        node["ka_interval_send"]  >> c.ka_interval_send;
+        node["ka_interval_check"]  >> c.ka_interval_check;
+
+
 };
 
 
@@ -688,6 +737,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_keep_alive_clients & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, pub_keep_alive_clients & c)
+{
+
+    node["pub_keep_alive_srv"]   >>   static_cast<pub_keep_alive_srv&>(c)  ;
+
+        node["login_confirmation"]  >> c.login_confirmation;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const pub_exit & c)
 {
     o << "{ "
@@ -706,6 +767,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_exit & c)
         << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "reason"  << YAML::Value <<   c.reason
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, pub_exit & c)
+{
+
+
+        node["process_info"]  >> c.process_info;
+        node["reason"]  >> c.reason;
+
+
 };
 
 
@@ -730,6 +803,24 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_alarm & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, pub_alarm & c)
+{
+
+
+        node["process_info"]  >> c.process_info;
+        node["code_source"]  >> c.code_source;
+        node["subject"]  >> c.subject;
+        node["message"]  >> c.message;
+        node["priority"]  >> c.priority;
+        node["type"]  >> c.type;
+        node["dateTime_generated"]  >> c.dateTime_generated;
+        node["alarm_id"]  >> c.alarm_id;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_command & c)
 {
     o << "{ "
@@ -748,6 +839,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_command & c)
         << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "proc_loc__destination"  << YAML::Value << c.proc_loc__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, req_command & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+        node["proc_loc__destination"]  >> c.proc_loc__destination;
+        node["command_line"]  >> c.command_line;
+
+
 };
 
 
@@ -772,6 +876,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_command_rd & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_command_rd & c)
+{
+
+
+        node["text"]  >> c.text;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const res_command & c)
 {
     o << "{ "
@@ -793,6 +908,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const res_command & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, res_command & c)
+{
+
+
+        node["response_info"]  >> c.response_info;
+        node["response_data"]  >> c.response_data;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const pub_central_keep_alive & c)
 {
     o << "{ "
@@ -811,6 +938,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_central_keep_alive & c)
         << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, pub_central_keep_alive & c)
+{
+
+
+        node["process_info"]  >> c.process_info;
+        node["ka_interval_send"]  >> c.ka_interval_send;
+        node["ka_interval_check"]  >> c.ka_interval_check;
+
+
 };
 
 

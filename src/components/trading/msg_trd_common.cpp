@@ -65,6 +65,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -457,6 +480,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_order_id & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_order_id & c)
+{
+
+    node["mtk::msg::sub_request_id"]   >>   static_cast<mtk::msg::sub_request_id&>(c)  ;
+
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_total_executions & c)
 {
     o << "{ "
@@ -475,6 +509,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_total_executions & c)
         << YAML::Key << "sum_price_by_qty"  << YAML::Value <<   c.sum_price_by_qty        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity        << YAML::Key << "remaining_qty"  << YAML::Value <<   c.remaining_qty
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_total_executions & c)
+{
+
+
+        node["sum_price_by_qty"]  >> c.sum_price_by_qty;
+        node["quantity"]  >> c.quantity;
+        node["remaining_qty"]  >> c.remaining_qty;
+
+
 };
 
 

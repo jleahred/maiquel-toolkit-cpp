@@ -265,6 +265,16 @@ YAML::Emitter& operator<< (YAML::Emitter& os, const Double& d)
     
 }
 
+void           operator>> (const YAML::Node& n, Double& d)
+{
+    if(n.size()>0)
+    {
+        double ld=0;
+        n >> ld;
+        d = Double(ld);
+    }
+}
+
 
 
 

@@ -65,6 +65,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -673,6 +696,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_login_key & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, req_login_key & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+        node["user_name"]  >> c.user_name;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const res_login_key & c)
 {
     o << "{ "
@@ -694,6 +729,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const res_login_key & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, res_login_key & c)
+{
+
+
+        node["response_info"]  >> c.response_info;
+        node["key"]  >> c.key;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_login & c)
 {
     o << "{ "
@@ -712,6 +759,20 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_login & c)
         << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "key"  << YAML::Value <<   c.key        << YAML::Key << "coded_pass"  << YAML::Value <<   c.coded_pass
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, req_login & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+        node["user_name"]  >> c.user_name;
+        node["key"]  >> c.key;
+        node["coded_pass"]  >> c.coded_pass;
+
+
 };
 
 
@@ -757,6 +818,30 @@ YAML::Emitter& operator << (YAML::Emitter& o, const res_login & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, res_login::IC_login_response_info & c)
+{
+
+
+        node["user_name"]  >> c.user_name;
+        node["session_id"]  >> c.session_id;
+
+
+};
+
+
+
+void  operator >> (const YAML::Node& node, res_login & c)
+{
+
+
+        node["response_info"]  >> c.response_info;
+            node["login_response_info"] >>  c.login_response_info;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const conf_logout & c)
 {
     o << "{ "
@@ -775,6 +860,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const conf_logout & c)
         << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "description"  << YAML::Value <<   c.description
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, conf_logout & c)
+{
+
+
+        node["location"]  >> c.location;
+        node["session_id"]  >> c.session_id;
+        node["description"]  >> c.description;
+
+
 };
 
 
@@ -799,6 +897,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_logout & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, req_logout & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_change_password & c)
 {
     o << "{ "
@@ -817,6 +926,21 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_change_password & c)
         << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "key"  << YAML::Value <<   c.key        << YAML::Key << "old_password"  << YAML::Value <<   c.old_password        << YAML::Key << "new_password"  << YAML::Value <<   c.new_password
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, req_change_password & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+        node["user_name"]  >> c.user_name;
+        node["key"]  >> c.key;
+        node["old_password"]  >> c.old_password;
+        node["new_password"]  >> c.new_password;
+
+
 };
 
 
@@ -859,6 +983,29 @@ YAML::Emitter& operator << (YAML::Emitter& o, const res_change_password & c)
         << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "change_password_info"   << YAML::Value << c.change_password_info
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, res_change_password::IC_change_password_info & c)
+{
+
+
+        node["accepted"]  >> c.accepted;
+
+
+};
+
+
+
+void  operator >> (const YAML::Node& node, res_change_password & c)
+{
+
+
+        node["response_info"]  >> c.response_info;
+            node["change_password_info"] >>  c.change_password_info;
+
+
 };
 
 

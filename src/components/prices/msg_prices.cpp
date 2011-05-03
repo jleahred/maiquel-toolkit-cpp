@@ -65,6 +65,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -565,6 +588,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_price_level & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_price_level & c)
+{
+
+
+        node["price"]  >> c.price;
+        node["quantity"]  >> c.quantity;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_price_deph5 & c)
 {
     o << "{ "
@@ -583,6 +618,21 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_price_deph5 & c)
         << YAML::Key << "level0"  << YAML::Value << c.level0        << YAML::Key << "level1"  << YAML::Value << c.level1        << YAML::Key << "level2"  << YAML::Value << c.level2        << YAML::Key << "level3"  << YAML::Value << c.level3        << YAML::Key << "level4"  << YAML::Value << c.level4
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_price_deph5 & c)
+{
+
+
+        node["level0"]  >> c.level0;
+        node["level1"]  >> c.level1;
+        node["level2"]  >> c.level2;
+        node["level3"]  >> c.level3;
+        node["level4"]  >> c.level4;
+
+
 };
 
 
@@ -607,6 +657,20 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_best_prices & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, pub_best_prices & c)
+{
+
+
+        node["product_code"]  >> c.product_code;
+        node["bids"]  >> c.bids;
+        node["asks"]  >> c.asks;
+        node["orig_control_fluct"]  >> c.orig_control_fluct;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_prod_info & c)
 {
     o << "{ "
@@ -625,6 +689,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_prod_info & c)
         << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "sys_product_code"  << YAML::Value << c.sys_product_code
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, req_prod_info & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+        node["sys_product_code"]  >> c.sys_product_code;
+
+
 };
 
 
@@ -667,6 +743,29 @@ YAML::Emitter& operator << (YAML::Emitter& o, const res_product_info & c)
         << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "response"   << YAML::Value << c.response
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, res_product_info::IC_response & c)
+{
+
+
+        node["best_prices"]  >> c.best_prices;
+
+
+};
+
+
+
+void  operator >> (const YAML::Node& node, res_product_info & c)
+{
+
+
+        node["response_info"]  >> c.response_info;
+            node["response"] >>  c.response;
+
+
 };
 
 

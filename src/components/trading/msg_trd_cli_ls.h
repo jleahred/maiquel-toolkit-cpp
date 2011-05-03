@@ -619,91 +619,106 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const sub_position_ls & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const sub_position_ls & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_position_ls & c);
+   void           operator >> (const YAML::Node& n,       sub_position_ls & c);
 
 bool operator== (const sub_position_ls& a, const sub_position_ls& b);
 bool operator!= (const sub_position_ls& a, const sub_position_ls& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_order_ls_confirmated & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const sub_order_ls_confirmated & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_order_ls_confirmated & c);
+   void           operator >> (const YAML::Node& n,       sub_order_ls_confirmated & c);
 
 bool operator== (const sub_order_ls_confirmated& a, const sub_order_ls_confirmated& b);
 bool operator!= (const sub_order_ls_confirmated& a, const sub_order_ls_confirmated& b);
 
     std::ostream& operator<< (std::ostream& o, const RQ_XX_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const RQ_XX_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_XX_LS & c);
+   void           operator >> (const YAML::Node& n,       RQ_XX_LS & c);
 
 bool operator== (const RQ_XX_LS& a, const RQ_XX_LS& b);
 bool operator!= (const RQ_XX_LS& a, const RQ_XX_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const RQ_NW_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const RQ_NW_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_NW_LS & c);
+   void           operator >> (const YAML::Node& n,       RQ_NW_LS & c);
 
 bool operator== (const RQ_NW_LS& a, const RQ_NW_LS& b);
 bool operator!= (const RQ_NW_LS& a, const RQ_NW_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const RQ_MD_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const RQ_MD_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_MD_LS & c);
+   void           operator >> (const YAML::Node& n,       RQ_MD_LS & c);
 
 bool operator== (const RQ_MD_LS& a, const RQ_MD_LS& b);
 bool operator!= (const RQ_MD_LS& a, const RQ_MD_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const RQ_CC_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const RQ_CC_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_CC_LS & c);
+   void           operator >> (const YAML::Node& n,       RQ_CC_LS & c);
 
 bool operator== (const RQ_CC_LS& a, const RQ_CC_LS& b);
 bool operator!= (const RQ_CC_LS& a, const RQ_CC_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const CF_XX_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const CF_XX_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const CF_XX_LS & c);
+   void           operator >> (const YAML::Node& n,       CF_XX_LS & c);
 
 bool operator== (const CF_XX_LS& a, const CF_XX_LS& b);
 bool operator!= (const CF_XX_LS& a, const CF_XX_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const CF_NW_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const CF_NW_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const CF_NW_LS & c);
+   void           operator >> (const YAML::Node& n,       CF_NW_LS & c);
 
 bool operator== (const CF_NW_LS& a, const CF_NW_LS& b);
 bool operator!= (const CF_NW_LS& a, const CF_NW_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const CF_MD_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const CF_MD_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const CF_MD_LS & c);
+   void           operator >> (const YAML::Node& n,       CF_MD_LS & c);
 
 bool operator== (const CF_MD_LS& a, const CF_MD_LS& b);
 bool operator!= (const CF_MD_LS& a, const CF_MD_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const CF_CC_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const CF_CC_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const CF_CC_LS & c);
+   void           operator >> (const YAML::Node& n,       CF_CC_LS & c);
 
 bool operator== (const CF_CC_LS& a, const CF_CC_LS& b);
 bool operator!= (const CF_CC_LS& a, const CF_CC_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const CF_EX_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const CF_EX_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const CF_EX_LS & c);
+   void           operator >> (const YAML::Node& n,       CF_EX_LS & c);
 
 bool operator== (const CF_EX_LS& a, const CF_EX_LS& b);
 bool operator!= (const CF_EX_LS& a, const CF_EX_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const RJ_XX_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const RJ_XX_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RJ_XX_LS & c);
+   void           operator >> (const YAML::Node& n,       RJ_XX_LS & c);
 
 bool operator== (const RJ_XX_LS& a, const RJ_XX_LS& b);
 bool operator!= (const RJ_XX_LS& a, const RJ_XX_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const RJ_NW_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const RJ_NW_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RJ_NW_LS & c);
+   void           operator >> (const YAML::Node& n,       RJ_NW_LS & c);
 
 bool operator== (const RJ_NW_LS& a, const RJ_NW_LS& b);
 bool operator!= (const RJ_NW_LS& a, const RJ_NW_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const RJ_MD_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const RJ_MD_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RJ_MD_LS & c);
+   void           operator >> (const YAML::Node& n,       RJ_MD_LS & c);
 
 bool operator== (const RJ_MD_LS& a, const RJ_MD_LS& b);
 bool operator!= (const RJ_MD_LS& a, const RJ_MD_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const RJ_CC_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const RJ_CC_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RJ_CC_LS & c);
+   void           operator >> (const YAML::Node& n,       RJ_CC_LS & c);
 
 bool operator== (const RJ_CC_LS& a, const RJ_CC_LS& b);
 bool operator!= (const RJ_CC_LS& a, const RJ_CC_LS& b);

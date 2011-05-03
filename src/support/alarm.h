@@ -47,8 +47,11 @@ enum alEnType       {
                         alTypeRealTime
                     };
 
-YAML::Emitter& operator<< (YAML::Emitter& o, const alEnPriority& a);
-YAML::Emitter& operator<< (YAML::Emitter& o, const alEnType& a);
+YAML::Emitter&  operator<< (YAML::Emitter& o, const alEnPriority& a);
+YAML::Emitter&  operator<< (YAML::Emitter& o, const alEnType& a);
+
+void            operator>> (const YAML::Node& o, alEnPriority& a);
+void            operator>> (const YAML::Node& o, alEnType& a);
 
 
 

@@ -65,6 +65,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -484,6 +507,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_tree_item & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_tree_item & c)
+{
+
+
+        node["branch"]  >> c.branch;
+        node["user_name"]  >> c.user_name;
+        node["product_code"]  >> c.product_code;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const req_tree_items & c)
 {
     o << "{ "
@@ -505,6 +541,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_tree_items & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, req_tree_items & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+        node["branch"]  >> c.branch;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const res_tree_items & c)
 {
     o << "{ "
@@ -523,6 +571,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const res_tree_items & c)
         << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "item"  << YAML::Value << c.item
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, res_tree_items & c)
+{
+
+
+        node["response_info"]  >> c.response_info;
+        node["item"]  >> c.item;
+
+
 };
 
 

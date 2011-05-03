@@ -65,6 +65,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -484,6 +507,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, oms_RQ_NW_LS & c)
+{
+
+    node["RQ_NW_LS"]   >>   static_cast<RQ_NW_LS&>(c)  ;
+
+        node["reject_descr"]  >> c.reject_descr;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_LS & c)
 {
     o << "{ "
@@ -505,6 +540,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, oms_RQ_MD_LS & c)
+{
+
+    node["RQ_MD_LS"]   >>   static_cast<RQ_MD_LS&>(c)  ;
+
+        node["reject_descr"]  >> c.reject_descr;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_LS & c)
 {
     o << "{ "
@@ -523,6 +570,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_LS & c)
         << YAML::Key << "reject_descr"  << YAML::Value <<   c.reject_descr
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, oms_RQ_CC_LS & c)
+{
+
+    node["RQ_CC_LS"]   >>   static_cast<RQ_CC_LS&>(c)  ;
+
+        node["reject_descr"]  >> c.reject_descr;
+
+
 };
 
 

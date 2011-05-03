@@ -74,7 +74,8 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const sub_control_fields & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fields & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_control_fields & c);
+   void           operator >> (const YAML::Node& n,       sub_control_fields & c);
 
 bool operator== (const sub_control_fields& a, const sub_control_fields& b);
 bool operator!= (const sub_control_fields& a, const sub_control_fields& b);

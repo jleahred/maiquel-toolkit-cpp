@@ -4,17 +4,31 @@
 
 
 
+
 int main(void)
 {
+    //  create message
+    mtk::msg::sub_single_product_code spc("market2", "product2");
     
-    mtk::msg::sub_single_product_code spc("market", "product");
-    mtk::msg::sub_product_code p (mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code(spc), "ljkkl"), mtk::nullable<mtk::msg::sub_adic_product_code>());
     
-   YAML::Emitter out;
-   out << p;
+    //  generate yaml
+    YAML::Emitter out;
+    out << spc;
    
    std::cout << out.c_str() << std::endl;
-   
+
+
+
+    //  from yaml generate message
+    std::istringstream i(out.c_str());
+    YAML::Parser parser(i);
+    YAML::Node node;
+    parser.GetNextDocument(node);
+    mtk::msg::sub_single_product_code spc2(__internal_get_default((mtk::msg::sub_single_product_code*) 0));
+    std::cout << spc2 << std::endl;
+    node >> spc2;
+    
+
    return 0;
 }
  

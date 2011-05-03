@@ -36,7 +36,7 @@
 
 
 
-namespace YAML  {  class Emitter;  };
+namespace YAML  {  class Emitter;  class Node;   };
 
 
 
@@ -309,8 +309,10 @@ typedef FixedNumber   fn;
 std::ostream&  operator<< (std::ostream&  os, const FixedNumber& fn);
 std::ostream&  operator<< (std::ostream&  os, const fnExt& fnExt);
 
-YAML::Emitter& operator<< (YAML::Emitter& os, const FixedNumber& fn);
-YAML::Emitter& operator<< (YAML::Emitter& os, const fnExt& fnExt);
+YAML::Emitter& operator<< (YAML::Emitter   & os, const FixedNumber& fn);
+YAML::Emitter& operator<< (YAML::Emitter   & os, const fnExt& fnExt);
+void           operator>> (const YAML::Node& i ,       FixedNumber& fn);
+void           operator>> (const YAML::Node& i ,       fnExt& d);
 
 
 

@@ -114,13 +114,15 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const sub_order_id & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const sub_order_id & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_order_id & c);
+   void           operator >> (const YAML::Node& n,       sub_order_id & c);
 
 bool operator== (const sub_order_id& a, const sub_order_id& b);
 bool operator!= (const sub_order_id& a, const sub_order_id& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_total_executions & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const sub_total_executions & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_total_executions & c);
+   void           operator >> (const YAML::Node& n,       sub_total_executions & c);
 
 bool operator== (const sub_total_executions& a, const sub_total_executions& b);
 bool operator!= (const sub_total_executions& a, const sub_total_executions& b);

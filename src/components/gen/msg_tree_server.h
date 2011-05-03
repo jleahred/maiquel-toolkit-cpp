@@ -158,19 +158,22 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const sub_tree_item & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const sub_tree_item & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_tree_item & c);
+   void           operator >> (const YAML::Node& n,       sub_tree_item & c);
 
 bool operator== (const sub_tree_item& a, const sub_tree_item& b);
 bool operator!= (const sub_tree_item& a, const sub_tree_item& b);
 
     std::ostream& operator<< (std::ostream& o, const req_tree_items & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const req_tree_items & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const req_tree_items & c);
+   void           operator >> (const YAML::Node& n,       req_tree_items & c);
 
 bool operator== (const req_tree_items& a, const req_tree_items& b);
 bool operator!= (const req_tree_items& a, const req_tree_items& b);
 
     std::ostream& operator<< (std::ostream& o, const res_tree_items & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const res_tree_items & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const res_tree_items & c);
+   void           operator >> (const YAML::Node& n,       res_tree_items & c);
 
 bool operator== (const res_tree_items& a, const res_tree_items& b);
 bool operator!= (const res_tree_items& a, const res_tree_items& b);

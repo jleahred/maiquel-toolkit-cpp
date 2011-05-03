@@ -65,6 +65,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -808,6 +831,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_position_ls & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, sub_position_ls & c)
+{
+
+
+        node["price"]  >> c.price;
+        node["quantity"]  >> c.quantity;
+        node["side"]  >> c.side;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_order_ls_confirmated & c)
 {
     o << "{ "
@@ -826,6 +862,21 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_order_ls_confirmated & c
         << YAML::Key << "order_id"  << YAML::Value << c.order_id        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "market_pos"  << YAML::Value << c.market_pos        << YAML::Key << "total_execs"  << YAML::Value << c.total_execs        << YAML::Key << "cli_ref"  << YAML::Value <<   c.cli_ref
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_order_ls_confirmated & c)
+{
+
+
+        node["order_id"]  >> c.order_id;
+        node["product_code"]  >> c.product_code;
+        node["market_pos"]  >> c.market_pos;
+        node["total_execs"]  >> c.total_execs;
+        node["cli_ref"]  >> c.cli_ref;
+
+
 };
 
 
@@ -850,6 +901,22 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RQ_XX_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, RQ_XX_LS & c)
+{
+
+
+        node["req_info"]  >> c.req_info;
+        node["order_id"]  >> c.order_id;
+        node["product_code"]  >> c.product_code;
+        node["request_pos"]  >> c.request_pos;
+        node["cli_ref"]  >> c.cli_ref;
+        node["orig_control_fluct"]  >> c.orig_control_fluct;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const RQ_NW_LS & c)
 {
     o << "{ "
@@ -868,6 +935,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RQ_NW_LS & c)
 
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, RQ_NW_LS & c)
+{
+
+    node["RQ_XX_LS"]   >>   static_cast<RQ_XX_LS&>(c)  ;
+
+
+
 };
 
 
@@ -892,6 +970,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RQ_MD_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, RQ_MD_LS & c)
+{
+
+    node["RQ_XX_LS"]   >>   static_cast<RQ_XX_LS&>(c)  ;
+
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const RQ_CC_LS & c)
 {
     o << "{ "
@@ -910,6 +999,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RQ_CC_LS & c)
 
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, RQ_CC_LS & c)
+{
+
+    node["RQ_XX_LS"]   >>   static_cast<RQ_XX_LS&>(c)  ;
+
+
+
 };
 
 
@@ -934,6 +1034,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_XX_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, CF_XX_LS & c)
+{
+
+
+        node["req_info"]  >> c.req_info;
+        node["confirmated_info"]  >> c.confirmated_info;
+        node["orig_control_fluct"]  >> c.orig_control_fluct;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const CF_NW_LS & c)
 {
     o << "{ "
@@ -952,6 +1065,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_NW_LS & c)
 
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, CF_NW_LS & c)
+{
+
+    node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
+
+
+
 };
 
 
@@ -976,6 +1100,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_MD_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, CF_MD_LS & c)
+{
+
+    node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
+
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const CF_CC_LS & c)
 {
     o << "{ "
@@ -994,6 +1129,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_CC_LS & c)
 
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, CF_CC_LS & c)
+{
+
+    node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
+
+
+
 };
 
 
@@ -1018,6 +1164,18 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_EX_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, CF_EX_LS & c)
+{
+
+    node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
+
+        node["executed_pos"]  >> c.executed_pos;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const RJ_XX_LS & c)
 {
     o << "{ "
@@ -1036,6 +1194,20 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_XX_LS & c)
         << YAML::Key << "req_info"  << YAML::Value << c.req_info        << YAML::Key << "confirmated_info"  << YAML::Value << c.confirmated_info        << YAML::Key << "description"  << YAML::Value <<   c.description        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, RJ_XX_LS & c)
+{
+
+
+        node["req_info"]  >> c.req_info;
+        node["confirmated_info"]  >> c.confirmated_info;
+        node["description"]  >> c.description;
+        node["orig_control_fluct"]  >> c.orig_control_fluct;
+
+
 };
 
 
@@ -1060,6 +1232,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_NW_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, RJ_NW_LS & c)
+{
+
+    node["RJ_XX_LS"]   >>   static_cast<RJ_XX_LS&>(c)  ;
+
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const RJ_MD_LS & c)
 {
     o << "{ "
@@ -1081,6 +1264,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_MD_LS & c)
 };
 
 
+
+void  operator >> (const YAML::Node& node, RJ_MD_LS & c)
+{
+
+    node["RJ_XX_LS"]   >>   static_cast<RJ_XX_LS&>(c)  ;
+
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const RJ_CC_LS & c)
 {
     o << "{ "
@@ -1099,6 +1293,17 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_CC_LS & c)
 
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, RJ_CC_LS & c)
+{
+
+    node["RJ_XX_LS"]   >>   static_cast<RJ_XX_LS&>(c)  ;
+
+
+
 };
 
 

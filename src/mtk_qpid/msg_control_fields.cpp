@@ -64,6 +64,29 @@ namespace msg {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -426,6 +449,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fields & c)
         << YAML::Key << "message_type"  << YAML::Value <<   c.message_type        << YAML::Key << "control_fluct_key"  << YAML::Value <<   c.control_fluct_key        << YAML::Key << "sent_date_time"  << YAML::Value <<   c.sent_date_time
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_control_fields & c)
+{
+
+
+        node["message_type"]  >> c.message_type;
+        node["control_fluct_key"]  >> c.control_fluct_key;
+        node["sent_date_time"]  >> c.sent_date_time;
+
+
 };
 
 

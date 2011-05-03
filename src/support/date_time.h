@@ -22,7 +22,7 @@
 #include <iostream>     //  no es debug
 
 
-namespace YAML  {  class Emitter;  };
+namespace YAML  {  class Emitter;  class Node;   };
 
 /*******************************************************************************
 
@@ -278,8 +278,9 @@ public:
 
 
 
-    friend std::ostream&  operator<< (std::ostream& os , const dtTimeQuantity& d);
-    friend YAML::Emitter& operator<< (YAML::Emitter& os, const dtTimeQuantity& d);
+    friend std::ostream&  operator<< (std::ostream     & os, const dtTimeQuantity& d);
+    friend YAML::Emitter& operator<< (YAML::Emitter    & os, const dtTimeQuantity& d);
+    friend void           operator>> (const YAML::Node & i ,       dtTimeQuantity& d);
 
 
 
@@ -402,8 +403,9 @@ public:
 
 
 
-    friend std::ostream&  operator<< (std::ostream& os , const DateTime& d);
-    friend YAML::Emitter& operator<< (YAML::Emitter& os, const DateTime& d);
+    friend std::ostream&  operator<< (std::ostream      & os, const DateTime& d);
+    friend YAML::Emitter& operator<< (YAML::Emitter     & os, const DateTime& d);
+    friend void           operator>> (const YAML::Node  & i ,       DateTime& d);
 
 
 

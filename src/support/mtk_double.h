@@ -7,7 +7,7 @@
 
 
 
-namespace YAML  {  class Emitter;  };
+namespace YAML  {  class Emitter;   class Node;  };
 
 
 
@@ -31,6 +31,7 @@ class Double {
 
     friend std::ostream & operator<< (std::ostream & os, const Double& d);
     friend YAML::Emitter& operator<< (YAML::Emitter& os, const Double& d);
+    friend void           operator>> (const YAML::Node& n, Double& d);
 
 
 

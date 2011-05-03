@@ -58,6 +58,22 @@ inline YAML::Emitter& operator<< (YAML::Emitter& o, const enBuySell& s)
 
 
 
+inline void   operator>> (const YAML::Node& n, enBuySell& bs)
+
+{
+
+    std::string sbs;
+    
+    n >> sbs;
+    
+    if      (sbs=="buy")        bs = buy;
+    else if (sbs=="sell")       bs = sell;
+    else    throw "PENDING";
+}
+
+
+
+
 inline enBuySell  __internal_get_default (enBuySell*)
 {
     return buy;

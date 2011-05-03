@@ -151,19 +151,22 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_NW_LS & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_NW_LS & c);
 
 bool operator== (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b);
 bool operator!= (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_MD_LS & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_MD_LS & c);
 
 bool operator== (const oms_RQ_MD_LS& a, const oms_RQ_MD_LS& b);
 bool operator!= (const oms_RQ_MD_LS& a, const oms_RQ_MD_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_CC_LS & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_CC_LS & c);
 
 bool operator== (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b);
 bool operator!= (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b);
