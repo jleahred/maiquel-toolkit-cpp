@@ -16,7 +16,6 @@
 #include "components/prices/cli/price_manager.h"
 
 #include "components/trading/msg_trd_common_support.h"
-#include "yaml/yaml.h"
 
 
 
@@ -25,6 +24,10 @@
 class QTableWidget;
 class QTableWidgetItem;
 class QCommonTableDelegate;
+
+namespace YAML { class Emitter;  class Node;      };
+
+
 
 
 class marginal_in_table : public mtk::SignalReceptor
@@ -62,7 +65,8 @@ class QTableMarginal : public QTableWidget
 {
     Q_OBJECT
     typedef  QTableMarginal CLASS_NAME;
-    friend YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m);
+    friend YAML::Emitter&   operator << (YAML::Emitter&       out, const  QTableMarginal& m);
+    friend void             operator >> (const YAML::Node&   node,        QTableMarginal& m);
 
 
 public:
@@ -135,7 +139,8 @@ class QMarginal : public mtkContainerWidget
 {
     Q_OBJECT
     typedef  QMarginal CLASS_NAME;
-    friend YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m);
+    friend YAML::Emitter&   operator << (YAML::Emitter&       out, const QMarginal& m);
+    friend void             operator >> (const YAML::Node&   node,       QMarginal& m);
 
 public:
     explicit QMarginal(QWidget *parent = 0);

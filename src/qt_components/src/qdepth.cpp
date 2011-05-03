@@ -16,6 +16,7 @@
 
 #include "components/trading/trd_cli_ord_book.h"
 #include "qt_components/src/qmtk_misc.h"
+#include "yaml/yaml.h"
 
 
 
@@ -582,4 +583,13 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QDepth& m)
     out << YAML::EndMap;
 
     return out;
+}
+
+void             operator >> (const YAML::Node&   node,       QDepth& d)
+{
+    node["component"] >> static_cast<mtkContainerWidget&>(d);
+
+    mtk::msg::sub_product_code pc = mtk::msg::__internal_get_default((mtk::msg::sub_product_code*)0);
+    node["product_code"] >> pc;
+    d.subscribe_to(pc);
 }

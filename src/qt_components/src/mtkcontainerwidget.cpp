@@ -8,6 +8,9 @@
 
 #include "qt_components/src/qmtk_misc.h"
 
+#include "yaml/yaml.h"
+
+
 
 
 mtk_uTitle::mtk_uTitle(QWidget *parent) :
@@ -241,4 +244,16 @@ YAML::Emitter& operator << (YAML::Emitter& out, const mtkContainerWidget& m)
     out << YAML::EndMap;
 
     return out;
+}
+
+void             operator >> (const YAML::Node& node,    mtkContainerWidget& m)
+{
+    int top, left, width, height;
+
+    node["geometry"][0] >> top;
+    node["geometry"][1] >> left;
+    node["geometry"][2] >> width;
+    node["geometry"][3] >> height;
+
+    m.setGeometry(left, top, width, height);
 }

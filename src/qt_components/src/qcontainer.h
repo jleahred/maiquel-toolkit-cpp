@@ -3,17 +3,25 @@
 
 #include <QScrollArea>
 
+
+namespace YAML { class Emitter;  class Node;  };
+class  QMarginal;
+class  QDepth;
+
+
+
 class qContainer : public QScrollArea
 {
     Q_OBJECT
 public:
     explicit qContainer(QWidget *parent = 0);
 
-    void insert_qmarginal(void);
-    void insert_qdepth(void);
+    QMarginal*  insert_qmarginal(void);
+    QDepth*     insert_qdepth   (void);
 
-    void save_config(void);
-    void load_config(void);
+
+    friend YAML::Emitter& operator << (YAML::Emitter   & out , const qContainer& m);
+    friend void           operator>> (const YAML::Node & i   ,       qContainer& m);
 
 private:
     QPoint  last_inserted_pos;

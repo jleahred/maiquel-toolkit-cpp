@@ -32,4 +32,4 @@ FORMS    += monitor.ui
 
 INCLUDEPATH = .   ../../../../src/
 
-LIBS =  -L../../../../lib/  -lmtk_qpid -lmtksupport  -lqpidclient -lqpidmessaging -lqpidtypes
+LIBS =  -L../../../../lib/  -lmtk_qpid -lyaml -lmtksupport  -lqpidclient -lqpidmessaging -lqpidtypes

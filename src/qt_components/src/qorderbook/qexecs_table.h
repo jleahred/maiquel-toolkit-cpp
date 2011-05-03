@@ -53,4 +53,4 @@ private:
     void contextMenuEvent(QContextMenuEvent *);
 };
 
-#endif // QORDER_TABLE_H
+#endif // QEXEC_TABLE_H

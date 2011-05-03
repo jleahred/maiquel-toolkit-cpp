@@ -22,6 +22,7 @@
 #include "qt_components/src/qcommontabledelegate.h"
 
 #include "support/vector.hpp"
+#include "yaml/yaml.h"
 
 
 
@@ -769,13 +770,14 @@ void QTableMarginal::slot_remove_current_row(void)
 YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
 {
     out     << YAML::BeginMap;
+
     //  writing products
     out << YAML::Key   <<  "products"
         << YAML::Value << YAML::BeginSeq;
 
         for(int i=0; i<m.rowCount(); ++i)
     {
-        QTableWidgetItemProduct* iproduct = dynamic_cast<QTableWidgetItemProduct*>(m.item(m.rowAt(i), 0));
+        QTableWidgetItemProduct* iproduct = dynamic_cast<QTableWidgetItemProduct*>(m.item(i, 0));
         if(iproduct!=0)
         {
             out <<  iproduct->product_code;
@@ -784,7 +786,6 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
     }
     out << YAML::EndSeq;
     //  end products
-
 
     //  writing sections sizes
     out << YAML::Key   <<  "sect_sizes"
@@ -799,6 +800,24 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
     out << YAML::EndMap;
     return out;
 }
+
+void             operator >> (const YAML::Node&   node,        QTableMarginal& m)
+{
+    for(unsigned i=0; i< node["products"].size(); ++i)
+    {
+        mtk::msg::sub_product_code pc = mtk::msg::__internal_get_default((mtk::msg::sub_product_code*)0);
+        node["products"][i] >> pc;
+        m.add_marginal(pc);
+    }
+    for(unsigned i=0; i< node["sect_sizes"].size(); ++i)
+    {
+        int sect_size;
+        node["sect_sizes"][i] >> sect_size;
+        m.horizontalHeader()->resizeSection(i, sect_size);
+    }
+
+}
+
 
 
 YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
@@ -824,3 +843,8 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
 }
 
 
+void             operator >> (const YAML::Node&   node,       QMarginal& m)
+{
+    node["component"] >> static_cast<mtkContainerWidget&>(m);
+    node["qtablemarginal"] >>  (*m.table_marginals);
+}

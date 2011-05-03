@@ -6,10 +6,10 @@
 #include <QImage>
 
 
-#include "yaml/yaml.h"
 
 
 class QMouseEvent;
+namespace YAML { class Emitter;  class Node;      };
 
 
 
@@ -78,7 +78,8 @@ protected:
 class mtkContainerWidget : public QWidget
 {
     Q_OBJECT
-    friend YAML::Emitter& operator << (YAML::Emitter& out, const mtkContainerWidget& m);
+    friend YAML::Emitter&   operator << (YAML::Emitter&     out, const mtkContainerWidget& m);
+    friend void             operator >> (const YAML::Node& node,    mtkContainerWidget& m);
 
 public:
     explicit mtkContainerWidget(QWidget *parent = 0);
