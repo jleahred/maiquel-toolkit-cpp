@@ -89,6 +89,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
         connect(close_button, SIGNAL(clicked()), this, SLOT(slot_request_close_tab()));
         close_button->setFlat(true);
         close_button->setEnabled(false);
+        close_button->setToolTip(tr("Close selected tab"));
         hl->addWidget(close_button);
         /*
         filter_button = new QPushButton(QIcon(QLatin1String(":/small_icons/filter")), QLatin1String(""), w);
@@ -101,9 +102,10 @@ QOrderBook::QOrderBook(QWidget *parent) :
         connect(new_button, SIGNAL(clicked()), this, SLOT(slot_request_new_tab()));
         new_button->setFlat(true);
         hl->addWidget(new_button);
+        new_button->setToolTip(tr("Create a new tab"));
 
         tab_widget->setCornerWidget(w, Qt::TopLeftCorner);
-        w->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
+        //w->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
     }
 
     {
@@ -116,10 +118,11 @@ QOrderBook::QOrderBook(QWidget *parent) :
         connect(filter_button, SIGNAL(clicked()), this, SLOT(slot_request_showfilter()));
         filter_button->setFlat(true);
         filter_button->setCheckable(true);
+        filter_button->setToolTip(tr("Show/Hide the filter aplied on this tab"));
         hl->addWidget(filter_button);
 
         tab_widget->setCornerWidget(w);
-        w->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
+        //w->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
     }
 
     splitter->addWidget(tab_widget);

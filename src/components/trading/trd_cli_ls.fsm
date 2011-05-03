@@ -58,6 +58,7 @@
       in_market          :  bool                                        ({false})                                           phony
       is_canceled        :  bool                                        ({false})                                           phony
       is_full_executed   :  bool                                        ({false})                                           phony
+      has_pending_rq     :  bool                                        ({false})                                           phony
       serrors            :  std::string                                 ({""})
       //  pending historic
 
@@ -66,19 +67,25 @@
 ::STATUS::init
 
 ::STATUS::w_cfnw
+      has_pending_rq          :  bool                                        ({true})
 
 ::STATUS::market
       in_market          :  bool                                        ({true})
 
 ::STATUS::w_cfmd
+      has_pending_rq          :  bool                                        ({true})
 
 ::STATUS::w_cfcc
+      has_pending_rq          :  bool                                        ({true})
 
 ::STATUS::w_cfmdcc
+      has_pending_rq          :  bool                                        ({true})
 
 ::STATUS::w_cfnwmd
+      has_pending_rq          :  bool                                        ({true})
 
 ::STATUS::w_cfnwcc
+      has_pending_rq          :  bool                                        ({true})
 
 ::STATUS::canceled
       is_canceled        :  bool                                        ({true})                                           

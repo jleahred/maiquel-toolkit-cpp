@@ -46,8 +46,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     else
     {
         ui->BuySell->setText(tr("SELL"));
-        setPalette( QPalette(mtk_color_problem));
-        //setPalette( QPalette( Qt::red ) );
+        setPalette( QPalette(mtk_color_sell));
     }
     ui->market->setText(QLatin1String(rq.product_code.sys_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.product_code.sys_code.product.c_str()));

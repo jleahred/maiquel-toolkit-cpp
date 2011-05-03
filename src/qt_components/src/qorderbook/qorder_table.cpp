@@ -148,12 +148,14 @@ public:
         if      (inner_order->serrors() != "")
             return mtk_color_problem;
         else if (inner_order->in_market())
-            //return mtk_yellow;
             return Qt::white;
         else if (inner_order->is_canceled())
             return Qt::gray;
         else if (inner_order->is_full_executed())
             return mtk_color_executed;
+        //else if(inner_order->last_confirmation().HasValue()==false)
+        else if(inner_order->has_pending_rq())
+            return mtk_color_pending;
         else
             return Qt::white;
     }
@@ -170,8 +172,6 @@ public:
     {
         QTableWidgetItem* item = items[col_req_code];
         item->setText(get_req_code_from_order(inner_order));
-        if (inner_order->last_confirmation().HasValue()==false)
-            item->setBackgroundColor(Qt::white);
         item->setBackgroundColor(get_default_color());
     }
 
@@ -215,24 +215,7 @@ public:
         if (requested.HasValue()==false  &&  confirmed.HasValue()==false)
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
-        if (confirmed.HasValue()  &&  requested.HasValue()  &&  confirmed.Get() == requested.Get())
-        {
-            item->setText(fn_as_QString(confirmed.Get()));
-            item->setBackgroundColor(get_default_color());
-        }
-        else
-        {
-            item->setBackgroundColor(Qt::white);
-            QString text_price;
-            if (confirmed.HasValue())
-                text_price += fn_as_QString(confirmed.Get());
-            if (requested.HasValue())
-                text_price += QLatin1String(" (") + fn_as_QString(requested.Get()) + QLatin1String(")");
-            item->setText(text_price);
-        }
-        //item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-        if (inner_order->is_canceled())
-            item->setBackgroundColor(Qt::gray);
+        item->setBackgroundColor(get_default_color());
     }
 
     void update_item_quantity(void)
@@ -249,23 +232,7 @@ public:
         if (requested.HasValue()==false  &&  confirmed.HasValue()==false)
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
-        if (confirmed.HasValue()  &&  requested.HasValue()  &&  confirmed.Get() == requested.Get())
-        {
-            item->setText(fn_as_QString(confirmed.Get()));
-            item->setBackgroundColor(get_default_color());
-        }
-        else
-        {
-            item->setBackgroundColor(Qt::white);
-            QString text_price;
-            if (confirmed.HasValue())
-                text_price += fn_as_QString(confirmed.Get());
-            if (requested.HasValue())
-                text_price += QLatin1String(" (") + fn_as_QString(requested.Get()) + QLatin1String(")");
-            item->setText(text_price);
-        }
-        if (inner_order->is_canceled())
-            item->setBackgroundColor(Qt::gray);
+        item->setBackgroundColor(get_default_color());
     }
 
 
@@ -288,7 +255,7 @@ public:
         else
         {
             item->setText(QObject::tr("sell"));
-            item->setBackgroundColor(mtk_color_problem);
+            item->setBackgroundColor(mtk_color_sell);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }
@@ -325,7 +292,7 @@ public:
                             inner_order->last_confirmation().Get().confirmated_info.total_execs.quantity.GetDouble();
             item->setText(QString::number(confirmed.get()._0, 'f', 5));
         }
-        if (confirmed >= mtk::Double(1.))
+        if (confirmed.IsValid())
         {
             item->setBackgroundColor(mtk_color_executed);
         }

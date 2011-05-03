@@ -108,7 +108,7 @@ public:
         else
         {
             item->setText(QObject::tr("sell"));
-            item->setBackgroundColor(mtk_color_problem);
+            item->setBackgroundColor(mtk_color_sell);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }

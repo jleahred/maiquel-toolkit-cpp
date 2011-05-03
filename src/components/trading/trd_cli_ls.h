@@ -68,6 +68,7 @@ public:
     const bool                                         &  in_market () const;
     const bool                                         &  is_canceled () const;
     const bool                                         &  is_full_executed () const;
+    const bool                                         &  has_pending_rq () const;
     const std::string                                  &  serrors () const;
 
 

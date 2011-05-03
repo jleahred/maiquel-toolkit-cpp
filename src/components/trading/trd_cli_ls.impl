@@ -46,6 +46,8 @@ struct  status_common_info
     virtual void set_is_canceled(const bool                                        & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
     virtual const bool                                         &  is_full_executed() const {  static bool                                         result(false);   return result; };
     virtual void set_is_full_executed(const bool                                        & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
+    virtual const bool                                         &  has_pending_rq() const {  static bool                                         result(false);   return result; };
+    virtual void set_has_pending_rq(const bool                                        & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
     std::string                                  __serrors;
     virtual const std::string                                 &  serrors() const {  return __serrors; };
     virtual void set_serrors(const std::string                                 &  _prop) {  __serrors = _prop;  };
@@ -105,6 +107,7 @@ public:
     virtual const bool                                         &  in_market (void) const { return ci->in_market(); }; 
     virtual const bool                                         &  is_canceled (void) const { return ci->is_canceled(); }; 
     virtual const bool                                         &  is_full_executed (void) const { return ci->is_full_executed(); }; 
+    virtual const bool                                         &  has_pending_rq (void) const { return ci->has_pending_rq(); }; 
     virtual const std::string                                  &  serrors (void) const { return ci->serrors(); }; 
 
 };
@@ -161,14 +164,17 @@ class w_cfnw  :   public  abstract_status
 public:
     w_cfnw (mtk::CountPtr<status_common_info> _ci)
         : 
-        abstract_status(_ci)
-
+        abstract_status(_ci),
+        __has_pending_rq(true)
         {  };
     
     std::string  GetStatusName()  {  return "w_cfnw"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    bool                                         __has_pending_rq;
+    virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
+    virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
 
 
     //  INPUTS
@@ -240,14 +246,17 @@ class w_cfmd  :   public  abstract_status
 public:
     w_cfmd (mtk::CountPtr<status_common_info> _ci)
         : 
-        abstract_status(_ci)
-
+        abstract_status(_ci),
+        __has_pending_rq(true)
         {  };
     
     std::string  GetStatusName()  {  return "w_cfmd"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    bool                                         __has_pending_rq;
+    virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
+    virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
 
 
     //  INPUTS
@@ -278,14 +287,17 @@ class w_cfcc  :   public  abstract_status
 public:
     w_cfcc (mtk::CountPtr<status_common_info> _ci)
         : 
-        abstract_status(_ci)
-
+        abstract_status(_ci),
+        __has_pending_rq(true)
         {  };
     
     std::string  GetStatusName()  {  return "w_cfcc"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    bool                                         __has_pending_rq;
+    virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
+    virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
 
 
     //  INPUTS
@@ -316,14 +328,17 @@ class w_cfmdcc  :   public  abstract_status
 public:
     w_cfmdcc (mtk::CountPtr<status_common_info> _ci)
         : 
-        abstract_status(_ci)
-
+        abstract_status(_ci),
+        __has_pending_rq(true)
         {  };
     
     std::string  GetStatusName()  {  return "w_cfmdcc"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    bool                                         __has_pending_rq;
+    virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
+    virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
 
 
     //  INPUTS
@@ -354,14 +369,17 @@ class w_cfnwmd  :   public  abstract_status
 public:
     w_cfnwmd (mtk::CountPtr<status_common_info> _ci)
         : 
-        abstract_status(_ci)
-
+        abstract_status(_ci),
+        __has_pending_rq(true)
         {  };
     
     std::string  GetStatusName()  {  return "w_cfnwmd"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    bool                                         __has_pending_rq;
+    virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
+    virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
 
 
     //  INPUTS
@@ -392,14 +410,17 @@ class w_cfnwcc  :   public  abstract_status
 public:
     w_cfnwcc (mtk::CountPtr<status_common_info> _ci)
         : 
-        abstract_status(_ci)
-
+        abstract_status(_ci),
+        __has_pending_rq(true)
         {  };
     
     std::string  GetStatusName()  {  return "w_cfnwcc"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    bool                                         __has_pending_rq;
+    virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
+    virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
 
 
     //  INPUTS
@@ -5793,6 +5814,10 @@ const bool                                         & mtk::trd::trd_cli_ls::is_ca
 const bool                                         & mtk::trd::trd_cli_ls::is_full_executed (void) const
 {
     return current_status->is_full_executed();
+}
+const bool                                         & mtk::trd::trd_cli_ls::has_pending_rq (void) const
+{
+    return current_status->has_pending_rq();
 }
 const std::string                                  & mtk::trd::trd_cli_ls::serrors (void) const
 {
