@@ -131,7 +131,7 @@ QTableMarginal::QTableMarginal(QWidget *parent)
 {
     //this->setStyleSheet("background-color: rgb(191,219,255);");
     //color_product = QColor(191,219,255);
-    this->horizontalHeader()->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
+    //this->horizontalHeader()->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
 
 
     //color_product = this->horizontalHeader()->palette().background().color();
@@ -207,6 +207,7 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     action_remove_product->setShortcut(Qt::Key_Delete);
     connect(action_remove_product, SIGNAL(triggered()), this, SLOT(slot_remove_current_row()));
     this->addAction(action_remove_product);
+    this->disable_actions();
 }
 
 void QTableMarginal::slot_column_resized(int li, int, int)

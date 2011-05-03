@@ -255,6 +255,7 @@ QDepth::QDepth(QWidget *parent) :
     action_hit_the_bid->setShortcut(Qt::Key_F12);
     connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
     this->addAction(action_hit_the_bid);
+    this->disable_actions();
 }
 
 QDepth::~QDepth()

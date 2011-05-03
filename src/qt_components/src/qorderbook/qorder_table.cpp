@@ -363,6 +363,8 @@ qorder_table::qorder_table(QWidget *parent) :
     hl->setContentsMargins(0, 0, 0, 0);
     hl->addWidget(table_widget);
 
+    //table_widget->horizontalHeader()->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
+
     hl->addWidget(filterf);
     hl->setStretch(0,1);
     filterf->hide();
