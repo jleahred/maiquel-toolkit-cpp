@@ -13,3 +13,5 @@ HEADERS += *.h
 INCLUDEPATH += /home/maiquel/develop/mtk/src
 FORMS += hpgui.ui
 RESOURCES += 
+
+LIBS = -L../../../../../mtk/lib  -lyaml

@@ -7,6 +7,7 @@
 // coded last modification:        _CODED_LAST_MODIF
 
 
+#include "yaml/yaml.h"
 #include "support/nullable.hpp"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
@@ -17,6 +18,7 @@
 #include "support/mtk_string.h"
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
+
 #include "mtk_qpid/mtk_qpid.hpp"
 
 
@@ -56,6 +58,9 @@ public:
     
     
     
+    
+    
+    void        before_send(void) const;
     
 private:
     std::string check_recomended(void) const;
@@ -102,6 +107,9 @@ public:
         
         
         
+        
+        void        before_send(void) const;
+        
     private:
         std::string check_recomended(void) const;
     };
@@ -139,6 +147,9 @@ public:
         
         
         
+        
+        void        before_send(void) const;
+        
     private:
         std::string check_recomended(void) const;
     };
@@ -174,6 +185,9 @@ virtual std::string  get_out_subject (void) const;
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -209,6 +223,9 @@ public:
     
     
     
+    
+    void        before_send(void) const;
+    
 private:
     std::string check_recomended(void) const;
 };
@@ -220,11 +237,15 @@ private:
     
 //  fordward declarations-----------------------------------------------------------
     std::ostream& operator<< (std::ostream& o, const LimitPosition & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const LimitPosition & c);
+   void           operator >> (const YAML::Node& n,       LimitPosition & c);
 
 bool operator== (const LimitPosition& a, const LimitPosition& b);
 bool operator!= (const LimitPosition& a, const LimitPosition& b);
 
     std::ostream& operator<< (std::ostream& o, const RQ_NW_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_NW_LS & c);
+   void           operator >> (const YAML::Node& n,       RQ_NW_LS & c);
 
 bool operator== (const RQ_NW_LS::IC_control_fields_& a, const RQ_NW_LS::IC_control_fields_& b);
 bool operator!= (const RQ_NW_LS::IC_control_fields_& a, const RQ_NW_LS::IC_control_fields_& b);
@@ -238,16 +259,22 @@ bool operator== (const RQ_NW_LS& a, const RQ_NW_LS& b);
 bool operator!= (const RQ_NW_LS& a, const RQ_NW_LS& b);
 
     std::ostream& operator<< (std::ostream& o, const RQ_NW_LS::IC_control_fields_ & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_NW_LS::IC_control_fields_ & c);
+   void           operator >> (const YAML::Node& n,       RQ_NW_LS::IC_control_fields_ & c);
 
 bool operator== (const RQ_NW_LS::IC_control_fields_& a, const RQ_NW_LS::IC_control_fields_& b);
 bool operator!= (const RQ_NW_LS::IC_control_fields_& a, const RQ_NW_LS::IC_control_fields_& b);
 
     std::ostream& operator<< (std::ostream& o, const RQ_NW_LS::IC_product_code & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_NW_LS::IC_product_code & c);
+   void           operator >> (const YAML::Node& n,       RQ_NW_LS::IC_product_code & c);
 
 bool operator== (const RQ_NW_LS::IC_product_code& a, const RQ_NW_LS::IC_product_code& b);
 bool operator!= (const RQ_NW_LS::IC_product_code& a, const RQ_NW_LS::IC_product_code& b);
 
     std::ostream& operator<< (std::ostream& o, const LimitPositionChild & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const LimitPositionChild & c);
+   void           operator >> (const YAML::Node& n,       LimitPositionChild & c);
 
 bool operator== (const LimitPositionChild& a, const LimitPositionChild& b);
 bool operator!= (const LimitPositionChild& a, const LimitPositionChild& b);

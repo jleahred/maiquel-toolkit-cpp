@@ -537,7 +537,7 @@ YAML::Emitter& operator<< (YAML::Emitter& os, const fnExt& fnExt)
 
 void           operator>> (const YAML::Node   & i ,       FixedNumber& fn)
 {
-    int int_code;
+    int int_code=0;
     
     i[0] >> int_code;
     
@@ -547,8 +547,8 @@ void           operator>> (const YAML::Node   & i ,       FixedNumber& fn)
 }
 void           operator>> (const YAML::Node   & i ,       fnExt& d)
 {
-    int decimals;
-    int increment;
+    int decimals=0;
+    int increment=0;
     
     i[0] >> decimals;
     i[1] >> increment;

@@ -11,11 +11,11 @@ make[3]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/support'
 ex_alarm.exec ----------------------------------------------------------------
 ./ex_alarm.exec
 
-             ERROR Unkown # throwing @int main()(ex_alarm.cpp:33)
+             ERROR Unkown # throwing >exalarm @int main()(ex_alarm.cpp:33)
 
-             ERROR Unkown # throwing @int main()(ex_alarm.cpp:49)
+             ERROR Unkown # throwing >exalarm @int main()(ex_alarm.cpp:49)
 
-             Warn  Unkown # stacked @int main()(ex_alarm.cpp:67)
+             Warn  Unkown # stacked >exalarm @int main()(ex_alarm.cpp:67)
 rm -f ./ex_alarm.exec
 ex_asyn_call_delay.exec ----------------------------------------------------------------
 ./ex_asyn_call_delay.exec
@@ -846,8 +846,8 @@ Los ficheros son consistentes [ADMIN.ConSim-bolo_s] 8888 == 8888
 ************************************************************************************
 Añadimos una propiedad a un nodo nuevo
 No está permitido crear una propiedad en un nodo nuevo: 
-             ERROR NoPerm # on file config2.cfg alarm @CF_Create
-             ERROR NoPerm # Cannot create property with a node key [NODO_NUEVO.hOLa]   node doesn't exists @void mtk::ConfigFile::Create(const std::string&, const std::string&, const std::string&)(configfile.cpp:614)
+             ERROR NoPerm # on file config2.cfg alarm >CF_Create @void mtk::ConfigFile::Create(const std::string&, const std::string&, const std::string&)(configfile.cpp:629)
+             ERROR NoPerm # Cannot create property with a node key [NODO_NUEVO.hOLa]   node doesn't exists >configfile @void mtk::ConfigFile::Create(const std::string&, const std::string&, const std::string&)(configfile.cpp:614)
 ************************************************************************************
 Vamos a borrar una propiedad
 Se ha borrado la propiedad [ADMIN.ESTASEBORRA]
@@ -905,12 +905,12 @@ Los ficheros son consistentes
 ************************************************************************************
 Vamos a borrar un nodo
 No esta permitido borrar un nodo: 
-             ERROR Unkown # Cannot delete on keys.property [ADMIN] @void mtk::ConfigFile::Delete(const std::string&)(configfile.cpp:581)
+             ERROR Unkown # Cannot delete on keys.property [ADMIN] >configfile @void mtk::ConfigFile::Delete(const std::string&)(configfile.cpp:581)
 ************************************************************************************
 Vamos a intentar escribir un valor en un nodo:
 No esta permitido escribir un valor en un nodo: 
-             ERROR NoPerm # on file config2.cfg alarm @CF_Create
-             ERROR NoPerm # Cannot write a property on a node [ADMIN]  @void mtk::ConfigFile::Create(const std::string&, const std::string&, const std::string&)(configfile.cpp:605)
+             ERROR NoPerm # on file config2.cfg alarm >CF_Create @void mtk::ConfigFile::Create(const std::string&, const std::string&, const std::string&)(configfile.cpp:629)
+             ERROR NoPerm # Cannot write a property on a node [ADMIN]  >configfile @void mtk::ConfigFile::Create(const std::string&, const std::string&, const std::string&)(configfile.cpp:605)
 ************************************************************************************
 Comprobamos todo el fichero
 NODE [] = ADMIN
@@ -963,7 +963,7 @@ Los ficheros son consistentes
 ************************************************************************************
 Vamos a intentar crear un identificador con símbolos no permitidos:
 No esta permitido crear un identificador con símbolos no permitidos: 
-             ERROR Unkown # invalid id ADMIN.aaaa íá=() @cf::Create
+             ERROR Unkown # invalid id ADMIN.aaaa íá=() >cf::Create @void mtk::VerifModifParams(const std::string&, const std::string&, const std::string&, const std::string&)(configfile.cpp:415)
 ************************************************************************************
 Vamos a coger una propiedad con variables:
 Valor de la variable varmercado:mercado expandido
@@ -1090,19 +1090,19 @@ copia iterator lista
 
 Pruebas de fallos..................
 1.-  tratamos de obtener un dato de un iterador que no está inicialiado
-             ERROR Unkown # iterator not valid @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)2.-  tratamos de avanzar en un iterador no inicializado
-             ERROR Unkown # iterator not valid @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:218)3.-  tratamos de obtener datos de un iterador que apunta a un mapa vacío
-             ERROR Unkown # iterator not valid @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)4.-  tratamos de obtener un datos de un iterador cuando su contenedor se ha borrado
+             ERROR Unkown # iterator not valid >map @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)2.-  tratamos de avanzar en un iterador no inicializado
+             ERROR Unkown # iterator not valid >map @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:218)3.-  tratamos de obtener datos de un iterador que apunta a un mapa vacío
+             ERROR Unkown # iterator not valid >map @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)4.-  tratamos de obtener un datos de un iterador cuando su contenedor se ha borrado
 esto bien 0
-             ERROR Unkown # container is not registered @int mtk::internal_for_containers::get_registered_container_last_size_change(int)(container_support.cpp:48)5.-  tratamos de avanzar iterador su contenedor se ha borrado (eliminado)
+             ERROR Unkown # container is not registered >containersupport @int mtk::internal_for_containers::get_registered_container_last_size_change(int)(container_support.cpp:48)5.-  tratamos de avanzar iterador su contenedor se ha borrado (eliminado)
 esto bien 0
-             ERROR Unkown # container is not registered @int mtk::internal_for_containers::get_registered_container_last_size_change(int)(container_support.cpp:48)6.-  tratamos de avanzar en un iterador cuando su contenedor se ha vaciado
-             ERROR Unkown # iterator not valid @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)7.-  tratamos de obtener datos de un iterador del que se ha borrado su elemento
-             ERROR Unkown # iterator not valid @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)8.-  tratamos de avanzar en un iterador que apunta al final
-             ERROR Unkown # iterator not valid @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:218)9.-  tratamos de avanzar en un iterador que llegó al final
+             ERROR Unkown # container is not registered >containersupport @int mtk::internal_for_containers::get_registered_container_last_size_change(int)(container_support.cpp:48)6.-  tratamos de avanzar en un iterador cuando su contenedor se ha vaciado
+             ERROR Unkown # iterator not valid >map @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)7.-  tratamos de obtener datos de un iterador del que se ha borrado su elemento
+             ERROR Unkown # iterator not valid >map @std::pair<const _Key, _Tp>* mtk::map<key_type, T>::iterator::operator->() [with key_type = int, T = int](../../../src/support/map.hpp:264)8.-  tratamos de avanzar en un iterador que apunta al final
+             ERROR Unkown # iterator not valid >map @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:218)9.-  tratamos de avanzar en un iterador que llegó al final
 este bien______________
-             ERROR Unkown # ++ on end iterator @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:221)10.-  comparar iteradores de diferentes contenedores
-             ERROR Unkown # on different owners @bool mtk::map<key_type, T>::iterator::operator==(const mtk::map<key_type, T>::iterator&) const [with key_type = int, T = int](../../../src/support/map.hpp:246)
+             ERROR Unkown # ++ on end iterator >map @mtk::map<key_type, T>::iterator& mtk::map<key_type, T>::iterator::operator++() [with key_type = int, T = int](../../../src/support/map.hpp:221)10.-  comparar iteradores de diferentes contenedores
+             ERROR Unkown # on different owners >map @bool mtk::map<key_type, T>::iterator::operator==(const mtk::map<key_type, T>::iterator&) const [with key_type = int, T = int](../../../src/support/map.hpp:246)
 
 TIENE BUENA PINTA.
 rm -f ./test_containers.exec
@@ -1917,8 +1917,6 @@ Prueba de socket udp
 
    from: 127.0.0.159
 
-   from: 127.0.0.160
-
 rm -f ./ex_udp_socket.exec
 #make -C fb
 #make -C components
@@ -2032,7 +2030,7 @@ hola.pajarito  {colours:[red, green, white], id:987654321, list:[hi, there], nam
 rm -f ./ex_qpid_direct_msg.exec
 ex_qpid_msg_parsing.exec ----------------------------------------------------------------
 ./ex_qpid_msg_parsing.exec
-{_cf_:{mt:RQ_NW_LS}, bs:b, ci:734462, cr:cli_ref, ns:[john, peter], oid:order_id, pc:{ac:aditional code, mk:market, pr:product}, pos:{bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}, poss:[], pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}, sec:123}
+{_cf_:{cfk:, mt:RQ_NW_LS, sdt:734566.4764461458}, bs:b, ci:734462, cr:cli_ref, ns:[john, peter], oid:order_id, pc:{ac:aditional code, mk:market, pr:product}, pos:{bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}, poss:[], pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}, sec:123}
 {bs:b, pr:{d:2, i:1, n:188}, qt:{d:2, i:1, n:266}}-------------------
 RECEIVED----------------------------
 { order_id:order_id  cli_ref:cli_ref  position:{ buy_sell:b  price:1.88#1  quantity:2.66#1   }  positionnn:{ buy_sell:b  price:1.88#1  quantity:2.66#1   }  control_fields_:{ clock_id:2011-01-20  secuence:123   }  product_code:{ market:market  product_code:product  aditional_code:aditional code   }  names:[john, peter, ]  postitions:[]   }
@@ -2173,6 +2171,7 @@ ADMIN
    }   }
    }   }
    }   }
+   }   }
 
 __GLOBAL__
 ------------------------------------
@@ -2230,8 +2229,7 @@ make -C acs/
 make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components/acs'
 ex_acs_cli.exec ----------------------------------------------------------------
 ./ex_acs_cli.exec
-received login ok  { user_name:joseluis.esteban@desarrollo  session_id:2011451521251   }
-received logout
+received login ok  { user_name:joseluis.esteban@desarrollo  session_id:2011541126401   }
 received logout  with description... requested by user
 FIN..... 
 rm -f ./ex_acs_cli.exec
@@ -2240,6 +2238,19 @@ rm -f ./ex_acs_cli.exec
 echo "FIN"
 FIN
 make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components/acs'
+make -C yaml/
+make[4]: Entering directory `/home/maiquel/develop/mtk/examples/onefile/components/yaml'
+ex_msg_yaml.exec ----------------------------------------------------------------
+./ex_msg_yaml.exec
+market: market2
+product: product2
+{ market:market2  product:product2   }
+rm -f ./ex_msg_yaml.exec
+#make -C components
+#make -C clicompo
+echo "FIN"
+FIN
+make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components/yaml'
 echo "FIN"
 FIN
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/onefile/components'
@@ -2253,7 +2264,7 @@ mkdir temp -p
 g++ -c -I./src -I../../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/arithmachine.o src/arithmachine.cpp
 mkdir temp -p
 g++ -c -I./src -I../../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/test.o src/test.cpp
-g++   temp/arithmachine.o  temp/test.o -L../../../lib -lmtksupport  -o bin/test_calculator
+g++   temp/arithmachine.o  temp/test.o -L../../../lib -lmtksupport -lyaml  -o bin/test_calculator
 bin/test_calculator
 
 RESULTADO... 5
@@ -4275,14 +4286,14 @@ make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/hp/test_rules'
 make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/hp'
 make -C bhvm/    test
 make[2]: Entering directory `/home/maiquel/develop/mtk/examples/bhvm'
-g++ -I../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings bhvmt.cpp  -L../../external/lib/linux -L../../lib  -lmtksupport -o bhvmt.exec
+g++ -I../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings bhvmt.cpp  -L../../external/lib/linux -L../../lib  -lmtksupport -lyaml -o bhvmt.exec
 cat program.hellt  | ./dhp hellt_compiler.rules | ./bhvmt.exec
 status
 ==========
 program_counter:54
 stack:
 
- @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:159)
+ >bhvm @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:159)
 status
 ==========
 program_counter:54
@@ -4336,15 +4347,15 @@ FIN
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/hell/onefile'
 make -C bhvm_asocmem0
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/hell/bhvm_asocmem0'
-g++ -I../../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings bhvmt.cpp  -L../../../lib  -lmtkhell -lmtksupport -o bhvmt.exec
+g++ -I../../../src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings bhvmt.cpp  -L../../../lib  -lmtkhell -lmtksupport -lyaml -o bhvmt.exec
 cat program.hellt  | ./dhp hellt_compiler.rules | ./bhvmt.exec
 ==========
 program_counter:1
 stack:
   double:0
 
- @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:163) [2]
-             CRIT. Unkown # unknown command  push var:i @void mtk::bhvm::exec_instruction(const std::string&)(./hvm/bhvm.cpp:144)
+ >bhvm @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:163) [2]
+             CRIT. Unkown # unknown command  push var:i >bhvm @void mtk::bhvm::exec_instruction(const std::string&)(./hvm/bhvm.cpp:144)
 status
 ==========
 program_counter:1
@@ -4364,8 +4375,8 @@ program_counter:1
 stack:
   double:(__void__)
 
- @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:163) [2]
-             CRIT. Unkown # unknown command  push var:result @void mtk::bhvm::exec_instruction(const std::string&)(./hvm/bhvm.cpp:144)
+ >bhvm @void mtk::bhvm::execute_program()(./hvm/bhvm.cpp:163) [2]
+             CRIT. Unkown # unknown command  push var:result >bhvm @void mtk::bhvm::exec_instruction(const std::string&)(./hvm/bhvm.cpp:144)
 status
 ==========
 program_counter:1
@@ -4394,7 +4405,7 @@ rm -f  temp/utibtcp_client.o
 mkdir -p bin
 mkdir -p temp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/utibtcp_client.o src/utibtcp_client.cpp
-g++   temp/utibtcp_client.o -L./mtk/external/lib/linux -L./mtk/lib -lmtksockets -lmtksupport  -o bin/utibtcp_cli
+g++   temp/utibtcp_client.o -L./mtk/external/lib/linux -L./mtk/lib -lmtksockets -lmtksupport -lyaml  -o bin/utibtcp_cli
 make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp/client'
 make -C mono_server this
 make[4]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp/mono_server'
@@ -4402,7 +4413,7 @@ rm -f  temp/utibtcp_monoserver.o
 mkdir -p bin
 mkdir -p temp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/utibtcp_monoserver.o src/utibtcp_monoserver.cpp
-g++   temp/utibtcp_monoserver.o -L./mtk/external/lib/linux -L./mtk/lib -lmtksockets -lmtksupport  -o bin/utibtcp_monoserver
+g++   temp/utibtcp_monoserver.o -L./mtk/external/lib/linux -L./mtk/lib -lmtksockets -lmtksupport -lyaml  -o bin/utibtcp_monoserver
 make[4]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/umtktcp/mono_server'
 mono_server/bin/utibtcp_monoserver & client/bin/utibtcp_cli 
 client connected___________________________
@@ -4908,7 +4919,7 @@ client   D I S C O N N E C T E D  __    connection down pr_server 4
 
 
 ALARMA SALIDA...
-             ERROR Unkown # pr_server Connection down  bytes readed 0    socket: -1 @void mtk::tcp_base_socket::check_input()(tcp_base_socket.cpp:165)
+             ERROR Unkown # pr_server Connection down  bytes readed 0    socket: -1 >socket @void mtk::tcp_base_socket::check_input()(tcp_base_socket.cpp:165)
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/emarket'
 rm -f  temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o
 mkdir -p bin
@@ -4917,7 +4928,7 @@ g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/orders_book.o src/orders_book.cpp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/ord_ls.o src/ord_ls.cpp
-g++   temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__emarket
+g++   temp/check_request.o  temp/main.o  temp/orders_book.o  temp/ord_ls.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__emarket
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/emarket'
 make -C houselight this
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/houselight'
@@ -4925,7 +4936,7 @@ rm -f  temp/main.o
 mkdir -p bin
 mkdir -p temp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
-g++   temp/main.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__houselight
+g++   temp/main.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__houselight
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/houselight'
 make -C houselight doc
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/houselight'
@@ -4949,7 +4960,7 @@ rm -f  temp/main.o
 mkdir -p bin
 mkdir -p temp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
-g++   temp/main.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__treeserver
+g++   temp/main.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__treeserver
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/tree_server'
 make -C tree_server doc
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/tree_server'
@@ -4974,7 +4985,7 @@ mkdir -p bin
 mkdir -p temp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
 g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/users_manager.o src/users_manager.cpp
-g++   temp/main.o  temp/users_manager.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__acs
+g++   temp/main.o  temp/users_manager.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__acs
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/acs'
 make -C acs doc
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/acs'
@@ -4992,6 +5003,54 @@ a2x: executing: xmllint --nonet --noout --valid /home/maiquel/develop/mtk/exampl
 a2x: executing: dblatex -t pdf -p /etc/asciidoc/dblatex/asciidoc-dblatex.xsl -s /etc/asciidoc/dblatex/asciidoc-dblatex.sty -T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top -V /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
 a2x: deleting /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/acs'
+make -C alarms_db this
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/alarms_db'
+rm -f  temp/main.o
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
+g++   temp/main.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtkfirebird -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging -lfbclient64  -o bin/ct__alarms_db
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/alarms_db'
+make -C alarms_db doc
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/alarms_db'
+a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/alarms_db.adoc
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+Image 'dblatex' not found
+'alarms_db.pdf' successfully built
+a2x: executing: asciidoc --backend docbook  --doctype book --verbose --out-file /home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc/alarms_db.xml /home/maiquel/develop/mtk/examples/prj_make/alarms_db/src/alarms_db.adoc
+a2x: executing: xmllint --nonet --noout --valid /home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc/alarms_db.xml
+a2x: executing: dblatex -t pdf -p /etc/asciidoc/dblatex/asciidoc-dblatex.xsl -s /etc/asciidoc/dblatex/asciidoc-dblatex.sty -T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top -V /home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc/alarms_db.xml
+a2x: deleting /home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc/alarms_db.xml
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/alarms_db'
+make -C product_loader this
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/product_loader'
+rm -f  temp/main.o
+mkdir -p bin
+mkdir -p temp
+g++ -c -I./src -I./mtk/src -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion  -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result  -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Winit-self -Wignored-qualifiers -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wshadow -Wcast-qual -Wwrite-strings -o temp/main.o src/main.cpp
+g++   temp/main.o -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging  -o bin/ct__product_loader
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/product_loader'
+make -C product_loader doc
+make[3]: Entering directory `/home/maiquel/develop/mtk/examples/prj_make/product_loader'
+a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/product_loader.adoc
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian)
+ restricted \write18 enabled.
+entering extended mode
+Image 'dblatex' not found
+'product_loader.pdf' successfully built
+a2x: executing: asciidoc --backend docbook  --doctype book --verbose --out-file /home/maiquel/develop/mtk/examples/prj_make/product_loader/doc/product_loader.xml /home/maiquel/develop/mtk/examples/prj_make/product_loader/src/product_loader.adoc
+a2x: executing: xmllint --nonet --noout --valid /home/maiquel/develop/mtk/examples/prj_make/product_loader/doc/product_loader.xml
+a2x: executing: dblatex -t pdf -p /etc/asciidoc/dblatex/asciidoc-dblatex.xsl -s /etc/asciidoc/dblatex/asciidoc-dblatex.sty -T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top -V /home/maiquel/develop/mtk/examples/prj_make/product_loader/doc/product_loader.xml
+a2x: deleting /home/maiquel/develop/mtk/examples/prj_make/product_loader/doc/product_loader.xml
+make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make/product_loader'
 make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/prj_make'
 make -C qt/ test
 make[2]: Entering directory `/home/maiquel/develop/mtk/examples/qt'
@@ -5002,7 +5061,7 @@ g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB 
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_cont_widget/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_cont_widget/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o mainwindow.o ../../ex_cont_widget/src/mainwindow.cpp
 /usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_cont_widget/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_cont_widget/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. ../../ex_cont_widget/src/mainwindow.h -o moc_mainwindow.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_cont_widget/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_cont_widget/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
-g++ -Wl,-O1 -o ex_cont_widget main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lqt_components -lQtGui -lQtCore -lpthread 
+g++ -Wl,-O1 -o ex_cont_widget main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lqt_components -lmtksupport -lyaml -lQtGui -lQtCore -lpthread 
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
 rm -rf temp; mkdir -p temp; cd temp; mkdir -p bin; cd bin; qmake ../../ex_min_qt/src/ex_min_qt.pro; make; ./ex_min_qt
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
@@ -5011,7 +5070,7 @@ g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB 
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. -o mainwindow.o ../../ex_min_qt/src/mainwindow.cpp
 /usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. ../../ex_min_qt/src/mainwindow.h -o moc_mainwindow.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_min_qt/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_min_qt/src -I../../../../src -I. -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
-g++ -Wl,-O1 -o ex_min_qt main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging -lQtGui -lQtCore -lpthread 
+g++ -Wl,-O1 -o ex_min_qt main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging -lQtGui -lQtCore -lpthread 
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
 rm -rf temp; mkdir -p temp; cd temp; mkdir -p bin; cd bin; qmake ../../ex_send_order/src/ex_send_order.pro; make; cd ..; cp -r ../ex_send_order/etc . ; ./bin/ex_send_order etc/config.cfg
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
@@ -5020,8 +5079,12 @@ g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB 
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o mainwindow.o ../../ex_send_order/src/mainwindow.cpp
 /usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. ../../ex_send_order/src/mainwindow.h -o moc_mainwindow.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../ex_send_order/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../ex_send_order/src -I../../../../src -I../../../../src/qt_components/src -I. -I. -I. -o moc_mainwindow.o moc_mainwindow.cpp
-g++ -Wl,-O1 -o ex_send_order main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lqt_components -lmtk_components -lmtk_qpid -lmtksupport -lqpidclient -lqpidmessaging -lQtGui -lQtCore -lpthread 
+g++ -Wl,-O1 -o ex_send_order main.o mainwindow.o moc_mainwindow.o    -L/usr/lib -L../../../../lib -lqt_components -lmtk_components -lmtk_qpid -lmtksupport -lyaml -lqpidclient -lqpidmessaging -lphonon -lQtGui -lQtCore -lpthread 
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
+params.c:OpenConfFile() - Unable to open configuration file "/home/maiquel/.smb/smb.conf":
+	No such file or directory
+params.c:OpenConfFile() - Unable to open configuration file "/home/maiquel/.smb/smb.conf.append":
+	No such file or directory
 rm -rf temp; mkdir -p temp; cd temp; mkdir -p bin; cd bin; qmake ../../monitor/src/monitor.pro; make; ./monitor
 make[3]: Entering directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
 /usr/bin/uic-qt4 ../../monitor/src/monitor.ui -o ui_monitor.h
@@ -5030,6 +5093,11 @@ g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB 
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o qplaintexteditcommand.o ../../monitor/src/qplaintexteditcommand.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o qlistprocesses.o ../../monitor/src/qlistprocesses.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o qtablealarms.o ../../monitor/src/qtablealarms.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o msg_common.o ../../../../src/components/msg_common.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o msg_common_support.o ../../../../src/components/msg_common_support.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o msg_acs.o ../../../../src/components/acs/msg_acs.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o msg_admin.o ../../../../src/components/admin/msg_admin.cpp
+g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o msg_admin_support.o ../../../../src/components/admin/msg_admin_support.cpp
 /usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. ../../monitor/src/monitor.h -o moc_monitor.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o moc_monitor.o moc_monitor.cpp
 /usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. ../../monitor/src/qplaintexteditcommand.h -o moc_qplaintexteditcommand.cpp
@@ -5038,7 +5106,7 @@ g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB 
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o moc_qlistprocesses.o moc_qlistprocesses.cpp
 /usr/bin/moc-qt4 -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. ../../monitor/src/qtablealarms.h -o moc_qtablealarms.cpp
 g++ -c -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED -I/usr/share/qt4/mkspecs/linux-g++ -I../../monitor/src -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I../../monitor/src -I../../../../src -I. -I. -I. -o moc_qtablealarms.o moc_qtablealarms.cpp
-g++ -Wl,-O1 -o monitor main.o monitor.o qplaintexteditcommand.o qlistprocesses.o qtablealarms.o moc_monitor.o moc_qplaintexteditcommand.o moc_qlistprocesses.o moc_qtablealarms.o    -L/usr/lib -L../../../../lib/ -lmtk_components -lmtk_qpid -lmtksupport -lqpidclient -lqpidmessaging -lqpidtypes -lQtGui -lQtCore -lpthread 
+g++ -Wl,-O1 -o monitor main.o monitor.o qplaintexteditcommand.o qlistprocesses.o qtablealarms.o msg_common.o msg_common_support.o msg_acs.o msg_admin.o msg_admin_support.o moc_monitor.o moc_qplaintexteditcommand.o moc_qlistprocesses.o moc_qtablealarms.o    -L/usr/lib -L../../../../lib/ -lmtk_qpid -lmtksupport -lyaml -lqpidclient -lqpidmessaging -lqpidtypes -lQtGui -lQtCore -lpthread 
 make[3]: Leaving directory `/home/maiquel/develop/mtk/examples/qt/temp/bin'
 make[2]: Leaving directory `/home/maiquel/develop/mtk/examples/qt'
 make[1]: Leaving directory `/home/maiquel/develop/mtk/examples'

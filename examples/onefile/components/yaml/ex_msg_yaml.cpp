@@ -25,8 +25,8 @@ int main(void)
     YAML::Node node;
     parser.GetNextDocument(node);
     mtk::msg::sub_single_product_code spc2(__internal_get_default((mtk::msg::sub_single_product_code*) 0));
-    std::cout << spc2 << std::endl;
     node >> spc2;
+    std::cout << spc2 << std::endl;
     
 
    return 0;

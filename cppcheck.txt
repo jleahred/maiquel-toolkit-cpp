@@ -1,0 +1,7 @@
+[src/yaml/emittermanip.h:79]: (style) Function parameter 'content' is passed by value. It could be passed by reference instead.
+[src/yaml/emittermanip.h:88]: (style) Function parameter 'content' is passed by value. It could be passed by reference instead.
+[src/yaml/emittermanip.h:104]: (style) Function parameter 'content' is passed by value. It could be passed by reference instead.
+[src/yaml/emittermanip.h:108]: (style) Function parameter 'content' is passed by value. It could be passed by reference instead.
+[src/yaml/emittermanip.h:112]: (style) Function parameter 'content' is passed by value. It could be passed by reference instead.
+[src/yaml/emittermanip.h:116]: (style) Function parameter 'content' is passed by value. It could be passed by reference instead.
+[src/yaml/emittermanip.h:125]: (style) Function parameter 'content' is passed by value. It could be passed by reference instead.

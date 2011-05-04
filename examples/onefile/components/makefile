@@ -3,6 +3,7 @@ default:
 	make -C admin/
 	make -C trading/
 	make -C acs/
+	make -C yaml/
 	echo "FIN"
 
 
@@ -17,5 +18,6 @@ clean:
 	make -C support/ clean
 	make -C admin/   clean
 	make -C acs/   clean
+	make -C yaml/  clean
 
 

@@ -8,7 +8,7 @@ DIR_SRC_CXX = src
 #
 #
 # library paths
-LIBS = -L./mtk/external/lib/linux -L./mtk/lib -lmtksockets -lmtksupport
+LIBS = -L./mtk/external/lib/linux -L./mtk/lib -lmtksockets -lmtksupport -lyaml
 #
 #
 # include directories

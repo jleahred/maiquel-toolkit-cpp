@@ -20,4 +20,4 @@ FORMS    += mainwindow.ui
 
 INCLUDEPATH = . ../../../../src/ ../../../../src/qt_components/src
 
-LIBS =  -L../../../../lib  -lqt_components
+LIBS =  -L../../../../lib  -lqt_components -lmtksupport -lyaml

@@ -88,7 +88,8 @@ include::examples/ex1/test_messages.msg[]
 <10> a list of names of type strings
 <11> A list of positions of type limit position
 <12> +LimitPositionChild+ inherits from +LimitPosition+
-<13> This code will be executed on building message just before send
+<13> This code will be executed on building message just before send +
+     Non realtime messages could generate the message long time before sending it
 +
 * Using the generated code in our program
 +

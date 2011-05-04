@@ -100,6 +100,9 @@ CLI <-->  SYS::
 |=====================
 
 
+=== YAML support
+* All generated messages and submessages overload operators +>>+ and +<<+ with +YAML+ classes
+
 
 
 

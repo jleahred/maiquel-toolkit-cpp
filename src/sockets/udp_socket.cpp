@@ -46,7 +46,7 @@ udp_socket::udp_socket(const std::string& _name)
         if (WSAStartup(wVersionRequested, &wsaData) != 0)   //pendiente de revisión gestión errores
 		{
             get_socket_error();
-			throw mtk::Alarm(MTK_HERE, MTK_SS(name << "  WSAStartup " <<  strerror(errno)), mtk::alPriorError);
+			throw mtk::Alarm(MTK_HERE, "udp_socket", MTK_SS(name << "  WSAStartup " <<  strerror(errno)), mtk::alPriorError);
 		}
 		
     #endif

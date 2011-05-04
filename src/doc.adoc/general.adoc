@@ -66,9 +66,9 @@ digraph lib_depend
 	
             qpidclient      -> qpidmessaging
 	
-	yaml_a          -> mtksuport_a
 	mtksockets_a    -> mtksuport_a
 	
+	mtksuport_a -> yaml_a
 }
 ------------
 +

@@ -63,6 +63,29 @@ namespace testing {
     }
 
 
+	template <typename T>
+	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
+    {
+        for(unsigned i=0; i<seq.size(); ++i)
+        {
+            T t = __internal_get_default((T*)0);
+            seq[i] >> t;
+            v.push_back(t);
+        }
+	}
+
+	template <typename T>
+	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    {
+        if(n.size()!=0)
+        {
+            T t = __internal_get_default((T*)0);
+            n >> t;
+            nv = t;
+        }
+	}
+
+
 
 
     
@@ -79,6 +102,7 @@ std::ostream& operator<< (std::ostream& o, const mtk::list<T>& list)
     o << "]";
     return o;
 }
+
 
 
 template<typename T>
@@ -404,6 +428,12 @@ std::string LimitPosition::check_recomended(void) const
     return result;
 }
 
+void LimitPosition::before_send(void) const
+{
+
+}
+
+
 
 
 RQ_NW_LS::RQ_NW_LS (   const std::string&  _order_id,   const std::string&  _cli_ref,   const LimitPosition&  _position,   const LimitPosition&  _positionnn,   const IC_control_fields_&  _control_fields_,   const IC_product_code&  _product_code,   const mtk::list<std::string >&  _names,   const mtk::list<LimitPosition >&  _postitions)
@@ -424,6 +454,12 @@ std::string RQ_NW_LS::check_recomended(void) const
 
     return result;
 }
+
+void RQ_NW_LS::before_send(void) const
+{
+
+}
+
 
 
 
@@ -446,6 +482,12 @@ std::string RQ_NW_LS::IC_control_fields_::check_recomended(void) const
     return result;
 }
 
+void RQ_NW_LS::IC_control_fields_::before_send(void) const
+{
+
+}
+
+
 
 
 RQ_NW_LS::IC_product_code::IC_product_code (   const std::string&  _market,   const std::string&  _product_code,   const std::string&  _aditional_code)
@@ -466,6 +508,12 @@ std::string RQ_NW_LS::IC_product_code::check_recomended(void) const
 
     return result;
 }
+
+void RQ_NW_LS::IC_product_code::before_send(void) const
+{
+
+}
+
 
 
 
@@ -488,6 +536,12 @@ std::string LimitPositionChild::check_recomended(void) const
     return result;
 }
 
+void LimitPositionChild::before_send(void) const
+{
+  std::cout  << "#send " << this->new_field << std::endl; 
+}
+
+
 
 std::ostream& operator<< (std::ostream& o, const LimitPosition & c)
 {
@@ -500,6 +554,29 @@ std::ostream& operator<< (std::ostream& o, const LimitPosition & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const LimitPosition & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "buy_sell"  << YAML::Value <<   c.buy_sell        << YAML::Key << "price"  << YAML::Value <<   c.price        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, LimitPosition & c)
+{
+
+
+        node["buy_sell"]  >> c.buy_sell;
+        node["price"]  >> c.price;
+        node["quantity"]  >> c.quantity;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const RQ_NW_LS::IC_control_fields_ & c)
 {
     o << "{ "
@@ -510,7 +587,6 @@ std::ostream& operator<< (std::ostream& o, const RQ_NW_LS::IC_control_fields_ & 
 };
 
 
-
 std::ostream& operator<< (std::ostream& o, const RQ_NW_LS::IC_product_code & c)
 {
     o << "{ "
@@ -519,7 +595,6 @@ std::ostream& operator<< (std::ostream& o, const RQ_NW_LS::IC_product_code & c)
         << " }";
     return o;
 };
-
 
 
 std::ostream& operator<< (std::ostream& o, const RQ_NW_LS & c)
@@ -533,6 +608,81 @@ std::ostream& operator<< (std::ostream& o, const RQ_NW_LS & c)
 
 
 
+YAML::Emitter& operator << (YAML::Emitter& o, const RQ_NW_LS::IC_control_fields_ & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "clock_id"  << YAML::Value <<   c.clock_id        << YAML::Key << "secuence"  << YAML::Value <<   c.secuence
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const RQ_NW_LS::IC_product_code & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "market"  << YAML::Value <<   c.market        << YAML::Key << "product_code"  << YAML::Value <<   c.product_code        << YAML::Key << "aditional_code"  << YAML::Value <<   c.aditional_code
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const RQ_NW_LS & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "order_id"  << YAML::Value <<   c.order_id        << YAML::Key << "cli_ref"  << YAML::Value <<   c.cli_ref        << YAML::Key << "position"  << YAML::Value << c.position        << YAML::Key << "positionnn"    << YAML::Value << c.positionnn        << YAML::Key << "control_fields_"   << YAML::Value << c.control_fields_        << YAML::Key << "product_code"   << YAML::Value << c.product_code        << YAML::Key << "names"  << YAML::Value <<   c.names        << YAML::Key << "postitions"  << YAML::Value << c.postitions
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, RQ_NW_LS::IC_control_fields_ & c)
+{
+
+
+        node["clock_id"]  >> c.clock_id;
+        node["secuence"]  >> c.secuence;
+
+
+};
+
+
+
+void  operator >> (const YAML::Node& node, RQ_NW_LS::IC_product_code & c)
+{
+
+
+        node["market"]  >> c.market;
+        node["product_code"]  >> c.product_code;
+        node["aditional_code"]  >> c.aditional_code;
+
+
+};
+
+
+
+void  operator >> (const YAML::Node& node, RQ_NW_LS & c)
+{
+
+
+        node["order_id"]  >> c.order_id;
+        node["cli_ref"]  >> c.cli_ref;
+        node["position"]  >> c.position;
+        node["positionnn"]  >> c.positionnn;
+            node["control_fields_"]   >> c.control_fields_;
+            node["product_code"] >>  c.product_code;
+        node["names"]  >> c.names;
+        node["postitions"]  >> c.postitions;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const LimitPositionChild & c)
 {
     o << "{ "
@@ -542,6 +692,28 @@ std::ostream& operator<< (std::ostream& o, const LimitPositionChild & c)
     return o;
 };
 
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const LimitPositionChild & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "LimitPosition" <<  YAML::Value << static_cast<const LimitPosition&>(c)  
+        << YAML::Key << "new_field"  << YAML::Value <<   c.new_field
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, LimitPositionChild & c)
+{
+
+    node["LimitPosition"]   >>   static_cast<LimitPosition&>(c)  ;
+
+        node["new_field"]  >> c.new_field;
+
+
+};
 
 
 bool operator== (const LimitPosition& a, const LimitPosition& b)
@@ -637,7 +809,9 @@ void  copy (LimitPosition& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const LimitPosition& a)
 {
-    
+
+    a.before_send();
+
 
 if (a.buy_sell.HasValue())
 //  field_type
@@ -730,7 +904,9 @@ void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.order_id, std::string("oid"));
@@ -792,7 +968,9 @@ void  copy (RQ_NW_LS::IC_control_fields_& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_control_fields_& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.clock_id, std::string("ci"));
@@ -849,7 +1027,9 @@ void  copy (RQ_NW_LS::IC_product_code& c, const qpid::types::Variant& v)
 
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_product_code& a)
 {
-    
+
+    a.before_send();
+
 
 //  field_type
         __internal_add2map(map, a.market, std::string("mk"));
@@ -892,7 +1072,9 @@ copy(static_cast<LimitPosition&>(c), v);
 
 void __internal_add2map (qpid::types::Variant::Map& map, const LimitPositionChild& a)
 {
-    
+
+    a.before_send();
+
 //  parent
 __internal_add2map(map, static_cast<const LimitPosition&>(a));
 
@@ -911,11 +1093,11 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<Lim
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message RQ_NW_LS::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {

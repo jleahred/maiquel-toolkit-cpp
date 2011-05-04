@@ -8,7 +8,7 @@ DIR_SRC_CXX = . generated
 #
 #
 # library paths
-LIBS = -L./mtk/lib -lmtksupport
+LIBS = -L./mtk/lib -lmtksupport -lyaml
 #
 #
 # include directories

@@ -57,5 +57,5 @@ LimitPositionChild   [< V:0, I:LimitPosition >]      // <12>
 {
    new_field   (nf)  : string 
 
-  #send  [{  std::cout  "#send " << this->new_field << std::endl; }]    //    <13>
+  #send  [{  std::cout  << "#send " << this->new_field << std::endl; }]    //    <13>
 }

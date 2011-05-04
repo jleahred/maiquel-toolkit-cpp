@@ -177,7 +177,7 @@ private:
     # INNER CLASSES
     for field in class_info:
         if field.has_key('IN_MSG'):
-            INNER_CLASSES += generate_class('IC_' + field['IN_MSG'][0], field['IN_MSG'][1], field['IN_MSG'][2], field['IN_SUB_MSG'][3])
+            INNER_CLASSES += generate_class('IC_' + field['IN_MSG'][0], field['IN_MSG'][1], field['IN_MSG'][2], field['IN_MSG'][3])
     for field in class_info:
         if field.has_key('IN_SUB_MSG'):
             INNER_CLASSES += generate_class('IC_' + field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], field['IN_SUB_MSG'][2], field['IN_SUB_MSG'][3])
@@ -1009,7 +1009,7 @@ def get_inner_classes(class_name, class_info, class_properties, send_code) :
     # INNER CLASSES
     for field in class_info:
         if field.has_key('IN_MSG'):
-            result += get_inner_classes(class_name + '::IC_' + field['IN_MSG'][0], field['IN_MSG'][1], field['IN_MSG'][2], field['IN_SUB_MSG'][3])
+            result += get_inner_classes(class_name + '::IC_' + field['IN_MSG'][0], field['IN_MSG'][1], field['IN_MSG'][2], field['IN_MSG'][3])
     for field in class_info:
         if field.has_key('IN_SUB_MSG'):
             result += get_inner_classes(class_name + '::IC_' + field['IN_SUB_MSG'][0], field['IN_SUB_MSG'][1], field['IN_SUB_MSG'][2], field['IN_SUB_MSG'][3])

@@ -8,7 +8,7 @@ DIR_SRC_CXX = .
 #
 #
 # library paths
-LIBS = -L./mtk/lib -lmtksupport -lmtk_qpid -lqpidclient -lqpidmessaging -lqpidtypes
+LIBS = -L./mtk/lib -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging -lqpidtypes
 #
 #
 # include directories
