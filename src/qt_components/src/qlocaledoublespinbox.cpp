@@ -45,8 +45,8 @@ QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) con
 
 QString qLocaleDoubleSpinBox::textFromValue(double val) const
 {
-    if(this->text().isEmpty()  &&  abs(val) < 0.00000001)
-        return QString();
-    else
+    if(this->text() != QLatin1String("+")  &&   this->text() != QLatin1String("-"))
         return QDoubleSpinBox::textFromValue(val);
+    else
+        return this->text();
 }

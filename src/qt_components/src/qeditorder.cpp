@@ -107,6 +107,13 @@ bool QEditOrder::check_if_order_can_be_sent(void)
         result = false;
     }
 
+    if(int(ui->quantity->value()*100000) == 0)
+    {
+        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+        ui->message->setText(tr("zero quantity"));
+        result = false;
+    }
+
     text = ui->price->text();
     if(ui->price->validate(text, pos) != QValidator::Acceptable)
     {
