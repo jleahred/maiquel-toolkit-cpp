@@ -288,7 +288,7 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
     }
 
 
-    //  NO parece un número exácto...
+    //  NO parece un número exacto...
     int inc = ext.GetInc();
     int signo = value >= 0  ?  1  :  -1;
     switch (round) {
@@ -296,7 +296,7 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
                 intValue =  int(
                                   (
                                     (valuePow10+signo*1/1000.)*2.0
-                                    +  inc
+                                    +  (inc*signo)
                                   )
                                   /(2.0*inc)
                              )
