@@ -30,11 +30,11 @@ namespace mtk
                     kamikaze_response->signal_received.connect(__METHOD_CALL__);  \
                 }
 
-#define MTK_RECEIVE_MULTI_RESPONSE_THIS(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_SESSION__, __SUBJECT__, __METHOD_CALL__)  \
+#define MTK_RECEIVE_MULTI_RESPONSE_THIS(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_SESSION__, __SUBJECT__, __METHOD_CALL__, __REQ_CONTEXT_INFO__)  \
                 {   \
                     mtk::__kamikaze_receive_r<__MSG_RESPONSE__>* kamikaze_response =     \
                             new mtk::__kamikaze_receive_r<__MSG_RESPONSE__>     \
-                            ( __QPID_SESSION__, __SUBJECT__);     \
+                            ( __QPID_SESSION__, __SUBJECT__, __REQ_CONTEXT_INFO__);     \
                     kamikaze_response->signal_received.connect(this, &CLASS_NAME::__METHOD_CALL__);  \
                 }
 
@@ -121,8 +121,8 @@ class __kamikaze_receive_r   :   public  mtk::SignalReceptor  {
     friend void delete_later<MSG_T>(__kamikaze_receive_r<MSG_T>* const & ptr_to_delete);
     
 public:
-	__kamikaze_receive_r(mtk::CountPtr< mtk::qpid_session >  _qpid_session, const std::string in_subject)
-                    : programed_to_delete(false), last_received(mtk::dtNowLocal()+mtk::dtSeconds(30)), espected_secuence(-1)
+	__kamikaze_receive_r(mtk::CountPtr< mtk::qpid_session >  _qpid_session, const std::string in_subject, const std::string _req_context_info)
+                    : programed_to_delete(false), last_received(mtk::dtNowLocal()+mtk::dtSeconds(30)), espected_secuence(-1),  req_context_info(_req_context_info)
             { 
                 MTK_QPID_RECEIVER_CONNECT_THIS(
                                         hqpid_response,
@@ -147,6 +147,7 @@ private:
     bool                                                                        programed_to_delete;
     mtk::dtDateTime                                                             last_received;
     int                                                                         espected_secuence;
+    const std::string                                                           req_context_info;
 
 
     void on_command_response(const MSG_T& response)
@@ -184,7 +185,7 @@ private:
     {
         if(mtk::dtNowLocal() -  last_received  > mtk::dtSeconds(20)    &&  programed_to_delete==false)
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "req_response", MTK_SS("time out on request "), mtk::alPriorError, mtk::alTypeOverflow));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "req_response", MTK_SS("time out on request " << req_context_info), mtk::alPriorError, mtk::alTypeOverflow));
             MTK_TIMER_1S_STOP(check_timeout)
             MTK_CALL_LATER1S_F(mtk::dtMilliseconds(10), this, delete_later);
             programed_to_delete = true;

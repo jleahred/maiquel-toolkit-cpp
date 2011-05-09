@@ -218,7 +218,8 @@ void qTreeProducts::request_root_items(void)
                                                                                                 request_info.process_location.process_uuid,
                                                                                                 request_info.req_id.sess_id,
                                                                                                 request_info.req_id.req_code),
-                                            on_response_request_tree)
+                                            on_response_request_tree,
+                                            "tree prod ROOT")
             mtk::send_message(qpid_session, tree_request_message);
         }
         else
@@ -312,7 +313,8 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
                                                                                             request_info.process_location.process_uuid,
                                                                                             request_info.req_id.sess_id,
                                                                                             request_info.req_id.req_code),
-                                        on_response_request_tree)
+                                        on_response_request_tree,
+                                        MTK_SS("tree prod " << mtk_item->item.branch))
         mtk::send_message(qpid_session, tree_request_message);
     }
 }
