@@ -22,7 +22,7 @@
 
 
 qContainer::qContainer(QWidget *parent) :
-    QScrollArea(parent), last_inserted_pos(7, 7)
+    QScrollArea(parent), counter_insertions(0)
 {
     this->viewport()->setBackgroundRole(QPalette::Dark);
 }
@@ -31,8 +31,9 @@ qContainer::qContainer(QWidget *parent) :
 QMarginal*  qContainer::insert_qmarginal(void)
 {
     QMarginal* marginals= new QMarginal(this->widget());
-    marginals->move(last_inserted_pos);
-    last_inserted_pos += QPoint(20, 20);
+    marginals->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    ++counter_insertions;
+    counter_insertions %= 6;
     marginals->show();
 
     return marginals;
@@ -41,8 +42,9 @@ QMarginal*  qContainer::insert_qmarginal(void)
 QDepth* qContainer::insert_qdepth()
 {
     QDepth* depth= new QDepth(this->widget());
-    depth->move(last_inserted_pos);
-    last_inserted_pos += QPoint(20, 20);
+    depth->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    ++counter_insertions;
+    counter_insertions %= 6;
     depth->show();
 
     return depth;

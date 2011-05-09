@@ -65,16 +65,6 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
 
     this->check_if_order_can_be_sent();
-    if(agressive==false)
-    {
-        ui->price->setFocus();
-        ui->price->selectAll();
-    }
-    else
-    {
-        ui->quantity->setFocus();
-        ui->quantity->selectAll();
-    }
 
     mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
     if(s_default_qty.HasValue()==false)
@@ -85,6 +75,17 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     {
         QLatin1String default_q (s_default_qty.Get().c_str());
         ui->quantity->setValue(QString(default_q).toDouble());
+    }
+
+    if(agressive==false)
+    {
+        ui->price->setFocus();
+        ui->price->selectAll();
+    }
+    else
+    {
+        ui->quantity->setFocus();
+        ui->quantity->selectAll();
     }
 }
 

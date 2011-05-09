@@ -174,6 +174,13 @@ users_manager::users_manager()
     
     
     std::ifstream fusers(mtk::admin::get_config_property("MISC.data").Get().c_str(), std::ios::in );
+    if (fusers.is_open() == false)
+    {
+        mtk::Alarm alarm (MTK_HERE, "users_manager", "Error opening data file", mtk::alPriorCritic);
+        mtk::AlarmMsg(alarm);
+        throw alarm;
+    }
+        
     int counter = 0;
     char line[2048];
     while(fusers.eof() == false)

@@ -590,7 +590,10 @@ void             operator >> (const YAML::Node&   node,       QDepth& d)
 {
     node["component"] >> static_cast<mtkContainerWidget&>(d);
 
-    mtk::msg::sub_product_code pc = mtk::msg::__internal_get_default((mtk::msg::sub_product_code*)0);
-    node["product_code"] >> pc;
-    d.subscribe_to(pc);
+    if(node.FindValue("product_code"))
+    {
+        mtk::msg::sub_product_code pc = mtk::msg::__internal_get_default((mtk::msg::sub_product_code*)0);
+        node["product_code"] >> pc;
+        d.subscribe_to(pc);
+    }
 }

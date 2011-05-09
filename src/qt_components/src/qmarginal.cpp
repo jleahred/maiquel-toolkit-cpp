@@ -564,9 +564,7 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
 
 
     showing_menu = true;
-    //paint_delegate->keep_focus_paint(true);
     menu.exec(event->globalPos());
-    //paint_delegate->keep_focus_paint(false);
     showing_menu = false;
     this->setFocus();
     enable_actions();
@@ -758,11 +756,21 @@ void QTableMarginal::enable_actions(void)
 
 void QTableMarginal::slot_remove_current_row(void)
 {
-    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove the current product from this table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+    QTableWidgetItemProduct* i = dynamic_cast<QTableWidgetItemProduct*>(this->item(this->currentRow(), 0));
+    if (i)
     {
-        QTableWidgetItemProduct* i = dynamic_cast<QTableWidgetItemProduct*>(this->item(this->currentRow(), 0));
-        if (i)
-            this->remove_row(i->id);
+        paint_delegate->keep_focus_paint(true);
+        try
+        {
+            if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove the current product from this table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+                this->remove_row(i->id);
+        }
+        catch(...)
+        {
+            paint_delegate->keep_focus_paint(false);
+            throw;
+        }
+        paint_delegate->keep_focus_paint(false);
     }
 }
 

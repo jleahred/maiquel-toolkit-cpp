@@ -5,7 +5,7 @@
 
 
 ==== prices_manager
-
+* It will manage all publishing information related to a product (prices, status, etc...)
 * It will request for load
 * It will mantein the last received value
 * It will signal updates

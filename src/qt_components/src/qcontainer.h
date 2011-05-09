@@ -24,7 +24,7 @@ public:
     friend void           operator>> (const YAML::Node & i   ,       qContainer& m);
 
 private:
-    QPoint  last_inserted_pos;
+    int   counter_insertions;
 
 signals:
 

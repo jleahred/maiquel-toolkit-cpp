@@ -157,10 +157,10 @@ void price_manager::on_res_product_info(const mtk::list<mtk::prices::msg::res_pr
 {
     const mtk::prices::msg::pub_best_prices local_best_prices = res_pi.front().response.best_prices;
     if(local_best_prices.product_code.sys_code != product_code.sys_code)
-        throw mtk::Alarm(MTK_HERE, "product_manager", MTK_SS("invalid product code on response r/s  " << local_best_prices.product_code.sys_code << " " << product_code.sys_code), mtk::alPriorError, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("invalid product code on response r/s  " << local_best_prices.product_code.sys_code << " " << product_code.sys_code), mtk::alPriorError, mtk::alTypeNoPermisions);
     best_prices = local_best_prices;
     if(signal_best_prices_update.emit(best_prices) ==0)
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_manager", MTK_SS("received load " << local_best_prices.product_code << " with no suscription"), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received load " << local_best_prices.product_code << " with no suscription"), mtk::alPriorError, mtk::alTypeNoPermisions));
 }
 
 

@@ -5,6 +5,11 @@
 #include <math.h>
 
 
+#include <QKeyEvent>
+
+
+
+
 qLocaleDoubleSpinBox::qLocaleDoubleSpinBox(QWidget *parent) :
     QDoubleSpinBox(parent)
 {
@@ -13,6 +18,11 @@ qLocaleDoubleSpinBox::qLocaleDoubleSpinBox(QWidget *parent) :
 
 void qLocaleDoubleSpinBox::keyPressEvent(QKeyEvent *event)
 {
+    if(event->key() == Qt::Key_Enter  ||   event->key() == Qt::Key_Return)
+    {
+        if(this->text() == QLatin1String("+")  ||  this->text()== QLatin1String("-"))
+            return;
+    }
     QDoubleSpinBox::keyPressEvent(event);
     Q_EMIT(this->valueChanged(this->text()));
 }

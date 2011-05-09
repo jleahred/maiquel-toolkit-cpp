@@ -27,6 +27,8 @@ namespace
     void command_list_sessions(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_logout(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_lock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_unlock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
     
     void register_global_commands (void)
@@ -35,7 +37,9 @@ namespace
         mtk::admin::register_command("__GLOBAL__",  "stats",     "")->connect(command_stats);
         mtk::admin::register_command("sessions",  "stats",     "")->connect(command_stats);
         mtk::admin::register_command("sessions",  "list",       "list of valid sessions")->connect(command_list_sessions);
-        mtk::admin::register_command("sessions",  "logout",     "generate a logout for specific session", true)->connect(command_logout);
+        mtk::admin::register_command("sessions",  "logout",     "generate a logout for a specific session", true)->connect(command_logout);
+        mtk::admin::register_command("sessions",  "lock_logings",     "lock new login request", true)->connect(command_lock);
+        mtk::admin::register_command("sessions",  "unlock_logings",     "lock new login request", true)->connect(command_unlock);
         
         users_manager::Instance();      //  create instance and it will register aditional commands on constructor  (tick)
     }
@@ -88,6 +92,8 @@ struct sessions_login_info
     mtk::DateTime                                   last_keep_alive_received;
 };
 mtk::CountPtr<mtk::list<sessions_login_info> >   list_sessions_login_info;
+
+static bool   rq_login_locked = false;
 
 
 
@@ -199,6 +205,13 @@ int main(int argc, char ** argv)
 
 void on_request_key_received(const mtk::acs::msg::req_login_key& req_login_key)
 {
+    if(rq_login_locked==true)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("System locked  " << req_login_key.user_name << "/" << req_login_key.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        return;
+    }
+        
+        
     //  check the client code
     if(users_manager::Instance()->check_user_client_code(req_login_key.user_name, req_login_key.request_info.process_location.location.client_code) == false)
     {
@@ -226,6 +239,12 @@ void on_request_key_received(const mtk::acs::msg::req_login_key& req_login_key)
 
 void on_request_login_received(const mtk::acs::msg::req_login& req_login)
 {
+    if(rq_login_locked==true)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("System locked  " << req_login.user_name << "/" << req_login.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        return;
+    }
+    
     //  check the client code
     if(users_manager::Instance()->check_user_client_code(req_login.user_name, req_login.request_info.process_location.location.client_code) == false)
     {
@@ -563,6 +582,39 @@ void command_stats(const std::string& /*command*/, const std::string& /*params*/
         max_sessions = current_sessions;
     response_lines.push_back(MTK_SS("max_sessions:" << max_sessions));
     response_lines.push_back(MTK_SS("current_sessions:" << current_sessions));
+}
+
+
+void command_lock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+{
+    if(rq_login_locked)
+    {
+        response_lines.push_back(MTK_SS("Do you know what do you want???"));
+        response_lines.push_back(MTK_SS("The system was already locked"));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acs", "received command to lock request on status already locked", mtk::alPriorError, mtk::alTypeNoPermisions));
+    }
+    else
+    {
+        rq_login_locked = true;
+        response_lines.push_back(MTK_SS("Locked. New login requests will be ignored or rejected"));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acs", "Locked by command", mtk::alPriorWarning, mtk::alTypeNoPermisions));
+    }
+}
+
+void command_unlock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+{
+    if(rq_login_locked==false)
+    {
+        response_lines.push_back(MTK_SS("Do you know what do you want???"));
+        response_lines.push_back(MTK_SS("The system was already unlocked"));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acs", "received command to unlock request on status already unlocked", mtk::alPriorError, mtk::alTypeNoPermisions));
+    }
+    else
+    {
+        rq_login_locked = false;
+        response_lines.push_back(MTK_SS("Unlocked. New login requests will be attended"));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acs", "Locked by command", mtk::alPriorWarning, mtk::alTypeNoPermisions));
+    }
 }
 
 

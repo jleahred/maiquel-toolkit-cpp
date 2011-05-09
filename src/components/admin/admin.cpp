@@ -204,6 +204,7 @@ namespace {
             void command_config             (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_ping               (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_date_time          (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_set_machine_code   (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_rqclose            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             
             std::string  get_stats_simulating_command(void);
@@ -429,6 +430,8 @@ namespace {
         MTK_CONNECT_THIS(*register_command("ADMIN",         "realtime",     "some realtime stats"),                             command_realtime)
         MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "stats",        "some stats"),                                      command_realtime)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_realtime)
+
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "set_machine_code",        "write a machine code on config file"),  command_set_machine_code)
     }
 
     std::string admin_status::get_mandatory_property(const std::string& path_and_property)
@@ -886,8 +889,9 @@ namespace {
         response_lines.push_back(MTK_SS("pong  " << mtk::dtNowLocal()));
     }
 
-    void admin_status::command_rqclose(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  /*response_lines*/)
+    void admin_status::command_rqclose(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
     {
+        response_lines.push_back("closing as you demand...");
         close_application("requested by interactive admin command");
         
         if(role=="server")
@@ -902,6 +906,17 @@ namespace {
     {
         response_lines.push_back(MTK_SS("current_date_time       " << mtk::dtNowLocal()  << std::endl
                                   <<    "current_date_time_utc   " << mtk::dtNowUTC()));
+    }
+
+    void admin_status::command_set_machine_code(const std::string& /*command*/, const std::string& param, mtk::list<std::string>&  response_lines)
+    {
+        this->set_config_property("ADMIN.CLIENT.machine_code", mtk::s_trim(param, " \t"));
+        process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location(get_mandatory_property("ADMIN.CLIENT.location"), 
+                                                        MTK_SS(get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode())),
+                                                        app_name, 
+                                                        mtk::crc32_as_string(MTK_SS(app_name<<get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand()))),
+                                                        app_version);
+        response_lines.push_back(MTK_SS("writed machine code... " << this->get_mandatory_property("ADMIN.CLIENT.machine_code")));
     }
 
     mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*response lines*/> >

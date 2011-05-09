@@ -136,8 +136,11 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
             mtk::map<std::string, market_info >::iterator  it = map_market_info.begin();
             for( ; it!= map_market_info.end(); ++it)
             {
-                if(it->second.last_update_received + it->second.check_interval < mtk::dtNowLocal())
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too many time with no activity " << it->first), mtk::alPriorError, mtk::alTypeOverflow));
+                if(it->second.check_interval > mtk::dtSeconds(1))
+                {
+                    if(it->second.last_update_received + it->second.check_interval < mtk::dtNowLocal())
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too many time with no activity " << it->first), mtk::alPriorError, mtk::alTypeOverflow));
+                }
             }
             
         MTK_END_EXEC_MAX_FREC

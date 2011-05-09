@@ -22,11 +22,16 @@ void command_modifications  (const std::string& /*command*/, const std::string& 
     response_lines.push_back(".......................................");
     response_lines.push_back(MODIFICATIONS);
 }
+void command_stats  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines);
+
+
 
 void register_global_commands (void)
 {
-    mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
-    mtk::admin::register_command("__GLOBAL__",  "modifs",   "")->connect(command_modifications);
+    mtk::admin::register_command("__GLOBAL__",    "ver",   "")->connect(command_version);
+    mtk::admin::register_command("__GLOBAL__",    "modifs","")->connect(command_modifications);
+    mtk::admin::register_command("__GLOBAL__",    "stats", "")->connect(command_stats);
+    mtk::admin::register_command("cli_ord_book",  "stats", "")->connect(command_stats);
 }
 
     MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
@@ -395,13 +400,18 @@ void cf_ex_ls(const mtk::trd::msg::CF_EX_LS& ex)
 
 
 
-
-
-
-
-
-
 };//    namespace  trd_cli_ord_book {
 
 };   //  namespace mtk
 };   //  namespace trd
+
+
+namespace   //anonymous
+{
+    void command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back("cli_order_book_____________________");
+        response_lines.push_back(MTK_SS("limit:" <<  mtk::trd::trd_cli_ord_book::get_status_ref().ls_orders.size()));
+    }
+    
+}

@@ -25,7 +25,7 @@ namespace {
     const int col_quantity      = 6;
     const int col_exec_price    = 7;
     const int col_exec_quantity = 8;
-    const int col_observs       = 9;
+    const int col_remarks       = 9;
     /*
     const char* const col_captions[] = {    "sess_id",            defined later for translations
                                         QObject::tr("req_code"),
@@ -36,7 +36,7 @@ namespace {
                                         QObject::tr("qty"),
                                         QObject::tr("exec price"),
                                         QObject::tr("exec qty"),
-                                        QObject::tr("observs"),
+                                        QObject::tr("remarks"),
                                         QObject::tr("")                 };
     */
 };
@@ -202,17 +202,12 @@ public:
 
     void update_item_price(void)
     {
-        mtk::nullable<mtk::FixedNumber> requested;
-        mtk::nullable<mtk::FixedNumber> confirmed;
-
         QTableWidgetItem* item = items[col_price];
-        if (inner_order->last_confirmation().HasValue())
-            confirmed = inner_order->last_confirmation().Get().confirmated_info.market_pos.price;
         if (inner_order->last_request().HasValue())
-            requested = inner_order->last_request().Get().request_pos.price;
-
-
-        if (requested.HasValue()==false  &&  confirmed.HasValue()==false)
+            item->setText(fn_as_QString(inner_order->last_request().Get().request_pos.price));
+        else if (inner_order->last_confirmation().HasValue())
+            item->setText(fn_as_QString(inner_order->last_confirmation().Get().confirmated_info.market_pos.price));
+        else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
         item->setBackgroundColor(get_default_color());
@@ -220,16 +215,12 @@ public:
 
     void update_item_quantity(void)
     {
-        mtk::nullable<mtk::FixedNumber> requested;
-        mtk::nullable<mtk::FixedNumber> confirmed;
-
         QTableWidgetItem* item = items[col_quantity];
-        if (inner_order->last_confirmation().HasValue())
-            confirmed = inner_order->last_confirmation().Get().confirmated_info.market_pos.quantity;
         if (inner_order->last_request().HasValue())
-            requested = inner_order->last_request().Get().request_pos.quantity;
-
-        if (requested.HasValue()==false  &&  confirmed.HasValue()==false)
+            item->setText(fn_as_QString(inner_order->last_request().Get().request_pos.quantity));
+        else if (inner_order->last_confirmation().HasValue())
+            item->setText(fn_as_QString(inner_order->last_confirmation().Get().confirmated_info.market_pos.quantity));
+        else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
         item->setBackgroundColor(get_default_color());
@@ -305,7 +296,7 @@ public:
 
     void update_item_exec_observations   (void)
     {
-        QTableWidgetItem* item = items[col_observs];
+        QTableWidgetItem* item = items[col_remarks];
         item->setBackgroundColor(get_default_color());
         item->setText(QLatin1String(inner_order->serrors().c_str()));
     }
@@ -351,7 +342,7 @@ qorder_table::qorder_table(QWidget *parent) :
                                                          QT_TR_NOOP("qty"),
                                                          QT_TR_NOOP("exec price"),
                                                          QT_TR_NOOP("exec qty"),
-                                                         QT_TR_NOOP("observs"),
+                                                         QT_TR_NOOP("remarks"),
                                                          0                 };
 
 
@@ -367,7 +358,7 @@ qorder_table::qorder_table(QWidget *parent) :
     //table_widget->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     table_widget->setColumnWidth(col_session_id, 20);
     table_widget->setColumnWidth(col_req_code, 20);
-    table_widget->setColumnWidth(col_observs, 400);
+    table_widget->setColumnWidth(col_remarks, 400);
     table_widget->horizontalHeader()->setStretchLastSection(true);
 
     delegate_paint->set_horiz_line_each(1);
@@ -535,12 +526,11 @@ void qorder_table::slot_apply_filter(const filter_data& fd)
     orders2add_loading.clear();
 
     Q_EMIT(signal_named_changed(fd.name));
-    orders->clear();
     table_widget->setRowCount(0);
+    orders->clear();
     mtk::list<mtk::trd::msg::sub_order_id> all_orders = mtk::trd::trd_cli_ord_book::get_all_order_ids();
     for(mtk::list<mtk::trd::msg::sub_order_id>::const_iterator it= all_orders.begin(); it!=all_orders.end(); ++it)
             orders2add_loading.push_back(*it);
-
     current_filter = fd;
     Q_EMIT(signal_filter_changed());
 }
@@ -628,14 +618,14 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
     }
     QMenu  menu;
     {
-        QAction* action = new QAction(tr("cancel"), this);
+        QAction* action = new QAction(tr("cancel"), &menu);
         connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
         action->setEnabled(enabled_cancel);
         action->setShortcut(Qt::Key_Delete);
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction(tr("modif"), this);
+        QAction* action = new QAction(tr("modif"), &menu);
         connect(action, SIGNAL(triggered()), this, SLOT(request_modif()));
         action->setEnabled(enabled_modif);
         action->setShortcut(Qt::Key_Enter  |  Qt::Key_Return);
@@ -647,7 +637,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction(tr("live orders"), this);
+        QAction* action = new QAction(tr("live orders"), &menu);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_live_orders()));
         action->setEnabled(true);
         action->setCheckable(true);
@@ -658,7 +648,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction(tr("live and exec orders"), this);
+        QAction* action = new QAction(tr("live and exec orders"), &menu);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_live_and_exec_orders()));
         action->setEnabled(true);
         action->setCheckable(true);
@@ -669,7 +659,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
-        QAction* action = new QAction(tr("all orders"), this);
+        QAction* action = new QAction(tr("all orders"), &menu);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_all_orders()));
         action->setEnabled(true);
         action->setCheckable(true);
