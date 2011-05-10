@@ -608,16 +608,16 @@ void QTableMarginal::request_side(mtk::trd::msg::enBuySell bs)
                 price = price_manager->get_best_prices().asks.level0.price;
                 quantity= price_manager->get_best_prices().asks.level0.quantity;
             }
-            if(quantity.GetIntCode() != 0)
+            if(quantity.GetIntCode() != 0)     //  provisional, remove it
             {
-                quantity.SetIntCode(1);
+                quantity.SetIntCode(0);
                 mtk::trd::msg::sub_position_ls     pos(
                                                                   price
                                                                 , quantity
                                                                 , bs);
                 mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, pos, "cli_ref");
             }
-            else
+            else        //  provisional, remove it
             {
                 mtk::trd::msg::sub_position_ls     pos(
                                                                   mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(2),  mtk::fnInc(1))
@@ -672,7 +672,7 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
             }
             if(quantity.GetIntCode() != 0)
             {
-                quantity.SetIntCode(1);
+                quantity.SetIntCode(0);
                 mtk::trd::msg::sub_position_ls     pos(
                                                                   price
                                                                 , quantity

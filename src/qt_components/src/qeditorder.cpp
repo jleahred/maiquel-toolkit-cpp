@@ -27,6 +27,9 @@ QEditOrder::~QEditOrder()
 }
 
 
+/**
+  If quantity is empty, it will get the default quantity
+  */
 QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidget *parent) :
         QDialog(parent),
         ui(new Ui::QEditOrder),
@@ -52,10 +55,10 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     ui->product->setText(QLatin1String(rq.product_code.sys_code.product.c_str()));
     ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
     ui->price->setSingleStep(1./pow(10.,rq.request_pos.price.GetExt().GetDec())*rq.request_pos.price.GetExt().GetInc());
-    if(rq.request_pos.quantity.GetIntCode()!=0)
-        ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
-    else
+    if(rq.request_pos.quantity.GetIntCode()==0  &&  rq.request_pos.price.GetIntCode()==0)
         ui->price->clear();
+    else
+        ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
     ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
     ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
     if(rq.request_pos.quantity.GetIntCode()!=0)
@@ -73,8 +76,13 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     }
     else
     {
-        QLatin1String default_q (s_default_qty.Get().c_str());
-        ui->quantity->setValue(QString(default_q).toDouble());
+        if(rq.request_pos.quantity.GetIntCode() == 0)
+        {
+            QLatin1String default_q (s_default_qty.Get().c_str());
+            ui->quantity->setValue(QString(default_q).toDouble());
+        }
+        else
+            ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     }
 
     if(agressive==false)
