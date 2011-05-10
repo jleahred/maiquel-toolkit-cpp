@@ -10,6 +10,7 @@
 #include "qmtk_misc.h"
 #include "qt_components/src/qcommontabledelegate.h"
 #include "components/trading/trd_cli_support.h"
+#include "components/trading/msg_trd_cli_ls.h"
 
 
 
@@ -77,6 +78,11 @@ class order_in_qbook  : public mtk::SignalReceptor
 {
     typedef order_in_qbook  CLASS_NAME;
 public:
+    mtk::CountPtr<mtk::trd::trd_cli_ls>                 inner_order;
+    QTableWidgetItem**                                  items;
+    mtk::Signal<const mtk::trd::msg::sub_order_id&>     signal_executed_order;
+
+
     order_in_qbook(QTableWidget *table_widget, const mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
         : inner_order(order),
           items (new QTableWidgetItem*[10])
@@ -113,8 +119,7 @@ public:
         delete [] items;
     }
 
-    mtk::CountPtr<mtk::trd::trd_cli_ls> inner_order;
-    QTableWidgetItem**                  items;
+    int get_row(void) const  {    return  items[0]->row();  }
 
     void update(void)
     {
@@ -133,13 +138,19 @@ public:
     void update_on_cf(const mtk::trd::msg::CF_NW_LS&)  {    update();   }
     void update_on_cf(const mtk::trd::msg::CF_MD_LS&)  {    update();   }
     void update_on_cf(const mtk::trd::msg::CF_CC_LS&)  {    update();   }
-    void update_on_cf(const mtk::trd::msg::CF_EX_LS&)  {    update();   }
     void update_on_rj(const mtk::trd::msg::RJ_NW_LS&)  {    update();   }
     void update_on_rj(const mtk::trd::msg::RJ_MD_LS&)  {    update();   }
     void update_on_rj(const mtk::trd::msg::RJ_CC_LS&)  {    update();   }
     void update_on_rq(const mtk::trd::msg::RQ_NW_LS&)  {    update();   }
     void update_on_rq(const mtk::trd::msg::RQ_MD_LS&)  {    update();   }
     void update_on_rq(const mtk::trd::msg::RQ_CC_LS&)  {    update();   }
+
+    //  on execution on order it will signal it
+    void update_on_cf(const mtk::trd::msg::CF_EX_LS& cfex)
+    {
+        update();
+        signal_executed_order.emit(cfex.confirmated_info.order_id);
+    }
 
 
 
@@ -410,7 +421,21 @@ qorder_table::~qorder_table()
 
 void qorder_table::__direct_add_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 {
-    orders->insert(std::make_pair(order_id, mtk::make_cptr(new order_in_qbook(table_widget, order))));
+    //  if the order was previusly registered, delete the row and the order info
+    mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >::iterator  it = orders->find(order_id);
+    if(it != orders->end())
+    {
+        //  delete the row
+        this->table_widget->removeRow(it->second->get_row());
+        //  remove from map
+        orders->erase(order_id);
+    }
+
+
+    //  create an register the order
+    mtk::CountPtr<order_in_qbook>  new_order = mtk::make_cptr(new order_in_qbook(table_widget, order));
+    MTK_CONNECT_THIS(new_order->signal_executed_order, on_execution_on_order);
+    orders->insert(std::make_pair(order_id, new_order));
 }
 
 void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& /*order*/)
@@ -425,6 +450,28 @@ void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk
     initialized = true;
 */
 }
+
+void  qorder_table::on_execution_on_order(const mtk::trd::msg::sub_order_id& ord_id)
+{
+
+    //  if order is on bottom, do nothing
+    mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >::iterator  it = orders->find(ord_id);
+    if(it == orders->end())
+        throw mtk::Alarm(MTK_HERE, "qorder_table_exec", "received execution on inexistent order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+
+    int row = it->second->get_row();
+    if(row == this->table_widget->rowCount()-1)
+    {
+        std::cout << it->second->get_row() << "  " << ord_id  << "is on bottom" << std::endl;
+        return;
+    }
+
+    //  the row and the previus order will be deleted on inserting on orders2add_online
+
+    //  program the order to add on table
+    orders2add_online.push_back(ord_id);
+}
+
 
 
 
