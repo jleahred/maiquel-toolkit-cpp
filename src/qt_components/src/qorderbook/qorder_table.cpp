@@ -555,14 +555,11 @@ void   qorder_table::timer_get_orders2add(void)
     {
         mtk::trd::msg::sub_order_id order_id = orders2add_online.front();
         orders2add_online.pop_front();
-        if(check_filter_order(current_filter, order_id))
-        {
-            mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
-            __direct_add_new_order(order_id, order);
-            ++counter;
-            if(counter%5==0)
-                return;
-        }
+        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
+        __direct_add_new_order(order_id, order);
+        ++counter;
+        if(counter%5==0)
+            return;
     }
 }
 
