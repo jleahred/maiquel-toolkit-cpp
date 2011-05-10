@@ -274,12 +274,17 @@ void	QDepth::resizeEvent ( QResizeEvent *  event )
 
 
 
-void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_level& level, QTableWidget* table_widget)
+void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_level& level, QTableWidget* table_widget, const mtk::msg::sub_product_code& product_code)
 {
-    if (level.price.GetIntCode()!=0  &&  level.quantity.GetIntCode() != 0)
+    if (level.quantity.GetIntCode() != 0)
     {
         table_widget->item(row, price_col)->setText(fn_as_QString(level.price));
         table_widget->item(row, 1)->setText(fn_as_QString(level.quantity));
+    }
+    else if(level.quantity.GetIntCode() == 0  &&   level.price.GetIntCode()!=0)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", MTK_SS("received quantity 0 with price not 0 on "
+                                                  << product_code.sys_code.market << "." << product_code.sys_code.product << "  " << level), mtk::alPriorCritic, mtk::alTypeNoPermisions));
     }
     else
     {
@@ -291,17 +296,17 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
 
 void QDepth::on_message(const mtk::prices::msg::pub_best_prices& msg)
 {
-    write_in_cell(5, 0, msg.bids.level0, table_widget);
-    write_in_cell(6, 0, msg.bids.level1, table_widget);
-    write_in_cell(7, 0, msg.bids.level2, table_widget);
-    write_in_cell(8, 0, msg.bids.level3, table_widget);
-    write_in_cell(9, 0, msg.bids.level4, table_widget);
+    write_in_cell(5, 0, msg.bids.level0, table_widget, price_manager->get_product_code());
+    write_in_cell(6, 0, msg.bids.level1, table_widget, price_manager->get_product_code());
+    write_in_cell(7, 0, msg.bids.level2, table_widget, price_manager->get_product_code());
+    write_in_cell(8, 0, msg.bids.level3, table_widget, price_manager->get_product_code());
+    write_in_cell(9, 0, msg.bids.level4, table_widget, price_manager->get_product_code());
 
-    write_in_cell(4, 2, msg.asks.level0, table_widget);
-    write_in_cell(3, 2, msg.asks.level1, table_widget);
-    write_in_cell(2, 2, msg.asks.level2, table_widget);
-    write_in_cell(1, 2, msg.asks.level3, table_widget);
-    write_in_cell(0, 2, msg.asks.level4, table_widget);
+    write_in_cell(4, 2, msg.asks.level0, table_widget, price_manager->get_product_code());
+    write_in_cell(3, 2, msg.asks.level1, table_widget, price_manager->get_product_code());
+    write_in_cell(2, 2, msg.asks.level2, table_widget, price_manager->get_product_code());
+    write_in_cell(1, 2, msg.asks.level3, table_widget, price_manager->get_product_code());
+    write_in_cell(0, 2, msg.asks.level4, table_widget, price_manager->get_product_code());
 
 }
 
