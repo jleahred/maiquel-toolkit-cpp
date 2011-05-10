@@ -69,6 +69,8 @@ QOrderBook::QOrderBook(QWidget *parent) :
     splitter->setChildrenCollapsible(false);
     tab_widget = new QTabWidget(this);
     tab_widget->setMovable(true);
+    tab_widget->setTabPosition(QTabWidget::South);
+
     //tab_widget->setTabsClosable(true);
     {
         qorder_table* order_table = new qorder_table(this);

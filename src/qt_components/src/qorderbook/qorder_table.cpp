@@ -434,13 +434,15 @@ void qorder_table::__direct_add_new_order(const mtk::trd::msg::sub_order_id& ord
 
     //  create an register the order
     mtk::CountPtr<order_in_qbook>  new_order = mtk::make_cptr(new order_in_qbook(table_widget, order));
-    MTK_CONNECT_THIS(new_order->signal_executed_order, on_execution_on_order);
+    MTK_CONNECT_THIS(new_order->signal_executed_order, try_realocate_order);
     orders->insert(std::make_pair(order_id, new_order));
 }
 
 void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& /*order*/)
 {
     orders2add_online.push_back(order_id);
+    orders_in_sequence.push_back(order_id);
+
     //orders->insert(std::make_pair(order_id, mtk::make_cptr(new order_in_qbook(this, order))));
 /*
     static int size = QFontMetrics(this->font()).height()*1.4;
@@ -451,25 +453,40 @@ void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk
 */
 }
 
-void  qorder_table::on_execution_on_order(const mtk::trd::msg::sub_order_id& ord_id)
+void  qorder_table::try_realocate_order(const mtk::trd::msg::sub_order_id& order_id)
 {
-
     //  if order is on bottom, do nothing
-    mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >::iterator  it = orders->find(ord_id);
+    mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >::iterator  it = orders->find(order_id);
     if(it == orders->end())
         throw mtk::Alarm(MTK_HERE, "qorder_table_exec", "received execution on inexistent order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
     int row = it->second->get_row();
     if(row == this->table_widget->rowCount()-1)
-    {
-        std::cout << it->second->get_row() << "  " << ord_id  << "is on bottom" << std::endl;
         return;
+
+    //  the row and the previus order will be deleted on inserting on __direct_add_new_order
+
+    //  realocate   orders_in_sequence
+    {
+        //  look and delete from orders_in_sequence      dangerous optimization
+        bool located=false;
+        for(mtk::list<mtk::trd::msg::sub_order_id>::iterator it = orders_in_sequence.begin(); it!= orders_in_sequence.end(); ++it)
+        {
+            if(*it == order_id)
+            {
+                it = orders_in_sequence.erase(it);
+                if(located==true)
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("duplicated order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+                located=true;
+            }
+        }
+        if(located==false)
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+        orders_in_sequence.push_back(order_id);
     }
 
-    //  the row and the previus order will be deleted on inserting on orders2add_online
-
     //  program the order to add on table
-    orders2add_online.push_back(ord_id);
+    orders2add_online.push_back(order_id);
 }
 
 
@@ -575,7 +592,9 @@ void qorder_table::slot_apply_filter(const filter_data& fd)
     Q_EMIT(signal_named_changed(fd.name));
     table_widget->setRowCount(0);
     orders->clear();
-    mtk::list<mtk::trd::msg::sub_order_id> all_orders = mtk::trd::trd_cli_ord_book::get_all_order_ids();
+
+    mtk::list<mtk::trd::msg::sub_order_id>& all_orders = orders_in_sequence;
+
     for(mtk::list<mtk::trd::msg::sub_order_id>::const_iterator it= all_orders.begin(); it!=all_orders.end(); ++it)
             orders2add_loading.push_back(*it);
     current_filter = fd;

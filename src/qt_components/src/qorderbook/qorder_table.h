@@ -52,7 +52,8 @@ private:
     mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >* orders;
     mtk::list<mtk::trd::msg::sub_order_id>     orders2add_loading;
     mtk::list<mtk::trd::msg::sub_order_id>     orders2add_online;
-    void  on_execution_on_order(const mtk::trd::msg::sub_order_id&);
+    mtk::list<mtk::trd::msg::sub_order_id>     orders_in_sequence;      //     orders in received sequence
+    void  try_realocate_order(const mtk::trd::msg::sub_order_id&);
 
     filter_data     current_filter;
     filter_form*    filterf;
