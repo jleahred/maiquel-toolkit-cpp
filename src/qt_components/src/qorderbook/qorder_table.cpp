@@ -40,6 +40,74 @@ namespace {
                                         QObject::tr("remarks"),
                                         QObject::tr("")                 };
     */
+
+
+
+    mtk::list<mtk::trd::msg::sub_order_id>     __do_not_use_it_directly_orders_in_sequence;      //     orders in received sequence
+
+    void realocate_orders_in_sequence(const mtk::trd::msg::sub_order_id& order_id)
+    {
+        static mtk::trd::msg::sub_order_id  last_ord_id = order_id;
+        static bool first_execution=true;
+        if(!first_execution)
+        {
+            if(last_ord_id == order_id)     return;
+        }
+        else
+            first_execution = false;
+        last_ord_id = order_id;
+
+
+        //  realocate   orders_in_sequence
+        {
+            //  look and delete from orders_in_sequence      dangerous optimization
+            bool located=false;
+            for(mtk::list<mtk::trd::msg::sub_order_id>::iterator it = __do_not_use_it_directly_orders_in_sequence.begin(); it!= __do_not_use_it_directly_orders_in_sequence.end(); ++it)
+            {
+                if(*it == order_id)
+                {
+                    it = __do_not_use_it_directly_orders_in_sequence.erase(it);
+                    if(located==true)
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("duplicated order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+                    located=true;
+                }
+            }
+            if(located==false)
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+            __do_not_use_it_directly_orders_in_sequence.push_back(order_id);
+        }
+    }
+    void add_new_order_orders_in_sequence(const mtk::trd::msg::sub_order_id& order_id)
+    {
+        static mtk::trd::msg::sub_order_id  last_ord_id = order_id;
+        static bool first_execution=true;
+        if(!first_execution)
+        {
+            if(last_ord_id == order_id)     return;
+        }
+        else
+            first_execution = false;
+        last_ord_id = order_id;
+
+        //  realocate   orders_in_sequence
+        {
+            //  look and delete from orders_in_sequence      dangerous optimization
+            bool located=false;
+            for(mtk::list<mtk::trd::msg::sub_order_id>::iterator it = __do_not_use_it_directly_orders_in_sequence.begin(); it!= __do_not_use_it_directly_orders_in_sequence.end(); ++it)
+            {
+                if(*it == order_id)
+                {
+                    it = __do_not_use_it_directly_orders_in_sequence.erase(it);
+                    if(located==true)
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("duplicated order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+                    located=true;
+                }
+            }
+            if(located==true)
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("adding new order in sequence, exist a previus one" << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+            __do_not_use_it_directly_orders_in_sequence.push_back(order_id);
+        }
+    }
 };
 
 
@@ -441,7 +509,7 @@ void qorder_table::__direct_add_new_order(const mtk::trd::msg::sub_order_id& ord
 void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& /*order*/)
 {
     orders2add_online.push_back(order_id);
-    orders_in_sequence.push_back(order_id);
+    add_new_order_orders_in_sequence(order_id);
 
     //orders->insert(std::make_pair(order_id, mtk::make_cptr(new order_in_qbook(this, order))));
 /*
@@ -466,26 +534,11 @@ void  qorder_table::try_realocate_order(const mtk::trd::msg::sub_order_id& order
 
     //  the row and the previus order will be deleted on inserting on __direct_add_new_order
 
-    //  realocate   orders_in_sequence
-    {
-        //  look and delete from orders_in_sequence      dangerous optimization
-        bool located=false;
-        for(mtk::list<mtk::trd::msg::sub_order_id>::iterator it = orders_in_sequence.begin(); it!= orders_in_sequence.end(); ++it)
-        {
-            if(*it == order_id)
-            {
-                it = orders_in_sequence.erase(it);
-                if(located==true)
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("duplicated order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
-                located=true;
-            }
-        }
-        if(located==false)
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
-        orders_in_sequence.push_back(order_id);
-    }
 
-    //  program the order to add on table
+    realocate_orders_in_sequence(order_id);
+
+
+    //  program the order to add on this table
     orders2add_online.push_back(order_id);
 }
 
@@ -555,8 +608,17 @@ void qorder_table::request_cancel(void)
 }
 
 
-bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order_id& order_id)
+bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order_id& order_id, bool check_no_tab_filter_config)
 {
+    //  check_no_tab_filter_config means just alives, alives executed, all
+    //  on new orders received on line, this filter has to be ignored
+    //  this subfilter has to be applied only on user request
+    //  at this moment, orders2add_loading is filled with current orders when user make a request
+    //  and orders2add_online is filled with new orders or execution on an order
+    //  timer_get_orders2add  is calling this function
+
+
+
     mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
     mtk::msg::sub_product_code pc = mtk::trd::get_product_code(*order);
     int matches = 0;
@@ -566,19 +628,27 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
     if(mtk::s_toUpper(pc.sys_code.market).find(fd.market.toUpper().toStdString())!=std::string::npos)
         ++matches;
 
-    if(fd.liveFilter == filter_data::lfAll)
-        ++matches;
-    else if(fd.liveFilter == filter_data::lfLive  &&   (order->is_canceled()== false  &&  order->is_full_executed()==false))
-        ++matches;
-    else if(fd.liveFilter == filter_data::lfLiveExecuted  &&
-                    ( (order->is_canceled()== false  &&  order->is_full_executed()==false)       //  alive
-                      ||
-                      (order->last_confirmation().HasValue() &&  order->last_confirmation().Get().confirmated_info.total_execs.quantity.GetIntCode() > 0)
-                      ))
-        ++matches;
+    if(check_no_tab_filter_config)
+    {
+        if(fd.liveFilter == filter_data::lfAll)
+            ++matches;
+        else if(fd.liveFilter == filter_data::lfLive  &&   (order->is_canceled()== false  &&  order->is_full_executed()==false))
+            ++matches;
+        else if(fd.liveFilter == filter_data::lfLiveExecuted  &&
+                        ( (order->is_canceled()== false  &&  order->is_full_executed()==false)       //  alive
+                          ||
+                          (order->last_confirmation().HasValue() &&  order->last_confirmation().Get().confirmated_info.total_execs.quantity.GetIntCode() > 0)
+                          ))
+            ++matches;
 
-    if(matches==3)  return true;
-    else            return false;
+        if(matches==3)  return true;
+        else            return false;
+    }
+    else
+    {
+        if(matches==2)  return true;
+        else            return false;
+    }
 }
 
 void qorder_table::slot_apply_filter(const filter_data& fd)
@@ -593,7 +663,7 @@ void qorder_table::slot_apply_filter(const filter_data& fd)
     table_widget->setRowCount(0);
     orders->clear();
 
-    mtk::list<mtk::trd::msg::sub_order_id>& all_orders = orders_in_sequence;
+    mtk::list<mtk::trd::msg::sub_order_id>& all_orders = __do_not_use_it_directly_orders_in_sequence;
 
     for(mtk::list<mtk::trd::msg::sub_order_id>::const_iterator it= all_orders.begin(); it!=all_orders.end(); ++it)
             orders2add_loading.push_back(*it);
@@ -608,7 +678,7 @@ void   qorder_table::timer_get_orders2add(void)
     {
         mtk::trd::msg::sub_order_id order_id = orders2add_loading.front();
         orders2add_loading.pop_front();
-        if(check_filter_order(current_filter, order_id))
+        if(check_filter_order(current_filter, order_id, true))
         {
             mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
             __direct_add_new_order(order_id, order);
@@ -621,11 +691,14 @@ void   qorder_table::timer_get_orders2add(void)
     {
         mtk::trd::msg::sub_order_id order_id = orders2add_online.front();
         orders2add_online.pop_front();
-        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
-        __direct_add_new_order(order_id, order);
-        ++counter;
-        if(counter%5==0)
-            return;
+        if(check_filter_order(current_filter, order_id, false))
+        {
+            mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
+            __direct_add_new_order(order_id, order);
+            ++counter;
+            if(counter%5==0)
+                return;
+        }
     }
 }
 

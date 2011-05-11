@@ -911,12 +911,8 @@ namespace {
     void admin_status::command_set_machine_code(const std::string& /*command*/, const std::string& param, mtk::list<std::string>&  response_lines)
     {
         this->set_config_property("ADMIN.CLIENT.machine_code", mtk::s_trim(param, " \t"));
-        process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location(get_mandatory_property("ADMIN.CLIENT.location"), 
-                                                        MTK_SS(get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode())),
-                                                        app_name, 
-                                                        mtk::crc32_as_string(MTK_SS(app_name<<get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand()))),
-                                                        app_version);
         response_lines.push_back(MTK_SS("writed machine code... " << this->get_mandatory_property("ADMIN.CLIENT.machine_code")));
+        response_lines.push_back(MTK_SS("It will be ready on next execution"));
     }
 
     mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*response lines*/> >
