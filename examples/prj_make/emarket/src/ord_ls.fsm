@@ -251,18 +251,20 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     }
                     else
                     {
-                        mtk::trd::msg::CF_XX_LS lc(
-                                  rq.req_info
-                                , mtk::trd::msg::sub_order_ls_confirmated(
-                                          rq.order_id
-                                        , rq.product_code
-                                        , rq.request_pos
-                                        , mtk::trd::msg::sub_total_executions(
-                                                      0.
-                                                    , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                    , rq.request_pos.quantity)
-                                        , rq.cli_ref)
-                                , mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX_LS   lc(
+                                                  mtk::trd::msg::CF_XX(
+                                                              rq.req_info
+                                                            , rq.product_code
+                                                            , mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()))
+                                                , mtk::trd::msg::sub_order_ls_confirmated(
+                                                          mtk::trd::msg::sub_order_xx_confirmated(
+                                                                  rq.order_id
+                                                                , mtk::trd::msg::sub_total_executions(
+                                                                              0.
+                                                                            , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                                                            , rq.request_pos.quantity)
+                                                                , rq.cli_ref)
+                                                        , rq.request_pos));
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                 }]

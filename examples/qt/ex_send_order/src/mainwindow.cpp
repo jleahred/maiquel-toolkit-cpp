@@ -124,7 +124,7 @@ void MainWindow::on_pbPrepareNewRequest_clicked()
 
 mtk::msg::sub_process_info   MainWindow::get_process_info(void)
 {
-    return mtk::msg::sub_process_info(mtk::msg::sub_location(ui->leReqInfo_CliCode->text().toStdString()), "ex_send_order", "ex_send_orderAA", "0");
+    return mtk::msg::sub_process_info(mtk::msg::sub_location(ui->leReqInfo_CliCode->text().toStdString(), "I"), "ex_send_order", "ex_send_orderAA", "0");
 }
 
 
@@ -140,17 +140,18 @@ mtk::trd::msg::RQ_XX_LS MainWindow::get_xx_request(void)
         side = mtk::trd::msg::sell;
 
 
-    return mtk::trd::msg::RQ_XX_LS(           mtk::msg::sub_request_info(mtk::msg::sub_request_id(ui->leReqInfo_SessionID->text().toStdString(),
+    return mtk::trd::msg::RQ_XX_LS(mtk::trd::msg::RQ_XX(
+                                            mtk::msg::sub_request_info(mtk::msg::sub_request_id(ui->leReqInfo_SessionID->text().toStdString(),
                                                                                                 ui->leReqInfo_RequestCode->text().toStdString()),
                                                                        get_process_info())
                                             , ord_id
                                             , pc
-                                            , mtk::trd::msg::sub_position_ls(
-                                                      mtk::FixedNumber(mtk::fnDouble(ui->lePrice->text().toDouble()),  mtk::fnDec(2),  mtk::fnInc(1))
-                                                    , mtk::FixedNumber(mtk::fnDouble(ui->leQuantity->text().toDouble())     ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                    , side)
                                             , ui->leCliRef->text().toStdString()
-                                            , mtk::admin::get_control_fluct_info());
+                                            , mtk::admin::get_control_fluct_info())
+                                    , mtk::trd::msg::sub_position_ls(
+                                              mtk::FixedNumber(mtk::fnDouble(ui->lePrice->text().toDouble()),  mtk::fnDec(2),  mtk::fnInc(1))
+                                            , mtk::FixedNumber(mtk::fnDouble(ui->leQuantity->text().toDouble())     ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                            , side));
 }
 
 void MainWindow::on_pbNewOrder_clicked()

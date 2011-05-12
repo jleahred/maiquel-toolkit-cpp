@@ -185,30 +185,30 @@ void internal_orders_book::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
 void internal_orders_book::add_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("add")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].add_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].add_order(cached_last_request);
 }
 
 void internal_orders_book::del_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("del")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].del_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].del_order(cached_last_request);
 }
 
 void internal_orders_book::modif_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("modif")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].modif_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].modif_order(cached_last_request);
 }
 
 void internal_orders_book::check_execs  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("check_execs")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].check_execs();
+    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].check_execs();
 }
 
 void internal_orders_book::update_prices(const mtk::trd::msg::CF_XX_LS& /*order_info*/)
 {
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].update_prices(cached_last_request->last_confirmation().Get().confirmated_info.product_code);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].update_prices(cached_last_request->last_confirmation().Get().product_code);
 }
 
 

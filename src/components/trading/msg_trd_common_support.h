@@ -28,65 +28,16 @@ namespace mtk {
 
 
 
-inline std::ostream& operator<< (std::ostream& os, const enBuySell& d)
+        std::ostream& operator<< (std::ostream& os, const enBuySell& d);
 
-{
-
-    if      (d==buy)    os << "buy";
-
-    else if (d==sell)   os << "sell";
-
-    else                os << "ERROR";
-
-    return os;
-
-}
-
-inline YAML::Emitter& operator<< (YAML::Emitter& o, const enBuySell& s)
-
-{
-
-    if      (s==buy)    o << "buy";
-
-    else if (s==sell)   o << "sell";
-
-    else                o << "ERROR";
-
-    return o;
-
-}
+        YAML::Emitter& operator<< (YAML::Emitter& o, const enBuySell& s);
 
 
+        void   operator>> (const YAML::Node& n, enBuySell& bs);
 
-inline void   operator>> (const YAML::Node& n, enBuySell& bs)
-
-{
-
-    std::string sbs;
-    
-    n >> sbs;
-    
-    if      (sbs=="buy")        bs = buy;
-    else if (sbs=="sell")       bs = sell;
-    else    throw "PENDING";
-}
-
-
-
-
-inline enBuySell  __internal_get_default (enBuySell*)
-{
-    return buy;
-}
-inline void  copy(enBuySell& result, const qpid::types::Variant& v)
-{
-    result = enBuySell(v.asInt8());
-}
-inline void __internal_add2map (qpid::types::Variant::Map& map, enBuySell a, const std::string& key)
-{
-    map[key] = int8_t(a);
-}
-
+        enBuySell  __internal_get_default (enBuySell*);
+        void  copy(enBuySell& result, const qpid::types::Variant& v);
+        void __internal_add2map (qpid::types::Variant::Map& map, enBuySell a, const std::string& key);
 
 
         };   //namespace msg {

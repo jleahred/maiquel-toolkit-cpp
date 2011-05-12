@@ -75,14 +75,14 @@ private:
 //-------------------------------
 //      sub_order_ls_confirmated
 //-------------------------------    
-class sub_order_ls_confirmated     
+class sub_order_ls_confirmated        :  public  sub_order_xx_confirmated
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit sub_order_ls_confirmated (    const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const sub_position_ls&  _market_pos,   const sub_total_executions&  _total_execs,   const std::string&  _cli_ref );
+    explicit sub_order_ls_confirmated (  const sub_order_xx_confirmated&  parent,   const sub_position_ls&  _market_pos );
     explicit sub_order_ls_confirmated ( const qpid::messaging::Message& message );
     virtual ~sub_order_ls_confirmated (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_order_ls_confirmated"; };
@@ -91,11 +91,7 @@ public:
     
 
     // fields
-    sub_order_id                              order_id; 
-    mtk::msg::sub_product_code                product_code; 
     sub_position_ls                           market_pos; 
-    sub_total_executions                      total_execs; 
-    std::string                               cli_ref; 
 
 
 
@@ -117,38 +113,31 @@ private:
 //-------------------------------
 //      RQ_XX_LS
 //-------------------------------    
-class RQ_XX_LS     
+class RQ_XX_LS        :  public  RQ_XX
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit RQ_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const sub_position_ls&  _request_pos,   const std::string&  _cli_ref,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+    explicit RQ_XX_LS (  const RQ_XX&  parent,   const sub_position_ls&  _request_pos );
     explicit RQ_XX_LS ( const qpid::messaging::Message& message );
     virtual ~RQ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
     
 
     // fields
-    mtk::msg::sub_request_info                req_info; 
-    sub_order_id                              order_id; 
-    mtk::msg::sub_product_code                product_code; 
     sub_position_ls                           request_pos; 
-    std::string                               cli_ref; 
-    mtk::msg::sub_control_fluct               orig_control_fluct; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
-virtual std::string  get_out_subject (void) const;
-
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    
     
     void        before_send(void) const;
     
@@ -182,7 +171,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -219,7 +210,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -256,7 +249,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -273,14 +268,14 @@ private:
 //-------------------------------
 //      CF_XX_LS
 //-------------------------------    
-class CF_XX_LS     
+class CF_XX_LS        :  public  CF_XX
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit CF_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+    explicit CF_XX_LS (  const CF_XX&  parent,   const sub_order_ls_confirmated&  _confirmated_info );
     explicit CF_XX_LS ( const qpid::messaging::Message& message );
     virtual ~CF_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX_LS"; };
@@ -289,14 +284,12 @@ public:
     
 
     // fields
-    mtk::msg::sub_request_info                req_info; 
     sub_order_ls_confirmated                  confirmated_info; 
-    mtk::msg::sub_control_fluct               orig_control_fluct; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& confirmated_info_product_code_market,const std::string& confirmated_info_product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -335,7 +328,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -372,7 +367,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -409,7 +406,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -447,7 +446,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -464,14 +465,14 @@ private:
 //-------------------------------
 //      RJ_XX_LS
 //-------------------------------    
-class RJ_XX_LS     
+class RJ_XX_LS        :  public  RJ_XX
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit RJ_XX_LS (    const mtk::msg::sub_request_info&  _req_info,   const sub_order_ls_confirmated&  _confirmated_info,   const std::string&  _description,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+    explicit RJ_XX_LS (  const RJ_XX&  parent,   const sub_order_ls_confirmated&  _confirmated_info );
     explicit RJ_XX_LS ( const qpid::messaging::Message& message );
     virtual ~RJ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_LS"; };
@@ -480,15 +481,12 @@ public:
     
 
     // fields
-    mtk::msg::sub_request_info                req_info; 
     sub_order_ls_confirmated                  confirmated_info; 
-    std::string                               description; 
-    mtk::msg::sub_control_fluct               orig_control_fluct; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& confirmated_info_product_code_market,const std::string& confirmated_info_product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -527,7 +525,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -564,7 +564,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -601,7 +603,9 @@ public:
 
 
     //  subject info
-    
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
     mtk::msg::sub_control_fields*   __internal_warning_control_fields;
@@ -828,7 +832,6 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_XX_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_NW_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_MD_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_CC_LS)

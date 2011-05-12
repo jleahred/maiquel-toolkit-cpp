@@ -90,6 +90,8 @@ CLI <-->  SYS::
 * +REQ+ is for request responses and request confirmation patterns
 * +REP+ responses of request response pattern. _Non permanent_ suscriptions
 
+[NOTE]
+The subject identify a message that can be sent or received directly
 
 === Message name convention
 |=====================
@@ -156,26 +158,113 @@ include::../../../src/components/acs/msg_acs.msg[]
 
 == Trading
 
-.Common submessages for trading
+=== Common
+
+* Inheritance diagram with some messages
+
+["graphviz", "trading_inheritance_diagram0.png"]
+-----------
+digraph trading_inheritance {
+    node [shape = circle, fontsize=10, fixedsize=true width=0.8];
+
+    RQ_XX
+    CF_XX 
+    RJ_XX
+}
+-----------
+
+["graphviz", "trading_inheritance_diagram1.png"]
+-----------
+digraph trading_inheritance {
+    node [shape = circle, fontsize=10, fixedsize=true width=0.8];
+
+    RQ_XX  ->  RQ_XX_LS
+    RQ_XX_LS  ->  RQ_NW_LS  
+    RQ_XX_LS  ->  RQ_MD_LS
+    RQ_XX_LS  ->  RQ_EX_LS
+
+    RQ_XX  ->  RQ_XX_MK
+    RQ_XX_MK  ->  RQ_NW_MK
+    RQ_XX_MK  ->  RQ_MD_MK
+    RQ_XX_MK  ->  RQ_EX_MK
+
+    RQ_XX  ->  RQ_XX_SL
+    RQ_XX  ->  RQ_XX_SM
+
+}
+-----------
+
+["graphviz", "trading_inheritance_diagram2.png"]
+-----------
+digraph trading_inheritance {
+    node [shape = circle, fontsize=10, fixedsize=true width=0.8];
+
+    CF_XX  ->  CF_XX_LS
+    CF_XX_LS  ->  CF_NW_LS  
+    CF_XX_LS  ->  CF_MD_LS
+    CF_XX_LS  ->  CF_EX_LS
+
+    CF_XX  ->  CF_XX_MK
+    CF_XX_MK  ->  CF_NW_MK
+    CF_XX_MK  ->  CF_MD_MK
+    CF_XX_MK  ->  CF_EX_MK
+
+    CF_XX  ->  CF_XX_SL
+    CF_XX  ->  CF_XX_SM
+
+}
+-----------
+
+["graphviz", "trading_inheritance_diagram3.png"]
+-----------
+digraph trading_inheritance {
+    node [shape = circle, fontsize=10, fixedsize=true width=0.8];
+    RJ_XX  ->  RJ_XX_LS
+    RJ_XX_LS  ->  RJ_NW_LS  
+    RJ_XX_LS  ->  RJ_MD_LS
+    RJ_XX_LS  ->  RJ_EX_LS
+
+    RJ_XX  ->  RJ_XX_MK
+    RJ_XX_MK  ->  RJ_NW_MK
+    RJ_XX_MK  ->  RJ_MD_MK
+    RJ_XX_MK  ->  RJ_EX_MK
+
+    RJ_XX  ->  RJ_XX_SL
+    RJ_XX  ->  RJ_XX_SM
+}
+
+------------
+
+
+* Common submessages for trading
++
+.src/components/trading/msg_trd_common.msg
 -----
 include::../../../src/components/trading/msg_trd_common.msg[]
 -----
 
 
-.Support code for trading client messages
+* Support code for trading client messages
++
+.src/components/trading/msg_trd_common_support.h
 -----
 include::../../../src/components/trading/msg_trd_common_support.h[]
 -----
 
 
 
-.Online trading Limit Orders client messages
+=== Limit orders
+
+* Online trading Limit Orders client messages
++
+.msg_trd_cli_ls.msg
 -----
 include::../../../src/components/trading/msg_trd_cli_ls.msg[]
 -----
 
 
-.Orders LS status diagram
+* Orders LS status diagram
++
 ["graphviz", "components_trading_o_ls.png"]
 -----------
 include::../../../src/components/trading/trd_cli_ls.dot[]
@@ -183,7 +272,12 @@ include::../../../src/components/trading/trd_cli_ls.dot[]
 
 
 
-.Trading Limit Orders OMS messages (added permision filter fields)
+
+=== OMS
+
+* Trading Limit Orders OMS messages (added permision filter fields)
+. msg_trd_oms_rq.msg
++
 -----
 include::../../../src/components/trading/msg_trd_oms_rq.msg[]
 -----

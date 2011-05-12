@@ -258,7 +258,7 @@ public:
     {
         QTableWidgetItem* item = items[col_market];
         if (inner_order->last_confirmation().HasValue())
-            item->setText(QLatin1String(inner_order->last_confirmation().Get().confirmated_info.product_code.market.c_str()));
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().product_code.market.c_str()));
         else if (inner_order->last_request().HasValue())
             item->setText(QLatin1String(inner_order->last_request().Get().product_code.market.c_str()));
         else
@@ -270,7 +270,7 @@ public:
     {
         QTableWidgetItem* item = items[col_product];
         if (inner_order->last_confirmation().HasValue())
-            item->setText(QLatin1String(inner_order->last_confirmation().Get().confirmated_info.product_code.product.c_str()));
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().product_code.product.c_str()));
         else if (inner_order->last_request().HasValue())
             item->setText(QLatin1String(inner_order->last_request().Get().product_code.product.c_str()));
         else

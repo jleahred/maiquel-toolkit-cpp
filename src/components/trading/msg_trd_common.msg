@@ -27,3 +27,70 @@ sub_total_executions [<V:0>]
 }
 
 
+
+sub_order_xx_confirmated [<V:0>]
+{
+    order_id       (oid)  :   sub_order_id
+    total_execs    (exp)  :   sub_total_executions      
+    
+    cli_ref        (cr)   :   string
+}
+
+
+
+
+//  QUEUES
+//  SUBJ:RQ.client.market.product_code
+//  SUBJ:RS.client.market.product_code
+
+
+
+
+//---------------------------------------------------------------------
+//	request XX
+
+
+RQ_XX  [< V:0 >]
+{
+    req_info            (rqid) :   mtk::msg::sub_request_info
+    order_id            (oid)  :   sub_order_id
+    product_code        (pc)   :   mtk::msg::sub_product_code     
+    
+    cli_ref             (cr)   :   string
+    
+    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
+}
+
+
+
+
+//---------------------------------------------------------------------
+//	confirmations  XX
+
+CF_XX  [<  V:0  >]
+{
+    req_info            (rqid) :   mtk::msg::sub_request_info    
+    product_code        (pc)   :   mtk::msg::sub_product_code
+
+    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
+}
+
+
+
+
+
+
+//---------------------------------------------------------------------
+//	rejects  XX
+
+RJ_XX  [< V:0 >]
+{
+    req_info            (rqid) :   mtk::msg::sub_request_info    
+    product_code        (pc)   :   mtk::msg::sub_product_code
+    description         (ds)   :   string
+    
+    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
+}
+
+
+

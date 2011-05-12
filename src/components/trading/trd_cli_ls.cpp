@@ -164,7 +164,7 @@ mtk::tuple<int, std::string> check_confirm_request(const mtk::trd::msg::CF_XX_LS
     if (last_request.HasValue()== true)
     {
         __INTERNAL_CHECK_EQUAL(last_request.Get().order_id         , cf.confirmated_info.order_id       )
-        __INTERNAL_CHECK_EQUAL(last_request.Get().product_code     , cf.confirmated_info.product_code   )
+        __INTERNAL_CHECK_EQUAL(last_request.Get().product_code     , cf.product_code                    )
         __INTERNAL_CHECK_EQUAL(last_request.Get().request_pos.side , cf.confirmated_info.market_pos.side)
     }
     
@@ -226,7 +226,7 @@ mtk::tuple<int, std::string> check_reject_request(const mtk::trd::msg::RJ_XX_LS&
     if (last_request.HasValue())
     {
         __INTERNAL_CHECK_EQUAL(last_request.Get().order_id        , rj.confirmated_info.order_id        )
-        __INTERNAL_CHECK_EQUAL(last_request.Get().product_code    , rj.confirmated_info.product_code    )
+        __INTERNAL_CHECK_EQUAL(last_request.Get().product_code    , rj.product_code                     )
     }
     
     if (nerrors >0)
@@ -314,20 +314,21 @@ mtk::tuple<int, std::string>  check_exec__last_confirm(const mtk::trd::msg::CF_E
 
 #define SEND_REJECT(__SIGNAL_TYPE__, __MSG_TYPE__) \
     if (last_confirmation().HasValue())    \
-        ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, last_confirmation().Get().confirmated_info, MTK_SS("Error: Received rq_md on status " << GetStatusName()), mtk::admin::get_control_fluct_info())));     \
+        ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(mtk::trd::msg::RJ_XX(rq.req_info, rq.product_code, MTK_SS("Error: Received rq_md on status " << GetStatusName()), \
+                        mtk::admin::get_control_fluct_info()), last_confirmation().Get().confirmated_info)));  \
     else      \
     {      \
         if (last_request().HasValue()==true)      \
         {      \
             mtk::trd::msg::RQ_XX_LS  _last_request = last_request().Get();  \
-            mtk::trd::msg::sub_order_ls_confirmated to_confirm(    _last_request.order_id,     \
-                                                _last_request.product_code,     \
-                                                _last_request.request_pos,     \
+            mtk::trd::msg::sub_order_ls_confirmated to_confirm(mtk::trd::msg::sub_order_xx_confirmated( _last_request.order_id,     \
                                                 mtk::trd::msg::sub_total_executions(0.,     \
                                                                                     mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)),    \
                                                                                     mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)) ),    \
-                                                _last_request.cli_ref);    \
-            ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rq.req_info, to_confirm, MTK_SS("Error: Local reject. Order not sent. Received rq_md on status " << GetStatusName()), mtk::admin::get_control_fluct_info())));    \
+                                                _last_request.cli_ref),         \
+                                                _last_request.request_pos);    \
+            ci->__SIGNAL_TYPE__(mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(mtk::trd::msg::RJ_XX(rq.req_info, rq.product_code, MTK_SS("Error: Local reject. Order not sent. Received rq_md on status " << GetStatusName()), \
+                            mtk::admin::get_control_fluct_info()), to_confirm)));  \
         }    \
         else     \
             throw mtk::Alarm("SEND_REJECT", "trd_cli_ls.cpp", MTK_SS("Missing last_request trying to reject "), mtk::alPriorCritic, mtk::alTypeNoPermisions);    \

@@ -12,3 +12,13 @@ test:
 	make -C alarms_db doc
 	make -C product_loader this
 	make -C product_loader doc
+
+
+.PHONY: this
+this:
+	make -C emarket this
+	make -C houselight this
+	make -C tree_server this
+	make -C acs this
+	make -C alarms_db this
+	make -C product_loader this
