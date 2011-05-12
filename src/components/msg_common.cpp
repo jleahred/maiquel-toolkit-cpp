@@ -432,35 +432,8 @@ void sub_location::before_send(void) const
 
 
 
-sub_process_location::sub_process_location (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid)
-    :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid) 
-       
-    {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-std::string sub_process_location::check_recomended(void) const
-{
-    std::string result;
-
-    return result;
-}
-
-void sub_process_location::before_send(void) const
-{
-
-}
-
-
-
-
-sub_process_info::sub_process_info (   const sub_process_location&  _process_location,   const std::string&  _version)
-    :     process_location(_process_location),   version(_version) 
+sub_process_info::sub_process_info (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version)
+    :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid),   version(_version) 
        
     {  
         std::string cr = check_recomended ();  
@@ -540,8 +513,8 @@ void sub_request_id::before_send(void) const
 
 
 
-sub_request_info::sub_request_info (   const sub_request_id&  _req_id,   const sub_process_location&  _process_location)
-    :     req_id(_req_id),   process_location(_process_location) 
+sub_request_info::sub_request_info (   const sub_request_id&  _req_id,   const sub_process_info&  _process_info)
+    :     req_id(_req_id),   process_info(_process_info) 
        
     {  
         std::string cr = check_recomended ();  
@@ -594,89 +567,8 @@ void sub_r_response::before_send(void) const
 
 
 
-sub_single_product_code::sub_single_product_code (   const std::string&  _market,   const std::string&  _product)
+sub_product_code::sub_product_code (   const std::string&  _market,   const std::string&  _product)
     :     market(_market),   product(_product) 
-       
-    {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-std::string sub_single_product_code::check_recomended(void) const
-{
-    std::string result;
-
-    return result;
-}
-
-void sub_single_product_code::before_send(void) const
-{
-
-}
-
-
-
-
-sub_sys_product_code::sub_sys_product_code ( const sub_single_product_code&  parent,   const std::string&  _user_name)
-    :  sub_single_product_code(parent),   user_name(_user_name) 
-       
-    {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-std::string sub_sys_product_code::check_recomended(void) const
-{
-    std::string result;
-
-    return result;
-}
-
-void sub_sys_product_code::before_send(void) const
-{
-
-}
-
-
-
-
-sub_adic_product_code::sub_adic_product_code ( const sub_single_product_code&  parent,   const std::string&  _aditional_code_type)
-    :  sub_single_product_code(parent),   aditional_code_type(_aditional_code_type) 
-       
-    {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-std::string sub_adic_product_code::check_recomended(void) const
-{
-    std::string result;
-
-    return result;
-}
-
-void sub_adic_product_code::before_send(void) const
-{
-
-}
-
-
-
-
-sub_product_code::sub_product_code (   const sub_sys_product_code&  _sys_code,   const mtk::nullable<sub_adic_product_code>&  _aditional_code)
-    :     sys_code(_sys_code),   aditional_code(_aditional_code) 
        
     {  
         std::string cr = check_recomended ();  
@@ -734,45 +626,11 @@ void  operator >> (const YAML::Node& node, sub_location & c)
 };
 
 
-std::ostream& operator<< (std::ostream& o, const sub_process_location & c)
-{
-    o << "{ "
-
-        << "location:"<< c.location<<"  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "
-        << " }";
-    return o;
-};
-
-
-
-YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_location & c)
-{
-    o << YAML::BeginMap
-
-        << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "process_name"  << YAML::Value <<   c.process_name        << YAML::Key << "process_uuid"  << YAML::Value <<   c.process_uuid
-        << YAML::EndMap;
-    return o;
-};
-
-
-
-void  operator >> (const YAML::Node& node, sub_process_location & c)
-{
-
-
-        node["location"]  >> c.location;
-        node["process_name"]  >> c.process_name;
-        node["process_uuid"]  >> c.process_uuid;
-
-
-};
-
-
 std::ostream& operator<< (std::ostream& o, const sub_process_info & c)
 {
     o << "{ "
 
-        << "process_location:"<< c.process_location<<"  "        << "version:"<<   c.version << "  "
+        << "location:"<< c.location<<"  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "        << "version:"<<   c.version << "  "
         << " }";
     return o;
 };
@@ -783,7 +641,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "process_location"  << YAML::Value << c.process_location        << YAML::Key << "version"  << YAML::Value <<   c.version
+        << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "process_name"  << YAML::Value <<   c.process_name        << YAML::Key << "process_uuid"  << YAML::Value <<   c.process_uuid        << YAML::Key << "version"  << YAML::Value <<   c.version
         << YAML::EndMap;
     return o;
 };
@@ -794,7 +652,9 @@ void  operator >> (const YAML::Node& node, sub_process_info & c)
 {
 
 
-        node["process_location"]  >> c.process_location;
+        node["location"]  >> c.location;
+        node["process_name"]  >> c.process_name;
+        node["process_uuid"]  >> c.process_uuid;
         node["version"]  >> c.version;
 
 
@@ -871,7 +731,7 @@ std::ostream& operator<< (std::ostream& o, const sub_request_info & c)
 {
     o << "{ "
 
-        << "req_id:"<< c.req_id<<"  "        << "process_location:"<< c.process_location<<"  "
+        << "req_id:"<< c.req_id<<"  "        << "process_info:"<< c.process_info<<"  "
         << " }";
     return o;
 };
@@ -882,7 +742,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_request_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "process_location"  << YAML::Value << c.process_location
+        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "process_info"  << YAML::Value << c.process_info
         << YAML::EndMap;
     return o;
 };
@@ -894,7 +754,7 @@ void  operator >> (const YAML::Node& node, sub_request_info & c)
 
 
         node["req_id"]  >> c.req_id;
-        node["process_location"]  >> c.process_location;
+        node["process_info"]  >> c.process_info;
 
 
 };
@@ -934,7 +794,7 @@ void  operator >> (const YAML::Node& node, sub_r_response & c)
 };
 
 
-std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c)
+std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
 {
     o << "{ "
 
@@ -945,7 +805,7 @@ std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c)
 
 
 
-YAML::Emitter& operator << (YAML::Emitter& o, const sub_single_product_code & c)
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_product_code & c)
 {
     o << YAML::BeginMap
 
@@ -956,111 +816,12 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_single_product_code & c)
 
 
 
-void  operator >> (const YAML::Node& node, sub_single_product_code & c)
+void  operator >> (const YAML::Node& node, sub_product_code & c)
 {
 
 
         node["market"]  >> c.market;
         node["product"]  >> c.product;
-
-
-};
-
-
-std::ostream& operator<< (std::ostream& o, const sub_sys_product_code & c)
-{
-    o << "{ "
-    << "("  <<  static_cast<const sub_single_product_code&>(c)  << ")" 
-        << "user_name:"<<   c.user_name << "  "
-        << " }";
-    return o;
-};
-
-
-
-YAML::Emitter& operator << (YAML::Emitter& o, const sub_sys_product_code & c)
-{
-    o << YAML::BeginMap
-    << YAML::Key << "sub_single_product_code" <<  YAML::Value << static_cast<const sub_single_product_code&>(c)  
-        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name
-        << YAML::EndMap;
-    return o;
-};
-
-
-
-void  operator >> (const YAML::Node& node, sub_sys_product_code & c)
-{
-
-    node["sub_single_product_code"]   >>   static_cast<sub_single_product_code&>(c)  ;
-
-        node["user_name"]  >> c.user_name;
-
-
-};
-
-
-std::ostream& operator<< (std::ostream& o, const sub_adic_product_code & c)
-{
-    o << "{ "
-    << "("  <<  static_cast<const sub_single_product_code&>(c)  << ")" 
-        << "aditional_code_type:"<<   c.aditional_code_type << "  "
-        << " }";
-    return o;
-};
-
-
-
-YAML::Emitter& operator << (YAML::Emitter& o, const sub_adic_product_code & c)
-{
-    o << YAML::BeginMap
-    << YAML::Key << "sub_single_product_code" <<  YAML::Value << static_cast<const sub_single_product_code&>(c)  
-        << YAML::Key << "aditional_code_type"  << YAML::Value <<   c.aditional_code_type
-        << YAML::EndMap;
-    return o;
-};
-
-
-
-void  operator >> (const YAML::Node& node, sub_adic_product_code & c)
-{
-
-    node["sub_single_product_code"]   >>   static_cast<sub_single_product_code&>(c)  ;
-
-        node["aditional_code_type"]  >> c.aditional_code_type;
-
-
-};
-
-
-std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
-{
-    o << "{ "
-
-        << "sys_code:"<< c.sys_code<<"  "        << "aditional_code:"<< c.aditional_code<<"  "
-        << " }";
-    return o;
-};
-
-
-
-YAML::Emitter& operator << (YAML::Emitter& o, const sub_product_code & c)
-{
-    o << YAML::BeginMap
-
-        << YAML::Key << "sys_code"  << YAML::Value << c.sys_code        << YAML::Key << "aditional_code"  << YAML::Value << c.aditional_code
-        << YAML::EndMap;
-    return o;
-};
-
-
-
-void  operator >> (const YAML::Node& node, sub_product_code & c)
-{
-
-
-        node["sys_code"]  >> c.sys_code;
-        node["aditional_code"]  >> c.aditional_code;
 
 
 };
@@ -1078,21 +839,9 @@ bool operator!= (const sub_location& a, const sub_location& b)
 
 
 
-bool operator== (const sub_process_location& a, const sub_process_location& b)
-{
-    return (          a.location ==  b.location  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&   true  );
-};
-
-bool operator!= (const sub_process_location& a, const sub_process_location& b)
-{
-    return !(a==b);
-};
-
-
-
 bool operator== (const sub_process_info& a, const sub_process_info& b)
 {
-    return (          a.process_location ==  b.process_location  &&          a.version ==  b.version  &&   true  );
+    return (          a.location ==  b.location  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&          a.version ==  b.version  &&   true  );
 };
 
 bool operator!= (const sub_process_info& a, const sub_process_info& b)
@@ -1128,7 +877,7 @@ bool operator!= (const sub_request_id& a, const sub_request_id& b)
 
 bool operator== (const sub_request_info& a, const sub_request_info& b)
 {
-    return (          a.req_id ==  b.req_id  &&          a.process_location ==  b.process_location  &&   true  );
+    return (          a.req_id ==  b.req_id  &&          a.process_info ==  b.process_info  &&   true  );
 };
 
 bool operator!= (const sub_request_info& a, const sub_request_info& b)
@@ -1150,45 +899,9 @@ bool operator!= (const sub_r_response& a, const sub_r_response& b)
 
 
 
-bool operator== (const sub_single_product_code& a, const sub_single_product_code& b)
-{
-    return (          a.market ==  b.market  &&          a.product ==  b.product  &&   true  );
-};
-
-bool operator!= (const sub_single_product_code& a, const sub_single_product_code& b)
-{
-    return !(a==b);
-};
-
-
-
-bool operator== (const sub_sys_product_code& a, const sub_sys_product_code& b)
-{
-    return ( (static_cast<const sub_single_product_code&>(a)   ==  static_cast<const sub_single_product_code&>(b))  &&           a.user_name ==  b.user_name  &&   true  );
-};
-
-bool operator!= (const sub_sys_product_code& a, const sub_sys_product_code& b)
-{
-    return !(a==b);
-};
-
-
-
-bool operator== (const sub_adic_product_code& a, const sub_adic_product_code& b)
-{
-    return ( (static_cast<const sub_single_product_code&>(a)   ==  static_cast<const sub_single_product_code&>(b))  &&           a.aditional_code_type ==  b.aditional_code_type  &&   true  );
-};
-
-bool operator!= (const sub_adic_product_code& a, const sub_adic_product_code& b)
-{
-    return !(a==b);
-};
-
-
-
 bool operator== (const sub_product_code& a, const sub_product_code& b)
 {
-    return (          a.sys_code ==  b.sys_code  &&          a.aditional_code ==  b.aditional_code  &&   true  );
+    return (          a.market ==  b.market  &&          a.product ==  b.product  &&   true  );
 };
 
 bool operator!= (const sub_product_code& a, const sub_product_code& b)
@@ -1250,67 +963,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_process_location& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_process_location& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   sub_msg_type
-
-                    it = mv.find("l");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field location on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.location, it->second);
-                        //__internal_qpid_fill(c.location, it->second.asMap());
-//   field_type
-
-                    it = mv.find("pn");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_name on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.process_name, it->second);
-                        //c.process_name = it->second;
-//   field_type
-
-                    it = mv.find("pi");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_uuid on message sub_process_location::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.process_uuid, it->second);
-                        //c.process_uuid = it->second;
-
-    }
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_location& a)
-{
-
-    a.before_send();
-
-
-//  sub_msg_type
-        __internal_add2map(map, a.location, std::string("l"));
-//  field_type
-        __internal_add2map(map, a.process_name, std::string("pn"));
-//  field_type
-        __internal_add2map(map, a.process_uuid, std::string("pi"));
-
-
-};
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_location>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
-
 //void  __internal_qpid_fill (sub_process_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_process_info& c, const qpid::types::Variant& v)
     {  
@@ -1319,12 +971,28 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("pl");
+                    it = mv.find("l");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_location on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field location on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.process_location, it->second);
-                        //__internal_qpid_fill(c.process_location, it->second.asMap());
+                        copy(c.location, it->second);
+                        //__internal_qpid_fill(c.location, it->second.asMap());
+//   field_type
+
+                    it = mv.find("pn");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_name on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.process_name, it->second);
+                        //c.process_name = it->second;
+//   field_type
+
+                    it = mv.find("pi");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_uuid on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.process_uuid, it->second);
+                        //c.process_uuid = it->second;
 //   field_type
 
                     it = mv.find("pv");
@@ -1344,7 +1012,11 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info&
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.process_location, std::string("pl"));
+        __internal_add2map(map, a.location, std::string("l"));
+//  field_type
+        __internal_add2map(map, a.process_name, std::string("pn"));
+//  field_type
+        __internal_add2map(map, a.process_uuid, std::string("pi"));
 //  field_type
         __internal_add2map(map, a.version, std::string("pv"));
 
@@ -1480,12 +1152,12 @@ void  copy (sub_request_info& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.req_id, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("pl");
+                    it = mv.find("pi");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_location on message sub_request_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_info on message sub_request_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.process_location, it->second);
-                        //__internal_qpid_fill(c.process_location, it->second.asMap());
+                        copy(c.process_info, it->second);
+                        //__internal_qpid_fill(c.process_info, it->second.asMap());
 
     }
 
@@ -1499,7 +1171,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info&
 //  sub_msg_type
         __internal_add2map(map, a.req_id, std::string("rid"));
 //  sub_msg_type
-        __internal_add2map(map, a.process_location, std::string("pl"));
+        __internal_add2map(map, a.process_info, std::string("pi"));
 
 
 };
@@ -1576,8 +1248,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_single_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_single_product_code& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (sub_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_product_code& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
@@ -1586,7 +1258,7 @@ void  copy (sub_single_product_code& c, const qpid::types::Variant& v)
 
                     it = mv.find("mk");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market on message sub_single_product_code::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market on message sub_product_code::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.market, it->second);
                         //c.market = it->second;
@@ -1594,145 +1266,10 @@ void  copy (sub_single_product_code& c, const qpid::types::Variant& v)
 
                     it = mv.find("pr");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product on message sub_single_product_code::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product on message sub_product_code::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.product, it->second);
                         //c.product = it->second;
-
-    }
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_single_product_code& a)
-{
-
-    a.before_send();
-
-
-//  field_type
-        __internal_add2map(map, a.market, std::string("mk"));
-//  field_type
-        __internal_add2map(map, a.product, std::string("pr"));
-
-
-};
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_single_product_code>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
-
-//void  __internal_qpid_fill (sub_sys_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_sys_product_code& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<sub_single_product_code&>(c), v);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("un");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message sub_sys_product_code::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.user_name, it->second);
-                        //c.user_name = it->second;
-
-    }
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_sys_product_code& a)
-{
-
-    a.before_send();
-
-//  parent
-__internal_add2map(map, static_cast<const sub_single_product_code&>(a));
-
-//  field_type
-        __internal_add2map(map, a.user_name, std::string("un"));
-
-
-};
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_sys_product_code>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
-
-//void  __internal_qpid_fill (sub_adic_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_adic_product_code& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<sub_single_product_code&>(c), v);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("act");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field aditional_code_type on message sub_adic_product_code::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.aditional_code_type, it->second);
-                        //c.aditional_code_type = it->second;
-
-    }
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_adic_product_code& a)
-{
-
-    a.before_send();
-
-//  parent
-__internal_add2map(map, static_cast<const sub_single_product_code&>(a));
-
-//  field_type
-        __internal_add2map(map, a.aditional_code_type, std::string("act"));
-
-
-};
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_adic_product_code>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
-
-//void  __internal_qpid_fill (sub_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_product_code& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   sub_msg_type
-
-                    it = mv.find("spc");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sys_code on message sub_product_code::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.sys_code, it->second);
-                        //__internal_qpid_fill(c.sys_code, it->second.asMap());
-//   sub_msg_type
-
-                    it = mv.find("apc");
-                    if (it!= mv.end())
-                        copy(c.aditional_code, it->second);
-                        //__internal_qpid_fill(c.aditional_code, it->second.asMap());
 
     }
 
@@ -1743,11 +1280,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code&
     a.before_send();
 
 
-//  sub_msg_type
-        __internal_add2map(map, a.sys_code, std::string("spc"));
-if (a.aditional_code.HasValue())
-//  sub_msg_type
-        __internal_add2map(map, a.aditional_code, std::string("apc"));
+//  field_type
+        __internal_add2map(map, a.market, std::string("mk"));
+//  field_type
+        __internal_add2map(map, a.product, std::string("pr"));
 
 
 };
@@ -1768,10 +1304,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
     sub_location  __internal_get_default(sub_location*)
     {
@@ -1783,23 +1315,15 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
             );
     }
     
-    sub_process_location  __internal_get_default(sub_process_location*)
+    sub_process_info  __internal_get_default(sub_process_info*)
     {
-        return sub_process_location(
+        return sub_process_info(
 //   sub_msg_type
    __internal_get_default((sub_location*)0),
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((std::string*)0)
-            );
-    }
-    
-    sub_process_info  __internal_get_default(sub_process_info*)
-    {
-        return sub_process_info(
-//   sub_msg_type
-   __internal_get_default((sub_process_location*)0),
+   __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
             );
@@ -1831,7 +1355,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //   sub_msg_type
    __internal_get_default((sub_request_id*)0),
 //   sub_msg_type
-   __internal_get_default((sub_process_location*)0)
+   __internal_get_default((sub_process_info*)0)
             );
     }
     
@@ -1847,39 +1371,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
             );
     }
     
-    sub_single_product_code  __internal_get_default(sub_single_product_code*)
+    sub_product_code  __internal_get_default(sub_product_code*)
     {
-        return sub_single_product_code(
+        return sub_product_code(
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
-            );
-    }
-    
-    sub_sys_product_code  __internal_get_default(sub_sys_product_code*)
-    {
-        return sub_sys_product_code(
-__internal_get_default((sub_single_product_code*)0), //   field_type
-   __internal_get_default ((std::string*)0)
-            );
-    }
-    
-    sub_adic_product_code  __internal_get_default(sub_adic_product_code*)
-    {
-        return sub_adic_product_code(
-__internal_get_default((sub_single_product_code*)0), //   field_type
-   __internal_get_default ((std::string*)0)
-            );
-    }
-    
-    sub_product_code  __internal_get_default(sub_product_code*)
-    {
-        return sub_product_code(
-//   sub_msg_type
-   __internal_get_default((sub_sys_product_code*)0),
-//   sub_msg_type
-   mtk::nullable<sub_adic_product_code>()
             );
     }
     
@@ -1902,29 +1400,13 @@ sub_location::sub_location (const qpid::messaging::Message& msg)
 
 
 
-sub_process_location::sub_process_location (const qpid::messaging::Message& msg)
+sub_process_info::sub_process_info (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    location(__internal_get_default((sub_location*)0)),
 //   field_type
    process_name(__internal_get_default((std::string*)0)),
 //   field_type
-   process_uuid(__internal_get_default((std::string*)0)) 
-    {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-sub_process_info::sub_process_info (const qpid::messaging::Message& msg)
-    :  //   sub_msg_type
-   process_location(__internal_get_default((sub_process_location*)0)),
+   process_uuid(__internal_get_default((std::string*)0)),
 //   field_type
    version(__internal_get_default((std::string*)0)) 
     {
@@ -1980,7 +1462,7 @@ sub_request_info::sub_request_info (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    req_id(__internal_get_default((sub_request_id*)0)),
 //   sub_msg_type
-   process_location(__internal_get_default((sub_process_location*)0)) 
+   process_info(__internal_get_default((sub_process_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2014,59 +1496,11 @@ sub_r_response::sub_r_response (const qpid::messaging::Message& msg)
 
 
 
-sub_single_product_code::sub_single_product_code (const qpid::messaging::Message& msg)
+sub_product_code::sub_product_code (const qpid::messaging::Message& msg)
     :  //   field_type
    market(__internal_get_default((std::string*)0)),
 //   field_type
    product(__internal_get_default((std::string*)0)) 
-    {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-sub_sys_product_code::sub_sys_product_code (const qpid::messaging::Message& msg)
-    :  sub_single_product_code(msg), //   field_type
-   user_name(__internal_get_default((std::string*)0)) 
-    {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-sub_adic_product_code::sub_adic_product_code (const qpid::messaging::Message& msg)
-    :  sub_single_product_code(msg), //   field_type
-   aditional_code_type(__internal_get_default((std::string*)0)) 
-    {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-sub_product_code::sub_product_code (const qpid::messaging::Message& msg)
-    :  //   sub_msg_type
-   sys_code(__internal_get_default((sub_sys_product_code*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

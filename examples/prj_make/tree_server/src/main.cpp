@@ -90,8 +90,7 @@ void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)
         std::string full_branch = MTK_SS(tree_request.branch << "." <<*it);
         if(market_code != "")
         {
-            mtk::msg::sub_product_code pc ( mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code(market_code, *it), description), 
-                                            mtk::nullable<mtk::msg::sub_adic_product_code> ());
+            mtk::msg::sub_product_code pc ( mtk::msg::sub_product_code(market_code, *it));
             data_list.push_back(mtk::gen::msg::sub_tree_item(full_branch, description, mtk::make_nullable(pc)));
         }
         else

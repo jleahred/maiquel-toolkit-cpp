@@ -287,7 +287,7 @@ mtk::trd::msg::RQ_XX_LS get_last_request_or_confirmation (mtk::CountPtr<trd_cli_
                                             lc.confirmated_info.product_code, 
                                             lc.confirmated_info.market_pos, 
                                             lc.confirmated_info.cli_ref,
-                                            mtk::msg::sub_control_fluct(MTK_SS(lc.req_info.process_location.location.machine << "." << lc.req_info.process_location.location.client_code), mtk::dtNowLocal()));
+                                            mtk::msg::sub_control_fluct(MTK_SS(lc.req_info.process_info.location.machine << "." << lc.req_info.process_info.location.client_code), mtk::dtNowLocal()));
     }
    else
         throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing product code in order", mtk::alPriorCritic, mtk::alTypeNoPermisions);

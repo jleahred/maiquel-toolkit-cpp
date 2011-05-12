@@ -97,7 +97,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_location_location_client_code);
+    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -138,7 +138,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code);
+    static std::string  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code);
 virtual std::string  get_out_subject (void) const;
 
     

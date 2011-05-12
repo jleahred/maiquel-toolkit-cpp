@@ -22,11 +22,11 @@ namespace mtk
     
     
 
-#define MTK_RECEIVE_MULTI_RESPONSE_F(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_SESSION__, __SUBJECT__, __METHOD_CALL__)  \
+#define MTK_RECEIVE_MULTI_RESPONSE_F(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_SESSION__, __SUBJECT__, __METHOD_CALL__, __REQ_CONTEXT_INFO__)  \
                 {   \
                     mtk::__kamikaze_receive_r<__MSG_RESPONSE__>* kamikaze_response =     \
                             new mtk::__kamikaze_receive_r<__MSG_RESPONSE__>     \
-                            ( __QPID_SESSION__, __SUBJECT__);     \
+                            ( __QPID_SESSION__, __SUBJECT__, __REQ_CONTEXT_INFO__);     \
                     kamikaze_response->signal_received.connect(__METHOD_CALL__);  \
                 }
 

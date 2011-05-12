@@ -51,7 +51,7 @@ private:
 
     void check_ka(void);
 
-    QListWidgetItem_ka*  find_item(const mtk::msg::sub_process_location& l);
+    QListWidgetItem_ka*  find_item(const mtk::msg::sub_process_info& l);
 
     void  check_alarm_received(const mtk::msg::sub_process_info& l);
     void  on_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);

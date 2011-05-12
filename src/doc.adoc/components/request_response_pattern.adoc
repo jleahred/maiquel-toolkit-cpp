@@ -3,7 +3,11 @@
 === Request response pattern
 
 
-You can send and receive multiresponses in an easy way
+You can send and receive multiresponses in an easy way.
+
+This is a one2one communication
+
+
 
 * Secuence
 .. Multiresponse suscription
@@ -13,7 +17,7 @@ You can send and receive multiresponses in an easy way
 
 * The request will be sent _slowly_
 * The reception will let 40 seconds for first response and 20 seconds for consecutive responses
-* In case of not receive the next response (timeout) or we will receive an incorrect partial response (bad secuence number), the system will cancel the listener to the response and will emit an alarm
+* In case of not receiving the next response (timeout) or we will receive an incorrect partial response (bad secuence number), the system will cancel the listener to the response and will emit an alarm
 
 
 * Request response submessages are defined on...
@@ -37,7 +41,7 @@ include::../../../src/components/admin/msg_admin.msg[]
 -----
 include::../../../examples/onefile/components/support/ex_request_response.cpp[]
 -----
-<1> This is de method that will receive the list with full response messages
+<1> This is the method that will receive the list with full response messages
 <2> Before sending the request (and therefore producing the response) we will susbscribe to the multiresponse +
     Look that there are no objects to care about their scope
 <3> Here we fill a list with the full response information

@@ -45,8 +45,9 @@ void init_request_response(const int&)
     MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
-                                    mtk::admin::msg::res_command::get_in_subject(request_info.process_location.process_uuid, request_info.req_id.req_code),
-                                    on_res_command)
+                                    mtk::admin::msg::res_command::get_in_subject(request_info.process_info.process_uuid, request_info.req_id.req_code),
+                                    on_res_command,
+				    "testing_req_resp")
 
 
 

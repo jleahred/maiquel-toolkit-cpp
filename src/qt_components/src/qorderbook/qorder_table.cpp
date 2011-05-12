@@ -258,9 +258,9 @@ public:
     {
         QTableWidgetItem* item = items[col_market];
         if (inner_order->last_confirmation().HasValue())
-            item->setText(QLatin1String(inner_order->last_confirmation().Get().confirmated_info.product_code.sys_code.market.c_str()));
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().confirmated_info.product_code.market.c_str()));
         else if (inner_order->last_request().HasValue())
-            item->setText(QLatin1String(inner_order->last_request().Get().product_code.sys_code.market.c_str()));
+            item->setText(QLatin1String(inner_order->last_request().Get().product_code.market.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         item->setBackgroundColor(get_default_color());
@@ -270,9 +270,9 @@ public:
     {
         QTableWidgetItem* item = items[col_product];
         if (inner_order->last_confirmation().HasValue())
-            item->setText(QLatin1String(inner_order->last_confirmation().Get().confirmated_info.product_code.sys_code.product.c_str()));
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().confirmated_info.product_code.product.c_str()));
         else if (inner_order->last_request().HasValue())
-            item->setText(QLatin1String(inner_order->last_request().Get().product_code.sys_code.product.c_str()));
+            item->setText(QLatin1String(inner_order->last_request().Get().product_code.product.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         item->setBackgroundColor(get_default_color());
@@ -622,10 +622,10 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
     mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
     mtk::msg::sub_product_code pc = mtk::trd::get_product_code(*order);
     int matches = 0;
-    if(mtk::s_toUpper(pc.sys_code.user_name).find(fd.product.toUpper().toStdString())!=std::string::npos
-                ||  mtk::s_toUpper(pc.sys_code.product).find(fd.product.toUpper().toStdString())!=std::string::npos)
+    if(mtk::s_toUpper(pc.product).find(fd.product.toUpper().toStdString())!=std::string::npos
+                ||  mtk::s_toUpper(pc.product).find(fd.product.toUpper().toStdString())!=std::string::npos)
         ++matches;
-    if(mtk::s_toUpper(pc.sys_code.market).find(fd.market.toUpper().toStdString())!=std::string::npos)
+    if(mtk::s_toUpper(pc.market).find(fd.market.toUpper().toStdString())!=std::string::npos)
         ++matches;
 
     if(check_no_tab_filter_config)

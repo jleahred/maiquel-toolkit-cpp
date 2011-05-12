@@ -44,7 +44,7 @@ process_path('{docdir}/../../../src/components')
 
 +++++++++++++++++++++++++
 
-i nclude::/tmp/adoc/generate_messages_doc.txt[]
+include::/tmp/adoc/generate_messages_doc.txt[]
 
 //////////////
 
@@ -87,13 +87,13 @@ CLI <-->  SYS::
 * +PUB+ will be used on messages sent to many. Broadcast with no response and therefore no end response
 * +CONF+ to send messages to many but they depend from any request or previus suscription information and the suscription is _permanent_. +
   Orders confirmation for example
-* +REQ+ is for request responses
+* +REQ+ is for request responses and request confirmation patterns
 * +REP+ responses of request response pattern. _Non permanent_ suscriptions
 
 
 === Message name convention
 |=====================
-| req_...   |    request (not necessarily request response, could be a request order)
+| req_...   |    request (not necessarily request response, could be a request confirmation)
 | res_...   |    responses (from request responses)
 | conf_...  |    confirmations (as order confirmations)
 | pub_...   |    publications (as prices, keepalives, etc...)

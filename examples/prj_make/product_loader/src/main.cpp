@@ -70,7 +70,7 @@ namespace
 
 
     //  PRICES MAP
-    mtk::CountPtr<mtk::map<mtk::msg::sub_sys_product_code, mtk::prices::msg::pub_best_prices> >   map_products;
+    mtk::CountPtr<mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::pub_best_prices> >   map_products;
 
 
     //  requests
@@ -86,10 +86,10 @@ namespace
         ++stats_req_rec;
         static mtk::CountPtr<mtk::qpid_session>  response_session(mtk::admin::get_qpid_session("client", "CLITESTING"));
 
-        mtk::map<mtk::msg::sub_sys_product_code, mtk::prices::msg::pub_best_prices>::iterator it = map_products->find(req.sys_product_code);
+        mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::pub_best_prices>::iterator it = map_products->find(req.product_code);
         if(it == map_products->end())
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown product code " << req.sys_product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown product code " << req.product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
             ++stats_req_unknown;
         }
         else
@@ -112,17 +112,17 @@ namespace
 void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
 {
     ++stats_prec_update;
-    mtk::map<mtk::msg::sub_sys_product_code, mtk::prices::msg::pub_best_prices>::iterator it = map_products->find(msg_update_price.product_code.sys_code);
+    mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::pub_best_prices>::iterator it = map_products->find(msg_update_price.product_code);
     if(it == map_products->end())
-        map_products->insert(std::make_pair(msg_update_price.product_code.sys_code, msg_update_price));
+        map_products->insert(std::make_pair(msg_update_price.product_code, msg_update_price));
     else
         it->second = msg_update_price;
     mtk::admin::check_control_fluct(msg_update_price.orig_control_fluct);
     
     //  update last received message for this market
-    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(msg_update_price.product_code.sys_code.market);
+    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(msg_update_price.product_code.market);
     if(itlu==map_market_info.end())
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << msg_update_price.product_code.sys_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << msg_update_price.product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
     else
         itlu->second.last_update_received  = mtk::dtNowLocal();
 }
@@ -132,7 +132,7 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
     void check_inactivity(void)
     {
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(20))
-            //mtk::map<mtk::msg::sub_sys_product_code>, mtk::DateTime >    map_last_update;
+            //mtk::map<mtk::msg::sub_product_code>, mtk::DateTime >    map_last_update;
             mtk::map<std::string, market_info >::iterator  it = map_market_info.begin();
             for( ; it!= map_market_info.end(); ++it)
             {
@@ -183,7 +183,7 @@ int main(int argc, char ** argv)
         init_map_market_info();
         
         //  last update info
-        map_products = mtk::make_cptr(new mtk::map<mtk::msg::sub_sys_product_code, mtk::prices::msg::pub_best_prices>);
+        map_products = mtk::make_cptr(new mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::pub_best_prices>);
         
         
         //  suscriptions to changes and request
@@ -211,7 +211,7 @@ int main(int argc, char ** argv)
         mtk::start_timer_wait_till_end();
         
 
-        map_products = mtk::CountPtr<mtk::map<mtk::msg::sub_sys_product_code, mtk::prices::msg::pub_best_prices> > ();
+        map_products = mtk::CountPtr<mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::pub_best_prices> > ();
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"
         return 0;

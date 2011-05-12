@@ -487,8 +487,8 @@ void pub_best_prices::before_send(void) const
 
 
 
-req_prod_info::req_prod_info (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_sys_product_code&  _sys_product_code)
-    :     request_info(_request_info),   sys_product_code(_sys_product_code) 
+req_prod_info::req_prod_info (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_product_code&  _product_code)
+    :     request_info(_request_info),   product_code(_product_code) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -675,7 +675,7 @@ std::ostream& operator<< (std::ostream& o, const req_prod_info & c)
 {
     o << "{ "
 
-        << "request_info:"<< c.request_info<<"  "        << "sys_product_code:"<< c.sys_product_code<<"  "
+        << "request_info:"<< c.request_info<<"  "        << "product_code:"<< c.product_code<<"  "
         << " }";
     return o;
 };
@@ -686,7 +686,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_prod_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "sys_product_code"  << YAML::Value << c.sys_product_code
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "product_code"  << YAML::Value << c.product_code
         << YAML::EndMap;
     return o;
 };
@@ -698,7 +698,7 @@ void  operator >> (const YAML::Node& node, req_prod_info & c)
 
 
         node["request_info"]  >> c.request_info;
-        node["sys_product_code"]  >> c.sys_product_code;
+        node["product_code"]  >> c.product_code;
 
 
 };
@@ -807,7 +807,7 @@ bool operator!= (const pub_best_prices& a, const pub_best_prices& b)
 
 bool operator== (const req_prod_info& a, const req_prod_info& b)
 {
-    return (          a.request_info ==  b.request_info  &&          a.sys_product_code ==  b.sys_product_code  &&   true  );
+    return (          a.request_info ==  b.request_info  &&          a.product_code ==  b.product_code  &&   true  );
 };
 
 bool operator!= (const req_prod_info& a, const req_prod_info& b)
@@ -1061,12 +1061,12 @@ void  copy (req_prod_info& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("spc");
+                    it = mv.find("pc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sys_product_code on message req_prod_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_code on message req_prod_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.sys_product_code, it->second);
-                        //__internal_qpid_fill(c.sys_product_code, it->second.asMap());
+                        copy(c.product_code, it->second);
+                        //__internal_qpid_fill(c.product_code, it->second.asMap());
 
     }
 
@@ -1080,7 +1080,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_prod_info& a)
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
 //  sub_msg_type
-        __internal_add2map(map, a.sys_product_code, std::string("spc"));
+        __internal_add2map(map, a.product_code, std::string("pc"));
 
 
 };
@@ -1236,8 +1236,8 @@ qpid::messaging::Message req_prod_info::qpidmsg_codded_as_qpid_message (const st
 //        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
         __internal_add2map(content, this->request_info, std::string("ri"));
 //  sub_msg_type
-//        content["spc"] =  qpidmsg_coded_as_qpid_Map(this->sys_product_code);
-        __internal_add2map(content, this->sys_product_code, std::string("spc"));
+//        content["pc"] =  qpidmsg_coded_as_qpid_Map(this->product_code);
+        __internal_add2map(content, this->product_code, std::string("pc"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1324,7 +1324,7 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_info*)0),
 //   sub_msg_type
-   __internal_get_default((mtk::msg::sub_sys_product_code*)0)
+   __internal_get_default((mtk::msg::sub_product_code*)0)
             );
     }
     
@@ -1415,7 +1415,7 @@ req_prod_info::req_prod_info (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   sub_msg_type
-   sys_product_code(__internal_get_default((mtk::msg::sub_sys_product_code*)0)) 
+   product_code(__internal_get_default((mtk::msg::sub_product_code*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -1461,29 +1461,29 @@ res_product_info::IC_response::IC_response (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  pub_best_prices::get_in_subject (const std::string& product_code_sys_code_market,const std::string& product_code_sys_code_product)
+std::string  pub_best_prices::get_in_subject (const std::string& product_code_market,const std::string& product_code_product)
     {
-        return MTK_SS("PUB." << product_code_sys_code_market << "." << product_code_sys_code_product << "");
+        return MTK_SS("PUB." << product_code_market << "." << product_code_product << "");
     }
     std::string  pub_best_prices::get_out_subject (void) const
     {
-        return MTK_SS("PUB." << this->product_code.sys_code.market << "." << this->product_code.sys_code.product << "");
+        return MTK_SS("PUB." << this->product_code.market << "." << this->product_code.product << "");
     }
-    std::string  req_prod_info::get_in_subject (const std::string& request_info_process_location_location_client_code)
+    std::string  req_prod_info::get_in_subject (const std::string& request_info_process_info_location_client_code)
     {
-        return MTK_SS("RQ." << request_info_process_location_location_client_code << ".PRC.PI");
+        return MTK_SS("RQ." << request_info_process_info_location_client_code << ".PRC.PI");
     }
     std::string  req_prod_info::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->request_info.process_location.location.client_code << ".PRC.PI");
+        return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".PRC.PI");
     }
-    std::string  res_product_info::get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    std::string  res_product_info::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_location_location_client_code << "." << response_info_request_info_process_location_location_machine << "." << response_info_request_info_process_location_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << ".PRC.PI");
+        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << ".PRC.PI");
     }
     std::string  res_product_info::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_location.location.client_code << "." << this->response_info.request_info.process_location.location.machine << "." << this->response_info.request_info.process_location.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << ".PRC.PI");
+        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << ".PRC.PI");
     }
     
 

@@ -256,7 +256,7 @@ public:
 
     
     // constructor
-    explicit req_command (    const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_location&  _proc_loc__destination,   const std::string&  _command_line );
+    explicit req_command (    const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line );
     explicit req_command ( const qpid::messaging::Message& message );
     virtual ~req_command (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command"; };
@@ -266,13 +266,13 @@ public:
 
     // fields
     mtk::msg::sub_request_info                request_info; 
-    mtk::msg::sub_process_location            proc_loc__destination; 
+    mtk::msg::sub_process_info                proc_info__destination; 
     std::string                               command_line; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& proc_loc__destination_location_client_code,const std::string& proc_loc__destination_location_machine,const std::string& proc_loc__destination_process_name,const std::string& proc_loc__destination_process_uuid);
+    static std::string  get_in_subject (const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -351,7 +351,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_req_code);
+    static std::string  get_in_subject (const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_req_code);
 virtual std::string  get_out_subject (void) const;
 
     

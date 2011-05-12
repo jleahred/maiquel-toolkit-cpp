@@ -10,20 +10,20 @@ namespace mtk {
           
 bool is_valid (const sub_request_info& req_info)
 {
-    if (req_info.req_id.sess_id ==""  ||  req_info.req_id.req_code==""  ||  req_info.process_location.location.client_code =="")
+    if (req_info.req_id.sess_id ==""  ||  req_info.req_id.req_code==""  ||  req_info.process_info.location.client_code =="")
         return false;
     return true;
 }
 
 bool is_valid (const sub_product_code& pc)
 {
-    if (pc.sys_code.market ==""  ||  pc.sys_code.product =="")
+    if (pc.market ==""  ||  pc.product =="")
         return false;
     return true;
 }
 
 
-bool operator< (const sub_single_product_code& p1, const sub_single_product_code& p2)
+bool operator< (const sub_product_code& p1, const sub_product_code& p2)
 {
     if      (p1.market < p2.market)
         return true;
@@ -32,10 +32,6 @@ bool operator< (const sub_single_product_code& p1, const sub_single_product_code
     return false;
 }
 
-bool operator< (const sub_product_code& p1, const sub_product_code& p2)
-{
-    return p1.sys_code < p2.sys_code;
-}
 
 
 

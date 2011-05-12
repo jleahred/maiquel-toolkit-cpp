@@ -109,7 +109,7 @@ namespace {
                                 signal_alarm_error_critic(new mtk::Signal<const mtk::Alarm&> ),
                                 signal_alarm_nonerror(new mtk::Signal<const mtk::Alarm&> ),
                                 process_priority(ppVeryLow), 
-                                process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("", ""), "", ""), ""),
+                                process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("", ""), "", "", "")),
                                 ka_interval_send(mtk::dtSeconds(50)), 
                                 ka_interval_check(mtk::dtSeconds(50)),
                                 start_date_time(mtk::dtNowLocal()),
@@ -342,11 +342,11 @@ namespace {
 
         if(role=="client")
         {
-            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location(get_mandatory_property("ADMIN.CLIENT.location"), 
+            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location(get_mandatory_property("ADMIN.CLIENT.location"), 
                                                             MTK_SS(get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode())),
                                                             app_name, 
-                                                            mtk::crc32_as_string(MTK_SS(app_name<<get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand()))),
-                                                            app_version);
+                                                            mtk::crc32_as_string(MTK_SS(app_name<<get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())),
+                                                            app_version));
             
             session_admin = mtk::admin::get_qpid_session("client", "CLITESTING");
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
@@ -354,10 +354,10 @@ namespace {
                                     hqpid_commands,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::admin::msg::req_command::get_in_subject(temp_process_info.process_location.location.client_code, 
-                                                                             temp_process_info.process_location.location.machine,
-                                                                             temp_process_info.process_location.process_name,
-                                                                             temp_process_info.process_location.process_uuid),
+                                    mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code, 
+                                                                             temp_process_info.location.machine,
+                                                                             temp_process_info.process_name,
+                                                                             temp_process_info.process_uuid),
                                     mtk::admin::msg::req_command,
                                     on_command_received)
             
@@ -371,18 +371,18 @@ namespace {
         }
         else
         {
-            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("SYS", mtk::GetMachineCode()), app_name, 
-                                                            mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand()))), app_version);
+            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("SYS", mtk::GetMachineCode()), app_name, 
+                                                            mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())), app_version));
             session_admin   = mtk::admin::get_qpid_session("admin", "SRVTESTING");
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("admin"),
                                     "SRVTESTING",
-                                    mtk::admin::msg::req_command::get_in_subject(temp_process_info.process_location.location.client_code, 
-                                                                             temp_process_info.process_location.location.machine,
-                                                                             temp_process_info.process_location.process_name,
-                                                                             temp_process_info.process_location.process_uuid),
+                                    mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code, 
+                                                                             temp_process_info.location.machine,
+                                                                             temp_process_info.process_name,
+                                                                             temp_process_info.process_uuid),
                                     mtk::admin::msg::req_command,
                                     on_command_received)
 
@@ -395,9 +395,9 @@ namespace {
                                     on_central_ka_received)
         }
         if(role == "server")
-            mtk::set_control_fluct_key(MTK_SS(process_info.process_location.location.client_code << "." << process_info.process_location.location.machine));
+            mtk::set_control_fluct_key(MTK_SS(process_info.location.client_code << "." << process_info.location.machine));
         else
-            mtk::set_control_fluct_key(MTK_SS("_" << process_info.process_location.location.client_code << "." << process_info.process_location.location.machine));
+            mtk::set_control_fluct_key(MTK_SS("_" << process_info.location.client_code << "." << process_info.location.machine));
         
         
         full_initialized = true;
@@ -948,7 +948,7 @@ namespace {
     
     mtk::msg::sub_control_fluct     admin_status::get_control_fluct_info(void)
     {
-        return mtk::msg::sub_control_fluct(MTK_SS(process_info.process_location.location.client_code << "." << process_info.process_location.location.machine), mtk::dtNowLocal());
+        return mtk::msg::sub_control_fluct(MTK_SS(process_info.location.client_code << "." << process_info.location.machine), mtk::dtNowLocal());
     }
     void  admin_status::check_control_fluct(const mtk::msg::sub_control_fluct&  cf)
     {
@@ -970,7 +970,7 @@ namespace {
         if(role=="server")
         {
             static int counter=0;
-            return mtk::msg::sub_request_info (mtk::msg::sub_request_id(app_name, MTK_SS(++counter)), get_process_info().process_location);
+            return mtk::msg::sub_request_info (mtk::msg::sub_request_id(app_name, MTK_SS(++counter)), get_process_info());
         }
         else if(role=="client")
         {
@@ -978,7 +978,7 @@ namespace {
             std::string session_id = client_login_confirmation.session_id;
             if(session_id=="")
                 session_id = "provisional";
-            return mtk::msg::sub_request_info(mtk::msg::sub_request_id(session_id, MTK_SS(++contador)), get_process_info().process_location);
+            return mtk::msg::sub_request_info(mtk::msg::sub_request_id(session_id, MTK_SS(++contador)), get_process_info());
         }
         else
             throw mtk::Alarm(MTK_HERE, "admin", MTK_SS(role << "  request info with invalid role"), mtk::alPriorCritic, mtk::alTypeNoPermisions);

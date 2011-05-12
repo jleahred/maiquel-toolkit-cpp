@@ -29,7 +29,7 @@ sub_price_deph5 [<V:0>]
 
 
 
-pub_best_prices [<V:0,  SUBJ:PUB.${product_code.sys_code.market}.${product_code.sys_code.product}  >]
+pub_best_prices [<V:0,  SUBJ:PUB.${product_code.market}.${product_code.product}  >]
 {
     product_code        (pc)    :   mtk::msg::sub_product_code     
 
@@ -45,16 +45,16 @@ pub_best_prices [<V:0,  SUBJ:PUB.${product_code.sys_code.market}.${product_code.
 //    REQUEST/RESPONSE
 //---------------------------------------------------------------------
 
-req_prod_info [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}.PRC.PI >]
+req_prod_info [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.PRC.PI >]
 {
     request_info        (ri)        :   mtk::msg::sub_request_info
     
-    sys_product_code    (spc)       :   mtk::msg::sub_sys_product_code
+    product_code        (pc)        :   mtk::msg::sub_product_code
 }
 
 
 
-res_product_info   [< V:0 , SUBJ:RS.${response_info.request_info.process_location.location.client_code}.${response_info.request_info.process_location.location.machine}.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.PRC.PI >]
+res_product_info   [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.PRC.PI >]
 {
     response_info   (ri)        :   mtk::msg::sub_r_response
     

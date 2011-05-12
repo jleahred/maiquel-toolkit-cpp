@@ -51,8 +51,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
         ui->BuySell->setText(tr("SELL"));
         setPalette( QPalette(mtk_color_sell));
     }
-    ui->market->setText(QLatin1String(rq.product_code.sys_code.market.c_str()));
-    ui->product->setText(QLatin1String(rq.product_code.sys_code.product.c_str()));
+    ui->market->setText(QLatin1String(rq.product_code.market.c_str()));
+    ui->product->setText(QLatin1String(rq.product_code.product.c_str()));
     ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
     ui->price->setSingleStep(1./pow(10.,rq.request_pos.price.GetExt().GetDec())*rq.request_pos.price.GetExt().GetInc());
     if(rq.request_pos.quantity.GetIntCode()==0  &&  rq.request_pos.price.GetIntCode()==0)
@@ -157,8 +157,8 @@ bool QEditOrder::check_if_order_can_be_sent(void)
 
 mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request(void)
 {
-    rq.product_code.sys_code.market = ui->market->text().toStdString();
-    rq.product_code.sys_code.product = ui->product->text().toStdString();
+    rq.product_code.market = ui->market->text().toStdString();
+    rq.product_code.product = ui->product->text().toStdString();
     rq.request_pos.price.SetDouble(ui->price->value());
     rq.request_pos.quantity.SetDouble(ui->quantity->value());
     rq.cli_ref = ui->cliref->text().toStdString();

@@ -29,21 +29,21 @@ END_INIT
 
 
 
-req_login_key [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}.ACS.RQK >]
+req_login_key [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQK >]
 {
     request_info    (ri)        :   mtk::msg::sub_request_info
     
     user_name       (u)         :   string
 }
 
-res_login_key [< V:0 , SUBJ:RS.${response_info.request_info.process_location.location.client_code}.${response_info.request_info.process_location.location.machine}.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.RSK >]
+res_login_key [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.RSK >]
 {
     response_info   (ri)    :   mtk::msg::sub_r_response
     key             (k)     :   string
 }
 
 
-req_login [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}.ACS.RQL >]
+req_login [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQL >]
 {
     request_info    (ri)        :   mtk::msg::sub_request_info
     
@@ -54,7 +54,7 @@ req_login [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}.
 
 
 
-res_login   [< V:0 , SUBJ:RS.${response_info.request_info.process_location.location.client_code}.${response_info.request_info.process_location.location.machine}.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.LRES >]
+res_login   [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.LRES >]
 {
     response_info   (ri)        :   mtk::msg::sub_r_response
     
@@ -77,7 +77,7 @@ conf_logout [< V:0 , SUBJ:CONF.${location.client_code}.${location.machine}.${ses
 }
 
 
-req_logout [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}.ACS.RQK >]
+req_logout [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQK >]
 {
     request_info    (ri)        :   mtk::msg::sub_request_info
 }
@@ -90,7 +90,7 @@ req_logout [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}
 //---------------------------------------------
 
 
-req_change_password [< V:0, SUBJ:RQ.${request_info.process_location.location.client_code}.ACS.RQCP >]
+req_change_password [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQCP >]
 {
     request_info    (ri)        :   mtk::msg::sub_request_info
     
@@ -103,7 +103,7 @@ req_change_password [< V:0, SUBJ:RQ.${request_info.process_location.location.cli
 
 
 
-res_change_password    [< V:0 , SUBJ:RS.${response_info.request_info.process_location.location.client_code}.${response_info.request_info.process_location.location.machine}.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.LCP >]
+res_change_password    [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code}.LCP >]
 {
     response_info   (ri)        :   mtk::msg::sub_r_response
     

@@ -48,7 +48,7 @@ class internal_orders_book : public mtk::SignalReceptor
 typedef internal_orders_book  CLASS_NAME;    
     
     mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<ord_ls> >           orders_by_id;
-    mtk::map<mtk::msg::sub_single_product_code, orders_in_product_queue >   queue_by_product;
+    mtk::map<mtk::msg::sub_product_code, orders_in_product_queue >   queue_by_product;
     
     mtk::CountPtr<ord_ls> cached_last_request;
     
@@ -185,30 +185,30 @@ void internal_orders_book::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
 void internal_orders_book::add_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("add")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code.sys_code].add_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].add_order(cached_last_request);
 }
 
 void internal_orders_book::del_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("del")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code.sys_code].del_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].del_order(cached_last_request);
 }
 
 void internal_orders_book::modif_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("modif")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code.sys_code].modif_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].modif_order(cached_last_request);
 }
 
 void internal_orders_book::check_execs  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("check_execs")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code.sys_code].check_execs();
+    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].check_execs();
 }
 
 void internal_orders_book::update_prices(const mtk::trd::msg::CF_XX_LS& /*order_info*/)
 {
-    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code.sys_code].update_prices(cached_last_request->last_confirmation().Get().confirmated_info.product_code);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().confirmated_info.product_code].update_prices(cached_last_request->last_confirmation().Get().confirmated_info.product_code);
 }
 
 
@@ -380,9 +380,7 @@ mtk::prices::msg::sub_price_level   get_emtpy_level_prices(void)
 mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
 {
     
-    return mtk::prices::msg::pub_best_prices(
-        mtk::msg::sub_product_code( mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("", ""), ""), 
-                                    mtk::nullable<mtk::msg::sub_adic_product_code>()),
+    return mtk::prices::msg::pub_best_prices(mtk::msg::sub_product_code("", ""), 
         mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(),  
                                             get_emtpy_level_prices(), 
                                             get_emtpy_level_prices(),

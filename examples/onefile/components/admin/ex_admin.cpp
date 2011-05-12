@@ -73,11 +73,12 @@ void request_command(const std::string& command)
     MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command, 
                                     mtk::admin::msg::sub_command_rd, 
                                     qpid_session,
-                                    mtk::admin::msg::res_command::get_in_subject(request_info.process_location.process_uuid, request_info.req_id.req_code),
-                                    on_command_response)
+                                    mtk::admin::msg::res_command::get_in_subject(request_info.process_info.process_uuid, request_info.req_id.req_code),
+                                    on_command_response,
+				    "ex_admin_req_res")
 
     //  sending hello command
-    mtk::admin::msg::req_command   command_request_msg  (request_info, mtk::admin::get_process_info().process_location, command);
+    mtk::admin::msg::req_command   command_request_msg  (request_info, mtk::admin::get_process_info(), command);
     mtk::send_message(qpid_session, command_request_msg);
 
 }

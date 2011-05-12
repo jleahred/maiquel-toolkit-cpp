@@ -66,7 +66,7 @@ private:
     void on_message(const qpid::messaging::Message& message);
 
     mtk::trd::msg::RQ_XX_LS get_xx_request(void);
-    mtk::msg::sub_process_location   get_process_location(void);
+    mtk::msg::sub_process_info   get_process_info(void);
 
     mtk::list<mtk::trd::msg::RQ_NW_LS>  list_new;
     mtk::list<mtk::trd::msg::RQ_CC_LS>  list_cc;

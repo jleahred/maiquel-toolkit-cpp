@@ -165,22 +165,20 @@ void QPlainTextEditCommand::send_command(const QString& command)
     mtk::list<mtk::msg::sub_process_info>::iterator it = admin_process_info_to_send.begin();
     while(it!=admin_process_info_to_send.end())
     {
-        mtk::msg::sub_request_info   request_info(mtk::msg::sub_request_id("monitor", mtk::crc32_as_string(MTK_SS(mtk::rand()))), it->process_location);
+        mtk::msg::sub_request_info   request_info(mtk::msg::sub_request_id("monitor", mtk::crc32_as_string(MTK_SS(mtk::rand()))), *it);
         //  subscription to multiresponse
         MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::admin::msg::res_command,
                                         mtk::admin::msg::sub_command_rd,
                                         qpid_admin_session,
-                                        mtk::admin::msg::res_command::get_in_subject(it->process_location.process_uuid, request_info.req_id.req_code),
-                                        on_command_response)
+                                        mtk::admin::msg::res_command::get_in_subject(it->process_uuid, request_info.req_id.req_code),
+                                        on_command_response,
+                                        MTK_SS("cmd " << command.toStdString()))
 
-        mtk::admin::msg::req_command   command_request_msg(request_info, it->process_location,  command.toStdString());
+        mtk::admin::msg::req_command   command_request_msg(request_info, *it,  command.toStdString());
         mtk::send_message(qpid_admin_session, command_request_msg);
         if(write_into)
             write_into->appendPlainText(MTK_SS(std::endl << std::endl << std::endl << "SENDING COMMAND  "
-                                               << command.toStdString() << "  -->  " << it->process_location.location.client_code << "  "
-                                               << it->process_location.location.machine  << "  "
-                                               << it->process_location.process_name << "  "
-                                               << it->process_location.process_uuid
+                                               << command.toStdString() << "  -->  " << *it
                                                << std::endl << "_______________________________________________________________________________________________").c_str());
         else
             throw mtk::Alarm(MTK_HERE, "monitor","write_into not initialized.", mtk::alPriorError);

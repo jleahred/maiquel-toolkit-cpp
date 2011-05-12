@@ -4,6 +4,7 @@ default:
 	make -C trading/
 	make -C acs/
 	make -C yaml/
+	make -C fb/
 	echo "FIN"
 
 

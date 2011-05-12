@@ -18,14 +18,14 @@ namespace
 
 namespace mtk{  namespace msg  { 
     
-sub_process_location  get_process_location(void)
+sub_process_info  get_process_info(void)
 {
-    return mtk::msg::sub_process_location(mtk::msg::sub_location("CLIENT", "MACHINE"), "PROCESS_NAME", "UUID");
+    return mtk::msg::sub_process_info(mtk::msg::sub_location("CLIENT", "MACHINE"), "PROCESS_NAME", "UUID", "0");
 }
 sub_request_info   get_request_info (void)
 {
     static int i=0;
-    return sub_request_info (sub_request_id("pending", MTK_SS("pending"<<i)), get_process_location());
+    return sub_request_info (sub_request_id("pending", MTK_SS("pending"<<i)), get_process_info());
 }
 
 };};  //namespace mkt{  namespace msg  { 
@@ -96,8 +96,7 @@ int main(void)
       
       
         mtk::trd::msg::sub_order_id         ord_id(mtk::msg::get_request_info().req_id);
-        mtk::msg::sub_product_code pc (mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("market", "product"), "product"), 
-                                    mtk::nullable<mtk::msg::sub_adic_product_code>());
+        mtk::msg::sub_product_code pc (mtk::msg::sub_product_code("market", "product"));
 
 
         mtk::trd::trd_cli_ls  order_ls;
@@ -121,7 +120,7 @@ int main(void)
         order_ls.rq_nw (mtk::trd::msg::RQ_NW_LS (mtk::trd::msg::RQ_XX_LS(
                                   mtk::msg::sub_request_info(mtk::msg::sub_request_id(ord_id.sess_id, 
                                                               ord_id.req_code), 
-                                                 mtk::msg::get_process_location())
+                                                 mtk::msg::get_process_info())
                                   ,  ord_id
                                   , pc
                                   , mtk::trd::msg::sub_position_ls(
@@ -134,7 +133,7 @@ int main(void)
 
         //  receiving a cf_nw
         order_ls.cf_nw(mtk::trd::msg::CF_NW_LS( mtk::trd::msg::CF_XX_LS(     
-                                                                    mtk::msg::sub_request_info(mtk::msg::sub_request_id(ord_id.sess_id, ord_id.req_code), mtk::msg::get_process_location())
+                                                                    mtk::msg::sub_request_info(mtk::msg::sub_request_id(ord_id.sess_id, ord_id.req_code), mtk::msg::get_process_info())
                                                                   , mtk::trd::msg::sub_order_ls_confirmated(     
                                                                                                   ord_id
                                                                                                 , pc

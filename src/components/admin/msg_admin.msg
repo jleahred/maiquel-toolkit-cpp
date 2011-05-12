@@ -45,7 +45,7 @@ pub_keep_alive_srv  [< V:0, SUBJ:ADM.CIMD.KA >]
 
 pub_keep_alive_clients  [< V:0, I:pub_keep_alive_srv,  SUBJ:ADM.CIMD.KA >]
 {
-    //  aditional info for ACS
+    //  aditional info for ACS  (hot registration)
     login_confirmation  (lc)    :   mtk::acs::msg::res_login::IC_login_response_info
 }
 
@@ -84,11 +84,11 @@ pub_alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 //  COMMANDS
 //-------------------------------------------------------------------
 
-req_command  [< V:0, SUBJ:ADM.${proc_loc__destination.location.client_code}.${proc_loc__destination.location.machine}.${proc_loc__destination.process_name}.${proc_loc__destination.process_uuid}.COMMAND >]
+req_command  [< V:0, SUBJ:ADM.${proc_info__destination.location.client_code}.${proc_info__destination.location.machine}.${proc_info__destination.process_name}.${proc_info__destination.process_uuid}.COMMAND >]
 {
     request_info            (ri)    :   mtk::msg::sub_request_info
 
-    proc_loc__destination   (pd)    :   mtk::msg::sub_process_location
+    proc_info__destination  (pd)    :   mtk::msg::sub_process_info
     command_line            (c)     :   string                  //  command and params
 }
 
@@ -98,7 +98,7 @@ sub_command_rd [< V:0 >]
     text                (t)     :   string
 }
 
-res_command  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_location.process_uuid}.${response_info.request_info.req_id.req_code} >]
+res_command  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.req_code} >]
 {
     response_info       (ri)    :   mtk::msg::sub_r_response
     response_data       (rd)    :   sub_command_rd

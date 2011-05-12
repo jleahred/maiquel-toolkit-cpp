@@ -71,46 +71,6 @@ private:
 
 
 //-------------------------------
-//      sub_process_location
-//-------------------------------    
-class sub_process_location     
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit sub_process_location (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid );
-    explicit sub_process_location ( const qpid::messaging::Message& message );
-    virtual ~sub_process_location (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_process_location"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_process_location"; };
-    
-    
-
-    // fields
-    sub_location                              location; 
-    std::string                               process_name; 
-    std::string                               process_uuid; 
-
-
-
-    //  subject info
-    
-    
-    
-    
-    
-    void        before_send(void) const;
-    
-private:
-    std::string check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
 //      sub_process_info
 //-------------------------------    
 class sub_process_info     
@@ -120,7 +80,7 @@ public:
 
     
     // constructor
-    explicit sub_process_info (    const sub_process_location&  _process_location,   const std::string&  _version );
+    explicit sub_process_info (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version );
     explicit sub_process_info ( const qpid::messaging::Message& message );
     virtual ~sub_process_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_info"; };
@@ -129,7 +89,9 @@ public:
     
 
     // fields
-    sub_process_location                      process_location; 
+    sub_location                              location; 
+    std::string                               process_name; 
+    std::string                               process_uuid; 
     std::string                               version; 
 
 
@@ -237,7 +199,7 @@ public:
 
     
     // constructor
-    explicit sub_request_info (    const sub_request_id&  _req_id,   const sub_process_location&  _process_location );
+    explicit sub_request_info (    const sub_request_id&  _req_id,   const sub_process_info&  _process_info );
     explicit sub_request_info ( const qpid::messaging::Message& message );
     virtual ~sub_request_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_info"; };
@@ -247,7 +209,7 @@ public:
 
     // fields
     sub_request_id                            req_id; 
-    sub_process_location                      process_location; 
+    sub_process_info                          process_info; 
 
 
 
@@ -307,121 +269,6 @@ private:
 
 
 //-------------------------------
-//      sub_single_product_code
-//-------------------------------    
-class sub_single_product_code     
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit sub_single_product_code (    const std::string&  _market,   const std::string&  _product );
-    explicit sub_single_product_code ( const qpid::messaging::Message& message );
-    virtual ~sub_single_product_code (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_single_product_code"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_single_product_code"; };
-    
-    
-
-    // fields
-    std::string                               market; 
-    std::string                               product; 
-
-
-
-    //  subject info
-    
-    
-    
-    
-    
-    void        before_send(void) const;
-    
-private:
-    std::string check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
-//      sub_sys_product_code
-//-------------------------------    
-class sub_sys_product_code        :  public  sub_single_product_code
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit sub_sys_product_code (  const sub_single_product_code&  parent,   const std::string&  _user_name );
-    explicit sub_sys_product_code ( const qpid::messaging::Message& message );
-    virtual ~sub_sys_product_code (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_sys_product_code"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_sys_product_code"; };
-    
-    
-
-    // fields
-    std::string                               user_name; 
-
-
-
-    //  subject info
-    
-    
-    
-    
-    
-    void        before_send(void) const;
-    
-private:
-    std::string check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
-//      sub_adic_product_code
-//-------------------------------    
-class sub_adic_product_code        :  public  sub_single_product_code
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit sub_adic_product_code (  const sub_single_product_code&  parent,   const std::string&  _aditional_code_type );
-    explicit sub_adic_product_code ( const qpid::messaging::Message& message );
-    virtual ~sub_adic_product_code (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_adic_product_code"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_adic_product_code"; };
-    
-    
-
-    // fields
-    std::string                               aditional_code_type; 
-
-
-
-    //  subject info
-    
-    
-    
-    
-    
-    void        before_send(void) const;
-    
-private:
-    std::string check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
 //      sub_product_code
 //-------------------------------    
 class sub_product_code     
@@ -431,7 +278,7 @@ public:
 
     
     // constructor
-    explicit sub_product_code (    const sub_sys_product_code&  _sys_code,   const mtk::nullable<sub_adic_product_code>&  _aditional_code );
+    explicit sub_product_code (    const std::string&  _market,   const std::string&  _product );
     explicit sub_product_code ( const qpid::messaging::Message& message );
     virtual ~sub_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_product_code"; };
@@ -440,8 +287,8 @@ public:
     
 
     // fields
-    sub_sys_product_code                      sys_code; 
-    mtk::nullable<sub_adic_product_code>      aditional_code; 
+    std::string                               market; 
+    std::string                               product; 
 
 
 
@@ -469,13 +316,6 @@ private:
 
 bool operator== (const sub_location& a, const sub_location& b);
 bool operator!= (const sub_location& a, const sub_location& b);
-
-    std::ostream& operator<< (std::ostream& o, const sub_process_location & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_process_location & c);
-   void           operator >> (const YAML::Node& n,       sub_process_location & c);
-
-bool operator== (const sub_process_location& a, const sub_process_location& b);
-bool operator!= (const sub_process_location& a, const sub_process_location& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_process_info & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_process_info & c);
@@ -512,27 +352,6 @@ bool operator!= (const sub_request_info& a, const sub_request_info& b);
 bool operator== (const sub_r_response& a, const sub_r_response& b);
 bool operator!= (const sub_r_response& a, const sub_r_response& b);
 
-    std::ostream& operator<< (std::ostream& o, const sub_single_product_code & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_single_product_code & c);
-   void           operator >> (const YAML::Node& n,       sub_single_product_code & c);
-
-bool operator== (const sub_single_product_code& a, const sub_single_product_code& b);
-bool operator!= (const sub_single_product_code& a, const sub_single_product_code& b);
-
-    std::ostream& operator<< (std::ostream& o, const sub_sys_product_code & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_sys_product_code & c);
-   void           operator >> (const YAML::Node& n,       sub_sys_product_code & c);
-
-bool operator== (const sub_sys_product_code& a, const sub_sys_product_code& b);
-bool operator!= (const sub_sys_product_code& a, const sub_sys_product_code& b);
-
-    std::ostream& operator<< (std::ostream& o, const sub_adic_product_code & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_adic_product_code & c);
-   void           operator >> (const YAML::Node& n,       sub_adic_product_code & c);
-
-bool operator== (const sub_adic_product_code& a, const sub_adic_product_code& b);
-bool operator!= (const sub_adic_product_code& a, const sub_adic_product_code& b);
-
     std::ostream& operator<< (std::ostream& o, const sub_product_code & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_product_code & c);
    void           operator >> (const YAML::Node& n,       sub_product_code & c);
@@ -544,10 +363,6 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_location
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_location& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_location>& a, const std::string& field);
 void copy (sub_location& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_process_location& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_location& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_location>& a, const std::string& field);
-void copy (sub_process_location& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_process_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_process_info>& a, const std::string& field);
@@ -568,26 +383,12 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_r_respon
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_r_response>& a, const std::string& field);
 void copy (sub_r_response& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_single_product_code& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_single_product_code& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_single_product_code>& a, const std::string& field);
-void copy (sub_single_product_code& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_sys_product_code& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_sys_product_code& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_sys_product_code>& a, const std::string& field);
-void copy (sub_sys_product_code& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_adic_product_code& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_adic_product_code& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_adic_product_code>& a, const std::string& field);
-void copy (sub_adic_product_code& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_code>& a, const std::string& field);
 void copy (sub_product_code& a, const qpid::types::Variant& map);
 
     sub_location  __internal_get_default(sub_location *);
-    
-    sub_process_location  __internal_get_default(sub_process_location *);
     
     sub_process_info  __internal_get_default(sub_process_info *);
     
@@ -598,12 +399,6 @@ void copy (sub_product_code& a, const qpid::types::Variant& map);
     sub_request_info  __internal_get_default(sub_request_info *);
     
     sub_r_response  __internal_get_default(sub_r_response *);
-    
-    sub_single_product_code  __internal_get_default(sub_single_product_code *);
-    
-    sub_sys_product_code  __internal_get_default(sub_sys_product_code *);
-    
-    sub_adic_product_code  __internal_get_default(sub_adic_product_code *);
     
     sub_product_code  __internal_get_default(sub_product_code *);
     

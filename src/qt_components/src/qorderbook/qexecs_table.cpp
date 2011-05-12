@@ -92,7 +92,7 @@ public:
     void update_item_market_product(void)
     {
         QTableWidgetItem* item = items[col_market_product];
-        item->setText(QLatin1String(MTK_SS(product_code.sys_code.market << "." <<product_code.sys_code.user_name).c_str()));
+        item->setText(QLatin1String(MTK_SS(product_code.market << "." <<product_code.product).c_str()));
         item->setBackgroundColor(get_default_color());
     }
 

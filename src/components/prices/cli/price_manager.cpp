@@ -66,8 +66,7 @@ mtk::prices::msg::sub_price_level   get_emtpy_level_prices(void)
 
 mtk::msg::sub_product_code  get_empty_product_code (void)
 {
-    return mtk::msg::sub_product_code(mtk::msg::sub_sys_product_code(mtk::msg::sub_single_product_code("", ""), ""),
-                                      mtk::nullable<mtk::msg::sub_adic_product_code>());
+    return mtk::msg::sub_product_code("", "");
 }
 
 mtk::prices::msg::pub_best_prices    get_emtpy_best_prices   (void)
@@ -112,7 +111,7 @@ price_manager::price_manager(const mtk::msg::sub_product_code&  _product_code)
                             h_best_prices,
                             mtk::admin::get_url("client"),
                             "CLITESTING",
-                            mtk::prices::msg::pub_best_prices::get_in_subject(product_code.sys_code.market, product_code.sys_code.product),
+                            mtk::prices::msg::pub_best_prices::get_in_subject(product_code.market, product_code.product),
                             mtk::prices::msg::pub_best_prices,
                             on_price_update);
 
@@ -123,16 +122,16 @@ price_manager::price_manager(const mtk::msg::sub_product_code&  _product_code)
     MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::prices::msg::res_product_info,
                                     mtk::prices::msg::res_product_info::IC_response,
                                     req_session,
-                                    mtk::prices::msg::res_product_info::get_in_subject( request_info.process_location.location.client_code,
-                                                                                        request_info.process_location.location.machine,
-                                                                                        request_info.process_location.process_uuid,
+                                    mtk::prices::msg::res_product_info::get_in_subject( request_info.process_info.location.client_code,
+                                                                                        request_info.process_info.location.machine,
+                                                                                        request_info.process_info.process_uuid,
                                                                                         request_info.req_id.sess_id,
                                                                                         request_info.req_id.req_code),
                                     on_res_product_info,
                                     "price_manager_req_load_product_info")
 
 
-    mtk::prices::msg::req_prod_info req_load_product_info(request_info, product_code.sys_code);
+    mtk::prices::msg::req_prod_info req_load_product_info(request_info, product_code);
     mtk::send_message(req_session, req_load_product_info);
 }
 
@@ -157,8 +156,8 @@ void price_manager::on_price_update(const mtk::prices::msg::pub_best_prices& msg
 void price_manager::on_res_product_info(const mtk::list<mtk::prices::msg::res_product_info>& res_pi)
 {
     const mtk::prices::msg::pub_best_prices local_best_prices = res_pi.front().response.best_prices;
-    if(local_best_prices.product_code.sys_code != product_code.sys_code)
-        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("invalid product code on response r/s  " << local_best_prices.product_code.sys_code << " " << product_code.sys_code), mtk::alPriorError, mtk::alTypeNoPermisions);
+    if(local_best_prices.product_code != product_code)
+        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("invalid product code on response r/s  " << local_best_prices.product_code << " " << product_code), mtk::alPriorError, mtk::alTypeNoPermisions);
     best_prices = local_best_prices;
     if(signal_best_prices_update.emit(best_prices) ==0)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received load " << local_best_prices.product_code << " with no suscription"), mtk::alPriorError, mtk::alTypeNoPermisions));

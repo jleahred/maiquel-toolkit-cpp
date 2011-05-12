@@ -207,15 +207,15 @@ void on_request_key_received(const mtk::acs::msg::req_login_key& req_login_key)
 {
     if(rq_login_locked==true)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("System locked  " << req_login_key.user_name << "/" << req_login_key.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("System locked  " << req_login_key.user_name << "/" << req_login_key.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
         
         
     //  check the client code
-    if(users_manager::Instance()->check_user_client_code(req_login_key.user_name, req_login_key.request_info.process_location.location.client_code) == false)
+    if(users_manager::Instance()->check_user_client_code(req_login_key.user_name, req_login_key.request_info.process_info.location.client_code) == false)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("received invalid  user_name/client_code  " << req_login_key.user_name << "/" << req_login_key.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("received invalid  user_name/client_code  " << req_login_key.user_name << "/" << req_login_key.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
 
@@ -241,14 +241,14 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
 {
     if(rq_login_locked==true)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("System locked  " << req_login.user_name << "/" << req_login.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("System locked  " << req_login.user_name << "/" << req_login.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
     
     //  check the client code
-    if(users_manager::Instance()->check_user_client_code(req_login.user_name, req_login.request_info.process_location.location.client_code) == false)
+    if(users_manager::Instance()->check_user_client_code(req_login.user_name, req_login.request_info.process_info.location.client_code) == false)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("received invalid  user_name/client_code  " << req_login.user_name << "/" << req_login.request_info.process_location.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("received invalid  user_name/client_code  " << req_login.user_name << "/" << req_login.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
     
@@ -290,8 +290,7 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
                         sessions_login_info(
                                 mtk::admin::msg::pub_keep_alive_clients(
                                         mtk::admin::msg::pub_keep_alive_srv(
-                                                    mtk::msg::sub_process_info( req_login.request_info.process_location, 
-                                                                                "."),
+                                                    mtk::msg::sub_process_info( req_login.request_info.process_info),
                                                     mtk::dtSeconds(90), 
                                                     mtk::dtSeconds(90)), 
                                         mtk::acs::msg::res_login::IC_login_response_info(req_login.user_name, session_id))));
@@ -561,7 +560,7 @@ void command_logout(const std::string& /*command*/, const std::string& params, m
     {
         if(it->keep_alive_client_info.login_confirmation.session_id == session_id)
         {
-            mtk::acs::msg::conf_logout conf_logout(it->keep_alive_client_info.process_info.process_location.location, session_id, "requested by command");
+            mtk::acs::msg::conf_logout conf_logout(it->keep_alive_client_info.process_info.location, session_id, "requested by command");
             mtk::send_message(qpid_cli_session, conf_logout);
             
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"rqchangpwd", MTK_SS("logout command processed for " << session_id << "  user " << it->keep_alive_client_info.login_confirmation.user_name), mtk::alPriorWarning));

@@ -271,7 +271,7 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     //QFont font(table_widget->font());
     //font.setBold(true);
     {
-        tw_product->setText(QLatin1String(MTK_SS(product_code.sys_code.market << "." << product_code.sys_code.user_name).c_str()));
+        tw_product->setText(QLatin1String(MTK_SS(product_code.market << "." << product_code.product).c_str()));
         QFont font(tw_product->font());
         font.setBold(true);
         tw_product->setFont(font);
@@ -363,7 +363,7 @@ namespace {
             else
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qmarginal", MTK_SS("received quantity 0 with price not 0 on "
-                                                          << product_code.sys_code.market << "." << product_code.sys_code.product <<  "  " << marginal), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+                                                          << product_code.market << "." << product_code.product <<  "  " << marginal), mtk::alPriorCritic, mtk::alTypeNoPermisions));
                 return mtk::make_tuple(fn_as_QString(marginal.price), fn_as_QString(marginal.quantity));
             }
         }

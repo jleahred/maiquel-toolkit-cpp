@@ -140,7 +140,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& product_code_sys_code_market,const std::string& product_code_sys_code_product);
+    static std::string  get_in_subject (const std::string& product_code_market,const std::string& product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -166,7 +166,7 @@ public:
 
     
     // constructor
-    explicit req_prod_info (    const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_sys_product_code&  _sys_product_code );
+    explicit req_prod_info (    const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_product_code&  _product_code );
     explicit req_prod_info ( const qpid::messaging::Message& message );
     virtual ~req_prod_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_prod_info"; };
@@ -176,12 +176,12 @@ public:
 
     // fields
     mtk::msg::sub_request_info                request_info; 
-    mtk::msg::sub_sys_product_code            sys_product_code; 
+    mtk::msg::sub_product_code                product_code; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_location_location_client_code);
+    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -260,7 +260,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_location_location_client_code,const std::string& response_info_request_info_process_location_location_machine,const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code);
+    static std::string  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code);
 virtual std::string  get_out_subject (void) const;
 
     

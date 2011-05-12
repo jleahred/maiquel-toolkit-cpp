@@ -8,7 +8,7 @@ namespace {
     const mtk::dtTimeQuantity starting_time = mtk::dtSeconds(40);
 
 
-    QString get_composed_name(const mtk::msg::sub_process_location& l)
+    QString get_composed_name(const mtk::msg::sub_process_info& l)
     {
         return MTK_SS(l.location.client_code << "." << l.location.machine << "." << l.process_name).c_str();
     }
@@ -95,7 +95,7 @@ private:
 
 void QListProcesses::on_enter_received(const mtk::admin::msg::pub_enter& msg)
 {
-    QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
+    QListWidgetItem_ka* item = find_item(msg.process_info);
     if(item!=0)
     {
         if(item->next_ka.HasValue())
@@ -107,7 +107,7 @@ void QListProcesses::on_enter_received(const mtk::admin::msg::pub_enter& msg)
     }
     else
     {
-        QListWidgetItem_ka* new_item = new QListWidgetItem_ka(get_composed_name(msg.process_info.process_location), this, mtk::dtNowLocal() + msg.ka_interval_check, msg.process_info);
+        QListWidgetItem_ka* new_item = new QListWidgetItem_ka(get_composed_name(msg.process_info), this, mtk::dtNowLocal() + msg.ka_interval_check, msg.process_info);
         new_item->setCheckState(Qt::Unchecked);
         addItem(new_item);
     }
@@ -116,7 +116,7 @@ void QListProcesses::on_enter_received(const mtk::admin::msg::pub_enter& msg)
 
 void QListProcesses::on_exit_received (const mtk::admin::msg::pub_exit& msg)
 {
-    QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
+    QListWidgetItem_ka* item = find_item(msg.process_info);
     if(item==0)
         signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor","received exit on a non registered client", mtk::alPriorError, mtk::alTypeNoPermisions));
     else
@@ -126,12 +126,12 @@ void QListProcesses::on_exit_received (const mtk::admin::msg::pub_exit& msg)
 
 void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_alive_clients& msg)
 {
-    QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
+    QListWidgetItem_ka* item = find_item(msg.process_info);
     if(item==0)
     {
         if ((mtk::dtNowLocal() - started_application) > starting_time)
             signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor","received keep alive  on a non registered client", mtk::alPriorError, mtk::alTypeNoPermisions));
-        QListWidgetItem_ka* new_item = new QListWidgetItem_ka(get_composed_name(msg.process_info.process_location), this, mtk::dtNowLocal() + msg.ka_interval_check, msg.process_info);
+        QListWidgetItem_ka* new_item = new QListWidgetItem_ka(get_composed_name(msg.process_info), this, mtk::dtNowLocal() + msg.ka_interval_check, msg.process_info);
         new_item->setCheckState(Qt::Unchecked);
         addItem(new_item);
     }
@@ -148,12 +148,12 @@ void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_al
 
 void QListProcesses::on_ka_server_received   (const mtk::admin::msg::pub_keep_alive_srv& msg)
 {
-    QListWidgetItem_ka* item = find_item(msg.process_info.process_location);
+    QListWidgetItem_ka* item = find_item(msg.process_info);
     if(item==0)
     {
         if ((mtk::dtNowLocal() - started_application) > starting_time)
             signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor","received keep alive  on a non registered client", mtk::alPriorError, mtk::alTypeNoPermisions));
-        QListWidgetItem_ka* new_item = new QListWidgetItem_ka(get_composed_name(msg.process_info.process_location), this, mtk::dtNowLocal() + msg.ka_interval_check, msg.process_info);
+        QListWidgetItem_ka* new_item = new QListWidgetItem_ka(get_composed_name(msg.process_info), this, mtk::dtNowLocal() + msg.ka_interval_check, msg.process_info);
         new_item->setCheckState(Qt::Unchecked);
         addItem(new_item);
     }
@@ -178,8 +178,8 @@ void QListProcesses::check_ka(void)
             {
                 if(itka->next_ka.Get() < mtk::dtNowLocal())
                 {
-                        signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor",MTK_SS(get_composed_name(itka->process_info.process_location).toStdString()
-                                                                      << "." << itka->process_info.process_location.process_uuid
+                        signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor",MTK_SS(get_composed_name(itka->process_info).toStdString()
+                                                                      << "." << itka->process_info.process_uuid
                                                                       << "  lost keep alive"), mtk::alPriorError, mtk::alTypeNoPermisions));
                         itka->setBackgroundColor(Qt::red);
                         itka->next_ka = mtk::nullable<mtk::DateTime>();
@@ -194,12 +194,12 @@ void QListProcesses::check_ka(void)
 }
 
 
-QListWidgetItem_ka*  QListProcesses::find_item(const mtk::msg::sub_process_location& l)
+QListWidgetItem_ka*  QListProcesses::find_item(const mtk::msg::sub_process_info& l)
 {
     for(int i=0;i<this->count();i++)
     {
         QListWidgetItem_ka* itka = dynamic_cast<QListWidgetItem_ka*>(this->item(i));
-        if(itka  &&  itka->process_info.process_location == l)
+        if(itka  &&  itka->process_info == l)
             return itka;
     }
     return 0;
@@ -208,9 +208,9 @@ QListWidgetItem_ka*  QListProcesses::find_item(const mtk::msg::sub_process_locat
 void  QListProcesses::check_alarm_received(const mtk::msg::sub_process_info& pi)
 {
     MTK_EXEC_MAX_FREC(mtk::dtSeconds(5))
-        QListWidgetItem_ka* item = this->find_item(pi.process_location);
+        QListWidgetItem_ka* item = this->find_item(pi);
         if(item==0  &&  (mtk::dtNowLocal() - started_application) > starting_time)
-            signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor",MTK_SS("Receiving alarms with no keep alive  " << pi.process_location), mtk::alPriorError, mtk::alTypeNoPermisions));
+            signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor",MTK_SS("Receiving alarms with no keep alive  " << pi), mtk::alPriorError, mtk::alTypeNoPermisions));
     MTK_END_EXEC_MAX_FREC
 }
 

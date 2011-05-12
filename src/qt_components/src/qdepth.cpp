@@ -283,8 +283,8 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
     }
     else if(level.quantity.GetIntCode() == 0  &&   level.price.GetIntCode()!=0)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", MTK_SS("received quantity 0 with price not 0 on "
-                                                  << product_code.sys_code.market << "." << product_code.sys_code.product << "  " << level), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", MTK_SS("received quantity 0 with price not 0 on "  << product_code
+                                                                        << "  " << level), mtk::alPriorCritic, mtk::alTypeNoPermisions));
     }
     else
     {
@@ -431,7 +431,7 @@ void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
     on_message(price_manager->get_best_prices());
-    title->setText(QLatin1String(MTK_SS(price_manager->get_product_code().sys_code.market << "."<< price_manager->get_product_code().sys_code.user_name).c_str()));
+    title->setText(QLatin1String(MTK_SS(price_manager->get_product_code().market << "."<< price_manager->get_product_code().product).c_str()));
 }
 
 

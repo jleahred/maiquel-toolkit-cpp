@@ -2934,29 +2934,29 @@ RJ_CC_LS::RJ_CC_LS (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  RQ_XX_LS::get_in_subject (const std::string& req_info_process_location,const std::string& product_code_sys_code_market,const std::string& product_code_sys_code_product)
+std::string  RQ_XX_LS::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
     {
-        return MTK_SS("RQ." << req_info_process_location << "." << product_code_sys_code_market << "." << product_code_sys_code_product << "");
+        return MTK_SS("RQ." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
     }
     std::string  RQ_XX_LS::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->req_info.process_location << "." << this->product_code.sys_code.market << "." << this->product_code.sys_code.product << "");
+        return MTK_SS("RQ." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
     }
-    std::string  CF_XX_LS::get_in_subject (const std::string& req_info_process_location_location_client_code,const std::string& confirmated_info_product_code_sys_code_market,const std::string& confirmated_info_product_code_sys_code_product)
+    std::string  CF_XX_LS::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& confirmated_info_product_code_market,const std::string& confirmated_info_product_code_product)
     {
-        return MTK_SS("RS." << req_info_process_location_location_client_code << "." << confirmated_info_product_code_sys_code_market << "." << confirmated_info_product_code_sys_code_product << "");
+        return MTK_SS("RS." << req_info_process_info_location_client_code << "." << confirmated_info_product_code_market << "." << confirmated_info_product_code_product << "");
     }
     std::string  CF_XX_LS::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->req_info.process_location.location.client_code << "." << this->confirmated_info.product_code.sys_code.market << "." << this->confirmated_info.product_code.sys_code.product << "");
+        return MTK_SS("RS." << this->req_info.process_info.location.client_code << "." << this->confirmated_info.product_code.market << "." << this->confirmated_info.product_code.product << "");
     }
-    std::string  RJ_XX_LS::get_in_subject (const std::string& req_info_process_location_location_client_code,const std::string& confirmated_info_product_code_sys_code_market,const std::string& confirmated_info_product_code_sys_code_product)
+    std::string  RJ_XX_LS::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& confirmated_info_product_code_market,const std::string& confirmated_info_product_code_product)
     {
-        return MTK_SS("RS." << req_info_process_location_location_client_code << "." << confirmated_info_product_code_sys_code_market << "." << confirmated_info_product_code_sys_code_product << "");
+        return MTK_SS("RS." << req_info_process_info_location_client_code << "." << confirmated_info_product_code_market << "." << confirmated_info_product_code_product << "");
     }
     std::string  RJ_XX_LS::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->req_info.process_location.location.client_code << "." << this->confirmated_info.product_code.sys_code.market << "." << this->confirmated_info.product_code.sys_code.product << "");
+        return MTK_SS("RS." << this->req_info.process_info.location.client_code << "." << this->confirmated_info.product_code.market << "." << this->confirmated_info.product_code.product << "");
     }
     
 

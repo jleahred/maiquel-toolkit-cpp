@@ -124,10 +124,11 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
     {
         QTableWidgetItem* new_item = new QTableWidgetItem();
-        new_item->setText(MTK_SS(alarm_msg.process_info.process_location.location.client_code << "."
-                                    << alarm_msg.process_info.process_location.location.machine << "."
-                                    << alarm_msg.process_info.process_location.process_name << "."
-                                    << alarm_msg.process_info.process_location.process_uuid).c_str());
+        new_item->setText(MTK_SS(alarm_msg.process_info.location.client_code << "."
+                                    << alarm_msg.process_info.location.machine << "."
+                                    << alarm_msg.process_info.process_name << "."
+                                    << alarm_msg.process_info.process_uuid << "."
+                                    << alarm_msg.process_info.version  ).c_str());
         new_item->setBackgroundColor(back_color);
         new_item->setForeground(QBrush(foregroud_color));
         this->setItem(last_row, ++column, new_item);
@@ -192,7 +193,7 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
 void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
 {
-    mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
+    mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
                                      alarm.codeSource, "monitor", alarm.message, alarm.priority, alarm.type, mtk::dtNowLocal(), -1);
 
     write_alarm_msg(alarm_msg);
@@ -200,7 +201,7 @@ void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
     std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
     while (it != alarm.stackAlarms.end())
     {
-        mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_process_location(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL"), "LOCAL"),
+        mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
                                          "monitor", it->codeSource, it->message, it->priority, it->type, mtk::dtNowLocal(), -1);
         write_alarm_msg(alarm_msg);
         ++it;

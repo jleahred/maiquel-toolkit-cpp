@@ -541,8 +541,8 @@ void pub_alarm::before_send(void) const
 
 
 
-req_command::req_command (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_location&  _proc_loc__destination,   const std::string&  _command_line)
-    :     request_info(_request_info),   proc_loc__destination(_proc_loc__destination),   command_line(_command_line) 
+req_command::req_command (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line)
+    :     request_info(_request_info),   proc_info__destination(_proc_info__destination),   command_line(_command_line) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -825,7 +825,7 @@ std::ostream& operator<< (std::ostream& o, const req_command & c)
 {
     o << "{ "
 
-        << "request_info:"<< c.request_info<<"  "        << "proc_loc__destination:"<< c.proc_loc__destination<<"  "        << "command_line:"<<   c.command_line << "  "
+        << "request_info:"<< c.request_info<<"  "        << "proc_info__destination:"<< c.proc_info__destination<<"  "        << "command_line:"<<   c.command_line << "  "
         << " }";
     return o;
 };
@@ -836,7 +836,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_command & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "proc_loc__destination"  << YAML::Value << c.proc_loc__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "proc_info__destination"  << YAML::Value << c.proc_info__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
         << YAML::EndMap;
     return o;
 };
@@ -848,7 +848,7 @@ void  operator >> (const YAML::Node& node, req_command & c)
 
 
         node["request_info"]  >> c.request_info;
-        node["proc_loc__destination"]  >> c.proc_loc__destination;
+        node["proc_info__destination"]  >> c.proc_info__destination;
         node["command_line"]  >> c.command_line;
 
 
@@ -1016,7 +1016,7 @@ bool operator!= (const pub_alarm& a, const pub_alarm& b)
 
 bool operator== (const req_command& a, const req_command& b)
 {
-    return (          a.request_info ==  b.request_info  &&          a.proc_loc__destination ==  b.proc_loc__destination  &&          a.command_line ==  b.command_line  &&   true  );
+    return (          a.request_info ==  b.request_info  &&          a.proc_info__destination ==  b.proc_info__destination  &&          a.command_line ==  b.command_line  &&   true  );
 };
 
 bool operator!= (const req_command& a, const req_command& b)
@@ -1408,10 +1408,10 @@ void  copy (req_command& c, const qpid::types::Variant& v)
 
                     it = mv.find("pd");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field proc_loc__destination on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field proc_info__destination on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.proc_loc__destination, it->second);
-                        //__internal_qpid_fill(c.proc_loc__destination, it->second.asMap());
+                        copy(c.proc_info__destination, it->second);
+                        //__internal_qpid_fill(c.proc_info__destination, it->second.asMap());
 //   field_type
 
                     it = mv.find("c");
@@ -1433,7 +1433,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a)
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("ri"));
 //  sub_msg_type
-        __internal_add2map(map, a.proc_loc__destination, std::string("pd"));
+        __internal_add2map(map, a.proc_info__destination, std::string("pd"));
 //  field_type
         __internal_add2map(map, a.command_line, std::string("c"));
 
@@ -1775,8 +1775,8 @@ qpid::messaging::Message req_command::qpidmsg_codded_as_qpid_message (const std:
 //        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
         __internal_add2map(content, this->request_info, std::string("ri"));
 //  sub_msg_type
-//        content["pd"] =  qpidmsg_coded_as_qpid_Map(this->proc_loc__destination);
-        __internal_add2map(content, this->proc_loc__destination, std::string("pd"));
+//        content["pd"] =  qpidmsg_coded_as_qpid_Map(this->proc_info__destination);
+        __internal_add2map(content, this->proc_info__destination, std::string("pd"));
 //  field_type
 //        content["c"] = this->command_line;
         __internal_add2map(content, this->command_line, std::string("c"));
@@ -1919,7 +1919,7 @@ __internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_info*)0),
 //   sub_msg_type
-   __internal_get_default((mtk::msg::sub_process_location*)0),
+   __internal_get_default((mtk::msg::sub_process_info*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
             );
@@ -2064,7 +2064,7 @@ req_command::req_command (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   sub_msg_type
-   proc_loc__destination(__internal_get_default((mtk::msg::sub_process_location*)0)),
+   proc_info__destination(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    command_line(__internal_get_default((std::string*)0)) 
     {
@@ -2172,21 +2172,21 @@ std::string  pub_enter::get_in_subject ()
     {
         return MTK_SS("ADM.CIMD.ALARMS");
     }
-    std::string  req_command::get_in_subject (const std::string& proc_loc__destination_location_client_code,const std::string& proc_loc__destination_location_machine,const std::string& proc_loc__destination_process_name,const std::string& proc_loc__destination_process_uuid)
+    std::string  req_command::get_in_subject (const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
     {
-        return MTK_SS("ADM." << proc_loc__destination_location_client_code << "." << proc_loc__destination_location_machine << "." << proc_loc__destination_process_name << "." << proc_loc__destination_process_uuid << ".COMMAND");
+        return MTK_SS("ADM." << proc_info__destination_location_client_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".COMMAND");
     }
     std::string  req_command::get_out_subject (void) const
     {
-        return MTK_SS("ADM." << this->proc_loc__destination.location.client_code << "." << this->proc_loc__destination.location.machine << "." << this->proc_loc__destination.process_name << "." << this->proc_loc__destination.process_uuid << ".COMMAND");
+        return MTK_SS("ADM." << this->proc_info__destination.location.client_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".COMMAND");
     }
-    std::string  res_command::get_in_subject (const std::string& response_info_request_info_process_location_process_uuid,const std::string& response_info_request_info_req_id_req_code)
+    std::string  res_command::get_in_subject (const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("ADM.CIMD.COMMRES." << response_info_request_info_process_location_process_uuid << "." << response_info_request_info_req_id_req_code << "");
+        return MTK_SS("ADM.CIMD.COMMRES." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_req_code << "");
     }
     std::string  res_command::get_out_subject (void) const
     {
-        return MTK_SS("ADM.CIMD.COMMRES." << this->response_info.request_info.process_location.process_uuid << "." << this->response_info.request_info.req_id.req_code << "");
+        return MTK_SS("ADM.CIMD.COMMRES." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.req_code << "");
     }
     std::string  pub_central_keep_alive::get_in_subject ()
     {
