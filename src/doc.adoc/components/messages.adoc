@@ -271,6 +271,24 @@ include::../../../src/components/trading/trd_cli_ls.dot[]
 ------------
 
 
+=== Market orders
+
+* Online trading +market+ Orders client messages
++
+.msg_trd_cli_mk.msg
+-----
+include::../../../src/components/trading/msg_trd_cli_mk.msg[]
+-----
+
+
+* Orders MK status diagram
++
+["graphviz", "components_trading_o_mk.png"]
+-----------
+include::../../../src/components/trading/trd_cli_mk.dot[]
+------------
+
+
 
 
 === OMS

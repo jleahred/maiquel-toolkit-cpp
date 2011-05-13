@@ -71,6 +71,47 @@ private:
 
 
 //-------------------------------
+//      sub_exec_conf
+//-------------------------------    
+class sub_exec_conf     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_exec_conf (    const std::string&  _exec_id,   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const enBuySell&  _side );
+    explicit sub_exec_conf ( const qpid::messaging::Message& message );
+    virtual ~sub_exec_conf (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_exec_conf"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_exec_conf"; };
+    
+    
+
+    // fields
+    std::string                               exec_id; 
+    mtk::FixedNumber                          price; 
+    mtk::FixedNumber                          quantity; 
+    enBuySell                                 side; 
+
+
+
+    //  subject info
+    
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
 //      sub_total_executions
 //-------------------------------    
 class sub_total_executions     
@@ -283,6 +324,13 @@ private:
 bool operator== (const sub_order_id& a, const sub_order_id& b);
 bool operator!= (const sub_order_id& a, const sub_order_id& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_exec_conf & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_exec_conf & c);
+   void           operator >> (const YAML::Node& n,       sub_exec_conf & c);
+
+bool operator== (const sub_exec_conf& a, const sub_exec_conf& b);
+bool operator!= (const sub_exec_conf& a, const sub_exec_conf& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_total_executions & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_total_executions & c);
    void           operator >> (const YAML::Node& n,       sub_total_executions & c);
@@ -322,6 +370,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_order_id
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_id>& a, const std::string& field);
 void copy (sub_order_id& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_exec_conf& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_exec_conf& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_exec_conf>& a, const std::string& field);
+void copy (sub_exec_conf& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_total_executions& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executions& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_total_executions>& a, const std::string& field);
@@ -344,6 +396,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 void copy (RJ_XX& a, const qpid::types::Variant& map);
 
     sub_order_id  __internal_get_default(sub_order_id *);
+    
+    sub_exec_conf  __internal_get_default(sub_exec_conf *);
     
     sub_total_executions  __internal_get_default(sub_total_executions *);
     

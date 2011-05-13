@@ -280,7 +280,7 @@ public:
     virtual ~CF_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
     
 
     // fields
@@ -289,12 +289,10 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
-virtual std::string  get_out_subject (void) const;
-
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    
     
     void        before_send(void) const;
     
@@ -432,7 +430,7 @@ public:
 
     
     // constructor
-    explicit CF_EX_LS (  const CF_XX_LS&  parent,   const sub_position_ls&  _executed_pos );
+    explicit CF_EX_LS (  const CF_XX_LS&  parent,   const sub_exec_conf&  _executed_pos );
     explicit CF_EX_LS ( const qpid::messaging::Message& message );
     virtual ~CF_EX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_LS"; };
@@ -441,7 +439,7 @@ public:
     
 
     // fields
-    sub_position_ls                           executed_pos; 
+    sub_exec_conf                             executed_pos; 
 
 
 
@@ -477,7 +475,7 @@ public:
     virtual ~RJ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_XX_LS"; };
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
     
 
     // fields
@@ -486,12 +484,10 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
-virtual std::string  get_out_subject (void) const;
-
     
     
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    
     
     void        before_send(void) const;
     
@@ -835,12 +831,10 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_NW_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_MD_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_CC_LS)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_XX_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_NW_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_MD_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_CC_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EX_LS)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RJ_XX_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RJ_NW_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RJ_MD_LS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RJ_CC_LS)

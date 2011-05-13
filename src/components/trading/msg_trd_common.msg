@@ -19,12 +19,25 @@ sub_order_id   [< V:0, I:mtk::msg::sub_request_id  >]   {}
 
 
 
+
+sub_exec_conf   [<V:0>]
+{ 
+    exec_id  (eid)  :   string
+    price    (pr)   :   fix_num
+    quantity (qt)   :   fix_num
+    side     (sd)   :   enBuySell
+}
+
+
 sub_total_executions [<V:0>]
 {
     sum_price_by_qty    (spq)   :  double
     quantity            (aqt)   :  fix_num
     remaining_qty       (rq)    :  fix_num
 }
+
+
+
 
 
 
@@ -91,6 +104,5 @@ RJ_XX  [< V:0 >]
     
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
-
 
 
