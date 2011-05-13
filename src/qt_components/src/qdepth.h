@@ -71,6 +71,10 @@ private slots:
     void request_side(mtk::trd::msg::enBuySell bs);
     void request_aggression(mtk::trd::msg::enBuySell bs);
 
+    void request_buy_market(void);
+    void request_sell_market(void);
+    void request_side_market(mtk::trd::msg::enBuySell bs);
+
 
     void make_transparent(void);
     void remove_transparecy(void);
@@ -88,6 +92,8 @@ private:
     QAction* action_sell;
     QAction* action_hit_the_bid;
     QAction* action_lift_the_offer;
+    QAction* action_buy_market;
+    QAction* action_sell_market;
 
     bool showing_menu;
     void disable_actions(void);

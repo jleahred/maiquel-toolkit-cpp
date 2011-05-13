@@ -126,6 +126,7 @@ QMarginal::~QMarginal()
 QTableMarginal::QTableMarginal(QWidget *parent)
     : QTableWidget(parent), startPos(-1,-1),
       action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0), action_remove_product(0),
+      action_buy_market(0), action_sell_market(0),
       paint_delegate(new QCommonTableDelegate(this)),
       showing_menu(false)
 {
@@ -202,6 +203,16 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     action_hit_the_bid->setShortcut(Qt::Key_F12);
     connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
     this->addAction(action_hit_the_bid);
+
+
+    action_buy_market = new QAction(tr("buy"), this);
+    connect(action_buy_market, SIGNAL(triggered()), this, SLOT(request_buy_market()));
+    this->addAction(action_buy_market);
+
+    action_sell_market = new QAction(tr("sell"), this);
+    connect(action_sell_market, SIGNAL(triggered()), this, SLOT(request_sell_market()));
+    this->addAction(action_sell_market);
+
 
     action_remove_product = new QAction(tr("remove product"), this);
     action_remove_product->setShortcut(Qt::Key_Delete);
@@ -553,10 +564,16 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_sell);
 
     menu.addSeparator();
-
     menu.addAction(action_lift_the_offer);
     menu.addAction(action_hit_the_bid);
 
+
+    menu.addSeparator();
+    QMenu sub_menu_market_orders(this);
+    sub_menu_market_orders.setTitle(tr("Market orders"));
+    sub_menu_market_orders.addAction(action_buy_market);
+    sub_menu_market_orders.addAction(action_sell_market);
+    menu.addMenu(&sub_menu_market_orders);
 
     menu.addSeparator();
     menu.addAction(action_remove_product);
@@ -714,6 +731,64 @@ void QTableMarginal::make_transparent(void)
         ++it;
     }
 }
+
+
+
+void QTableMarginal::request_side_market(mtk::trd::msg::enBuySell bs)
+{
+    QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(currentRow(), 0));
+    if (item)
+    {
+        mtk::msg::sub_product_code product_code = item->product_code;
+        if (mtk::msg::is_valid(product_code)==false)      return;
+
+
+        //  proposed price
+        mtk::CountPtr<mtk::prices::price_manager>  price_manager =   locate_price_manager(marginals, item->id);
+        if(price_manager.isValid() == false)
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "marginal", "marginal not located", mtk::alPriorError));
+        else
+        {
+            mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+            if(bs == mtk::trd::msg::sell)
+                quantity= price_manager->get_best_prices().asks.level0.quantity;
+            if(quantity.GetIntCode() != 0)     //  provisional, remove it
+            {
+                quantity.SetIntCode(0);
+                mtk::trd::msg::sub_position_mk     pos(
+                                                                  quantity
+                                                                , bs);
+                mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, pos, "cli_ref");
+            }
+            else        //  provisional, remove it
+            {
+                mtk::trd::msg::sub_position_mk     pos(
+                                                                  mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                                                , bs);
+                mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, pos, "cli_ref");
+            }
+        }
+    }
+}
+
+
+void QTableMarginal::request_buy_market(void)
+{
+    paint_delegate->keep_focus_paint(true);
+    request_side_market(mtk::trd::msg::buy);
+    paint_delegate->keep_focus_paint(false);
+}
+
+void QTableMarginal::request_sell_market(void)
+{
+    paint_delegate->keep_focus_paint(true);
+    request_side_market(mtk::trd::msg::sell);
+    paint_delegate->keep_focus_paint(false);
+}
+
+
+
+
 
 void QTableMarginal::remove_transparency(void)
 {

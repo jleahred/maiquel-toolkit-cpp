@@ -32,11 +32,12 @@ YAML::Emitter& operator<< (YAML::Emitter& o, const alEnType& a)
 {
     switch(a)
     {
-        case alTypeUnknown      :       o << "unknown" ; break;
-        case alTypeNoPermisions :       o << "no perm" ; break;
-        case alTypeOverflow     :       o << "overflow"; break;
-        case alTypeRealTime     :       o << "realtime"; break;
-        default                 :       o << "???"     ; break;
+        case alTypeUnknown      :       o << "unknown"      ; break;
+        case alTypeNoPermisions :       o << "no perm"      ; break;
+        case alTypeOverflow     :       o << "overflow"     ; break;
+        case alTypeRealTime     :       o << "realtime"     ; break;
+        case alTypeLogicError   :       o << "logicerror"   ; break;
+        default                 :       o << "???"          ; break;
     }
     return o;
 }
@@ -61,6 +62,7 @@ void            operator>> (const YAML::Node& o, alEnType& a)
     else if (val=="perm"    )       a = alTypeNoPermisions;
     else if (val=="overflow")       a = alTypeOverflow;
     else if (val=="realtime")       a = alTypeRealTime;
+    else if (val=="logicerror")     a = alTypeRealTime;
     else                            a = alTypeUnknown;
 }
 

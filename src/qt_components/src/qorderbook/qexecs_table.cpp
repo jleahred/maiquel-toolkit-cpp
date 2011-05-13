@@ -46,9 +46,9 @@ public:
 
     QTableWidgetItem**                  items;
     mtk::msg::sub_product_code          product_code;
-    mtk::trd::msg::sub_position_ls      exec;
+    mtk::trd::msg::sub_exec_conf        exec;
 
-    Exec_in_table(QTableWidget *table_widget, const mtk::msg::sub_product_code& _product_code, const mtk::trd::msg::sub_position_ls& _exec)
+    Exec_in_table(QTableWidget *table_widget, const mtk::msg::sub_product_code& _product_code, const mtk::trd::msg::sub_exec_conf& _exec)
         : items (new QTableWidgetItem*[4]),
             product_code(_product_code),  exec (_exec)
 
@@ -217,12 +217,12 @@ QExecsTable::QExecsTable(QWidget *parent) :
 }
 
 
-void QExecsTable::__direct_add_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_position_ls& exec)
+void QExecsTable::__direct_add_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_exec_conf& exec)
 {
     exec_in_table->push_back(new Exec_in_table(table_widget, pc, exec));
 }
 
-void QExecsTable::on_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_position_ls& exec)
+void QExecsTable::on_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_exec_conf& exec)
 {
     execs2add_online.push_back(mtk::make_tuple(pc, exec));
     execs_all.push_back(mtk::make_tuple(pc, exec));
@@ -245,7 +245,7 @@ void   QExecsTable::timer_get_execs2add(void)
     int counter=0;
     while(execs2add_loading.size()>0)
     {
-        mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> exec = execs2add_loading.front();
+        mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> exec = execs2add_loading.front();
         execs2add_loading.pop_front();
         __direct_add_new_execution(exec._0, exec._1);
         ++counter;
@@ -254,7 +254,7 @@ void   QExecsTable::timer_get_execs2add(void)
     }
     while(execs2add_online.size()>0)
     {
-        mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> exec = execs2add_online.front();
+        mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> exec = execs2add_online.front();
         execs2add_online.pop_front();
         __direct_add_new_execution(exec._0, exec._1);
         ++counter;
@@ -280,7 +280,7 @@ void  QExecsTable::slot_show_all_execs(void)
     if(execs2add_loading.size()!=0)
         execs2add_loading.clear();
 
-    for(mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> >::iterator it = execs_all.begin();  it != execs_all.end(); ++it)
+    for(mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> >::iterator it = execs_all.begin();  it != execs_all.end(); ++it)
         execs2add_loading.push_back(*it);
 }
 

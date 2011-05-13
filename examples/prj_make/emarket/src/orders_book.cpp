@@ -311,6 +311,7 @@ mtk::FixedNumber get_exec_price(const mtk::tuple<mtk::FixedNumber, int>& b, cons
 
 void orders_in_product_queue::check_execs(void)
 {
+    static int ex_counter=0;
     //  pending...
     //  check executions
     if (bid_queue.size() > 0  &&  ask_queue.size() > 0)
@@ -336,7 +337,7 @@ void orders_in_product_queue::check_execs(void)
                             cf.confirmated_info.market_pos.quantity.GetDouble()
                             -
                             cf.confirmated_info.total_execs.quantity.GetDouble());
-                best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_position_ls(exec_price, exec_quantity, mtk::trd::msg::buy)));
+                best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::buy)));
                     
                 if (cf.confirmated_info.total_execs.quantity  >=  cf.confirmated_info.market_pos.quantity)
                     bid_queue.pop_front();
@@ -350,7 +351,7 @@ void orders_in_product_queue::check_execs(void)
                             cf.confirmated_info.market_pos.quantity.GetDouble()
                             -
                             cf.confirmated_info.total_execs.quantity.GetDouble());
-                best_sell->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_position_ls(exec_price, exec_quantity, mtk::trd::msg::sell)));
+                best_sell->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::sell)));
                 if (cf.confirmated_info.total_execs.quantity  >=  cf.confirmated_info.market_pos.quantity)
                     ask_queue.pop_front();
             }

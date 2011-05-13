@@ -30,17 +30,19 @@ QEditOrder::~QEditOrder()
 /**
   If quantity is empty, it will get the default quantity
   */
-QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidget *parent) :
+QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidget *parent) :
         QDialog(parent),
         ui(new Ui::QEditOrder),
-        rq(_rq)
+        rq_ls(rq)
 {
     ui->setupUi(this);
+
+    this->setWindowTitle(tr("Edit Limit Order"));
+
     QFont font(this->font());
     font.setPixelSize(get_base_font_size()+2);
     this->setFont(font);
 
-    rq = _rq;
     if (rq.request_pos.side == mtk::trd::msg::buy)
     {
         ui->BuySell->setText(tr("BUY"));
@@ -97,6 +99,63 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidg
     }
 }
 
+QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QWidget *parent) :
+        QDialog(parent),
+        ui(new Ui::QEditOrder),
+        rq_mk(rq)
+{
+    ui->setupUi(this);
+    this->setWindowTitle(tr("Edit Limit Order"));
+
+    QFont font(this->font());
+    font.setPixelSize(get_base_font_size()+2);
+    this->setFont(font);
+
+    if (rq.request_pos.side == mtk::trd::msg::buy)
+    {
+        ui->BuySell->setText(tr("BUY"));
+        setPalette( mtk_color_buy );
+    }
+    else
+    {
+        ui->BuySell->setText(tr("SELL"));
+        setPalette( QPalette(mtk_color_sell));
+    }
+    ui->market->setText(QLatin1String(rq.product_code.market.c_str()));
+    ui->product->setText(QLatin1String(rq.product_code.product.c_str()));
+    ui->price->setVisible(false);
+    ui->price->setEnabled(false);
+    ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
+    ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
+    if(rq.request_pos.quantity.GetIntCode()!=0)
+        ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
+    else
+        ui->quantity->clear();
+    ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
+
+    this->check_if_order_can_be_sent();
+
+    mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
+    if(s_default_qty.HasValue()==false)
+    {
+        ui->message->setText(tr("you can configure default qty with dblclick on qty label"));
+    }
+    else
+    {
+        if(rq.request_pos.quantity.GetIntCode() == 0)
+        {
+            QLatin1String default_q (s_default_qty.Get().c_str());
+            ui->quantity->setValue(QString(default_q).toDouble());
+        }
+        else
+            ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
+    }
+
+    ui->quantity->setFocus();
+    ui->quantity->selectAll();
+}
+
+
 bool QEditOrder::check_if_order_can_be_sent(void)
 {
     bool result = true;
@@ -122,12 +181,16 @@ bool QEditOrder::check_if_order_can_be_sent(void)
         result = false;
     }
 
-    text = ui->price->text();
-    if(ui->price->validate(text, pos) != QValidator::Acceptable)
+
+    if(rq_ls.HasValue())
     {
-        ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-        ui->message->setText(tr("invalid price"));
-        result = false;
+        text = ui->price->text();
+        if(ui->price->validate(text, pos) != QValidator::Acceptable)
+        {
+            ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+            ui->message->setText(tr("invalid price"));
+            result = false;
+        }
     }
 
     if(ui->account->currentIndex() == -1)
@@ -155,14 +218,25 @@ bool QEditOrder::check_if_order_can_be_sent(void)
 }
 
 
-mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request(void)
+mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request_ls(void)
 {
-    rq.product_code.market = ui->market->text().toStdString();
-    rq.product_code.product = ui->product->text().toStdString();
-    rq.request_pos.price.SetDouble(ui->price->value());
-    rq.request_pos.quantity.SetDouble(ui->quantity->value());
-    rq.cli_ref = ui->cliref->text().toStdString();
-    return rq;
+    mtk::trd::msg::RQ_XX_LS  result = rq_ls.Get();
+    result.product_code.market = ui->market->text().toStdString();
+    result.product_code.product = ui->product->text().toStdString();
+    result.request_pos.price.SetDouble(ui->price->value());
+    result.request_pos.quantity.SetDouble(ui->quantity->value());
+    result.cli_ref = ui->cliref->text().toStdString();
+    return result;
+}
+
+mtk::trd::msg::RQ_XX_MK   QEditOrder::get_request_mk(void)
+{
+    mtk::trd::msg::RQ_XX_MK  result = rq_mk.Get();
+    result.product_code.market = ui->market->text().toStdString();
+    result.product_code.product = ui->product->text().toStdString();
+    result.request_pos.quantity.SetDouble(ui->quantity->value());
+    result.cli_ref = ui->cliref->text().toStdString();
+    return result;
 }
 
 

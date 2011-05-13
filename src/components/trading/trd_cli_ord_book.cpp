@@ -720,6 +720,15 @@ void cf_ex_mk(const mtk::trd::msg::CF_EX_MK& ex)
 
 
 
+en_order_type  get_order_type(const msg::sub_order_id& ord_id)
+{
+    if(get_status_ref().ls_orders.find(ord_id) !=  get_status_ref().ls_orders.end())
+        return ot_limit;
+    else if(get_status_ref().mk_orders.find(ord_id) !=  get_status_ref().mk_orders.end())
+        return ot_market;
+    else 
+        throw mtk::Alarm(MTK_HERE, "cli_order_book", MTK_SS("missing " << ord_id << " looking order type"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+}
 
 
 

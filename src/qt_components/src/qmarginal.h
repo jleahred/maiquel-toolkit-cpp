@@ -97,6 +97,11 @@ private slots:
     void request_side(mtk::trd::msg::enBuySell bs);
     void request_aggression(mtk::trd::msg::enBuySell bs);
 
+
+    void request_buy_market(void);
+    void request_sell_market(void);
+    void request_side_market(mtk::trd::msg::enBuySell bs);
+
     void slot_column_resized(int, int, int);
     void slot_remove_current_row(void);
 
@@ -123,6 +128,8 @@ private:
     QAction* action_hit_the_bid;
     QAction* action_lift_the_offer;
     QAction* action_remove_product;
+    QAction* action_buy_market;
+    QAction* action_sell_market;
 
     QCommonTableDelegate* paint_delegate;
     bool showing_menu;

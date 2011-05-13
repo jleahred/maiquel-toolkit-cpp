@@ -137,6 +137,7 @@ QDepth::QDepth(QWidget *parent) :
     mtkContainerWidget(parent),
     table_widget(new QTableDeph(this)),
     action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
+    action_buy_market(0), action_sell_market(0),
     showing_menu(false),
     keep_paint_focus(false)
 {
@@ -255,6 +256,15 @@ QDepth::QDepth(QWidget *parent) :
     action_hit_the_bid->setShortcut(Qt::Key_F12);
     connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
     this->addAction(action_hit_the_bid);
+
+    action_buy_market = new QAction(tr("buy"), this);
+    connect(action_buy_market, SIGNAL(triggered()), this, SLOT(request_buy_market()));
+    this->addAction(action_buy_market);
+
+    action_sell_market = new QAction(tr("sell"), this);
+    connect(action_sell_market, SIGNAL(triggered()), this, SLOT(request_sell_market()));
+    this->addAction(action_sell_market);
+
     this->disable_actions();
 }
 
@@ -343,7 +353,6 @@ void QDepth::request_side(mtk::trd::msg::enBuySell bs)
             mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), pos, "cli_ref");
         }
     }
-
 }
 
 
@@ -360,6 +369,53 @@ void QDepth::request_sell(void)
     request_side(mtk::trd::msg::sell);
     keep_paint_focus = false;
 }
+
+
+
+void QDepth::request_side_market(mtk::trd::msg::enBuySell bs)
+{
+    if(price_manager.isValid() == false)
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
+    else
+    {
+        mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+        if(bs == mtk::trd::msg::sell)
+        {
+            quantity= price_manager->get_best_prices().asks.level0.quantity;
+        }
+        if(quantity.GetIntCode() != 0)  //  provisional, remove it
+        {
+            quantity.SetIntCode(0);
+            mtk::trd::msg::sub_position_mk     pos(
+                                                              quantity
+                                                            , bs);
+            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), pos, "cli_ref");
+        }
+        else        //  provisional, remove it
+        {
+            mtk::trd::msg::sub_position_mk     pos(
+                                                              mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                                            , bs);
+            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), pos, "cli_ref");
+        }
+    }
+}
+
+
+void QDepth::request_buy_market(void)
+{
+    keep_paint_focus = true;
+    request_side_market(mtk::trd::msg::buy);
+    keep_paint_focus = false;
+}
+
+void QDepth::request_sell_market(void)
+{
+    keep_paint_focus = true;
+    request_side_market(mtk::trd::msg::sell);
+    keep_paint_focus = false;
+}
+
 
 
 
@@ -480,14 +536,18 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_sell);
 
 
-    {
-        QAction* action = new QAction(&menu);
-        action->setSeparator(true);
-        menu.addAction(action);
-    }
-
+    menu.addSeparator();
     menu.addAction(action_lift_the_offer);
     menu.addAction(action_hit_the_bid);
+
+    menu.addSeparator();
+    QMenu sub_menu_market_orders(this);
+    sub_menu_market_orders.setTitle(tr("Market orders"));
+    sub_menu_market_orders.addAction(action_buy_market);
+    sub_menu_market_orders.addAction(action_sell_market);
+    menu.addMenu(&sub_menu_market_orders);
+
+
     showing_menu = true;
     keep_paint_focus = true;
     menu.exec(event->globalPos());

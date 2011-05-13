@@ -55,6 +55,7 @@ inline std::ostream& operator<< (std::ostream& os, const mtk::alEnType& p)
         case (mtk::alTypeOverflow):         os << "overflow"     ;         break;
         case (mtk::alTypeRealTime):         os << "realtime"     ;         break;
         case (mtk::alTypeUnknown):          os << "unknown"      ;         break;
+        case (mtk::alTypeLogicError):       os << "logicerror"   ;         break;
         default:                            os << "???";
     }
     return os;

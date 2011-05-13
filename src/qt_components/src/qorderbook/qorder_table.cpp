@@ -11,6 +11,7 @@
 #include "qt_components/src/qcommontabledelegate.h"
 #include "components/trading/trd_cli_support.h"
 #include "components/trading/msg_trd_cli_ls.h"
+#include "components/trading/msg_trd_cli_mk.h"
 
 
 
@@ -114,9 +115,8 @@ namespace {
 
 
 
-
-
-QString get_session_id_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+template<typename  ORDER_TYPE>
+QString get_session_id_from_order(mtk::CountPtr<ORDER_TYPE>& order)
 {
     if (order->last_confirmation().HasValue())
         return QLatin1String(order->last_confirmation().Get().confirmated_info.order_id.sess_id.c_str());
@@ -127,7 +127,8 @@ QString get_session_id_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 }
 
 
-QString get_req_code_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+template<typename  ORDER_TYPE>
+QString get_req_code_from_order(mtk::CountPtr<ORDER_TYPE>& order)
 {
     if (order->last_confirmation().HasValue())
         return QLatin1String(order->last_confirmation().Get().confirmated_info.order_id.req_code.c_str());
@@ -139,21 +140,122 @@ QString get_req_code_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 
 
 
+
+//  by order type   access   ****************************************************************************************
+QString get_req_price_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+{
+    if (order->last_request().HasValue())
+        return (fn_as_QString(order->last_request().Get().request_pos.price));
+    else if (order->last_confirmation().HasValue())
+        return  (fn_as_QString(order->last_confirmation().Get().confirmated_info.market_pos.price));
+    else
+        throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+}
+
+QString get_req_price_from_order(mtk::CountPtr<mtk::trd::trd_cli_mk>& /*order*/)
+{
+    return QLatin1String("");
+}
+
+
+bool  is_canceled(const mtk::trd::msg::sub_order_id& ord_id)
+{
+    mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
+    if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+    {
+        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
+        return  order->is_canceled();
+    }
+    else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+    {
+        mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
+        return  order->is_canceled();
+    }
+    else
+        throw mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order type for orderid " << ord_id), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+}
+
+bool  is_full_executed(const mtk::trd::msg::sub_order_id& ord_id)
+{
+    mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
+    if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+    {
+        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
+        return  order->is_full_executed();
+    }
+    else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+    {
+        mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
+        return  order->is_full_executed();
+    }
+    else
+        throw mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order type for orderid " << ord_id), mtk::alPriorError, mtk::alTypeNoPermisions);
+}
+
+
+mtk::msg::sub_product_code    get_product_code(const mtk::trd::msg::sub_order_id& ord_id)
+{
+    mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
+    if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+    {
+        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
+        return mtk::trd::get_product_code(*order);
+    }
+    else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+    {
+        mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
+        return mtk::trd::get_product_code(*order);
+    }
+    else
+        throw mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order type for orderid " << ord_id), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+}
+
+mtk::FixedNumber   get_total_exec_quantity (const mtk::trd::msg::sub_order_id& ord_id)
+{
+    mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
+    if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+    {
+
+        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
+        if(order->last_confirmation().HasValue())
+        {
+            return order->last_confirmation().Get().confirmated_info.total_execs.quantity;
+        }
+        else
+            return mtk::FixedNumber(mtk::fnIntCode(0), mtk::fnDec(0), mtk::fnInc(0));
+
+    }
+    else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+    {
+
+        mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
+        if(order->last_confirmation().HasValue())
+        {
+            return order->last_confirmation().Get().confirmated_info.total_execs.quantity;
+        }
+        else
+            return mtk::FixedNumber(mtk::fnIntCode(0), mtk::fnDec(0), mtk::fnInc(0));
+
+    }
+    else
+        throw mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order type for orderid " << ord_id), mtk::alPriorError, mtk::alTypeNoPermisions);
+}
+
+
+
+
+
 //----------------------------------------------------------------------------------------------------
 //  class order_in_qbook
 //----------------------------------------------------------------------------------------------------
-class order_in_qbook  : public mtk::SignalReceptor
+class order_in_qbook
 {
-    typedef order_in_qbook  CLASS_NAME;
 public:
-    mtk::CountPtr<mtk::trd::trd_cli_ls>                 inner_order;
     QTableWidgetItem**                                  items;
     mtk::Signal<const mtk::trd::msg::sub_order_id&>     signal_executed_order;
 
-
-    order_in_qbook(QTableWidget *table_widget, const mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
-        : inner_order(order),
-          items (new QTableWidgetItem*[10])
+    order_in_qbook(QTableWidget *table_widget)
+        :   items (new QTableWidgetItem*[10])
     {
         int row = table_widget->rowCount();
         table_widget->insertRow(row);
@@ -169,21 +271,10 @@ public:
                 items[column]->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         }
 
-        MTK_CONNECT_THIS(inner_order->sig_cf_cc, update_on_cf);
-        MTK_CONNECT_THIS(inner_order->sig_cf_ex, update_on_cf);
-        MTK_CONNECT_THIS(inner_order->sig_cf_md, update_on_cf);
-        MTK_CONNECT_THIS(inner_order->sig_cf_nw, update_on_cf);
-        MTK_CONNECT_THIS(inner_order->sig_rj_cc, update_on_rj);
-        MTK_CONNECT_THIS(inner_order->sig_rj_md, update_on_rj);
-        MTK_CONNECT_THIS(inner_order->sig_rj_nw, update_on_rj);
-        MTK_CONNECT_THIS(inner_order->sig_rq_cc, update_on_rq);
-        MTK_CONNECT_THIS(inner_order->sig_rq_md, update_on_rq);
-        MTK_CONNECT_THIS(inner_order->sig_rq_nw, update_on_rq);
-
         table_widget->scrollToBottom();
-        update();
+        //update();     calling virtual functions on constructor????    crazy
     }
-    ~order_in_qbook() {
+    virtual ~order_in_qbook() {
         delete [] items;
     }
 
@@ -203,23 +294,33 @@ public:
         update_item_exec_observations   ();
     }
 
-    void update_on_cf(const mtk::trd::msg::CF_NW_LS&)  {    update();   }
-    void update_on_cf(const mtk::trd::msg::CF_MD_LS&)  {    update();   }
-    void update_on_cf(const mtk::trd::msg::CF_CC_LS&)  {    update();   }
-    void update_on_rj(const mtk::trd::msg::RJ_NW_LS&)  {    update();   }
-    void update_on_rj(const mtk::trd::msg::RJ_MD_LS&)  {    update();   }
-    void update_on_rj(const mtk::trd::msg::RJ_CC_LS&)  {    update();   }
-    void update_on_rq(const mtk::trd::msg::RQ_NW_LS&)  {    update();   }
-    void update_on_rq(const mtk::trd::msg::RQ_MD_LS&)  {    update();   }
-    void update_on_rq(const mtk::trd::msg::RQ_CC_LS&)  {    update();   }
+    virtual void   update_item_session_id          ()=0;
+    virtual void   update_item_req_code            ()=0;
+    virtual void   update_item_market              ()=0;
+    virtual void   update_item_product             ()=0;
+    virtual void   update_item_price               ()=0;
+    virtual void   update_item_quantity            ()=0;
+    virtual void   update_item_side                ()=0;
+    virtual void   update_item_exec_quantity       ()=0;
+    virtual void   update_item_exec_price          ()=0;
+    virtual void   update_item_exec_observations   ()=0;
 
-    //  on execution on order it will signal it
-    void update_on_cf(const mtk::trd::msg::CF_EX_LS& cfex)
+};
+
+
+template<typename  ORDER_TYPE>
+class order_in_qbook_xx  :    public  order_in_qbook
+{
+    typedef order_in_qbook_xx  CLASS_NAME;
+public:
+    mtk::CountPtr<ORDER_TYPE>                 inner_order;
+
+    order_in_qbook_xx(QTableWidget *table_widget, const mtk::CountPtr<ORDER_TYPE>& order)
+        : order_in_qbook(table_widget), inner_order(order)
     {
-        update();
-        signal_executed_order.emit(cfex.confirmated_info.order_id);
     }
-
+    ~order_in_qbook_xx() {
+    }
 
 
     QColor  get_default_color(void)
@@ -245,7 +346,6 @@ public:
         item->setText(get_session_id_from_order(inner_order));
         item->setBackgroundColor(get_default_color());
     }
-
 
     void update_item_req_code()
     {
@@ -282,13 +382,7 @@ public:
     void update_item_price(void)
     {
         QTableWidgetItem* item = items[col_price];
-        if (inner_order->last_request().HasValue())
-            item->setText(fn_as_QString(inner_order->last_request().Get().request_pos.price));
-        else if (inner_order->last_confirmation().HasValue())
-            item->setText(fn_as_QString(inner_order->last_confirmation().Get().confirmated_info.market_pos.price));
-        else
-            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-
+        item->setText(get_req_price_from_order(inner_order));
         item->setBackgroundColor(get_default_color());
     }
 
@@ -305,14 +399,12 @@ public:
         item->setBackgroundColor(get_default_color());
     }
 
-
-
     void update_item_side(void)
     {
         QTableWidgetItem* item = items[col_side];
         mtk::trd::msg::enBuySell buy_sell;
         if (inner_order->last_confirmation().HasValue())
-            buy_sell =inner_order->last_confirmation().Get().confirmated_info.market_pos.side;
+            buy_sell = inner_order->last_confirmation().Get().confirmated_info.market_pos.side;
         else if (inner_order->last_request().HasValue())
             buy_sell = inner_order->last_request().Get().request_pos.side;
         else
@@ -379,9 +471,105 @@ public:
         item->setBackgroundColor(get_default_color());
         item->setText(QLatin1String(inner_order->serrors().c_str()));
     }
-
-
 };
+
+
+
+template<typename  ORDER_TYPE>
+class order_in_qbook_XX;
+
+
+//      mtk::trd::trd_cli_ls
+template<>
+class order_in_qbook_XX<mtk::trd::trd_cli_ls>  :    public  order_in_qbook_xx<mtk::trd::trd_cli_ls>,       public mtk::SignalReceptor
+{
+    typedef order_in_qbook_XX  CLASS_NAME;
+public:
+    order_in_qbook_XX(QTableWidget *table_widget, const mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+        : order_in_qbook_xx<mtk::trd::trd_cli_ls>(table_widget, order)
+    {
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_cf_cc, update_on_cf);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_cf_ex, update_on_cf);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_cf_md, update_on_cf);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_cf_nw, update_on_cf);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_rj_cc, update_on_rj);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_rj_md, update_on_rj);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_rj_nw, update_on_rj);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_rq_cc, update_on_rq);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_rq_md, update_on_rq);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_rq_nw, update_on_rq);
+        order_in_qbook::update();
+    }
+    ~order_in_qbook_XX() {
+    }
+
+
+    void update_on_cf(const mtk::trd::msg::CF_NW_LS&)  {    order_in_qbook::update();   }
+    void update_on_cf(const mtk::trd::msg::CF_MD_LS&)  {    order_in_qbook::update();   }
+    void update_on_cf(const mtk::trd::msg::CF_CC_LS&)  {    order_in_qbook::update();   }
+    void update_on_rj(const mtk::trd::msg::RJ_NW_LS&)  {    order_in_qbook::update();   }
+    void update_on_rj(const mtk::trd::msg::RJ_MD_LS&)  {    order_in_qbook::update();   }
+    void update_on_rj(const mtk::trd::msg::RJ_CC_LS&)  {    order_in_qbook::update();   }
+    void update_on_rq(const mtk::trd::msg::RQ_NW_LS&)  {    order_in_qbook::update();   }
+    void update_on_rq(const mtk::trd::msg::RQ_MD_LS&)  {    order_in_qbook::update();   }
+    void update_on_rq(const mtk::trd::msg::RQ_CC_LS&)  {    order_in_qbook::update();   }
+
+    //  on execution on order it will signal it
+    void update_on_cf(const mtk::trd::msg::CF_EX_LS& cfex)
+    {
+        order_in_qbook::update();
+        order_in_qbook::signal_executed_order.emit(cfex.confirmated_info.order_id);
+    }
+};
+
+
+
+
+//      mtk::trd::trd_cli_mk
+template<>
+class order_in_qbook_XX<mtk::trd::trd_cli_mk>  :    public  order_in_qbook_xx<mtk::trd::trd_cli_mk>,       public mtk::SignalReceptor
+{
+    typedef order_in_qbook_XX  CLASS_NAME;
+public:
+    order_in_qbook_XX(QTableWidget *table_widget, const mtk::CountPtr<mtk::trd::trd_cli_mk>& order)
+        : order_in_qbook_xx<mtk::trd::trd_cli_mk>(table_widget, order)
+    {
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_cf_cc, update_on_cf);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_cf_ex, update_on_cf);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_cf_md, update_on_cf);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_cf_nw, update_on_cf);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_rj_cc, update_on_rj);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_rj_md, update_on_rj);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_rj_nw, update_on_rj);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_rq_cc, update_on_rq);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_rq_md, update_on_rq);
+        MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_mk>::inner_order->sig_rq_nw, update_on_rq);
+        order_in_qbook::update();
+    }
+    ~order_in_qbook_XX() {
+    }
+
+
+    void update_on_cf(const mtk::trd::msg::CF_NW_MK&)  {    order_in_qbook::update();   }
+    void update_on_cf(const mtk::trd::msg::CF_MD_MK&)  {    order_in_qbook::update();   }
+    void update_on_cf(const mtk::trd::msg::CF_CC_MK&)  {    order_in_qbook::update();   }
+    void update_on_rj(const mtk::trd::msg::RJ_NW_MK&)  {    order_in_qbook::update();   }
+    void update_on_rj(const mtk::trd::msg::RJ_MD_MK&)  {    order_in_qbook::update();   }
+    void update_on_rj(const mtk::trd::msg::RJ_CC_MK&)  {    order_in_qbook::update();   }
+    void update_on_rq(const mtk::trd::msg::RQ_NW_MK&)  {    order_in_qbook::update();   }
+    void update_on_rq(const mtk::trd::msg::RQ_MD_MK&)  {    order_in_qbook::update();   }
+    void update_on_rq(const mtk::trd::msg::RQ_CC_MK&)  {    order_in_qbook::update();   }
+
+    //  on execution on order it will signal it
+    void update_on_cf(const mtk::trd::msg::CF_EX_MK& cfex)
+    {
+        order_in_qbook::update();
+        order_in_qbook::signal_executed_order.emit(cfex.confirmated_info.order_id);
+    }
+};
+
+
+
 //----------------------------------------------------------------------------------------------------
 //  class order_in_qbook
 //----------------------------------------------------------------------------------------------------
@@ -475,6 +663,7 @@ qorder_table::qorder_table(QWidget *parent) :
 
 
     MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_order_ls_new(), on_new_order);
+    MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_order_mk_new(), on_new_order);
     MTK_TIMER_1C(timer_get_orders2add);
 
     //slot_apply_filter(filter_data());
@@ -487,7 +676,7 @@ qorder_table::~qorder_table()
 }
 
 
-void qorder_table::__direct_add_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+void qorder_table::__direct_add_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<order_in_qbook>& order)
 {
     //  if the order was previusly registered, delete the row and the order info
     mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >::iterator  it = orders->find(order_id);
@@ -500,10 +689,9 @@ void qorder_table::__direct_add_new_order(const mtk::trd::msg::sub_order_id& ord
     }
 
 
-    //  create an register the order
-    mtk::CountPtr<order_in_qbook>  new_order = mtk::make_cptr(new order_in_qbook(table_widget, order));
-    MTK_CONNECT_THIS(new_order->signal_executed_order, try_realocate_order);
-    orders->insert(std::make_pair(order_id, new_order));
+    //  register the order
+    MTK_CONNECT_THIS(order->signal_executed_order, try_realocate_order);
+    orders->insert(std::make_pair(order_id, order));
 }
 
 void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& /*order*/)
@@ -511,15 +699,16 @@ void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk
     orders2add_online.push_back(order_id);
     add_new_order_orders_in_sequence(order_id);
 
-    //orders->insert(std::make_pair(order_id, mtk::make_cptr(new order_in_qbook(this, order))));
-/*
-    static int size = QFontMetrics(this->font()).height()*1.4;
-    static bool initialized=false;
-    if (!initialized)
-        table_widget->verticalHeader()->setDefaultSectionSize(size);
-    initialized = true;
-*/
 }
+
+void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_mk>& /*order*/)
+{
+    orders2add_online.push_back(order_id);
+    add_new_order_orders_in_sequence(order_id);
+
+}
+
+
 
 void  qorder_table::try_realocate_order(const mtk::trd::msg::sub_order_id& order_id)
 {
@@ -572,7 +761,12 @@ void qorder_table::request_modif(void)
         int row = table_widget->currentRow();
         if (row==-1)        return;
         const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
-        mtk::trd::trd_cli_ord_book::rq_md_ls_manual(ord_id);
+        if(mtk::trd::trd_cli_ord_book::get_order_type(ord_id) ==  mtk::trd::trd_cli_ord_book::ot_limit)
+            mtk::trd::trd_cli_ord_book::rq_md_ls_manual(ord_id);
+        else if(mtk::trd::trd_cli_ord_book::get_order_type(ord_id) ==  mtk::trd::trd_cli_ord_book::ot_market)
+            mtk::trd::trd_cli_ord_book::rq_md_mk_manual(ord_id);
+        else throw mtk::Alarm(MTK_HERE, "qorderbook", MTK_SS("unknown order type " << ord_id << "  type:"  << mtk::trd::trd_cli_ord_book::get_order_type(ord_id)), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+
     }
     catch(...)
     {
@@ -595,7 +789,12 @@ void qorder_table::request_cancel(void)
         if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to cancel the order?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
         {
             const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
-            mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+            if(mtk::trd::trd_cli_ord_book::get_order_type(ord_id) ==  mtk::trd::trd_cli_ord_book::ot_limit)
+                mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+            else if(mtk::trd::trd_cli_ord_book::get_order_type(ord_id) ==  mtk::trd::trd_cli_ord_book::ot_market)
+                mtk::trd::trd_cli_ord_book::rq_cc_mk(ord_id);
+            else throw mtk::Alarm(MTK_HERE, "qorderbook", MTK_SS("unknown order type " << ord_id << "  type:"  << mtk::trd::trd_cli_ord_book::get_order_type(ord_id)), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+
         }
     }
     catch(...)
@@ -618,9 +817,7 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
     //  timer_get_orders2add  is calling this function
 
 
-
-    mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
-    mtk::msg::sub_product_code pc = mtk::trd::get_product_code(*order);
+    mtk::msg::sub_product_code pc = get_product_code(order_id);
     int matches = 0;
     if(mtk::s_toUpper(pc.product).find(fd.product.toUpper().toStdString())!=std::string::npos
                 ||  mtk::s_toUpper(pc.product).find(fd.product.toUpper().toStdString())!=std::string::npos)
@@ -632,12 +829,12 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
     {
         if(fd.liveFilter == filter_data::lfAll)
             ++matches;
-        else if(fd.liveFilter == filter_data::lfLive  &&   (order->is_canceled()== false  &&  order->is_full_executed()==false))
+        else if(fd.liveFilter == filter_data::lfLive  &&   (is_canceled(order_id)== false  &&  is_full_executed(order_id)==false))
             ++matches;
         else if(fd.liveFilter == filter_data::lfLiveExecuted  &&
-                        ( (order->is_canceled()== false  &&  order->is_full_executed()==false)       //  alive
+                        ( (is_canceled(order_id)== false  &&  is_full_executed(order_id)==false)       //  alive
                           ||
-                          (order->last_confirmation().HasValue() &&  order->last_confirmation().Get().confirmated_info.total_execs.quantity.GetIntCode() > 0)
+                          (get_total_exec_quantity(order_id).GetIntCode() > 0)
                           ))
             ++matches;
 
@@ -680,8 +877,19 @@ void   qorder_table::timer_get_orders2add(void)
         orders2add_loading.pop_front();
         if(check_filter_order(current_filter, order_id, true))
         {
-            mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
-            __direct_add_new_order(order_id, order);
+            mtk::CountPtr<order_in_qbook>  new_order;
+            mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(order_id);
+            if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+            {
+                mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
+                new_order = mtk::CountPtr<order_in_qbook>(new order_in_qbook_XX<mtk::trd::trd_cli_ls>(table_widget, order));
+            }
+            else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+            {
+                mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(order_id);
+                new_order = mtk::CountPtr<order_in_qbook>(new order_in_qbook_XX<mtk::trd::trd_cli_mk>(table_widget, order));
+            }
+            __direct_add_new_order(order_id, new_order);
             ++counter;
             if(counter%5==0)
                 return;
@@ -693,8 +901,19 @@ void   qorder_table::timer_get_orders2add(void)
         orders2add_online.pop_front();
         if(check_filter_order(current_filter, order_id, false))
         {
-            mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
-            __direct_add_new_order(order_id, order);
+            mtk::CountPtr<order_in_qbook>  new_order;
+            mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(order_id);
+            if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+            {
+                mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
+                new_order = mtk::CountPtr<order_in_qbook>(new order_in_qbook_XX<mtk::trd::trd_cli_ls>(table_widget, order));
+            }
+            else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+            {
+                mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(order_id);
+                new_order = mtk::CountPtr<order_in_qbook>(new order_in_qbook_XX<mtk::trd::trd_cli_mk>(table_widget, order));
+            }
+            __direct_add_new_order(order_id, new_order);
             ++counter;
             if(counter%5==0)
                 return;
@@ -740,8 +959,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
     {
         mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
 
-        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
-        if(order->is_canceled()  ||  order->is_full_executed())
+        if(is_canceled(ord_id)  ||  is_full_executed(ord_id))
         {
             enabled_cancel = false;
             enabled_modif = false;
@@ -843,8 +1061,8 @@ void qorder_table::keyPressEvent(QKeyEvent *e)
     {
         mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
 
-        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
-        if(order->is_canceled()  ||  order->is_full_executed())
+
+        if(is_canceled(ord_id)  ||  is_full_executed(ord_id))
         {
             enabled_cancel = false;
             enabled_modif = false;

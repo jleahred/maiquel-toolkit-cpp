@@ -38,13 +38,13 @@ private slots:
 
 private:
     QTableWidget*        table_widget;
-    void __direct_add_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_position_ls& exec);
-    void on_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_position_ls& exec);
+    void __direct_add_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_exec_conf& exec);
+    void on_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_exec_conf& exec);
 
     mtk::list<Exec_in_table*>*                                                          exec_in_table;
-    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> >  execs2add_loading;
-    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> >  execs2add_online;
-    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_position_ls> >  execs_all;
+    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> >    execs2add_loading;
+    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> >    execs2add_online;
+    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> >    execs_all;
 
     void            timer_get_execs2add(void);
 

@@ -5,6 +5,7 @@
 
 #include "support/signalslot.hpp"
 #include "components/trading/trd_cli_ls.h"
+#include "components/trading/trd_cli_mk.h"
 #include "components/trading/trd_cli_ord_book.h"
 #include "qorderbook/filter_form.h"
 
@@ -46,8 +47,9 @@ private slots:
 
 private:
     QTableWidget*        table_widget;
-    void __direct_add_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& order);
+    void __direct_add_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<order_in_qbook>& order);
     void on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls>& order);
+    void on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_mk>& order);
 
     mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >* orders;
     mtk::list<mtk::trd::msg::sub_order_id>     orders2add_loading;

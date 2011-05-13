@@ -17,6 +17,10 @@ namespace mtk{namespace trd{
     
     
     namespace  trd_cli_ord_book {
+
+
+        enum  en_order_type  {  ot_limit, ot_market  };
+        
         
         
         //  INPUT
@@ -45,6 +49,11 @@ namespace mtk{namespace trd{
         mtk::CountPtr<trd_cli_mk>                   get_order_mk            (const msg::sub_order_id& ord_id);
         
         mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void);
+        
+        
+        en_order_type  get_order_type(const msg::sub_order_id& ord_id);
+        
+        
         
         //  hooks
         mtk::Signal< mtk::trd::msg::RQ_XX_LS&, bool& /* canceled */, bool /*agress*/    >&   get_signal_request_hook_ls         (void);

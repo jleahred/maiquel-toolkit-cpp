@@ -4,6 +4,8 @@
 #include <QDialog>
 
 #include "components/trading/msg_trd_cli_ls.h"
+#include "components/trading/msg_trd_cli_mk.h"
+
 
 namespace Ui {
     class QEditOrder;
@@ -14,18 +16,22 @@ class QEditOrder : public QDialog
     Q_OBJECT
 
 public:
+
     //explicit QEditOrder(QWidget *parent = 0);
     explicit QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidget *parent = 0);
+    explicit QEditOrder(const mtk::trd::msg::RQ_XX_MK& _rq, bool agressive, QWidget *parent = 0);
 
     ~QEditOrder();
 
     //void set_request(const mtk::trd::msg::RQ_XX_LS& rq);
-    mtk::trd::msg::RQ_XX_LS get_request(void);
+    mtk::trd::msg::RQ_XX_LS   get_request_ls(void);
+    mtk::trd::msg::RQ_XX_MK   get_request_mk(void);
 
 private:
     Ui::QEditOrder *ui;
 
-    mtk::trd::msg::RQ_XX_LS  rq;
+    mtk::nullable<mtk::trd::msg::RQ_XX_LS>   rq_ls;
+    mtk::nullable<mtk::trd::msg::RQ_XX_MK>   rq_mk;
 
 
     bool check_if_order_can_be_sent(void);

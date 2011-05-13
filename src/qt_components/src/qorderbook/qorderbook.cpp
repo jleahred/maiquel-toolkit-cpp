@@ -46,12 +46,22 @@ namespace {
 
 
 
-void on_request_with_user_check(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled, bool agressive)
+void on_request_with_user_check_ls(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled, bool agressive)
 {
     QEditOrder eo(rq, agressive);
     if (eo.exec())
     {
-        rq = eo.get_request();
+        rq = eo.get_request_ls();
+    }
+    else canceled =true;
+}
+
+void on_request_with_user_check_mk(mtk::trd::msg::RQ_XX_MK& rq, bool& canceled, bool agressive)
+{
+    QEditOrder eo(rq, agressive);
+    if (eo.exec())
+    {
+        rq = eo.get_request_mk();
     }
     else canceled =true;
 }
@@ -136,7 +146,8 @@ QOrderBook::QOrderBook(QWidget *parent) :
     layout->setMargin(0);
     this->setLayout(layout);
 
-    mtk::trd::trd_cli_ord_book::get_signal_request_hook().connect(on_request_with_user_check);
+    mtk::trd::trd_cli_ord_book::get_signal_request_hook_ls().connect(on_request_with_user_check_ls);
+    mtk::trd::trd_cli_ord_book::get_signal_request_hook_mk().connect(on_request_with_user_check_mk);
 }
 
 QOrderBook::~QOrderBook()

@@ -44,7 +44,8 @@ enum alEnType       {
                         alTypeUnknown       ,
                         alTypeNoPermisions  ,
                         alTypeOverflow      ,
-                        alTypeRealTime
+                        alTypeRealTime      ,
+                        alTypeLogicError
                     };
 
 YAML::Emitter&  operator<< (YAML::Emitter& o, const alEnPriority& a);
