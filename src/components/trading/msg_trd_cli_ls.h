@@ -42,7 +42,7 @@ public:
 
     
     // constructor
-    explicit sub_position_ls (    const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const enBuySell&  _side );
+    explicit sub_position_ls (    const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity );
     explicit sub_position_ls ( const qpid::messaging::Message& message );
     virtual ~sub_position_ls (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_position_ls"; };
@@ -53,45 +53,6 @@ public:
     // fields
     mtk::FixedNumber                          price; 
     mtk::FixedNumber                          quantity; 
-    enBuySell                                 side; 
-
-
-
-    //  subject info
-    
-    
-    
-    
-    
-    void        before_send(void) const;
-    
-private:
-    std::string check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
-//      sub_order_ls_confirmated
-//-------------------------------    
-class sub_order_ls_confirmated        :  public  sub_order_xx_confirmated
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit sub_order_ls_confirmated (  const sub_order_xx_confirmated&  parent,   const sub_position_ls&  _market_pos );
-    explicit sub_order_ls_confirmated ( const qpid::messaging::Message& message );
-    virtual ~sub_order_ls_confirmated (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_order_ls_confirmated"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_order_ls_confirmated"; };
-    
-    
-
-    // fields
-    sub_position_ls                           market_pos; 
 
 
 
@@ -171,7 +132,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -210,7 +171,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -249,7 +210,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -275,7 +236,7 @@ public:
 
     
     // constructor
-    explicit CF_XX_LS (  const CF_XX&  parent,   const sub_order_ls_confirmated&  _confirmated_info );
+    explicit CF_XX_LS (  const CF_XX&  parent,   const sub_position_ls&  _market_pos );
     explicit CF_XX_LS ( const qpid::messaging::Message& message );
     virtual ~CF_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX_LS"; };
@@ -284,7 +245,7 @@ public:
     
 
     // fields
-    sub_order_ls_confirmated                  confirmated_info; 
+    sub_position_ls                           market_pos; 
 
 
 
@@ -326,7 +287,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -365,7 +326,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -404,7 +365,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -444,7 +405,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -461,54 +422,16 @@ private:
 
 
 //-------------------------------
-//      RJ_XX_LS
-//-------------------------------    
-class RJ_XX_LS        :  public  RJ_XX
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit RJ_XX_LS (  const RJ_XX&  parent,   const sub_order_ls_confirmated&  _confirmated_info );
-    explicit RJ_XX_LS ( const qpid::messaging::Message& message );
-    virtual ~RJ_XX_LS (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_LS"; };
-    static  std::string static_get_message_type_as_string(void)        { return "RJ_XX_LS"; };
-    
-    
-
-    // fields
-    sub_order_ls_confirmated                  confirmated_info; 
-
-
-
-    //  subject info
-    
-    
-    
-    
-    
-    void        before_send(void) const;
-    
-private:
-    std::string check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
 //      RJ_NW_LS
 //-------------------------------    
-class RJ_NW_LS        :  public  RJ_XX_LS
+class RJ_NW_LS        :  public  CF_XX_LS
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit RJ_NW_LS (  const RJ_XX_LS&  parent );
+    explicit RJ_NW_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description );
     explicit RJ_NW_LS ( const qpid::messaging::Message& message );
     virtual ~RJ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_NW_LS"; };
@@ -517,11 +440,12 @@ public:
     
 
     // fields
+    std::string                               reject_description; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -540,14 +464,14 @@ private:
 //-------------------------------
 //      RJ_MD_LS
 //-------------------------------    
-class RJ_MD_LS        :  public  RJ_XX_LS
+class RJ_MD_LS        :  public  CF_XX_LS
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit RJ_MD_LS (  const RJ_XX_LS&  parent );
+    explicit RJ_MD_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description );
     explicit RJ_MD_LS ( const qpid::messaging::Message& message );
     virtual ~RJ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_MD_LS"; };
@@ -556,11 +480,12 @@ public:
     
 
     // fields
+    std::string                               reject_description; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -579,14 +504,14 @@ private:
 //-------------------------------
 //      RJ_CC_LS
 //-------------------------------    
-class RJ_CC_LS        :  public  RJ_XX_LS
+class RJ_CC_LS        :  public  CF_XX_LS
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit RJ_CC_LS (  const RJ_XX_LS&  parent );
+    explicit RJ_CC_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description );
     explicit RJ_CC_LS ( const qpid::messaging::Message& message );
     virtual ~RJ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_CC_LS"; };
@@ -595,11 +520,12 @@ public:
     
 
     // fields
+    std::string                               reject_description; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product);
+    static std::string  get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -624,13 +550,6 @@ private:
 
 bool operator== (const sub_position_ls& a, const sub_position_ls& b);
 bool operator!= (const sub_position_ls& a, const sub_position_ls& b);
-
-    std::ostream& operator<< (std::ostream& o, const sub_order_ls_confirmated & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_order_ls_confirmated & c);
-   void           operator >> (const YAML::Node& n,       sub_order_ls_confirmated & c);
-
-bool operator== (const sub_order_ls_confirmated& a, const sub_order_ls_confirmated& b);
-bool operator!= (const sub_order_ls_confirmated& a, const sub_order_ls_confirmated& b);
 
     std::ostream& operator<< (std::ostream& o, const RQ_XX_LS & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_XX_LS & c);
@@ -695,13 +614,6 @@ bool operator!= (const CF_CC_LS& a, const CF_CC_LS& b);
 bool operator== (const CF_EX_LS& a, const CF_EX_LS& b);
 bool operator!= (const CF_EX_LS& a, const CF_EX_LS& b);
 
-    std::ostream& operator<< (std::ostream& o, const RJ_XX_LS & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const RJ_XX_LS & c);
-   void           operator >> (const YAML::Node& n,       RJ_XX_LS & c);
-
-bool operator== (const RJ_XX_LS& a, const RJ_XX_LS& b);
-bool operator!= (const RJ_XX_LS& a, const RJ_XX_LS& b);
-
     std::ostream& operator<< (std::ostream& o, const RJ_NW_LS & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const RJ_NW_LS & c);
    void           operator >> (const YAML::Node& n,       RJ_NW_LS & c);
@@ -727,10 +639,6 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_position
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_ls& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_position_ls>& a, const std::string& field);
 void copy (sub_position_ls& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_order_ls_confirmated& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_ls_confirmated& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_ls_confirmated>& a, const std::string& field);
-void copy (sub_order_ls_confirmated& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_XX_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_XX_LS>& a, const std::string& field);
@@ -767,10 +675,6 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_EX_LS& a)
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EX_LS>& a, const std::string& field);
 void copy (CF_EX_LS& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_XX_LS& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_LS& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_XX_LS>& a, const std::string& field);
-void copy (RJ_XX_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_NW_LS>& a, const std::string& field);
@@ -785,8 +689,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 void copy (RJ_CC_LS& a, const qpid::types::Variant& map);
 
     sub_position_ls  __internal_get_default(sub_position_ls *);
-    
-    sub_order_ls_confirmated  __internal_get_default(sub_order_ls_confirmated *);
     
     RQ_XX_LS  __internal_get_default(RQ_XX_LS *);
     
@@ -805,8 +707,6 @@ void copy (RJ_CC_LS& a, const qpid::types::Variant& map);
     CF_CC_LS  __internal_get_default(CF_CC_LS *);
     
     CF_EX_LS  __internal_get_default(CF_EX_LS *);
-    
-    RJ_XX_LS  __internal_get_default(RJ_XX_LS *);
     
     RJ_NW_LS  __internal_get_default(RJ_NW_LS *);
     

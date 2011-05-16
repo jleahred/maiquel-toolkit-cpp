@@ -38,16 +38,14 @@ sub_total_executions [<V:0>]
 
 
 
-
-
-
-sub_order_xx_confirmated [<V:0>]
+sub_invariant_order_info  [<V:0>]
 {
-    order_id       (oid)  :   sub_order_id
-    total_execs    (exp)  :   sub_total_executions      
-    
-    cli_ref        (cr)   :   string
+    order_id            (oid)  :   sub_order_id
+    product_code        (pc)   :   mtk::msg::sub_product_code     
+    side                (sd)   :   enBuySell
+    account             (acc)  :   string
 }
+
 
 
 
@@ -65,10 +63,9 @@ sub_order_xx_confirmated [<V:0>]
 
 RQ_XX  [< V:0 >]
 {
+    invariant           (inv)  :   sub_invariant_order_info
+
     req_info            (rqid) :   mtk::msg::sub_request_info
-    order_id            (oid)  :   sub_order_id
-    product_code        (pc)   :   mtk::msg::sub_product_code     
-    
     cli_ref             (cr)   :   string
     
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
@@ -82,27 +79,15 @@ RQ_XX  [< V:0 >]
 
 CF_XX  [<  V:0  >]
 {
-    req_info            (rqid) :   mtk::msg::sub_request_info    
-    product_code        (pc)   :   mtk::msg::sub_product_code
-
-    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
-}
-
-
-
-
-
-
-//---------------------------------------------------------------------
-//	rejects  XX
-
-RJ_XX  [< V:0 >]
-{
-    req_info            (rqid) :   mtk::msg::sub_request_info    
-    product_code        (pc)   :   mtk::msg::sub_product_code
-    description         (ds)   :   string
+    invariant           (inv)  :   sub_invariant_order_info
     
+    req_info            (rqid) :   mtk::msg::sub_request_info    
+    cli_ref             (cr)   :   string
+    total_execs         (ext)  :   sub_total_executions      
+
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
+
+
 
 

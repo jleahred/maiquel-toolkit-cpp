@@ -119,9 +119,9 @@ template<typename  ORDER_TYPE>
 QString get_session_id_from_order(mtk::CountPtr<ORDER_TYPE>& order)
 {
     if (order->last_confirmation().HasValue())
-        return QLatin1String(order->last_confirmation().Get().confirmated_info.order_id.sess_id.c_str());
+        return QLatin1String(order->last_confirmation().Get().invariant.order_id.sess_id.c_str());
     else if (order->last_request().HasValue())
-        return QLatin1String(order->last_request().Get().order_id.sess_id.c_str());
+        return QLatin1String(order->last_request().Get().invariant.order_id.sess_id.c_str());
     else
         throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
@@ -131,9 +131,9 @@ template<typename  ORDER_TYPE>
 QString get_req_code_from_order(mtk::CountPtr<ORDER_TYPE>& order)
 {
     if (order->last_confirmation().HasValue())
-        return QLatin1String(order->last_confirmation().Get().confirmated_info.order_id.req_code.c_str());
+        return QLatin1String(order->last_confirmation().Get().invariant.order_id.req_code.c_str());
     else if (order->last_request().HasValue())
-        return QLatin1String(order->last_request().Get().order_id.req_code.c_str());
+        return QLatin1String(order->last_request().Get().invariant.order_id.req_code.c_str());
     else
         throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
@@ -147,7 +147,7 @@ QString get_req_price_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
     if (order->last_request().HasValue())
         return (fn_as_QString(order->last_request().Get().request_pos.price));
     else if (order->last_confirmation().HasValue())
-        return  (fn_as_QString(order->last_confirmation().Get().confirmated_info.market_pos.price));
+        return  (fn_as_QString(order->last_confirmation().Get().market_pos.price));
     else
         throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
@@ -219,7 +219,7 @@ mtk::FixedNumber   get_total_exec_quantity (const mtk::trd::msg::sub_order_id& o
         mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
         if(order->last_confirmation().HasValue())
         {
-            return order->last_confirmation().Get().confirmated_info.total_execs.quantity;
+            return order->last_confirmation().Get().total_execs.quantity;
         }
         else
             return mtk::FixedNumber(mtk::fnIntCode(0), mtk::fnDec(0), mtk::fnInc(0));
@@ -231,7 +231,7 @@ mtk::FixedNumber   get_total_exec_quantity (const mtk::trd::msg::sub_order_id& o
         mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
         if(order->last_confirmation().HasValue())
         {
-            return order->last_confirmation().Get().confirmated_info.total_execs.quantity;
+            return order->last_confirmation().Get().total_execs.quantity;
         }
         else
             return mtk::FixedNumber(mtk::fnIntCode(0), mtk::fnDec(0), mtk::fnInc(0));
@@ -358,9 +358,9 @@ public:
     {
         QTableWidgetItem* item = items[col_market];
         if (inner_order->last_confirmation().HasValue())
-            item->setText(QLatin1String(inner_order->last_confirmation().Get().product_code.market.c_str()));
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().invariant.product_code.market.c_str()));
         else if (inner_order->last_request().HasValue())
-            item->setText(QLatin1String(inner_order->last_request().Get().product_code.market.c_str()));
+            item->setText(QLatin1String(inner_order->last_request().Get().invariant.product_code.market.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         item->setBackgroundColor(get_default_color());
@@ -370,9 +370,9 @@ public:
     {
         QTableWidgetItem* item = items[col_product];
         if (inner_order->last_confirmation().HasValue())
-            item->setText(QLatin1String(inner_order->last_confirmation().Get().product_code.product.c_str()));
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().invariant.product_code.product.c_str()));
         else if (inner_order->last_request().HasValue())
-            item->setText(QLatin1String(inner_order->last_request().Get().product_code.product.c_str()));
+            item->setText(QLatin1String(inner_order->last_request().Get().invariant.product_code.product.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         item->setBackgroundColor(get_default_color());
@@ -392,7 +392,7 @@ public:
         if (inner_order->last_request().HasValue())
             item->setText(fn_as_QString(inner_order->last_request().Get().request_pos.quantity));
         else if (inner_order->last_confirmation().HasValue())
-            item->setText(fn_as_QString(inner_order->last_confirmation().Get().confirmated_info.market_pos.quantity));
+            item->setText(fn_as_QString(inner_order->last_confirmation().Get().market_pos.quantity));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
@@ -404,9 +404,9 @@ public:
         QTableWidgetItem* item = items[col_side];
         mtk::trd::msg::enBuySell buy_sell;
         if (inner_order->last_confirmation().HasValue())
-            buy_sell = inner_order->last_confirmation().Get().confirmated_info.market_pos.side;
+            buy_sell = inner_order->last_confirmation().Get().invariant.side;
         else if (inner_order->last_request().HasValue())
-            buy_sell = inner_order->last_request().Get().request_pos.side;
+            buy_sell = inner_order->last_request().Get().invariant.side;
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (buy_sell == mtk::trd::msg::buy)
@@ -429,7 +429,7 @@ public:
         QTableWidgetItem* item = items[col_exec_quantity];
         if (inner_order->last_confirmation().HasValue())
         {
-            confirmed = inner_order->last_confirmation().Get().confirmated_info.total_execs.quantity;
+            confirmed = inner_order->last_confirmation().Get().total_execs.quantity;
             item->setText(fn_as_QString(confirmed.Get()));
         }
         if (confirmed.HasValue()  &&  confirmed.Get().GetIntCode() != 0)
@@ -449,9 +449,9 @@ public:
         QTableWidgetItem* item = items[col_exec_price];
         if (inner_order->last_confirmation().HasValue())
         {
-            confirmed = inner_order->last_confirmation().Get().confirmated_info.total_execs.sum_price_by_qty
+            confirmed = inner_order->last_confirmation().Get().total_execs.sum_price_by_qty
                             /
-                            inner_order->last_confirmation().Get().confirmated_info.total_execs.quantity.GetDouble();
+                            inner_order->last_confirmation().Get().total_execs.quantity.GetDouble();
             item->setText(QString::number(confirmed.get()._0, 'f', 5));
         }
         if (confirmed.IsValid())
@@ -518,7 +518,7 @@ public:
     void update_on_cf(const mtk::trd::msg::CF_EX_LS& cfex)
     {
         order_in_qbook::update();
-        order_in_qbook::signal_executed_order.emit(cfex.confirmated_info.order_id);
+        order_in_qbook::signal_executed_order.emit(cfex.invariant.order_id);
     }
 };
 
@@ -564,7 +564,7 @@ public:
     void update_on_cf(const mtk::trd::msg::CF_EX_MK& cfex)
     {
         order_in_qbook::update();
-        order_in_qbook::signal_executed_order.emit(cfex.confirmated_info.order_id);
+        order_in_qbook::signal_executed_order.emit(cfex.invariant.order_id);
     }
 };
 

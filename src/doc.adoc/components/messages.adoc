@@ -1,7 +1,33 @@
 = Messages
 
-
 Here we have the messages definitions (and in some cases the state diagrams) from component messages.
+
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| lib version |  **
+include::../../../VERSION[]
+**
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-05-16
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+<<<
+
+
 
 
 
@@ -164,18 +190,20 @@ include::../../../src/components/acs/msg_acs.msg[]
 
 ["graphviz", "trading_inheritance_diagram0.png"]
 -----------
-digraph trading_inheritance {
+digraph trading_inheritance  {
+    rankdir=LR;
     node [shape = circle, fontsize=10, fixedsize=true width=0.8];
 
     RQ_XX
-    CF_XX 
-    RJ_XX
+    CF_XX  ->  RJ_XX
 }
 -----------
 
 ["graphviz", "trading_inheritance_diagram1.png"]
 -----------
 digraph trading_inheritance {
+    rankdir=LR;
+
     node [shape = circle, fontsize=10, fixedsize=true width=0.8];
 
     RQ_XX  ->  RQ_XX_LS
@@ -197,6 +225,8 @@ digraph trading_inheritance {
 ["graphviz", "trading_inheritance_diagram2.png"]
 -----------
 digraph trading_inheritance {
+    rankdir=LR;
+
     node [shape = circle, fontsize=10, fixedsize=true width=0.8];
 
     CF_XX  ->  CF_XX_LS
@@ -212,28 +242,11 @@ digraph trading_inheritance {
     CF_XX  ->  CF_XX_SL
     CF_XX  ->  CF_XX_SM
 
+    CF_XX_LS  ->  RJ_NW_LS  
+    CF_XX_LS  ->  RJ_MD_LS
 }
 -----------
 
-["graphviz", "trading_inheritance_diagram3.png"]
------------
-digraph trading_inheritance {
-    node [shape = circle, fontsize=10, fixedsize=true width=0.8];
-    RJ_XX  ->  RJ_XX_LS
-    RJ_XX_LS  ->  RJ_NW_LS  
-    RJ_XX_LS  ->  RJ_MD_LS
-    RJ_XX_LS  ->  RJ_EX_LS
-
-    RJ_XX  ->  RJ_XX_MK
-    RJ_XX_MK  ->  RJ_NW_MK
-    RJ_XX_MK  ->  RJ_MD_MK
-    RJ_XX_MK  ->  RJ_EX_MK
-
-    RJ_XX  ->  RJ_XX_SL
-    RJ_XX  ->  RJ_XX_SM
-}
-
-------------
 
 
 * Common submessages for trading
@@ -243,14 +256,14 @@ digraph trading_inheritance {
 include::../../../src/components/trading/msg_trd_common.msg[]
 -----
 
-
+/*
 * Support code for trading client messages
 +
 .src/components/trading/msg_trd_common_support.h
 -----
 include::../../../src/components/trading/msg_trd_common_support.h[]
 -----
-
+*/
 
 
 === Limit orders

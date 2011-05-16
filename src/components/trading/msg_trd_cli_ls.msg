@@ -27,15 +27,10 @@ sub_position_ls   [<V:0>]
 { 
     price    (pr)   :   fix_num
     quantity (qt)   :   fix_num
-    side     (sd)   :   enBuySell
 }
 
 
 
-sub_order_ls_confirmated [<  V:0, I:sub_order_xx_confirmated  >]
-{
-    market_pos     (mp)   :   sub_position_ls      
-}
 
 
 
@@ -50,13 +45,13 @@ RQ_XX_LS  [<V:0,   I:RQ_XX   >]
 
 
 
-RQ_NW_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product} >]   {}
+RQ_NW_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
 
 
-RQ_MD_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product} >]   {}
+RQ_MD_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
 
 
-RQ_CC_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product} >]   {}
+RQ_CC_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
 
 
 
@@ -65,17 +60,17 @@ RQ_CC_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client
 
 CF_XX_LS  [< V:0,  I:CF_XX >]
 {
-    confirmated_info    (ci)   :   sub_order_ls_confirmated
+    market_pos     (mp)   :   sub_position_ls      
 }
 
 
-CF_NW_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product}   >]   {}
+CF_NW_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}   >]   {}
 
 
-CF_MD_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product}   >]   {}
+CF_MD_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}   >]   {}
 
 
-CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product}   >]   {}
+CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}   >]   {}
 
 
 
@@ -83,9 +78,9 @@ CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.clien
 //---------------------------------------------------------------------
 //	executions  LS
 
-CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product}   >]
+CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}   >]
 {
-    executed_pos  (exp)   :  sub_exec_conf
+    executed_pos  (exc)   :  sub_exec_conf
 }
 
 
@@ -95,18 +90,22 @@ CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client
 //---------------------------------------------------------------------
 //	rejects  LS
 
-RJ_XX_LS  [< V:0, I:RJ_XX   >]
+
+RJ_NW_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}  >]  
 {
-    confirmated_info    (ci)   :   sub_order_ls_confirmated
+    reject_description  (rd)    :   string
 }
 
 
-RJ_NW_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product}  >]  {}
+RJ_MD_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}  >]
+{
+    reject_description  (rd)    :   string
+}
 
 
-RJ_MD_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product}  >]  {}
-
-
-RJ_CC_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${product_code.market}.${product_code.product}  >]  {}
+RJ_CC_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}  >]
+{
+    reject_description  (rd)    :   string
+}
 
 

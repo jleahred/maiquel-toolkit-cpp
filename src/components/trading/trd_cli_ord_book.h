@@ -24,15 +24,15 @@ namespace mtk{namespace trd{
         
         
         //  INPUT
-        mtk::CountPtr<trd_cli_ls>   rq_nw_ls        (                                   const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref);
-        mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual (                                   const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref, bool agressive=false);
-        mtk::CountPtr<trd_cli_ls>   rq_md_ls        ( const msg::sub_order_id& ord_id,                                          const msg::sub_position_ls& rq_pos, const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_ls>   rq_nw_ls        (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const std::string& account, const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const std::string& account, const std::string& cli_ref, bool agressive=false);
+        mtk::CountPtr<trd_cli_ls>   rq_md_ls        ( const msg::sub_order_id& ord_id,                                                                              const msg::sub_position_ls& rq_pos,                             const std::string& cli_ref);
         mtk::CountPtr<trd_cli_ls>   rq_md_ls_manual ( const msg::sub_order_id& ord_id);
         mtk::CountPtr<trd_cli_ls>   rq_cc_ls        ( const msg::sub_order_id& ord_id);
 
-        mtk::CountPtr<trd_cli_mk>   rq_nw_mk        (                                   const mtk::msg::sub_product_code&   pc, const msg::sub_position_mk& rq_pos, const std::string& cli_ref);
-        mtk::CountPtr<trd_cli_mk>   rq_nw_mk_manual (                                   const mtk::msg::sub_product_code&   pc, const msg::sub_position_mk& rq_pos, const std::string& cli_ref, bool agressive=false);
-        mtk::CountPtr<trd_cli_mk>   rq_md_mk        ( const msg::sub_order_id& ord_id,                                          const msg::sub_position_mk& rq_pos, const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_mk>   rq_nw_mk        (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const std::string& account, const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_mk>   rq_nw_mk_manual (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const std::string& account, const std::string& cli_ref, bool agressive=false);
+        mtk::CountPtr<trd_cli_mk>   rq_md_mk        ( const msg::sub_order_id& ord_id,                                                                              const msg::sub_position_mk& rq_pos,                             const std::string& cli_ref);
         mtk::CountPtr<trd_cli_mk>   rq_md_mk_manual ( const msg::sub_order_id& ord_id);
         mtk::CountPtr<trd_cli_mk>   rq_cc_mk        ( const msg::sub_order_id& ord_id);
 

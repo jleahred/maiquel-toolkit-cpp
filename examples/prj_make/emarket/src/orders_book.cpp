@@ -116,11 +116,11 @@ void orders_book::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
 //------------------------------------------------------------------------------------------
 
 #define SET_OR_INIT_CACHED_LAST_REQUEST\
-    cached_last_request = orders_by_id[rq.order_id];    \
+    cached_last_request = orders_by_id[rq.invariant.order_id];    \
     if (cached_last_request.isValid()==false)     \
     {      \
         cached_last_request = make_cptr(new ord_ls());       \
-        orders_by_id[rq.order_id] = cached_last_request;      \
+        orders_by_id[rq.invariant.order_id] = cached_last_request;      \
         cached_last_request->sig_cli_cf_nw.connect(&send_to_client);    \
         cached_last_request->sig_cli_cf_md.connect(&send_to_client);    \
         cached_last_request->sig_cli_cf_cc.connect(&send_to_client);    \
@@ -178,37 +178,37 @@ void internal_orders_book::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
         throw mtk::Alarm(MTK_HERE, "orders_book::" ACTION "_order", MTK_SS("empty cached_last_request request" << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);  \
     if (cached_last_request->last_confirmation().HasValue() == false)  \
         throw mtk::Alarm(MTK_HERE, "orders_book::" ACTION "_order", MTK_SS("empty cached_last_request confirmation " << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);  \
-    else if (cached_last_request->last_request().Get().order_id != order_info.confirmated_info.order_id)  \
+    else if (cached_last_request->last_request().Get().invariant.order_id != order_info.invariant.order_id)  \
         throw mtk::Alarm(MTK_HERE, "orders_book::" ACTION "_order", MTK_SS("cached_last_request doesn't math with order to " ACTION   \
                         << cached_last_request->last_request().Get() << "  " << order_info), mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
 void internal_orders_book::add_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("add")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].add_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().invariant.product_code].add_order(cached_last_request);
 }
 
 void internal_orders_book::del_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("del")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].del_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().invariant.product_code].del_order(cached_last_request);
 }
 
 void internal_orders_book::modif_order  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("modif")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].modif_order(cached_last_request);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().invariant.product_code].modif_order(cached_last_request);
 }
 
 void internal_orders_book::check_execs  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("check_execs")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].check_execs();
+    this->queue_by_product[cached_last_request->last_confirmation().Get().invariant.product_code].check_execs();
 }
 
 void internal_orders_book::update_prices(const mtk::trd::msg::CF_XX_LS& /*order_info*/)
 {
-    this->queue_by_product[cached_last_request->last_confirmation().Get().product_code].update_prices(cached_last_request->last_confirmation().Get().product_code);
+    this->queue_by_product[cached_last_request->last_confirmation().Get().invariant.product_code].update_prices(cached_last_request->last_confirmation().Get().invariant.product_code);
 }
 
 
@@ -222,11 +222,11 @@ void internal_orders_book::update_prices(const mtk::trd::msg::CF_XX_LS& /*order_
 
 mtk::tuple<mtk::list<mtk::CountPtr<ord_ls> >*/*queue*/, int/*adjust_comparation*/> orders_in_product_queue::get_queue_adjust_comparation(mtk::CountPtr<ord_ls> order)
 {
-    if      (order->last_confirmation().Get().confirmated_info.market_pos.side == mtk::trd::msg::buy)
+    if      (order->last_confirmation().Get().invariant.side == mtk::trd::msg::buy)
     {
         return mtk::make_tuple(&bid_queue, 1);
     }
-    else if (order->last_confirmation().Get().confirmated_info.market_pos.side == mtk::trd::msg::sell)
+    else if (order->last_confirmation().Get().invariant.side == mtk::trd::msg::sell)
     {
         return mtk::make_tuple(&ask_queue,-1);
     }
@@ -246,9 +246,9 @@ void orders_in_product_queue::add_order(mtk::CountPtr<ord_ls> order)
     mtk::list<mtk::CountPtr<ord_ls> >::iterator it = queue->begin();
     while (it != queue->end())
     {
-        if ( mtk::Double((*it)->last_confirmation().Get().confirmated_info.market_pos.price.GetDouble()*adjust_comparation)  
+        if ( mtk::Double((*it)->last_confirmation().Get().market_pos.price.GetDouble()*adjust_comparation)  
              <  
-             mtk::Double(order->last_confirmation().Get().confirmated_info.market_pos.price.GetDouble()*adjust_comparation))
+             mtk::Double(order->last_confirmation().Get().market_pos.price.GetDouble()*adjust_comparation))
         //  atention: if they are equal, the order to add, will be back
         //  GetDouble returns a mtk::Double (comparations safe)
         //  Here, we let diferent extended on prices
@@ -272,7 +272,7 @@ void orders_in_product_queue::del_order(mtk::CountPtr<ord_ls> order)
     mtk::list<mtk::CountPtr<ord_ls> >::iterator it = queue->begin();
     while (it != queue->end())
     {
-        if ((*it)->last_confirmation().Get().confirmated_info.market_pos.price  ==  order->last_confirmation().Get().confirmated_info.market_pos.price)
+        if ((*it)->last_confirmation().Get().market_pos.price  ==  order->last_confirmation().Get().market_pos.price)
         //  GetDouble returns a mtk::Double (comparations safe)
         {
             queue->erase(it);
@@ -291,11 +291,11 @@ void orders_in_product_queue::modif_order(mtk::CountPtr<ord_ls> order)
 
 mtk::tuple<mtk::FixedNumber, int> get_price (const mtk::CountPtr<ord_ls>& order)
 {
-    return mtk::make_tuple(order->last_confirmation().Get().confirmated_info.market_pos.price, order->sequence());
+    return mtk::make_tuple(order->last_confirmation().Get().market_pos.price, order->sequence());
 }
 mtk::FixedNumber get_pending_quantity (const mtk::CountPtr<ord_ls>& order)
 {
-    return order->last_confirmation().Get().confirmated_info.total_execs.remaining_qty;
+    return order->last_confirmation().Get().total_execs.remaining_qty;
 }
 mtk::FixedNumber min(const mtk::FixedNumber& a, const mtk::FixedNumber& b)
 {
@@ -331,28 +331,28 @@ void orders_in_product_queue::check_execs(void)
             //  confirmation buy
             {
                 mtk::trd::msg::CF_XX_LS cf = best_buy->last_confirmation().Get();
-                cf.confirmated_info.total_execs.quantity.SetDouble(cf.confirmated_info.total_execs.quantity.GetDouble() + exec_quantity.GetDouble());
-                cf.confirmated_info.total_execs.sum_price_by_qty += exec_quantity.GetDouble() * exec_price.GetDouble();
-                cf.confirmated_info.total_execs.remaining_qty.SetDouble(
-                            cf.confirmated_info.market_pos.quantity.GetDouble()
+                cf.total_execs.quantity.SetDouble(cf.total_execs.quantity.GetDouble() + exec_quantity.GetDouble());
+                cf.total_execs.sum_price_by_qty += exec_quantity.GetDouble() * exec_price.GetDouble();
+                cf.total_execs.remaining_qty.SetDouble(
+                            cf.market_pos.quantity.GetDouble()
                             -
-                            cf.confirmated_info.total_execs.quantity.GetDouble());
+                            cf.total_execs.quantity.GetDouble());
                 best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::buy)));
                     
-                if (cf.confirmated_info.total_execs.quantity  >=  cf.confirmated_info.market_pos.quantity)
+                if (cf.total_execs.quantity  >=  cf.market_pos.quantity)
                     bid_queue.pop_front();
             }
             //  confirmation sell
             {
                 mtk::trd::msg::CF_XX_LS cf = best_sell->last_confirmation().Get();
-                cf.confirmated_info.total_execs.quantity.SetDouble(cf.confirmated_info.total_execs.quantity.GetDouble() + exec_quantity.GetDouble());
-                cf.confirmated_info.total_execs.sum_price_by_qty += exec_quantity.GetDouble() * exec_price.GetDouble();
-                cf.confirmated_info.total_execs.remaining_qty.SetDouble(
-                            cf.confirmated_info.market_pos.quantity.GetDouble()
+                cf.total_execs.quantity.SetDouble(cf.total_execs.quantity.GetDouble() + exec_quantity.GetDouble());
+                cf.total_execs.sum_price_by_qty += exec_quantity.GetDouble() * exec_price.GetDouble();
+                cf.total_execs.remaining_qty.SetDouble(
+                            cf.market_pos.quantity.GetDouble()
                             -
-                            cf.confirmated_info.total_execs.quantity.GetDouble());
+                            cf.total_execs.quantity.GetDouble());
                 best_sell->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::sell)));
-                if (cf.confirmated_info.total_execs.quantity  >=  cf.confirmated_info.market_pos.quantity)
+                if (cf.total_execs.quantity  >=  cf.market_pos.quantity)
                     ask_queue.pop_front();
             }
             if (bid_queue.size() == 0  ||  ask_queue.size() == 0)
@@ -418,10 +418,10 @@ void fill_side (const mtk::list<mtk::CountPtr<ord_ls> >& xxx_queue, mtk::prices:
         while (it != xxx_queue.end())
         {
             mtk::trd::msg::CF_XX_LS cf = (*it)->last_confirmation().Get();
-            if (levels.size() == 0  ||  cf.confirmated_info.market_pos.price != levels.front().price)
-                levels.push_front(mtk::prices::msg::sub_price_level(cf.confirmated_info.market_pos.price, cf.confirmated_info.total_execs.remaining_qty));
-            else if (cf.confirmated_info.market_pos.price == levels.front().price)
-                levels.front().quantity.SetDouble( levels.front().quantity.GetDouble() + cf.confirmated_info.total_execs.remaining_qty.GetDouble() );
+            if (levels.size() == 0  ||  cf.market_pos.price != levels.front().price)
+                levels.push_front(mtk::prices::msg::sub_price_level(cf.market_pos.price, cf.total_execs.remaining_qty));
+            else if (cf.market_pos.price == levels.front().price)
+                levels.front().quantity.SetDouble( levels.front().quantity.GetDouble() + cf.total_execs.remaining_qty.GetDouble() );
             else
                 throw mtk::Alarm(MTK_HERE, "ordersbook", "imposible!?!", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 

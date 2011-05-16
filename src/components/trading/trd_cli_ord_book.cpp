@@ -240,7 +240,6 @@ s_status& get_status_ref(void)
                                     mtk::trd::msg::CF_EX_MK::get_in_subject(client_code, "*", "*"),
                                     mtk::trd::msg::CF_EX_MK,
                                     cf_ex_mk)
-                                    
     }
     return *__internal_ptr_status;
 }
@@ -275,46 +274,68 @@ mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_exec_co
 
 
 
-mtk::CountPtr<trd_cli_ls>  get_order_ls(const mtk::trd::msg::sub_order_id& ord_id)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//      generic support   get_order
+/**  ex
+ *      ORDER_TYPE  trd_cli_ls
+ */
+template<typename ORDER_TYPE>
+mtk::CountPtr<ORDER_TYPE>  get_order_withmapandsignal(      const mtk::trd::msg::sub_order_id& ord_id, 
+                                                            mtk::map<msg::sub_order_id, 
+                                                            mtk::CountPtr<ORDER_TYPE> >&  order_map, 
+                                                            mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<ORDER_TYPE>&  >& signal_new)
 {
-    mtk::CountPtr<trd_cli_ls> order;    
-    mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_ls> >::iterator it= get_status_ref().ls_orders.find(ord_id);    
-    if (it == get_status_ref().ls_orders.end())
+    mtk::CountPtr<ORDER_TYPE> order;    
+    typename mtk::map<msg::sub_order_id, mtk::CountPtr<ORDER_TYPE> >::iterator it= order_map.find(ord_id);    
+    if (it == order_map.end())
     {
         //  creating new order
-        order = mtk::make_cptr(new trd_cli_ls);
+        order = mtk::make_cptr(new ORDER_TYPE);
         order->sig_rq_nw.connect(send_request_message);
         order->sig_rq_md.connect(send_request_message);
         order->sig_rq_cc.connect(send_request_message);
 
-        get_status_ref().ls_orders[ord_id] = order;
-        get_status_ref().sig_order_ls_new.emit(ord_id, order);
+        order_map[ord_id] = order;
+        signal_new.emit(ord_id, order);
     }
     else    
         order = it->second;
     return order;
 }
 
+template<typename ORDER_TYPE>
+mtk::CountPtr<ORDER_TYPE>  get_order(const mtk::trd::msg::sub_order_id& ord_id);
 
-mtk::CountPtr<trd_cli_mk>  get_order_mk(const mtk::trd::msg::sub_order_id& ord_id)
+template<>
+mtk::CountPtr<trd_cli_ls>  get_order<trd_cli_ls>(const mtk::trd::msg::sub_order_id& ord_id)
 {
-    mtk::CountPtr<trd_cli_mk> order;    
-    mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_mk> >::iterator it= get_status_ref().mk_orders.find(ord_id);    
-    if (it == get_status_ref().mk_orders.end())
-    {
-        //  creating new order
-        order = mtk::make_cptr(new trd_cli_mk);
-        order->sig_rq_nw.connect(send_request_message);
-        order->sig_rq_md.connect(send_request_message);
-        order->sig_rq_cc.connect(send_request_message);
-
-        get_status_ref().mk_orders[ord_id] = order;
-        get_status_ref().sig_order_mk_new.emit(ord_id, order);
-    }
-    else    
-        order = it->second;
-    return order;
+    return get_order_withmapandsignal<trd_cli_ls>(ord_id, get_status_ref().ls_orders, get_status_ref().sig_order_ls_new);
 }
+
+template<>
+mtk::CountPtr<trd_cli_mk>  get_order<trd_cli_mk>(const mtk::trd::msg::sub_order_id& ord_id)
+{
+    return get_order_withmapandsignal<trd_cli_mk>(ord_id, get_status_ref().mk_orders, get_status_ref().sig_order_mk_new);
+}
+
+
+//      generic support   get_order
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+mtk::CountPtr<trd_cli_ls>                   get_order_ls            (const msg::sub_order_id& ord_id)
+{
+    return  get_order<trd_cli_ls>(ord_id);
+}
+
+mtk::CountPtr<trd_cli_mk>                   get_order_mk            (const msg::sub_order_id& ord_id)
+{
+    return  get_order<trd_cli_mk>(ord_id);
+}
+
+
+
 
 
 mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void)
@@ -349,60 +370,88 @@ mtk::Signal< mtk::trd::msg::RQ_XX_MK&, bool&, bool    >&  get_signal_request_hoo
 
 
 
-    //      REQUEST  LIMIT   ORDERS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//      generic support   
 
-mtk::CountPtr<trd_cli_ls>   rq_nw_ls    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref)
+/**
+ *      ex:  
+ *              ORDER_TYPE                  trd_cli_ls
+ *              POS_TYPE                    msg::sub_position_ls
+ *              REQUEST_TYPE                mtk::trd::msg::RQ_XX_LS
+ */
+template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE>
+mtk::CountPtr<ORDER_TYPE>   rq_nw_xx    (               const mtk::msg::sub_product_code&   pc, 
+                                                        const mtk::trd::msg::enBuySell      buy_sell,
+                                                        const POS_TYPE& rq_pos, 
+                                                        const std::string& account, 
+                                                        const std::string& cli_ref)
 {
     mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
     
     mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
     
-    mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
+    mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
 
-    mtk::trd::msg::RQ_NW_LS rq(mtk::trd::msg::RQ_XX_LS(mtk::trd::msg::RQ_XX(
-                                                            rq_info,
-                                                            ord_id,
-                                                            pc,
-                                                            cli_ref,
-                                                            mtk::admin::get_control_fluct_info()),
-                                                rq_pos));
+
+    mtk::trd::msg::sub_invariant_order_info  invariant  (ord_id, pc, buy_sell, account);
+    mtk::trd::msg::RQ_XX                     rqxx       (invariant, rq_info, cli_ref, mtk::admin::get_control_fluct_info());
+    REQUEST_TYPE                             rqxxxx     (rqxx, rq_pos);
+
+    REQUEST_TYPE_ORDER_TYPE                  rq         (rqxxxx);
+    
     order->rq_nw(rq);
     return order;
 }
 
-mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_ls& rq_pos, const std::string& cli_ref, bool agressive)
+
+
+template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE>
+mtk::CountPtr<ORDER_TYPE>   rq_nw_xx_manual    (        const mtk::msg::sub_product_code&   pc, 
+                                                        const mtk::trd::msg::enBuySell      buy_sell,
+                                                        const POS_TYPE& rq_pos, 
+                                                        const std::string& account, 
+                                                        const std::string& cli_ref, 
+                                                        bool agressive, 
+                                                        mtk::Signal< REQUEST_TYPE&, bool& /*canceled*/, bool  /*aggre*/   >& signal_hook
+                                                        )
 {
     mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
     mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
 
-    mtk::trd::msg::RQ_NW_LS rq(mtk::trd::msg::RQ_XX_LS(mtk::trd::msg::RQ_XX(
-                                                                rq_info,
-                                                                ord_id,
-                                                                pc,
-                                                                cli_ref,
-                                                                mtk::admin::get_control_fluct_info()),
-                                                rq_pos));
+    mtk::trd::msg::sub_invariant_order_info  invariant  (ord_id, pc, buy_sell, account);
+    mtk::trd::msg::RQ_XX                     rqxx       (invariant, rq_info, cli_ref, mtk::admin::get_control_fluct_info());
+    REQUEST_TYPE                             rqxxls     (rqxx, rq_pos);
+
+    REQUEST_TYPE_ORDER_TYPE                  rq         (rqxxls);
+    
+    
     bool canceled=false;
-    get_status_ref().sig_request_hook_ls.emit(rq, canceled, agressive);
+    signal_hook.emit(rq, canceled, agressive);
     if (!canceled)
     {
-        mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
+        mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
         order->rq_nw(rq);
 
         return order;
     }
     else
-        return mtk::CountPtr<trd_cli_ls>();
+        return mtk::CountPtr<ORDER_TYPE>();
 }
 
 
 
 
 
-/*
-    it will return the last request or last confirmation if we don't have a previus request
+
+/**
+    it will return the last request 
+    or  an artificial request with confirmation info in case we don't have a previus request
+    
+    ex:
+        ORDER_TYPE:  trd_cli_ls
  */
-mtk::trd::msg::RQ_XX_LS get_last_request_or_confirmation (mtk::CountPtr<trd_cli_ls> order)
+template<typename  ORDER_TYPE,  typename REQUEST_TYPE,  typename CONF_TYPE>
+REQUEST_TYPE     get_last_request_or_build_from_confirmation (mtk::CountPtr<ORDER_TYPE> order)
 {
     if (order.isValid()==false)
         throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -411,310 +460,277 @@ mtk::trd::msg::RQ_XX_LS get_last_request_or_confirmation (mtk::CountPtr<trd_cli_
         return order->last_request().Get();
     else if (order->last_confirmation().HasValue())
     {
-        mtk::trd::msg::CF_XX_LS lc (order->last_confirmation().Get());
-        return mtk::trd::msg::RQ_XX_LS(mtk::trd::msg::RQ_XX(
-                                            lc.req_info, 
-                                            lc.confirmated_info.order_id, 
-                                            lc.product_code, 
-                                            lc.confirmated_info.cli_ref,
-                                            mtk::msg::sub_control_fluct(MTK_SS(lc.req_info.process_info.location.machine << "." << lc.req_info.process_info.location.client_code), mtk::dtNowLocal())),
-                                lc.confirmated_info.market_pos);
+        CONF_TYPE                   lc (order->last_confirmation().Get());
+        
+        mtk::trd::msg::RQ_XX        rqxx       (lc.invariant, lc.req_info, lc.cli_ref, mtk::admin::get_control_fluct_info());
+        REQUEST_TYPE                rqxxls     (rqxx, lc.market_pos);
+
+        return rqxxls;
     }
    else
         throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing product code in order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+}
+
+
+template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE, typename  CONF_TYPE>
+mtk::CountPtr<ORDER_TYPE>   rq_md_xx    ( const msg::sub_order_id& ord_id, const POS_TYPE& rq_pos, const std::string& cli_ref)
+{
+    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
+    
+    mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
+    REQUEST_TYPE rq = get_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order);
+    rq.request_pos = rq_pos;
+    rq.cli_ref = cli_ref;
+    order->rq_md(REQUEST_TYPE_ORDER_TYPE (rq));
+    
+    return order;
+}
+
+
+template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE, typename  CONF_TYPE>
+mtk::CountPtr<ORDER_TYPE>   rq_md_xx_manual    (const msg::sub_order_id& ord_id, mtk::Signal< REQUEST_TYPE&, bool& /*canceled*/, bool  /*aggre*/   >& signal_hook)
+{
+    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
+
+
+    mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
+    REQUEST_TYPE_ORDER_TYPE   rq(get_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order));
+
+    bool canceled=false;
+    signal_hook.emit(rq, canceled, false);
+    if (!canceled)
+    {
+        order->rq_md(rq);
+        return order;
+    }
+    else
+        return mtk::CountPtr<ORDER_TYPE>();
+}
+
+
+template<typename ORDER_TYPE, typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE, typename  CONF_TYPE>
+mtk::CountPtr<ORDER_TYPE>   rq_cc_xx    (const msg::sub_order_id& ord_id)
+{
+    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
+    
+    mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
+
+    order->rq_cc(REQUEST_TYPE_ORDER_TYPE (get_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order)));
+    
+    return order;
+}
+
+
+template<typename ORDER_TYPE, typename  CONF_TYPE>
+void cf_nw_xx(const CONF_TYPE& cf)
+{
+    mtk::admin::check_control_fluct(cf.orig_control_fluct);
+    
+    mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(cf.invariant.order_id);
+    order->cf_nw(cf);
+    //get_status_ref().sig_order_ls_status_modif.emit(order);
+}
+
+
+template<typename ORDER_TYPE, typename  CONF_TYPE>
+void cf_md_xx(const CONF_TYPE& cf)
+{
+    mtk::admin::check_control_fluct(cf.orig_control_fluct);
+    
+    mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(cf.invariant.order_id);
+    order->cf_md(cf);
+}
+
+template<typename ORDER_TYPE, typename  CONF_TYPE>
+void cf_cc_xx(const CONF_TYPE& cf)
+{
+    mtk::admin::check_control_fluct(cf.orig_control_fluct);
+    
+    mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(cf.invariant.order_id);
+    order->cf_cc(cf);
+}
+
+template<typename ORDER_TYPE, typename  REJECT_TYPE>
+void rj_nw_xx(const REJECT_TYPE& rj)
+{
+    mtk::admin::check_control_fluct( rj.orig_control_fluct);
+    
+    mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(rj.invariant.order_id);
+    order->rj_nw(rj);
+}
+
+template<typename ORDER_TYPE, typename  REJECT_TYPE>
+void rj_md_xx(const REJECT_TYPE& rj)
+{
+    mtk::admin::check_control_fluct( rj.orig_control_fluct);
+    
+    mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(rj.invariant.order_id);
+    order->rj_md(rj);
+}
+
+template<typename ORDER_TYPE, typename  REJECT_TYPE>
+void rj_cc_xx(const REJECT_TYPE& rj)
+{
+    mtk::admin::check_control_fluct( rj.orig_control_fluct);
+    
+    mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(rj.invariant.order_id);
+    order->rj_cc(rj);
+}
+
+template<typename ORDER_TYPE, typename  EXEC_TYPE>
+void cf_ex_xx(const EXEC_TYPE& ex)
+{
+    mtk::admin::check_control_fluct(ex.orig_control_fluct);
+    
+    mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(ex.invariant.order_id);
+    order->cf_ex(ex);
+    
+    get_status_ref().sig_execution.emit(ex.invariant.product_code, ex.executed_pos);
+}
+
+
+
+//      generic support
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+mtk::CountPtr<trd_cli_ls>   rq_nw_ls        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const std::string& account, const std::string& cli_ref)
+{
+    return rq_nw_xx<trd_cli_ls, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_NW_LS>(pc, buy_sell, rq_pos, account, cli_ref);
+}
+
+mtk::CountPtr<trd_cli_mk>   rq_nw_mk        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const std::string& account, const std::string& cli_ref)
+{
+    return rq_nw_xx<trd_cli_mk, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_NW_MK>(pc, buy_sell, rq_pos, account, cli_ref);
+}
+
+mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const std::string& account, const std::string& cli_ref, bool agressive)
+{
+    return rq_nw_xx_manual<trd_cli_ls, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_NW_LS>(pc, buy_sell, rq_pos, account, cli_ref, agressive, get_status_ref().sig_request_hook_ls);
+}
+
+mtk::CountPtr<trd_cli_mk>   rq_nw_mk_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const std::string& account, const std::string& cli_ref, bool agressive)
+{
+    return rq_nw_xx_manual<trd_cli_mk, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_NW_MK>(pc, buy_sell, rq_pos, account, cli_ref, agressive, get_status_ref().sig_request_hook_mk);
 }
 
 
 
 mtk::CountPtr<trd_cli_ls>   rq_md_ls    ( const msg::sub_order_id& ord_id, const msg::sub_position_ls& rq_pos, const std::string& cli_ref)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-    
-    mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
-    mtk::trd::msg::RQ_XX_LS rq = get_last_request_or_confirmation(order);
-    rq.request_pos = rq_pos;
-    rq.cli_ref = cli_ref;
-    order->rq_md(mtk::trd::msg::RQ_MD_LS (rq));
-    
-    return order;
+    return rq_md_xx<trd_cli_ls, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_MD_LS, mtk::trd::msg::CF_XX_LS>(ord_id, rq_pos, cli_ref);
 }
+
+mtk::CountPtr<trd_cli_mk>   rq_md_mk    ( const msg::sub_order_id& ord_id, const msg::sub_position_mk& rq_pos, const std::string& cli_ref)
+{
+    return rq_md_xx<trd_cli_mk, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_MD_MK, mtk::trd::msg::CF_XX_MK>(ord_id, rq_pos, cli_ref);
+}
+
 
 mtk::CountPtr<trd_cli_ls>   rq_md_ls_manual    (const msg::sub_order_id& ord_id)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-
-
-    mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
-    mtk::trd::msg::RQ_MD_LS rq(get_last_request_or_confirmation(order));
-
-    bool canceled=false;
-    get_status_ref().sig_request_hook_ls.emit(rq, canceled, false);
-    if (!canceled)
-    {
-        order->rq_md(rq);
-        return order;
-    }
-    else
-        return mtk::CountPtr<trd_cli_ls>();
+    return rq_md_xx_manual<trd_cli_ls, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_MD_LS, mtk::trd::msg::CF_XX_LS>(ord_id, get_status_ref().sig_request_hook_ls);
 }
+
+mtk::CountPtr<trd_cli_mk>   rq_md_mk_manual    (const msg::sub_order_id& ord_id)
+{
+    return rq_md_xx_manual<trd_cli_mk, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_MD_MK, mtk::trd::msg::CF_XX_MK>(ord_id, get_status_ref().sig_request_hook_mk);
+}
+
 
 mtk::CountPtr<trd_cli_ls>   rq_cc_ls    ( const msg::sub_order_id& ord_id )
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-    
-    mtk::CountPtr<trd_cli_ls> order = get_order_ls(ord_id);
-
-    order->rq_cc(mtk::trd::msg::RQ_CC_LS (get_last_request_or_confirmation(order)));
-    
-    return order;
+    return rq_cc_xx<trd_cli_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_CC_LS, mtk::trd::msg::CF_XX_LS>(ord_id);
 }
+
+mtk::CountPtr<trd_cli_mk>   rq_cc_mk    ( const msg::sub_order_id& ord_id )
+{
+    return rq_cc_xx<trd_cli_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_CC_MK, mtk::trd::msg::CF_XX_MK>(ord_id);
+}
+
+
 
 
 
 void cf_nw_ls(const mtk::trd::msg::CF_NW_LS& cf)
 {
-    mtk::admin::check_control_fluct(cf.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_ls>  order = get_order_ls(cf.confirmated_info.order_id);
-    order->cf_nw(cf);
-    //get_status_ref().sig_order_ls_status_modif.emit(order);
+    cf_nw_xx<trd_cli_ls, mtk::trd::msg::CF_NW_LS>(cf);
 }
+void cf_nw_mk(const mtk::trd::msg::CF_NW_MK& cf)
+{
+    cf_nw_xx<trd_cli_mk, mtk::trd::msg::CF_NW_MK>(cf);
+}
+
+
 void cf_md_ls(const mtk::trd::msg::CF_MD_LS& cf)
 {
-    mtk::admin::check_control_fluct(cf.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_ls>  order = get_order_ls(cf.confirmated_info.order_id);
-    order->cf_md(cf);
+    cf_md_xx<trd_cli_ls, mtk::trd::msg::CF_MD_LS>(cf);
 }
+
+void cf_md_mk(const mtk::trd::msg::CF_MD_MK& cf)
+{
+    cf_md_xx<trd_cli_mk, mtk::trd::msg::CF_MD_MK>(cf);
+}
+
+
 
 void cf_cc_ls(const mtk::trd::msg::CF_CC_LS& cf)
 {
-    mtk::admin::check_control_fluct(cf.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_ls>  order = get_order_ls(cf.confirmated_info.order_id);
-    order->cf_cc(cf);
-}
-
-void rj_nw_ls(const mtk::trd::msg::RJ_NW_LS& rj)
-{
-    mtk::admin::check_control_fluct( rj.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_ls>  order = get_order_ls(rj.confirmated_info.order_id);
-    order->rj_nw(rj);
-}
-
-void rj_md_ls(const mtk::trd::msg::RJ_MD_LS& rj)
-{
-    mtk::admin::check_control_fluct( rj.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_ls>  order = get_order_ls(rj.confirmated_info.order_id);
-    order->rj_md(rj);
-}
-
-void rj_cc_ls(const mtk::trd::msg::RJ_CC_LS& rj)
-{
-    mtk::admin::check_control_fluct( rj.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_ls>  order = get_order_ls(rj.confirmated_info.order_id);
-    order->rj_cc(rj);
-}
-
-void cf_ex_ls(const mtk::trd::msg::CF_EX_LS& ex)
-{
-    mtk::admin::check_control_fluct(ex.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_ls>  order = get_order_ls(ex.confirmated_info.order_id);
-    order->cf_ex(ex);
-    
-    get_status_ref().sig_execution.emit(ex.product_code, ex.executed_pos);
-}
-
-
-
-
-
-
-
-    //      REQUEST  MARKET   ORDERS
-
-
-mtk::CountPtr<trd_cli_mk>   rq_nw_mk    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_mk& rq_pos, const std::string& cli_ref)
-{
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-    
-    mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
-    
-    mtk::CountPtr<trd_cli_mk> order = get_order_mk(ord_id);
-
-    mtk::trd::msg::RQ_NW_MK rq(mtk::trd::msg::RQ_XX_MK(mtk::trd::msg::RQ_XX(
-                                                            rq_info,
-                                                            ord_id,
-                                                            pc,
-                                                            cli_ref,
-                                                            mtk::admin::get_control_fluct_info()),
-                                                rq_pos));
-    order->rq_nw(rq);
-    return order;
-}
-
-mtk::CountPtr<trd_cli_mk>   rq_nw_mk_manual    (                             const mtk::msg::sub_product_code&   pc, const msg::sub_position_mk& rq_pos, const std::string& cli_ref, bool agressive)
-{
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-    mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
-
-    mtk::trd::msg::RQ_NW_MK rq(mtk::trd::msg::RQ_XX_MK(mtk::trd::msg::RQ_XX(
-                                                                rq_info,
-                                                                ord_id,
-                                                                pc,
-                                                                cli_ref,
-                                                                mtk::admin::get_control_fluct_info()),
-                                                rq_pos));
-    bool canceled=false;
-    get_status_ref().sig_request_hook_mk.emit(rq, canceled, agressive);
-    if (!canceled)
-    {
-        mtk::CountPtr<trd_cli_mk> order = get_order_mk(ord_id);
-        order->rq_nw(rq);
-
-        return order;
-    }
-    else
-        return mtk::CountPtr<trd_cli_mk>();
-}
-
-
-
-
-
-/*
-    it will return the last request or last confirmation if we don't have a previus request
- */
-mtk::trd::msg::RQ_XX_MK get_last_request_or_confirmation (mtk::CountPtr<trd_cli_mk> order)
-{
-    if (order.isValid()==false)
-        throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-
-    if (order->last_request().HasValue())
-        return order->last_request().Get();
-    else if (order->last_confirmation().HasValue())
-    {
-        mtk::trd::msg::CF_XX_MK lc (order->last_confirmation().Get());
-        return mtk::trd::msg::RQ_XX_MK(mtk::trd::msg::RQ_XX(
-                                            lc.req_info, 
-                                            lc.confirmated_info.order_id, 
-                                            lc.product_code, 
-                                            lc.confirmated_info.cli_ref,
-                                            mtk::msg::sub_control_fluct(MTK_SS(lc.req_info.process_info.location.machine << "." << lc.req_info.process_info.location.client_code), mtk::dtNowLocal())),
-                                lc.confirmated_info.market_pos);
-    }
-   else
-        throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing product code in order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-}
-
-
-
-mtk::CountPtr<trd_cli_mk>   rq_md_mk    ( const msg::sub_order_id& ord_id, const msg::sub_position_mk& rq_pos, const std::string& cli_ref)
-{
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-    
-    mtk::CountPtr<trd_cli_mk> order = get_order_mk(ord_id);
-    mtk::trd::msg::RQ_XX_MK rq = get_last_request_or_confirmation(order);
-    rq.request_pos = rq_pos;
-    rq.cli_ref = cli_ref;
-    order->rq_md(mtk::trd::msg::RQ_MD_MK (rq));
-    
-    return order;
-}
-
-mtk::CountPtr<trd_cli_mk>   rq_md_mk_manual    (const msg::sub_order_id& ord_id)
-{
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-
-
-    mtk::CountPtr<trd_cli_mk> order = get_order_mk(ord_id);
-    mtk::trd::msg::RQ_MD_MK rq(get_last_request_or_confirmation(order));
-
-    bool canceled=false;
-    get_status_ref().sig_request_hook_mk.emit(rq, canceled, false);
-    if (!canceled)
-    {
-        order->rq_md(rq);
-        return order;
-    }
-    else
-        return mtk::CountPtr<trd_cli_mk>();
-}
-
-mtk::CountPtr<trd_cli_mk>   rq_cc_mk    ( const msg::sub_order_id& ord_id )
-{
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-    
-    mtk::CountPtr<trd_cli_mk> order = get_order_mk(ord_id);
-
-    order->rq_cc(mtk::trd::msg::RQ_CC_MK (get_last_request_or_confirmation(order)));
-    
-    return order;
-}
-
-
-
-void cf_nw_mk(const mtk::trd::msg::CF_NW_MK& cf)
-{
-    mtk::admin::check_control_fluct(cf.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_mk>  order = get_order_mk(cf.confirmated_info.order_id);
-    order->cf_nw(cf);
-    //get_status_ref().sig_order_mk_status_modif.emit(order);
-}
-void cf_md_mk(const mtk::trd::msg::CF_MD_MK& cf)
-{
-    mtk::admin::check_control_fluct(cf.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_mk>  order = get_order_mk(cf.confirmated_info.order_id);
-    order->cf_md(cf);
+    cf_cc_xx<trd_cli_ls, mtk::trd::msg::CF_CC_LS>(cf);
 }
 
 void cf_cc_mk(const mtk::trd::msg::CF_CC_MK& cf)
 {
-    mtk::admin::check_control_fluct(cf.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_mk>  order = get_order_mk(cf.confirmated_info.order_id);
-    order->cf_cc(cf);
+    cf_cc_xx<trd_cli_mk, mtk::trd::msg::CF_CC_MK>(cf);
+}
+
+
+
+
+void rj_nw_ls(const mtk::trd::msg::RJ_NW_LS& rj)
+{
+    rj_nw_xx<trd_cli_ls, mtk::trd::msg::RJ_NW_LS>(rj);
 }
 
 void rj_nw_mk(const mtk::trd::msg::RJ_NW_MK& rj)
 {
-    mtk::admin::check_control_fluct( rj.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_mk>  order = get_order_mk(rj.confirmated_info.order_id);
-    order->rj_nw(rj);
+    rj_nw_xx<trd_cli_mk, mtk::trd::msg::RJ_NW_MK>(rj);
+}
+
+
+void rj_md_ls(const mtk::trd::msg::RJ_MD_LS& rj)
+{
+    rj_md_xx<trd_cli_ls, mtk::trd::msg::RJ_MD_LS>(rj);
 }
 
 void rj_md_mk(const mtk::trd::msg::RJ_MD_MK& rj)
 {
-    mtk::admin::check_control_fluct( rj.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_mk>  order = get_order_mk(rj.confirmated_info.order_id);
-    order->rj_md(rj);
+    rj_md_xx<trd_cli_mk, mtk::trd::msg::RJ_MD_MK>(rj);
+}
+
+void rj_cc_ls(const mtk::trd::msg::RJ_CC_LS& rj)
+{
+    rj_cc_xx<trd_cli_ls, mtk::trd::msg::RJ_CC_LS>(rj);
 }
 
 void rj_cc_mk(const mtk::trd::msg::RJ_CC_MK& rj)
 {
-    mtk::admin::check_control_fluct( rj.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_mk>  order = get_order_mk(rj.confirmated_info.order_id);
-    order->rj_cc(rj);
+    rj_cc_xx<trd_cli_mk, mtk::trd::msg::RJ_CC_MK>(rj);
+}
+
+void cf_ex_ls(const mtk::trd::msg::CF_EX_LS& ex)
+{
+    cf_ex_xx<trd_cli_ls, mtk::trd::msg::CF_EX_LS>(ex);
 }
 
 void cf_ex_mk(const mtk::trd::msg::CF_EX_MK& ex)
 {
-    mtk::admin::check_control_fluct(ex.orig_control_fluct);
-    
-    mtk::CountPtr<trd_cli_mk>  order = get_order_mk(ex.confirmated_info.order_id);
-    order->cf_ex(ex);
-    
-    get_status_ref().sig_execution.emit(ex.product_code, ex.executed_pos);
+    cf_ex_xx<trd_cli_mk, mtk::trd::msg::CF_EX_MK>(ex);
 }
+
+
+
+
 
 
 

@@ -406,8 +406,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_position_mk::sub_position_mk (   const mtk::FixedNumber&  _quantity,   const enBuySell&  _side)
-    :     quantity(_quantity),   side(_side) 
+sub_position_mk::sub_position_mk (   const mtk::FixedNumber&  _quantity)
+    :     quantity(_quantity) 
        
     {  
         std::string cr = check_recomended ();  
@@ -426,33 +426,6 @@ std::string sub_position_mk::check_recomended(void) const
 }
 
 void sub_position_mk::before_send(void) const
-{
-
-}
-
-
-
-
-sub_order_mk_confirmated::sub_order_mk_confirmated ( const sub_order_xx_confirmated&  parent,   const sub_position_mk&  _market_pos)
-    :  sub_order_xx_confirmated(parent),   market_pos(_market_pos) 
-       
-    {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-std::string sub_order_mk_confirmated::check_recomended(void) const
-{
-    std::string result;
-
-    return result;
-}
-
-void sub_order_mk_confirmated::before_send(void) const
 {
 
 }
@@ -568,8 +541,8 @@ void RQ_CC_MK::before_send(void) const
 
 
 
-CF_XX_MK::CF_XX_MK ( const CF_XX&  parent,   const sub_order_mk_confirmated&  _confirmated_info)
-    :  CF_XX(parent),   confirmated_info(_confirmated_info) 
+CF_XX_MK::CF_XX_MK ( const CF_XX&  parent,   const sub_position_mk&  _market_pos)
+    :  CF_XX(parent),   market_pos(_market_pos) 
        
     {  
         std::string cr = check_recomended ();  
@@ -703,35 +676,8 @@ void CF_EX_MK::before_send(void) const
 
 
 
-RJ_XX_MK::RJ_XX_MK ( const RJ_XX&  parent,   const sub_order_mk_confirmated&  _confirmated_info)
-    :  RJ_XX(parent),   confirmated_info(_confirmated_info) 
-       
-    {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-std::string RJ_XX_MK::check_recomended(void) const
-{
-    std::string result;
-
-    return result;
-}
-
-void RJ_XX_MK::before_send(void) const
-{
-
-}
-
-
-
-
-RJ_NW_MK::RJ_NW_MK ( const RJ_XX_MK&  parent)
-    :  RJ_XX_MK(parent) 
+RJ_NW_MK::RJ_NW_MK ( const CF_XX_MK&  parent,   const std::string&  _reject_description)
+    :  CF_XX_MK(parent),   reject_description(_reject_description) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -757,8 +703,8 @@ void RJ_NW_MK::before_send(void) const
 
 
 
-RJ_MD_MK::RJ_MD_MK ( const RJ_XX_MK&  parent)
-    :  RJ_XX_MK(parent) 
+RJ_MD_MK::RJ_MD_MK ( const CF_XX_MK&  parent,   const std::string&  _reject_description)
+    :  CF_XX_MK(parent),   reject_description(_reject_description) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -784,8 +730,8 @@ void RJ_MD_MK::before_send(void) const
 
 
 
-RJ_CC_MK::RJ_CC_MK ( const RJ_XX_MK&  parent)
-    :  RJ_XX_MK(parent) 
+RJ_CC_MK::RJ_CC_MK ( const CF_XX_MK&  parent,   const std::string&  _reject_description)
+    :  CF_XX_MK(parent),   reject_description(_reject_description) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -814,7 +760,7 @@ std::ostream& operator<< (std::ostream& o, const sub_position_mk & c)
 {
     o << "{ "
 
-        << "quantity:"<<   c.quantity << "  "        << "side:"<< c.side<<"  "
+        << "quantity:"<<   c.quantity << "  "
         << " }";
     return o;
 };
@@ -825,7 +771,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_position_mk & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity        << YAML::Key << "side"  << YAML::Value << c.side
+        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity
         << YAML::EndMap;
     return o;
 };
@@ -837,40 +783,6 @@ void  operator >> (const YAML::Node& node, sub_position_mk & c)
 
 
         node["quantity"]  >> c.quantity;
-        node["side"]  >> c.side;
-
-
-};
-
-
-std::ostream& operator<< (std::ostream& o, const sub_order_mk_confirmated & c)
-{
-    o << "{ "
-    << "("  <<  static_cast<const sub_order_xx_confirmated&>(c)  << ")" 
-        << "market_pos:"<< c.market_pos<<"  "
-        << " }";
-    return o;
-};
-
-
-
-YAML::Emitter& operator << (YAML::Emitter& o, const sub_order_mk_confirmated & c)
-{
-    o << YAML::BeginMap
-    << YAML::Key << "sub_order_xx_confirmated" <<  YAML::Value << static_cast<const sub_order_xx_confirmated&>(c)  
-        << YAML::Key << "market_pos"  << YAML::Value << c.market_pos
-        << YAML::EndMap;
-    return o;
-};
-
-
-
-void  operator >> (const YAML::Node& node, sub_order_mk_confirmated & c)
-{
-
-    node["sub_order_xx_confirmated"]   >>   static_cast<sub_order_xx_confirmated&>(c)  ;
-
-        node["market_pos"]  >> c.market_pos;
 
 
 };
@@ -1009,7 +921,7 @@ std::ostream& operator<< (std::ostream& o, const CF_XX_MK & c)
 {
     o << "{ "
     << "("  <<  static_cast<const CF_XX&>(c)  << ")" 
-        << "confirmated_info:"<< c.confirmated_info<<"  "
+        << "market_pos:"<< c.market_pos<<"  "
         << " }";
     return o;
 };
@@ -1020,7 +932,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_XX_MK & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "CF_XX" <<  YAML::Value << static_cast<const CF_XX&>(c)  
-        << YAML::Key << "confirmated_info"  << YAML::Value << c.confirmated_info
+        << YAML::Key << "market_pos"  << YAML::Value << c.market_pos
         << YAML::EndMap;
     return o;
 };
@@ -1032,7 +944,7 @@ void  operator >> (const YAML::Node& node, CF_XX_MK & c)
 
     node["CF_XX"]   >>   static_cast<CF_XX&>(c)  ;
 
-        node["confirmated_info"]  >> c.confirmated_info;
+        node["market_pos"]  >> c.market_pos;
 
 
 };
@@ -1167,44 +1079,11 @@ void  operator >> (const YAML::Node& node, CF_EX_MK & c)
 };
 
 
-std::ostream& operator<< (std::ostream& o, const RJ_XX_MK & c)
-{
-    o << "{ "
-    << "("  <<  static_cast<const RJ_XX&>(c)  << ")" 
-        << "confirmated_info:"<< c.confirmated_info<<"  "
-        << " }";
-    return o;
-};
-
-
-
-YAML::Emitter& operator << (YAML::Emitter& o, const RJ_XX_MK & c)
-{
-    o << YAML::BeginMap
-    << YAML::Key << "RJ_XX" <<  YAML::Value << static_cast<const RJ_XX&>(c)  
-        << YAML::Key << "confirmated_info"  << YAML::Value << c.confirmated_info
-        << YAML::EndMap;
-    return o;
-};
-
-
-
-void  operator >> (const YAML::Node& node, RJ_XX_MK & c)
-{
-
-    node["RJ_XX"]   >>   static_cast<RJ_XX&>(c)  ;
-
-        node["confirmated_info"]  >> c.confirmated_info;
-
-
-};
-
-
 std::ostream& operator<< (std::ostream& o, const RJ_NW_MK & c)
 {
     o << "{ "
-    << "("  <<  static_cast<const RJ_XX_MK&>(c)  << ")" 
-
+    << "("  <<  static_cast<const CF_XX_MK&>(c)  << ")" 
+        << "reject_description:"<<   c.reject_description << "  "
         << " }";
     return o;
 };
@@ -1214,8 +1093,8 @@ std::ostream& operator<< (std::ostream& o, const RJ_NW_MK & c)
 YAML::Emitter& operator << (YAML::Emitter& o, const RJ_NW_MK & c)
 {
     o << YAML::BeginMap
-    << YAML::Key << "RJ_XX_MK" <<  YAML::Value << static_cast<const RJ_XX_MK&>(c)  
-
+    << YAML::Key << "CF_XX_MK" <<  YAML::Value << static_cast<const CF_XX_MK&>(c)  
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
         << YAML::EndMap;
     return o;
 };
@@ -1225,8 +1104,9 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_NW_MK & c)
 void  operator >> (const YAML::Node& node, RJ_NW_MK & c)
 {
 
-    node["RJ_XX_MK"]   >>   static_cast<RJ_XX_MK&>(c)  ;
+    node["CF_XX_MK"]   >>   static_cast<CF_XX_MK&>(c)  ;
 
+        node["reject_description"]  >> c.reject_description;
 
 
 };
@@ -1235,8 +1115,8 @@ void  operator >> (const YAML::Node& node, RJ_NW_MK & c)
 std::ostream& operator<< (std::ostream& o, const RJ_MD_MK & c)
 {
     o << "{ "
-    << "("  <<  static_cast<const RJ_XX_MK&>(c)  << ")" 
-
+    << "("  <<  static_cast<const CF_XX_MK&>(c)  << ")" 
+        << "reject_description:"<<   c.reject_description << "  "
         << " }";
     return o;
 };
@@ -1246,8 +1126,8 @@ std::ostream& operator<< (std::ostream& o, const RJ_MD_MK & c)
 YAML::Emitter& operator << (YAML::Emitter& o, const RJ_MD_MK & c)
 {
     o << YAML::BeginMap
-    << YAML::Key << "RJ_XX_MK" <<  YAML::Value << static_cast<const RJ_XX_MK&>(c)  
-
+    << YAML::Key << "CF_XX_MK" <<  YAML::Value << static_cast<const CF_XX_MK&>(c)  
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
         << YAML::EndMap;
     return o;
 };
@@ -1257,8 +1137,9 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_MD_MK & c)
 void  operator >> (const YAML::Node& node, RJ_MD_MK & c)
 {
 
-    node["RJ_XX_MK"]   >>   static_cast<RJ_XX_MK&>(c)  ;
+    node["CF_XX_MK"]   >>   static_cast<CF_XX_MK&>(c)  ;
 
+        node["reject_description"]  >> c.reject_description;
 
 
 };
@@ -1267,8 +1148,8 @@ void  operator >> (const YAML::Node& node, RJ_MD_MK & c)
 std::ostream& operator<< (std::ostream& o, const RJ_CC_MK & c)
 {
     o << "{ "
-    << "("  <<  static_cast<const RJ_XX_MK&>(c)  << ")" 
-
+    << "("  <<  static_cast<const CF_XX_MK&>(c)  << ")" 
+        << "reject_description:"<<   c.reject_description << "  "
         << " }";
     return o;
 };
@@ -1278,8 +1159,8 @@ std::ostream& operator<< (std::ostream& o, const RJ_CC_MK & c)
 YAML::Emitter& operator << (YAML::Emitter& o, const RJ_CC_MK & c)
 {
     o << YAML::BeginMap
-    << YAML::Key << "RJ_XX_MK" <<  YAML::Value << static_cast<const RJ_XX_MK&>(c)  
-
+    << YAML::Key << "CF_XX_MK" <<  YAML::Value << static_cast<const CF_XX_MK&>(c)  
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
         << YAML::EndMap;
     return o;
 };
@@ -1289,8 +1170,9 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_CC_MK & c)
 void  operator >> (const YAML::Node& node, RJ_CC_MK & c)
 {
 
-    node["RJ_XX_MK"]   >>   static_cast<RJ_XX_MK&>(c)  ;
+    node["CF_XX_MK"]   >>   static_cast<CF_XX_MK&>(c)  ;
 
+        node["reject_description"]  >> c.reject_description;
 
 
 };
@@ -1298,22 +1180,10 @@ void  operator >> (const YAML::Node& node, RJ_CC_MK & c)
 
 bool operator== (const sub_position_mk& a, const sub_position_mk& b)
 {
-    return (          a.quantity ==  b.quantity  &&          a.side ==  b.side  &&   true  );
+    return (          a.quantity ==  b.quantity  &&   true  );
 };
 
 bool operator!= (const sub_position_mk& a, const sub_position_mk& b)
-{
-    return !(a==b);
-};
-
-
-
-bool operator== (const sub_order_mk_confirmated& a, const sub_order_mk_confirmated& b)
-{
-    return ( (static_cast<const sub_order_xx_confirmated&>(a)   ==  static_cast<const sub_order_xx_confirmated&>(b))  &&           a.market_pos ==  b.market_pos  &&   true  );
-};
-
-bool operator!= (const sub_order_mk_confirmated& a, const sub_order_mk_confirmated& b)
 {
     return !(a==b);
 };
@@ -1370,7 +1240,7 @@ bool operator!= (const RQ_CC_MK& a, const RQ_CC_MK& b)
 
 bool operator== (const CF_XX_MK& a, const CF_XX_MK& b)
 {
-    return ( (static_cast<const CF_XX&>(a)   ==  static_cast<const CF_XX&>(b))  &&           a.confirmated_info ==  b.confirmated_info  &&   true  );
+    return ( (static_cast<const CF_XX&>(a)   ==  static_cast<const CF_XX&>(b))  &&           a.market_pos ==  b.market_pos  &&   true  );
 };
 
 bool operator!= (const CF_XX_MK& a, const CF_XX_MK& b)
@@ -1428,21 +1298,9 @@ bool operator!= (const CF_EX_MK& a, const CF_EX_MK& b)
 
 
 
-bool operator== (const RJ_XX_MK& a, const RJ_XX_MK& b)
-{
-    return ( (static_cast<const RJ_XX&>(a)   ==  static_cast<const RJ_XX&>(b))  &&           a.confirmated_info ==  b.confirmated_info  &&   true  );
-};
-
-bool operator!= (const RJ_XX_MK& a, const RJ_XX_MK& b)
-{
-    return !(a==b);
-};
-
-
-
 bool operator== (const RJ_NW_MK& a, const RJ_NW_MK& b)
 {
-    return ( (static_cast<const RJ_XX_MK&>(a)   ==  static_cast<const RJ_XX_MK&>(b))  &&    true  );
+    return ( (static_cast<const CF_XX_MK&>(a)   ==  static_cast<const CF_XX_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
 };
 
 bool operator!= (const RJ_NW_MK& a, const RJ_NW_MK& b)
@@ -1454,7 +1312,7 @@ bool operator!= (const RJ_NW_MK& a, const RJ_NW_MK& b)
 
 bool operator== (const RJ_MD_MK& a, const RJ_MD_MK& b)
 {
-    return ( (static_cast<const RJ_XX_MK&>(a)   ==  static_cast<const RJ_XX_MK&>(b))  &&    true  );
+    return ( (static_cast<const CF_XX_MK&>(a)   ==  static_cast<const CF_XX_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
 };
 
 bool operator!= (const RJ_MD_MK& a, const RJ_MD_MK& b)
@@ -1466,7 +1324,7 @@ bool operator!= (const RJ_MD_MK& a, const RJ_MD_MK& b)
 
 bool operator== (const RJ_CC_MK& a, const RJ_CC_MK& b)
 {
-    return ( (static_cast<const RJ_XX_MK&>(a)   ==  static_cast<const RJ_XX_MK&>(b))  &&    true  );
+    return ( (static_cast<const CF_XX_MK&>(a)   ==  static_cast<const CF_XX_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
 };
 
 bool operator!= (const RJ_CC_MK& a, const RJ_CC_MK& b)
@@ -1491,14 +1349,6 @@ void  copy (sub_position_mk& c, const qpid::types::Variant& v)
                     else
                         copy(c.quantity, it->second);
                         //c.quantity = it->second;
-//   sub_msg_type
-
-                    it = mv.find("sd");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field side on message sub_position_mk::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.side, it->second);
-                        //__internal_qpid_fill(c.side, it->second.asMap());
 
     }
 
@@ -1511,57 +1361,12 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_mk& 
 
 //  field_type
         __internal_add2map(map, a.quantity, std::string("qt"));
-//  sub_msg_type
-        __internal_add2map(map, a.side, std::string("sd"));
 
 
 };
 
 
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_position_mk>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
-
-//void  __internal_qpid_fill (sub_order_mk_confirmated& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_order_mk_confirmated& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<sub_order_xx_confirmated&>(c), v);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   sub_msg_type
-
-                    it = mv.find("mp");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market_pos on message sub_order_mk_confirmated::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.market_pos, it->second);
-                        //__internal_qpid_fill(c.market_pos, it->second.asMap());
-
-    }
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_mk_confirmated& a)
-{
-
-    a.before_send();
-
-//  parent
-__internal_add2map(map, static_cast<const sub_order_xx_confirmated&>(a));
-
-//  sub_msg_type
-        __internal_add2map(map, a.market_pos, std::string("mp"));
-
-
-};
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_mk_confirmated>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1721,12 +1526,12 @@ copy(static_cast<CF_XX&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ci");
+                    it = mv.find("mp");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field confirmated_info on message CF_XX_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market_pos on message CF_XX_MK::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.confirmated_info, it->second);
-                        //__internal_qpid_fill(c.confirmated_info, it->second.asMap());
+                        copy(c.market_pos, it->second);
+                        //__internal_qpid_fill(c.market_pos, it->second.asMap());
 
     }
 
@@ -1740,7 +1545,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX_MK& a)
 __internal_add2map(map, static_cast<const CF_XX&>(a));
 
 //  sub_msg_type
-        __internal_add2map(map, a.confirmated_info, std::string("ci"));
+        __internal_add2map(map, a.market_pos, std::string("mp"));
 
 
 };
@@ -1863,7 +1668,7 @@ copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("exp");
+                    it = mv.find("exc");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field executed_pos on message CF_EX_MK::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1882,7 +1687,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_MK& a)
 __internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
 //  sub_msg_type
-        __internal_add2map(map, a.executed_pos, std::string("exp"));
+        __internal_add2map(map, a.executed_pos, std::string("exc"));
 
 
 };
@@ -1898,55 +1703,20 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
-//void  __internal_qpid_fill (RJ_XX_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (RJ_XX_MK& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<RJ_XX&>(c), v);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   sub_msg_type
-
-                    it = mv.find("ci");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field confirmated_info on message RJ_XX_MK::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.confirmated_info, it->second);
-                        //__internal_qpid_fill(c.confirmated_info, it->second.asMap());
-
-    }
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_MK& a)
-{
-
-    a.before_send();
-
-//  parent
-__internal_add2map(map, static_cast<const RJ_XX&>(a));
-
-//  sub_msg_type
-        __internal_add2map(map, a.confirmated_info, std::string("ci"));
-
-
-};
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_XX_MK>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
-
 //void  __internal_qpid_fill (RJ_NW_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RJ_NW_MK& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<RJ_XX_MK&>(c), v);
+copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("rd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_NW_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.reject_description, it->second);
+                        //c.reject_description = it->second;
 
     }
 
@@ -1957,8 +1727,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_NW_MK& a)
     a.before_send();
 
 //  parent
-__internal_add2map(map, static_cast<const RJ_XX_MK&>(a));
+__internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
+//  field_type
+        __internal_add2map(map, a.reject_description, std::string("rd"));
 
 
 };
@@ -1978,8 +1750,16 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 void  copy (RJ_MD_MK& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<RJ_XX_MK&>(c), v);
+copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("rd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_MD_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.reject_description, it->second);
+                        //c.reject_description = it->second;
 
     }
 
@@ -1990,8 +1770,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_MD_MK& a)
     a.before_send();
 
 //  parent
-__internal_add2map(map, static_cast<const RJ_XX_MK&>(a));
+__internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
+//  field_type
+        __internal_add2map(map, a.reject_description, std::string("rd"));
 
 
 };
@@ -2011,8 +1793,16 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 void  copy (RJ_CC_MK& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<RJ_XX_MK&>(c), v);
+copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("rd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_CC_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.reject_description, it->second);
+                        //c.reject_description = it->second;
 
     }
 
@@ -2023,8 +1813,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_CC_MK& a)
     a.before_send();
 
 //  parent
-__internal_add2map(map, static_cast<const RJ_XX_MK&>(a));
+__internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
+//  field_type
+        __internal_add2map(map, a.reject_description, std::string("rd"));
 
 
 };
@@ -2038,8 +1830,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 
 
 
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
-//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -2195,8 +1985,8 @@ qpid::messaging::Message CF_EX_MK::qpidmsg_codded_as_qpid_message (const std::st
 __internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
 
 //  sub_msg_type
-//        content["exp"] =  qpidmsg_coded_as_qpid_Map(this->executed_pos);
-        __internal_add2map(content, this->executed_pos, std::string("exp"));
+//        content["exc"] =  qpidmsg_coded_as_qpid_Map(this->executed_pos);
+        __internal_add2map(content, this->executed_pos, std::string("exc"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2217,8 +2007,11 @@ qpid::messaging::Message RJ_NW_MK::qpidmsg_codded_as_qpid_message (const std::st
     qpid::types::Variant::Map content;
 
 //  parent
-__internal_add2map(content, static_cast<const RJ_XX_MK&>(*this));
+__internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
 
+//  field_type
+//        content["rd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2239,8 +2032,11 @@ qpid::messaging::Message RJ_MD_MK::qpidmsg_codded_as_qpid_message (const std::st
     qpid::types::Variant::Map content;
 
 //  parent
-__internal_add2map(content, static_cast<const RJ_XX_MK&>(*this));
+__internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
 
+//  field_type
+//        content["rd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2261,8 +2057,11 @@ qpid::messaging::Message RJ_CC_MK::qpidmsg_codded_as_qpid_message (const std::st
     qpid::types::Variant::Map content;
 
 //  parent
-__internal_add2map(content, static_cast<const RJ_XX_MK&>(*this));
+__internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
 
+//  field_type
+//        content["rd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2281,17 +2080,7 @@ __internal_add2map(content, static_cast<const RJ_XX_MK&>(*this));
     {
         return sub_position_mk(
 //   field_type
-   __internal_get_default ((mtk::FixedNumber*)0),
-//   sub_msg_type
-   __internal_get_default((enBuySell*)0)
-            );
-    }
-    
-    sub_order_mk_confirmated  __internal_get_default(sub_order_mk_confirmated*)
-    {
-        return sub_order_mk_confirmated(
-__internal_get_default((sub_order_xx_confirmated*)0), //   sub_msg_type
-   __internal_get_default((sub_position_mk*)0)
+   __internal_get_default ((mtk::FixedNumber*)0)
             );
     }
     
@@ -2328,7 +2117,7 @@ __internal_get_default((RQ_XX_MK*)0)
     {
         return CF_XX_MK(
 __internal_get_default((CF_XX*)0), //   sub_msg_type
-   __internal_get_default((sub_order_mk_confirmated*)0)
+   __internal_get_default((sub_position_mk*)0)
             );
     }
     
@@ -2361,57 +2150,34 @@ __internal_get_default((CF_XX_MK*)0), //   sub_msg_type
             );
     }
     
-    RJ_XX_MK  __internal_get_default(RJ_XX_MK*)
-    {
-        return RJ_XX_MK(
-__internal_get_default((RJ_XX*)0), //   sub_msg_type
-   __internal_get_default((sub_order_mk_confirmated*)0)
-            );
-    }
-    
     RJ_NW_MK  __internal_get_default(RJ_NW_MK*)
     {
         return RJ_NW_MK(
-__internal_get_default((RJ_XX_MK*)0)
+__internal_get_default((CF_XX_MK*)0), //   field_type
+   __internal_get_default ((std::string*)0)
             );
     }
     
     RJ_MD_MK  __internal_get_default(RJ_MD_MK*)
     {
         return RJ_MD_MK(
-__internal_get_default((RJ_XX_MK*)0)
+__internal_get_default((CF_XX_MK*)0), //   field_type
+   __internal_get_default ((std::string*)0)
             );
     }
     
     RJ_CC_MK  __internal_get_default(RJ_CC_MK*)
     {
         return RJ_CC_MK(
-__internal_get_default((RJ_XX_MK*)0)
+__internal_get_default((CF_XX_MK*)0), //   field_type
+   __internal_get_default ((std::string*)0)
             );
     }
     
 
 sub_position_mk::sub_position_mk (const qpid::messaging::Message& msg)
     :  //   field_type
-   quantity(__internal_get_default((mtk::FixedNumber*)0)),
-//   sub_msg_type
-   side(__internal_get_default((enBuySell*)0)) 
-    {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
-sub_order_mk_confirmated::sub_order_mk_confirmated (const qpid::messaging::Message& msg)
-    :  sub_order_xx_confirmated(msg), //   sub_msg_type
-   market_pos(__internal_get_default((sub_position_mk*)0)) 
+   quantity(__internal_get_default((mtk::FixedNumber*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2488,7 +2254,7 @@ RQ_CC_MK::RQ_CC_MK (const qpid::messaging::Message& msg)
 
 CF_XX_MK::CF_XX_MK (const qpid::messaging::Message& msg)
     :  CF_XX(msg), //   sub_msg_type
-   confirmated_info(__internal_get_default((sub_order_mk_confirmated*)0)) 
+   market_pos(__internal_get_default((sub_position_mk*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2563,24 +2329,9 @@ CF_EX_MK::CF_EX_MK (const qpid::messaging::Message& msg)
 
 
 
-RJ_XX_MK::RJ_XX_MK (const qpid::messaging::Message& msg)
-    :  RJ_XX(msg), //   sub_msg_type
-   confirmated_info(__internal_get_default((sub_order_mk_confirmated*)0)) 
-    {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
-    }
-
-
-
 RJ_NW_MK::RJ_NW_MK (const qpid::messaging::Message& msg)
-    :  RJ_XX_MK(msg) 
+    :  CF_XX_MK(msg), //   field_type
+   reject_description(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2595,7 +2346,8 @@ RJ_NW_MK::RJ_NW_MK (const qpid::messaging::Message& msg)
 
 
 RJ_MD_MK::RJ_MD_MK (const qpid::messaging::Message& msg)
-    :  RJ_XX_MK(msg) 
+    :  CF_XX_MK(msg), //   field_type
+   reject_description(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2610,7 +2362,8 @@ RJ_MD_MK::RJ_MD_MK (const qpid::messaging::Message& msg)
 
 
 RJ_CC_MK::RJ_CC_MK (const qpid::messaging::Message& msg)
-    :  RJ_XX_MK(msg) 
+    :  CF_XX_MK(msg), //   field_type
+   reject_description(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2622,85 +2375,85 @@ RJ_CC_MK::RJ_CC_MK (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  RQ_NW_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+std::string  RQ_NW_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("RQ." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  RQ_NW_MK::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("RQ." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  RQ_MD_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  RQ_MD_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("RQ." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  RQ_MD_MK::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("RQ." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  RQ_CC_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  RQ_CC_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("RQ." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  RQ_CC_MK::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("RQ." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  CF_NW_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  CF_NW_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  CF_NW_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  CF_MD_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  CF_MD_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  CF_MD_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  CF_CC_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  CF_CC_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  CF_CC_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  CF_EX_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  CF_EX_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  CF_EX_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  RJ_NW_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  RJ_NW_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  RJ_NW_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  RJ_MD_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  RJ_MD_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  RJ_MD_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
-    std::string  RJ_CC_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& product_code_market,const std::string& product_code_product)
+    std::string  RJ_CC_MK::get_in_subject (const std::string& req_info_process_info_location_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << product_code_market << "." << product_code_product << "");
+        return MTK_SS("CONF." << req_info_process_info_location_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
     }
     std::string  RJ_CC_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->product_code.market << "." << this->product_code.product << "");
+        return MTK_SS("CONF." << this->req_info.process_info.location.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
     }
     
 

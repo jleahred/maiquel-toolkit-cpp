@@ -323,21 +323,19 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
             rq_cc
                 [{
                     if (last_confirmation().HasValue())
-                        ci->sig_rq_cc(mtk::trd::msg::RQ_CC_MK(mtk::trd::msg::RQ_XX_MK(mtk::trd::msg::RQ_XX(
-                                                                mtk::admin::get_request_info(),
-                                                                last_confirmation().Get().confirmated_info.order_id,
-                                                                last_confirmation().Get().product_code,
-                                                                last_confirmation().Get().confirmated_info.cli_ref,
-                                                                mtk::admin::get_control_fluct_info()),
-                                                        last_confirmation().Get().confirmated_info.market_pos)));
+                    {
+                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), last_confirmation().Get().cli_ref, mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
+                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
+                        ci->sig_rq_cc(rqccmk);
+                    }
                     else if (last_request().HasValue())
-                        ci->sig_rq_cc(mtk::trd::msg::RQ_CC_MK(mtk::trd::msg::RQ_XX_MK(mtk::trd::msg::RQ_XX(
-                                                                mtk::admin::get_request_info(),
-                                                                last_request().Get().order_id,
-                                                                last_request().Get().product_code,
-                                                                last_request().Get().cli_ref,
-                                                                mtk::admin::get_control_fluct_info()),
-                                                        last_request().Get().request_pos)));
+                    {
+                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), last_request().Get().cli_ref, mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
+                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
+                        ci->sig_rq_cc(rqccmk);
+                    }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 }]
@@ -373,8 +371,8 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
             full_exec
                 [{
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().confirmated_info.total_execs.quantity  
-                        == last_confirmation().Get().confirmated_info.market_pos.quantity
+                    &&  last_confirmation().Get().total_execs.quantity  
+                        == last_confirmation().Get().market_pos.quantity
                 }]
 
 

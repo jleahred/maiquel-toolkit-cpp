@@ -43,7 +43,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     font.setPixelSize(get_base_font_size()+2);
     this->setFont(font);
 
-    if (rq.request_pos.side == mtk::trd::msg::buy)
+    if (rq.invariant.side == mtk::trd::msg::buy)
     {
         ui->BuySell->setText(tr("BUY"));
         setPalette( mtk_color_buy );
@@ -53,8 +53,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
         ui->BuySell->setText(tr("SELL"));
         setPalette( QPalette(mtk_color_sell));
     }
-    ui->market->setText(QLatin1String(rq.product_code.market.c_str()));
-    ui->product->setText(QLatin1String(rq.product_code.product.c_str()));
+    ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
+    ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
     ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
     ui->price->setSingleStep(1./pow(10.,rq.request_pos.price.GetExt().GetDec())*rq.request_pos.price.GetExt().GetInc());
     if(rq.request_pos.quantity.GetIntCode()==0  &&  rq.request_pos.price.GetIntCode()==0)
@@ -68,6 +68,19 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     else
         ui->quantity->clear();
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
+
+    int current_index = -1;
+    ui->account->addItem(QLatin1String("acpr1@fut"));
+    ui->account->addItem(QLatin1String("acpr2@fut"));
+    ui->account->addItem(QLatin1String("acpr3@fut"));
+    if(current_index == -1)
+    {
+        MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "editorder", "default account not valid", mtk::alPriorWarning, mtk::alTypeNoPermisions));
+        MTK_END_EXEC_MAX_FREC
+    }
+    else
+        ui->account->setCurrentIndex(current_index);
 
     this->check_if_order_can_be_sent();
 
@@ -111,7 +124,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     font.setPixelSize(get_base_font_size()+2);
     this->setFont(font);
 
-    if (rq.request_pos.side == mtk::trd::msg::buy)
+    if (rq.invariant.side == mtk::trd::msg::buy)
     {
         ui->BuySell->setText(tr("BUY"));
         setPalette( mtk_color_buy );
@@ -121,8 +134,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
         ui->BuySell->setText(tr("SELL"));
         setPalette( QPalette(mtk_color_sell));
     }
-    ui->market->setText(QLatin1String(rq.product_code.market.c_str()));
-    ui->product->setText(QLatin1String(rq.product_code.product.c_str()));
+    ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
+    ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
     ui->price->setVisible(false);
     ui->price->setEnabled(false);
     ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
@@ -134,6 +147,19 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
 
     this->check_if_order_can_be_sent();
+
+    int current_index = -1;
+    ui->account->addItem(QLatin1String("acpr1@fut"));
+    ui->account->addItem(QLatin1String("acpr2@fut"));
+    ui->account->addItem(QLatin1String("acpr3@fut"));
+    if(current_index == -1)
+    {
+        MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "editorder", "default account not valid", mtk::alPriorWarning, mtk::alTypeNoPermisions));
+        MTK_END_EXEC_MAX_FREC
+    }
+    else
+        ui->account->setCurrentIndex(current_index);
 
     mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
     if(s_default_qty.HasValue()==false)
@@ -221,8 +247,8 @@ bool QEditOrder::check_if_order_can_be_sent(void)
 mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request_ls(void)
 {
     mtk::trd::msg::RQ_XX_LS  result = rq_ls.Get();
-    result.product_code.market = ui->market->text().toStdString();
-    result.product_code.product = ui->product->text().toStdString();
+    result.invariant.product_code.market = ui->market->text().toStdString();
+    result.invariant.product_code.product = ui->product->text().toStdString();
     result.request_pos.price.SetDouble(ui->price->value());
     result.request_pos.quantity.SetDouble(ui->quantity->value());
     result.cli_ref = ui->cliref->text().toStdString();
@@ -232,8 +258,8 @@ mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request_ls(void)
 mtk::trd::msg::RQ_XX_MK   QEditOrder::get_request_mk(void)
 {
     mtk::trd::msg::RQ_XX_MK  result = rq_mk.Get();
-    result.product_code.market = ui->market->text().toStdString();
-    result.product_code.product = ui->product->text().toStdString();
+    result.invariant.product_code.market = ui->market->text().toStdString();
+    result.invariant.product_code.product = ui->product->text().toStdString();
     result.request_pos.quantity.SetDouble(ui->quantity->value());
     result.cli_ref = ui->cliref->text().toStdString();
     return result;

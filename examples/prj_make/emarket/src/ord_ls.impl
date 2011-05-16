@@ -273,10 +273,10 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     if (last_confirmation().HasValue())
                     {
                         mtk::trd::msg::CF_XX_LS lc = last_confirmation().Get();
-                        lc.confirmated_info.cli_ref = rq.cli_ref;
-                        lc.confirmated_info.market_pos = rq.request_pos;
-                        lc.confirmated_info.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.confirmated_info.total_execs.quantity.GetDouble());
-                        if (lc.confirmated_info.total_execs.remaining_qty.GetIntCode() <= 0)
+                        lc.cli_ref = rq.cli_ref;
+                        lc.market_pos = rq.request_pos;
+                        lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.quantity.GetDouble());
+                        if (lc.total_execs.remaining_qty.GetIntCode() <= 0)
                             throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity " 
                                                                     << method_name << "  received:  "  << "  " << rq  
                                                                     <<  "  last request: " << last_request()
@@ -286,19 +286,12 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     }
                     else
                     {
-                        mtk::trd::msg::CF_XX_LS   lc(mtk::trd::msg::CF_XX(
-                                          rq.req_info
-                                        , rq.product_code
-                                        , mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()))
-                                , mtk::trd::msg::sub_order_ls_confirmated(mtk::trd::msg::sub_order_xx_confirmated(
-                                          rq.order_id
-                                        , mtk::trd::msg::sub_total_executions(
-                                                      0.
-                                                    , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                    , rq.request_pos.quantity)
-                                        , rq.cli_ref)
-                                        , rq.request_pos)
-                                );
+                        mtk::trd::msg::sub_total_executions  total_execs (
+                                          0.
+                                        , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                        , rq.request_pos.quantity);
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, rq.req_info, rq.cli_ref, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                 
@@ -559,10 +552,10 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                     if (last_confirmation().HasValue())
                     {
                         mtk::trd::msg::CF_XX_LS lc = last_confirmation().Get();
-                        lc.confirmated_info.cli_ref = rq.cli_ref;
-                        lc.confirmated_info.market_pos = rq.request_pos;
-                        lc.confirmated_info.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.confirmated_info.total_execs.quantity.GetDouble());
-                        if (lc.confirmated_info.total_execs.remaining_qty.GetIntCode() <= 0)
+                        lc.cli_ref = rq.cli_ref;
+                        lc.market_pos = rq.request_pos;
+                        lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.quantity.GetDouble());
+                        if (lc.total_execs.remaining_qty.GetIntCode() <= 0)
                             throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity " 
                                                                     << method_name << "  received:  "  << "  " << rq  
                                                                     <<  "  last request: " << last_request()
@@ -572,20 +565,12 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                     }
                     else
                     {
-                        mtk::trd::msg::CF_XX_LS   lc(
-                                                  mtk::trd::msg::CF_XX(
-                                                              rq.req_info
-                                                            , rq.product_code
-                                                            , mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()))
-                                                , mtk::trd::msg::sub_order_ls_confirmated(
-                                                          mtk::trd::msg::sub_order_xx_confirmated(
-                                                                  rq.order_id
-                                                                , mtk::trd::msg::sub_total_executions(
-                                                                              0.
-                                                                            , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                            , rq.request_pos.quantity)
-                                                                , rq.cli_ref)
-                                                        , rq.request_pos));
+                        mtk::trd::msg::sub_total_executions  total_execs (
+                                          0.
+                                        , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                        , rq.request_pos.quantity);
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, rq.req_info, rq.cli_ref, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                 
@@ -727,9 +712,9 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (//  inserting macro: full_exec
 
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().confirmated_info.total_execs.quantity  
-                        == last_confirmation().Get().confirmated_info.market_pos.quantity
-                    /*last_confirmation().HasValue() == true  && last_confirmation().Get().confirmated_info.total_execs.remaining_qty.GetIntCode() == 0*/
+                    &&  last_confirmation().Get().total_execs.quantity  
+                        == last_confirmation().Get().market_pos.quantity
+                    /*last_confirmation().HasValue() == true  && last_confirmation().Get().total_execs.remaining_qty.GetIntCode() == 0*/
                  ) {
 //  inserting macro: wex
 
