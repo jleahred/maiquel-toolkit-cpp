@@ -152,6 +152,45 @@ private:
 
 
 //-------------------------------
+//      sub_account_info
+//-------------------------------    
+class sub_account_info     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_account_info (    const std::string&  _client_code,   const std::string&  _name );
+    explicit sub_account_info ( const qpid::messaging::Message& message );
+    virtual ~sub_account_info (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_account_info"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_account_info"; };
+    
+    
+
+    // fields
+    std::string                               client_code; 
+    std::string                               name; 
+
+
+
+    //  subject info
+    
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
 //      sub_invariant_order_info
 //-------------------------------    
 class sub_invariant_order_info     
@@ -161,7 +200,7 @@ public:
 
     
     // constructor
-    explicit sub_invariant_order_info (    const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const std::string&  _account );
+    explicit sub_invariant_order_info (    const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account );
     explicit sub_invariant_order_info ( const qpid::messaging::Message& message );
     virtual ~sub_invariant_order_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_invariant_order_info"; };
@@ -173,7 +212,7 @@ public:
     sub_order_id                              order_id; 
     mtk::msg::sub_product_code                product_code; 
     enBuySell                                 side; 
-    std::string                               account; 
+    sub_account_info                          account; 
 
 
 
@@ -243,7 +282,7 @@ public:
 
     
     // constructor
-    explicit CF_XX (    const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_info&  _req_info,   const std::string&  _cli_ref,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+    explicit CF_XX (    const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_id&  _req_id,   const std::string&  _cli_ref,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit CF_XX ( const qpid::messaging::Message& message );
     virtual ~CF_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; };
@@ -253,7 +292,7 @@ public:
 
     // fields
     sub_invariant_order_info                  invariant; 
-    mtk::msg::sub_request_info                req_info; 
+    mtk::msg::sub_request_id                  req_id; 
     std::string                               cli_ref; 
     sub_total_executions                      total_execs; 
     mtk::msg::sub_control_fluct               orig_control_fluct; 
@@ -299,6 +338,13 @@ bool operator!= (const sub_exec_conf& a, const sub_exec_conf& b);
 bool operator== (const sub_total_executions& a, const sub_total_executions& b);
 bool operator!= (const sub_total_executions& a, const sub_total_executions& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_account_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_account_info & c);
+   void           operator >> (const YAML::Node& n,       sub_account_info & c);
+
+bool operator== (const sub_account_info& a, const sub_account_info& b);
+bool operator!= (const sub_account_info& a, const sub_account_info& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_invariant_order_info & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_invariant_order_info & c);
    void           operator >> (const YAML::Node& n,       sub_invariant_order_info & c);
@@ -332,6 +378,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_total_ex
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executions& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_total_executions>& a, const std::string& field);
 void copy (sub_total_executions& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_account_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_account_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_account_info>& a, const std::string& field);
+void copy (sub_account_info& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_invariant_order_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_invariant_order_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_invariant_order_info>& a, const std::string& field);
@@ -350,6 +400,8 @@ void copy (CF_XX& a, const qpid::types::Variant& map);
     sub_exec_conf  __internal_get_default(sub_exec_conf *);
     
     sub_total_executions  __internal_get_default(sub_total_executions *);
+    
+    sub_account_info  __internal_get_default(sub_account_info *);
     
     sub_invariant_order_info  __internal_get_default(sub_invariant_order_info *);
     

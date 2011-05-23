@@ -2091,7 +2091,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
 
                     ({  bool result = false;
                         if (ci->last_request().HasValue())
-                            result = cf.req_info == ci->last_request().Get().req_info;
+                            result = cf.req_id == ci->last_request().Get().req_info.req_id;
                         else
                             result = false;
                         result;
@@ -3035,7 +3035,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
 
                     ({  bool result = false;
                         if (ci->last_request().HasValue())
-                            result = cf.req_info == ci->last_request().Get().req_info;
+                            result = cf.req_id == ci->last_request().Get().req_info.req_id;
                         else
                             result = false;
                         result;

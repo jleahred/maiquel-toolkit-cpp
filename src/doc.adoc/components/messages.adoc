@@ -256,14 +256,14 @@ digraph trading_inheritance {
 include::../../../src/components/trading/msg_trd_common.msg[]
 -----
 
-/*
+
 * Support code for trading client messages
 +
 .src/components/trading/msg_trd_common_support.h
 -----
 include::../../../src/components/trading/msg_trd_common_support.h[]
 -----
-*/
+
 
 
 === Limit orders

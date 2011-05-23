@@ -13,6 +13,7 @@
 #include "support/list.hpp"
 
 #include "components/trading/msg_trd_cli_ls.h"
+#include "components/trading/trd_cli_support.h"
 #include "components/admin/admin.h"
 
 namespace fsmgen_trd_cli_ls {

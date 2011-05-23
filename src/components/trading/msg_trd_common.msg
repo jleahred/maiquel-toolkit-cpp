@@ -38,12 +38,21 @@ sub_total_executions [<V:0>]
 
 
 
+sub_account_info [<V:0>]
+{
+    client_code         (cc)    :   string
+    name                (nm)    :   string
+}
+
+
+
+
 sub_invariant_order_info  [<V:0>]
 {
     order_id            (oid)  :   sub_order_id
     product_code        (pc)   :   mtk::msg::sub_product_code     
     side                (sd)   :   enBuySell
-    account             (acc)  :   string
+    account             (acc)  :   sub_account_info
 }
 
 
@@ -81,7 +90,7 @@ CF_XX  [<  V:0  >]
 {
     invariant           (inv)  :   sub_invariant_order_info
     
-    req_info            (rqid) :   mtk::msg::sub_request_info    
+    req_id              (rqid) :   mtk::msg::sub_request_id
     cli_ref             (cr)   :   string
     total_execs         (ext)  :   sub_total_executions      
 

@@ -45,13 +45,13 @@ RQ_XX_LS  [<V:0,   I:RQ_XX   >]
 
 
 
-RQ_NW_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
+RQ_NW_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
 
 
-RQ_MD_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
+RQ_MD_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
 
 
-RQ_CC_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
+RQ_CC_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
 
 
 
@@ -64,13 +64,13 @@ CF_XX_LS  [< V:0,  I:CF_XX >]
 }
 
 
-CF_NW_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}   >]   {}
+CF_NW_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}   >]   {}
 
 
-CF_MD_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}   >]   {}
+CF_MD_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}   >]   {}
 
 
-CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}   >]   {}
+CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}   >]   {}
 
 
 
@@ -78,7 +78,7 @@ CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.clien
 //---------------------------------------------------------------------
 //	executions  LS
 
-CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}   >]
+CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}   >]
 {
     executed_pos  (exc)   :  sub_exec_conf
 }
@@ -91,19 +91,19 @@ CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${req_info.process_info.location.client
 //	rejects  LS
 
 
-RJ_NW_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}  >]  
+RJ_NW_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]  
 {
     reject_description  (rd)    :   string
 }
 
 
-RJ_MD_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}  >]
+RJ_MD_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
 {
     reject_description  (rd)    :   string
 }
 
 
-RJ_CC_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${req_info.process_info.location.client_code}.${invariant.product_code.market}.${invariant.product_code.product}  >]
+RJ_CC_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
 {
     reject_description  (rd)    :   string
 }

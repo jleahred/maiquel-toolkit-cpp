@@ -20,14 +20,20 @@
 namespace {
     const int col_session_id    = 0;
     const int col_req_code      = 1;
-    const int col_market        = 2;
-    const int col_product       = 3;
-    const int col_side          = 4;
-    const int col_price         = 5;
-    const int col_quantity      = 6;
-    const int col_exec_price    = 7;
-    const int col_exec_quantity = 8;
-    const int col_remarks       = 9;
+    const int col_cli_code      = 2;
+    const int col_account       = 3;
+    const int col_order_type    = 4;
+    const int col_market        = 5;
+    const int col_product       = 6;
+    const int col_side          = 7;
+    const int col_price         = 8;
+    const int col_quantity      = 9;
+    const int col_exec_price    = 10;
+    const int col_exec_quantity = 11;
+    const int col_rem_quantity  = 12;
+    const int col_remarks       = 13;
+
+    const int count_items       = 14;
     /*
     const char* const col_captions[] = {    "sess_id",            defined later for translations
                                         QObject::tr("req_code"),
@@ -255,20 +261,22 @@ public:
     mtk::Signal<const mtk::trd::msg::sub_order_id&>     signal_executed_order;
 
     order_in_qbook(QTableWidget *table_widget)
-        :   items (new QTableWidgetItem*[10])
+        :   items (new QTableWidgetItem*[count_items])
     {
         int row = table_widget->rowCount();
         table_widget->insertRow(row);
 
-        for (int column=0; column<10; ++column)
+        for (int column=0; column<count_items; ++column)
         {
             items[column] = new QTableWidgetItem;
             items[column]->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             items[column]->setBackgroundColor(Qt::white);
             table_widget->setItem(row, column, items[column]);
             if (column == col_price  ||  column == col_quantity  ||  column == col_exec_quantity
-                || column == col_exec_price)
+                || column == col_exec_price  ||  column == col_rem_quantity)
                 items[column]->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+            else if(column == col_order_type)
+                items[column]->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
         }
 
         table_widget->scrollToBottom();
@@ -292,6 +300,10 @@ public:
         update_item_exec_quantity       ();
         update_item_exec_price          ();
         update_item_exec_observations   ();
+        update_item_cli_code            ();
+        update_item_account             ();
+        update_item_rem_quantity        ();
+        update_item_order_type          ();
     }
 
     virtual void   update_item_session_id          ()=0;
@@ -304,6 +316,10 @@ public:
     virtual void   update_item_exec_quantity       ()=0;
     virtual void   update_item_exec_price          ()=0;
     virtual void   update_item_exec_observations   ()=0;
+    virtual void   update_item_cli_code            ()=0;
+    virtual void   update_item_account             ()=0;
+    virtual void   update_item_rem_quantity        ()=0;
+    virtual void   update_item_order_type          ()=0;
 
 };
 
@@ -471,6 +487,54 @@ public:
         item->setBackgroundColor(get_default_color());
         item->setText(QLatin1String(inner_order->serrors().c_str()));
     }
+    void update_item_cli_code            ()
+    {
+        QTableWidgetItem* item = items[col_cli_code];
+        item->setBackgroundColor(get_default_color());
+        if (inner_order->last_confirmation().HasValue())
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().invariant.account.client_code.c_str()));
+        else if (inner_order->last_request().HasValue())
+            item->setText(QLatin1String(inner_order->last_request().Get().invariant.account.client_code.c_str()));
+        else
+            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+
+    }
+    void update_item_account             ()
+    {
+        QTableWidgetItem* item = items[col_account];
+        item->setBackgroundColor(get_default_color());
+        if (inner_order->last_confirmation().HasValue())
+            item->setText(QLatin1String(inner_order->last_confirmation().Get().invariant.account.name.c_str()));
+        else if (inner_order->last_request().HasValue())
+            item->setText(QLatin1String(inner_order->last_request().Get().invariant.account.name.c_str()));
+        else
+            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    }
+    void update_item_rem_quantity        ()
+    {
+        QTableWidgetItem* item = items[col_rem_quantity];
+        if (inner_order->last_confirmation().HasValue())
+            item->setText(fn_as_QString(inner_order->last_confirmation().Get().total_execs.remaining_qty));
+        else
+            item->setText(QLatin1String(""));
+
+        item->setBackgroundColor(get_default_color());
+    }
+    void update_item_order_type        ()
+    {
+        QTableWidgetItem* item = items[col_order_type];
+        item->setBackgroundColor(get_default_color());
+        if(dynamic_cast<mtk::trd::trd_cli_ls*>(inner_order.get2()) != 0)
+            item->setText(QObject::tr("limit"));
+        else if(dynamic_cast<mtk::trd::trd_cli_mk*>(inner_order.get2()) != 0)
+            item->setText(QObject::tr("market"));
+        else
+        {
+            item->setText(QLatin1String("???"));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qorderbook", "unknown order type", mtk::alPriorCritic, mtk::alTypeNoPermisions));
+        }
+    }
+
 };
 
 
@@ -602,6 +666,9 @@ qorder_table::qorder_table(QWidget *parent) :
     {
         static  const char* const col_captions[] = {     "sess_id",
                                                          QT_TR_NOOP("req_code"),
+                                                         QT_TR_NOOP("cli_code"),
+                                                         QT_TR_NOOP("account"),
+                                                         QT_TR_NOOP("order_type"),
                                                          QT_TR_NOOP("market"),
                                                          QT_TR_NOOP("product"),
                                                          QT_TR_NOOP("side"),
@@ -609,6 +676,7 @@ qorder_table::qorder_table(QWidget *parent) :
                                                          QT_TR_NOOP("qty"),
                                                          QT_TR_NOOP("exec price"),
                                                          QT_TR_NOOP("exec qty"),
+                                                         QT_TR_NOOP("rem qty"),
                                                          QT_TR_NOOP("remarks"),
                                                          0                 };
 

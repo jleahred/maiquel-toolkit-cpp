@@ -133,7 +133,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.cf_nw_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::CF_NW_LS,
                                     cf_nw_ls)
 
@@ -141,7 +141,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.cf_md_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_MD_LS::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::CF_MD_LS::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::CF_MD_LS,
                                     cf_md_ls)
 
@@ -149,7 +149,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.cf_cc_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_CC_LS::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::CF_CC_LS::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::CF_CC_LS,
                                     cf_cc_ls)
 
@@ -157,7 +157,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.rj_nw_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_NW_LS::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::RJ_NW_LS::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::RJ_NW_LS,
                                     rj_nw_ls)
 
@@ -165,7 +165,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.rj_md_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_MD_LS::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::RJ_MD_LS::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::RJ_MD_LS,
                                     rj_md_ls)
 
@@ -173,14 +173,14 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.rj_cc_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_CC_LS::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::RJ_CC_LS::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::RJ_CC_LS,
                                     rj_cc_ls)
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.cf_ex_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_EX_LS::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::CF_EX_LS::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::CF_EX_LS,
                                     cf_ex_ls)
 
@@ -190,7 +190,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.cf_nw_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_MK::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::CF_NW_MK::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::CF_NW_MK,
                                     cf_nw_mk)
 
@@ -198,7 +198,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.cf_md_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_MD_MK::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::CF_MD_MK::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::CF_MD_MK,
                                     cf_md_mk)
 
@@ -206,7 +206,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.cf_cc_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_CC_MK::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::CF_CC_MK::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::CF_CC_MK,
                                     cf_cc_mk)
 
@@ -214,7 +214,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.rj_nw_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_NW_MK::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::RJ_NW_MK::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::RJ_NW_MK,
                                     rj_nw_mk)
 
@@ -222,7 +222,7 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.rj_md_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_MD_MK::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::RJ_MD_MK::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::RJ_MD_MK,
                                     rj_md_mk)
 
@@ -230,14 +230,14 @@ s_status& get_status_ref(void)
                                     __internal_ptr_status->handles.rj_cc_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_CC_MK::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::RJ_CC_MK::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::RJ_CC_MK,
                                     rj_cc_mk)
             MTK_QPID_RECEIVER_CONNECT_F(
                                     __internal_ptr_status->handles.cf_ex_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_EX_MK::get_in_subject(client_code, "*", "*"),
+                                    mtk::trd::msg::CF_EX_MK::get_in_subject(client_code, "*", "*", "*"),
                                     mtk::trd::msg::CF_EX_MK,
                                     cf_ex_mk)
     }
@@ -383,7 +383,7 @@ template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typena
 mtk::CountPtr<ORDER_TYPE>   rq_nw_xx    (               const mtk::msg::sub_product_code&   pc, 
                                                         const mtk::trd::msg::enBuySell      buy_sell,
                                                         const POS_TYPE& rq_pos, 
-                                                        const std::string& account, 
+                                                        const mtk::trd::msg::sub_account_info& account, 
                                                         const std::string& cli_ref)
 {
     mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
@@ -409,7 +409,7 @@ template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typena
 mtk::CountPtr<ORDER_TYPE>   rq_nw_xx_manual    (        const mtk::msg::sub_product_code&   pc, 
                                                         const mtk::trd::msg::enBuySell      buy_sell,
                                                         const POS_TYPE& rq_pos, 
-                                                        const std::string& account, 
+                                                        const mtk::trd::msg::sub_account_info& account, 
                                                         const std::string& cli_ref, 
                                                         bool agressive, 
                                                         mtk::Signal< REQUEST_TYPE&, bool& /*canceled*/, bool  /*aggre*/   >& signal_hook
@@ -462,7 +462,7 @@ REQUEST_TYPE     get_last_request_or_build_from_confirmation (mtk::CountPtr<ORDE
     {
         CONF_TYPE                   lc (order->last_confirmation().Get());
         
-        mtk::trd::msg::RQ_XX        rqxx       (lc.invariant, lc.req_info, lc.cli_ref, mtk::admin::get_control_fluct_info());
+        mtk::trd::msg::RQ_XX        rqxx       (lc.invariant, mtk::admin::get_request_info(), lc.cli_ref, mtk::admin::get_control_fluct_info());
         REQUEST_TYPE                rqxxls     (rqxx, lc.market_pos);
 
         return rqxxls;
@@ -594,22 +594,22 @@ void cf_ex_xx(const EXEC_TYPE& ex)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-mtk::CountPtr<trd_cli_ls>   rq_nw_ls        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const std::string& account, const std::string& cli_ref)
+mtk::CountPtr<trd_cli_ls>   rq_nw_ls        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref)
 {
     return rq_nw_xx<trd_cli_ls, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_NW_LS>(pc, buy_sell, rq_pos, account, cli_ref);
 }
 
-mtk::CountPtr<trd_cli_mk>   rq_nw_mk        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const std::string& account, const std::string& cli_ref)
+mtk::CountPtr<trd_cli_mk>   rq_nw_mk        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref)
 {
     return rq_nw_xx<trd_cli_mk, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_NW_MK>(pc, buy_sell, rq_pos, account, cli_ref);
 }
 
-mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const std::string& account, const std::string& cli_ref, bool agressive)
+mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref, bool agressive)
 {
     return rq_nw_xx_manual<trd_cli_ls, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_NW_LS>(pc, buy_sell, rq_pos, account, cli_ref, agressive, get_status_ref().sig_request_hook_ls);
 }
 
-mtk::CountPtr<trd_cli_mk>   rq_nw_mk_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const std::string& account, const std::string& cli_ref, bool agressive)
+mtk::CountPtr<trd_cli_mk>   rq_nw_mk_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref, bool agressive)
 {
     return rq_nw_xx_manual<trd_cli_mk, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_NW_MK>(pc, buy_sell, rq_pos, account, cli_ref, agressive, get_status_ref().sig_request_hook_mk);
 }

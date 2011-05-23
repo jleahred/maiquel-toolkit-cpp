@@ -487,7 +487,34 @@ void sub_total_executions::before_send(void) const
 
 
 
-sub_invariant_order_info::sub_invariant_order_info (   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const std::string&  _account)
+sub_account_info::sub_account_info (   const std::string&  _client_code,   const std::string&  _name)
+    :     client_code(_client_code),   name(_name) 
+       
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_account_info::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void sub_account_info::before_send(void) const
+{
+
+}
+
+
+
+
+sub_invariant_order_info::sub_invariant_order_info (   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account)
     :     order_id(_order_id),   product_code(_product_code),   side(_side),   account(_account) 
        
     {  
@@ -541,8 +568,8 @@ void RQ_XX::before_send(void) const
 
 
 
-CF_XX::CF_XX (   const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_info&  _req_info,   const std::string&  _cli_ref,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
-    :     invariant(_invariant),   req_info(_req_info),   cli_ref(_cli_ref),   total_execs(_total_execs),   orig_control_fluct(_orig_control_fluct) 
+CF_XX::CF_XX (   const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_id&  _req_id,   const std::string&  _cli_ref,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     invariant(_invariant),   req_id(_req_id),   cli_ref(_cli_ref),   total_execs(_total_execs),   orig_control_fluct(_orig_control_fluct) 
        
     {  
         std::string cr = check_recomended ();  
@@ -668,11 +695,44 @@ void  operator >> (const YAML::Node& node, sub_total_executions & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const sub_account_info & c)
+{
+    o << "{ "
+
+        << "client_code:"<<   c.client_code << "  "        << "name:"<<   c.name << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_account_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code        << YAML::Key << "name"  << YAML::Value <<   c.name
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_account_info & c)
+{
+
+
+        node["client_code"]  >> c.client_code;
+        node["name"]  >> c.name;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_invariant_order_info & c)
 {
     o << "{ "
 
-        << "order_id:"<< c.order_id<<"  "        << "product_code:"<< c.product_code<<"  "        << "side:"<< c.side<<"  "        << "account:"<<   c.account << "  "
+        << "order_id:"<< c.order_id<<"  "        << "product_code:"<< c.product_code<<"  "        << "side:"<< c.side<<"  "        << "account:"<< c.account<<"  "
         << " }";
     return o;
 };
@@ -683,7 +743,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_invariant_order_info & c
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "order_id"  << YAML::Value << c.order_id        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "side"  << YAML::Value << c.side        << YAML::Key << "account"  << YAML::Value <<   c.account
+        << YAML::Key << "order_id"  << YAML::Value << c.order_id        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "side"  << YAML::Value << c.side        << YAML::Key << "account"  << YAML::Value << c.account
         << YAML::EndMap;
     return o;
 };
@@ -742,7 +802,7 @@ std::ostream& operator<< (std::ostream& o, const CF_XX & c)
 {
     o << "{ "
 
-        << "invariant:"<< c.invariant<<"  "        << "req_info:"<< c.req_info<<"  "        << "cli_ref:"<<   c.cli_ref << "  "        << "total_execs:"<< c.total_execs<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
+        << "invariant:"<< c.invariant<<"  "        << "req_id:"<< c.req_id<<"  "        << "cli_ref:"<<   c.cli_ref << "  "        << "total_execs:"<< c.total_execs<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
         << " }";
     return o;
 };
@@ -753,7 +813,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_XX & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "invariant"  << YAML::Value << c.invariant        << YAML::Key << "req_info"  << YAML::Value << c.req_info        << YAML::Key << "cli_ref"  << YAML::Value <<   c.cli_ref        << YAML::Key << "total_execs"  << YAML::Value << c.total_execs        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
+        << YAML::Key << "invariant"  << YAML::Value << c.invariant        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "cli_ref"  << YAML::Value <<   c.cli_ref        << YAML::Key << "total_execs"  << YAML::Value << c.total_execs        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
         << YAML::EndMap;
     return o;
 };
@@ -765,7 +825,7 @@ void  operator >> (const YAML::Node& node, CF_XX & c)
 
 
         node["invariant"]  >> c.invariant;
-        node["req_info"]  >> c.req_info;
+        node["req_id"]  >> c.req_id;
         node["cli_ref"]  >> c.cli_ref;
         node["total_execs"]  >> c.total_execs;
         node["orig_control_fluct"]  >> c.orig_control_fluct;
@@ -810,6 +870,18 @@ bool operator!= (const sub_total_executions& a, const sub_total_executions& b)
 
 
 
+bool operator== (const sub_account_info& a, const sub_account_info& b)
+{
+    return (          a.client_code ==  b.client_code  &&          a.name ==  b.name  &&   true  );
+};
+
+bool operator!= (const sub_account_info& a, const sub_account_info& b)
+{
+    return !(a==b);
+};
+
+
+
 bool operator== (const sub_invariant_order_info& a, const sub_invariant_order_info& b)
 {
     return (          a.order_id ==  b.order_id  &&          a.product_code ==  b.product_code  &&          a.side ==  b.side  &&          a.account ==  b.account  &&   true  );
@@ -836,7 +908,7 @@ bool operator!= (const RQ_XX& a, const RQ_XX& b)
 
 bool operator== (const CF_XX& a, const CF_XX& b)
 {
-    return (          a.invariant ==  b.invariant  &&          a.req_info ==  b.req_info  &&          a.cli_ref ==  b.cli_ref  &&          a.total_execs ==  b.total_execs  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
+    return (          a.invariant ==  b.invariant  &&          a.req_id ==  b.req_id  &&          a.cli_ref ==  b.cli_ref  &&          a.total_execs ==  b.total_execs  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
 };
 
 bool operator!= (const CF_XX& a, const CF_XX& b)
@@ -1012,6 +1084,57 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+//void  __internal_qpid_fill (sub_account_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_account_info& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("cc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field client_code on message sub_account_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.client_code, it->second);
+                        //c.client_code = it->second;
+//   field_type
+
+                    it = mv.find("nm");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field name on message sub_account_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.name, it->second);
+                        //c.name = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_account_info& a)
+{
+
+    a.before_send();
+
+
+//  field_type
+        __internal_add2map(map, a.client_code, std::string("cc"));
+//  field_type
+        __internal_add2map(map, a.name, std::string("nm"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_account_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
 //void  __internal_qpid_fill (sub_invariant_order_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_invariant_order_info& c, const qpid::types::Variant& v)
     {  
@@ -1042,14 +1165,14 @@ void  copy (sub_invariant_order_info& c, const qpid::types::Variant& v)
                     else
                         copy(c.side, it->second);
                         //__internal_qpid_fill(c.side, it->second.asMap());
-//   field_type
+//   sub_msg_type
 
                     it = mv.find("acc");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field account on message sub_invariant_order_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.account, it->second);
-                        //c.account = it->second;
+                        //__internal_qpid_fill(c.account, it->second.asMap());
 
     }
 
@@ -1066,7 +1189,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_invariant_ord
         __internal_add2map(map, a.product_code, std::string("pc"));
 //  sub_msg_type
         __internal_add2map(map, a.side, std::string("sd"));
-//  field_type
+//  sub_msg_type
         __internal_add2map(map, a.account, std::string("acc"));
 
 
@@ -1172,10 +1295,10 @@ void  copy (CF_XX& c, const qpid::types::Variant& v)
 
                     it = mv.find("rqid");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field req_info on message CF_XX::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field req_id on message CF_XX::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.req_info, it->second);
-                        //__internal_qpid_fill(c.req_info, it->second.asMap());
+                        copy(c.req_id, it->second);
+                        //__internal_qpid_fill(c.req_id, it->second.asMap());
 //   field_type
 
                     it = mv.find("cr");
@@ -1213,7 +1336,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX& a)
 //  sub_msg_type
         __internal_add2map(map, a.invariant, std::string("inv"));
 //  sub_msg_type
-        __internal_add2map(map, a.req_info, std::string("rqid"));
+        __internal_add2map(map, a.req_id, std::string("rqid"));
 //  field_type
         __internal_add2map(map, a.cli_ref, std::string("cr"));
 //  sub_msg_type
@@ -1233,6 +1356,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1273,6 +1397,16 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
             );
     }
     
+    sub_account_info  __internal_get_default(sub_account_info*)
+    {
+        return sub_account_info(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
     sub_invariant_order_info  __internal_get_default(sub_invariant_order_info*)
     {
         return sub_invariant_order_info(
@@ -1282,8 +1416,8 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
    __internal_get_default((mtk::msg::sub_product_code*)0),
 //   sub_msg_type
    __internal_get_default((enBuySell*)0),
-//   field_type
-   __internal_get_default ((std::string*)0)
+//   sub_msg_type
+   __internal_get_default((sub_account_info*)0)
             );
     }
     
@@ -1307,7 +1441,7 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
 //   sub_msg_type
    __internal_get_default((sub_invariant_order_info*)0),
 //   sub_msg_type
-   __internal_get_default((mtk::msg::sub_request_info*)0),
+   __internal_get_default((mtk::msg::sub_request_id*)0),
 //   field_type
    __internal_get_default ((std::string*)0),
 //   sub_msg_type
@@ -1375,6 +1509,24 @@ sub_total_executions::sub_total_executions (const qpid::messaging::Message& msg)
 
 
 
+sub_account_info::sub_account_info (const qpid::messaging::Message& msg)
+    :  //   field_type
+   client_code(__internal_get_default((std::string*)0)),
+//   field_type
+   name(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
 sub_invariant_order_info::sub_invariant_order_info (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    order_id(__internal_get_default((sub_order_id*)0)),
@@ -1382,8 +1534,8 @@ sub_invariant_order_info::sub_invariant_order_info (const qpid::messaging::Messa
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
 //   sub_msg_type
    side(__internal_get_default((enBuySell*)0)),
-//   field_type
-   account(__internal_get_default((std::string*)0)) 
+//   sub_msg_type
+   account(__internal_get_default((sub_account_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -1423,7 +1575,7 @@ CF_XX::CF_XX (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    invariant(__internal_get_default((sub_invariant_order_info*)0)),
 //   sub_msg_type
-   req_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
+   req_id(__internal_get_default((mtk::msg::sub_request_id*)0)),
 //   field_type
    cli_ref(__internal_get_default((std::string*)0)),
 //   sub_msg_type

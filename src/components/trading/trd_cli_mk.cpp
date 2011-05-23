@@ -86,7 +86,7 @@
 #define SEND_REJECT(__SIGNAL_TYPE__, __MSG_TYPE__) \
     if (last_confirmation().HasValue())    \
     {               \
-        mtk::trd::msg::CF_XX cfxx(rq.invariant, rq.req_info, rq.cli_ref, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
+        mtk::trd::msg::CF_XX cfxx(rq.invariant, rq.req_info.req_id, rq.cli_ref, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
         mtk::trd::msg::CF_XX_MK  rjxx(cfxx, last_confirmation().Get().market_pos);      \
         mtk::trd::msg::__MSG_TYPE__  _rj_(rjxx, ci->__serrors);  \
         ci->__SIGNAL_TYPE__(_rj_);  \
@@ -98,7 +98,7 @@
             mtk::trd::msg::sub_total_executions total_execs(0.,     \
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)),    \
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)) );    \
-            mtk::trd::msg::CF_XX cfxx(rq.invariant, rq.req_info, rq.cli_ref, total_execs, mtk::admin::get_control_fluct_info());  \
+            mtk::trd::msg::CF_XX cfxx(rq.invariant, rq.req_info.req_id, rq.cli_ref, total_execs, mtk::admin::get_control_fluct_info());  \
             mtk::trd::msg::CF_XX_MK  rjxx(cfxx, last_request().Get().request_pos);      \
             mtk::trd::msg::__MSG_TYPE__  _rj_(rjxx, ci->__serrors);  \
             ci->__SIGNAL_TYPE__(_rj_);  \

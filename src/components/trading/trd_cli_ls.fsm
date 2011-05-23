@@ -4,7 +4,7 @@
 ::INIT::
         NAMESPACES=['mtk','trd']
         GENERATE_ON='.'
-        INCLUDES = ['#include "components/trading/msg_trd_cli_ls.h"', '#include "components/admin/admin.h"']
+        INCLUDES = ['#include "components/trading/msg_trd_cli_ls.h"', '#include "components/trading/trd_cli_support.h"', '#include "components/admin/admin.h"']
 
 
 ::INPUTS::
@@ -361,7 +361,7 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
                 [{
                     ({  bool result = false;
                         if (ci->last_request().HasValue())
-                            result = cf.req_info == ci->last_request().Get().req_info;
+                            result = cf.req_id == ci->last_request().Get().req_info.req_id;
                         else
                             result = false;
                         result;
