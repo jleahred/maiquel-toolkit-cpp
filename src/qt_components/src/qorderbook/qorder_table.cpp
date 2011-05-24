@@ -216,6 +216,24 @@ mtk::msg::sub_product_code    get_product_code(const mtk::trd::msg::sub_order_id
         throw mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order type for orderid " << ord_id), mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
 
+mtk::trd::msg::sub_account_info    get_account(const mtk::trd::msg::sub_order_id& ord_id)
+{
+    mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
+    if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+    {
+        mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
+        return mtk::trd::get_account(*order);
+    }
+    else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+    {
+        mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
+        return mtk::trd::get_account(*order);
+    }
+    else
+        throw mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order type for orderid " << ord_id), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+}
+
+
 mtk::FixedNumber   get_total_exec_quantity (const mtk::trd::msg::sub_order_id& ord_id)
 {
     mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
@@ -668,7 +686,7 @@ qorder_table::qorder_table(QWidget *parent) :
                                                          QT_TR_NOOP("req_code"),
                                                          QT_TR_NOOP("cli_code"),
                                                          QT_TR_NOOP("account"),
-                                                         QT_TR_NOOP("order_type"),
+                                                         QT_TR_NOOP("o.type"),
                                                          QT_TR_NOOP("market"),
                                                          QT_TR_NOOP("product"),
                                                          QT_TR_NOOP("side"),
@@ -893,6 +911,12 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
     if(mtk::s_toUpper(pc.market).find(fd.market.toUpper().toStdString())!=std::string::npos)
         ++matches;
 
+    mtk::trd::msg::sub_account_info account = get_account(order_id);
+    if(mtk::s_toUpper(account.client_code).find(fd.client_code.toUpper().toStdString())!=std::string::npos)
+        ++matches;
+    if(mtk::s_toUpper(account.name).find(fd.account.toUpper().toStdString())!=std::string::npos)
+        ++matches;
+
     if(check_no_tab_filter_config)
     {
         if(fd.liveFilter == filter_data::lfAll)
@@ -906,12 +930,12 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
                           ))
             ++matches;
 
-        if(matches==3)  return true;
+        if(matches==5)  return true;
         else            return false;
     }
     else
     {
-        if(matches==2)  return true;
+        if(matches==4)  return true;
         else            return false;
     }
 }

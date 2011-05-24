@@ -4,7 +4,7 @@
 
 #include "qt_components/src/qmtk_misc.h"
 #include "components/admin/admin.h"
-
+#include "components/trading/trd_cli_account_manager.h"
 
 
 #include <QPushButton>
@@ -69,18 +69,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
         ui->quantity->clear();
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
 
-    int current_index = -1;
-    ui->account->addItem(QLatin1String("acpr1@fut"));
-    ui->account->addItem(QLatin1String("acpr2@fut"));
-    ui->account->addItem(QLatin1String("acpr3@fut"));
-    if(current_index == -1)
-    {
-        MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "editorder", "default account not valid", mtk::alPriorWarning, mtk::alTypeNoPermisions));
-        MTK_END_EXEC_MAX_FREC
-    }
-    else
-        ui->account->setCurrentIndex(current_index);
+
+    this->fill_accounts(rq);
 
     this->check_if_order_can_be_sent();
 
@@ -146,20 +136,9 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
         ui->quantity->clear();
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
 
-    this->check_if_order_can_be_sent();
+    this->fill_accounts(rq);
 
-    int current_index = -1;
-    ui->account->addItem(QLatin1String("acpr1@fut"));
-    ui->account->addItem(QLatin1String("acpr2@fut"));
-    ui->account->addItem(QLatin1String("acpr3@fut"));
-    if(current_index == -1)
-    {
-        MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "editorder", "default account not valid", mtk::alPriorWarning, mtk::alTypeNoPermisions));
-        MTK_END_EXEC_MAX_FREC
-    }
-    else
-        ui->account->setCurrentIndex(current_index);
+    this->check_if_order_can_be_sent();
 
     mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
     if(s_default_qty.HasValue()==false)
@@ -252,6 +231,13 @@ mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request_ls(void)
     result.request_pos.price.SetDouble(ui->price->value());
     result.request_pos.quantity.SetDouble(ui->quantity->value());
     result.cli_ref = ui->cliref->text().toStdString();
+
+    mtk::list<mtk::trd::msg::sub_account_info>::iterator it_account=account_list.begin();
+    for(int i=0; i<ui->account->currentIndex(); ++i)
+        ++it_account;
+    result.invariant.account = mtk::trd::msg::sub_account_info(*it_account);
+
+    std::cout << result.invariant.account << std::endl;
     return result;
 }
 
@@ -262,6 +248,12 @@ mtk::trd::msg::RQ_XX_MK   QEditOrder::get_request_mk(void)
     result.invariant.product_code.product = ui->product->text().toStdString();
     result.request_pos.quantity.SetDouble(ui->quantity->value());
     result.cli_ref = ui->cliref->text().toStdString();
+
+    mtk::list<mtk::trd::msg::sub_account_info>::iterator it_account=account_list.begin();
+    for(int i=0; i<ui->account->currentIndex(); ++i)
+        ++it_account;
+    result.invariant.account = mtk::trd::msg::sub_account_info(*it_account);
+
     return result;
 }
 
@@ -297,5 +289,26 @@ void QEditOrder::mouseDoubleClickEvent(QMouseEvent *e)
         std::string default_qty = MTK_SS(ui->quantity->value());
         mtk::admin::set_config_property("MISC.default_qty",default_qty);
         ui->message->setText(tr("configured new default qty with %1").arg(QLatin1String(default_qty.c_str())));
+    }
+}
+
+
+void QEditOrder::fill_accounts(const mtk::trd::msg::RQ_XX& rq)
+{
+    account_list.clear();
+    if(rq.invariant.account.client_code == "")      //  it's  a new order
+    {
+        account_list = mtk::trd::account_manager::get_accounts();
+        for(mtk::list<mtk::trd::msg::sub_account_info>::iterator it = account_list.begin(); it!= account_list.end(); ++it)
+        {
+            ui->account->addItem(QLatin1String(it->name.c_str()));
+        }
+        ui->account->setCurrentIndex(0);
+    }
+    else
+    {
+        account_list.push_back(rq.invariant.account);
+        ui->account->addItem(QLatin1String(rq.invariant.account.name.c_str()));
+        ui->account->setCurrentIndex(0);
     }
 }

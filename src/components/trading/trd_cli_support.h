@@ -27,12 +27,12 @@ namespace mtk{namespace trd{
 
 
     template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
-    std::string   get_client_code(const ORDER_TYPE& order)
+    mtk::trd::msg::sub_account_info   get_account(const ORDER_TYPE& order)
     {
         if(order.last_request().HasValue())
-            return order.last_request().Get().req_info.process_info.location.client_code;
+            return order.last_request().Get().invariant.account;
         else if (order.last_confirmation().HasValue())
-            return order.last_confirmation().Get().client_code;
+            return order.last_confirmation().Get().invariant.account;
         else
             throw mtk::Alarm(MTK_HERE, "trd_cli_support", MTK_SS("no request no confirmation on order"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
     }
