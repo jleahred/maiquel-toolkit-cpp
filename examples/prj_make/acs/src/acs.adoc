@@ -67,11 +67,13 @@ digraph dfd0_graph {
  ACS ->  CLIENT  [label = "rs_key"];
  ACS ->  CLIENT  [label = "rs_login"];
 
- ACS ->  SERVERS [label = "pub_login" color=red];
- ACS ->  SERVERS [label = "pub_logout" color=red];
- ACS ->  SERVERS [label = "pub_partial_list" color=red];
+ ACS ->  SERVERS [label = "pub_add_user"];
+ ACS ->  SERVERS [label = "pub_del_user"];
 
- SERVERS -> ACS  [label = "pub_partial_list" color=red];
+ SERVERS -> ACS  [label = "req_session_id_conf"]
+ ACS ->  SERVERS [label = "pub_partial_user_list_acs2serv" ];
+
+ SERVERS -> ACS  [label = "pub_partial_user_list_serv2acs" ];
 }
 -----
 
@@ -100,8 +102,19 @@ include::../mtk/src/components/acs/msg_acs.msg[]
 * It will also check the keep alive messages defined on admin
 
 == Server side messages
-* PENDING
 
+* Servers will send +pub_partial_user_list_serv2acs+ frecuently in order to detect invalid users registered on one server
+* If a server receives a request on an invalid +session_id+, it will...
+.. Ask for this +session_id+
+.. Notify as +error+ with an +alarm+
+.. Reject the request
+.. In case it would be a valid +session_id+, +acs_server+ will publish +pub_partial_user_list_acs2serv+ for next requests
+.. +acs_server+ will notify this with an error message
+
+[source,{cpp}]
+----
+include::..//src/msg_acs_server.msg[]
+----
 
 
 

@@ -110,11 +110,23 @@ CLI <-->  SYS::
 | ADM.#   |    keep alives, request commands, response commands
 |=====================
 
+
+SYS <-->  SYS::
++
+--
+* Server to server comunication
+* Same routing keys preceded by +SYS.+
+--
+
 * +PUB+ will be used on messages sent to many. Broadcast with no response and therefore no end response
 * +CONF+ to send messages to many but they depend from any request or previus suscription information and the suscription is _permanent_. +
   Orders confirmation for example
 * +REQ+ is for request responses and request confirmation patterns
 * +REP+ responses of request response pattern. _Non permanent_ suscriptions
+
+
+
+
 
 [NOTE]
 The subject identify a message that can be sent or received directly

@@ -24,6 +24,29 @@ default__:  default
 	@echo
 	@echo
 	@echo
+	@echo "make fsm"
+	@echo "--------------"
+	@echo "it will compile de fsm files..."
+	@echo
+	@echo
+	@echo
+	@echo "make msg"
+	@echo "--------------"
+	@echo "it will compile de messages files..."
+	@echo
+	@echo
+	@echo
+	@echo
+
+
+.PHONY : fsm
+fsm:
+	find . -name '*.fsm' | xargs python tools/fsm_gen.py
+
+
+.PHONY : msg
+msg:
+	find . -name '*.msg' | xargs python tools/build_msg.py
 
 
 .PHONY : doc

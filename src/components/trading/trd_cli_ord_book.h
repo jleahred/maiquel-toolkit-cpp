@@ -1,5 +1,5 @@
-#ifndef __trd_cli_ord_book_h__
-#define __trd_cli_ord_book_h__
+#ifndef __trd_cli_ord_book_h_
+#define __trd_cli_ord_book_h_
 
 
 #include "support/alarm.h"
