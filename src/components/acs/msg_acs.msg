@@ -58,9 +58,10 @@ res_login   [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.
 {
     response_info   (ri)        :   mtk::msg::sub_r_response
     
-    login_response_info (lr)  [< V:0 >]
+    session_info (lr)  [< V:0 >]
     {
         user_name      (u)      :   string      //  empty if login rejected
+        client_code    (cc)     :   string
         session_id     (si)     :   string
     }
 }

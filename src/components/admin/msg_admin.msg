@@ -46,7 +46,7 @@ pub_keep_alive_srv  [< V:0, SUBJ:ADM.CIMD.KA >]
 pub_keep_alive_clients  [< V:0, I:pub_keep_alive_srv,  SUBJ:ADM.CIMD.KA >]
 {
     //  aditional info for ACS  (hot registration)
-    login_confirmation  (lc)    :   mtk::acs::msg::res_login::IC_login_response_info
+    login_confirmation  (lc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
 

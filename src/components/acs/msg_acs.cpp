@@ -487,8 +487,8 @@ void req_login::before_send(void) const
 
 
 
-res_login::res_login (   const mtk::msg::sub_r_response&  _response_info,   const IC_login_response_info&  _login_response_info)
-    :     response_info(_response_info),   login_response_info(_login_response_info) 
+res_login::res_login (   const mtk::msg::sub_r_response&  _response_info,   const IC_session_info&  _session_info)
+    :     response_info(_response_info),   session_info(_session_info) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -514,8 +514,8 @@ void res_login::before_send(void) const
 
 
 
-res_login::IC_login_response_info::IC_login_response_info (   const std::string&  _user_name,   const std::string&  _session_id)
-    :     user_name(_user_name),   session_id(_session_id) 
+res_login::IC_session_info::IC_session_info (   const std::string&  _user_name,   const std::string&  _client_code,   const std::string&  _session_id)
+    :     user_name(_user_name),   client_code(_client_code),   session_id(_session_id) 
        
     {  
         std::string cr = check_recomended ();  
@@ -526,14 +526,14 @@ res_login::IC_login_response_info::IC_login_response_info (   const std::string&
 
 
 
-std::string res_login::IC_login_response_info::check_recomended(void) const
+std::string res_login::IC_session_info::check_recomended(void) const
 {
     std::string result;
 
     return result;
 }
 
-void res_login::IC_login_response_info::before_send(void) const
+void res_login::IC_session_info::before_send(void) const
 {
 
 }
@@ -776,11 +776,11 @@ void  operator >> (const YAML::Node& node, req_login & c)
 };
 
 
-std::ostream& operator<< (std::ostream& o, const res_login::IC_login_response_info & c)
+std::ostream& operator<< (std::ostream& o, const res_login::IC_session_info & c)
 {
     o << "{ "
 
-        << "user_name:"<<   c.user_name << "  "        << "session_id:"<<   c.session_id << "  "
+        << "user_name:"<<   c.user_name << "  "        << "client_code:"<<   c.client_code << "  "        << "session_id:"<<   c.session_id << "  "
         << " }";
     return o;
 };
@@ -790,18 +790,18 @@ std::ostream& operator<< (std::ostream& o, const res_login & c)
 {
     o << "{ "
 
-        << "response_info:"<< c.response_info<<"  "        << "login_response_info:"<< c.login_response_info<<"  "
+        << "response_info:"<< c.response_info<<"  "        << "session_info:"<< c.session_info<<"  "
         << " }";
     return o;
 };
 
 
 
-YAML::Emitter& operator << (YAML::Emitter& o, const res_login::IC_login_response_info & c)
+YAML::Emitter& operator << (YAML::Emitter& o, const res_login::IC_session_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id
+        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id
         << YAML::EndMap;
     return o;
 };
@@ -812,18 +812,19 @@ YAML::Emitter& operator << (YAML::Emitter& o, const res_login & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "login_response_info"   << YAML::Value << c.login_response_info
+        << YAML::Key << "response_info"  << YAML::Value << c.response_info        << YAML::Key << "session_info"   << YAML::Value << c.session_info
         << YAML::EndMap;
     return o;
 };
 
 
 
-void  operator >> (const YAML::Node& node, res_login::IC_login_response_info & c)
+void  operator >> (const YAML::Node& node, res_login::IC_session_info & c)
 {
 
 
         node["user_name"]  >> c.user_name;
+        node["client_code"]  >> c.client_code;
         node["session_id"]  >> c.session_id;
 
 
@@ -836,7 +837,7 @@ void  operator >> (const YAML::Node& node, res_login & c)
 
 
         node["response_info"]  >> c.response_info;
-            node["login_response_info"] >>  c.login_response_info;
+            node["session_info"] >>  c.session_info;
 
 
 };
@@ -1045,12 +1046,12 @@ bool operator!= (const req_login& a, const req_login& b)
 
 
 
-bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b)
+bool operator== (const res_login::IC_session_info& a, const res_login::IC_session_info& b)
 {
-    return (          a.user_name ==  b.user_name  &&          a.session_id ==  b.session_id  &&   true  );
+    return (          a.user_name ==  b.user_name  &&          a.client_code ==  b.client_code  &&          a.session_id ==  b.session_id  &&   true  );
 };
 
-bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b)
+bool operator!= (const res_login::IC_session_info& a, const res_login::IC_session_info& b)
 {
     return !(a==b);
 };
@@ -1059,7 +1060,7 @@ bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC
 
 bool operator== (const res_login& a, const res_login& b)
 {
-    return (          a.response_info ==  b.response_info  &&          a.login_response_info  ==  b.login_response_info  &&   true  );
+    return (          a.response_info ==  b.response_info  &&          a.session_info  ==  b.session_info  &&   true  );
 };
 
 bool operator!= (const res_login& a, const res_login& b)
@@ -1321,10 +1322,10 @@ void  copy (res_login& c, const qpid::types::Variant& v)
 
                     it = mv.find("lr");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field login_response_info on message res_login::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_info on message res_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.login_response_info, it->second);
-                        //__internal_qpid_fill(c.login_response_info, it->second.asMap());
+                        copy(c.session_info, it->second);
+                        //__internal_qpid_fill(c.session_info, it->second.asMap());
 
     }
 
@@ -1338,8 +1339,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a)
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("ri"));
 //  IN_SUB_MSG
-//        map["lr"] =  qpidmsg_coded_as_qpid_Map(a.login_response_info);
-        __internal_add2map(map, a.login_response_info);
+//        map["lr"] =  qpidmsg_coded_as_qpid_Map(a.session_info);
+        __internal_add2map(map, a.session_info);
 
 
 };
@@ -1355,8 +1356,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//void  __internal_qpid_fill (res_login::IC_login_response_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (res_login::IC_login_response_info& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (res_login::IC_session_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (res_login::IC_session_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
@@ -1365,15 +1366,23 @@ void  copy (res_login::IC_login_response_info& c, const qpid::types::Variant& v)
 
                     it = mv.find("u");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message res_login::IC_login_response_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message res_login::IC_session_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.user_name, it->second);
                         //c.user_name = it->second;
 //   field_type
 
+                    it = mv.find("cc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field client_code on message res_login::IC_session_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.client_code, it->second);
+                        //c.client_code = it->second;
+//   field_type
+
                     it = mv.find("si");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_id on message res_login::IC_login_response_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_id on message res_login::IC_session_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.session_id, it->second);
                         //c.session_id = it->second;
@@ -1381,7 +1390,7 @@ void  copy (res_login::IC_login_response_info& c, const qpid::types::Variant& v)
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_login_response_info& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_session_info& a)
 {
 
     a.before_send();
@@ -1390,13 +1399,15 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_log
 //  field_type
         __internal_add2map(map, a.user_name, std::string("u"));
 //  field_type
+        __internal_add2map(map, a.client_code, std::string("cc"));
+//  field_type
         __internal_add2map(map, a.session_id, std::string("si"));
 
 
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login::IC_login_response_info>& a, const std::string& field)
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login::IC_session_info>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1785,8 +1796,8 @@ qpid::messaging::Message res_login::qpidmsg_codded_as_qpid_message (const std::s
 //        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
         __internal_add2map(content, this->response_info, std::string("ri"));
 //  IN_SUB_MSG
-//        content["lr"] =  qpidmsg_coded_as_qpid_Map(this->login_response_info);
-        __internal_add2map(content, this->login_response_info, std::string("lr"));
+//        content["lr"] =  qpidmsg_coded_as_qpid_Map(this->session_info);
+        __internal_add2map(content, this->session_info, std::string("lr"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1954,13 +1965,15 @@ qpid::messaging::Message res_change_password::qpidmsg_codded_as_qpid_message (co
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_r_response*)0),
 //   IN_SUB_MSG
-   __internal_get_default((res_login::IC_login_response_info*)0)
+   __internal_get_default((res_login::IC_session_info*)0)
             );
     }
     
-    res_login::IC_login_response_info  __internal_get_default(res_login::IC_login_response_info*)
+    res_login::IC_session_info  __internal_get_default(res_login::IC_session_info*)
     {
-        return res_login::IC_login_response_info(
+        return res_login::IC_session_info(
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
@@ -2085,7 +2098,7 @@ res_login::res_login (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   IN_SUB_MSG
-   login_response_info(__internal_get_default((res_login::IC_login_response_info*)0)) 
+   session_info(__internal_get_default((res_login::IC_session_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2099,9 +2112,11 @@ res_login::res_login (const qpid::messaging::Message& msg)
 
 
 
-res_login::IC_login_response_info::IC_login_response_info (const qpid::messaging::Message& msg)
+res_login::IC_session_info::IC_session_info (const qpid::messaging::Message& msg)
     :  //   field_type
    user_name(__internal_get_default((std::string*)0)),
+//   field_type
+   client_code(__internal_get_default((std::string*)0)),
 //   field_type
    session_id(__internal_get_default((std::string*)0)) 
     {

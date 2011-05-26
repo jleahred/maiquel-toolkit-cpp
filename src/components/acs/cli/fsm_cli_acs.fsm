@@ -37,7 +37,7 @@
 
 ::OUTPUTS::
 
-    sig_confirm_login_ok    (login_conf      :   mtk::acs::msg::res_login::IC_login_response_info)
+    sig_confirm_login_ok    (login_conf      :   mtk::acs::msg::res_login::IC_session_info)
     sig_reject_login        (description     :   std::string)
     sig_logout_login        (description     :   std::string)
     
@@ -98,7 +98,7 @@
     [{  
             std::string  client_code        = login_confirmed().response_info.request_info.process_info.location.client_code;
             std::string  location_machine   = login_confirmed().response_info.request_info.process_info.location.machine;
-            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            std::string  session_id         = login_confirmed().session_info.session_id;
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
@@ -129,7 +129,7 @@
             
             std::string  client_code        = login_confirmed().response_info.request_info.process_info.location.client_code;
             std::string  location_machine   = login_confirmed().response_info.request_info.process_info.location.machine;
-            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            std::string  session_id         = login_confirmed().session_info.session_id;
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
@@ -159,7 +159,7 @@
                                     
             std::string  client_code        = login_confirmed().response_info.request_info.process_info.location.client_code;
             std::string  location_machine   = login_confirmed().response_info.request_info.process_info.location.machine;
-            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            std::string  session_id         = login_confirmed().session_info.session_id;
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
@@ -252,7 +252,7 @@ w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj 
     
     rlok        //  guard
     [{
-        rs.login_response_info.user_name != ""
+        rs.session_info.user_name != ""
     }]
     
 
@@ -279,8 +279,8 @@ w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj 
 
     sig_login_ok    
     [{      
-        ci->sig_confirm_login_ok.emit(rs.login_response_info);    
-        mtk::admin::client_login_ok_confirmation(rs.login_response_info);
+        ci->sig_confirm_login_ok.emit(rs.session_info);    
+        mtk::admin::client_login_ok_confirmation(rs.session_info);
     }]
     
     sig_login_rj    

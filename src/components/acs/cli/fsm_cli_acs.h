@@ -43,7 +43,7 @@ public:
 
 
     //  OUTPUT
-    mtk::Signal< const mtk::acs::msg::res_login::IC_login_response_info&   /*login_conf*/   > sig_confirm_login_ok;
+    mtk::Signal< const mtk::acs::msg::res_login::IC_session_info&   /*login_conf*/   > sig_confirm_login_ok;
     mtk::Signal< const std::string&   /*description*/   > sig_reject_login;
     mtk::Signal< const std::string&   /*description*/   > sig_logout_login;
     mtk::Signal<  > sig_password_changed;

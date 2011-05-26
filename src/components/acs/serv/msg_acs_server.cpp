@@ -406,7 +406,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-pub_add_user::pub_add_user (   const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation)
+pub_add_user::pub_add_user (   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation)
     :     login_confirmation(_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
@@ -433,7 +433,7 @@ void pub_add_user::before_send(void) const
 
 
 
-pub_del_user::pub_del_user (   const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation)
+pub_del_user::pub_del_user (   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation)
     :     login_confirmation(_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
@@ -487,7 +487,7 @@ void req_session_id_conf::before_send(void) const
 
 
 
-pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (   const mtk::list<mtk::acs::msg::res_login::IC_login_response_info >&  _list_login_confirmation)
+pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation)
     :     list_login_confirmation(_list_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
@@ -514,7 +514,7 @@ void pub_partial_user_list_acs2serv::before_send(void) const
 
 
 
-pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (   const mtk::list<mtk::acs::msg::res_login::IC_login_response_info >&  _list_login_confirmation)
+pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation)
     :     list_login_confirmation(_list_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
@@ -568,7 +568,7 @@ void req_user_list::before_send(void) const
 
 
 
-res_user_list::res_user_list (   const mtk::msg::sub_r_response&  _response_info,   const mtk::list<mtk::acs::msg::res_login::IC_login_response_info >&  _list_login_confirmation)
+res_user_list::res_user_list (   const mtk::msg::sub_r_response&  _response_info,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation)
     :     response_info(_response_info),   list_login_confirmation(_list_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
@@ -1375,7 +1375,7 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     {
         return pub_add_user(
 //   sub_msg_type
-   __internal_get_default((mtk::acs::msg::res_login::IC_login_response_info*)0)
+   __internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)
             );
     }
     
@@ -1383,7 +1383,7 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     {
         return pub_del_user(
 //   sub_msg_type
-   __internal_get_default((mtk::acs::msg::res_login::IC_login_response_info*)0)
+   __internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)
             );
     }
     
@@ -1399,7 +1399,7 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     {
         return pub_partial_user_list_acs2serv(
 //   sub_msg_type
-   __internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_login_response_info >*)0)
+   __internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)
             );
     }
     
@@ -1407,7 +1407,7 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     {
         return pub_partial_user_list_serv2acs(
 //   sub_msg_type
-   __internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_login_response_info >*)0)
+   __internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)
             );
     }
     
@@ -1425,14 +1425,14 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_r_response*)0),
 //   sub_msg_type
-   __internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_login_response_info >*)0)
+   __internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)
             );
     }
     
 
 pub_add_user::pub_add_user (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_login_response_info*)0)) 
+   login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -1448,7 +1448,7 @@ pub_add_user::pub_add_user (const qpid::messaging::Message& msg)
 
 pub_del_user::pub_del_user (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_login_response_info*)0)) 
+   login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -1480,7 +1480,7 @@ req_session_id_conf::req_session_id_conf (const qpid::messaging::Message& msg)
 
 pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_login_response_info >*)0)) 
+   list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -1496,7 +1496,7 @@ pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::mess
 
 pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_login_response_info >*)0)) 
+   list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -1530,7 +1530,7 @@ res_user_list::res_user_list (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   sub_msg_type
-   list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_login_response_info >*)0)) 
+   list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

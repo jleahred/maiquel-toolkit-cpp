@@ -43,7 +43,7 @@ public:
 
     
     // constructor
-    explicit pub_add_user (    const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation );
+    explicit pub_add_user (    const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
     explicit pub_add_user ( const qpid::messaging::Message& message );
     virtual ~pub_add_user (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_add_user"; };
@@ -52,7 +52,7 @@ public:
     
 
     // fields
-    mtk::acs::msg::res_login::IC_login_response_info  login_confirmation; 
+    mtk::acs::msg::res_login::IC_session_info  login_confirmation; 
 
 
 
@@ -83,7 +83,7 @@ public:
 
     
     // constructor
-    explicit pub_del_user (    const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation );
+    explicit pub_del_user (    const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
     explicit pub_del_user ( const qpid::messaging::Message& message );
     virtual ~pub_del_user (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_del_user"; };
@@ -92,7 +92,7 @@ public:
     
 
     // fields
-    mtk::acs::msg::res_login::IC_login_response_info  login_confirmation; 
+    mtk::acs::msg::res_login::IC_session_info  login_confirmation; 
 
 
 
@@ -163,7 +163,7 @@ public:
 
     
     // constructor
-    explicit pub_partial_user_list_acs2serv (    const mtk::list<mtk::acs::msg::res_login::IC_login_response_info >&  _list_login_confirmation );
+    explicit pub_partial_user_list_acs2serv (    const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
     explicit pub_partial_user_list_acs2serv ( const qpid::messaging::Message& message );
     virtual ~pub_partial_user_list_acs2serv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_acs2serv"; };
@@ -172,7 +172,7 @@ public:
     
 
     // fields
-    mtk::list<mtk::acs::msg::res_login::IC_login_response_info >  list_login_confirmation; 
+    mtk::list<mtk::acs::msg::res_login::IC_session_info >  list_login_confirmation; 
 
 
 
@@ -203,7 +203,7 @@ public:
 
     
     // constructor
-    explicit pub_partial_user_list_serv2acs (    const mtk::list<mtk::acs::msg::res_login::IC_login_response_info >&  _list_login_confirmation );
+    explicit pub_partial_user_list_serv2acs (    const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
     explicit pub_partial_user_list_serv2acs ( const qpid::messaging::Message& message );
     virtual ~pub_partial_user_list_serv2acs (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_serv2acs"; };
@@ -212,7 +212,7 @@ public:
     
 
     // fields
-    mtk::list<mtk::acs::msg::res_login::IC_login_response_info >  list_login_confirmation; 
+    mtk::list<mtk::acs::msg::res_login::IC_session_info >  list_login_confirmation; 
 
 
 
@@ -283,7 +283,7 @@ public:
 
     
     // constructor
-    explicit res_user_list (    const mtk::msg::sub_r_response&  _response_info,   const mtk::list<mtk::acs::msg::res_login::IC_login_response_info >&  _list_login_confirmation );
+    explicit res_user_list (    const mtk::msg::sub_r_response&  _response_info,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
     explicit res_user_list ( const qpid::messaging::Message& message );
     virtual ~res_user_list (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_user_list"; };
@@ -293,7 +293,7 @@ public:
 
     // fields
     mtk::msg::sub_r_response                  response_info; 
-    mtk::list<mtk::acs::msg::res_login::IC_login_response_info >  list_login_confirmation; 
+    mtk::list<mtk::acs::msg::res_login::IC_session_info >  list_login_confirmation; 
 
 
 

@@ -65,7 +65,7 @@ namespace {
         };
         
     public:
-            mtk::acs::msg::res_login::IC_login_response_info     client_login_confirmation;
+            mtk::acs::msg::res_login::IC_session_info     client_login_confirmation;
             bool                  full_initialized;
             
             void                  init                ( const std::string& config_file_name,
@@ -104,7 +104,7 @@ namespace {
             en_process_priority   process_priority;
             
             
-            admin_status()  :   client_login_confirmation("", ""),
+            admin_status()  :   client_login_confirmation("", "", ""),
                                 full_initialized(false),
                                 signal_alarm_error_critic(new mtk::Signal<const mtk::Alarm&> ),
                                 signal_alarm_nonerror(new mtk::Signal<const mtk::Alarm&> ),
@@ -1114,7 +1114,7 @@ void set_config_property(const std::string& path, const std::string& property_va
 }
 
 
-void client_login_ok_confirmation   (const mtk::acs::msg::res_login::IC_login_response_info& client_login_confirmation)
+void client_login_ok_confirmation   (const mtk::acs::msg::res_login::IC_session_info& client_login_confirmation)
 {
     admin_status::i()->client_login_confirmation = client_login_confirmation;
     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("registered login ok: " << client_login_confirmation), mtk::alPriorDebug));
@@ -1122,7 +1122,7 @@ void client_login_ok_confirmation   (const mtk::acs::msg::res_login::IC_login_re
 
 void client_logout_confirmation     (const std::string& description)
 {
-    admin_status::i()->client_login_confirmation = mtk::acs::msg::res_login::IC_login_response_info("", "");
+    admin_status::i()->client_login_confirmation = mtk::acs::msg::res_login::IC_session_info("", "", "");
     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("registered logout: " << description), mtk::alPriorDebug));
 }
 

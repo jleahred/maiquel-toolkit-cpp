@@ -166,25 +166,26 @@ public:
 
     
     //-------------------------------
-    //      IC_login_response_info
+    //      IC_session_info
     //-------------------------------    
-    class IC_login_response_info     
+    class IC_session_info     
     {
     public:
         //  inner classes
     
         
         // constructor
-        explicit IC_login_response_info (    const std::string&  _user_name,   const std::string&  _session_id );
-        explicit IC_login_response_info ( const qpid::messaging::Message& message );
-        virtual ~IC_login_response_info (){};
-        virtual std::string get_message_type_as_string       (void) const  { return "IC_login_response_info"; };
-        static  std::string static_get_message_type_as_string(void)        { return "IC_login_response_info"; };
+        explicit IC_session_info (    const std::string&  _user_name,   const std::string&  _client_code,   const std::string&  _session_id );
+        explicit IC_session_info ( const qpid::messaging::Message& message );
+        virtual ~IC_session_info (){};
+        virtual std::string get_message_type_as_string       (void) const  { return "IC_session_info"; };
+        static  std::string static_get_message_type_as_string(void)        { return "IC_session_info"; };
         
         
     
         // fields
         std::string                               user_name; 
+        std::string                               client_code; 
         std::string                               session_id; 
     
     
@@ -205,7 +206,7 @@ public:
     
     
     // constructor
-    explicit res_login (    const mtk::msg::sub_r_response&  _response_info,   const IC_login_response_info&  _login_response_info );
+    explicit res_login (    const mtk::msg::sub_r_response&  _response_info,   const IC_session_info&  _session_info );
     explicit res_login ( const qpid::messaging::Message& message );
     virtual ~res_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_login"; };
@@ -215,7 +216,7 @@ public:
 
     // fields
     mtk::msg::sub_r_response                  response_info; 
-    IC_login_response_info                    login_response_info; 
+    IC_session_info                           session_info; 
 
 
 
@@ -469,19 +470,19 @@ bool operator!= (const req_login& a, const req_login& b);
    YAML::Emitter& operator << (YAML::Emitter&    o, const res_login & c);
    void           operator >> (const YAML::Node& n,       res_login & c);
 
-bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
-bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
+bool operator== (const res_login::IC_session_info& a, const res_login::IC_session_info& b);
+bool operator!= (const res_login::IC_session_info& a, const res_login::IC_session_info& b);
 
 
 bool operator== (const res_login& a, const res_login& b);
 bool operator!= (const res_login& a, const res_login& b);
 
-    std::ostream& operator<< (std::ostream& o, const res_login::IC_login_response_info & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const res_login::IC_login_response_info & c);
-   void           operator >> (const YAML::Node& n,       res_login::IC_login_response_info & c);
+    std::ostream& operator<< (std::ostream& o, const res_login::IC_session_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const res_login::IC_session_info & c);
+   void           operator >> (const YAML::Node& n,       res_login::IC_session_info & c);
 
-bool operator== (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
-bool operator!= (const res_login::IC_login_response_info& a, const res_login::IC_login_response_info& b);
+bool operator== (const res_login::IC_session_info& a, const res_login::IC_session_info& b);
+bool operator!= (const res_login::IC_session_info& a, const res_login::IC_session_info& b);
 
     std::ostream& operator<< (std::ostream& o, const conf_logout & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const conf_logout & c);
@@ -538,10 +539,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login& a
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login>& a, const std::string& field);
 void copy (res_login& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login::IC_login_response_info& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_login_response_info& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login::IC_login_response_info>& a, const std::string& field);
-void copy (res_login::IC_login_response_info& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login::IC_session_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_session_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login::IC_session_info>& a, const std::string& field);
+void copy (res_login::IC_session_info& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const conf_logout& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<conf_logout>& a, const std::string& field);
@@ -571,7 +572,7 @@ void copy (res_change_password::IC_change_password_info& a, const qpid::types::V
     
     res_login  __internal_get_default(res_login *);
     
-    res_login::IC_login_response_info  __internal_get_default(res_login::IC_login_response_info *);
+    res_login::IC_session_info  __internal_get_default(res_login::IC_session_info *);
     
     conf_logout  __internal_get_default(conf_logout *);
     

@@ -4,6 +4,9 @@
 #include <string>
 
 
+#include "msg_acs_server.h"
+
+
 namespace mtk{namespace msg { class sub_request_info;  } };
 
 
@@ -24,7 +27,7 @@ namespace mtk{namespace acs_server {
 
 
         //  ACCESS
-        std::string  get_user_for_session_id ( const std::string& session_id);      //  it returns emtpy string if not found
+        mtk::acs::msg::res_login::IC_session_info    get_session_info_for_session_id( const std::string& session_id);      //  it returns emtpy string if not found
         
         
         //  hooks

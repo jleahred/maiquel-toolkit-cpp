@@ -128,7 +128,7 @@ public:
 
     
     // constructor
-    explicit pub_keep_alive_clients (  const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation );
+    explicit pub_keep_alive_clients (  const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
     explicit pub_keep_alive_clients ( const qpid::messaging::Message& message );
     virtual ~pub_keep_alive_clients (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_clients"; };
@@ -137,7 +137,7 @@ public:
     
 
     // fields
-    mtk::acs::msg::res_login::IC_login_response_info  login_confirmation; 
+    mtk::acs::msg::res_login::IC_session_info  login_confirmation; 
 
 
 

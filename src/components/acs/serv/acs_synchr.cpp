@@ -1,7 +1,6 @@
 #include "acs_synchr.h"
 
 #include "components/admin/admin.h"
-#include "msg_acs_server.h"
 #include "components/request_response.hpp"
 
 
@@ -50,7 +49,7 @@ namespace
     void  send_partial_sessions_list(void);
     void  suscribe_acs_syncr_add_del_users(void);
     void  suscribe_acs_partial_sessions_list(void);
-    std::string  __get_user_for_session_id(const std::string& session_id);
+    mtk::acs::msg::res_login::IC_session_info   __get_session_info_for_session_id(const std::string& session_id);
 };
 
 
@@ -72,9 +71,9 @@ namespace  synchr {
     }
 
 
-    std::string  get_user_for_session_id (const std::string& session_id)
+    mtk::acs::msg::res_login::IC_session_info   get_session_info_for_session_id (const std::string& session_id)
     {
-        return __get_user_for_session_id(session_id);
+        return __get_session_info_for_session_id(session_id);
     }
 
 
@@ -101,47 +100,47 @@ namespace   //anonymous
 {
 
 
-    mtk::CountPtr<mtk::map<std::string/*session_id*/, std::string/*user_name*/> >    get_map_sessionid_username(void)
+    mtk::CountPtr<mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info> >    get_map_session_id__session_info(void)
     {
-        static mtk::CountPtr<mtk::map<std::string/*session_id*/, std::string/*user_name*/> >    result;
+        static mtk::CountPtr<mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info> >    result;
         if(result.isValid() == false)
         {
-            result = mtk::make_cptr(new mtk::map<std::string/*session_id*/, std::string/*user_name*/>);
+            result = mtk::make_cptr(new mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info>);
         }
         return result;
     }
     
-    void add_sessionid_username(const std::string&  session_id, const std::string& user_name)
+    void add_session_info(const mtk::acs::msg::res_login::IC_session_info& session_info)
     {
-        mtk::CountPtr<mtk::map<std::string/*session_id*/, std::string/*user_name*/> >    map_sessionid_user_name = get_map_sessionid_username();
-        mtk::map<std::string/*session_id*/, std::string/*user_name*/>::const_iterator  it =  map_sessionid_user_name->find(session_id);
-        if(it != map_sessionid_user_name->end())
+        mtk::CountPtr<mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info> >    map_session_id__session_info = get_map_session_id__session_info();
+        mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info>::const_iterator  it =  map_session_id__session_info->find(session_info.session_id);
+        if(it != map_session_id__session_info->end())
         {
-            if(it->second != user_name)
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acssynchr", MTK_SS("adding> received session id already registered with a diferent user   " << session_id 
-                                << "  received user " << user_name  << "  registered user: " << it->second), mtk::alPriorError, mtk::alTypeLogicError));
+            if(it->second.user_name != session_info.user_name   ||  it->second.client_code != session_info.client_code)
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acssynchr", MTK_SS("adding> received session id already registered with a diferent user or client_code  rec/reg "
+                                << session_info << " / " << it->second), mtk::alPriorError, mtk::alTypeLogicError));
         }
         else
         {
-            map_sessionid_user_name->insert(std::make_pair(session_id, user_name));
+            map_session_id__session_info->insert(std::make_pair(session_info.session_id, session_info));
         }
     }
 
-    void del_sessionid_username(const std::string&  session_id, const std::string& user_name)
+    void del_session_info(const mtk::acs::msg::res_login::IC_session_info& session_info)
     {
-        mtk::CountPtr<mtk::map<std::string/*session_id*/, std::string/*user_name*/> >    map_sessionid_user_name = get_map_sessionid_username();
-        mtk::map<std::string/*session_id*/, std::string/*user_name*/>::iterator  it =  map_sessionid_user_name->find(session_id);
-        if(it != map_sessionid_user_name->end())
+        mtk::CountPtr<mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info> >    map_session_id__session_info = get_map_session_id__session_info();
+        mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info>::iterator  it =  map_session_id__session_info->find(session_info.session_id);
+        if(it != map_session_id__session_info->end())
         {
-            if(it->second != user_name)
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acssynchr", MTK_SS("deleting> received session id already registered with a diferent user  " << session_id 
-                                << "  received user " << user_name  << "  registered user: " << it->second), mtk::alPriorError, mtk::alTypeLogicError));
+            if(it->second.user_name != session_info.user_name   ||  it->second.client_code != session_info.client_code)
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acssynchr", MTK_SS("deleting> received session id already registered with a diferent user or client_code  rec/reg "
+                                << session_info << " / " << it->second), mtk::alPriorError, mtk::alTypeLogicError));
             else
-                map_sessionid_user_name->erase(it);
+                map_session_id__session_info->erase(it);
         }
         else
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acssynchr", MTK_SS("deleting> received session not registered   " << session_id), mtk::alPriorError, mtk::alTypeLogicError));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acssynchr", MTK_SS("deleting> received session not registered   " << session_info), mtk::alPriorError, mtk::alTypeLogicError));
         }
     }
 
@@ -165,7 +164,7 @@ namespace   //anonymous
     void command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
     {
         response_lines.push_back("acs_synchr_____________________");
-        response_lines.push_back(MTK_SS("#sessions :  "  <<   get_map_sessionid_username()->size()));
+        response_lines.push_back(MTK_SS("#sessions :  "  <<   get_map_session_id__session_info()->size()));
     }
 
 
@@ -175,10 +174,10 @@ namespace   //anonymous
         mtk::list<mtk::acs_server::msg::res_user_list>::const_iterator it = res_user_list.begin();
         while(it != res_user_list.end())
         {
-            mtk::list<mtk::acs::msg::res_login::IC_login_response_info>::const_iterator it2 = it->list_login_confirmation.begin();
+            mtk::list<mtk::acs::msg::res_login::IC_session_info>::const_iterator it2 = it->list_login_confirmation.begin();
             while(it2 != it->list_login_confirmation.end())
             {
-                add_sessionid_username(it2->session_id, it2->user_name);
+                add_session_info(*it2);
                 ++it2;
             }
             ++it;
@@ -191,7 +190,7 @@ namespace   //anonymous
         mtk::send_message(get_server_qpid_session(), msg_request_user_list);
         mtk::msg::sub_request_info  request_info = mtk::admin::get_request_info();
         MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::acs_server::msg::res_user_list,
-                                        mtk::list<mtk::acs::msg::res_login::IC_login_response_info>,
+                                        mtk::list<mtk::acs::msg::res_login::IC_session_info>,
                                         get_server_qpid_session(),
                                         mtk::acs_server::msg::res_user_list::get_in_subject(request_info.process_info.location.client_code, 
                                                 msg_request_user_list.request_info.process_info.location.machine, 
@@ -204,11 +203,11 @@ namespace   //anonymous
 
 
     
-    std::string  __get_user_for_session_id(const std::string& session_id)
+    mtk::acs::msg::res_login::IC_session_info  __get_session_info_for_session_id(const std::string& session_id)
     {
-        mtk::CountPtr<mtk::map<std::string/*session_id*/, std::string/*user_name*/> >    map_sessionid_user_name = get_map_sessionid_username();
-        mtk::map<std::string/*session_id*/, std::string/*user_name*/>::const_iterator  it =  map_sessionid_user_name->find(session_id);
-        if(it != map_sessionid_user_name->end())
+        mtk::CountPtr<mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info> >    map_session_id__session_info = get_map_session_id__session_info();
+        mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info>::const_iterator  it =  map_session_id__session_info->find(session_id);
+        if(it != map_session_id__session_info->end())
         {
             return it->second;
         }
@@ -216,7 +215,8 @@ namespace   //anonymous
         {
             mtk::acs_server::msg::req_session_id_conf  msg(session_id);
             mtk::send_message(get_server_qpid_session(), msg);
-            return "";
+            return  mtk::acs::msg::res_login::IC_session_info("", "", "");
+            
         }
     }
     
@@ -224,11 +224,11 @@ namespace   //anonymous
 
     void __received_add_session(const mtk::acs_server::msg::pub_add_user&  pub_add_user)
     {
-        add_sessionid_username(pub_add_user.login_confirmation.session_id, pub_add_user.login_confirmation.user_name)  ;
+        add_session_info(pub_add_user.login_confirmation);
     }
     void __received_del_session(const mtk::acs_server::msg::pub_del_user& pub_del_user)
     {
-        del_sessionid_username(pub_del_user.login_confirmation.session_id, pub_del_user.login_confirmation.user_name)  ;
+        del_session_info(pub_del_user.login_confirmation);
     }
     
     void  suscribe_acs_syncr_add_del_users(void)
@@ -255,28 +255,28 @@ namespace   //anonymous
     void  send_partial_sessions_list(void)
     {
         MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
-            mtk::CountPtr<mtk::map<std::string/*session_id*/, std::string/*user_name*/> >    map_sessionid_user_name = get_map_sessionid_username();
-            if(map_sessionid_user_name.isValid()  &&  map_sessionid_user_name->size() > 0)
+            mtk::CountPtr<mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info> >    map_session_id__session_info = get_map_session_id__session_info();
+            if(map_session_id__session_info.isValid()  &&  map_session_id__session_info->size() > 0)
             {
                 static int static_skip = 0;
                 int current_skip = static_skip;
                     
                 int count_prepared2send=0;
-                mtk::list<mtk::acs::msg::res_login::IC_login_response_info>   partial_list_users;
-                for(mtk::map<std::string/*session_id*/, std::string/*user_name*/>::iterator it=map_sessionid_user_name->begin(); it!=map_sessionid_user_name->end(); ++it)
+                mtk::list<mtk::acs::msg::res_login::IC_session_info>   partial_list_users;
+                for(mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info>::iterator it=map_session_id__session_info->begin(); it!=map_session_id__session_info->end(); ++it)
                 {
                     if(--current_skip > 0)      continue;
                     
                     if(count_prepared2send < 10)
                     {
-                        partial_list_users.push_back(mtk::acs::msg::res_login::IC_login_response_info(it->second, it->first));
+                        partial_list_users.push_back(mtk::acs::msg::res_login::IC_session_info(it->second));
                         ++count_prepared2send;
                     }
                     else        break;
                     
                 }
                 static_skip += 10;
-                if(unsigned(static_skip) >= map_sessionid_user_name->size())
+                if(unsigned(static_skip) >= map_session_id__session_info->size())
                     static_skip = 0;
                 
                 if(partial_list_users.size()>0)
@@ -292,9 +292,9 @@ namespace   //anonymous
 
     void __received_partial_session_list(const mtk::acs_server::msg::pub_partial_user_list_acs2serv& partial_session_list)
     {
-        const mtk::list<mtk::acs::msg::res_login::IC_login_response_info>&   list_sessions = partial_session_list.list_login_confirmation;
-        for(mtk::list<mtk::acs::msg::res_login::IC_login_response_info>::const_iterator it = list_sessions.begin(); it!=list_sessions.end(); ++it)
-            add_sessionid_username(it->session_id, it->user_name);
+        const mtk::list<mtk::acs::msg::res_login::IC_session_info>&   list_sessions = partial_session_list.list_login_confirmation;
+        for(mtk::list<mtk::acs::msg::res_login::IC_session_info>::const_iterator it = list_sessions.begin(); it!=list_sessions.end(); ++it)
+            add_session_info(*it);
     }
     
     void suscribe_acs_partial_sessions_list()

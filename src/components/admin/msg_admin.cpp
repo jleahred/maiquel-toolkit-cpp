@@ -460,7 +460,7 @@ void pub_keep_alive_srv::before_send(void) const
 
 
 
-pub_keep_alive_clients::pub_keep_alive_clients ( const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_login_response_info&  _login_confirmation)
+pub_keep_alive_clients::pub_keep_alive_clients ( const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation)
     :  pub_keep_alive_srv(parent),   login_confirmation(_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
@@ -1877,7 +1877,7 @@ qpid::messaging::Message pub_central_keep_alive::qpidmsg_codded_as_qpid_message 
     {
         return pub_keep_alive_clients(
 __internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
-   __internal_get_default((mtk::acs::msg::res_login::IC_login_response_info*)0)
+   __internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)
             );
     }
     
@@ -1998,7 +1998,7 @@ pub_keep_alive_srv::pub_keep_alive_srv (const qpid::messaging::Message& msg)
 
 pub_keep_alive_clients::pub_keep_alive_clients (const qpid::messaging::Message& msg)
     :  pub_keep_alive_srv(msg), //   sub_msg_type
-   login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_login_response_info*)0)) 
+   login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

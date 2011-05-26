@@ -15,7 +15,7 @@ class abstract_status;
 
 struct  status_common_info
 {
-    status_common_info ( mtk::Signal<const mtk::acs::msg::res_login::IC_login_response_info&   /*login_conf*/  >& _sig_confirm_login_ok, mtk::Signal<const std::string&   /*description*/  >& _sig_reject_login, mtk::Signal<const std::string&   /*description*/  >& _sig_logout_login, mtk::Signal<>& _sig_password_changed, mtk::Signal<>& _sig_password_change_rj)
+    status_common_info ( mtk::Signal<const mtk::acs::msg::res_login::IC_session_info&   /*login_conf*/  >& _sig_confirm_login_ok, mtk::Signal<const std::string&   /*description*/  >& _sig_reject_login, mtk::Signal<const std::string&   /*description*/  >& _sig_logout_login, mtk::Signal<>& _sig_password_changed, mtk::Signal<>& _sig_password_change_rj)
         :  
         __qpid_session(mtk::admin::get_qpid_session("client", "CLITESTING")  ),
         __user_name("" ), 
@@ -34,7 +34,7 @@ struct  status_common_info
     std::string                         __user_name;
     virtual const std::string                        &  user_name() const {  return __user_name; };
     virtual void set_user_name(const std::string                        &  _prop) {  __user_name = _prop;  };
-    mtk::Signal<const mtk::acs::msg::res_login::IC_login_response_info&   /*login_conf*/  >& sig_confirm_login_ok;
+    mtk::Signal<const mtk::acs::msg::res_login::IC_session_info&   /*login_conf*/  >& sig_confirm_login_ok;
     mtk::Signal<const std::string&   /*description*/  >& sig_reject_login;
     mtk::Signal<const std::string&   /*description*/  >& sig_logout_login;
     mtk::Signal<>& sig_password_changed;
@@ -272,7 +272,7 @@ public:
                   
             std::string  client_code        = login_confirmed().response_info.request_info.process_info.location.client_code;
             std::string  location_machine   = login_confirmed().response_info.request_info.process_info.location.machine;
-            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            std::string  session_id         = login_confirmed().session_info.session_id;
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
@@ -344,7 +344,7 @@ public:
             
             std::string  client_code        = login_confirmed().response_info.request_info.process_info.location.client_code;
             std::string  location_machine   = login_confirmed().response_info.request_info.process_info.location.machine;
-            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            std::string  session_id         = login_confirmed().session_info.session_id;
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
@@ -428,7 +428,7 @@ public:
                                     
             std::string  client_code        = login_confirmed().response_info.request_info.process_info.location.client_code;
             std::string  location_machine   = login_confirmed().response_info.request_info.process_info.location.machine;
-            std::string  session_id         = login_confirmed().login_response_info.session_id;
+            std::string  session_id         = login_confirmed().session_info.session_id;
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
@@ -1131,15 +1131,15 @@ void w_login::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
         
         if (//  inserting macro: rlok
 
-        rs.login_response_info.user_name != ""
+        rs.session_info.user_name != ""
      ) {
 
             new_status = mtk::make_cptr(new login_ok (ci, rs));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: sig_login_ok
       
-        ci->sig_confirm_login_ok.emit(rs.login_response_info);    
-        mtk::admin::client_login_ok_confirmation(rs.login_response_info);
+        ci->sig_confirm_login_ok.emit(rs.session_info);    
+        mtk::admin::client_login_ok_confirmation(rs.session_info);
     
 
         }
