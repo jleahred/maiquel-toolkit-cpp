@@ -24,8 +24,9 @@ namespace mtk {
 
         if (!initialized)
         {
-	    srand ( (unsigned int) time(NULL) );
-             initialized = true;
+            //srand ( (unsigned int) time(NULL) );      only one second precision
+            srand ( (unsigned int) ARE_YOU_SURE_YOU_WANT_GetMillisecsDay(mtk::dtMachineGetTotalMillisecs()) );
+            initialized = true;
         }
         return ::rand();
     }
