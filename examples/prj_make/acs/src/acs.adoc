@@ -104,16 +104,17 @@ include::../mtk/src/components/acs/msg_acs.msg[]
 == Server side messages
 
 * Servers will send +pub_partial_user_list_serv2acs+ frecuently in order to detect invalid users registered on one server
+** If +acs+ receives an invalid session info on +pub_partial_user_list_serv2acs+, it will generate a +pub_del_user+ message
 * If a server receives a request on an invalid +session_id+, it will...
-.. Ask for this +session_id+
+.. Ask for this +session_id+ with +req_session_id_conf+
 .. Notify as +error+ with an +alarm+
 .. Reject the request
-.. In case it would be a valid +session_id+, +acs_server+ will publish +pub_partial_user_list_acs2serv+ for next requests
-.. +acs_server+ will notify this with an error message
+.. If the +session_id+ is valid, +acs_server+ will publish +pub_partial_user_list_acs2serv+ for next requests
+.. +acs_server+ will notify this with an error message (it could be a concurrence behaviour)
 
 [source,{cpp}]
 ----
-include::..//src/msg_acs_server.msg[]
+include::../mtk/src/components/acs/serv/msg_acs_server.msg[]
 ----
 
 

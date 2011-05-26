@@ -10,7 +10,7 @@
 #include "components/acs/msg_acs.h"
 
 #include "users_manager.h"
-#include "msg_acs_server.h"
+#include "components/acs/serv/msg_acs_server.h"
 
 
 
@@ -625,11 +625,8 @@ void timer_send_partial_login_confirmation(void)
     MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
         if(list_sessions_login_info.isValid()  &&  list_sessions_login_info->size() > 0)
         {
-            static int counter = 0;
-            int skip = (counter*10 - 5) % list_sessions_login_info->size();
-	    if(skip<0)  skip = 0;
-            if(unsigned(skip) > list_sessions_login_info->size())
-                skip = 0;
+            static int static_skip = 0;
+            int skip = static_skip;
                 
             int count_prepared2send=0;
             mtk::list<mtk::acs::msg::res_login::IC_login_response_info>   partial_list_users;
@@ -645,7 +642,9 @@ void timer_send_partial_login_confirmation(void)
                 else        break;
                 
             }
-            ++counter;
+	    static_skip += 10;
+	    if(unsigned(static_skip) >= list_sessions_login_info->size())
+		static_skip = 0;
             
             if(partial_list_users.size()>0)
             {
@@ -686,7 +685,10 @@ void on_server_pub_partial_user_list_serv2acs(const mtk::acs_server::msg::pub_pa
         }
         if(!located)
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"acs_user_list_serv2acs", MTK_SS("Not registered sessionid-user, could be a concurrency behaviour  " 
+            mtk::acs::msg::res_login::IC_login_response_info  lri(user_name, session_id);
+            mtk::acs_server::msg::pub_del_user msg_del_user(lri);
+            mtk::send_message(qpid_cli_session,  msg_del_user);
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"acs_user_list_serv2acs", MTK_SS("Not registered sessionid-user, could be a concurrency behaviour sending delete  " 
                                                 << session_id << "  " << user_name), 
                                                 mtk::alPriorError, mtk::alTypeNoPermisions));
         }

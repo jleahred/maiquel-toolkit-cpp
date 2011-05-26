@@ -340,7 +340,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
         {
             qpid::types::Variant::Map m;
             __internal_add2map(m, *it);
-            //list.push_back(*it);
+            list.push_back(m);
             ++it;
         }
         

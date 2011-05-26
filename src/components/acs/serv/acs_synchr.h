@@ -8,11 +8,11 @@ namespace mtk{namespace msg { class sub_request_info;  } };
 
 
 
-namespace mtk{namespace adm {
+namespace mtk{namespace acs_server {
 
     
     
-    namespace  acs_synchr {
+    namespace  synchr {
 
 
         void  init(void);
@@ -24,16 +24,16 @@ namespace mtk{namespace adm {
 
 
         //  ACCESS
-        std::string  get_user_for_session_id ( const std::string& session_id);
+        std::string  get_user_for_session_id ( const std::string& session_id);      //  it returns emtpy string if not found
         
         
         //  hooks
         
         
-    };  //  namespace  acs_synchr {
+    };  //  namespace  synchr {
 
 
-};   //  namespace adm
+};   //  namespace acs_server
 };   //  namespace trd
 
 

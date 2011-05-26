@@ -10,6 +10,8 @@ include::request_response_pattern.adoc[]
 
 include::admin.adoc[]
 
+include::acs/acs.adoc[]
+
 
 
 include::trading/msg_trading.adoc[]

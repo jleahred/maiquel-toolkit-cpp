@@ -1,0 +1,93 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
+=== Components -> ACS
+
+
+==== CLI
+
+  components/acs/cli/fsm_cli_acs.h
+  components/acs/cli/fsm_cli_acs.cpp
+
+
+* This component has been generated with +fsm_gen+ from +fsm_cli_acs.fsm+
++
+.login and change password status diagram
+["graphviz", "components_trading_o_ls.png"]
+-----------
+include::../../../components/acs/cli/fsm_cli_acs.dot[]
+------------
++
+* The interfaz is...
++
+.fsm_cli_acs.h
+[source,{cpp}]
+----
+include::../../../components/acs/cli/fsm_cli_acs.h[]
+----
++
+* The code (dsl fsm_gen) is...
++
+.fsm_cli_acs.fsm
+[source,{cpp}]
+----
+include::../../../components/acs/cli/fsm_cli_acs.fsm[]
+----
+
+
+==== CLIENT example
+
+.examples/onefile/components/acs/ex_acs_cli.cpp
+[source,{cpp}]
+----
+include::../../../../examples/onefile/components/acs/ex_acs_cli.cpp[]
+----
+
+.examples/onefile/components/acs/config.cfg
+[source,{cpp}]
+----
+include::../../../../examples/onefile/components/acs/config.cfg[]
+----
+
+
+
+==== SERVER
+
+* +acs_syncrh+ will be sinchronized with acs sessions list
+* You have a very small and easy interfaz to work with it
++
+.acs_synchr
+[source,{cpp}]
+----
+include::../../../components/acs/serv/acs_synchr.h[]
+----
+
+
+* Message definitions
++
+.msg_acs_server.msg
+[source,{cpp}]
+----
+include::../../../components/acs/serv/msg_acs_server.msg[]
+----
+
+
+
+[NOTE]
+See +acs_server+ for more information
+
+
+
+
+==== SERVER example
+
+.examples/onefile/components/acs/ex_acs_serv.cpp
+[source,{cpp}]
+----
+include::../../../../examples/onefile/components/acs/ex_acs_serv.cpp[]
+----
+
+.examples/onefile/components/acs/config_server.cfg
+[source,{cpp}]
+----
+include::../../../../examples/onefile/components/acs/config_server.cfg[]
+----
