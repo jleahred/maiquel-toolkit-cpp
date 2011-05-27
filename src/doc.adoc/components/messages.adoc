@@ -332,3 +332,9 @@ include::../../../src/components/trading/msg_trd_oms_rq.msg[]
 -----
 include::../../../src/components/prices/msg_prices.msg[]
 -----
+
+
+
+== Messages analysis
+
+include::msg_analysis.msg[]
