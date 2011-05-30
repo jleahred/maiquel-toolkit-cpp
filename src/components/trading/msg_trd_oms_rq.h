@@ -43,7 +43,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_NW_LS (  const RQ_NW_LS&  parent,   const std::string&  _reject_descr );
+    explicit oms_RQ_NW_LS (  const RQ_NW_LS&  parent,   const std::string&  _reject_description );
     explicit oms_RQ_NW_LS ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_LS"; };
@@ -52,7 +52,7 @@ public:
     
 
     // fields
-    std::string                               reject_descr; 
+    std::string                               reject_description; 
 
 
 
@@ -81,7 +81,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_MD_LS (  const RQ_MD_LS&  parent,   const std::string&  _reject_descr );
+    explicit oms_RQ_MD_LS (  const RQ_MD_LS&  parent,   const std::string&  _reject_description );
     explicit oms_RQ_MD_LS ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_LS"; };
@@ -90,7 +90,7 @@ public:
     
 
     // fields
-    std::string                               reject_descr; 
+    std::string                               reject_description; 
 
 
 
@@ -119,7 +119,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_CC_LS (  const RQ_CC_LS&  parent,   const std::string&  _reject_descr );
+    explicit oms_RQ_CC_LS (  const RQ_CC_LS&  parent,   const std::string&  _reject_description );
     explicit oms_RQ_CC_LS ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_LS"; };
@@ -128,7 +128,7 @@ public:
     
 
     // fields
-    std::string                               reject_descr; 
+    std::string                               reject_description; 
 
 
 

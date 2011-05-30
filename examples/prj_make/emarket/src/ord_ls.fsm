@@ -240,7 +240,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                         mtk::trd::msg::CF_XX_LS lc = last_confirmation().Get();
                         lc.cli_ref = rq.cli_ref;
                         lc.market_pos = rq.request_pos;
-                        lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.quantity.GetDouble());
+                        lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.acc_quantity.GetDouble());
                         if (lc.total_execs.remaining_qty.GetIntCode() <= 0)
                             throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity " 
                                                                     << method_name << "  received:  "  << "  " << rq  
@@ -280,7 +280,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
             full_exec
                 [{
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().total_execs.quantity  
+                    &&  last_confirmation().Get().total_execs.acc_quantity  
                         == last_confirmation().Get().market_pos.quantity
                     /*last_confirmation().HasValue() == true  && last_confirmation().Get().total_execs.remaining_qty.GetIntCode() == 0*/
                 }]

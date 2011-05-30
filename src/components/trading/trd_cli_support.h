@@ -134,7 +134,7 @@ namespace mtk{namespace trd{
                 
 
                 //  non critic
-                if (last_conf.HasValue()  &&  mtk::Double(last_conf.Get().total_execs.quantity.GetDouble()) >= (mtk::Double(rq.request_pos.quantity.GetDouble())))
+                if (last_conf.HasValue()  &&  mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble()) >= (mtk::Double(rq.request_pos.quantity.GetDouble())))
                 {
                     serrors += "  requested quantity lower or equal than executed quantity!!!  ";
                     ++nerrors;
@@ -201,7 +201,7 @@ namespace mtk{namespace trd{
                     ++nerrors;
                 }
 
-                if (mtk::Double(cf.total_execs.quantity.GetDouble()) > (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble())))
+                if (mtk::Double(cf.total_execs.acc_quantity.GetDouble()) > (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble())))
                 {
                     ++nerrors;
                     serrors += "  over execution!!!  ";
@@ -279,14 +279,14 @@ namespace mtk{namespace trd{
                     serrors += MTK_SS("last_conf.Get().invariant  !=  ex.invariant " <<  last_conf.Get().invariant  << "  !=  "  <<  ex.invariant);
                     ++nerrors;
                 }
-                if (mtk::Double(ex.total_execs.quantity.GetDouble()) !=  
-                            mtk::Double(ex.executed_pos.quantity.GetDouble()) + mtk::Double(last_conf.Get().total_execs.quantity.GetDouble()))
+                if (mtk::Double(ex.total_execs.acc_quantity.GetDouble()) !=  
+                            mtk::Double(ex.executed_pos.quantity.GetDouble()) + mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble()))
                 {
                     ++nerrors;
                     serrors += "  total execution received doesn't match with  execution received and last confirmated execution  ";
                     
                 }
-                if (mtk::Double(ex.executed_pos.quantity.GetDouble())  >  (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble()) - mtk::Double(last_conf.Get().total_execs.quantity.GetDouble())))
+                if (mtk::Double(ex.executed_pos.quantity.GetDouble())  >  (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble()) - mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble())))
                 {
                     ++nerrors;
                     serrors += "  over execution!!!  ";

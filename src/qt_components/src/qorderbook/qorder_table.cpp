@@ -125,9 +125,9 @@ template<typename  ORDER_TYPE>
 QString get_session_id_from_order(mtk::CountPtr<ORDER_TYPE>& order)
 {
     if (order->last_confirmation().HasValue())
-        return QLatin1String(order->last_confirmation().Get().invariant.order_id.sess_id.c_str());
+        return QLatin1String(order->last_confirmation().Get().invariant.order_id.session_id.c_str());
     else if (order->last_request().HasValue())
-        return QLatin1String(order->last_request().Get().invariant.order_id.sess_id.c_str());
+        return QLatin1String(order->last_request().Get().invariant.order_id.session_id.c_str());
     else
         throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
@@ -243,7 +243,7 @@ mtk::FixedNumber   get_total_exec_quantity (const mtk::trd::msg::sub_order_id& o
         mtk::CountPtr<mtk::trd::trd_cli_ls> order=mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
         if(order->last_confirmation().HasValue())
         {
-            return order->last_confirmation().Get().total_execs.quantity;
+            return order->last_confirmation().Get().total_execs.acc_quantity;
         }
         else
             return mtk::FixedNumber(mtk::fnIntCode(0), mtk::fnDec(0), mtk::fnInc(0));
@@ -255,7 +255,7 @@ mtk::FixedNumber   get_total_exec_quantity (const mtk::trd::msg::sub_order_id& o
         mtk::CountPtr<mtk::trd::trd_cli_mk> order=mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
         if(order->last_confirmation().HasValue())
         {
-            return order->last_confirmation().Get().total_execs.quantity;
+            return order->last_confirmation().Get().total_execs.acc_quantity;
         }
         else
             return mtk::FixedNumber(mtk::fnIntCode(0), mtk::fnDec(0), mtk::fnInc(0));
@@ -463,7 +463,7 @@ public:
         QTableWidgetItem* item = items[col_exec_quantity];
         if (inner_order->last_confirmation().HasValue())
         {
-            confirmed = inner_order->last_confirmation().Get().total_execs.quantity;
+            confirmed = inner_order->last_confirmation().Get().total_execs.acc_quantity;
             item->setText(fn_as_QString(confirmed.Get()));
         }
         if (confirmed.HasValue()  &&  confirmed.Get().GetIntCode() != 0)
@@ -485,7 +485,7 @@ public:
         {
             confirmed = inner_order->last_confirmation().Get().total_execs.sum_price_by_qty
                             /
-                            inner_order->last_confirmation().Get().total_execs.quantity.GetDouble();
+                            inner_order->last_confirmation().Get().total_execs.acc_quantity.GetDouble();
             item->setText(QString::number(confirmed.get()._0, 'f', 5));
         }
         if (confirmed.IsValid())

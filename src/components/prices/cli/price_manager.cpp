@@ -125,7 +125,7 @@ price_manager::price_manager(const mtk::msg::sub_product_code&  _product_code)
                                     mtk::prices::msg::res_product_info::get_in_subject( request_info.process_info.location.client_code,
                                                                                         request_info.process_info.location.machine,
                                                                                         request_info.process_info.process_uuid,
-                                                                                        request_info.req_id.sess_id,
+                                                                                        request_info.req_id.session_id,
                                                                                         request_info.req_id.req_code),
                                     on_res_product_info,
                                     "price_manager_req_load_product_info")

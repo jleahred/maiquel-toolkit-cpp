@@ -1139,7 +1139,7 @@ void  copy (req_login_key& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_login_key::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1147,7 +1147,7 @@ void  copy (req_login_key& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("u");
+                    it = mv.find("un");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message req_login_key::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1164,9 +1164,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_login_key& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_info, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
-        __internal_add2map(map, a.user_name, std::string("u"));
+        __internal_add2map(map, a.user_name, std::string("un"));
 
 
 };
@@ -1190,7 +1190,7 @@ void  copy (res_login_key& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rsi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_login_key::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1215,7 +1215,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login_key& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.response_info, std::string("ri"));
+        __internal_add2map(map, a.response_info, std::string("rsi"));
 //  field_type
         __internal_add2map(map, a.key, std::string("k"));
 
@@ -1241,7 +1241,7 @@ void  copy (req_login& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1249,7 +1249,7 @@ void  copy (req_login& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("u");
+                    it = mv.find("un");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1265,7 +1265,7 @@ void  copy (req_login& c, const qpid::types::Variant& v)
                         //c.key = it->second;
 //   field_type
 
-                    it = mv.find("cp");
+                    it = mv.find("cpw");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field coded_pass on message req_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1282,13 +1282,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_login& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_info, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
-        __internal_add2map(map, a.user_name, std::string("u"));
+        __internal_add2map(map, a.user_name, std::string("un"));
 //  field_type
         __internal_add2map(map, a.key, std::string("k"));
 //  field_type
-        __internal_add2map(map, a.coded_pass, std::string("cp"));
+        __internal_add2map(map, a.coded_pass, std::string("cpw"));
 
 
 };
@@ -1312,7 +1312,7 @@ void  copy (res_login& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rsi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_login::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1337,7 +1337,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.response_info, std::string("ri"));
+        __internal_add2map(map, a.response_info, std::string("rsi"));
 //  IN_SUB_MSG
 //        map["lr"] =  qpidmsg_coded_as_qpid_Map(a.session_info);
         __internal_add2map(map, a.session_info);
@@ -1364,7 +1364,7 @@ void  copy (res_login::IC_session_info& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("u");
+                    it = mv.find("un");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message res_login::IC_session_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1380,7 +1380,7 @@ void  copy (res_login::IC_session_info& c, const qpid::types::Variant& v)
                         //c.client_code = it->second;
 //   field_type
 
-                    it = mv.find("si");
+                    it = mv.find("sid");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_id on message res_login::IC_session_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1397,11 +1397,11 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_ses
 
 
 //  field_type
-        __internal_add2map(map, a.user_name, std::string("u"));
+        __internal_add2map(map, a.user_name, std::string("un"));
 //  field_type
         __internal_add2map(map, a.client_code, std::string("cc"));
 //  field_type
-        __internal_add2map(map, a.session_id, std::string("si"));
+        __internal_add2map(map, a.session_id, std::string("sid"));
 
 
 };
@@ -1433,7 +1433,7 @@ void  copy (conf_logout& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.location, it->second.asMap());
 //   field_type
 
-                    it = mv.find("si");
+                    it = mv.find("sid");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_id on message conf_logout::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1441,7 +1441,7 @@ void  copy (conf_logout& c, const qpid::types::Variant& v)
                         //c.session_id = it->second;
 //   field_type
 
-                    it = mv.find("si");
+                    it = mv.find("desc");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field description on message conf_logout::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1460,9 +1460,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout& a)
 //  sub_msg_type
         __internal_add2map(map, a.location, std::string("lc"));
 //  field_type
-        __internal_add2map(map, a.session_id, std::string("si"));
+        __internal_add2map(map, a.session_id, std::string("sid"));
 //  field_type
-        __internal_add2map(map, a.description, std::string("si"));
+        __internal_add2map(map, a.description, std::string("desc"));
 
 
 };
@@ -1486,7 +1486,7 @@ void  copy (req_logout& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_logout::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1503,7 +1503,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_logout& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_info, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("rqi"));
 
 
 };
@@ -1527,7 +1527,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1551,7 +1551,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
                         //c.key = it->second;
 //   field_type
 
-                    it = mv.find("op");
+                    it = mv.find("opw");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field old_password on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1559,7 +1559,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
                         //c.old_password = it->second;
 //   field_type
 
-                    it = mv.find("np");
+                    it = mv.find("npw");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field new_password on message req_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1576,15 +1576,15 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_change_passwo
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_info, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
         __internal_add2map(map, a.user_name, std::string("un"));
 //  field_type
         __internal_add2map(map, a.key, std::string("k"));
 //  field_type
-        __internal_add2map(map, a.old_password, std::string("op"));
+        __internal_add2map(map, a.old_password, std::string("opw"));
 //  field_type
-        __internal_add2map(map, a.new_password, std::string("np"));
+        __internal_add2map(map, a.new_password, std::string("npw"));
 
 
 };
@@ -1608,7 +1608,7 @@ void  copy (res_change_password& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rsi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1616,7 +1616,7 @@ void  copy (res_change_password& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.response_info, it->second.asMap());
 //   IN_SUB_MSG
 
-                    it = mv.find("cp");
+                    it = mv.find("cpi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field change_password_info on message res_change_password::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1633,9 +1633,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_change_passwo
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.response_info, std::string("ri"));
+        __internal_add2map(map, a.response_info, std::string("rsi"));
 //  IN_SUB_MSG
-//        map["cp"] =  qpidmsg_coded_as_qpid_Map(a.change_password_info);
+//        map["cpi"] =  qpidmsg_coded_as_qpid_Map(a.change_password_info);
         __internal_add2map(map, a.change_password_info);
 
 
@@ -1709,11 +1709,11 @@ qpid::messaging::Message req_login_key::qpidmsg_codded_as_qpid_message (const st
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
-        __internal_add2map(content, this->request_info, std::string("ri"));
+//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("rqi"));
 //  field_type
-//        content["u"] = this->user_name;
-        __internal_add2map(content, this->user_name, std::string("u"));
+//        content["un"] = this->user_name;
+        __internal_add2map(content, this->user_name, std::string("un"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1735,8 +1735,8 @@ qpid::messaging::Message res_login_key::qpidmsg_codded_as_qpid_message (const st
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
-        __internal_add2map(content, this->response_info, std::string("ri"));
+//        content["rsi"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
+        __internal_add2map(content, this->response_info, std::string("rsi"));
 //  field_type
 //        content["k"] = this->key;
         __internal_add2map(content, this->key, std::string("k"));
@@ -1761,17 +1761,17 @@ qpid::messaging::Message req_login::qpidmsg_codded_as_qpid_message (const std::s
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
-        __internal_add2map(content, this->request_info, std::string("ri"));
+//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("rqi"));
 //  field_type
-//        content["u"] = this->user_name;
-        __internal_add2map(content, this->user_name, std::string("u"));
+//        content["un"] = this->user_name;
+        __internal_add2map(content, this->user_name, std::string("un"));
 //  field_type
 //        content["k"] = this->key;
         __internal_add2map(content, this->key, std::string("k"));
 //  field_type
-//        content["cp"] = this->coded_pass;
-        __internal_add2map(content, this->coded_pass, std::string("cp"));
+//        content["cpw"] = this->coded_pass;
+        __internal_add2map(content, this->coded_pass, std::string("cpw"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1793,8 +1793,8 @@ qpid::messaging::Message res_login::qpidmsg_codded_as_qpid_message (const std::s
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
-        __internal_add2map(content, this->response_info, std::string("ri"));
+//        content["rsi"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
+        __internal_add2map(content, this->response_info, std::string("rsi"));
 //  IN_SUB_MSG
 //        content["lr"] =  qpidmsg_coded_as_qpid_Map(this->session_info);
         __internal_add2map(content, this->session_info, std::string("lr"));
@@ -1822,11 +1822,11 @@ qpid::messaging::Message conf_logout::qpidmsg_codded_as_qpid_message (const std:
 //        content["lc"] =  qpidmsg_coded_as_qpid_Map(this->location);
         __internal_add2map(content, this->location, std::string("lc"));
 //  field_type
-//        content["si"] = this->session_id;
-        __internal_add2map(content, this->session_id, std::string("si"));
+//        content["sid"] = this->session_id;
+        __internal_add2map(content, this->session_id, std::string("sid"));
 //  field_type
-//        content["si"] = this->description;
-        __internal_add2map(content, this->description, std::string("si"));
+//        content["desc"] = this->description;
+        __internal_add2map(content, this->description, std::string("desc"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1848,8 +1848,8 @@ qpid::messaging::Message req_logout::qpidmsg_codded_as_qpid_message (const std::
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
-        __internal_add2map(content, this->request_info, std::string("ri"));
+//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("rqi"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1871,8 +1871,8 @@ qpid::messaging::Message req_change_password::qpidmsg_codded_as_qpid_message (co
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
-        __internal_add2map(content, this->request_info, std::string("ri"));
+//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("rqi"));
 //  field_type
 //        content["un"] = this->user_name;
         __internal_add2map(content, this->user_name, std::string("un"));
@@ -1880,11 +1880,11 @@ qpid::messaging::Message req_change_password::qpidmsg_codded_as_qpid_message (co
 //        content["k"] = this->key;
         __internal_add2map(content, this->key, std::string("k"));
 //  field_type
-//        content["op"] = this->old_password;
-        __internal_add2map(content, this->old_password, std::string("op"));
+//        content["opw"] = this->old_password;
+        __internal_add2map(content, this->old_password, std::string("opw"));
 //  field_type
-//        content["np"] = this->new_password;
-        __internal_add2map(content, this->new_password, std::string("np"));
+//        content["npw"] = this->new_password;
+        __internal_add2map(content, this->new_password, std::string("npw"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1906,11 +1906,11 @@ qpid::messaging::Message res_change_password::qpidmsg_codded_as_qpid_message (co
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
-        __internal_add2map(content, this->response_info, std::string("ri"));
+//        content["rsi"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
+        __internal_add2map(content, this->response_info, std::string("rsi"));
 //  IN_SUB_MSG
-//        content["cp"] =  qpidmsg_coded_as_qpid_Map(this->change_password_info);
-        __internal_add2map(content, this->change_password_info, std::string("cp"));
+//        content["cpi"] =  qpidmsg_coded_as_qpid_Map(this->change_password_info);
+        __internal_add2map(content, this->change_password_info, std::string("cpi"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2232,13 +2232,13 @@ std::string  req_login_key::get_in_subject (const std::string& request_info_proc
     {
         return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACS.RQK");
     }
-    std::string  res_login_key::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    std::string  res_login_key::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << ".RSK");
+        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSK");
     }
     std::string  res_login_key::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << ".RSK");
+        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSK");
     }
     std::string  req_login::get_in_subject (const std::string& request_info_process_info_location_client_code)
     {
@@ -2248,13 +2248,13 @@ std::string  req_login_key::get_in_subject (const std::string& request_info_proc
     {
         return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACS.RQL");
     }
-    std::string  res_login::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    std::string  res_login::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << ".LRES");
+        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".LRES");
     }
     std::string  res_login::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << ".LRES");
+        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".LRES");
     }
     std::string  conf_logout::get_in_subject (const std::string& location_client_code,const std::string& location_machine,const std::string& session_id)
     {
@@ -2280,13 +2280,13 @@ std::string  req_login_key::get_in_subject (const std::string& request_info_proc
     {
         return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACS.RQCP");
     }
-    std::string  res_change_password::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    std::string  res_change_password::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << ".LCP");
+        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".LCP");
     }
     std::string  res_change_password::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << ".LCP");
+        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".LCP");
     }
     
 

@@ -121,7 +121,7 @@ public:
 
     
     // constructor
-    explicit sub_total_executions (    const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _quantity,   const mtk::FixedNumber&  _remaining_qty );
+    explicit sub_total_executions (    const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _acc_quantity,   const mtk::FixedNumber&  _remaining_qty );
     explicit sub_total_executions ( const qpid::messaging::Message& message );
     virtual ~sub_total_executions (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_total_executions"; };
@@ -131,7 +131,7 @@ public:
 
     // fields
     mtk::Double                               sum_price_by_qty; 
-    mtk::FixedNumber                          quantity; 
+    mtk::FixedNumber                          acc_quantity; 
     mtk::FixedNumber                          remaining_qty; 
 
 

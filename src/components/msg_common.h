@@ -160,7 +160,7 @@ public:
 
     
     // constructor
-    explicit sub_request_id (    const std::string&  _sess_id,   const std::string&  _req_code );
+    explicit sub_request_id (    const std::string&  _session_id,   const std::string&  _req_code );
     explicit sub_request_id ( const qpid::messaging::Message& message );
     virtual ~sub_request_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_id"; };
@@ -169,7 +169,7 @@ public:
     
 
     // fields
-    std::string                               sess_id; 
+    std::string                               session_id; 
     std::string                               req_code; 
 
 

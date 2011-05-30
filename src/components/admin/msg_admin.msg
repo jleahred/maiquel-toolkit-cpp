@@ -31,22 +31,22 @@ END_INIT
 pub_enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
-    ka_interval_send    (ks)    :   time_quantity
-    ka_interval_check   (kc)    :   time_quantity
+    ka_interval_send    (kas)   :   time_quantity
+    ka_interval_check   (kac)   :   time_quantity
 }
 
 
 pub_keep_alive_srv  [< V:0, SUBJ:ADM.CIMD.KA >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
-    ka_interval_send    (ks)    :   time_quantity
-    ka_interval_check   (kc)    :   time_quantity
+    ka_interval_send    (kas)   :   time_quantity
+    ka_interval_check   (kac)   :   time_quantity
 }
 
 pub_keep_alive_clients  [< V:0, I:pub_keep_alive_srv,  SUBJ:ADM.CIMD.KA >]
 {
     //  aditional info for ACS  (hot registration)
-    login_confirmation  (lc)    :   mtk::acs::msg::res_login::IC_session_info
+    login_confirmation  (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
 
@@ -67,11 +67,11 @@ pub_alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     code_source         (cs)    :   string
-    subject             (sb)    :   string
-    message             (ms)    :   string
+    subject             (sbj)   :   string
+    message             (msg)   :   string
     priority            (p)     :   mtk::alEnPriority
-    type                (t)     :   mtk::alEnType
-    dateTime_generated  (dt)    :   date_time
+    type                (ty)    :   mtk::alEnType
+    dateTime_generated  (dtg)   :   date_time
     alarm_id            (ai)    :   int16
 }
 
@@ -86,22 +86,22 @@ pub_alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 
 req_command  [< V:0, SUBJ:ADM.${proc_info__destination.location.client_code}.${proc_info__destination.location.machine}.${proc_info__destination.process_name}.${proc_info__destination.process_uuid}.COMMAND >]
 {
-    request_info            (ri)    :   mtk::msg::sub_request_info
+    request_info            (rqi)   :   mtk::msg::sub_request_info
 
     proc_info__destination  (pd)    :   mtk::msg::sub_process_info
-    command_line            (c)     :   string                  //  command and params
+    command_line            (cl)    :   string                  //  command and params
 }
 
 
 sub_command_rd [< V:0 >]
 {
-    text                (t)     :   string
+    text                (txt)       :   string
 }
 
 res_command  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.req_code} >]
 {
-    response_info       (ri)    :   mtk::msg::sub_r_response
-    response_data       (rd)    :   sub_command_rd
+    response_info       (rsi)   :   mtk::msg::sub_r_response
+    response_data       (rsd)   :   sub_command_rd
 }
 
 
@@ -117,7 +117,7 @@ res_command  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process
 pub_central_keep_alive  [< V:0, SUBJ:ADM.ALL.KA >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
-    ka_interval_send    (ks)    :   time_quantity
-    ka_interval_check   (kc)    :   time_quantity
+    ka_interval_send    (kas)   :   time_quantity
+    ka_interval_check   (kac)   :   time_quantity
 }
 

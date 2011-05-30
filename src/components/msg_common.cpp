@@ -486,8 +486,8 @@ void sub_control_fluct::before_send(void) const
 
 
 
-sub_request_id::sub_request_id (   const std::string&  _sess_id,   const std::string&  _req_code)
-    :     sess_id(_sess_id),   req_code(_req_code) 
+sub_request_id::sub_request_id (   const std::string&  _session_id,   const std::string&  _req_code)
+    :     session_id(_session_id),   req_code(_req_code) 
        
     {  
         std::string cr = check_recomended ();  
@@ -698,7 +698,7 @@ std::ostream& operator<< (std::ostream& o, const sub_request_id & c)
 {
     o << "{ "
 
-        << "sess_id:"<<   c.sess_id << "  "        << "req_code:"<<   c.req_code << "  "
+        << "session_id:"<<   c.session_id << "  "        << "req_code:"<<   c.req_code << "  "
         << " }";
     return o;
 };
@@ -709,7 +709,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_request_id & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "sess_id"  << YAML::Value <<   c.sess_id        << YAML::Key << "req_code"  << YAML::Value <<   c.req_code
+        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "req_code"  << YAML::Value <<   c.req_code
         << YAML::EndMap;
     return o;
 };
@@ -720,7 +720,7 @@ void  operator >> (const YAML::Node& node, sub_request_id & c)
 {
 
 
-        node["sess_id"]  >> c.sess_id;
+        node["session_id"]  >> c.session_id;
         node["req_code"]  >> c.req_code;
 
 
@@ -865,7 +865,7 @@ bool operator!= (const sub_control_fluct& a, const sub_control_fluct& b)
 
 bool operator== (const sub_request_id& a, const sub_request_id& b)
 {
-    return (          a.sess_id ==  b.sess_id  &&          a.req_code ==  b.req_code  &&   true  );
+    return (          a.session_id ==  b.session_id  &&          a.req_code ==  b.req_code  &&   true  );
 };
 
 bool operator!= (const sub_request_id& a, const sub_request_id& b)
@@ -971,7 +971,7 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("l");
+                    it = mv.find("lc");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field location on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -987,7 +987,7 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
                         //c.process_name = it->second;
 //   field_type
 
-                    it = mv.find("pi");
+                    it = mv.find("pui");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_uuid on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -995,7 +995,7 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
                         //c.process_uuid = it->second;
 //   field_type
 
-                    it = mv.find("pv");
+                    it = mv.find("ver");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field version on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1012,13 +1012,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info&
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.location, std::string("l"));
+        __internal_add2map(map, a.location, std::string("lc"));
 //  field_type
         __internal_add2map(map, a.process_name, std::string("pn"));
 //  field_type
-        __internal_add2map(map, a.process_uuid, std::string("pi"));
+        __internal_add2map(map, a.process_uuid, std::string("pui"));
 //  field_type
-        __internal_add2map(map, a.version, std::string("pv"));
+        __internal_add2map(map, a.version, std::string("ver"));
 
 
 };
@@ -1095,10 +1095,10 @@ void  copy (sub_request_id& c, const qpid::types::Variant& v)
 
                     it = mv.find("sid");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sess_id on message sub_request_id::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_id on message sub_request_id::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.sess_id, it->second);
-                        //c.sess_id = it->second;
+                        copy(c.session_id, it->second);
+                        //c.session_id = it->second;
 //   field_type
 
                     it = mv.find("rqc");
@@ -1118,7 +1118,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a
 
 
 //  field_type
-        __internal_add2map(map, a.sess_id, std::string("sid"));
+        __internal_add2map(map, a.session_id, std::string("sid"));
 //  field_type
         __internal_add2map(map, a.req_code, std::string("rqc"));
 
@@ -1144,7 +1144,7 @@ void  copy (sub_request_info& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("rid");
+                    it = mv.find("rqid");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field req_id on message sub_request_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1169,7 +1169,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info&
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.req_id, std::string("rid"));
+        __internal_add2map(map, a.req_id, std::string("rqid"));
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 
@@ -1195,7 +1195,7 @@ void  copy (sub_r_response& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1203,7 +1203,7 @@ void  copy (sub_r_response& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("sq");
+                    it = mv.find("sqn");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sec_number on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1228,9 +1228,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_info, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
-        __internal_add2map(map, a.sec_number, std::string("sq"));
+        __internal_add2map(map, a.sec_number, std::string("sqn"));
 //  sub_msg_type
         __internal_add2map(map, a.is_last_response, std::string("lr"));
 
@@ -1442,7 +1442,7 @@ sub_control_fluct::sub_control_fluct (const qpid::messaging::Message& msg)
 
 sub_request_id::sub_request_id (const qpid::messaging::Message& msg)
     :  //   field_type
-   sess_id(__internal_get_default((std::string*)0)),
+   session_id(__internal_get_default((std::string*)0)),
 //   field_type
    req_code(__internal_get_default((std::string*)0)) 
     {

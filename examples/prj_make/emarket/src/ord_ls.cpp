@@ -80,7 +80,7 @@ int check_request_last_confirm(const mtk::trd::msg::RQ_XX_LS& rq, const mtk::nul
 
     __INTERNAL_CHECK_EQUAL(rq.invariant          , last_conf.Get().invariant        )
     
-    if (last_conf.HasValue()  &&  mtk::Double(last_conf.Get().total_execs.quantity.GetDouble()) >= (mtk::Double(rq.request_pos.quantity.GetDouble())))
+    if (last_conf.HasValue()  &&  mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble()) >= (mtk::Double(rq.request_pos.quantity.GetDouble())))
     {
         serrors += "  requested quantity lower or equal than executed quantity!!!  ";
         ++nerrors;
@@ -126,10 +126,10 @@ int check_request_not_modifying(const mtk::trd::msg::RQ_XX_LS& rq, const mtk::nu
         nerrors += check_request_last_confirm(rq, last_confirmation()   ,  serrors); \
         (void)nerrors;   \
         (void)serrors;\
-        if (rq.reject_descr != "")  \
+        if (rq.reject_description != "")  \
         {  \
             ++nerrors;  \
-            serrors = rq.reject_descr;  \
+            serrors = rq.reject_description;  \
         }  \
         ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_LS&>(rq)));
 
@@ -143,7 +143,7 @@ int check_confirm_request(const mtk::trd::msg::CF_XX_LS& cf, const mtk::nullable
     if (last_request.HasValue()== true)
         __INTERNAL_CHECK_EQUAL(last_request.Get().invariant     , cf.invariant)
     
-    if (mtk::Double(cf.total_execs.quantity.GetDouble()) > (mtk::Double(last_request.Get().request_pos.quantity.GetDouble())))
+    if (mtk::Double(cf.total_execs.acc_quantity.GetDouble()) > (mtk::Double(last_request.Get().request_pos.quantity.GetDouble())))
     {
         serrors += "  over execution!!!  ";
         ++nerrors;
@@ -166,7 +166,7 @@ int check_confirm__last_confirm(const mtk::trd::msg::CF_XX_LS& cf, const mtk::nu
     
     __INTERNAL_CHECK_EQUAL(cf.invariant,   last_conf.Get().invariant)
 
-    if (mtk::Double(cf.total_execs.quantity.GetDouble()) > (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble())))
+    if (mtk::Double(cf.total_execs.acc_quantity.GetDouble()) > (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble())))
     {
         ++nerrors;
         serrors += "  over execution!!!  ";
@@ -221,7 +221,7 @@ int check_reject__last_confirm(const mtk::trd::msg::CF_XX_LS& rj, const mtk::nul
     int nerrors=0;
     
     __INTERNAL_CHECK_EQUAL(rj.invariant   , last_conf.Get().invariant                 )
-    __INTERNAL_CHECK_EQUAL(rj.total_execs.quantity       , last_conf.Get().total_execs.quantity     )
+    __INTERNAL_CHECK_EQUAL(rj.total_execs.acc_quantity   , last_conf.Get().total_execs.acc_quantity     )
     __INTERNAL_CHECK_EQUAL(rj.total_execs.remaining_qty  , last_conf.Get().total_execs.remaining_qty)
 
     if (nerrors >0)
@@ -253,11 +253,11 @@ int   check_exec__last_confirm(const mtk::trd::msg::CF_EX_LS& ex, const mtk::nul
     int nerrors=0;
     
     __INTERNAL_CHECK_EQUAL(ex.executed_pos.side     ,   last_conf.Get().invariant.side    )
-    if (mtk::Double(ex.total_execs.quantity.GetDouble()) !=  
-                mtk::Double(ex.executed_pos.quantity.GetDouble()) + mtk::Double(last_conf.Get().total_execs.quantity.GetDouble()))
+    if (mtk::Double(ex.total_execs.acc_quantity.GetDouble()) !=  
+                mtk::Double(ex.executed_pos.quantity.GetDouble()) + mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble()))
     {
         ++nerrors;
-        serrors += MTK_SS("  total execution received doesn't match with  execution received and last confirmated execution  "<< ex.total_execs.quantity << "  !=  "  << ex.executed_pos.quantity  << " + " << last_conf.Get().total_execs.quantity << std::endl);
+        serrors += MTK_SS("  total execution received doesn't match with  execution received and last confirmated execution  "<< ex.total_execs.acc_quantity << "  !=  "  << ex.executed_pos.quantity  << " + " << last_conf.Get().total_execs.acc_quantity << std::endl);
         
     }
 

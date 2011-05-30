@@ -13,7 +13,7 @@ namespace mtk {
            
 bool is_valid (const sub_order_id& ord_id)
 {
-    if (ord_id.sess_id ==""  ||  ord_id.req_code=="")
+    if (ord_id.session_id ==""  ||  ord_id.req_code=="")
         return false;
     return true;
 }
@@ -21,9 +21,9 @@ bool is_valid (const sub_order_id& ord_id)
            
 bool operator< (const sub_order_id& p1, const sub_order_id& p2)
 {
-    if      (p1.sess_id< p2.sess_id)
+    if      (p1.session_id< p2.session_id)
         return true;
-    else if (p1.sess_id==p2.sess_id  &&  p1.req_code<p2.req_code)
+    else if (p1.session_id==p2.session_id  &&  p1.req_code<p2.req_code)
         return true;
     else
         return false;

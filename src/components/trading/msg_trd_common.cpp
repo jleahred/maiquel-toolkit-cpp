@@ -460,8 +460,8 @@ void sub_exec_conf::before_send(void) const
 
 
 
-sub_total_executions::sub_total_executions (   const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _quantity,   const mtk::FixedNumber&  _remaining_qty)
-    :     sum_price_by_qty(_sum_price_by_qty),   quantity(_quantity),   remaining_qty(_remaining_qty) 
+sub_total_executions::sub_total_executions (   const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _acc_quantity,   const mtk::FixedNumber&  _remaining_qty)
+    :     sum_price_by_qty(_sum_price_by_qty),   acc_quantity(_acc_quantity),   remaining_qty(_remaining_qty) 
        
     {  
         std::string cr = check_recomended ();  
@@ -665,7 +665,7 @@ std::ostream& operator<< (std::ostream& o, const sub_total_executions & c)
 {
     o << "{ "
 
-        << "sum_price_by_qty:"<<   c.sum_price_by_qty << "  "        << "quantity:"<<   c.quantity << "  "        << "remaining_qty:"<<   c.remaining_qty << "  "
+        << "sum_price_by_qty:"<<   c.sum_price_by_qty << "  "        << "acc_quantity:"<<   c.acc_quantity << "  "        << "remaining_qty:"<<   c.remaining_qty << "  "
         << " }";
     return o;
 };
@@ -676,7 +676,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_total_executions & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "sum_price_by_qty"  << YAML::Value <<   c.sum_price_by_qty        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity        << YAML::Key << "remaining_qty"  << YAML::Value <<   c.remaining_qty
+        << YAML::Key << "sum_price_by_qty"  << YAML::Value <<   c.sum_price_by_qty        << YAML::Key << "acc_quantity"  << YAML::Value <<   c.acc_quantity        << YAML::Key << "remaining_qty"  << YAML::Value <<   c.remaining_qty
         << YAML::EndMap;
     return o;
 };
@@ -688,7 +688,7 @@ void  operator >> (const YAML::Node& node, sub_total_executions & c)
 
 
         node["sum_price_by_qty"]  >> c.sum_price_by_qty;
-        node["quantity"]  >> c.quantity;
+        node["acc_quantity"]  >> c.acc_quantity;
         node["remaining_qty"]  >> c.remaining_qty;
 
 
@@ -860,7 +860,7 @@ bool operator!= (const sub_exec_conf& a, const sub_exec_conf& b)
 
 bool operator== (const sub_total_executions& a, const sub_total_executions& b)
 {
-    return (          a.sum_price_by_qty ==  b.sum_price_by_qty  &&          a.quantity ==  b.quantity  &&          a.remaining_qty ==  b.remaining_qty  &&   true  );
+    return (          a.sum_price_by_qty ==  b.sum_price_by_qty  &&          a.acc_quantity ==  b.acc_quantity  &&          a.remaining_qty ==  b.remaining_qty  &&   true  );
 };
 
 bool operator!= (const sub_total_executions& a, const sub_total_executions& b)
@@ -968,7 +968,7 @@ void  copy (sub_exec_conf& c, const qpid::types::Variant& v)
                         //c.exec_id = it->second;
 //   field_type
 
-                    it = mv.find("pr");
+                    it = mv.find("pri");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field price on message sub_exec_conf::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1003,7 +1003,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_exec_conf& a)
 //  field_type
         __internal_add2map(map, a.exec_id, std::string("eid"));
 //  field_type
-        __internal_add2map(map, a.price, std::string("pr"));
+        __internal_add2map(map, a.price, std::string("pri"));
 //  field_type
         __internal_add2map(map, a.quantity, std::string("qt"));
 //  sub_msg_type
@@ -1041,13 +1041,13 @@ void  copy (sub_total_executions& c, const qpid::types::Variant& v)
 
                     it = mv.find("aqt");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field quantity on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field acc_quantity on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.quantity, it->second);
-                        //c.quantity = it->second;
+                        copy(c.acc_quantity, it->second);
+                        //c.acc_quantity = it->second;
 //   field_type
 
-                    it = mv.find("rq");
+                    it = mv.find("rmq");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field remaining_qty on message sub_total_executions::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1066,9 +1066,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executi
 //  field_type
         __internal_add2map(map, a.sum_price_by_qty, std::string("spq"));
 //  field_type
-        __internal_add2map(map, a.quantity, std::string("aqt"));
+        __internal_add2map(map, a.acc_quantity, std::string("aqt"));
 //  field_type
-        __internal_add2map(map, a.remaining_qty, std::string("rq"));
+        __internal_add2map(map, a.remaining_qty, std::string("rmq"));
 
 
 };
@@ -1222,7 +1222,7 @@ void  copy (RQ_XX& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.invariant, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("rqid");
+                    it = mv.find("rqin");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field req_info on message RQ_XX::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1230,7 +1230,7 @@ void  copy (RQ_XX& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.req_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("cr");
+                    it = mv.find("clr");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_ref on message RQ_XX::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1257,9 +1257,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX& a)
 //  sub_msg_type
         __internal_add2map(map, a.invariant, std::string("inv"));
 //  sub_msg_type
-        __internal_add2map(map, a.req_info, std::string("rqid"));
+        __internal_add2map(map, a.req_info, std::string("rqin"));
 //  field_type
-        __internal_add2map(map, a.cli_ref, std::string("cr"));
+        __internal_add2map(map, a.cli_ref, std::string("clr"));
 //  sub_msg_type
         __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
 
@@ -1301,7 +1301,7 @@ void  copy (CF_XX& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.req_id, it->second.asMap());
 //   field_type
 
-                    it = mv.find("cr");
+                    it = mv.find("clr");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_ref on message CF_XX::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1338,7 +1338,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX& a)
 //  sub_msg_type
         __internal_add2map(map, a.req_id, std::string("rqid"));
 //  field_type
-        __internal_add2map(map, a.cli_ref, std::string("cr"));
+        __internal_add2map(map, a.cli_ref, std::string("clr"));
 //  sub_msg_type
         __internal_add2map(map, a.total_execs, std::string("ext"));
 //  sub_msg_type
@@ -1493,7 +1493,7 @@ sub_total_executions::sub_total_executions (const qpid::messaging::Message& msg)
     :  //   field_type
    sum_price_by_qty(__internal_get_default((mtk::Double*)0)),
 //   field_type
-   quantity(__internal_get_default((mtk::FixedNumber*)0)),
+   acc_quantity(__internal_get_default((mtk::FixedNumber*)0)),
 //   field_type
    remaining_qty(__internal_get_default((mtk::FixedNumber*)0)) 
     {

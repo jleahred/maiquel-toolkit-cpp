@@ -21,10 +21,10 @@ sub_location  [<V:0>]
 
 sub_process_info  [<V:0>]
 {
-    location        (l)     :   sub_location
+    location        (lc)    :   sub_location
     process_name    (pn)    :   string
-    process_uuid    (pi)    :   string
-    version         (pv)    :   string
+    process_uuid    (pui)   :   string
+    version         (ver)   :   string
 }
 
 
@@ -57,14 +57,14 @@ sub_control_fluct    [<V:0>]
 
 sub_request_id   [<V:0>]
 {
-    sess_id   (sid) :  string
-    req_code  (rqc) :  string
+    session_id  (sid) :  string
+    req_code    (rqc) :  string
 }
 
 
 sub_request_info [< V:0 >]   
 {
-    req_id              (rid)   :   sub_request_id
+    req_id              (rqid)  :   sub_request_id
     process_info        (pi)    :   sub_process_info
 }
 
@@ -76,8 +76,8 @@ sub_request_info [< V:0 >]
 
 sub_r_response [< V:0 >]   
 {
-    request_info       (ri)     :   sub_request_info
-    sec_number         (sq)     :   int16       //  it will start with 0
+    request_info       (rqi)    :   sub_request_info
+    sec_number         (sqn)    :   int16       //  it will start with 0
     is_last_response   (lr)     :   bool
 }
 

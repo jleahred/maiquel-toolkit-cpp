@@ -1384,7 +1384,7 @@ copy(static_cast<RQ_XX&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("rp");
+                    it = mv.find("rqp");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_pos on message RQ_XX_MK::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1403,7 +1403,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX_MK& a)
 __internal_add2map(map, static_cast<const RQ_XX&>(a));
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_pos, std::string("rp"));
+        __internal_add2map(map, a.request_pos, std::string("rqp"));
 
 
 };
@@ -1526,7 +1526,7 @@ copy(static_cast<CF_XX&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("mp");
+                    it = mv.find("mkp");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market_pos on message CF_XX_MK::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1545,7 +1545,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX_MK& a)
 __internal_add2map(map, static_cast<const CF_XX&>(a));
 
 //  sub_msg_type
-        __internal_add2map(map, a.market_pos, std::string("mp"));
+        __internal_add2map(map, a.market_pos, std::string("mkp"));
 
 
 };
@@ -1668,7 +1668,7 @@ copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("exc");
+                    it = mv.find("exp");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field executed_pos on message CF_EX_MK::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1687,7 +1687,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_MK& a)
 __internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
 //  sub_msg_type
-        __internal_add2map(map, a.executed_pos, std::string("exc"));
+        __internal_add2map(map, a.executed_pos, std::string("exp"));
 
 
 };
@@ -1711,7 +1711,7 @@ copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("rd");
+                    it = mv.find("rjd");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_NW_MK::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1730,7 +1730,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_NW_MK& a)
 __internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
 //  field_type
-        __internal_add2map(map, a.reject_description, std::string("rd"));
+        __internal_add2map(map, a.reject_description, std::string("rjd"));
 
 
 };
@@ -1754,7 +1754,7 @@ copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("rd");
+                    it = mv.find("rjd");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_MD_MK::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1773,7 +1773,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_MD_MK& a)
 __internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
 //  field_type
-        __internal_add2map(map, a.reject_description, std::string("rd"));
+        __internal_add2map(map, a.reject_description, std::string("rjd"));
 
 
 };
@@ -1797,7 +1797,7 @@ copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("rd");
+                    it = mv.find("rjd");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_CC_MK::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1816,7 +1816,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_CC_MK& a)
 __internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
 //  field_type
-        __internal_add2map(map, a.reject_description, std::string("rd"));
+        __internal_add2map(map, a.reject_description, std::string("rjd"));
 
 
 };
@@ -1985,8 +1985,8 @@ qpid::messaging::Message CF_EX_MK::qpidmsg_codded_as_qpid_message (const std::st
 __internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
 
 //  sub_msg_type
-//        content["exc"] =  qpidmsg_coded_as_qpid_Map(this->executed_pos);
-        __internal_add2map(content, this->executed_pos, std::string("exc"));
+//        content["exp"] =  qpidmsg_coded_as_qpid_Map(this->executed_pos);
+        __internal_add2map(content, this->executed_pos, std::string("exp"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2010,8 +2010,8 @@ qpid::messaging::Message RJ_NW_MK::qpidmsg_codded_as_qpid_message (const std::st
 __internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
 
 //  field_type
-//        content["rd"] = this->reject_description;
-        __internal_add2map(content, this->reject_description, std::string("rd"));
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2035,8 +2035,8 @@ qpid::messaging::Message RJ_MD_MK::qpidmsg_codded_as_qpid_message (const std::st
 __internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
 
 //  field_type
-//        content["rd"] = this->reject_description;
-        __internal_add2map(content, this->reject_description, std::string("rd"));
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2060,8 +2060,8 @@ qpid::messaging::Message RJ_CC_MK::qpidmsg_codded_as_qpid_message (const std::st
 __internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
 
 //  field_type
-//        content["rd"] = this->reject_description;
-        __internal_add2map(content, this->reject_description, std::string("rd"));
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());

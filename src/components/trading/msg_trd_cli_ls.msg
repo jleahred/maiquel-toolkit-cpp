@@ -25,7 +25,7 @@ END_INIT
 
 sub_position_ls   [<V:0>]
 { 
-    price    (pr)   :   fix_num
+    price    (pri)  :   fix_num
     quantity (qt)   :   fix_num
 }
 
@@ -40,7 +40,7 @@ sub_position_ls   [<V:0>]
 
 RQ_XX_LS  [<V:0,   I:RQ_XX   >]
 {
-    request_pos         (rp)   :   sub_position_ls      
+    request_pos         (rqp)   :   sub_position_ls      
 }
 
 
@@ -60,7 +60,7 @@ RQ_CC_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${invariant.account.client_code}.${inva
 
 CF_XX_LS  [< V:0,  I:CF_XX >]
 {
-    market_pos     (mp)   :   sub_position_ls      
+    market_pos     (mkp)   :   sub_position_ls      
 }
 
 
@@ -80,7 +80,7 @@ CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${inv
 
 CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}   >]
 {
-    executed_pos  (exc)   :  sub_exec_conf
+    executed_pos  (exp)   :  sub_exec_conf
 }
 
 
@@ -93,19 +93,19 @@ CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${inva
 
 RJ_NW_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]  
 {
-    reject_description  (rd)    :   string
+    reject_description  (rjd)    :   string
 }
 
 
 RJ_MD_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
 {
-    reject_description  (rd)    :   string
+    reject_description  (rjd)    :   string
 }
 
 
 RJ_CC_LS  [< V:0, I:CF_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
 {
-    reject_description  (rd)    :   string
+    reject_description  (rjd)    :   string
 }
 
 

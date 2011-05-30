@@ -631,7 +631,7 @@ void  copy (sub_tree_item& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("b");
+                    it = mv.find("br");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field branch on message sub_tree_item::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -662,7 +662,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item& a)
 
 
 //  field_type
-        __internal_add2map(map, a.branch, std::string("b"));
+        __internal_add2map(map, a.branch, std::string("br"));
 //  field_type
         __internal_add2map(map, a.user_name, std::string("un"));
 if (a.product_code.HasValue())
@@ -691,7 +691,7 @@ void  copy (req_tree_items& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -716,7 +716,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items& a
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_info, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
         __internal_add2map(map, a.branch, std::string("br"));
 
@@ -742,7 +742,7 @@ void  copy (res_tree_items& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rsi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_tree_items::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -767,7 +767,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.response_info, std::string("ri"));
+        __internal_add2map(map, a.response_info, std::string("rsi"));
 //  sub_msg_type
         __internal_add2map(map, a.item, std::string("it"));
 
@@ -794,8 +794,8 @@ qpid::messaging::Message req_tree_items::qpidmsg_codded_as_qpid_message (const s
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
-        __internal_add2map(content, this->request_info, std::string("ri"));
+//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("rqi"));
 //  field_type
 //        content["br"] = this->branch;
         __internal_add2map(content, this->branch, std::string("br"));
@@ -820,8 +820,8 @@ qpid::messaging::Message res_tree_items::qpidmsg_codded_as_qpid_message (const s
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
-        __internal_add2map(content, this->response_info, std::string("ri"));
+//        content["rsi"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
+        __internal_add2map(content, this->response_info, std::string("rsi"));
 //  sub_msg_type
 //        content["it"] =  qpidmsg_coded_as_qpid_Map(this->item);
         __internal_add2map(content, this->item, std::string("it"));
@@ -932,13 +932,13 @@ std::string  req_tree_items::get_in_subject (const std::string& request_info_pro
     {
         return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".TREE_REQUEST");
     }
-    std::string  res_tree_items::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    std::string  res_tree_items::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << "");
+        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << "");
     }
     std::string  res_tree_items::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << "");
+        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << "");
     }
     
 

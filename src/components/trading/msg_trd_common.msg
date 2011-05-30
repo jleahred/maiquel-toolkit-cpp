@@ -23,7 +23,7 @@ sub_order_id   [< V:0, I:mtk::msg::sub_request_id  >]   {}
 sub_exec_conf   [<V:0>]
 { 
     exec_id  (eid)  :   string
-    price    (pr)   :   fix_num
+    price    (pri)  :   fix_num
     quantity (qt)   :   fix_num
     side     (sd)   :   enBuySell
 }
@@ -32,8 +32,8 @@ sub_exec_conf   [<V:0>]
 sub_total_executions [<V:0>]
 {
     sum_price_by_qty    (spq)   :  double
-    quantity            (aqt)   :  fix_num
-    remaining_qty       (rq)    :  fix_num
+    acc_quantity        (aqt)   :  fix_num
+    remaining_qty       (rmq)   :  fix_num
 }
 
 
@@ -74,8 +74,8 @@ RQ_XX  [< V:0 >]
 {
     invariant           (inv)  :   sub_invariant_order_info
 
-    req_info            (rqid) :   mtk::msg::sub_request_info
-    cli_ref             (cr)   :   string
+    req_info            (rqin) :   mtk::msg::sub_request_info
+    cli_ref             (clr)  :   string
     
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
@@ -91,7 +91,7 @@ CF_XX  [<  V:0  >]
     invariant           (inv)  :   sub_invariant_order_info
     
     req_id              (rqid) :   mtk::msg::sub_request_id
-    cli_ref             (cr)   :   string
+    cli_ref             (clr)  :   string
     total_execs         (ext)  :   sub_total_executions      
 
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct

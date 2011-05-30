@@ -331,28 +331,28 @@ void orders_in_product_queue::check_execs(void)
             //  confirmation buy
             {
                 mtk::trd::msg::CF_XX_LS cf = best_buy->last_confirmation().Get();
-                cf.total_execs.quantity.SetDouble(cf.total_execs.quantity.GetDouble() + exec_quantity.GetDouble());
+                cf.total_execs.acc_quantity.SetDouble(cf.total_execs.acc_quantity.GetDouble() + exec_quantity.GetDouble());
                 cf.total_execs.sum_price_by_qty += exec_quantity.GetDouble() * exec_price.GetDouble();
                 cf.total_execs.remaining_qty.SetDouble(
                             cf.market_pos.quantity.GetDouble()
                             -
-                            cf.total_execs.quantity.GetDouble());
+                            cf.total_execs.acc_quantity.GetDouble());
                 best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::buy)));
                     
-                if (cf.total_execs.quantity  >=  cf.market_pos.quantity)
+                if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
                     bid_queue.pop_front();
             }
             //  confirmation sell
             {
                 mtk::trd::msg::CF_XX_LS cf = best_sell->last_confirmation().Get();
-                cf.total_execs.quantity.SetDouble(cf.total_execs.quantity.GetDouble() + exec_quantity.GetDouble());
+                cf.total_execs.acc_quantity.SetDouble(cf.total_execs.acc_quantity.GetDouble() + exec_quantity.GetDouble());
                 cf.total_execs.sum_price_by_qty += exec_quantity.GetDouble() * exec_price.GetDouble();
                 cf.total_execs.remaining_qty.SetDouble(
                             cf.market_pos.quantity.GetDouble()
                             -
-                            cf.total_execs.quantity.GetDouble());
+                            cf.total_execs.acc_quantity.GetDouble());
                 best_sell->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::sell)));
-                if (cf.total_execs.quantity  >=  cf.market_pos.quantity)
+                if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
                     ask_queue.pop_front();
             }
             if (bid_queue.size() == 0  ||  ask_queue.size() == 0)

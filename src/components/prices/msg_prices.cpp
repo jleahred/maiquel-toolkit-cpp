@@ -850,7 +850,7 @@ void  copy (sub_price_level& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("pr");
+                    it = mv.find("pri");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field price on message sub_price_level::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -875,7 +875,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& 
 
 
 //  field_type
-        __internal_add2map(map, a.price, std::string("pr"));
+        __internal_add2map(map, a.price, std::string("pri"));
 //  field_type
         __internal_add2map(map, a.quantity, std::string("qt"));
 
@@ -990,7 +990,7 @@ void  copy (pub_best_prices& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.product_code, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("bid");
+                    it = mv.find("bids");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field bids on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -998,7 +998,7 @@ void  copy (pub_best_prices& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.bids, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("ask");
+                    it = mv.find("asks");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field asks on message pub_best_prices::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1025,9 +1025,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& 
 //  sub_msg_type
         __internal_add2map(map, a.product_code, std::string("pc"));
 //  sub_msg_type
-        __internal_add2map(map, a.bids, std::string("bid"));
+        __internal_add2map(map, a.bids, std::string("bids"));
 //  sub_msg_type
-        __internal_add2map(map, a.asks, std::string("ask"));
+        __internal_add2map(map, a.asks, std::string("asks"));
 //  sub_msg_type
         __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
 
@@ -1053,7 +1053,7 @@ void  copy (req_prod_info& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_prod_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1078,7 +1078,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_prod_info& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_info, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("rqi"));
 //  sub_msg_type
         __internal_add2map(map, a.product_code, std::string("pc"));
 
@@ -1104,7 +1104,7 @@ void  copy (res_product_info& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rsi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_product_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1129,7 +1129,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info&
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.response_info, std::string("ri"));
+        __internal_add2map(map, a.response_info, std::string("rsi"));
 //  IN_SUB_MSG
 //        map["rs"] =  qpidmsg_coded_as_qpid_Map(a.response);
         __internal_add2map(map, a.response);
@@ -1204,11 +1204,11 @@ qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (const 
 //        content["pc"] =  qpidmsg_coded_as_qpid_Map(this->product_code);
         __internal_add2map(content, this->product_code, std::string("pc"));
 //  sub_msg_type
-//        content["bid"] =  qpidmsg_coded_as_qpid_Map(this->bids);
-        __internal_add2map(content, this->bids, std::string("bid"));
+//        content["bids"] =  qpidmsg_coded_as_qpid_Map(this->bids);
+        __internal_add2map(content, this->bids, std::string("bids"));
 //  sub_msg_type
-//        content["ask"] =  qpidmsg_coded_as_qpid_Map(this->asks);
-        __internal_add2map(content, this->asks, std::string("ask"));
+//        content["asks"] =  qpidmsg_coded_as_qpid_Map(this->asks);
+        __internal_add2map(content, this->asks, std::string("asks"));
 //  sub_msg_type
 //        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
         __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
@@ -1233,8 +1233,8 @@ qpid::messaging::Message req_prod_info::qpidmsg_codded_as_qpid_message (const st
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
-        __internal_add2map(content, this->request_info, std::string("ri"));
+//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("rqi"));
 //  sub_msg_type
 //        content["pc"] =  qpidmsg_coded_as_qpid_Map(this->product_code);
         __internal_add2map(content, this->product_code, std::string("pc"));
@@ -1259,8 +1259,8 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
-        __internal_add2map(content, this->response_info, std::string("ri"));
+//        content["rsi"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
+        __internal_add2map(content, this->response_info, std::string("rsi"));
 //  IN_SUB_MSG
 //        content["rs"] =  qpidmsg_coded_as_qpid_Map(this->response);
         __internal_add2map(content, this->response, std::string("rs"));
@@ -1477,13 +1477,13 @@ std::string  pub_best_prices::get_in_subject (const std::string& product_code_ma
     {
         return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".PRC.PI");
     }
-    std::string  res_product_info::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_sess_id,const std::string& response_info_request_info_req_id_req_code)
+    std::string  res_product_info::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_sess_id << "." << response_info_request_info_req_id_req_code << ".PRC.PI");
+        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".PRC.PI");
     }
     std::string  res_product_info::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.sess_id << "." << this->response_info.request_info.req_id.req_code << ".PRC.PI");
+        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".PRC.PI");
     }
     
 

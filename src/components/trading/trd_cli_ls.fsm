@@ -371,7 +371,7 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
             full_exec
                 [{
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().total_execs.quantity  
+                    &&  last_confirmation().Get().total_execs.acc_quantity
                         == last_confirmation().Get().market_pos.quantity
                 }]
 

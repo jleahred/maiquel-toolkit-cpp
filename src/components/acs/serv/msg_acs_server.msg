@@ -15,13 +15,13 @@ END_INIT
 
 pub_add_user  [<  V:0, SUBJ:SYS.PUB.ACS_SYNC  >]
 {
-    login_confirmation  (lc)    :   mtk::acs::msg::res_login::IC_session_info
+    login_confirmation  (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
 
 pub_del_user [<  V:0, SUBJ:SYS.PUB.ACS_SYNC  >]
 {
-    login_confirmation  (lc)    :   mtk::acs::msg::res_login::IC_session_info
+    login_confirmation  (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
 
@@ -53,11 +53,11 @@ pub_partial_user_list_serv2acs  [<  V:0, SUBJ:SYS.PUB.SERV2ACS_SYNC  >]
 
 req_user_list [<  V:0, SUBJ:SYS.REQ.ACS.USER_LIST  >]
 {
-    request_info    (ri)    :   mtk::msg::sub_request_info
+    request_info    (rqi)    :   mtk::msg::sub_request_info
 }
 
-res_user_list  [< V:0 , SUBJ:SYS.RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code} >]
+res_user_list  [< V:0 , SUBJ:SYS.RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code} >]
 {
-    response_info                (ri)    :   mtk::msg::sub_r_response
+    response_info                (rsi)   :   mtk::msg::sub_r_response
     [list_login_confirmation]    (slc)   :   mtk::acs::msg::res_login::IC_session_info
 }

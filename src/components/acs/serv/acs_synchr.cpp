@@ -195,7 +195,7 @@ namespace   //anonymous
                                         mtk::acs_server::msg::res_user_list::get_in_subject(request_info.process_info.location.client_code, 
                                                 msg_request_user_list.request_info.process_info.location.machine, 
                                                 msg_request_user_list.request_info.process_info.process_uuid,
-                                                msg_request_user_list.request_info.req_id.sess_id,
+                                                msg_request_user_list.request_info.req_id.session_id,
                                                 msg_request_user_list.request_info.req_id.req_code),
                                         on_res_user_list,
                                         "request user list to acs")

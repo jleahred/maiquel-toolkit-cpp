@@ -13,7 +13,7 @@ END_INIT
 
 sub_tree_item [< V:0 >]
 {
-    branch          (b)         :   string      //  separating by dots the full path (including current item name)
+    branch          (br)        :   string      //  separating by dots the full path (including current item name)
     user_name       (un)        :   string
     product_code    (pc)        :   mtk::msg::sub_product_code   [optional]       //  if exists, means it is a product
 }
@@ -23,14 +23,14 @@ sub_tree_item [< V:0 >]
 
 req_tree_items [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.TREE_REQUEST >]
 {
-    request_info    (ri)        :   mtk::msg::sub_request_info
+    request_info    (rqi)       :   mtk::msg::sub_request_info
     branch          (br)        :   string      //  separated by dots, the full path branch (not included the current item name)
 }
 
 
 
-res_tree_items [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.sess_id}.${response_info.request_info.req_id.req_code} >]
+res_tree_items [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code} >]
 {
-    response_info   (ri)    :   mtk::msg::sub_r_response
+    response_info   (rsi)   :   mtk::msg::sub_r_response
     item            (it)    :   sub_tree_item
 }

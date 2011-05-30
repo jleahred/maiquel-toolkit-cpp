@@ -216,7 +216,7 @@ void qTreeProducts::request_root_items(void)
                                             mtk::gen::msg::res_tree_items::get_in_subject( request_info.process_info.location.client_code,
                                                                                                 request_info.process_info.location.machine,
                                                                                                 request_info.process_info.process_uuid,
-                                                                                                request_info.req_id.sess_id,
+                                                                                                request_info.req_id.session_id,
                                                                                                 request_info.req_id.req_code),
                                             on_response_request_tree,
                                             "tree prod ROOT")
@@ -311,7 +311,7 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
                                         mtk::gen::msg::res_tree_items::get_in_subject( request_info.process_info.location.client_code,
                                                                                             request_info.process_info.location.machine,
                                                                                             request_info.process_info.process_uuid,
-                                                                                            request_info.req_id.sess_id,
+                                                                                            request_info.req_id.session_id,
                                                                                             request_info.req_id.req_code),
                                         on_response_request_tree,
                                         MTK_SS("tree prod " << mtk_item->item.branch))

@@ -1079,7 +1079,7 @@ void  copy (pub_enter& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.process_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("ks");
+                    it = mv.find("kas");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ka_interval_send on message pub_enter::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1087,7 +1087,7 @@ void  copy (pub_enter& c, const qpid::types::Variant& v)
                         //c.ka_interval_send = it->second;
 //   field_type
 
-                    it = mv.find("kc");
+                    it = mv.find("kac");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ka_interval_check on message pub_enter::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1106,9 +1106,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a)
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
-        __internal_add2map(map, a.ka_interval_send, std::string("ks"));
+        __internal_add2map(map, a.ka_interval_send, std::string("kas"));
 //  field_type
-        __internal_add2map(map, a.ka_interval_check, std::string("kc"));
+        __internal_add2map(map, a.ka_interval_check, std::string("kac"));
 
 
 };
@@ -1140,7 +1140,7 @@ void  copy (pub_keep_alive_srv& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.process_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("ks");
+                    it = mv.find("kas");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ka_interval_send on message pub_keep_alive_srv::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1148,7 +1148,7 @@ void  copy (pub_keep_alive_srv& c, const qpid::types::Variant& v)
                         //c.ka_interval_send = it->second;
 //   field_type
 
-                    it = mv.find("kc");
+                    it = mv.find("kac");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ka_interval_check on message pub_keep_alive_srv::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1167,9 +1167,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_sr
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
-        __internal_add2map(map, a.ka_interval_send, std::string("ks"));
+        __internal_add2map(map, a.ka_interval_send, std::string("kas"));
 //  field_type
-        __internal_add2map(map, a.ka_interval_check, std::string("kc"));
+        __internal_add2map(map, a.ka_interval_check, std::string("kac"));
 
 
 };
@@ -1193,7 +1193,7 @@ copy(static_cast<pub_keep_alive_srv&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("lc");
+                    it = mv.find("lgc");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field login_confirmation on message pub_keep_alive_clients::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1212,7 +1212,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_cl
 __internal_add2map(map, static_cast<const pub_keep_alive_srv&>(a));
 
 //  sub_msg_type
-        __internal_add2map(map, a.login_confirmation, std::string("lc"));
+        __internal_add2map(map, a.login_confirmation, std::string("lgc"));
 
 
 };
@@ -1303,7 +1303,7 @@ void  copy (pub_alarm& c, const qpid::types::Variant& v)
                         //c.code_source = it->second;
 //   field_type
 
-                    it = mv.find("sb");
+                    it = mv.find("sbj");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field subject on message pub_alarm::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1311,7 +1311,7 @@ void  copy (pub_alarm& c, const qpid::types::Variant& v)
                         //c.subject = it->second;
 //   field_type
 
-                    it = mv.find("ms");
+                    it = mv.find("msg");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field message on message pub_alarm::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1327,7 +1327,7 @@ void  copy (pub_alarm& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.priority, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("t");
+                    it = mv.find("ty");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field type on message pub_alarm::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1335,7 +1335,7 @@ void  copy (pub_alarm& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.type, it->second.asMap());
 //   field_type
 
-                    it = mv.find("dt");
+                    it = mv.find("dtg");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field dateTime_generated on message pub_alarm::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1364,15 +1364,15 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a)
 //  field_type
         __internal_add2map(map, a.code_source, std::string("cs"));
 //  field_type
-        __internal_add2map(map, a.subject, std::string("sb"));
+        __internal_add2map(map, a.subject, std::string("sbj"));
 //  field_type
-        __internal_add2map(map, a.message, std::string("ms"));
+        __internal_add2map(map, a.message, std::string("msg"));
 //  sub_msg_type
         __internal_add2map(map, a.priority, std::string("p"));
 //  sub_msg_type
-        __internal_add2map(map, a.type, std::string("t"));
+        __internal_add2map(map, a.type, std::string("ty"));
 //  field_type
-        __internal_add2map(map, a.dateTime_generated, std::string("dt"));
+        __internal_add2map(map, a.dateTime_generated, std::string("dtg"));
 //  field_type
         __internal_add2map(map, a.alarm_id, std::string("ai"));
 
@@ -1398,7 +1398,7 @@ void  copy (req_command& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1414,7 +1414,7 @@ void  copy (req_command& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.proc_info__destination, it->second.asMap());
 //   field_type
 
-                    it = mv.find("c");
+                    it = mv.find("cl");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field command_line on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1431,11 +1431,11 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.request_info, std::string("ri"));
+        __internal_add2map(map, a.request_info, std::string("rqi"));
 //  sub_msg_type
         __internal_add2map(map, a.proc_info__destination, std::string("pd"));
 //  field_type
-        __internal_add2map(map, a.command_line, std::string("c"));
+        __internal_add2map(map, a.command_line, std::string("cl"));
 
 
 };
@@ -1459,7 +1459,7 @@ void  copy (sub_command_rd& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("t");
+                    it = mv.find("txt");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field text on message sub_command_rd::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1476,7 +1476,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a
 
 
 //  field_type
-        __internal_add2map(map, a.text, std::string("t"));
+        __internal_add2map(map, a.text, std::string("txt"));
 
 
 };
@@ -1500,7 +1500,7 @@ void  copy (res_command& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("ri");
+                    it = mv.find("rsi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_info on message res_command::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1508,7 +1508,7 @@ void  copy (res_command& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.response_info, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("rd");
+                    it = mv.find("rsd");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field response_data on message res_command::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1525,9 +1525,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_command& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.response_info, std::string("ri"));
+        __internal_add2map(map, a.response_info, std::string("rsi"));
 //  sub_msg_type
-        __internal_add2map(map, a.response_data, std::string("rd"));
+        __internal_add2map(map, a.response_data, std::string("rsd"));
 
 
 };
@@ -1559,7 +1559,7 @@ void  copy (pub_central_keep_alive& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.process_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("ks");
+                    it = mv.find("kas");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ka_interval_send on message pub_central_keep_alive::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1567,7 +1567,7 @@ void  copy (pub_central_keep_alive& c, const qpid::types::Variant& v)
                         //c.ka_interval_send = it->second;
 //   field_type
 
-                    it = mv.find("kc");
+                    it = mv.find("kac");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field ka_interval_check on message pub_central_keep_alive::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1586,9 +1586,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
-        __internal_add2map(map, a.ka_interval_send, std::string("ks"));
+        __internal_add2map(map, a.ka_interval_send, std::string("kas"));
 //  field_type
-        __internal_add2map(map, a.ka_interval_check, std::string("kc"));
+        __internal_add2map(map, a.ka_interval_check, std::string("kac"));
 
 
 };
@@ -1622,11 +1622,11 @@ qpid::messaging::Message pub_enter::qpidmsg_codded_as_qpid_message (const std::s
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
 //  field_type
-//        content["ks"] = this->ka_interval_send;
-        __internal_add2map(content, this->ka_interval_send, std::string("ks"));
+//        content["kas"] = this->ka_interval_send;
+        __internal_add2map(content, this->ka_interval_send, std::string("kas"));
 //  field_type
-//        content["kc"] = this->ka_interval_check;
-        __internal_add2map(content, this->ka_interval_check, std::string("kc"));
+//        content["kac"] = this->ka_interval_check;
+        __internal_add2map(content, this->ka_interval_check, std::string("kac"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1651,11 +1651,11 @@ qpid::messaging::Message pub_keep_alive_srv::qpidmsg_codded_as_qpid_message (con
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
 //  field_type
-//        content["ks"] = this->ka_interval_send;
-        __internal_add2map(content, this->ka_interval_send, std::string("ks"));
+//        content["kas"] = this->ka_interval_send;
+        __internal_add2map(content, this->ka_interval_send, std::string("kas"));
 //  field_type
-//        content["kc"] = this->ka_interval_check;
-        __internal_add2map(content, this->ka_interval_check, std::string("kc"));
+//        content["kac"] = this->ka_interval_check;
+        __internal_add2map(content, this->ka_interval_check, std::string("kac"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1679,8 +1679,8 @@ qpid::messaging::Message pub_keep_alive_clients::qpidmsg_codded_as_qpid_message 
 __internal_add2map(content, static_cast<const pub_keep_alive_srv&>(*this));
 
 //  sub_msg_type
-//        content["lc"] =  qpidmsg_coded_as_qpid_Map(this->login_confirmation);
-        __internal_add2map(content, this->login_confirmation, std::string("lc"));
+//        content["lgc"] =  qpidmsg_coded_as_qpid_Map(this->login_confirmation);
+        __internal_add2map(content, this->login_confirmation, std::string("lgc"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1734,20 +1734,20 @@ qpid::messaging::Message pub_alarm::qpidmsg_codded_as_qpid_message (const std::s
 //        content["cs"] = this->code_source;
         __internal_add2map(content, this->code_source, std::string("cs"));
 //  field_type
-//        content["sb"] = this->subject;
-        __internal_add2map(content, this->subject, std::string("sb"));
+//        content["sbj"] = this->subject;
+        __internal_add2map(content, this->subject, std::string("sbj"));
 //  field_type
-//        content["ms"] = this->message;
-        __internal_add2map(content, this->message, std::string("ms"));
+//        content["msg"] = this->message;
+        __internal_add2map(content, this->message, std::string("msg"));
 //  sub_msg_type
 //        content["p"] =  qpidmsg_coded_as_qpid_Map(this->priority);
         __internal_add2map(content, this->priority, std::string("p"));
 //  sub_msg_type
-//        content["t"] =  qpidmsg_coded_as_qpid_Map(this->type);
-        __internal_add2map(content, this->type, std::string("t"));
+//        content["ty"] =  qpidmsg_coded_as_qpid_Map(this->type);
+        __internal_add2map(content, this->type, std::string("ty"));
 //  field_type
-//        content["dt"] = this->dateTime_generated;
-        __internal_add2map(content, this->dateTime_generated, std::string("dt"));
+//        content["dtg"] = this->dateTime_generated;
+        __internal_add2map(content, this->dateTime_generated, std::string("dtg"));
 //  field_type
 //        content["ai"] = this->alarm_id;
         __internal_add2map(content, this->alarm_id, std::string("ai"));
@@ -1772,14 +1772,14 @@ qpid::messaging::Message req_command::qpidmsg_codded_as_qpid_message (const std:
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
-        __internal_add2map(content, this->request_info, std::string("ri"));
+//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("rqi"));
 //  sub_msg_type
 //        content["pd"] =  qpidmsg_coded_as_qpid_Map(this->proc_info__destination);
         __internal_add2map(content, this->proc_info__destination, std::string("pd"));
 //  field_type
-//        content["c"] = this->command_line;
-        __internal_add2map(content, this->command_line, std::string("c"));
+//        content["cl"] = this->command_line;
+        __internal_add2map(content, this->command_line, std::string("cl"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1801,11 +1801,11 @@ qpid::messaging::Message res_command::qpidmsg_codded_as_qpid_message (const std:
 
 
 //  sub_msg_type
-//        content["ri"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
-        __internal_add2map(content, this->response_info, std::string("ri"));
+//        content["rsi"] =  qpidmsg_coded_as_qpid_Map(this->response_info);
+        __internal_add2map(content, this->response_info, std::string("rsi"));
 //  sub_msg_type
-//        content["rd"] =  qpidmsg_coded_as_qpid_Map(this->response_data);
-        __internal_add2map(content, this->response_data, std::string("rd"));
+//        content["rsd"] =  qpidmsg_coded_as_qpid_Map(this->response_data);
+        __internal_add2map(content, this->response_data, std::string("rsd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1830,11 +1830,11 @@ qpid::messaging::Message pub_central_keep_alive::qpidmsg_codded_as_qpid_message 
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
 //  field_type
-//        content["ks"] = this->ka_interval_send;
-        __internal_add2map(content, this->ka_interval_send, std::string("ks"));
+//        content["kas"] = this->ka_interval_send;
+        __internal_add2map(content, this->ka_interval_send, std::string("kas"));
 //  field_type
-//        content["kc"] = this->ka_interval_check;
-        __internal_add2map(content, this->ka_interval_check, std::string("kc"));
+//        content["kac"] = this->ka_interval_check;
+        __internal_add2map(content, this->ka_interval_check, std::string("kac"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());

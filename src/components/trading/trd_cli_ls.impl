@@ -864,7 +864,7 @@ void init::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (//  inserting macro: full_exec
 
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().total_execs.quantity  
+                    &&  last_confirmation().Get().total_execs.acc_quantity
                         == last_confirmation().Get().market_pos.quantity
                  ) {
 
@@ -1814,7 +1814,7 @@ void market::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (//  inserting macro: full_exec
 
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().total_execs.quantity  
+                    &&  last_confirmation().Get().total_execs.acc_quantity
                         == last_confirmation().Get().market_pos.quantity
                  ) {
 
@@ -2326,7 +2326,7 @@ void w_cfmd::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (//  inserting macro: full_exec
 
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().total_execs.quantity  
+                    &&  last_confirmation().Get().total_execs.acc_quantity
                         == last_confirmation().Get().market_pos.quantity
                  ) {
 
@@ -2758,7 +2758,7 @@ void w_cfcc::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (//  inserting macro: full_exec
 
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().total_execs.quantity  
+                    &&  last_confirmation().Get().total_execs.acc_quantity
                         == last_confirmation().Get().market_pos.quantity
                  ) {
 
@@ -3251,7 +3251,7 @@ void w_cfmdcc::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (//  inserting macro: full_exec
 
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().total_execs.quantity  
+                    &&  last_confirmation().Get().total_execs.acc_quantity
                         == last_confirmation().Get().market_pos.quantity
                  ) {
 

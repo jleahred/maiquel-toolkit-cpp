@@ -384,12 +384,12 @@ void on_request_logout_received(const mtk::acs::msg::req_logout& req_logout)
         bool located = false;
         while(it!=list_sessions_login_info->end())
         {
-            if(it->keep_alive_client_info.login_confirmation.session_id ==  req_logout.request_info.req_id.sess_id)
+            if(it->keep_alive_client_info.login_confirmation.session_id ==  req_logout.request_info.req_id.session_id)
             {
                 mtk::acs_server::msg::pub_del_user msg_del_user(it->keep_alive_client_info.login_confirmation);
                 it = list_sessions_login_info->erase(it);
                 mtk::send_message(qpid_srv_session, msg_del_user);
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogoutrec", MTK_SS("deleting session " << req_logout.request_info.req_id.sess_id), mtk::alPriorDebug));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogoutrec", MTK_SS("deleting session " << req_logout.request_info.req_id.session_id), mtk::alPriorDebug));
                 located = true;
                 break;
             }
@@ -398,7 +398,7 @@ void on_request_logout_received(const mtk::acs::msg::req_logout& req_logout)
         }
         
         if(located==false)
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogoutrec", MTK_SS("received logout with invalid session " << req_logout.request_info.req_id.sess_id), mtk::alPriorCritic));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogoutrec", MTK_SS("received logout with invalid session " << req_logout.request_info.req_id.session_id), mtk::alPriorCritic));
     }
     
 }
@@ -569,7 +569,7 @@ void on_request_change_password_received(const mtk::acs::msg::req_change_passwor
     //
     if(located)
     {
-        mtk::acs::msg::res_login::IC_session_info  session_info = get_session_info__from_session_id(req_change_password.request_info.req_id.sess_id);
+        mtk::acs::msg::res_login::IC_session_info  session_info = get_session_info__from_session_id(req_change_password.request_info.req_id.session_id);
         if(session_info.user_name !=  req_change_password.user_name  ||  req_change_password.user_name=="")
             throw mtk::Alarm(MTK_HERE, "rqchangpwd", MTK_SS("user name doesn't match  " << req_change_password  << "   "  << session_info.user_name), mtk::alPriorError, mtk::alTypeNoPermisions);
         else if (session_info.client_code !=  req_change_password.request_info.process_info.location.client_code)
