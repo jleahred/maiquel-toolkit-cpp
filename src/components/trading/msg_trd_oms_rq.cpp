@@ -65,30 +65,6 @@ namespace msg {
     }
 
 
-	template <typename T>
-	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
-    {
-        for(unsigned i=0; i<seq.size(); ++i)
-        {
-            T t = __internal_get_default((T*)0);
-            seq[i] >> t;
-            v.push_back(t);
-        }
-	}
-
-	template <typename T>
-	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
-    {
-        if(n.size()!=0)
-        {
-            T t = __internal_get_default((T*)0);
-            n >> t;
-            nv = t;
-        }
-	}
-
-
-
 
     
 template<typename T>
@@ -408,7 +384,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 
 oms_RQ_NW_LS::oms_RQ_NW_LS ( const RQ_NW_LS&  parent,   const std::string&  _reject_description)
     :  RQ_NW_LS(parent),   reject_description(_reject_description) 
-       
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -435,7 +411,7 @@ void oms_RQ_NW_LS::before_send(void) const
 
 oms_RQ_MD_LS::oms_RQ_MD_LS ( const RQ_MD_LS&  parent,   const std::string&  _reject_description)
     :  RQ_MD_LS(parent),   reject_description(_reject_description) 
-       
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -462,7 +438,7 @@ void oms_RQ_MD_LS::before_send(void) const
 
 oms_RQ_CC_LS::oms_RQ_CC_LS ( const RQ_CC_LS&  parent,   const std::string&  _reject_description)
     :  RQ_CC_LS(parent),   reject_description(_reject_description) 
-       
+       , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
         if (cr!= "")
@@ -480,6 +456,87 @@ std::string oms_RQ_CC_LS::check_recomended(void) const
 }
 
 void oms_RQ_CC_LS::before_send(void) const
+{
+
+}
+
+
+
+
+oms_RQ_NW_MK::oms_RQ_NW_MK ( const RQ_NW_MK&  parent,   const std::string&  _reject_description)
+    :  RQ_NW_MK(parent),   reject_description(_reject_description) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string oms_RQ_NW_MK::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void oms_RQ_NW_MK::before_send(void) const
+{
+
+}
+
+
+
+
+oms_RQ_MD_MK::oms_RQ_MD_MK ( const RQ_MD_MK&  parent,   const std::string&  _reject_description)
+    :  RQ_MD_MK(parent),   reject_description(_reject_description) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string oms_RQ_MD_MK::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void oms_RQ_MD_MK::before_send(void) const
+{
+
+}
+
+
+
+
+oms_RQ_CC_MK::oms_RQ_CC_MK ( const RQ_CC_MK&  parent,   const std::string&  _reject_description)
+    :  RQ_CC_MK(parent),   reject_description(_reject_description) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string oms_RQ_CC_MK::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void oms_RQ_CC_MK::before_send(void) const
 {
 
 }
@@ -585,6 +642,105 @@ void  operator >> (const YAML::Node& node, oms_RQ_CC_LS & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_MK & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const RQ_NW_MK&>(c)  << ")" 
+        << "reject_description:"<<   c.reject_description << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_MK & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "RQ_NW_MK" <<  YAML::Value << static_cast<const RQ_NW_MK&>(c)  
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, oms_RQ_NW_MK & c)
+{
+
+    node["RQ_NW_MK"]   >>   static_cast<RQ_NW_MK&>(c)  ;
+
+        node["reject_description"]  >> c.reject_description;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_MK & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const RQ_MD_MK&>(c)  << ")" 
+        << "reject_description:"<<   c.reject_description << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_MK & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "RQ_MD_MK" <<  YAML::Value << static_cast<const RQ_MD_MK&>(c)  
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, oms_RQ_MD_MK & c)
+{
+
+    node["RQ_MD_MK"]   >>   static_cast<RQ_MD_MK&>(c)  ;
+
+        node["reject_description"]  >> c.reject_description;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_MK & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const RQ_CC_MK&>(c)  << ")" 
+        << "reject_description:"<<   c.reject_description << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_MK & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "RQ_CC_MK" <<  YAML::Value << static_cast<const RQ_CC_MK&>(c)  
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, oms_RQ_CC_MK & c)
+{
+
+    node["RQ_CC_MK"]   >>   static_cast<RQ_CC_MK&>(c)  ;
+
+        node["reject_description"]  >> c.reject_description;
+
+
+};
+
+
 bool operator== (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b)
 {
     return ( (static_cast<const RQ_NW_LS&>(a)   ==  static_cast<const RQ_NW_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
@@ -615,6 +771,42 @@ bool operator== (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b)
 };
 
 bool operator!= (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const oms_RQ_NW_MK& a, const oms_RQ_NW_MK& b)
+{
+    return ( (static_cast<const RQ_NW_MK&>(a)   ==  static_cast<const RQ_NW_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
+};
+
+bool operator!= (const oms_RQ_NW_MK& a, const oms_RQ_NW_MK& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const oms_RQ_MD_MK& a, const oms_RQ_MD_MK& b)
+{
+    return ( (static_cast<const RQ_MD_MK&>(a)   ==  static_cast<const RQ_MD_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
+};
+
+bool operator!= (const oms_RQ_MD_MK& a, const oms_RQ_MD_MK& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b)
+{
+    return ( (static_cast<const RQ_CC_MK&>(a)   ==  static_cast<const RQ_CC_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
+};
+
+bool operator!= (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b)
 {
     return !(a==b);
 };
@@ -749,9 +941,291 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
+
+
+//void  __internal_qpid_fill (oms_RQ_NW_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (oms_RQ_NW_MK& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<RQ_NW_MK&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("rjd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message oms_RQ_NW_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.reject_description, it->second);
+                        //c.reject_description = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_MK& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const RQ_NW_MK&>(a));
+
+//  field_type
+        __internal_add2map(map, a.reject_description, std::string("rjd"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_MK>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (oms_RQ_MD_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (oms_RQ_MD_MK& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<RQ_MD_MK&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("rjd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message oms_RQ_MD_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.reject_description, it->second);
+                        //c.reject_description = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_MK& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const RQ_MD_MK&>(a));
+
+//  field_type
+        __internal_add2map(map, a.reject_description, std::string("rjd"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_MK>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (oms_RQ_CC_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (oms_RQ_CC_MK& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<RQ_CC_MK&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("rjd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message oms_RQ_CC_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.reject_description, it->second);
+                        //c.reject_description = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_MK& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const RQ_CC_MK&>(a));
+
+//  field_type
+        __internal_add2map(map, a.reject_description, std::string("rjd"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_MK>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+
+qpid::messaging::Message oms_RQ_NW_LS::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const RQ_NW_LS&>(*this));
+
+//  field_type
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message oms_RQ_MD_LS::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const RQ_MD_LS&>(*this));
+
+//  field_type
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message oms_RQ_CC_LS::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const RQ_CC_LS&>(*this));
+
+//  field_type
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message oms_RQ_NW_MK::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const RQ_NW_MK&>(*this));
+
+//  field_type
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message oms_RQ_MD_MK::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const RQ_MD_MK&>(*this));
+
+//  field_type
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message oms_RQ_CC_MK::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const RQ_CC_MK&>(*this));
+
+//  field_type
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
 
     oms_RQ_NW_LS  __internal_get_default(oms_RQ_NW_LS*)
     {
@@ -773,6 +1247,30 @@ __internal_get_default((RQ_MD_LS*)0), //   field_type
     {
         return oms_RQ_CC_LS(
 __internal_get_default((RQ_CC_LS*)0), //   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    oms_RQ_NW_MK  __internal_get_default(oms_RQ_NW_MK*)
+    {
+        return oms_RQ_NW_MK(
+__internal_get_default((RQ_NW_MK*)0), //   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    oms_RQ_MD_MK  __internal_get_default(oms_RQ_MD_MK*)
+    {
+        return oms_RQ_MD_MK(
+__internal_get_default((RQ_MD_MK*)0), //   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    oms_RQ_CC_MK  __internal_get_default(oms_RQ_CC_MK*)
+    {
+        return oms_RQ_CC_MK(
+__internal_get_default((RQ_CC_MK*)0), //   field_type
    __internal_get_default ((std::string*)0)
             );
     }
@@ -825,6 +1323,102 @@ oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::messaging::Message& msg)
     }
 
 
+
+oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::messaging::Message& msg)
+    :  RQ_NW_MK(msg), //   field_type
+   reject_description(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::messaging::Message& msg)
+    :  RQ_MD_MK(msg), //   field_type
+   reject_description(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::messaging::Message& msg)
+    :  RQ_CC_MK(msg), //   field_type
+   reject_description(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+std::string  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+    {
+        return MTK_SS("RQ.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "");
+    }
+    std::string  oms_RQ_NW_LS::get_out_subject (void) const
+    {
+        return MTK_SS("RQ.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+    }
+    std::string  oms_RQ_MD_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+    {
+        return MTK_SS("RQ.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "");
+    }
+    std::string  oms_RQ_MD_LS::get_out_subject (void) const
+    {
+        return MTK_SS("RQ.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+    }
+    std::string  oms_RQ_CC_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+    {
+        return MTK_SS("RQ.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "");
+    }
+    std::string  oms_RQ_CC_LS::get_out_subject (void) const
+    {
+        return MTK_SS("RQ.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+    }
+    std::string  oms_RQ_NW_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+    {
+        return MTK_SS("RQ.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "");
+    }
+    std::string  oms_RQ_NW_MK::get_out_subject (void) const
+    {
+        return MTK_SS("RQ.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+    }
+    std::string  oms_RQ_MD_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+    {
+        return MTK_SS("RQ.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "");
+    }
+    std::string  oms_RQ_MD_MK::get_out_subject (void) const
+    {
+        return MTK_SS("RQ.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+    }
+    std::string  oms_RQ_CC_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+    {
+        return MTK_SS("RQ.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "");
+    }
+    std::string  oms_RQ_CC_MK::get_out_subject (void) const
+    {
+        return MTK_SS("RQ.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+    }
+    
 
 };   //namespace mtk {
 };   //namespace trd {

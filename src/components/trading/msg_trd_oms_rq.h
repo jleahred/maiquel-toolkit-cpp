@@ -25,6 +25,7 @@
 #include "components/msg_common.h"
 #include "msg_trd_common.h"
 #include "msg_trd_cli_ls.h"
+#include "msg_trd_cli_mk.h"
 
 namespace mtk { 
 namespace trd { 
@@ -48,7 +49,7 @@ public:
     virtual ~oms_RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_LS"; };
-    
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -57,10 +58,12 @@ public:
 
 
     //  subject info
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
-    
-    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
     
     void        before_send(void) const;
     
@@ -86,7 +89,7 @@ public:
     virtual ~oms_RQ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_LS"; };
-    
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -95,10 +98,12 @@ public:
 
 
     //  subject info
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
-    
-    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
     
     void        before_send(void) const;
     
@@ -124,7 +129,7 @@ public:
     virtual ~oms_RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_LS"; };
-    
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
     // fields
@@ -133,10 +138,132 @@ public:
 
 
     //  subject info
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      oms_RQ_NW_MK
+//-------------------------------    
+class oms_RQ_NW_MK        :  public  RQ_NW_MK
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit oms_RQ_NW_MK (  const RQ_NW_MK&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_NW_MK ( const qpid::messaging::Message& message );
+    virtual ~oms_RQ_NW_MK (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_MK"; };
+    static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_MK"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
+
+    // fields
+    std::string                               reject_description; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+virtual std::string  get_out_subject (void) const;
+
     
     
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      oms_RQ_MD_MK
+//-------------------------------    
+class oms_RQ_MD_MK        :  public  RQ_MD_MK
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit oms_RQ_MD_MK (  const RQ_MD_MK&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_MD_MK ( const qpid::messaging::Message& message );
+    virtual ~oms_RQ_MD_MK (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_MK"; };
+    static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_MK"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
+
+    // fields
+    std::string                               reject_description; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+virtual std::string  get_out_subject (void) const;
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      oms_RQ_CC_MK
+//-------------------------------    
+class oms_RQ_CC_MK        :  public  RQ_CC_MK
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit oms_RQ_CC_MK (  const RQ_CC_MK&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_CC_MK ( const qpid::messaging::Message& message );
+    virtual ~oms_RQ_CC_MK (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_MK"; };
+    static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_MK"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
+
+    // fields
+    std::string                               reject_description; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+virtual std::string  get_out_subject (void) const;
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
     
     void        before_send(void) const;
     
@@ -171,6 +298,27 @@ bool operator!= (const oms_RQ_MD_LS& a, const oms_RQ_MD_LS& b);
 bool operator== (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b);
 bool operator!= (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b);
 
+    std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_MK & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_NW_MK & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_NW_MK & c);
+
+bool operator== (const oms_RQ_NW_MK& a, const oms_RQ_NW_MK& b);
+bool operator!= (const oms_RQ_NW_MK& a, const oms_RQ_NW_MK& b);
+
+    std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_MK & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_MD_MK & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_MD_MK & c);
+
+bool operator== (const oms_RQ_MD_MK& a, const oms_RQ_MD_MK& b);
+bool operator!= (const oms_RQ_MD_MK& a, const oms_RQ_MD_MK& b);
+
+    std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_MK & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_CC_MK & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_CC_MK & c);
+
+bool operator== (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b);
+bool operator!= (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b);
+
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const oms_RQ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_LS>& a, const std::string& field);
@@ -183,12 +331,30 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const oms_RQ_CC_LS
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_LS>& a, const std::string& field);
 void copy (oms_RQ_CC_LS& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const oms_RQ_NW_MK& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_MK& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_MK>& a, const std::string& field);
+void copy (oms_RQ_NW_MK& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const oms_RQ_MD_MK& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_MK& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_MK>& a, const std::string& field);
+void copy (oms_RQ_MD_MK& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const oms_RQ_CC_MK& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_MK& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_MK>& a, const std::string& field);
+void copy (oms_RQ_CC_MK& a, const qpid::types::Variant& map);
 
     oms_RQ_NW_LS  __internal_get_default(oms_RQ_NW_LS *);
     
     oms_RQ_MD_LS  __internal_get_default(oms_RQ_MD_LS *);
     
     oms_RQ_CC_LS  __internal_get_default(oms_RQ_CC_LS *);
+    
+    oms_RQ_NW_MK  __internal_get_default(oms_RQ_NW_MK *);
+    
+    oms_RQ_MD_MK  __internal_get_default(oms_RQ_MD_MK *);
+    
+    oms_RQ_CC_MK  __internal_get_default(oms_RQ_CC_MK *);
     
 
 };   //namespace mtk {
@@ -204,6 +370,12 @@ template<typename T>
 void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_NW_LS)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_MD_LS)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_CC_LS)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_NW_MK)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_MD_MK)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_CC_MK)
 
 
 
