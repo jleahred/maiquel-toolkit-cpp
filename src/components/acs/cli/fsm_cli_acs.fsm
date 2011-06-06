@@ -279,8 +279,8 @@ w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj 
 
     sig_login_ok    
     [{      
-        ci->sig_confirm_login_ok.emit(rs.session_info);    
         mtk::admin::client_login_ok_confirmation(rs.session_info);
+        ci->sig_confirm_login_ok.emit(rs.session_info);    
     }]
     
     sig_login_rj    

@@ -24,10 +24,12 @@ namespace mtk{namespace acs_server {
 
 
         //  OUTPUT
+        mtk::CountPtr<mtk::Signal<> >   get_signal_received_user_list();
 
 
         //  ACCESS
-        mtk::acs::msg::res_login::IC_session_info    get_session_info_for_session_id( const std::string& session_id);      //  it returns emtpy string if not found
+        mtk::acs::msg::res_login::IC_session_info               get_session_info_for_session_id  ( const std::string& session_id);      //  it returns emtpy string if not found
+        mtk::list<mtk::acs::msg::res_login::IC_session_info>    bad_performance_get_sessions_info( const std::string& user_name); 
         
         
         //  hooks

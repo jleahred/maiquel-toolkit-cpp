@@ -2,6 +2,7 @@
 
 #include "components/admin/admin.h"
 #include "components/request_response.hpp"
+#include "components/trading/accounts/msg_account_manager.h"
 
 
 
@@ -44,12 +45,14 @@ void register_global_commands (void)
 
 namespace
 {
-    void command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void  command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void  request_session_list(void);
     void  send_partial_sessions_list(void);
     void  suscribe_acs_syncr_add_del_users(void);
     void  suscribe_acs_partial_sessions_list(void);
-    mtk::acs::msg::res_login::IC_session_info   __get_session_info_for_session_id(const std::string& session_id);
+    mtk::acs::msg::res_login::IC_session_info               __get_session_info_for_session_id(const std::string& session_id);
+    mtk::list<mtk::acs::msg::res_login::IC_session_info>    __bad_performance_get_sessions_info( const std::string& user_name); 
+    
 };
 
 
@@ -75,7 +78,23 @@ namespace  synchr {
     {
         return __get_session_info_for_session_id(session_id);
     }
+    
+    mtk::list<mtk::acs::msg::res_login::IC_session_info>    bad_performance_get_sessions_info( const std::string& user_name)
+    {
+        return __bad_performance_get_sessions_info(user_name);
+    }
+    
+    
 
+    mtk::CountPtr<mtk::Signal<> >   get_signal_received_user_list()
+    {
+        static mtk::CountPtr<mtk::Signal<> >  result;
+        if(result.isValid() == false)
+        {
+            result = mtk::make_cptr(new mtk::Signal<>);
+        }
+        return result;
+    }
 
 
 
@@ -182,7 +201,7 @@ namespace   //anonymous
             }
             ++it;
         }
-        
+        mtk::acs_server::synchr::get_signal_received_user_list()->emit();
     }
     void  request_session_list(void)
     {
@@ -218,6 +237,18 @@ namespace   //anonymous
             return  mtk::acs::msg::res_login::IC_session_info("", "", "");
             
         }
+    }
+    mtk::list<mtk::acs::msg::res_login::IC_session_info>  __bad_performance_get_sessions_info( const std::string& user_name)
+    {
+        mtk::list<mtk::acs::msg::res_login::IC_session_info>   result;
+        mtk::CountPtr<mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info> >    map_session_id__session_info = get_map_session_id__session_info();
+        for(auto it=map_session_id__session_info->begin(); it!=map_session_id__session_info->end(); ++it)
+        //  for(auto it : *map_session_id__session_info)        supported on gcc4.6
+        {
+            if (mtk::s_toUpper(it->second.user_name) == mtk::s_toUpper(user_name))
+                result.push_back(it->second);
+        }
+        return result;
     }
     
     
@@ -308,5 +339,7 @@ namespace   //anonymous
                                 mtk::acs_server::msg::pub_partial_user_list_acs2serv,
                                 __received_partial_session_list)
     }
+
+
     
 }
