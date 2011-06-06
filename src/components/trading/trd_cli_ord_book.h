@@ -22,6 +22,7 @@ namespace mtk{namespace trd{
         enum  en_order_type  {  ot_limit, ot_market  };
         
         
+        void   init(void);      //  mtk::accmgrcli::init()  has to be called before
         
         //  INPUT
         mtk::CountPtr<trd_cli_ls>   rq_nw_ls        (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref);

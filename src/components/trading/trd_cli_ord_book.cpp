@@ -1,6 +1,8 @@
 #include "trd_cli_ord_book.h"
 
 #include "components/admin/admin.h"
+#include "components/trading/accounts/msg_account_manager.h"
+#include "components/trading/accounts/account_manager_cli.h"
 
 
 
@@ -49,6 +51,15 @@ namespace mtk{namespace trd{
     
 namespace  trd_cli_ord_book {
 
+    
+    void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant&);
+    void   init (void)
+    {
+        //  listen for new accounts
+            //mtk::CountPtr<mtk::Signal<const mtk::trd::account::msg::sub_grant&> >           get_signal_new_grant_received(void);
+        mtk::accmgrcli::get_signal_new_grant_received()->connect(orders_susbcription_for_account);
+    }
+    
 
 
 
@@ -74,8 +85,6 @@ struct handles_qpid
 
 struct s_status
 {
-    handles_qpid                                                handles;
-    
     mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_exec_conf&>  sig_execution;
 
 
@@ -120,126 +129,165 @@ void cf_ex_mk(const mtk::trd::msg::CF_EX_MK& ex);
 
 
 
-s_status& get_status_ref(void)
+void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& grant)
 {
-    if (deleted)    throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "on deleted module", mtk::alPriorWarning, mtk::alTypeNoPermisions);
-    if (__internal_ptr_status==0)
-    {
-        std::string client_code = mtk::admin::get_process_info().location.client_code;
-        if(client_code == "CIMD")           client_code = "*";
-        
-        __internal_ptr_status = new s_status();
+            static  mtk::CountPtr< mtk::map<mtk::trd::account::msg::sub_grant::IC_key, handles_qpid> >   map_handles;
+            if(map_handles.isValid() == false)
+                map_handles = mtk::make_cptr( new mtk::map<mtk::trd::account::msg::sub_grant::IC_key, handles_qpid> );
+                
+            
+            auto located = map_handles->find(grant.key);
+            
+            //  grant deletion
+            if((grant.type == "V"  ||  grant.type == "C"  ||  grant.type == "F") == false)
+            {
+                if(located != map_handles->end())
+                    map_handles->erase(located);
+                return;
+            }
+
+            //  already registered grant
+            if(located != map_handles->end())
+                return;
+            
+            // new grant received, making new suscription
+            map_handles->insert( std::make_pair(grant.key, handles_qpid()) );
+            handles_qpid&   handles = (*map_handles)[grant.key];        //  dangerous reference, I know
+            
+
+                
+            std::string process_client_code = mtk::admin::get_process_info().location.client_code;
+            //if(client_code == "CIMD")           client_code = "*";
+            if(process_client_code != "CIMD"  &&  process_client_code !=  grant.key.account.client_code)
+                throw mtk::Alarm(MTK_HERE, "ord_book", MTK_SS("client code is not cimd and client account is diferent to client code " 
+                                        << process_client_code << "  !=  "  << grant.key.account.client_code), mtk::alPriorCritic, mtk::alTypeLogicError);
+            
+            std::string client_code = grant.key.account.client_code;
+            std::string market = grant.key.market;
+            std::string account_name = grant.key.account.name;
+            
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.cf_nw_ls,
+                                    handles.cf_nw_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_NW_LS,
                                     cf_nw_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.cf_md_ls,
+                                    handles.cf_md_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_MD_LS::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_MD_LS,
                                     cf_md_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.cf_cc_ls,
+                                    handles.cf_cc_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_CC_LS::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_CC_LS,
                                     cf_cc_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.rj_nw_ls,
+                                    handles.rj_nw_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_NW_LS::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_NW_LS,
                                     rj_nw_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.rj_md_ls,
+                                    handles.rj_md_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_MD_LS::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_MD_LS,
                                     rj_md_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.rj_cc_ls,
+                                    handles.rj_cc_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_CC_LS::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_CC_LS,
                                     rj_cc_ls)
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.cf_ex_ls,
+                                    handles.cf_ex_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_EX_LS::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_EX_LS,
                                     cf_ex_ls)
 
 
                                     
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.cf_nw_mk,
+                                    handles.cf_nw_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_MK::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_NW_MK,
                                     cf_nw_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.cf_md_mk,
+                                    handles.cf_md_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_MD_MK::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_MD_MK,
                                     cf_md_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.cf_cc_mk,
+                                    handles.cf_cc_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_CC_MK::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_CC_MK,
                                     cf_cc_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.rj_nw_mk,
+                                    handles.rj_nw_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_NW_MK::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_NW_MK,
                                     rj_nw_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.rj_md_mk,
+                                    handles.rj_md_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_MD_MK::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_MD_MK,
                                     rj_md_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.rj_cc_mk,
+                                    handles.rj_cc_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::RJ_CC_MK::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_CC_MK,
                                     rj_cc_mk)
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    __internal_ptr_status->handles.cf_ex_mk,
+                                    handles.cf_ex_mk,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_EX_MK::get_in_subject(client_code, "*", "*", "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_EX_MK,
                                     cf_ex_mk)
+}
+
+
+s_status& get_status_ref(void)
+{
+    if (deleted)    throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "on deleted module", mtk::alPriorWarning, mtk::alTypeNoPermisions);
+    if (__internal_ptr_status==0)
+    {
+        
+        __internal_ptr_status = new s_status();
+        
     }
     return *__internal_ptr_status;
 }
