@@ -1,6 +1,6 @@
 :cpp: {basebackend@docbook:c++:cpp}
 
-=== Components -> ACS
+=== Components -> ACS  (cli & server)
 
 
 ==== CLI

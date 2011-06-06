@@ -42,6 +42,40 @@ include::../../../components/trading/trd_cli_ls.fsm[]
 include::../../../../examples/onefile/components/trading/test_trd_cli_ls.cpp[]
 ----
 
+
+==== Cli Orders  MK
+
+  components/trading/trd_cli_mk.h
+  components/trading/trd_cli_mk.cpp
+
+
+* This component has been generated with +fsm_gen+ from +trd_cli_mk.fsm+
+* It will control the flow and keep historic per limit simple order
+* It's allowed to request consecutive modifications and consecutive cancelations
++
+.Orders MK status diagram
+["graphviz", "components_trading_o_mk.png"]
+-----------
+include::../../../components/trading/trd_cli_mk.dot[]
+------------
++
+* The interfaz is...
++
+[source,{cpp}]
+----
+include::../../../components/trading/trd_cli_mk.h[]
+----
++
+* The code (dsl fsm_gen) is...
++
+.trd_cli_mk.fsm
+[source,{cpp}]
+----
+include::../../../components/trading/trd_cli_mk.fsm[]
+----
+
+
+
 ==== Cli Order book
 
 * It will keep the orders

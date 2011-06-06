@@ -12,7 +12,7 @@
 +
 [source,{cpp}]
 ----
-include::../../../components/prices/cli/price_manager.h[]
+include::../../components/prices/cli/price_manager.h[]
 ----
 +
 * It works with factory

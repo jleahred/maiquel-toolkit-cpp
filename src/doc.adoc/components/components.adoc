@@ -10,7 +10,8 @@ include::request_response_pattern.adoc[]
 
 include::admin.adoc[]
 
-include::acs/acs.adoc[]
+include::acs/acs.adoc[]        //    cli and server
+
 
 
 
@@ -19,8 +20,10 @@ include::trading/msg_trading.adoc[]
 
 include::trading/trading.adoc[]
 
+include::trading/accounts.adoc[]        //    cli and server
 
-include::trading/prices.adoc[]
+
+include::prices.adoc[]
 
 
 

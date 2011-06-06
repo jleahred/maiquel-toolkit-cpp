@@ -1,0 +1,30 @@
+:cpp: {basebackend@docbook:c++:cpp}
+
+=== Components -> Trading -> accounts  (cli & server)
+
+
+==== cli <-> server messages
+
+.components/trading/accounts/msg_account_manager.msg
+[source,{cpp}]
+----
+include::../../../components/trading/accounts/msg_account_manager.msg[]
+----
+
+
+
+==== CLI
+
+
+.components/trading/accounts/account_manager_cli.h
+[source,{cpp}]
+----
+include::../../../components/trading/accounts/account_manager_cli.h[]
+----
+
+
+
+
+==== SERVER
+
+* See account manager server process
