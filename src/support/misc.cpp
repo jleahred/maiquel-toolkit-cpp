@@ -25,7 +25,7 @@ namespace mtk {
         if (!initialized)
         {
             //srand ( (unsigned int) time(NULL) );      only one second precision
-            srand ( (unsigned int) ARE_YOU_SURE_YOU_WANT_GetMillisecsDay(mtk::dtMachineGetTotalMillisecs()) );
+            srand ( (unsigned int) (mtk::dtNowLocal().__WARNING_NOT_CALL_IT_internal_use_GetTimeQuantitySerialNumber().WarningDontDoThisGetInternal()*24.*60.*60.*1000.) );
             initialized = true;
         }
         return ::rand();
