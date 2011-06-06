@@ -345,6 +345,9 @@ bool operator!= (const sub_total_executions& a, const sub_total_executions& b);
 bool operator== (const sub_account_info& a, const sub_account_info& b);
 bool operator!= (const sub_account_info& a, const sub_account_info& b);
 
+
+    bool operator< (const sub_account_info& a, const sub_account_info& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_invariant_order_info & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_invariant_order_info & c);
    void           operator >> (const YAML::Node& n,       sub_invariant_order_info & c);

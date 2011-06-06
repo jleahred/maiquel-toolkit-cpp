@@ -65,30 +65,6 @@ namespace msg {
     }
 
 
-	template <typename T>
-	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
-    {
-        for(unsigned i=0; i<seq.size(); ++i)
-        {
-            T t = __internal_get_default((T*)0);
-            seq[i] >> t;
-            v.push_back(t);
-        }
-	}
-
-	template <typename T>
-	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
-    {
-        if(n.size()!=0)
-        {
-            T t = __internal_get_default((T*)0);
-            n >> t;
-            nv = t;
-        }
-	}
-
-
-
 
     
 template<typename T>
@@ -831,6 +807,20 @@ void  operator >> (const YAML::Node& node, CF_XX & c)
         node["orig_control_fluct"]  >> c.orig_control_fluct;
 
 
+};
+
+
+bool operator< (const sub_account_info& a, const sub_account_info& b)
+{
+    if (false)   return true;
+    else if (true)
+    {
+        auto ca = mtk::make_tuple( 0          , a.client_code       , a.name );
+        auto cb = mtk::make_tuple( 0          , b.client_code       , b.name );
+        return ca < cb;
+    }
+    else
+        return false;
 };
 
 

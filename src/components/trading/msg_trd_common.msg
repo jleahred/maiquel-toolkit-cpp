@@ -38,7 +38,7 @@ sub_total_executions [<V:0>]
 
 
 
-sub_account_info [<V:0>]
+sub_account_info [< V:0, LessOP:1 >]
 {
     client_code         (cc)    :   string
     name                (nm)    :   string

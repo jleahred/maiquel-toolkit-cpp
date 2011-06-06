@@ -1,6 +1,7 @@
 
 # Directories with source code
-DIR_SRC_CXX = . trading prices admin gen acs acs/cli acs/serv fb
+
+DIR_SRC_CXX = . trading trading/accounts  prices admin gen acs acs/cli acs/serv fb  
 DIR_SRC_C = 
 
 

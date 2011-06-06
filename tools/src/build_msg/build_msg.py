@@ -813,6 +813,19 @@ bool operator!= (const $class_name& a, const $class_name& b);
     OUPUT_PER_FIELD += ' true '
     return RECURSION_OUTPUT + Template(METHOD).substitute(class_name=class_name, OUPUT_PER_FIELD=OUPUT_PER_FIELD, OUTPUT_PARENT=OUTPUT_PARENT)
 
+def generate_less_operator_forward_declaration(class_name, class_info, class_properties, send_code) :
+    RECURSION_OUTPUT = ''
+    OUTPUT_PARENT = ''
+
+    if class_properties.has_key('I'):
+        OUTPUT_PARENT = '(static_cast<const ' + class_properties['I'] + '&>(a)   <  static_cast<const ' + class_properties['I'] + '&>(b))  &&  '
+    
+    METHOD = """
+    bool operator< (const $class_name& a, const $class_name& b);
+
+"""
+    return Template(METHOD).substitute(class_name=class_name)
+
 
 def generate_equal_operator(class_name, class_info, class_properties, send_code) :
     OUPUT_PER_FIELD = ''
@@ -853,6 +866,54 @@ bool operator!= (const $class_name& a, const $class_name& b)
     OUPUT_PER_FIELD += ' true '
     return RECURSION_OUTPUT + Template(METHOD).substitute(class_name=class_name, OUPUT_PER_FIELD=OUPUT_PER_FIELD, OUTPUT_PARENT=OUTPUT_PARENT)
 
+
+def generate_less_operator(class_name, class_info, class_properties, send_code) :
+    FIELD_LIST_A = ''
+    FIELD_LIST_B = ''
+    LESS_PARENT = ''
+    EQUAL_PARENT = ''
+
+    if class_properties.has_key('I'):
+        LESS_PARENT = '(static_cast<const ' + class_properties['I'] + '&>(a)   <  static_cast<const ' + class_properties['I'] + '&>(b))'
+        EQUAL_PARENT = '(static_cast<const ' + class_properties['I'] + '&>(a)   ==  static_cast<const ' + class_properties['I'] + '&>(b))'
+    else:
+        LESS_PARENT = 'false'
+        EQUAL_PARENT = 'true'
+    
+    METHOD = """
+bool operator< (const $class_name& a, const $class_name& b)
+{
+    if ($LESS_PARENT)   return true;
+    else if ($EQUAL_PARENT)
+    {
+        auto ca = mtk::make_tuple( 0   $FIELD_LIST_A );
+        auto cb = mtk::make_tuple( 0   $FIELD_LIST_B );
+        return ca < cb;
+    }
+    else
+        return false;
+};
+
+"""
+    for field in class_info:
+        if field.has_key('field_type'):
+            FIELD_LIST_A += '       , a.'+field['FIELD_NAME']
+            FIELD_LIST_B += '       , b.'+field['FIELD_NAME']
+        elif field.has_key('sub_msg_type'):
+            FIELD_LIST_A += '       , a.'+field['FIELD_NAME']
+            FIELD_LIST_B += '       , b.'+field['FIELD_NAME']
+        elif field.has_key('sub_msg_type_not_nested'):
+            FIELD_LIST_A += '       , a.'+field['FIELD_NAME']
+            FIELD_LIST_B += '       , b.'+field['FIELD_NAME']
+        elif field.has_key('IN_MSG'):
+            FIELD_LIST_A += '  NOT TESTED      a.'+field['IN_MSG'][0]
+            FIELD_LIST_B += '  NOT TESTED      b.'+field['IN_MSG'][0]
+        elif field.has_key('IN_SUB_MSG'):
+            FIELD_LIST_A += '  NOT TESTED      a.'+field['IN_SUB_MSG'][0]
+            FIELD_LIST_B += '  NOT TESTED      b.'+field['IN_SUB_MSG'][0]
+        else:
+            print "error 7--------------------------------\n" +  str(field)
+    return Template(METHOD).substitute(class_name=class_name, LESS_PARENT=LESS_PARENT, EQUAL_PARENT=EQUAL_PARENT, FIELD_LIST_A=FIELD_LIST_A, FIELD_LIST_B=FIELD_LIST_B)
 
 
 
@@ -1162,6 +1223,9 @@ $NOT_CONTROL_FIELDS
     for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
         content_file_h += generate_output_stream_operator_forward(class_name, class_info, class_properties, send_code)
         content_file_h += generate_equal_operator_forward_declaration(class_name, class_info, class_properties, send_code)
+        if class_properties.has_key('LessOP'):
+            content_file_h += generate_less_operator_forward_declaration(class_name, class_info, class_properties, send_code)
+
 
     for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
         content_file_h += Template("""qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const $class_name& a);\n""").substitute(class_name=class_name)
@@ -1263,30 +1327,6 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
     {
         return mtk::list<T>();
     }
-
-
-	template <typename T>
-	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
-    {
-        for(unsigned i=0; i<seq.size(); ++i)
-        {
-            T t = __internal_get_default((T*)0);
-            seq[i] >> t;
-            v.push_back(t);
-        }
-	}
-
-	template <typename T>
-	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
-    {
-        if(n.size()!=0)
-        {
-            T t = __internal_get_default((T*)0);
-            n >> t;
-            nv = t;
-        }
-	}
-
 
 
 
@@ -1631,6 +1671,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
         content_file_cpp += generate_input_yaml_operator(class_name, class_info, class_properties, send_code)
         
 
+    for class_name, class_info, class_properties, send_code in ALL_MESSAGES:
+        if class_properties.has_key('LessOP'):
+            content_file_cpp += generate_less_operator(class_name, class_info, class_properties, send_code)
+            
     for class_name, class_info, class_properties, send_code  in MESSAGES:
         content_file_cpp += generate_equal_operator(class_name, class_info, class_properties, send_code)
 

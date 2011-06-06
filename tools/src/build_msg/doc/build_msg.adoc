@@ -31,6 +31,8 @@
 |====================================================================
 | Date | Desciption
 
+| 2011-06-03 | Create less operator on messages with +LessOP+
+
 | 2011-04-18 | NEW  #send section
 
 | 2010-11-30 | Added inheritance and  message properties +
@@ -107,6 +109,23 @@ include::examples/ex1/main.cpp[]
 include::examples/ex1/test_messages.h[]
 ----
 
+
+== Example 2
+
+* Creating a less than +<+ operator for a set of fields with +LessOP+
++
+------
+sub_grant  [<V:0>]
+{
+    key  [< V:0,  LessOP:1 >]
+    {
+        market      (mk)        :   string
+        account     (acc)       :   mtk::trd::msg::sub_account_info
+        
+    }
+    type        (ty)    : string        //  F   C  V   (Full  Cancel  View)
+}
+------
 
 == FAQ
 
