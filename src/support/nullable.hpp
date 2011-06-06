@@ -15,7 +15,7 @@
 
 
 #include "alarm.h"
-#include "yaml/yaml.h"
+#include "yaml/emitter.h"
 
 
 
