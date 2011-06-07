@@ -16,6 +16,7 @@
 
 #include "components/trading/trd_cli_ord_book.h"
 #include "qt_components/src/qmtk_misc.h"
+#include "components/trading/accounts/account_manager_cli.h"
 #include "yaml/yaml.h"
 
 
@@ -537,6 +538,14 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     menu.addMenu(&sub_menu_market_orders);
 
 
+    //  permisions
+    mtk::msg::sub_product_code product_code (price_manager->get_product_code());
+    std::string grant = mtk::accmgrcli::get_grant_less_restrictive(product_code.market);
+    if(grant=="F")
+        enable_trading_actions();
+    else
+        disable_trading_actions();
+
     showing_menu = true;
     keep_paint_focus = true;
     menu.exec(event->globalPos());
@@ -585,10 +594,7 @@ void QDepth::disable_actions(void)
     {
         if(action_buy)
         {
-            action_buy->setEnabled(false);
-            action_sell->setEnabled(false);
-            action_hit_the_bid->setEnabled(false);
-            action_lift_the_offer->setEnabled(false);
+            disable_trading_actions();
         }
     }
 }
@@ -597,10 +603,36 @@ void QDepth::enable_actions(void)
 {
     if(action_buy)
     {
+        enable_trading_actions();
+    }
+}
+
+void QDepth::disable_trading_actions(void)
+{
+    if(showing_menu==false)
+    {
+        if(action_buy)
+        {
+            action_buy->setEnabled(false);
+            action_sell->setEnabled(false);
+            action_hit_the_bid->setEnabled(false);
+            action_lift_the_offer->setEnabled(false);
+            action_buy_market->setEnabled(false);
+            action_sell_market->setEnabled(false);
+        }
+    }
+}
+
+void QDepth::enable_trading_actions(void)
+{
+    if(action_buy)
+    {
         action_buy->setEnabled(true);
         action_sell->setEnabled(true);
         action_hit_the_bid->setEnabled(true);
         action_lift_the_offer->setEnabled(true);
+        action_buy_market->setEnabled(true);
+        action_sell_market->setEnabled(true);
     }
 }
 

@@ -1,0 +1,127 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= AccountManagerServer
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-06-01
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This process can work with two diferent configurations
+.. +account server+ receiving the account grants request and sending the confirmations (a request can be responsed by several +account managers+, so it's not possible to work with request response pattern)
+.. +account filter+ Receiving order request and adding the +reject description+ field on +oms_+ messages
+* The file with accounts and grants, is a +YAML+ file
+* On grants, +account_name+ and +client_code+ from +account_info+ is a regular expresion pattern
+** +^+  and +$+ indicating begining and end of string, will be added by program. Do not add them yourselft
+* An account will be deleted with +add_acounts+ message and +grant_type+ will be  +<deleted>+
+* When this process works as +account filter+, the susbcriptions will be by market not by market and account
+
+== Context DFD
+
+
+.DFD
+["graphviz", "account_manager_server_dfd.png"]
+-----------
+digraph dfd0_graph {
+ rankdir=LR;
+ nodesep=0.3
+ ranksep = 1.5
+
+ // Nodos
+ node [fontsize=16];
+ CLIENT [label="\n\nC\n\nL\n\nI\n\nE\n\nN\n\nT\n\n" shape=box height=4];
+ ACC_MANAGER [label=" ACCOUNT MANAGER " shape=circle height=3]
+ OMS [label="\n\nO\nM\nS\n\n" shape=box height=4];
+ // Conectores
+ edge [fontsize=12];
+
+
+ CLIENT ->  ACC_MANAGER  [label = "RQ_NW_XX"];
+ CLIENT ->  ACC_MANAGER  [label = "RQ_MD_XX"];
+ CLIENT ->  ACC_MANAGER  [label = "RQ_CC_XX"];
+
+ ACC_MANAGER -> OMS [label = "oms_RQ_NW_XX"];
+ ACC_MANAGER -> OMS [label = "oms_RQ_MD_XX"];
+ ACC_MANAGER -> OMS [label = "oms_RQ_CC_XX"];
+
+
+ CLIENT ->  ACC_MANAGER  [label = "rq_accounts"];
+ ACC_MANAGER  -> CLIENT [label = "add_accounts"];
+
+ ACC_MANAGER  -> CLIENT [label = "pub_accmgr_init"];
+ CLIENT ->  ACC_MANAGER  [label = "rq_accounts_oninit"];
+
+}
+-----
+
+
+
+== Client Messages
+
+.mtk/src/components/trading/accounts/msg_account_manager.msg
+[source,{cpp}]
+----
+include::../mtk/src/components/trading/accounts/msg_account_manager.msg[]
+----
+
+
+
+== Recovery sequence
+
+.Recovery diagram
+["graphviz", "account_manager_server_recovery.png"]
+-----------
+digraph recovery {
+ rankdir=LR;
+// nodesep=0.3
+// ranksep = 1.5
+
+ // Nodos
+ node [fontsize=14, shape=circle height=1];
+ // Conectores
+ edge [fontsize=12];
+
+
+ init -> 1  [label = "serv pub_accmgr_init"];
+ 1 -> 2 [label = "cli rq_accounts_oninit"];
+ 2 -> 3  [label = "srv add_accounts"];
+
+}
+-----
+
+
+
+== Document modifications
+* Non aply
+
+== Pending...
+* Configure to work as grant accounts loader or order filter or both  by comand (good for contingencies)
+* Generate a cache with all grants expanded
+** Better performance
+** It can be also used to detect grant deletions and them could be sent to clients

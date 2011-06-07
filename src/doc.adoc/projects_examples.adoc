@@ -61,3 +61,14 @@ Access Control System
 
 * It will listen information from products (as prices i.e.) and will keep in memory this information
 * Clients and other servers, can request for product status
+
+
+
+=== Account manager server
+
+* This process can work on two diferent configurations
+.. Receiving the account grants and sending the confirmations (a request can be responsed by several +account managers+, so it's not possible to work with request response pattern)
+.. Receiving order request and adding the +reject description+ field on +oms_+ messages
+* The file with accounts and grants, is a +YAML+ file
+* On grants, +account_name+ and +client_code+ from +account_info+ is a regular expresion pattern
+** +^+  and +$+ indicating begining and end of string, will be added by program. Do not add them yourselft

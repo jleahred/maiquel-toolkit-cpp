@@ -135,6 +135,11 @@ private:
     bool showing_menu;
     void disable_actions(void);
     void enable_actions(void);
+
+    void disable_trading_actions(void);
+    void enable_trading_actions(void);
+
+    mtk::msg::sub_product_code get_current_product_code(void);
 };
 
 

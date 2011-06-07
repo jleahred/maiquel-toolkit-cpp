@@ -4,7 +4,7 @@
 
 #include "qt_components/src/qmtk_misc.h"
 #include "components/admin/admin.h"
-#include "components/trading/trd_cli_account_manager.h"
+#include "components/trading/accounts/account_manager_cli.h"
 
 
 #include <QPushButton>
@@ -237,7 +237,6 @@ mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request_ls(void)
         ++it_account;
     result.invariant.account = mtk::trd::msg::sub_account_info(*it_account);
 
-    std::cout << result.invariant.account << std::endl;
     return result;
 }
 
@@ -298,7 +297,14 @@ void QEditOrder::fill_accounts(const mtk::trd::msg::RQ_XX& rq)
     account_list.clear();
     if(rq.invariant.account.client_code == "")      //  it's  a new order
     {
-        account_list = mtk::trd::account_manager::get_accounts();
+
+        //account_list = mtk::trd::account_manager::get_accounts();
+        mtk::list<mtk::trd::account::msg::sub_grant>  grant_list = mtk::accmgrcli::get_grant_list();
+        for(mtk::list<mtk::trd::account::msg::sub_grant>::iterator  it = grant_list.begin(); it!=grant_list.end(); ++it)
+        {
+            if(it->type == "F")
+                account_list.push_back(it->key.account);
+        }
         for(mtk::list<mtk::trd::msg::sub_account_info>::iterator it = account_list.begin(); it!= account_list.end(); ++it)
         {
             ui->account->addItem(QLatin1String(it->name.c_str()));

@@ -20,6 +20,7 @@
 #include "components/trading/trd_cli_ord_book.h"
 #include "qt_components/src/qmtk_misc.h"
 #include "qt_components/src/qcommontabledelegate.h"
+#include "components/trading/accounts/account_manager_cli.h"
 
 #include "support/vector.hpp"
 #include "yaml/yaml.h"
@@ -579,6 +580,14 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_remove_product);
 
 
+    //  permisions
+    mtk::msg::sub_product_code product_code (get_current_product_code());
+    std::string grant = mtk::accmgrcli::get_grant_less_restrictive(product_code.market);
+    if(grant=="F")
+        enable_trading_actions();
+    else
+        disable_trading_actions();
+
 
     showing_menu = true;
     menu.exec(event->globalPos());
@@ -796,10 +805,7 @@ void QTableMarginal::disable_actions(void)
     {
         if(action_buy)
         {
-            action_buy->setEnabled(false);
-            action_sell->setEnabled(false);
-            action_hit_the_bid->setEnabled(false);
-            action_lift_the_offer->setEnabled(false);
+            disable_trading_actions();
             action_remove_product->setEnabled(false);
         }
     }
@@ -809,11 +815,37 @@ void QTableMarginal::enable_actions(void)
 {
     if(action_buy)
     {
+        disable_trading_actions();
+        action_remove_product->setEnabled(true);
+    }
+}
+
+void QTableMarginal::disable_trading_actions(void)
+{
+    if(showing_menu==false)
+    {
+        if(action_buy)
+        {
+            action_buy->setEnabled(false);
+            action_sell->setEnabled(false);
+            action_hit_the_bid->setEnabled(false);
+            action_lift_the_offer->setEnabled(false);
+            action_sell_market->setEnabled(false);
+            action_buy_market->setEnabled(false);
+        }
+    }
+}
+
+void QTableMarginal::enable_trading_actions(void)
+{
+    if(action_buy)
+    {
         action_buy->setEnabled(true);
         action_sell->setEnabled(true);
         action_hit_the_bid->setEnabled(true);
         action_lift_the_offer->setEnabled(true);
-        action_remove_product->setEnabled(true);
+        action_sell_market->setEnabled(true);
+        action_buy_market->setEnabled(true);
     }
 }
 
@@ -837,6 +869,23 @@ void QTableMarginal::slot_remove_current_row(void)
         paint_delegate->keep_focus_paint(false);
     }
 }
+
+
+mtk::msg::sub_product_code   QTableMarginal::get_current_product_code(void)
+{
+    QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(currentRow(), 0));
+    if (item)
+    {
+        mtk::msg::sub_product_code product_code = item->product_code;
+        if (mtk::msg::is_valid(product_code)==false)
+            return mtk::msg::sub_product_code("", "");
+        else
+            return product_code;
+    }
+    return mtk::msg::sub_product_code("", "");
+}
+
+
 
 
 
@@ -921,3 +970,7 @@ void             operator >> (const YAML::Node&   node,       QMarginal& m)
     node["component"] >> static_cast<mtkContainerWidget&>(m);
     node["qtablemarginal"] >>  (*m.table_marginals);
 }
+
+
+
+

@@ -12,6 +12,7 @@
 #include "components/trading/trd_cli_support.h"
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/trading/msg_trd_cli_mk.h"
+#include "components/trading/accounts/account_manager_cli.h"
 
 
 
@@ -1058,8 +1059,22 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         }
         else
         {
-            enabled_cancel = true;
-            enabled_modif = true;
+            std::string grant = mtk::accmgrcli::get_grant(get_product_code(ord_id).market, get_account(ord_id));
+            if(grant == "F")
+            {
+                enabled_cancel = true;
+                enabled_modif = true;
+            }
+            else if(grant == "C")
+            {
+                enabled_cancel = true;
+                enabled_modif = false;
+            }
+            else
+            {
+                enabled_cancel = false;
+                enabled_modif = false;
+            }
         }
     }
     QMenu  menu;
