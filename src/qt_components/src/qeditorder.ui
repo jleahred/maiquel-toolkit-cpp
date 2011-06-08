@@ -71,12 +71,15 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="label_account">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Double click to configure current account as default account</string>
      </property>
      <property name="text">
       <string>account</string>
@@ -94,7 +97,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="label_price">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>

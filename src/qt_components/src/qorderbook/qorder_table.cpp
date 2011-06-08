@@ -894,6 +894,25 @@ void qorder_table::request_cancel(void)
 }
 
 
+bool multicheck_string (const std::string& value, const std::string& multifilter)
+{
+    if(multifilter == "")       return true;
+
+    static std::string prev_multifilter;
+    static mtk::vector<std::string>  vector_multifilter;
+    if(prev_multifilter == ""  ||  prev_multifilter != multifilter)
+        vector_multifilter = mtk::s_split(mtk::s_toUpper(mtk::s_trim(multifilter, ' ')), " ");
+    prev_multifilter = multifilter;
+
+    for(unsigned i=0; i<vector_multifilter.size(); ++i)
+    {
+        if(vector_multifilter[i] != "")
+            if(mtk::s_toUpper(value).find(vector_multifilter[i])!=std::string::npos)
+                return true;
+    }
+    return false;
+}
+
 bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order_id& order_id, bool check_no_tab_filter_config)
 {
     //  check_no_tab_filter_config means just alives, alives executed, all
@@ -906,16 +925,19 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
 
     mtk::msg::sub_product_code pc = get_product_code(order_id);
     int matches = 0;
-    if(mtk::s_toUpper(pc.product).find(fd.product.toUpper().toStdString())!=std::string::npos
-                ||  mtk::s_toUpper(pc.product).find(fd.product.toUpper().toStdString())!=std::string::npos)
+    //if(mtk::s_toUpper(pc.product).find(fd.product.toUpper().toStdString())!=std::string::npos)
+    if(multicheck_string(mtk::s_toUpper(pc.product), fd.product.toUpper().toStdString()))
         ++matches;
-    if(mtk::s_toUpper(pc.market).find(fd.market.toUpper().toStdString())!=std::string::npos)
+    //if(mtk::s_toUpper(pc.market).find(fd.market.toUpper().toStdString())!=std::string::npos)
+    if(multicheck_string(mtk::s_toUpper(pc.market), fd.market.toUpper().toStdString()))
         ++matches;
 
     mtk::trd::msg::sub_account_info account = get_account(order_id);
-    if(mtk::s_toUpper(account.client_code).find(fd.client_code.toUpper().toStdString())!=std::string::npos)
+    //if(mtk::s_toUpper(account.client_code).find(fd.client_code.toUpper().toStdString())!=std::string::npos)
+    if(multicheck_string(mtk::s_toUpper(account.client_code), fd.client_code.toUpper().toStdString()))
         ++matches;
-    if(mtk::s_toUpper(account.name).find(fd.account.toUpper().toStdString())!=std::string::npos)
+    //if(mtk::s_toUpper(account.name).find(fd.account.toUpper().toStdString())!=std::string::npos)
+    if(multicheck_string(mtk::s_toUpper(account.name), fd.account.toUpper().toStdString()))
         ++matches;
 
     if(check_no_tab_filter_config)

@@ -184,6 +184,7 @@ QDepth::QDepth(QWidget *parent) :
         table_widget->horizontalHeader()->setVisible(false);
         table_widget->setSelectionMode(QAbstractItemView::NoSelection);
         table_widget->verticalHeader()->setDefaultSectionSize(20);
+        table_widget->verticalHeader()->setStretchLastSection(true);
         table_widget->horizontalHeader()->setDefaultSectionSize(20);
         table_widget->setShowGrid(false);
         //QPalette p(table_widget->palette());
@@ -278,7 +279,10 @@ void	QDepth::resizeEvent ( QResizeEvent *  event )
 {
     mtkContainerWidget::resizeEvent(event);
     table_widget->verticalHeader()->setDefaultSectionSize(table_widget->height()/10-1);
-    table_widget->horizontalHeader()->setDefaultSectionSize(table_widget->width()/3-2);
+    //table_widget->horizontalHeader()->setDefaultSectionSize(table_widget->width()/3-2);
+    table_widget->horizontalHeader()->resizeSection(0, table_widget->width()/3-2);
+    table_widget->horizontalHeader()->resizeSection(1, table_widget->width()/3.7-2);
+    table_widget->horizontalHeader()->resizeSection(2, table_widget->width()/2.7-2);
 }
 
 

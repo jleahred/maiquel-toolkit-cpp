@@ -815,7 +815,7 @@ void QTableMarginal::enable_actions(void)
 {
     if(action_buy)
     {
-        disable_trading_actions();
+        enable_trading_actions();
         action_remove_product->setEnabled(true);
     }
 }

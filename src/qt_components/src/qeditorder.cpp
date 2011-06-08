@@ -289,6 +289,12 @@ void QEditOrder::mouseDoubleClickEvent(QMouseEvent *e)
         mtk::admin::set_config_property("MISC.default_qty",default_qty);
         ui->message->setText(tr("configured new default qty with %1").arg(QLatin1String(default_qty.c_str())));
     }
+    else if(lb == ui->label_account  &&  ui->account->currentIndex()!=-1)
+    {
+        QString default_account = ui->account->currentText();
+        mtk::admin::set_config_property("MISC.default_account",default_account.toStdString());
+        ui->message->setText(tr("configured new default account with %1").arg(default_account));
+    }
 }
 
 
@@ -305,11 +311,21 @@ void QEditOrder::fill_accounts(const mtk::trd::msg::RQ_XX& rq)
             if(it->type == "F")
                 account_list.push_back(it->key.account);
         }
+
+        int default_account_located=0;
+        mtk::Nullable<std::string>  n_default_account =  mtk::admin::get_config_property("MISC.default_account");
+        std::string default_account;
+        if(n_default_account.HasValue())
+            default_account = n_default_account.Get();
+        int counter=0;
         for(mtk::list<mtk::trd::msg::sub_account_info>::iterator it = account_list.begin(); it!= account_list.end(); ++it)
         {
             ui->account->addItem(QLatin1String(it->name.c_str()));
+            if(it->name == default_account)
+                default_account_located = counter;
+            ++counter;
         }
-        ui->account->setCurrentIndex(0);
+        ui->account->setCurrentIndex(default_account_located);
     }
     else
     {

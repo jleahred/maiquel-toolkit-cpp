@@ -164,6 +164,7 @@ void QOrderBook::update_sizes(void)
         if(tw != 0)
             tw->update_sizes();
     }
+    table_executions->update_sizes();
 }
 
 
