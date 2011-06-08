@@ -238,6 +238,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     if (last_confirmation().HasValue())
                     {
                         mtk::trd::msg::CF_XX_LS lc = last_confirmation().Get();
+                        lc.req_id  =   rq.req_info.req_id;
                         lc.cli_ref = rq.cli_ref;
                         lc.market_pos = rq.request_pos;
                         lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.acc_quantity.GetDouble());
