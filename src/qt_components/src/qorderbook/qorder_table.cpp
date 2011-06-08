@@ -145,21 +145,46 @@ QString get_req_code_from_order(mtk::CountPtr<ORDER_TYPE>& order)
         throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
 
+template<typename  ORDER_TYPE>
+QString get_quantity_from_order_as_text(mtk::CountPtr<ORDER_TYPE>& order)
+{
+    QString result;
+    if (order->last_request().HasValue()  &&  order->last_confirmation().HasValue()
+            &&  order->last_request().Get().request_pos.quantity  ==  order->last_confirmation().Get().market_pos.quantity)
+        result = fn_as_QString(order->last_request().Get().request_pos.quantity);
+    else
+    {
+        if (order->last_request().HasValue())
+            result = QLatin1String("(") + fn_as_QString(order->last_request().Get().request_pos.quantity) + QLatin1String(")");
+        if(order->last_confirmation().HasValue())
+            result += fn_as_QString(order->last_confirmation().Get().market_pos.quantity);
+    }
+    return result;
+}
+
 
 
 
 //  by order type   access   ****************************************************************************************
-QString get_req_price_from_order(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+QString get_price_from_order_as_text(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 {
-    if (order->last_request().HasValue())
-        return (fn_as_QString(order->last_request().Get().request_pos.price));
-    else if (order->last_confirmation().HasValue())
-        return  (fn_as_QString(order->last_confirmation().Get().market_pos.price));
+    QString result;
+    if (order->last_request().HasValue()  &&  order->last_confirmation().HasValue()
+            &&  order->last_request().Get().request_pos.price  ==  order->last_confirmation().Get().market_pos.price)
+        result = fn_as_QString(order->last_request().Get().request_pos.price);
     else
-        throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    {
+        if (order->last_request().HasValue())
+            result = QLatin1String("(") + fn_as_QString(order->last_request().Get().request_pos.price) + QLatin1String(")");
+        if(order->last_confirmation().HasValue())
+            result += fn_as_QString(order->last_confirmation().Get().market_pos.price);
+    }
+    return result;
 }
 
-QString get_req_price_from_order(mtk::CountPtr<mtk::trd::trd_cli_mk>& /*order*/)
+
+
+QString get_price_from_order_as_text(mtk::CountPtr<mtk::trd::trd_cli_mk>& /*order*/)
 {
     return QLatin1String("");
 }
@@ -417,20 +442,14 @@ public:
     void update_item_price(void)
     {
         QTableWidgetItem* item = items[col_price];
-        item->setText(get_req_price_from_order(inner_order));
+        item->setText(get_price_from_order_as_text(inner_order));
         item->setBackgroundColor(get_default_color());
     }
 
     void update_item_quantity(void)
     {
         QTableWidgetItem* item = items[col_quantity];
-        if (inner_order->last_request().HasValue())
-            item->setText(fn_as_QString(inner_order->last_request().Get().request_pos.quantity));
-        else if (inner_order->last_confirmation().HasValue())
-            item->setText(fn_as_QString(inner_order->last_confirmation().Get().market_pos.quantity));
-        else
-            throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-
+        item->setText(get_quantity_from_order_as_text(inner_order));
         item->setBackgroundColor(get_default_color());
     }
 

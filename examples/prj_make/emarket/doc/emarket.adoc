@@ -19,9 +19,9 @@ digraph dfd0_graph {
  // Conectores
  edge [fontsize=12];
 
- CLIENT_out -> emarket [label = "rq_nw" color=red];
- CLIENT_out -> emarket [label = "rq_md" color=red];
- CLIENT_out -> emarket [label = "rq_cc" color=red];
+ CLIENT_out -> emarket [label = "rq_nw" ];
+ CLIENT_out -> emarket [label = "rq_md" ];
+ CLIENT_out -> emarket [label = "rq_cc" ];
 
  CLIENT_out -> emarket [label = "rq_prod_list" color=red];
  CLIENT_out -> emarket [label = "rq_init_prices_best" color=red];
