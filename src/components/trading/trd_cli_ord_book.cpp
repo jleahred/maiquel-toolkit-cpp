@@ -499,13 +499,18 @@ mtk::CountPtr<ORDER_TYPE>   rq_nw_xx_manual    (        const mtk::msg::sub_prod
         ORDER_TYPE:  trd_cli_ls
  */
 template<typename  ORDER_TYPE,  typename REQUEST_TYPE,  typename CONF_TYPE>
-REQUEST_TYPE     get_last_request_or_build_from_confirmation (mtk::CountPtr<ORDER_TYPE> order)
+REQUEST_TYPE     get_new_request_from_last_request_or_build_from_confirmation (mtk::CountPtr<ORDER_TYPE> order)
 {
     if (order.isValid()==false)
         throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
     if (order->last_request().HasValue())
-        return order->last_request().Get();
+    {
+        REQUEST_TYPE                rqxxls     (order->last_request().Get());
+        rqxxls.req_info             =  mtk::admin::get_request_info();
+        rqxxls.orig_control_fluct   =  mtk::admin::get_control_fluct_info();
+        return rqxxls;
+    }
     else if (order->last_confirmation().HasValue())
     {
         CONF_TYPE                   lc (order->last_confirmation().Get());
@@ -526,7 +531,7 @@ mtk::CountPtr<ORDER_TYPE>   rq_md_xx    ( const msg::sub_order_id& ord_id, const
     mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
     
     mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
-    REQUEST_TYPE rq = get_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order);
+    REQUEST_TYPE rq = get_new_request_from_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order);
     rq.request_pos = rq_pos;
     rq.cli_ref = cli_ref;
     order->rq_md(REQUEST_TYPE_ORDER_TYPE (rq));
@@ -542,7 +547,7 @@ mtk::CountPtr<ORDER_TYPE>   rq_md_xx_manual    (const msg::sub_order_id& ord_id,
 
 
     mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
-    REQUEST_TYPE_ORDER_TYPE   rq(get_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order));
+    REQUEST_TYPE_ORDER_TYPE   rq(get_new_request_from_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order));
 
     bool canceled=false;
     signal_hook.emit(rq, canceled, false);
@@ -563,7 +568,7 @@ mtk::CountPtr<ORDER_TYPE>   rq_cc_xx    (const msg::sub_order_id& ord_id)
     
     mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
 
-    order->rq_cc(REQUEST_TYPE_ORDER_TYPE (get_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order)));
+    order->rq_cc(REQUEST_TYPE_ORDER_TYPE (get_new_request_from_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order)));
     
     return order;
 }

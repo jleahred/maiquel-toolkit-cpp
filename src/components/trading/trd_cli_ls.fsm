@@ -70,7 +70,7 @@
       has_pending_rq          :  bool                                        ({true})
 
 ::STATUS::market
-      in_market          :  bool                                        ({true})
+      in_market               :  bool                                        ({true})
 
 ::STATUS::w_cfmd
       has_pending_rq          :  bool                                        ({true})
