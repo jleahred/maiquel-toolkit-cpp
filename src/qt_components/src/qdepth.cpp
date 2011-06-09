@@ -344,14 +344,14 @@ void QDepth::request_side(mtk::trd::msg::enBuySell bs)
         {
             quantity.SetIntCode(0);
             mtk::trd::msg::sub_position_ls     pos(price, quantity);
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "cli_ref");
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
         }
         else        //  provisional, remove it
         {
             mtk::trd::msg::sub_position_ls     pos(
                                                               mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(2),  mtk::fnInc(1))
                                                             , mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1)));
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "cli_ref");
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
         }
     }
 }
@@ -388,12 +388,12 @@ void QDepth::request_side_market(mtk::trd::msg::enBuySell bs)
         {
             quantity.SetIntCode(0);
             mtk::trd::msg::sub_position_mk     pos(quantity);
-            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), bs, pos, "cli_ref");
+            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
         }
         else        //  provisional, remove it
         {
             mtk::trd::msg::sub_position_mk     pos(mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1)));
-            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), bs, pos, "cli_ref");
+            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
         }
     }
 }
@@ -434,7 +434,7 @@ void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
         {
             quantity.SetIntCode(0);
             mtk::trd::msg::sub_position_ls     pos(price, quantity);
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "cli_ref", true);
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/, true);
         }
         else
         {

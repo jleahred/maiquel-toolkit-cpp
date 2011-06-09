@@ -513,7 +513,16 @@ public:
     {
         QTableWidgetItem* item = items[col_remarks];
         item->setBackgroundColor(get_default_color());
-        item->setText(QLatin1String(inner_order->serrors().c_str()));
+        QString ref_cli;
+        QString remarks;
+        if(inner_order->has_pending_rq())
+            ref_cli = QLatin1String(inner_order->last_request().Get().cli_ref.c_str());
+        else
+            ref_cli = QLatin1String(inner_order->last_confirmation().Get().cli_ref.c_str());
+        if(ref_cli.size() != 0)
+            remarks = QObject::tr("ref_cli: ") + ref_cli;
+        remarks += QLatin1String(inner_order->serrors().c_str());
+        item->setText(remarks);
     }
     void update_item_cli_code            ()
     {
