@@ -13,10 +13,10 @@ class check_request : public mtk::SignalReceptor {
 typedef check_request CLASS_NAME;
 
 public:
-    //  in  cli -> check_request
-    void RQ_NW_LS(const mtk::trd::msg::RQ_NW_LS& rq);
-    void RQ_MD_LS(const mtk::trd::msg::RQ_MD_LS& rq);
-    void RQ_CC_LS(const mtk::trd::msg::RQ_CC_LS& rq);
+    //  in  cli(permisions/filter) -> check_request
+    void oms_RQ_NW_LS(const mtk::trd::msg::oms_RQ_NW_LS& rq);
+    void oms_RQ_MD_LS(const mtk::trd::msg::oms_RQ_MD_LS& rq);
+    void oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq);
     
     
     // out -> book_orders
@@ -28,9 +28,9 @@ public:
 	~check_request();
 
 private:
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_NW_LS> > hqpid_rqnwls;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_MD_LS> > hqpid_rqmdls;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_CC_LS> > hqpid_rqccls;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_NW_LS> > hqpid_rqnwls;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_MD_LS> > hqpid_rqmdls;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_CC_LS> > hqpid_rqccls;
 };
 
 
