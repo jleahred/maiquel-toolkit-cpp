@@ -76,7 +76,7 @@ public:
                     MTK_HERE,
                     "nullable", 
                     "Have NO Value",
-                    alPriorError, alTypeNoPermisions
+                    alPriorCritic, alTypeNoPermisions
             );
     }
 
@@ -247,7 +247,7 @@ public:
                     MTK_HERE,
                     "Nullable", 
                     "Have NO Value",
-                    alPriorError, alTypeNoPermisions
+                    alPriorCritic, alTypeNoPermisions
             );
 
     }
