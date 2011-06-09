@@ -166,17 +166,20 @@ QTableMarginal::QTableMarginal(QWidget *parent)
             item->setForeground(QBrush(QColor(30,0,100)));  \
             item->setText(__TEXT__);   \
             setHorizontalHeaderItem(__COLUMN__, item);   \
+            QFont font(item->font());   \
+            font.setBold(true);   \
+            item->setFont(font);    \
         }
 
         {
             QTableWidgetItem *item=0;
-            QFont font(this->font());
-            font.setBold(true);
+            //QFont font(this->font());
+            //font.setBold(true);
             //font.setPointSize(11);
             QMARG_INIT_HEADER_ITEM(0, tr("Product"))
             QMARG_INIT_HEADER_ITEM(1, tr("Qty bid"))
-            QMARG_INIT_HEADER_ITEM(2, tr("BID"))
-            QMARG_INIT_HEADER_ITEM(3, tr("ASK"))
+            QMARG_INIT_HEADER_ITEM(2, tr("BID")    )
+            QMARG_INIT_HEADER_ITEM(3, tr("ASK")    )
             QMARG_INIT_HEADER_ITEM(4, tr("Qty ask"))
         }
         horizontalHeader()->setMovable(true);
@@ -305,16 +308,16 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
         tw_ASK->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
     {
-        QFont font(tw_qty_bid->font());
-        font.setBold(true);
-        tw_qty_bid->setFont(font);
+        //QFont font(tw_qty_bid->font());
+        //font.setBold(true);
+        //tw_qty_bid->setFont(font);
         tw_qty_bid->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         tw_qty_bid->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
     {
-        QFont font(tw_qty_ask->font());
-        font.setBold(true);
-        tw_qty_ask->setFont(font);
+        //QFont font(tw_qty_ask->font());
+        //font.setBold(true);
+        //tw_qty_ask->setFont(font);
         tw_qty_ask->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         tw_qty_ask->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
