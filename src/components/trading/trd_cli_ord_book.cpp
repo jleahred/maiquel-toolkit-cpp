@@ -504,7 +504,7 @@ REQUEST_TYPE     get_new_request_from_last_request_or_build_from_confirmation (m
     if (order.isValid()==false)
         throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
-    if (order->last_request().HasValue())
+    if(order->has_pending_rq())
     {
         REQUEST_TYPE                rqxxls     (order->last_request().Get());
         rqxxls.req_info             =  mtk::admin::get_request_info();
@@ -521,7 +521,7 @@ REQUEST_TYPE     get_new_request_from_last_request_or_build_from_confirmation (m
         return rqxxls;
     }
    else
-        throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "missing product code in order", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "not pending request, not confirmated order???", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
 
 
