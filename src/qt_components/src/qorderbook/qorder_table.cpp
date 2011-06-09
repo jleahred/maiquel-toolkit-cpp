@@ -149,16 +149,11 @@ template<typename  ORDER_TYPE>
 QString get_quantity_from_order_as_text(mtk::CountPtr<ORDER_TYPE>& order)
 {
     QString result;
-    if (order->last_request().HasValue()  &&  order->last_confirmation().HasValue()
-            &&  order->last_request().Get().request_pos.quantity  ==  order->last_confirmation().Get().market_pos.quantity)
+
+    if(order->has_pending_rq())
         result = fn_as_QString(order->last_request().Get().request_pos.quantity);
     else
-    {
-        if (order->last_request().HasValue())
-            result = QLatin1String("(") + fn_as_QString(order->last_request().Get().request_pos.quantity) + QLatin1String(")");
-        if(order->last_confirmation().HasValue())
-            result += fn_as_QString(order->last_confirmation().Get().market_pos.quantity);
-    }
+        result = fn_as_QString(order->last_confirmation().Get().market_pos.quantity);
     return result;
 }
 
@@ -169,16 +164,11 @@ QString get_quantity_from_order_as_text(mtk::CountPtr<ORDER_TYPE>& order)
 QString get_price_from_order_as_text(mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
 {
     QString result;
-    if (order->last_request().HasValue()  &&  order->last_confirmation().HasValue()
-            &&  order->last_request().Get().request_pos.price  ==  order->last_confirmation().Get().market_pos.price)
+
+    if(order->has_pending_rq())
         result = fn_as_QString(order->last_request().Get().request_pos.price);
     else
-    {
-        if (order->last_request().HasValue())
-            result = QLatin1String("(") + fn_as_QString(order->last_request().Get().request_pos.price) + QLatin1String(")");
-        if(order->last_confirmation().HasValue())
-            result += fn_as_QString(order->last_confirmation().Get().market_pos.price);
-    }
+        result += fn_as_QString(order->last_confirmation().Get().market_pos.price);
     return result;
 }
 
@@ -466,12 +456,12 @@ public:
         if (buy_sell == mtk::trd::msg::buy)
         {
             item->setText(QObject::tr("buy"));
-            item->setBackgroundColor(mtk_color_buy);
+            item->setBackgroundColor(mtk_color_buy_cell);
         }
         else
         {
             item->setText(QObject::tr("sell"));
-            item->setBackgroundColor(mtk_color_sell);
+            item->setBackgroundColor(mtk_color_sell_cell);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }

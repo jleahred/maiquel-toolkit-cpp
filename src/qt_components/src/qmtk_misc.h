@@ -25,7 +25,9 @@ const QColor mtk_color_header       (QColor(191,219,255));
 const QColor mtk_color_problem      (QColor(Qt::red).lighter(50));
 const QColor mtk_color_sell         (QColor(Qt::red).lighter(160));
 const QColor mtk_color_buy          (QColor(Qt::green).lighter(160));
-const QColor mtk_color_executed     (QColor(Qt::cyan).lighter());
+const QColor mtk_color_sell_cell    (QColor(255,225,225));
+const QColor mtk_color_buy_cell     (QColor(225,255,225));
+const QColor mtk_color_executed     (QColor(Qt::cyan).lighter(120));
 const QColor mtk_color_pending      (QColor(Qt::yellow).lighter(150));
 
 

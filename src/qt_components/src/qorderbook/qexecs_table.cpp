@@ -103,12 +103,12 @@ public:
         if (exec.side == mtk::trd::msg::buy)
         {
             item->setText(QObject::tr("buy"));
-            item->setBackgroundColor(mtk_color_buy);
+            item->setBackgroundColor(mtk_color_buy_cell);
         }
         else
         {
             item->setText(QObject::tr("sell"));
-            item->setBackgroundColor(mtk_color_sell);
+            item->setBackgroundColor(mtk_color_sell_cell);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }

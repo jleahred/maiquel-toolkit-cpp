@@ -317,6 +317,9 @@ void QEditOrder::fill_accounts(const mtk::trd::msg::RQ_XX& rq)
         std::string default_account;
         if(n_default_account.HasValue())
             default_account = n_default_account.Get();
+        else
+            ui->message->setText(tr("you can configure default account with dblclick on account label"));
+
         int counter=0;
         for(mtk::list<mtk::trd::msg::sub_account_info>::iterator it = account_list.begin(); it!= account_list.end(); ++it)
         {
