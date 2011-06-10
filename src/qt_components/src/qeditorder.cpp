@@ -66,25 +66,44 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     if(rq.request_pos.quantity.GetIntCode()!=0)
         ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     else
-        ui->quantity->clear();
+        ui->quantity->setValue(1.);//ui->quantity->clear();
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
 
 
-    this->fill_accounts(rq);
+    QString  configure_default_field;
 
-    this->check_if_order_can_be_sent();
+    mtk::Nullable<std::string>  s_default_cli_ref =  mtk::admin::get_config_property("MISC.default_cli_ref");
+    if(s_default_cli_ref.HasValue()==false)
+    {
+        configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
+    }
+    else
+    {
+        if(s_default_cli_ref.Get() == ""   &&   mtk::rand()%100 <= 7)
+            configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
+        if(ui->cliref->text() == QLatin1String(""))
+            ui->cliref->setText(QLatin1String(s_default_cli_ref.Get().c_str()));
+    }
+
+    mtk::Nullable<std::string>  n_default_account =  mtk::admin::get_config_property("MISC.default_account");
+    if(n_default_account.HasValue() == false)
+        configure_default_field =  tr("you can configure default account with dblclick on account label");
+    this->fill_accounts(rq);
 
     mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
     if(s_default_qty.HasValue()==false)
     {
-        ui->message->setText(tr("you can configure default qty with dblclick on qty label"));
+        configure_default_field =  tr("you can configure default qty with dblclick on qty label");
     }
     else
     {
         if(rq.request_pos.quantity.GetIntCode() == 0)
         {
             QLatin1String default_q (s_default_qty.Get().c_str());
-            ui->quantity->setValue(QString(default_q).toDouble());
+            if(default_q == ""  ||  default_q == "~")
+                ui->quantity->setValue(1.);
+            else
+                ui->quantity->setValue(QString(default_q).toDouble());
         }
         else
             ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
@@ -100,6 +119,10 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
         ui->quantity->setFocus();
         ui->quantity->selectAll();
     }
+
+    this->check_if_order_can_be_sent();
+    if(configure_default_field!=QLatin1String(""))
+        ui->message->setText(configure_default_field);
 }
 
 QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QWidget *parent) :
@@ -126,38 +149,57 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     }
     ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
-    ui->price->setVisible(false);
-    ui->price->setEnabled(false);
     ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
     ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
     if(rq.request_pos.quantity.GetIntCode()!=0)
         ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     else
-        ui->quantity->clear();
+        ui->quantity->setValue(1.);//ui->quantity->clear();
     ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
 
-    this->fill_accounts(rq);
 
-    this->check_if_order_can_be_sent();
+    QString  configure_default_field;
+
+    mtk::Nullable<std::string>  s_default_cli_ref =  mtk::admin::get_config_property("MISC.default_cli_ref");
+    if(s_default_cli_ref.HasValue()==false)
+    {
+        configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
+    }
+    else
+    {
+        if(s_default_cli_ref.Get() == ""   &&   mtk::rand()%100 <= 7)
+            configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
+        if(ui->cliref->text() == QLatin1String(""))
+            ui->cliref->setText(QLatin1String(s_default_cli_ref.Get().c_str()));
+    }
+
+    mtk::Nullable<std::string>  n_default_account =  mtk::admin::get_config_property("MISC.default_account");
+    if(n_default_account.HasValue() == false)
+        configure_default_field =  tr("you can configure default account with dblclick on account label");
+    this->fill_accounts(rq);
 
     mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
     if(s_default_qty.HasValue()==false)
     {
-        ui->message->setText(tr("you can configure default qty with dblclick on qty label"));
+        configure_default_field =  tr("you can configure default qty with dblclick on qty label");
     }
     else
     {
         if(rq.request_pos.quantity.GetIntCode() == 0)
         {
             QLatin1String default_q (s_default_qty.Get().c_str());
-            ui->quantity->setValue(QString(default_q).toDouble());
+            if(default_q == ""  ||  default_q == "~")
+                ui->quantity->setValue(1.);
+            else
+                ui->quantity->setValue(QString(default_q).toDouble());
         }
         else
             ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     }
 
-    ui->quantity->setFocus();
-    ui->quantity->selectAll();
+    this->check_if_order_can_be_sent();
+    if(configure_default_field!=QLatin1String(""))
+        ui->message->setText(configure_default_field);
 }
 
 
@@ -295,6 +337,12 @@ void QEditOrder::mouseDoubleClickEvent(QMouseEvent *e)
         mtk::admin::set_config_property("MISC.default_account",default_account.toStdString());
         ui->message->setText(tr("configured new default account with %1").arg(default_account));
     }
+    else if(lb == ui->label_cli_ref)
+    {
+        QString default_cli_ref = ui->cliref->text();
+        mtk::admin::set_config_property("MISC.default_cli_ref", default_cli_ref.toStdString());
+        ui->message->setText(tr("configured new default client reference with %1").arg(default_cli_ref));
+    }
 }
 
 
@@ -317,8 +365,6 @@ void QEditOrder::fill_accounts(const mtk::trd::msg::RQ_XX& rq)
         std::string default_account;
         if(n_default_account.HasValue())
             default_account = n_default_account.Get();
-        else
-            ui->message->setText(tr("you can configure default account with dblclick on account label"));
 
         int counter=0;
         for(mtk::list<mtk::trd::msg::sub_account_info>::iterator it = account_list.begin(); it!= account_list.end(); ++it)

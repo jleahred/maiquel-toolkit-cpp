@@ -520,7 +520,7 @@ public:
         else
             ref_cli = QLatin1String(inner_order->last_confirmation().Get().cli_ref.c_str());
         if(ref_cli.size() != 0)
-            remarks = QObject::tr("ref_cli: ") + ref_cli;
+            remarks = ref_cli;
         remarks += QLatin1String(inner_order->serrors().c_str());
         item->setText(remarks);
     }
@@ -1225,4 +1225,76 @@ void qorder_table::keyPressEvent(QKeyEvent *e)
         request_modif();
     else if(enabled_cancel  &&  e->key() == Qt::Key_Delete)
         request_cancel();
+}
+
+
+YAML::Emitter& operator << (YAML::Emitter& out, const qorder_table& qot)
+{
+    out << YAML::BeginMap;
+    out << YAML::Key  << "order_table"  << YAML::Value;
+
+
+
+        out << YAML::BeginMap;
+            out << YAML::Key  << "filter"  << YAML::Value;
+                out << YAML::BeginMap;
+                    out << YAML::Key  << "account" << YAML::Value << qot.current_filter.account.toStdString();
+                    out << YAML::Key  << "client_code" << YAML::Value << qot.current_filter.client_code.toStdString();
+                    out << YAML::Key  << "market" << YAML::Value << qot.current_filter.market.toStdString();
+                    out << YAML::Key  << "name" << YAML::Value << qot.current_filter.name.toStdString();
+        out << YAML::EndMap;
+
+        out << YAML::Key  << "column_sizes"  << YAML::Value;
+            out << YAML::Flow << YAML::BeginSeq;
+                for(int i=0; i < qot.table_widget->horizontalHeader()->count(); ++i)
+                {
+                    out << qot.table_widget->horizontalHeader()->sectionSize(i);
+                }
+            out << YAML::EndSeq;
+
+        out << YAML::EndMap;
+
+
+    out << YAML::EndMap;        //  qorder table
+    return out;
+}
+
+void     operator>> (const YAML::Node & node   , qorder_table& qot)
+{
+    {   //  column sizes
+        for(int i =0; unsigned(i)< node["order_table"]["column_sizes"].size()   &&   i+1 < qot.table_widget->horizontalHeader()->count(); ++i)
+        {
+            int size=1;
+            node["order_table"]["column_sizes"][i] >> size;
+            qot.table_widget->horizontalHeader()->resizeSection(i, size);
+        }
+    }
+
+    {       //  filter
+        std::string  account;
+        std::string  client_code;
+        std::string  market;
+        std::string  name;
+
+
+        node["order_table"]["filter"]["account"] >> account;
+        node["order_table"]["filter"]["client_code"] >> client_code;
+        node["order_table"]["filter"]["market"] >> market;
+        node["order_table"]["filter"]["name"] >> name;
+
+
+        if(account=="~")        account = "";
+        if(client_code=="~")    client_code = "";
+        if(market=="~")         market = "";
+        if(name=="~")           name = "";
+
+
+        qot.current_filter.account =  QLatin1String(account.c_str());
+        qot.current_filter.client_code =  QLatin1String(client_code.c_str());
+        qot.current_filter.market =  QLatin1String(market.c_str());
+        qot.current_filter.name =  QLatin1String(name.c_str());
+
+        Q_EMIT(qot.signal_named_changed(QLatin1String(name.c_str())));
+        Q_EMIT(qot.signal_filter_changed());
+    }
 }

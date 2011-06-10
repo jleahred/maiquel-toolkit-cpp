@@ -73,6 +73,7 @@ void filter_form::slot_button_pressed(QAbstractButton* button)
         fd.account = ui->account->text().trimmed().toUpper();
         fd.market = ui->market->text().trimmed().toUpper();
         fd.product = ui->product->text().trimmed().toUpper();
+        fd.client_code = ui->client_code->text().trimmed().toUpper();
         Q_EMIT(signal_filter_modified(fd));
     }
 }

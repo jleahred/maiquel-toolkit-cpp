@@ -82,13 +82,6 @@ QOrderBook::QOrderBook(QWidget *parent) :
     tab_widget->setTabPosition(QTabWidget::South);
 
     //tab_widget->setTabsClosable(true);
-    {
-        qorder_table* order_table = new qorder_table(this);
-        tab_widget->addTab(order_table, QLatin1String("."));
-        connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
-        connect(order_table, SIGNAL(signal_filter_changed()), this, SLOT(slot_filter_changed()));
-    }
-    //connect(tab_widget, SIGNAL(tabCloseRequested(int)), SLOT(slot_request_close_tab()));
     connect(tab_widget, SIGNAL(currentChanged(int)), SLOT(slot_tab_index_changed(int)));
 
     {
@@ -103,13 +96,6 @@ QOrderBook::QOrderBook(QWidget *parent) :
         close_button->setEnabled(false);
         close_button->setToolTip(tr("Close selected tab"));
         hl->addWidget(close_button);
-        /*
-        filter_button = new QPushButton(QIcon(QLatin1String(":/small_icons/filter")), QLatin1String(""), w);
-        connect(filter_button, SIGNAL(clicked()), this, SLOT(slot_request_showfilter()));
-        filter_button->setFlat(true);
-        filter_button->setCheckable(true);
-        hl->addWidget(filter_button);
-        */
         new_button = new QPushButton(QIcon(QLatin1String(":/small_icons/new")), QLatin1String(""), w);
         connect(new_button, SIGNAL(clicked()), this, SLOT(slot_request_new_tab()));
         new_button->setFlat(true);
@@ -136,6 +122,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
         tab_widget->setCornerWidget(w);
         //w->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
     }
+    create_new_tab();
 
     splitter->addWidget(tab_widget);
     splitter->addWidget(table_executions);
@@ -170,37 +157,29 @@ void QOrderBook::update_sizes(void)
 
 void QOrderBook::slot_request_new_tab(void)
 {
-    {
-        qorder_table* order_table = new qorder_table(this);
-        order_table->setFont(this->font());
-        tab_widget->addTab(order_table, QLatin1String("."));
-        connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
-        connect(order_table, SIGNAL(signal_filter_changed()), this, SLOT(slot_filter_changed()));
-    }
-
-    qorder_table* tw = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->count()-1));
-    if(tw != 0)
-        tw->update_sizes();
-    tab_widget->setCurrentIndex(tab_widget->count()-1);
-    if(tab_widget->count() > 5)
-        new_button->setEnabled(false);
-    if(tab_widget->count() > 1)
-        close_button->setEnabled(true);
-    filter_button->setChecked(true);
-    if(tw != 0)
-        tw->show_filter(filter_button->isChecked());
+    create_new_tab();
 }
 
-void QOrderBook::slot_request_close_tab(void)
+
+void QOrderBook::delete_current_tab(bool ask)
 {
-    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to close current tab?"), QMessageBox::Ok, QMessageBox::Cancel)!=QMessageBox::Ok)     return;
+    if(ask)
+        if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to close current tab?"), QMessageBox::Ok, QMessageBox::Cancel)!=QMessageBox::Ok)
+            return;
 
     if(tab_widget->count()==1)      return;
-    tab_widget->widget(tab_widget->currentIndex())->deleteLater();
+    //tab_widget->widget(tab_widget->currentIndex())->deleteLater();
+    delete tab_widget->widget(tab_widget->currentIndex());
     if(tab_widget->count() <= 5)
         new_button->setEnabled(true);
     if(tab_widget->count() == 2)        //  2 because of deletelater  IMPORTANT
         close_button->setEnabled(false);
+
+}
+
+void QOrderBook::slot_request_close_tab(void)
+{
+    delete_current_tab();
 }
 
 void QOrderBook::slot_request_showfilter(void)
@@ -234,4 +213,66 @@ void QOrderBook::slot_filter_changed()
         filter_button->setChecked(false);
         tw->show_filter(filter_button->isChecked());
     }
+}
+
+
+
+qorder_table* QOrderBook::create_new_tab(void)
+{
+    qorder_table* order_table = new qorder_table(this);
+    order_table->setFont(this->font());
+    tab_widget->addTab(order_table, QLatin1String("."));
+    connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
+    connect(order_table, SIGNAL(signal_filter_changed()), this, SLOT(slot_filter_changed()));
+
+    qorder_table* tw = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->count()-1));
+    if(tw != 0)
+        tw->update_sizes();
+    tab_widget->setCurrentIndex(tab_widget->count()-1);
+    if(tab_widget->count() > 5)
+        new_button->setEnabled(false);
+    if(tab_widget->count() > 1)
+        close_button->setEnabled(true);
+    filter_button->setChecked(true);
+    if(tw != 0)
+        tw->show_filter(filter_button->isChecked());
+
+    return order_table;
+}
+
+
+YAML::Emitter& operator << (YAML::Emitter& out, const QOrderBook& qob)
+{
+    out << YAML::BeginMap;
+    out << YAML::Key  << "tabs"  << YAML::Value
+                                            << YAML::BeginSeq;
+
+    for(int i=0; i<qob.tab_widget->count(); ++i)
+    {
+        qorder_table* ot = dynamic_cast<qorder_table*>(qob.tab_widget->widget(i));
+        if(ot != 0)
+            out << *ot;
+    }
+
+    out << YAML::EndSeq;
+
+
+    out << YAML::EndMap;
+    return out;
+}
+
+void     operator>> (const YAML::Node & node   , QOrderBook& qob)
+{
+    bool delete_first = false;
+    if(node["tabs"].size() > 0)
+        delete_first = true;
+    for(unsigned i=0; i<node["tabs"].size()  &&  i<6; ++i)
+    {
+        qorder_table*  order_table  =   qob.create_new_tab();
+        node["tabs"][i] >> *order_table;
+    }
+
+    qob.tab_widget->setCurrentIndex(0);
+    if(delete_first)
+        qob.delete_current_tab(false);
 }

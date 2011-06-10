@@ -9,12 +9,16 @@
 
 class  QExecsTable;
 class  QPushButton;
+class  qorder_table;
+namespace YAML { class Emitter;  class Node;  };
 
 
 class QOrderBook : public QWidget//, public mtk::SignalReceptor
 {
     Q_OBJECT
     //typedef  QOrderBook CLASS_NAME;
+    friend YAML::Emitter& operator<< (YAML::Emitter    & out , const QOrderBook& m);
+    friend void           operator>> (const YAML::Node & i   ,       QOrderBook& m);
 
 public:
     explicit QOrderBook(QWidget *parent = 0);
@@ -42,8 +46,11 @@ private:
 
     QPushButton* new_button;
     QPushButton* filter_button;
-    QPushButton* close_button;
+    QPushButton* close_button;    
 
+
+    qorder_table*   create_new_tab(void);
+    void            delete_current_tab(bool ask=true);
 };
 
 #endif // QORDERBOOK_H
