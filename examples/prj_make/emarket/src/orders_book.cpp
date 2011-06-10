@@ -8,13 +8,56 @@
 #include "components/admin/admin.h"
 
 
+
+
+
+
+
+namespace {
+    const char*   VERSION = "2011-06-10";
+    
+    const char*   MODIFICATIONS =
+                        "           2010-06-10     Added command print orders queue\n"
+                        "           2010-12-01     first version\n";
+
+
+void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+{
+    response_lines.push_back(MTK_SS(__FILE__ << ":  " << VERSION));
+}
+
+void command_modifications  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
+{
+    response_lines.push_back(__FILE__);
+    response_lines.push_back(".......................................");
+    response_lines.push_back(MODIFICATIONS);
+}
+
+
+
+void register_global_commands (void)
+{
+    mtk::admin::register_command("__GLOBAL__",    "ver",   "")->connect(command_version);
+    mtk::admin::register_command("__GLOBAL__",    "modifs","")->connect(command_modifications);
+
+
+    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
+}
+
+};       //  anonymous namespace  to register "static" commnads
+
+
+
+
+
+
 //----------------------------------------------------------------------------------------
 //      o r d e r s _ i n _ p r o d u c t _ q u e u e
 //----------------------------------------------------------------------------------------
 
 class orders_in_product_queue
 {
-private:
+public:
     mtk::list<mtk::CountPtr<ord_ls> >  bid_queue;
     mtk::list<mtk::CountPtr<ord_ls> >  ask_queue;
     const int                          adjust_product_comparation;
@@ -47,12 +90,13 @@ class internal_orders_book : public mtk::SignalReceptor
 {
 typedef internal_orders_book  CLASS_NAME;    
     
-    mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<ord_ls> >           orders_by_id;
+    mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<ord_ls> >    orders_by_id;
     mtk::map<mtk::msg::sub_product_code, orders_in_product_queue >   queue_by_product;
     
     mtk::CountPtr<ord_ls> cached_last_request;
     
 public:    
+    internal_orders_book();
 
     //  in  check_request->book_orders
     void oms_RQ_NW_LS (const mtk::trd::msg::oms_RQ_NW_LS& rq);
@@ -65,8 +109,40 @@ public:
     void check_execs  (const mtk::trd::msg::CF_XX_LS& order_info);     //  here will be generated the output  cf_ex if so
     void update_prices(const mtk::trd::msg::CF_XX_LS& order_info);
 
+
+    void command_print_queue(const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines);
 };
 
+
+internal_orders_book::internal_orders_book()
+{
+    MTK_CONNECT_THIS(*mtk::admin::register_command("ob",            "print_queue",   ""), command_print_queue)
+}
+
+void internal_orders_book::command_print_queue(const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
+{
+    for(auto it_queue_by_product = queue_by_product.begin(); it_queue_by_product != queue_by_product.end(); ++it_queue_by_product)
+    {
+        //        mtk::list<mtk::CountPtr<ord_ls> >  bid_queue;
+        //        mtk::list<mtk::CountPtr<ord_ls> >  ask_queue;
+        response_lines.push_back(MTK_SS(it_queue_by_product->first << "   ->  BIDS"));
+        for(auto it_orders = it_queue_by_product->second.bid_queue.begin(); it_orders != it_queue_by_product->second.bid_queue.end(); ++it_orders)
+        {
+            std::string big_response = MTK_SS((*it_orders)->last_confirmation());
+            mtk::vector<std::string> v_big_response = mtk::s_split(big_response, "{");
+            for(unsigned i = 0; i< v_big_response.size(); ++i)
+                response_lines.push_back(MTK_SS("       { "  <<  v_big_response[i]));
+        }
+        response_lines.push_back(MTK_SS(it_queue_by_product->first << "   ->  ASKS"));
+        for(auto it_orders = it_queue_by_product->second.ask_queue.begin(); it_orders != it_queue_by_product->second.ask_queue.end(); ++it_orders)
+        {
+            std::string big_response = MTK_SS((*it_orders)->last_confirmation());
+            mtk::vector<std::string> v_big_response = mtk::s_split(big_response, "{");
+            for(unsigned i = 0; i< v_big_response.size(); ++i)
+                response_lines.push_back(MTK_SS("       { "  <<  v_big_response[i]));
+        }
+    }
+}
 
 
 
@@ -88,6 +164,9 @@ orders_book::~orders_book()
 {
     delete ptr;
 }
+
+
+
 
 
 //  in  check_request->book_orders
@@ -327,7 +406,14 @@ void orders_in_product_queue::check_execs(void)
             mtk::FixedNumber exec_price = get_exec_price(best_buy_price, best_sell_price);
             mtk::FixedNumber exec_quantity = min(get_pending_quantity(best_buy), get_pending_quantity(best_sell));
             
-            if (exec_quantity.GetDouble() == mtk::Double(0.))   break;
+            if (exec_quantity.GetDouble() == mtk::Double(0.))   
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "emarket", "exec_quantity.GetDouble() == mtk::Double(0.)", mtk::alPriorCritic, mtk::alTypeLogicError));
+                break;
+            }
+            
+            
+            
             //  confirmation buy
             {
                 mtk::trd::msg::CF_XX_LS cf = best_buy->last_confirmation().Get();
@@ -449,5 +535,8 @@ void orders_in_product_queue::update_prices(const mtk::msg::sub_product_code& pr
     
     send_prices(best);
 }
+
+
+
 
 
