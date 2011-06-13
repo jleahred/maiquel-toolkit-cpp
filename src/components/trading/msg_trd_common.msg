@@ -89,6 +89,7 @@ RQ_XX  [< V:0 >]
 CF_XX  [<  V:0  >]
 {
     invariant           (inv)  :   sub_invariant_order_info
+    market_order_id     (moi)  :   string
     
     req_id              (rqid) :   mtk::msg::sub_request_id
     cli_ref             (clr)  :   string

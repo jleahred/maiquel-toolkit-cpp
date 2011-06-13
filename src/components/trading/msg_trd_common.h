@@ -282,7 +282,7 @@ public:
 
     
     // constructor
-    explicit CF_XX (    const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_id&  _req_id,   const std::string&  _cli_ref,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+    explicit CF_XX (    const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const std::string&  _cli_ref,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit CF_XX ( const qpid::messaging::Message& message );
     virtual ~CF_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; };
@@ -292,6 +292,7 @@ public:
 
     // fields
     sub_invariant_order_info                  invariant; 
+    std::string                               market_order_id; 
     mtk::msg::sub_request_id                  req_id; 
     std::string                               cli_ref; 
     sub_total_executions                      total_execs; 
