@@ -341,7 +341,13 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
             
             mtk::list<mtk::acs::msg::res_login::IC_session_info>  data_list;
             data_list.push_back(session_info);
-            
+
+
+	    //	notify servers before sending the confirmation to client
+            mtk::acs_server::msg::pub_add_user  msg_add_user  (session_info);
+            mtk::send_message(qpid_srv_session, msg_add_user);
+	    
+	    
             //  sending multiresponses in asyncronous way
             MTK_SEND_MULTI_RESPONSE(        mtk::acs::msg::res_login,
                                             mtk::acs::msg::res_login::IC_session_info, 
@@ -349,8 +355,6 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
                                             req_login.request_info,
                                             data_list)
             
-            mtk::acs_server::msg::pub_add_user  msg_add_user  (session_info);
-            mtk::send_message(qpid_srv_session, msg_add_user);
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("created session "  << list_sessions_login_info->back().keep_alive_client_info << " for  " << req_login.request_info), mtk::alPriorDebug));
         }
         else
