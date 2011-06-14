@@ -1,0 +1,60 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= TradingDB
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-06-13
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This process will write trading transactions on db using +fbinsert+
+* It will listen the trading messagses
+
+
+* Configuration file
++
+.etc/config.cfg
+[source,{cpp}]
+----
+include::../etc/config.cfg[]
+----
+
+
+* The full source code of this process is...
++
+.main.cpp
+[source,{cpp}]
+----
+include::main.cpp[]
+----
+
+
+
+== Document modifications
+* Non aply

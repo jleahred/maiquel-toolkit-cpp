@@ -41,13 +41,13 @@ RQ_XX_MK  [<V:0,   I:RQ_XX   >]
 
 
 
-RQ_NW_MK  [< V:0, I:RQ_XX_MK,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
+RQ_NW_MK  [< V:0, I:RQ_XX_MK,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product} >]   {}
 
 
-RQ_MD_MK  [< V:0, I:RQ_XX_MK,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
+RQ_MD_MK  [< V:0, I:RQ_XX_MK,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product} >]   {}
 
 
-RQ_CC_MK  [< V:0, I:RQ_XX_MK,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.product_code.product} >]   {}
+RQ_CC_MK  [< V:0, I:RQ_XX_MK,    SUBJ:RQ.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product} >]   {}
 
 
 

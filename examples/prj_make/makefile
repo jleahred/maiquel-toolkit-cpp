@@ -22,3 +22,12 @@ this:
 	make -C acs this
 	make -C alarms_db this
 	make -C product_loader this
+
+.PHONY: clean
+clean:
+	make -C emarket clean
+	make -C houselight clean
+	make -C tree_server clean
+	make -C acs clean
+	make -C alarms_db clean
+	make -C product_loader clean

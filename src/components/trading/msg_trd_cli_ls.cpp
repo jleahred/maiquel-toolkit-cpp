@@ -2366,29 +2366,29 @@ RJ_CC_LS::RJ_CC_LS (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  RQ_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+std::string  RQ_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
+        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << "");
     }
     std::string  RQ_NW_LS::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << "");
     }
-    std::string  RQ_MD_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+    std::string  RQ_MD_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
+        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << "");
     }
     std::string  RQ_MD_LS::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << "");
     }
-    std::string  RQ_CC_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
+    std::string  RQ_CC_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_product_code_product << "");
+        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << "");
     }
     std::string  RQ_CC_LS::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << "");
     }
     std::string  CF_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {

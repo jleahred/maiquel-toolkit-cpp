@@ -131,7 +131,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -170,7 +170,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -209,7 +209,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product);
 virtual std::string  get_out_subject (void) const;
 
     

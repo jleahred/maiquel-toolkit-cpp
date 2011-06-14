@@ -468,6 +468,8 @@ IBPP::Transaction fbInsert::TryStartTransaction(void)
 
 void fbInsert::OnTimer(void)
 {
+    if (queue.size() == 0)      return;
+    
 	MTK_EXEC_MAX_FREC(frecuency)
 
 		IBPP::Transaction tr = TryStartTransaction();
@@ -526,7 +528,7 @@ void fbInsert::OnTimer(void)
 						default:
 									mtk::AlarmMsg(mtk::Alarm (
 														MTK_HERE, "fbInsert.Insert",
-														MTK_SS("too many messages to write " <<  queue.size()),
+														MTK_SS("unkown type " << int(field.dataType)),
 														mtk::alPriorError,
 														mtk::alTypeNoPermisions
 													)
@@ -555,6 +557,7 @@ void fbInsert::OnTimer(void)
 		catch(...)
 		{
 			tr->Commit();
+            queue.clear();
 			throw;
 		}
 
