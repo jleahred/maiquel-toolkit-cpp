@@ -651,6 +651,36 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
     {
         
         if (true ) {
+//  inserting macro: wcf
+
+                    if (last_confirmation().HasValue())
+                    {
+                        mtk::trd::msg::CF_XX_LS lc = last_confirmation().Get();
+                        lc.req_id  =   rq.req_info.req_id;
+                        lc.cli_ref = rq.cli_ref;
+                        lc.market_pos = rq.request_pos;
+                        lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.acc_quantity.GetDouble());
+                        if (lc.total_execs.remaining_qty.GetIntCode() <= 0)
+                            throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity " 
+                                                                    << method_name << "  received:  "  << "  " << rq  
+                                                                    <<  "  last request: " << last_request()
+                                                                    <<  "  last confirmed: " << last_confirmation()),
+                                                                    mtk::alPriorError);
+                        ci->set_last_confirmation(mtk::make_nullable(lc));
+                    }
+                    else
+                    {
+                        static  int  market_order_id=0;
+                        ++market_order_id;
+                        mtk::trd::msg::sub_total_executions  total_execs (
+                                          0.
+                                        , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                        , rq.request_pos.quantity);
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.req_info.req_id, rq.cli_ref, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
+                        ci->set_last_confirmation(mtk::make_nullable(lc));
+                    }
+                
 //  inserting macro: del_queue
 
                     if (last_confirmation().HasValue())

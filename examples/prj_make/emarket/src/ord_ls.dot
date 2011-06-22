@@ -4,7 +4,7 @@ digraph automata {
 
         init  ->  market  [ label = "cli_rq_nw\nwcf & add_queue, cf_nw  & check_ex  &  upd_pr", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
     market  ->  market  [ label = "cli_rq_md\nwcf & modif_queue, cf_md & check_ex  &  upd_pr", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
-    market  ->  canceled  [ label = "cli_rq_cc\ndel_queue, cf_cc             &  upd_pr", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    market  ->  canceled  [ label = "cli_rq_cc\nwcf & del_queue, cf_cc             &  upd_pr", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
     market  ->  executed  [ label = "mkt_cf_ex & full_exec\nwex, cf_ex", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
     market  ->  market  [ label = "mkt_cf_ex\nwex, cf_ex", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
  

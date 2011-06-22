@@ -78,7 +78,7 @@
 ::TRANSITIONS::
 
 init    --   cli_rq_nw  &&   invalid_rq    /   LE                         ,  rj_rqnw                       ''>   canceled
-init    --   cli_rq_nw                     /             wcf & add_queue  ,  cf_nw  & check_ex  &  upd_pr  -->   market
+init    --   cli_rq_nw                     /          wcf & add_queue     ,  cf_nw  & check_ex  &  upd_pr  -->   market
 init    --   cli_rq_md                     /   LE                         ,  rj_rqmd                       ''>   canceled
 init    --   cli_rq_cc                     /   LE                         ,  rj_rqcc                       ''>   canceled
 init    --   mkt_cf_ex                     /   LE                                                          ''>   canceled
@@ -88,7 +88,7 @@ init    --   mkt_cf_ex                     /   LE                               
 market  --   cli_rq_nw                     /   LE &   del_queue            , rj_rqnw & cf_cc               ''>   canceled
 market  --   cli_rq_md  &&   invalid_rq    /                               , rj_rqmd                       ''>   market
 market  --   cli_rq_md                     /          wcf & modif_queue    , cf_md & check_ex  &  upd_pr   -->   market
-market  --   cli_rq_cc                     /          del_queue            , cf_cc             &  upd_pr   -->   canceled
+market  --   cli_rq_cc                     /          wcf & del_queue      , cf_cc             &  upd_pr   -->   canceled
 market  --   mkt_cf_ex  &&   full_exec     /          wex                  , cf_ex                         -->   executed
 market  --   mkt_cf_ex                     /          wex                  , cf_ex                         -->   market
 

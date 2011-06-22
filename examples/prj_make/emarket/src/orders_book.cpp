@@ -351,8 +351,7 @@ void orders_in_product_queue::del_order(mtk::CountPtr<ord_ls> order)
     mtk::list<mtk::CountPtr<ord_ls> >::iterator it = queue->begin();
     while (it != queue->end())
     {
-        if ((*it)->last_confirmation().Get().market_pos.price  ==  order->last_confirmation().Get().market_pos.price)
-        //  GetDouble returns a mtk::Double (comparations safe)
+        if ((*it)->last_confirmation().Get().invariant.order_id  ==  order->last_confirmation().Get().invariant.order_id)
         {
             queue->erase(it);
             break;
