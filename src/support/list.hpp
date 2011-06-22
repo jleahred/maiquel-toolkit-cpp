@@ -28,7 +28,7 @@ public:
         public:
             friend class mtk::list<T>;
             friend class mtk::list<T>::const_iterator;
-            iterator() : registered_owner(0), last_updated_container(0)  {};
+            iterator() : registered_owner(0), last_updated_container(0)  {}
             iterator&   operator++();
             iterator    operator++(int);
             bool        operator==(const iterator& it) const;
@@ -50,7 +50,7 @@ public:
         class const_iterator  {
         public:
             friend class mtk::list<T>;
-            const_iterator() : registered_owner(0), last_updated_container(0)  {};
+            const_iterator() : registered_owner(0), last_updated_container(0)  {}
             const_iterator(const iterator& it) :
                             iiterator (it.iiterator),
                             i_end_iterator (it.i_end_iterator),
@@ -87,6 +87,69 @@ public:
 
 
 
+        class reverse_iterator   {
+        public:
+            friend class mtk::list<T>;
+            friend class mtk::list<T>::const_reverse_iterator;
+            reverse_iterator() : registered_owner(0), last_updated_container(0)  {}
+            reverse_iterator&   operator++();
+            reverse_iterator    operator++(int);
+            bool                operator==(const reverse_iterator& it) const;
+            bool                operator!=(const reverse_iterator& it) const;
+
+            T* operator->(void);
+            T& operator* (void);
+
+        private:
+            typename std::list<T>::reverse_iterator iiterator;
+            typename std::list<T>::reverse_iterator i_rend_iterator;
+            int                             registered_owner;
+            int                             last_updated_container;
+
+            bool IsValid (void) const;
+        };
+
+
+        class const_reverse_iterator  {
+        public:
+            friend class mtk::list<T>;
+            const_reverse_iterator() : registered_owner(0), last_updated_container(0)  {}
+            const_reverse_iterator(const iterator& it) :
+                            iiterator (it.iiterator),
+                            i_rend_iterator (it.i_rend_iterator),
+                            registered_owner(it.registered_owner),
+                            last_updated_container(it.last_updated_container)
+                            {
+                            };
+            const_reverse_iterator&     operator=(const reverse_iterator& it)
+            {
+                iiterator = it.iiterator;
+                i_rend_iterator = it.i_rend_iterator;
+                registered_owner = it.registered_owner;
+                last_updated_container = it.last_updated_container;
+                return *this;
+            }
+
+
+            const_reverse_iterator&     operator++();
+            const_reverse_iterator      operator++(int);
+            bool                        operator==(const const_reverse_iterator& it) const;
+            bool                        operator!=(const const_reverse_iterator& it) const;
+
+            const T* operator->(void);
+            const T& operator* (void);
+
+        private:
+            typename std::list<T>::const_reverse_iterator   iiterator;
+            typename std::list<T>::const_reverse_iterator   i_rend_iterator;
+            int                                             registered_owner;
+            int                                             last_updated_container;
+
+            bool IsValid (void) const;
+        };
+
+
+
 
 
 	list()  : registered_as(internal_for_containers::register_container(true)) {};
@@ -99,10 +162,15 @@ public:
 
 
     //  iterators
-    iterator            begin       ();
-    const_iterator      begin       () const;
-    iterator            end         ();
-    const_iterator      end         () const;
+    iterator                    begin       ();
+    const_iterator              begin       () const;
+    iterator                    end         ();
+    const_iterator              end         () const;
+
+    reverse_iterator            rbegin      ();
+    const_reverse_iterator      rbegin      () const;
+    reverse_iterator            rend        ();
+    const_reverse_iterator      rend        () const;
 
 
     //  capacity
@@ -403,6 +471,227 @@ const T& list<T>::const_iterator::operator*(void)
 
     if (i_end_iterator == iiterator)
         throw mtk::Alarm(MTK_HERE, "list", "* on end iterator", mtk::alPriorError);
+
+    return *iiterator;
+}
+
+
+
+
+
+//  reverse_iterators
+template <typename T>
+bool list<T>::reverse_iterator::IsValid (void) const
+{
+    if (last_updated_container==0 || internal_for_containers::get_registered_container_last_size_change(registered_owner) != last_updated_container)
+        return false;
+    else
+        return true;
+}
+
+template <typename T>
+typename list<T>::reverse_iterator  list<T>::rbegin       ()
+{
+    typename list<T>::reverse_iterator it;
+    it.iiterator = ilist.rbegin();
+
+    it.registered_owner = registered_as;
+    it.i_rend_iterator = ilist.rend();
+    it.last_updated_container = internal_for_containers::get_registered_container_last_size_change(registered_as);  //  anotamos el momento del último cambio de tamaño del contenedor
+
+    return it;
+}
+
+
+template <typename T>
+typename list<T>::reverse_iterator  list<T>::rend       ()
+{
+    typename list<T>::reverse_iterator it;
+    it.iiterator = ilist.rend();
+    it.registered_owner = registered_as;
+    it.i_rend_iterator = ilist.rend();
+    return it;
+}
+
+
+
+
+
+template <typename T>
+typename list<T>::reverse_iterator&  list<T>::reverse_iterator::operator++()
+{
+    if (IsValid() == false)
+        throw mtk::Alarm(MTK_HERE, "list", "reverse_iterator not valid", mtk::alPriorError);
+
+    if (i_rend_iterator == iiterator)
+        throw mtk::Alarm(MTK_HERE, "list", "++ on end reverse_", mtk::alPriorError);
+
+    ++iiterator;
+    return *this;
+}
+
+template <typename T>
+typename list<T>::reverse_iterator  list<T>::reverse_iterator::operator++(int)
+{
+    typename list<T>::reverse_iterator  result = *this;
+    if (IsValid() == false)
+        throw mtk::Alarm(MTK_HERE, "list", "reverse_iterator not valid", mtk::alPriorError);
+
+    if (i_rend_iterator == iiterator)
+        throw mtk::Alarm(MTK_HERE, "list", "++ on end reverse_iterator", mtk::alPriorError);
+
+    ++iiterator;
+    return result;
+}
+
+
+
+template <typename T>
+bool  list<T>::reverse_iterator::operator==(const list<T>::reverse_iterator& it) const
+{
+    if (registered_owner!=0  &&  it.registered_owner != 0   &&  registered_owner !=  it.registered_owner)
+        throw mtk::Alarm(MTK_HERE, "list", "on different owners", mtk::alPriorError);
+
+    return it.iiterator == iiterator;
+}
+
+template <typename T>
+bool  list<T>::reverse_iterator::operator!=(const list<T>::reverse_iterator& it) const
+{
+    return !operator==(it);
+}
+
+
+template <typename T>
+T* list<T>::reverse_iterator::operator->(void)
+{
+    if (IsValid() == false)
+        throw mtk::Alarm(MTK_HERE, "list", "reverse_iterator not valid", mtk::alPriorError);
+
+    if (i_rend_iterator == iiterator)
+        throw mtk::Alarm(MTK_HERE, "list", "-> on rend reverse_iterator", mtk::alPriorError);
+
+    return iiterator.operator->();
+}
+
+template <typename T>
+T& list<T>::reverse_iterator::operator*(void)
+{
+    if (IsValid() == false)
+        throw mtk::Alarm(MTK_HERE, "list", "reverse_iterator not valid", mtk::alPriorError);
+
+    if (i_rend_iterator == iiterator)
+        throw mtk::Alarm(MTK_HERE, "list", "* on end reverse_iterator", mtk::alPriorError);
+
+    return *iiterator;
+}
+
+
+
+
+
+
+//  const_reverse_iterators       ---------------------------------------------------
+template <typename T>
+bool list<T>::const_reverse_iterator::IsValid (void) const
+{
+    if (last_updated_container==0  ||  internal_for_containers::get_registered_container_last_size_change(registered_owner) != last_updated_container)
+        return false;
+    else
+        return true;
+}
+
+template <typename T>
+typename list<T>::const_reverse_iterator  list<T>::rbegin       () const
+{
+    typename list<T>::const_reverse_iterator it;
+    it.iiterator = ilist.rbegin();
+
+    it.registered_owner = registered_as;
+    it.i_rend_iterator = ilist.rend();
+
+    it.last_updated_container = internal_for_containers::get_registered_container_last_size_change(registered_as);  //  anotamos el momento del último cambio de tamaño del contenedor
+
+    return it;
+}
+
+
+template <typename T>
+typename list<T>::const_reverse_iterator  list<T>::rend       ()  const
+{
+    typename list<T>::const_reverse_iterator it;
+    it.registered_owner = registered_as;
+    it.i_rend_iterator = ilist.rend();
+    it.iiterator = ilist.rend();
+    return it;
+}
+
+
+
+template <typename T>
+typename list<T>::const_reverse_iterator&  list<T>::const_reverse_iterator::operator++()
+{
+    if (IsValid() == false)
+        throw mtk::Alarm(MTK_HERE, "list", "reverse_iterator not valid", mtk::alPriorError);
+
+    if (i_rend_iterator == iiterator)
+        throw mtk::Alarm(MTK_HERE, "list", "++ on end reverse_iterator", mtk::alPriorError);
+
+    ++iiterator;
+    return *this;
+}
+
+template <typename T>
+typename list<T>::const_reverse_iterator  list<T>::const_reverse_iterator::operator++(int)
+{
+    typename list<T>::const_reverse_iterator result = *this;
+    if (IsValid() == false)
+        throw mtk::Alarm(MTK_HERE, "list", "reverse_iterator not valid", mtk::alPriorError);
+
+    if (i_rend_iterator == iiterator)
+        throw mtk::Alarm(MTK_HERE, "list", "++ on end reverse_iterator", mtk::alPriorError);
+
+    ++iiterator;
+    return result;
+}
+
+
+template <typename T>
+bool  list<T>::const_reverse_iterator::operator==(const const_reverse_iterator& it) const
+{
+    if(registered_owner!=0  &&  it.registered_owner != 0   &&  registered_owner !=  it.registered_owner)
+        throw mtk::Alarm(MTK_HERE, "list", "on different owners", mtk::alPriorError);
+
+    return it.iiterator == iiterator;
+}
+
+template <typename T>
+bool  list<T>::const_reverse_iterator::operator!=(const const_reverse_iterator& it) const
+{
+    return !operator==(it);
+}
+
+
+template <typename T>
+const T* list<T>::const_reverse_iterator::operator->(void)
+{
+    if (IsValid() == false)
+        throw mtk::Alarm(MTK_HERE, "list", "reverse_iterator not valid", mtk::alPriorError);
+
+    if (i_rend_iterator == iiterator)
+        throw mtk::Alarm(MTK_HERE, "list", "-> on rend reverse_iterator", mtk::alPriorError);
+
+    return iiterator.operator->();
+}
+
+template <typename T>
+const T& list<T>::const_reverse_iterator::operator*(void)
+{
+    if (IsValid() == false)
+        throw mtk::Alarm(MTK_HERE, "list", "reverse_iterator not valid", mtk::alPriorError);
+
+    if (i_rend_iterator == iiterator)
+        throw mtk::Alarm(MTK_HERE, "list", "* on end reverse_iterator", mtk::alPriorError);
 
     return *iiterator;
 }
