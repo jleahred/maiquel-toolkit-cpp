@@ -956,7 +956,7 @@ public:
                 ++it2ptrBaseConnection
             )
         {
-            Connection<TReceiver, TP1, TP2>* pconnection = dynamic_cast<Connection<TReceiver, TP1, TP2>* > (it2ptrBaseConnection->get());
+            Connection<TReceiver, TP1, TP2>* pconnection = dynamic_cast<Connection<TReceiver, TP1, TP2>* > (it2ptrBaseConnection->get2());
             if  (
                     pconnection
                     &&
@@ -1268,7 +1268,7 @@ public:
                 ++it2ptrBaseConnection
             )
         {
-            Connection<TReceiver, TP1, TP2, TP3>* pconnection = dynamic_cast<Connection<TReceiver, TP1, TP2, TP3>* > (it2ptrBaseConnection->get());
+            Connection<TReceiver, TP1, TP2, TP3>* pconnection = dynamic_cast<Connection<TReceiver, TP1, TP2, TP3>* > (it2ptrBaseConnection->get2());
             if  (
                     pconnection
                     &&
@@ -1581,7 +1581,7 @@ public:
                 ++it2ptrBaseConnection
             )
         {
-            Connection<TReceiver, TP1, TP2, TP3, TP4>* pconnection = dynamic_cast<Connection<TReceiver, TP1, TP2, TP3, TP4>* > (it2ptrBaseConnection->get());
+            Connection<TReceiver, TP1, TP2, TP3, TP4>* pconnection = dynamic_cast<Connection<TReceiver, TP1, TP2, TP3, TP4>* > (it2ptrBaseConnection->get2());
             if  (
                     pconnection
                     &&
