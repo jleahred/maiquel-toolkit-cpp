@@ -7,11 +7,12 @@
 #include <QPushButton>
 #include <QMessageBox>
 
-
 #include "components/admin/admin.h"
 #include "qeditorder.h"
 #include "qorder_table.h"
 #include "qexecs_table.h"
+#include "whistoric_order.h"
+
 
 
 
@@ -70,8 +71,11 @@ void on_request_with_user_check_mk(mtk::trd::msg::RQ_XX_MK& rq, bool& canceled, 
 
 QOrderBook::QOrderBook(QWidget *parent) :
     QWidget(parent),
-    table_executions(new QExecsTable(this))
+    table_executions(new QExecsTable(this)),
+    historic_order_window(new whistoric_order(this))
 {
+    historic_order_window->setAttribute(Qt::WA_ShowWithoutActivating);
+    //historic_order_window->setWindowFlags(Qt::WindowStaysOnTopHint);
     //table_executions->setMinimumWidth(300);
     table_executions->setMinimumWidth(30);
 
@@ -203,6 +207,7 @@ void QOrderBook::slot_tab_index_changed(int)
     }
     else
         filter_button->setChecked(false);
+    update_historic();
 }
 
 void QOrderBook::slot_filter_changed()
@@ -214,6 +219,7 @@ void QOrderBook::slot_filter_changed()
         tw->show_filter(filter_button->isChecked());
     }
 }
+
 
 
 
@@ -236,6 +242,11 @@ qorder_table* QOrderBook::create_new_tab(void)
     filter_button->setChecked(true);
     if(tw != 0)
         tw->show_filter(filter_button->isChecked());
+
+    connect(order_table, SIGNAL(signal_double_click(QModelIndex)), this, SLOT(slot_order_table_double_clicked(QModelIndex)));
+    connect(order_table, SIGNAL(signal_cell_changed(int, int, int, int)), this, SLOT(slot_order_table_cell_changed(int,int,int,int)));
+    connect(order_table, SIGNAL(signal_request_show_historic()), SLOT(slot_show_historic()));
+    connect(order_table, SIGNAL(signal_request_hide_historic()), SLOT(slot_hide_historic()));
 
     return order_table;
 }
@@ -275,4 +286,43 @@ void     operator>> (const YAML::Node & node   , QOrderBook& qob)
     qob.tab_widget->setCurrentIndex(0);
     if(delete_first)
         qob.delete_current_tab(false);
+}
+
+
+void QOrderBook::slot_show_historic(void)
+{
+    historic_order_window->setVisible(true);
+    update_historic();
+}
+
+void QOrderBook::slot_hide_historic(void)
+{
+    historic_order_window->setVisible(false);
+}
+
+void QOrderBook::update_historic(void)
+{
+    if(historic_order_window->isVisible())
+    {
+        qorder_table* tw = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->currentIndex()));
+        if(tw != 0)
+        {
+            mtk::nullable<mtk::trd::msg::sub_order_id>   order_id = tw->get_current_order_id();
+            if(order_id.HasValue())
+            {
+                historic_order_window->set_order(order_id.Get());
+            }
+        }
+    }
+}
+
+
+void QOrderBook::slot_order_table_cell_changed(int, int, int, int)
+{
+    update_historic();
+}
+
+void QOrderBook::slot_order_table_double_clicked(QModelIndex)
+{
+    slot_show_historic();
 }

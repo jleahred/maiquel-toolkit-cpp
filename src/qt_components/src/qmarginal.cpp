@@ -77,7 +77,7 @@ int marginal_in_table::counter = 0;
 namespace {
 
 
-    QColor  color_product = mtk_color_header;
+    QColor  color_product = qtmisc::mtk_color_header;
     const QColor  color_qty     = Qt::white;
     //const QColor  color_qty     = QColor(237,240,249);
     //const QColor  color_price   = mtk_color_header;
@@ -379,11 +379,11 @@ namespace {
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qmarginal", MTK_SS("received quantity 0 with price not 0 on "
                                                           << product_code.market << "." << product_code.product <<  "  " << marginal), mtk::alPriorCritic, mtk::alTypeNoPermisions));
-                return mtk::make_tuple(fn_as_QString(marginal.price), fn_as_QString(marginal.quantity));
+                return mtk::make_tuple(qtmisc::fn_as_QString(marginal.price), qtmisc::fn_as_QString(marginal.quantity));
             }
         }
         else
-            return mtk::make_tuple(fn_as_QString(marginal.price), fn_as_QString(marginal.quantity));
+            return mtk::make_tuple(qtmisc::fn_as_QString(marginal.price), qtmisc::fn_as_QString(marginal.quantity));
     }
 };
 
@@ -440,7 +440,7 @@ void QTableMarginal::dragMoveEvent(QDragMoveEvent *event)
 
 void QTableMarginal::dropEvent(QDropEvent *event)
 {
-    insert_marginal(get_product_code(event), rowAt(event->pos().y()));
+    insert_marginal(qtmisc::get_product_code(event), rowAt(event->pos().y()));
     if(qobject_cast<QTableMarginal*>(event->source())!=0)
         event->setDropAction(Qt::MoveAction);
     else
@@ -496,7 +496,7 @@ void QTableMarginal::start_drag(void)
     QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(rowAt(startPos.y()), columnAt(startPos.x())));
     if (item)
     {
-        mimeData->setText(dragProductText(item->product_code));
+        mimeData->setText(qtmisc::dragProductText(item->product_code));
         QDrag* drag = new QDrag(this);
         drag->setMimeData(mimeData);
 

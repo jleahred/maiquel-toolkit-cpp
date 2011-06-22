@@ -293,8 +293,8 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
 {
     if (level.quantity.GetIntCode() != 0)
     {
-        table_widget->item(row, price_col)->setText(fn_as_QString(level.price));
-        table_widget->item(row, 1)->setText(fn_as_QString(level.quantity));
+        table_widget->item(row, price_col)->setText(qtmisc::fn_as_QString(level.price));
+        table_widget->item(row, 1)->setText(qtmisc::fn_as_QString(level.quantity));
     }
     else if(level.quantity.GetIntCode() == 0  &&   level.price.GetIntCode()!=0)
     {
@@ -469,7 +469,7 @@ void QDepth::dragEnterEvent(QDragEnterEvent *event)
 
 void QDepth::dropEvent(QDropEvent *event)
 {
-    subscribe_to(get_product_code(event));
+    subscribe_to(qtmisc::get_product_code(event));
     this->setFocus();
 }
 
@@ -508,7 +508,7 @@ void QDepth::mouseMoveEvent(QMouseEvent *event)
         if (distance >= QApplication::startDragDistance()+5  &&  mtk::msg::is_valid(price_manager->get_product_code()))
         {
             QMimeData* mimeData = new QMimeData;
-            mimeData->setText(dragProductText(price_manager->get_product_code()));
+            mimeData->setText(qtmisc::dragProductText(price_manager->get_product_code()));
             QDrag* drag = new QDrag(this);
             drag->setMimeData(mimeData);
 

@@ -528,8 +528,6 @@ REQUEST_TYPE     get_new_request_from_last_request_or_build_from_confirmation (m
 template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE, typename  CONF_TYPE>
 mtk::CountPtr<ORDER_TYPE>   rq_md_xx    ( const msg::sub_order_id& ord_id, const POS_TYPE& rq_pos, const std::string& cli_ref)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-    
     mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
     REQUEST_TYPE rq = get_new_request_from_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order);
     rq.request_pos = rq_pos;
@@ -543,9 +541,6 @@ mtk::CountPtr<ORDER_TYPE>   rq_md_xx    ( const msg::sub_order_id& ord_id, const
 template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE, typename  CONF_TYPE>
 mtk::CountPtr<ORDER_TYPE>   rq_md_xx_manual    (const msg::sub_order_id& ord_id, mtk::Signal< REQUEST_TYPE&, bool& /*canceled*/, bool  /*aggre*/   >& signal_hook)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-
-
     mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
     REQUEST_TYPE_ORDER_TYPE   rq(get_new_request_from_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order));
 
@@ -564,8 +559,6 @@ mtk::CountPtr<ORDER_TYPE>   rq_md_xx_manual    (const msg::sub_order_id& ord_id,
 template<typename ORDER_TYPE, typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE, typename  CONF_TYPE>
 mtk::CountPtr<ORDER_TYPE>   rq_cc_xx    (const msg::sub_order_id& ord_id)
 {
-    mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
-    
     mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
 
     order->rq_cc(REQUEST_TYPE_ORDER_TYPE (get_new_request_from_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order)));

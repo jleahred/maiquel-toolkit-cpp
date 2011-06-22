@@ -218,7 +218,7 @@ void mtkContainerWidget::paintEvent   (QPaintEvent *event)
     QWidget::paintEvent(event);
     QPainter qpainter(this);
 
-    QColor color = mtk_color_header;
+    QColor color = qtmisc::mtk_color_header;
     if (this->hasFocus())
         color = Qt::blue;
     QPen pen = QPen(color, 1, Qt::SolidLine);

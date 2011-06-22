@@ -33,11 +33,16 @@ public:
     void update_sizes();
     void show_filter(bool);
     bool is_filter_visible(void);
+    mtk::nullable<mtk::trd::msg::sub_order_id>       get_current_order_id(void);
 
 
 signals:
     void signal_named_changed(const QString& name);
     void signal_filter_changed(void);
+    void signal_double_click(QModelIndex);
+    void signal_cell_changed(int, int, int, int);
+    void signal_request_show_historic(void);
+    void signal_request_hide_historic(void);
 
 private slots:
     void request_cancel(void);
@@ -46,6 +51,8 @@ private slots:
     void slot_live_orders(void);
     void slot_live_and_exec_orders(void);
     void slot_all_orders(void);
+    void slot_on_double_clicked(QModelIndex);
+    void slot_current_cell_changed(int, int, int, int);
 
 
 private:
@@ -57,6 +64,7 @@ private:
     mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >* orders;
     mtk::list<mtk::trd::msg::sub_order_id>     orders2add_loading;
     mtk::list<mtk::trd::msg::sub_order_id>     orders2add_online;
+    mtk::trd::msg::sub_order_id   current_order_id;
     void  try_realocate_order(const mtk::trd::msg::sub_order_id&);
 
     filter_data     current_filter;
@@ -68,6 +76,7 @@ private:
     void contextMenuEvent(QContextMenuEvent *);
 
     void keyPressEvent(QKeyEvent *);
+    bool eventFilter(QObject *, QEvent *);
 
     QCommonTableDelegate* delegate_paint;
 };

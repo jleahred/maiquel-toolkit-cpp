@@ -6,10 +6,15 @@
 
 #include <QLocale>
 
+#include "components/trading/trd_cli_ord_book.h"
+
+
+namespace qtmisc {
 
 QString fn_as_QString(const mtk::FixedNumber& fn)
 {
-    return QLocale::system().toString(fn.GetDouble().get()._0, 'f', fn.GetExt().GetDec());
+    if(fn.GetExt().GetInc() == 0)       return QLatin1String("");
+    else    return QLocale::system().toString(fn.GetDouble().get()._0, 'f', fn.GetExt().GetDec());
 }
 
 
@@ -57,3 +62,65 @@ void set_base_font_size(int new_size)
 {
     base_font_size = new_size;
 }
+
+
+
+
+
+
+
+
+//  by order type   access   ****************************************************************************************
+mtk::FixedNumber   get_order_position_price  (mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+{
+    if(order->has_pending_rq())
+        return order->last_request().Get().request_pos.price;
+    else
+        return order->last_confirmation().Get().market_pos.price;
+}
+
+
+
+mtk::FixedNumber   get_order_position_price  (mtk::CountPtr<mtk::trd::trd_cli_mk>& /*order*/)
+{
+    return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(0), mtk::fnInc(0));
+}
+
+mtk::FixedNumber   get_order_position_quantity  (mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+{
+    if(order->has_pending_rq())
+        return order->last_request().Get().request_pos.quantity;
+    else
+        return order->last_confirmation().Get().market_pos.quantity;
+}
+
+mtk::FixedNumber   get_order_position_quantity  (mtk::CountPtr<mtk::trd::trd_cli_mk>& order)
+{
+    if(order->has_pending_rq())
+        return order->last_request().Get().request_pos.quantity;
+    else
+        return order->last_confirmation().Get().market_pos.quantity;
+}
+
+
+
+
+
+
+
+
+
+
+QString   side_as_text(mtk::trd::msg::enBuySell side)
+{
+    if(side  == mtk::trd::msg::buy)             return QLatin1String("buy");
+    else  if(side  == mtk::trd::msg::sell)      return QLatin1String("sell");
+    else                                        return QLatin1String("???");
+}
+
+
+
+
+};      //      namespace qtmisc {
+
+

@@ -187,7 +187,7 @@ void qTreeProducts::start_drag(void)
     if (item  &&  item->item.product_code.HasValue())
     {
         QMimeData* mimeData = new QMimeData;
-        mimeData->setText(dragProductText(item->item.product_code.Get()));
+        mimeData->setText(qtmisc::dragProductText(item->item.product_code.Get()));
         QDrag* drag = new QDrag(this);
         drag->setMimeData(mimeData);
 

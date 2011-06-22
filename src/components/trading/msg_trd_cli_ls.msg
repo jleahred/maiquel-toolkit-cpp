@@ -40,7 +40,7 @@ sub_position_ls   [<V:0>]
 
 RQ_XX_LS  [<V:0,   I:RQ_XX   >]
 {
-    request_pos         (rqp)   :   sub_position_ls      
+    request_pos         (rqp)   :   sub_position_ls
 }
 
 

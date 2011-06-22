@@ -4,7 +4,10 @@
 ::INIT::
         NAMESPACES=['mtk','trd']
         GENERATE_ON='.'
-        INCLUDES = ['#include "components/trading/msg_trd_cli_mk.h"', '#include "components/trading/trd_cli_support.h"', '#include "components/admin/admin.h"']
+        INCLUDES = [    '#include "components/trading/msg_trd_cli_mk.h"', 
+                        '#include "components/trading/trd_cli_support.h"', 
+                        '#include "components/admin/admin.h"',
+                        '#include "components/trading/trd_cli_historic.h"']
 
 
 ::INPUTS::
@@ -31,6 +34,7 @@
 
 
 
+
 ::OUTPUTS::
     sig_rq_nw        (rq   :  mtk::trd::msg::RQ_NW_MK)
     sig_rq_md        (rq   :  mtk::trd::msg::RQ_MD_MK)
@@ -47,19 +51,21 @@
 	
 	sig_cf_ex        (ex   :  mtk::trd::msg::CF_EX_MK)
 
+    sig_changed      (                               )
 
 
 
 
 
 ::COMMON_STATUS_INFO::
-      last_confirmation  :  mtk::nullable<mtk::trd::msg::CF_XX_MK>      ({ mtk::nullable<mtk::trd::msg::CF_XX_MK>() })
-      last_request       :  mtk::nullable<mtk::trd::msg::RQ_XX_MK>      ({ mtk::nullable<mtk::trd::msg::RQ_XX_MK>() })
-      in_market          :  bool                                        ({false})                                           phony
-      is_canceled        :  bool                                        ({false})                                           phony
-      is_full_executed   :  bool                                        ({false})                                           phony
-      has_pending_rq     :  bool                                        ({false})                                           phony
-      serrors            :  std::string                                 ({""})
+      last_confirmation  :  mtk::nullable<mtk::trd::msg::CF_XX_MK>          ({ mtk::nullable<mtk::trd::msg::CF_XX_MK>() })
+      last_request       :  mtk::nullable<mtk::trd::msg::RQ_XX_MK>          ({ mtk::nullable<mtk::trd::msg::RQ_XX_MK>() })
+      history            :  mtk::CountPtr<mtk::trd::hist::order_historic>   ({ mtk::make_cptr(new mtk::trd::hist::order_historic) })
+      in_market          :  bool                                            ({false})                                           phony
+      is_canceled        :  bool                                            ({false})                                           phony
+      is_full_executed   :  bool                                            ({false})                                           phony
+      has_pending_rq     :  bool                                            ({false})                                           phony
+      serrors            :  std::string                                     ({""})
       //  pending historic
 
 
@@ -278,45 +284,44 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
 ::MACROS::
 
         //  progressing  request.................................................
-            rq_rqnw     [{  ci->sig_rq_nw(rq);  }]
+            rq_rqnw     [{  ADD_HIST_RQ(rq, nw)     ci->sig_rq_nw(rq);  ci->sig_changed();      }]
 
-            rq_rqmd     [{  ci->sig_rq_md(rq);  }]
+            rq_rqmd     [{  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();      }]
 
-            rq_rqmd     [{  ci->sig_rq_md(rq);  }]
             /*********  cancelations will be allways generated not progressed
             rq_rq_cc
                 [{
-                    ci->sig_rq_cc(p);
+                    ci->sig_rq_cc(p);   ci->sig_changed();      
                 }]
             **************/
 
         //  progressing  confirmations.................................................
-            cf_cfnw         [{  ci->sig_cf_nw(cf);  }]
+            cf_cfnw         [{  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();      }]
 
-            cf_cfmd         [{  ci->sig_cf_md(cf);  }]
-            cf_cfmd_nr      [{  ci->sig_cf_md(cf);  }]
-            cf_cfmd_pend    [{  ci->sig_cf_md(cf);  }]
+            cf_cfmd         [{  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();      }]
+            cf_cfmd_nr      [{  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();      }]
+            cf_cfmd_pend    [{  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();      }]
 
-            cf_cfcc         [{  ci->sig_cf_cc(cf);  }]
-            cf_cfcc_nr      [{  ci->sig_cf_cc(cf);  }]
+            cf_cfcc         [{  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();      }]
+            cf_cfcc_nr      [{  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();      }]
 
         //  CONFIRM EXECUTIONS..........................................
-            cf_cfex         [{  ci->sig_cf_ex(ex);  }]
+            cf_cfex         [{  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      }]
 
 
         //  progressing  rejects.................................................
-            cf_rjnw         [{  ci->sig_rj_nw(rj);  }]
+            cf_rjnw         [{  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();      }]
 
-            cf_rjmd         [{  ci->sig_rj_md(rj);  }]
+            cf_rjmd         [{  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();      }]
 
-            cf_rjcc         [{  ci->sig_rj_cc(rj);  }]
+            cf_rjcc         [{  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();      }]
 
 
 
         //  rejecting request.................................................
-            rj_rqnw [{ SEND_REJECT(sig_rj_nw, RJ_NW_MK)  }]
-            rj_rqmd [{ SEND_REJECT(sig_rj_md, RJ_MD_MK)  }]
-            rj_rqcc [{ SEND_REJECT(sig_rj_cc, RJ_CC_MK)  }]
+            rj_rqnw [{ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)  ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();      }]
+            rj_rqmd [{ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)  ADD_HIST(csr_rj, rj,md)      ci->sig_changed();      }]
+            rj_rqcc [{ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK)  ADD_HIST(csr_rj, rj,cc)      ci->sig_changed();      }]
 
 
         //  requesting not requested..........................................
@@ -327,14 +332,18 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
                         mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), last_confirmation().Get().cli_ref, mtk::admin::get_control_fluct_info());
                         mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();      
                     }
                     else if (last_request().HasValue())
                     {
                         mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), last_request().Get().cli_ref, mtk::admin::get_control_fluct_info());
                         mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();      
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);

@@ -40,18 +40,18 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     this->setWindowTitle(tr("Edit Limit Order"));
 
     QFont font(this->font());
-    font.setPixelSize(get_base_font_size()+2);
+    font.setPixelSize(qtmisc::get_base_font_size()+2);
     this->setFont(font);
 
     if (rq.invariant.side == mtk::trd::msg::buy)
     {
         ui->BuySell->setText(tr("BUY"));
-        setPalette( mtk_color_buy );
+        setPalette( qtmisc::mtk_color_buy );
     }
     else
     {
         ui->BuySell->setText(tr("SELL"));
-        setPalette( QPalette(mtk_color_sell));
+        setPalette( QPalette(qtmisc::mtk_color_sell));
     }
     ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
@@ -134,18 +134,18 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     this->setWindowTitle(tr("Edit Limit Order"));
 
     QFont font(this->font());
-    font.setPixelSize(get_base_font_size()+2);
+    font.setPixelSize(qtmisc::get_base_font_size()+2);
     this->setFont(font);
 
     if (rq.invariant.side == mtk::trd::msg::buy)
     {
         ui->BuySell->setText(tr("BUY"));
-        setPalette( mtk_color_buy );
+        setPalette( qtmisc::mtk_color_buy );
     }
     else
     {
         ui->BuySell->setText(tr("SELL"));
-        setPalette( QPalette(mtk_color_sell));
+        setPalette( QPalette(qtmisc::mtk_color_sell));
     }
     ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));

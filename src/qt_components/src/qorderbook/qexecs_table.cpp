@@ -85,7 +85,7 @@ public:
 
     QColor  get_default_color(void)
     {
-        return mtk_color_executed;
+        return qtmisc::mtk_color_executed;
     }
 
 
@@ -103,12 +103,12 @@ public:
         if (exec.side == mtk::trd::msg::buy)
         {
             item->setText(QObject::tr("buy"));
-            item->setBackgroundColor(mtk_color_buy_cell);
+            item->setBackgroundColor(qtmisc::mtk_color_buy_cell);
         }
         else
         {
             item->setText(QObject::tr("sell"));
-            item->setBackgroundColor(mtk_color_sell_cell);
+            item->setBackgroundColor(qtmisc::mtk_color_sell_cell);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }
@@ -116,13 +116,13 @@ public:
     void update_item_exec_quantity (void)
     {
         QTableWidgetItem* item = items[col_exec_quantity];
-        item->setText(fn_as_QString(exec.quantity));
+        item->setText(qtmisc::fn_as_QString(exec.quantity));
         item->setBackgroundColor(get_default_color());
     }
     void update_item_exec_price (void)
     {
         QTableWidgetItem* item = items[col_exec_price];
-        item->setText(fn_as_QString(exec.price));
+        item->setText(qtmisc::fn_as_QString(exec.price));
         item->setBackgroundColor(get_default_color());
     }
 
