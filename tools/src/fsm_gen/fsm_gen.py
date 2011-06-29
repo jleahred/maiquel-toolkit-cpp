@@ -177,16 +177,56 @@ namespace ${private_namespace} {
 
 ${BEGIN_NAMESPACES}
 
+class ${CLASSNAME}_dangerous_signals_not_warped;
+
+
+
 
 class ${CLASSNAME}   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
     typedef  ${CLASSNAME}  CLASS_NAME;
 
+public:
+    explicit ${CLASSNAME} ();
+    explicit ${CLASSNAME} (const mtk::CountPtr<${CLASSNAME}_dangerous_signals_not_warped>&  _ptr);
+    virtual ~${CLASSNAME} (){};
+
+
+
+    //  INPUT
+${INPUT_METHODS}
+
+    //  OUTPUT
+${OUTPUT_SIGNALS}
+
+    //  ACCESS
+${ACCESS_METHODS}
+
+
+    void  set   (const mtk::CountPtr<${CLASSNAME}_dangerous_signals_not_warped>&  _ptr);
+
+
+private:
+    mtk::CountPtr<${CLASSNAME}_dangerous_signals_not_warped>       ptr;
+
+};
+
+
+
+
+//  this class has to be used carefully
+//  It has to be used as internal storage in respositories
+
+class ${CLASSNAME}_dangerous_signals_not_warped   : public mtk::SignalReceptor
+{
+    mtk::non_copyable nc;
+    typedef  ${CLASSNAME}_dangerous_signals_not_warped  CLASS_NAME;
+
 
 public:
-    ${CLASSNAME} ($CTOR_PARAMS);
-    virtual ~${CLASSNAME} ();
+    ${CLASSNAME}_dangerous_signals_not_warped ($CTOR_PARAMS);
+    virtual ~${CLASSNAME}_dangerous_signals_not_warped ();
 
     //  INPUT
 ${INPUT_METHODS}
@@ -208,6 +248,7 @@ private:
     void on_keep_temp_status (void);
     void on_remove_temp_status (void);
 };
+
 
 
 
@@ -859,7 +900,7 @@ def get_main_class_implementation_public_inputs():
     for input in INPUTS_LIST:
         if len(input)>0:
             if input["visibility"] != 'private':
-                result += Template("""void ${NESTED_NAMESPACES}$CLASSNAME::$INPUT_NAME ($PARAMS)
+                result += Template("""void ${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::$INPUT_NAME ($PARAMS)
 {
     mtk::CountPtr<${private_namespace}::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->$INPUT_NAME($CALL_PARAMS);
@@ -881,7 +922,7 @@ def get_main_class_implementation_access():
     for csi in COMMON_STATUS_INFO:
         if len(csi)>0:
             if csi["visibility"] != 'private':
-                result += Template("""const $TYPE & ${NESTED_NAMESPACES}$CLASSNAME::$ACCESS_NAME (void) const
+                result += Template("""const $TYPE & ${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::$ACCESS_NAME (void) const
 {
     return current_status->$ACCESS_NAME();
 }
@@ -910,7 +951,7 @@ def get_main_class_implementation():
     CSI_CALL_PARAMS = get_params_call_from_properties(COMMON_STATUS_INFO)
     if SIGNALS != "" and  CSI_CALL_PARAMS  != "":
         CSI_CALL_PARAMS += ', '
-    result =  Template("""${NESTED_NAMESPACES}$CLASSNAME::$CLASSNAME($PARAMS)
+    result =  Template("""${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::${CLASSNAME}_dangerous_signals_not_warped($PARAMS)
 {
     mtk::CountPtr<$private_namespace::status_common_info> ci = mtk::make_cptr(
                             new $private_namespace::status_common_info ($CSI_CALL_PARAMS $SIGNALS));
@@ -922,20 +963,20 @@ def get_main_class_implementation():
 }
 
 
-${NESTED_NAMESPACES}$CLASSNAME::~$CLASSNAME($PARAMS)
+${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::~${CLASSNAME}_dangerous_signals_not_warped($PARAMS)
 {
 }
 
-void ${NESTED_NAMESPACES}$CLASSNAME::on_new_status (mtk::CountPtr<$private_namespace::abstract_status>  new_status)
+void ${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::on_new_status (mtk::CountPtr<$private_namespace::abstract_status>  new_status)
 {
     current_status = new_status;
 }
 
-void ${NESTED_NAMESPACES}$CLASSNAME::on_keep_temp_status (void)
+void ${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::on_keep_temp_status (void)
 {
     queue_temp_status.push_back(current_status);
 }
-void ${NESTED_NAMESPACES}$CLASSNAME::on_remove_temp_status (void)
+void ${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::on_remove_temp_status (void)
 {
     queue_temp_status.pop_front();
 }
@@ -960,6 +1001,102 @@ void ${NESTED_NAMESPACES}$CLASSNAME::on_remove_temp_status (void)
     return result
 
 
+
+
+
+
+
+def get_public_signals_connected_to_warper():
+    result = ''
+    for out in OUTPUTS_LIST:
+        if len(out)>0:
+            if out['visibility'] != 'private':
+                result += '    ptr->' + out["name"] + '.connect(&' +  out["name"] + ');\n'
+    return result[:-1]
+    
+
+
+def get_warper_class_implementation_public_inputs():
+    result = ''
+    for input in INPUTS_LIST:
+        if len(input)>0:
+            if input["visibility"] != 'private':
+                result += Template("""void ${NESTED_NAMESPACES}${CLASSNAME}::$INPUT_NAME ($PARAMS)
+{
+    ptr->$INPUT_NAME($CALL_PARAMS);
+}
+""").substitute(
+                                    CLASSNAME  = CLASSNAME,
+                                    INPUT_NAME = input["name"],
+                                    PARAMS = get_params_string(input["params"], False),
+                                    CALL_PARAMS = get_params_call_as_string(input["params"]),
+                                    NESTED_NAMESPACES = NESTED_NAMESPACES,
+                                    private_namespace       = private_namespace
+                                )
+    
+    return result
+
+
+def get_warper_class_implementation_access():
+    result = ''
+    for csi in COMMON_STATUS_INFO:
+        if len(csi)>0:
+            if csi["visibility"] != 'private':
+                result += Template("""const $TYPE & ${NESTED_NAMESPACES}${CLASSNAME}::$ACCESS_NAME (void) const
+{
+    return  ptr->$ACCESS_NAME();
+}
+""").substitute(
+                                    CLASSNAME  = CLASSNAME,
+                                    ACCESS_NAME = csi["name"],
+                                    NESTED_NAMESPACES  = NESTED_NAMESPACES,
+                                    TYPE = csi["type"]
+                                )
+    
+    return result
+
+def get_warper_class_implementation():
+    # constructor
+    SIGNALS = get_public_signals_connected_to_warper()
+    result =  Template("""
+//  warper RAII with signals and repository
+${NESTED_NAMESPACES}${CLASSNAME}::${CLASSNAME} (void)
+    : ptr (new ${CLASSNAME}_dangerous_signals_not_warped())
+{
+$SIGNALS
+}
+${NESTED_NAMESPACES}${CLASSNAME}::${CLASSNAME} (const mtk::CountPtr<${CLASSNAME}_dangerous_signals_not_warped>& _ptr)
+    :   ptr(_ptr)
+{
+    try
+    {
+$SIGNALS
+    } MTK_CATCH_RETHROW("${CLASSNAME}","connecting signals")
+}
+
+void ${NESTED_NAMESPACES}${CLASSNAME}::set (const mtk::CountPtr<${CLASSNAME}_dangerous_signals_not_warped>& _ptr)
+{
+ptr = _ptr;
+$SIGNALS
+}
+
+
+""").substitute(CLASSNAME = CLASSNAME,
+                SIGNALS  = SIGNALS,
+                NESTED_NAMESPACES = NESTED_NAMESPACES,
+                private_namespace = private_namespace,
+            )
+
+    # public inputs
+    result += get_warper_class_implementation_public_inputs()
+    
+    # access methods
+    result += get_warper_class_implementation_access()
+    return result
+
+
+
+
 def generate_implementation():
     
     
@@ -980,6 +1117,7 @@ def generate_implementation():
                 ))
 
     implf.write(get_main_class_implementation())
+    implf.write(get_warper_class_implementation())
     
     implf.close()
 

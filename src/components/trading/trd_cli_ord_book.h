@@ -25,29 +25,29 @@ namespace mtk{namespace trd{
         void   init(void);      //  mtk::accmgrcli::init()  has to be called before
         
         //  INPUT
-        mtk::CountPtr<trd_cli_ls>   rq_nw_ls        (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref);
-        mtk::CountPtr<trd_cli_ls>   rq_nw_ls_manual (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos,                                                 const std::string& cli_ref, bool agressive=false);
-        mtk::CountPtr<trd_cli_ls>   rq_md_ls        ( const msg::sub_order_id& ord_id,                                                                              const msg::sub_position_ls& rq_pos,                                                 const std::string& cli_ref);
-        mtk::CountPtr<trd_cli_ls>   rq_md_ls_manual ( const msg::sub_order_id& ord_id);
-        mtk::CountPtr<trd_cli_ls>   rq_cc_ls        ( const msg::sub_order_id& ord_id);
+        mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_nw_ls        (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_nw_ls_manual (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos,                                                 const std::string& cli_ref, bool agressive=false);
+        mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_md_ls        ( const msg::sub_order_id& ord_id,                                                                              const msg::sub_position_ls& rq_pos,                                                 const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_md_ls_manual ( const msg::sub_order_id& ord_id);
+        mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_cc_ls        ( const msg::sub_order_id& ord_id);
 
-        mtk::CountPtr<trd_cli_mk>   rq_nw_mk        (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref);
-        mtk::CountPtr<trd_cli_mk>   rq_nw_mk_manual (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos,                                                 const std::string& cli_ref, bool agressive=false);
-        mtk::CountPtr<trd_cli_mk>   rq_md_mk        ( const msg::sub_order_id& ord_id,                                                                              const msg::sub_position_mk& rq_pos,                                                 const std::string& cli_ref);
-        mtk::CountPtr<trd_cli_mk>   rq_md_mk_manual ( const msg::sub_order_id& ord_id);
-        mtk::CountPtr<trd_cli_mk>   rq_cc_mk        ( const msg::sub_order_id& ord_id);
+        mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_nw_mk        (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_nw_mk_manual (                                   const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos,                                                 const std::string& cli_ref, bool agressive=false);
+        mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_md_mk        ( const msg::sub_order_id& ord_id,                                                                              const msg::sub_position_mk& rq_pos,                                                 const std::string& cli_ref);
+        mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_md_mk_manual ( const msg::sub_order_id& ord_id);
+        mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_cc_mk        ( const msg::sub_order_id& ord_id);
 
 
         //  OUTPUT
         mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_exec_conf& >&   get_sig_execution       (void);
         
-        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls>&  >&          get_sig_order_ls_new    (void);
-        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_mk>&  >&          get_sig_order_mk_new    (void);
+        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>&  >&          get_sig_order_ls_new    (void);
+        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>&  >&          get_sig_order_mk_new    (void);
 
 
         //  ACCESS
-        mtk::CountPtr<trd_cli_ls>                   get_order_ls            (const msg::sub_order_id& ord_id);
-        mtk::CountPtr<trd_cli_mk>                   get_order_mk            (const msg::sub_order_id& ord_id);
+        mtk::CountPtr<trd_cli_ls>                   get_order_ls  (const msg::sub_order_id& ord_id);
+        mtk::CountPtr<trd_cli_mk>                   get_order_mk  (const msg::sub_order_id& ord_id);
         
         mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void);
         

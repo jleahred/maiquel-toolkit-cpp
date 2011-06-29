@@ -25,16 +25,66 @@ namespace fsmgen_fsm_cli_acs {
 
 namespace mtk{namespace acs_cli{
 
+class fsm_cli_acs_dangerous_signals_not_warped;
+
+
+
 
 class fsm_cli_acs   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
     typedef  fsm_cli_acs  CLASS_NAME;
 
+public:
+    explicit fsm_cli_acs ();
+    explicit fsm_cli_acs (const mtk::CountPtr<fsm_cli_acs_dangerous_signals_not_warped>&  _ptr);
+    virtual ~fsm_cli_acs (){};
+
+
+
+    //  INPUT
+    void user_rq_login  ( const std::string&   _user_name , const std::string&   _password    );
+    void user_rq_logout ( );
+    void user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password  );
+
+
+    //  OUTPUT
+    mtk::Signal< const mtk::acs::msg::res_login::IC_session_info&   /*login_conf*/   > sig_confirm_login_ok;
+    mtk::Signal< const std::string&   /*description*/   > sig_reject_login;
+    mtk::Signal< const std::string&   /*description*/   > sig_logout_login;
+    mtk::Signal<  > sig_password_changed;
+    mtk::Signal<  > sig_password_change_rj;
+
+
+    //  ACCESS
+    const mtk::CountPtr< mtk::qpid_session >    &  qpid_session () const;
+    const std::string                         &  user_name () const;
+
+
+
+    void  set   (const mtk::CountPtr<fsm_cli_acs_dangerous_signals_not_warped>&  _ptr);
+
+
+private:
+    mtk::CountPtr<fsm_cli_acs_dangerous_signals_not_warped>       ptr;
+
+};
+
+
+
+
+//  this class has to be used carefully
+//  It has to be used as internal storage in respositories
+
+class fsm_cli_acs_dangerous_signals_not_warped   : public mtk::SignalReceptor
+{
+    mtk::non_copyable nc;
+    typedef  fsm_cli_acs_dangerous_signals_not_warped  CLASS_NAME;
+
 
 public:
-    fsm_cli_acs ();
-    virtual ~fsm_cli_acs ();
+    fsm_cli_acs_dangerous_signals_not_warped ();
+    virtual ~fsm_cli_acs_dangerous_signals_not_warped ();
 
     //  INPUT
     void user_rq_login  ( const std::string&   _user_name , const std::string&   _password    );
@@ -66,6 +116,7 @@ private:
     void on_keep_temp_status (void);
     void on_remove_temp_status (void);
 };
+
 
 
 

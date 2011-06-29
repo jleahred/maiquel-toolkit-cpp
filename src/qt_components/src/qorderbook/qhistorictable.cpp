@@ -174,21 +174,13 @@ void        QHistoricTable::add_item(const  mtk::trd::hist::order_historic_item&
     update_item(new_row, item);
 }
 
-void QHistoricTable::set_historic(mtk::CountPtr<mtk::trd::hist::order_historic>  order_historic)
+void QHistoricTable::set_historic(mtk::CountPtr<mtk::trd::hist::order_historic2>  _order_historic)
 {
-    //  chapu
-    static  mtk::CountPtr<mtk::trd::hist::order_historic>   previus_order_historic;
-    if(previus_order_historic.isValid())
-    {
-        previus_order_historic->signal_new_item_added.disconnect(this, &CLASS_NAME::new_item_added);
-        previus_order_historic->signal_modified_item.disconnect(this, &CLASS_NAME::modified_item);
-    }
-
-    mtk::CountPtr<mtk::list<mtk::trd::hist::order_historic_item> >   hist_items =   order_historic->get_items_list();
+    mtk::CountPtr<mtk::list<mtk::trd::hist::order_historic_item> >   hist_items =   _order_historic->get_items_list();
 
 
-    MTK_CONNECT_THIS(order_historic->signal_new_item_added, new_item_added);
-    MTK_CONNECT_THIS(order_historic->signal_modified_item, modified_item);
+    MTK_CONNECT_THIS(_order_historic->signal_new_item_added, new_item_added);
+    MTK_CONNECT_THIS(_order_historic->signal_modified_item, modified_item);
 
 
     this->setRowCount(0);
@@ -196,7 +188,7 @@ void QHistoricTable::set_historic(mtk::CountPtr<mtk::trd::hist::order_historic> 
     for(mtk::list<mtk::trd::hist::order_historic_item>::reverse_iterator it = hist_items->rbegin(); it != hist_items->rend(); ++it)
         add_item(*it);
 
-    previus_order_historic = order_historic;
+    order_historic = _order_historic;
 }
 
 void  QHistoricTable::new_item_added(const mtk::trd::hist::order_historic_item& item)

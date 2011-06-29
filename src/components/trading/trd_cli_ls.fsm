@@ -60,7 +60,7 @@
 ::COMMON_STATUS_INFO::
       last_confirmation  :  mtk::nullable<mtk::trd::msg::CF_XX_LS>          ({ mtk::nullable<mtk::trd::msg::CF_XX_LS>() })
       last_request       :  mtk::nullable<mtk::trd::msg::RQ_XX_LS>          ({ mtk::nullable<mtk::trd::msg::RQ_XX_LS>() })
-      history            :  mtk::CountPtr<mtk::trd::hist::order_historic>   ({ mtk::make_cptr(new mtk::trd::hist::order_historic) })
+      history            :  mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>  ({ mtk::make_cptr(new mtk::trd::hist::order_historic_dangerous_not_signal_warped) })
       in_market          :  bool                                            ({false})                                           phony
       is_canceled        :  bool                                            ({false})                                           phony
       is_full_executed   :  bool                                            ({false})                                           phony

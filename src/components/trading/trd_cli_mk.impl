@@ -19,7 +19,7 @@ struct  status_common_info
         :  
         __last_confirmation(mtk::nullable<mtk::trd::msg::CF_XX_MK>() ),
         __last_request(mtk::nullable<mtk::trd::msg::RQ_XX_MK>() ),
-        __history(mtk::make_cptr(new mtk::trd::hist::order_historic) ),
+        __history(mtk::make_cptr(new mtk::trd::hist::order_historic_dangerous_not_signal_warped) ),
         __serrors(""), 
         sig_rq_nw (_sig_rq_nw), 
         sig_rq_md (_sig_rq_md), 
@@ -42,9 +42,9 @@ struct  status_common_info
     mtk::nullable<mtk::trd::msg::RQ_XX_MK>           __last_request;
     virtual const mtk::nullable<mtk::trd::msg::RQ_XX_MK>          &  last_request() const {  return __last_request; };
     virtual void set_last_request(const mtk::nullable<mtk::trd::msg::RQ_XX_MK>          &  _prop) {  __last_request = _prop;  };
-    mtk::CountPtr<mtk::trd::hist::order_historic>    __history;
-    virtual const mtk::CountPtr<mtk::trd::hist::order_historic>   &  history() const {  return __history; };
-    virtual void set_history(const mtk::CountPtr<mtk::trd::hist::order_historic>   &  _prop) {  __history = _prop;  };
+    mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>    __history;
+    virtual const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>   &  history() const {  return __history; };
+    virtual void set_history(const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>   &  _prop) {  __history = _prop;  };
     virtual const bool                                             &  in_market() const {  static bool                                             result(false);   return result; };
     virtual void set_in_market(const bool                                            & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
     virtual const bool                                             &  is_canceled() const {  static bool                                             result(false);   return result; };
@@ -110,7 +110,7 @@ public:
     //  ACCESS
     virtual const mtk::nullable<mtk::trd::msg::CF_XX_MK>           &  last_confirmation (void) const { return ci->last_confirmation(); }; 
     virtual const mtk::nullable<mtk::trd::msg::RQ_XX_MK>           &  last_request (void) const { return ci->last_request(); }; 
-    virtual const mtk::CountPtr<mtk::trd::hist::order_historic>    &  history (void) const { return ci->history(); }; 
+    virtual const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>    &  history (void) const { return ci->history(); }; 
     virtual const bool                                             &  in_market (void) const { return ci->in_market(); }; 
     virtual const bool                                             &  is_canceled (void) const { return ci->is_canceled(); }; 
     virtual const bool                                             &  is_full_executed (void) const { return ci->is_full_executed(); }; 
@@ -5877,7 +5877,7 @@ void error::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 };  // end   namespace fsmgen_trd_cli_mk {
 
-mtk::trd::trd_cli_mk::trd_cli_mk()
+mtk::trd::trd_cli_mk_dangerous_signals_not_warped::trd_cli_mk_dangerous_signals_not_warped()
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::status_common_info> ci = mtk::make_cptr(
                             new fsmgen_trd_cli_mk::status_common_info ( sig_rq_nw,sig_rq_md,sig_rq_cc,sig_rj_nw,sig_rj_md,sig_rj_cc,sig_cf_nw,sig_cf_md,sig_cf_cc,sig_cf_ex,sig_changed));
@@ -5889,104 +5889,229 @@ mtk::trd::trd_cli_mk::trd_cli_mk()
 }
 
 
-mtk::trd::trd_cli_mk::~trd_cli_mk()
+mtk::trd::trd_cli_mk_dangerous_signals_not_warped::~trd_cli_mk_dangerous_signals_not_warped()
 {
 }
 
-void mtk::trd::trd_cli_mk::on_new_status (mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  new_status)
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::on_new_status (mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  new_status)
 {
     current_status = new_status;
 }
 
-void mtk::trd::trd_cli_mk::on_keep_temp_status (void)
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::on_keep_temp_status (void)
 {
     queue_temp_status.push_back(current_status);
 }
-void mtk::trd::trd_cli_mk::on_remove_temp_status (void)
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::on_remove_temp_status (void)
 {
     queue_temp_status.pop_front();
 }
 
 
-void mtk::trd::trd_cli_mk::rq_nw (const mtk::trd::msg::RQ_NW_MK&   rq           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::rq_nw (const mtk::trd::msg::RQ_NW_MK&   rq           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->rq_nw(rq);
 }
-void mtk::trd::trd_cli_mk::rq_md (const mtk::trd::msg::RQ_MD_MK&   rq           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::rq_md (const mtk::trd::msg::RQ_MD_MK&   rq           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->rq_md(rq);
 }
-void mtk::trd::trd_cli_mk::rq_cc (const mtk::trd::msg::RQ_CC_MK&   rq           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::rq_cc (const mtk::trd::msg::RQ_CC_MK&   rq           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->rq_cc(rq);
 }
-void mtk::trd::trd_cli_mk::cf_nw (const mtk::trd::msg::CF_NW_MK&   cf           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::cf_nw (const mtk::trd::msg::CF_NW_MK&   cf           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cf_nw(cf);
 }
-void mtk::trd::trd_cli_mk::cf_md (const mtk::trd::msg::CF_MD_MK&   cf           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::cf_md (const mtk::trd::msg::CF_MD_MK&   cf           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cf_md(cf);
 }
-void mtk::trd::trd_cli_mk::cf_cc (const mtk::trd::msg::CF_CC_MK&   cf           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::cf_cc (const mtk::trd::msg::CF_CC_MK&   cf           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cf_cc(cf);
 }
-void mtk::trd::trd_cli_mk::rj_nw (const mtk::trd::msg::RJ_NW_MK&   rj           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::rj_nw (const mtk::trd::msg::RJ_NW_MK&   rj           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->rj_nw(rj);
 }
-void mtk::trd::trd_cli_mk::rj_md (const mtk::trd::msg::RJ_MD_MK&   rj           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::rj_md (const mtk::trd::msg::RJ_MD_MK&   rj           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->rj_md(rj);
 }
-void mtk::trd::trd_cli_mk::rj_cc (const mtk::trd::msg::RJ_CC_MK&   rj           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::rj_cc (const mtk::trd::msg::RJ_CC_MK&   rj           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->rj_cc(rj);
 }
-void mtk::trd::trd_cli_mk::cf_ex (const mtk::trd::msg::CF_EX_MK&   ex           )
+void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::cf_ex (const mtk::trd::msg::CF_EX_MK&   ex           )
 {
     mtk::CountPtr<fsmgen_trd_cli_mk::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cf_ex(ex);
 }
-const mtk::nullable<mtk::trd::msg::CF_XX_MK>           & mtk::trd::trd_cli_mk::last_confirmation (void) const
+const mtk::nullable<mtk::trd::msg::CF_XX_MK>           & mtk::trd::trd_cli_mk_dangerous_signals_not_warped::last_confirmation (void) const
 {
     return current_status->last_confirmation();
 }
-const mtk::nullable<mtk::trd::msg::RQ_XX_MK>           & mtk::trd::trd_cli_mk::last_request (void) const
+const mtk::nullable<mtk::trd::msg::RQ_XX_MK>           & mtk::trd::trd_cli_mk_dangerous_signals_not_warped::last_request (void) const
 {
     return current_status->last_request();
 }
-const mtk::CountPtr<mtk::trd::hist::order_historic>    & mtk::trd::trd_cli_mk::history (void) const
+const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>    & mtk::trd::trd_cli_mk_dangerous_signals_not_warped::history (void) const
 {
     return current_status->history();
 }
-const bool                                             & mtk::trd::trd_cli_mk::in_market (void) const
+const bool                                             & mtk::trd::trd_cli_mk_dangerous_signals_not_warped::in_market (void) const
 {
     return current_status->in_market();
 }
-const bool                                             & mtk::trd::trd_cli_mk::is_canceled (void) const
+const bool                                             & mtk::trd::trd_cli_mk_dangerous_signals_not_warped::is_canceled (void) const
 {
     return current_status->is_canceled();
 }
-const bool                                             & mtk::trd::trd_cli_mk::is_full_executed (void) const
+const bool                                             & mtk::trd::trd_cli_mk_dangerous_signals_not_warped::is_full_executed (void) const
 {
     return current_status->is_full_executed();
 }
-const bool                                             & mtk::trd::trd_cli_mk::has_pending_rq (void) const
+const bool                                             & mtk::trd::trd_cli_mk_dangerous_signals_not_warped::has_pending_rq (void) const
 {
     return current_status->has_pending_rq();
 }
-const std::string                                      & mtk::trd::trd_cli_mk::serrors (void) const
+const std::string                                      & mtk::trd::trd_cli_mk_dangerous_signals_not_warped::serrors (void) const
 {
     return current_status->serrors();
+}
+
+//  warper RAII with signals and repository
+mtk::trd::trd_cli_mk::trd_cli_mk (void)
+    : ptr (new trd_cli_mk_dangerous_signals_not_warped())
+{
+    ptr->sig_rq_nw.connect(&sig_rq_nw);
+    ptr->sig_rq_md.connect(&sig_rq_md);
+    ptr->sig_rq_cc.connect(&sig_rq_cc);
+    ptr->sig_rj_nw.connect(&sig_rj_nw);
+    ptr->sig_rj_md.connect(&sig_rj_md);
+    ptr->sig_rj_cc.connect(&sig_rj_cc);
+    ptr->sig_cf_nw.connect(&sig_cf_nw);
+    ptr->sig_cf_md.connect(&sig_cf_md);
+    ptr->sig_cf_cc.connect(&sig_cf_cc);
+    ptr->sig_cf_ex.connect(&sig_cf_ex);
+    ptr->sig_changed.connect(&sig_changed);
+}
+mtk::trd::trd_cli_mk::trd_cli_mk (const mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>& _ptr)
+    :   ptr(_ptr)
+{
+    try
+    {
+    ptr->sig_rq_nw.connect(&sig_rq_nw);
+    ptr->sig_rq_md.connect(&sig_rq_md);
+    ptr->sig_rq_cc.connect(&sig_rq_cc);
+    ptr->sig_rj_nw.connect(&sig_rj_nw);
+    ptr->sig_rj_md.connect(&sig_rj_md);
+    ptr->sig_rj_cc.connect(&sig_rj_cc);
+    ptr->sig_cf_nw.connect(&sig_cf_nw);
+    ptr->sig_cf_md.connect(&sig_cf_md);
+    ptr->sig_cf_cc.connect(&sig_cf_cc);
+    ptr->sig_cf_ex.connect(&sig_cf_ex);
+    ptr->sig_changed.connect(&sig_changed);
+    } MTK_CATCH_RETHROW("trd_cli_mk","connecting signals")
+}
+
+void mtk::trd::trd_cli_mk::set (const mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>& _ptr)
+{
+ptr = _ptr;
+    ptr->sig_rq_nw.connect(&sig_rq_nw);
+    ptr->sig_rq_md.connect(&sig_rq_md);
+    ptr->sig_rq_cc.connect(&sig_rq_cc);
+    ptr->sig_rj_nw.connect(&sig_rj_nw);
+    ptr->sig_rj_md.connect(&sig_rj_md);
+    ptr->sig_rj_cc.connect(&sig_rj_cc);
+    ptr->sig_cf_nw.connect(&sig_cf_nw);
+    ptr->sig_cf_md.connect(&sig_cf_md);
+    ptr->sig_cf_cc.connect(&sig_cf_cc);
+    ptr->sig_cf_ex.connect(&sig_cf_ex);
+    ptr->sig_changed.connect(&sig_changed);
+}
+
+
+void mtk::trd::trd_cli_mk::rq_nw (const mtk::trd::msg::RQ_NW_MK&   rq           )
+{
+    ptr->rq_nw(rq);
+}
+void mtk::trd::trd_cli_mk::rq_md (const mtk::trd::msg::RQ_MD_MK&   rq           )
+{
+    ptr->rq_md(rq);
+}
+void mtk::trd::trd_cli_mk::rq_cc (const mtk::trd::msg::RQ_CC_MK&   rq           )
+{
+    ptr->rq_cc(rq);
+}
+void mtk::trd::trd_cli_mk::cf_nw (const mtk::trd::msg::CF_NW_MK&   cf           )
+{
+    ptr->cf_nw(cf);
+}
+void mtk::trd::trd_cli_mk::cf_md (const mtk::trd::msg::CF_MD_MK&   cf           )
+{
+    ptr->cf_md(cf);
+}
+void mtk::trd::trd_cli_mk::cf_cc (const mtk::trd::msg::CF_CC_MK&   cf           )
+{
+    ptr->cf_cc(cf);
+}
+void mtk::trd::trd_cli_mk::rj_nw (const mtk::trd::msg::RJ_NW_MK&   rj           )
+{
+    ptr->rj_nw(rj);
+}
+void mtk::trd::trd_cli_mk::rj_md (const mtk::trd::msg::RJ_MD_MK&   rj           )
+{
+    ptr->rj_md(rj);
+}
+void mtk::trd::trd_cli_mk::rj_cc (const mtk::trd::msg::RJ_CC_MK&   rj           )
+{
+    ptr->rj_cc(rj);
+}
+void mtk::trd::trd_cli_mk::cf_ex (const mtk::trd::msg::CF_EX_MK&   ex           )
+{
+    ptr->cf_ex(ex);
+}
+const mtk::nullable<mtk::trd::msg::CF_XX_MK>           & mtk::trd::trd_cli_mk::last_confirmation (void) const
+{
+    return  ptr->last_confirmation();
+}
+const mtk::nullable<mtk::trd::msg::RQ_XX_MK>           & mtk::trd::trd_cli_mk::last_request (void) const
+{
+    return  ptr->last_request();
+}
+const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>    & mtk::trd::trd_cli_mk::history (void) const
+{
+    return  ptr->history();
+}
+const bool                                             & mtk::trd::trd_cli_mk::in_market (void) const
+{
+    return  ptr->in_market();
+}
+const bool                                             & mtk::trd::trd_cli_mk::is_canceled (void) const
+{
+    return  ptr->is_canceled();
+}
+const bool                                             & mtk::trd::trd_cli_mk::is_full_executed (void) const
+{
+    return  ptr->is_full_executed();
+}
+const bool                                             & mtk::trd::trd_cli_mk::has_pending_rq (void) const
+{
+    return  ptr->has_pending_rq();
+}
+const std::string                                      & mtk::trd::trd_cli_mk::serrors (void) const
+{
+    return  ptr->serrors();
 }

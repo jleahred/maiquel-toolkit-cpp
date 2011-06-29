@@ -71,35 +71,60 @@ void set_base_font_size(int new_size)
 
 
 //  by order type   access   ****************************************************************************************
-mtk::FixedNumber   get_order_position_price  (mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order)
 {
-    if(order->has_pending_rq())
-        return order->last_request().Get().request_pos.price;
+    if(order.has_pending_rq())
+        return order.last_request().Get().request_pos.price;
     else
-        return order->last_confirmation().Get().market_pos.price;
+        return order.last_confirmation().Get().market_pos.price;
+}
+mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_ls& order)
+{
+    if(order.has_pending_rq())
+        return order.last_request().Get().request_pos.price;
+    else
+        return order.last_confirmation().Get().market_pos.price;
 }
 
 
 
-mtk::FixedNumber   get_order_position_price  (mtk::CountPtr<mtk::trd::trd_cli_mk>& /*order*/)
+mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& /*order*/)
+{
+    return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(0), mtk::fnInc(0));
+}
+mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_mk& /*order*/)
 {
     return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(0), mtk::fnInc(0));
 }
 
-mtk::FixedNumber   get_order_position_quantity  (mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order)
 {
-    if(order->has_pending_rq())
-        return order->last_request().Get().request_pos.quantity;
+    if(order.has_pending_rq())
+        return order.last_request().Get().request_pos.quantity;
     else
-        return order->last_confirmation().Get().market_pos.quantity;
+        return order.last_confirmation().Get().market_pos.quantity;
+}
+mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls& order)
+{
+    if(order.has_pending_rq())
+        return order.last_request().Get().request_pos.quantity;
+    else
+        return order.last_confirmation().Get().market_pos.quantity;
 }
 
-mtk::FixedNumber   get_order_position_quantity  (mtk::CountPtr<mtk::trd::trd_cli_mk>& order)
+mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order)
 {
-    if(order->has_pending_rq())
-        return order->last_request().Get().request_pos.quantity;
+    if(order.has_pending_rq())
+        return order.last_request().Get().request_pos.quantity;
     else
-        return order->last_confirmation().Get().market_pos.quantity;
+        return order.last_confirmation().Get().market_pos.quantity;
+}
+mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk& order)
+{
+    if(order.has_pending_rq())
+        return order.last_request().Get().request_pos.quantity;
+    else
+        return order.last_confirmation().Get().market_pos.quantity;
 }
 
 

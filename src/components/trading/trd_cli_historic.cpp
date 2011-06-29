@@ -10,7 +10,7 @@ namespace  hist {
 
 
 
-order_historic::order_historic(void)
+order_historic_dangerous_not_signal_warped::order_historic_dangerous_not_signal_warped(void)
 {
     list_historic_item = mtk::make_cptr(new mtk::list<order_historic_item>);
 }
@@ -71,7 +71,7 @@ mtk::tuple<int, std::string>    check_for_previus_request_and_fill_delay_if_so(o
 }
 
 
-std::string    order_historic::add_item(const order_historic_item& _item)
+std::string    order_historic_dangerous_not_signal_warped::add_item(const order_historic_item& _item)
 {
     auto item = _item;
     

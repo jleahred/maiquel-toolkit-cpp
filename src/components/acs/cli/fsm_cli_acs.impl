@@ -2174,7 +2174,7 @@ void w_chpwd::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
 
 };  // end   namespace fsmgen_fsm_cli_acs {
 
-mtk::acs_cli::fsm_cli_acs::fsm_cli_acs()
+mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::fsm_cli_acs_dangerous_signals_not_warped()
 {
     mtk::CountPtr<fsmgen_fsm_cli_acs::status_common_info> ci = mtk::make_cptr(
                             new fsmgen_fsm_cli_acs::status_common_info ( sig_confirm_login_ok,sig_reject_login,sig_logout_login,sig_password_changed,sig_password_change_rj));
@@ -2186,45 +2186,100 @@ mtk::acs_cli::fsm_cli_acs::fsm_cli_acs()
 }
 
 
-mtk::acs_cli::fsm_cli_acs::~fsm_cli_acs()
+mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::~fsm_cli_acs_dangerous_signals_not_warped()
 {
 }
 
-void mtk::acs_cli::fsm_cli_acs::on_new_status (mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  new_status)
+void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::on_new_status (mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  new_status)
 {
     current_status = new_status;
 }
 
-void mtk::acs_cli::fsm_cli_acs::on_keep_temp_status (void)
+void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::on_keep_temp_status (void)
 {
     queue_temp_status.push_back(current_status);
 }
-void mtk::acs_cli::fsm_cli_acs::on_remove_temp_status (void)
+void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::on_remove_temp_status (void)
 {
     queue_temp_status.pop_front();
 }
 
 
-void mtk::acs_cli::fsm_cli_acs::user_rq_login (const std::string&   _user_name , const std::string&   _password    )
+void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::user_rq_login (const std::string&   _user_name , const std::string&   _password    )
 {
     mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->user_rq_login(_user_name, _password);
 }
-void mtk::acs_cli::fsm_cli_acs::user_rq_logout ()
+void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::user_rq_logout ()
 {
     mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->user_rq_logout();
 }
-void mtk::acs_cli::fsm_cli_acs::user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  )
+void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  )
 {
     mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->user_rq_changepass(_old_password, _new_password);
 }
-const mtk::CountPtr< mtk::qpid_session >    & mtk::acs_cli::fsm_cli_acs::qpid_session (void) const
+const mtk::CountPtr< mtk::qpid_session >    & mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::qpid_session (void) const
 {
     return current_status->qpid_session();
 }
-const std::string                         & mtk::acs_cli::fsm_cli_acs::user_name (void) const
+const std::string                         & mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::user_name (void) const
 {
     return current_status->user_name();
+}
+
+//  warper RAII with signals and repository
+mtk::acs_cli::fsm_cli_acs::fsm_cli_acs (void)
+    : ptr (new fsm_cli_acs_dangerous_signals_not_warped())
+{
+    ptr->sig_confirm_login_ok.connect(&sig_confirm_login_ok);
+    ptr->sig_reject_login.connect(&sig_reject_login);
+    ptr->sig_logout_login.connect(&sig_logout_login);
+    ptr->sig_password_changed.connect(&sig_password_changed);
+    ptr->sig_password_change_rj.connect(&sig_password_change_rj);
+}
+mtk::acs_cli::fsm_cli_acs::fsm_cli_acs (const mtk::CountPtr<fsm_cli_acs_dangerous_signals_not_warped>& _ptr)
+    :   ptr(_ptr)
+{
+    try
+    {
+    ptr->sig_confirm_login_ok.connect(&sig_confirm_login_ok);
+    ptr->sig_reject_login.connect(&sig_reject_login);
+    ptr->sig_logout_login.connect(&sig_logout_login);
+    ptr->sig_password_changed.connect(&sig_password_changed);
+    ptr->sig_password_change_rj.connect(&sig_password_change_rj);
+    } MTK_CATCH_RETHROW("fsm_cli_acs","connecting signals")
+}
+
+void mtk::acs_cli::fsm_cli_acs::set (const mtk::CountPtr<fsm_cli_acs_dangerous_signals_not_warped>& _ptr)
+{
+ptr = _ptr;
+    ptr->sig_confirm_login_ok.connect(&sig_confirm_login_ok);
+    ptr->sig_reject_login.connect(&sig_reject_login);
+    ptr->sig_logout_login.connect(&sig_logout_login);
+    ptr->sig_password_changed.connect(&sig_password_changed);
+    ptr->sig_password_change_rj.connect(&sig_password_change_rj);
+}
+
+
+void mtk::acs_cli::fsm_cli_acs::user_rq_login (const std::string&   _user_name , const std::string&   _password    )
+{
+    ptr->user_rq_login(_user_name, _password);
+}
+void mtk::acs_cli::fsm_cli_acs::user_rq_logout ()
+{
+    ptr->user_rq_logout();
+}
+void mtk::acs_cli::fsm_cli_acs::user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  )
+{
+    ptr->user_rq_changepass(_old_password, _new_password);
+}
+const mtk::CountPtr< mtk::qpid_session >    & mtk::acs_cli::fsm_cli_acs::qpid_session (void) const
+{
+    return  ptr->qpid_session();
+}
+const std::string                         & mtk::acs_cli::fsm_cli_acs::user_name (void) const
+{
+    return  ptr->user_name();
 }

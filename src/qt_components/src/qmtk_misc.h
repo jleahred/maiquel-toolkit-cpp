@@ -36,7 +36,8 @@ const QColor mtk_color_sell         (QColor(Qt::red).lighter(160));
 const QColor mtk_color_buy          (QColor(Qt::green).lighter(160));
 const QColor mtk_color_sell_cell    (QColor(255,215,225));
 const QColor mtk_color_buy_cell     (QColor(215,255,225));
-const QColor mtk_color_executed     (QColor(Qt::cyan).lighter(120));
+//const QColor mtk_color_executed     (QColor(Qt::cyan).lighter(120));
+const QColor mtk_color_executed     (QColor(255, 175, 75));
 const QColor mtk_color_pending      (QColor(Qt::yellow).lighter(150));
 
 
@@ -50,36 +51,36 @@ void set_base_font_size(int new_size);
 
 
 template<typename  ORDER_TYPE>
-mtk::trd::msg::sub_invariant_order_info      get_order_invariant (mtk::CountPtr<ORDER_TYPE>& order)
+mtk::trd::msg::sub_invariant_order_info      get_order_invariant (ORDER_TYPE& order)
 {
-    if (order->last_confirmation().HasValue())
-        return order->last_confirmation().Get().invariant;
-    else if (order->last_request().HasValue())
-        return order->last_request().Get().invariant;
+    if (order.last_confirmation().HasValue())
+        return order.last_confirmation().Get().invariant;
+    else if (order.last_request().HasValue())
+        return order.last_request().Get().invariant;
     else
         throw mtk::Alarm(MTK_HERE, "qmtk_misc", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
 
 template<typename  ORDER_TYPE>
-mtk::nullable<mtk::trd::msg::sub_total_executions>      get_order_total_executions (mtk::CountPtr<ORDER_TYPE>& order)
+mtk::nullable<mtk::trd::msg::sub_total_executions>      get_order_total_executions (ORDER_TYPE& order)
 {
-    if (order->last_confirmation().HasValue())
-        return mtk::make_nullable(order->last_confirmation().Get().total_execs);
+    if (order.last_confirmation().HasValue())
+        return mtk::make_nullable(order.last_confirmation().Get().total_execs);
     else
         return  mtk::nullable<mtk::trd::msg::sub_total_executions>();
 }
 
 template<typename  ORDER_TYPE>
-std::string       get_order_remarks (mtk::CountPtr<ORDER_TYPE>& order)
+std::string       get_order_remarks (ORDER_TYPE& order)
 {
     std::string result;
-    if (order->last_confirmation().HasValue())
-        result += order->last_confirmation().Get().cli_ref;
-    else if (order->last_request().HasValue())
-        result += order->last_request().Get().cli_ref;
+    if (order.last_confirmation().HasValue())
+        result += order.last_confirmation().Get().cli_ref;
+    else if (order.last_request().HasValue())
+        result += order.last_request().Get().cli_ref;
     else
         throw mtk::Alarm(MTK_HERE, "qmtk_misc", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-    return result + order->serrors();
+    return result + order.serrors();
 }
 
 
@@ -88,14 +89,20 @@ std::string       get_order_remarks (mtk::CountPtr<ORDER_TYPE>& order)
 
 
 //  by order type   access   ****************************************************************************************
-mtk::FixedNumber   get_order_position_price  (mtk::CountPtr<mtk::trd::trd_cli_ls>& order);
-mtk::FixedNumber   get_order_position_price  (mtk::CountPtr<mtk::trd::trd_cli_mk>& order);
+mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
+mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);
+mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_ls                             & order);
+mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_mk                             & order);
 
-mtk::FixedNumber   get_order_position_quantity  (mtk::CountPtr<mtk::trd::trd_cli_ls>& order);
-mtk::FixedNumber   get_order_position_quantity  (mtk::CountPtr<mtk::trd::trd_cli_mk>& order);
+mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
+mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);
+mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls                             & order);
+mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk                             & order);
 
-mtk::trd::msg::sub_position_ls      get_request  (mtk::CountPtr<mtk::trd::trd_cli_ls>& order);
-mtk::trd::msg::sub_position_mk      get_request  (mtk::CountPtr<mtk::trd::trd_cli_mk>& order);
+mtk::trd::msg::sub_position_ls      get_request  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
+mtk::trd::msg::sub_position_mk      get_request  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);
+mtk::trd::msg::sub_position_ls      get_request  (mtk::trd::trd_cli_ls                             & order);
+mtk::trd::msg::sub_position_mk      get_request  (mtk::trd::trd_cli_mk                             & order);
 
 
 };      //      namespace qtmisc {

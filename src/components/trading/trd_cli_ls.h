@@ -27,16 +27,22 @@ namespace fsmgen_trd_cli_ls {
 
 namespace mtk{namespace trd{
 
+class trd_cli_ls_dangerous_signals_not_warped;
+
+
+
 
 class trd_cli_ls   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
     typedef  trd_cli_ls  CLASS_NAME;
 
-
 public:
-    trd_cli_ls ();
-    virtual ~trd_cli_ls ();
+    explicit trd_cli_ls ();
+    explicit trd_cli_ls (const mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>&  _ptr);
+    virtual ~trd_cli_ls (){};
+
+
 
     //  INPUT
     void rq_nw          ( const mtk::trd::msg::RQ_NW_LS&   rq           );
@@ -68,7 +74,70 @@ public:
     //  ACCESS
     const mtk::nullable<mtk::trd::msg::CF_XX_LS>           &  last_confirmation () const;
     const mtk::nullable<mtk::trd::msg::RQ_XX_LS>           &  last_request () const;
-    const mtk::CountPtr<mtk::trd::hist::order_historic>    &  history () const;
+    const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>   &  history () const;
+    const bool                                             &  in_market () const;
+    const bool                                             &  is_canceled () const;
+    const bool                                             &  is_full_executed () const;
+    const bool                                             &  has_pending_rq () const;
+    const std::string                                      &  serrors () const;
+
+
+
+    void  set   (const mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>&  _ptr);
+
+
+private:
+    mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>       ptr;
+
+};
+
+
+
+
+//  this class has to be used carefully
+//  It has to be used as internal storage in respositories
+
+class trd_cli_ls_dangerous_signals_not_warped   : public mtk::SignalReceptor
+{
+    mtk::non_copyable nc;
+    typedef  trd_cli_ls_dangerous_signals_not_warped  CLASS_NAME;
+
+
+public:
+    trd_cli_ls_dangerous_signals_not_warped ();
+    virtual ~trd_cli_ls_dangerous_signals_not_warped ();
+
+    //  INPUT
+    void rq_nw          ( const mtk::trd::msg::RQ_NW_LS&   rq           );
+    void rq_md          ( const mtk::trd::msg::RQ_MD_LS&   rq           );
+    void rq_cc          ( const mtk::trd::msg::RQ_CC_LS&   rq           );
+    void cf_nw          ( const mtk::trd::msg::CF_NW_LS&   cf           );
+    void cf_md          ( const mtk::trd::msg::CF_MD_LS&   cf           );
+    void cf_cc          ( const mtk::trd::msg::CF_CC_LS&   cf           );
+    void rj_nw          ( const mtk::trd::msg::RJ_NW_LS&   rj           );
+    void rj_md          ( const mtk::trd::msg::RJ_MD_LS&   rj           );
+    void rj_cc          ( const mtk::trd::msg::RJ_CC_LS&   rj           );
+    void cf_ex          ( const mtk::trd::msg::CF_EX_LS&   ex           );
+
+
+    //  OUTPUT
+    mtk::Signal< const mtk::trd::msg::RQ_NW_LS&   /*rq*/          > sig_rq_nw;
+    mtk::Signal< const mtk::trd::msg::RQ_MD_LS&   /*rq*/          > sig_rq_md;
+    mtk::Signal< const mtk::trd::msg::RQ_CC_LS&   /*rq*/          > sig_rq_cc;
+    mtk::Signal< const mtk::trd::msg::RJ_NW_LS&   /*rj*/          > sig_rj_nw;
+    mtk::Signal< const mtk::trd::msg::RJ_MD_LS&   /*rj*/          > sig_rj_md;
+    mtk::Signal< const mtk::trd::msg::RJ_CC_LS&   /*rj*/          > sig_rj_cc;
+    mtk::Signal< const mtk::trd::msg::CF_NW_LS&   /*cf*/          > sig_cf_nw;
+    mtk::Signal< const mtk::trd::msg::CF_MD_LS&   /*cf*/          > sig_cf_md;
+    mtk::Signal< const mtk::trd::msg::CF_CC_LS&   /*cf*/          > sig_cf_cc;
+    mtk::Signal< const mtk::trd::msg::CF_EX_LS&   /*ex*/          > sig_cf_ex;
+    mtk::Signal<  > sig_changed;
+
+
+    //  ACCESS
+    const mtk::nullable<mtk::trd::msg::CF_XX_LS>           &  last_confirmation () const;
+    const mtk::nullable<mtk::trd::msg::RQ_XX_LS>           &  last_request () const;
+    const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>   &  history () const;
     const bool                                             &  in_market () const;
     const bool                                             &  is_canceled () const;
     const bool                                             &  is_full_executed () const;
@@ -87,6 +156,7 @@ private:
     void on_keep_temp_status (void);
     void on_remove_temp_status (void);
 };
+
 
 
 

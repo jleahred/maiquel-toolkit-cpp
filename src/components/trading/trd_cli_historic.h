@@ -38,7 +38,7 @@ struct  order_historic_item
 
 
 
-class  order_historic
+class  order_historic_dangerous_not_signal_warped
 {
     mtk::non_copyable nc;
 public:
@@ -51,13 +51,46 @@ public:
     mtk::Signal<int, const order_historic_item&>        signal_modified_item;
     
     
-    order_historic(void);
+    order_historic_dangerous_not_signal_warped(void);
         
 private:
     mtk::CountPtr<mtk::list<order_historic_item> >            list_historic_item;
     
 };
     
+
+class  order_historic2
+{
+    mtk::non_copyable nc;
+public:
+    
+        //  add_item will return  the error message, empty if there is no error
+    std::string                                         add_item(const order_historic_item&  item)  {  return  ptr->add_item(item);  }
+    mtk::CountPtr<mtk::list<order_historic_item> >      get_items_list(void) const   { return   ptr->get_items_list();    }
+    
+    mtk::Signal<const order_historic_item&>             signal_new_item_added;
+    mtk::Signal<int, const order_historic_item&>        signal_modified_item;
+    
+    
+    explicit  order_historic2(const mtk::CountPtr<order_historic_dangerous_not_signal_warped> _ptr) : ptr(_ptr)
+    {
+        try
+        {
+            ptr->signal_modified_item.connect (&signal_modified_item);
+            ptr->signal_new_item_added.connect(&signal_new_item_added);
+        } MTK_CATCH_RETHROW("order_historic2","connecting signals")
+    }
+        
+private:
+    mtk::CountPtr<order_historic_dangerous_not_signal_warped>   ptr;
+};
+
+
+inline  mtk::CountPtr<order_historic2>   order_historic2_sig_wp_cptr(const mtk::CountPtr<order_historic_dangerous_not_signal_warped>  oh)
+{
+    return mtk::make_cptr(new order_historic2(oh));
+}
+
     
 
 };      //  namespace  mtk
