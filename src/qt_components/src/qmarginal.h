@@ -86,7 +86,6 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *);
     void contextMenuEvent ( QContextMenuEvent * event );
-    //void resizeEvent(QResizeEvent *event);
 
 private slots:
     void request_buy (void);
@@ -102,7 +101,6 @@ private slots:
     void request_sell_market(void);
     void request_side_market(mtk::trd::msg::enBuySell bs);
 
-    void slot_column_resized(int, int, int);
     void slot_remove_current_row(void);
 
 private:

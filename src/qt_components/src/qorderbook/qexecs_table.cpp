@@ -145,8 +145,6 @@ QExecsTable::QExecsTable(QWidget *parent) :
     hl->setContentsMargins(0, 0, 0, 0);
     hl->addWidget(table_widget);
 
-    //table_widget->horizontalHeader()->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
-
     QStringList headers_captions;
     {
         static const char* const col_captions[] = {     QT_TR_NOOP("product"),
@@ -298,6 +296,5 @@ void QExecsTable::contextMenuEvent(QContextMenuEvent *e)
         connect(action, SIGNAL(triggered()), this, SLOT(slot_show_all_execs()));
         menu.addAction(action);
     }
-    //menu.setStyleSheet(this->styleSheet());
     menu.exec(this->mapToGlobal(e->pos()));
 }

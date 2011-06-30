@@ -44,15 +44,10 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     this->setFont(font);
 
     if (rq.invariant.side == mtk::trd::msg::buy)
-    {
-        ui->BuySell->setText(tr("BUY"));
-        setPalette( qtmisc::mtk_color_buy );
-    }
+        ui->side->setText(tr("buy"));
     else
-    {
-        ui->BuySell->setText(tr("SELL"));
-        setPalette( QPalette(qtmisc::mtk_color_sell));
-    }
+        ui->side->setText(tr("sell"));
+
     ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
     ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
@@ -139,13 +134,11 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
 
     if (rq.invariant.side == mtk::trd::msg::buy)
     {
-        ui->BuySell->setText(tr("BUY"));
-        setPalette( qtmisc::mtk_color_buy );
+        ui->side->setText(tr("buy"));
     }
     else
     {
-        ui->BuySell->setText(tr("SELL"));
-        setPalette( QPalette(qtmisc::mtk_color_sell));
+        ui->side->setText(tr("sell"));
     }
     ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));

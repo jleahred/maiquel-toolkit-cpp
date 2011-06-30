@@ -131,12 +131,6 @@ QTableMarginal::QTableMarginal(QWidget *parent)
       paint_delegate(new QCommonTableDelegate(this)),
       showing_menu(false)
 {
-    //this->setStyleSheet("background-color: rgb(191,219,255);");
-    //color_product = QColor(191,219,255);
-    //this->horizontalHeader()->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
-
-
-    //color_product = this->horizontalHeader()->palette().background().color();
     this->setAcceptDrops(true);
 
     setItemDelegate(paint_delegate);
@@ -158,24 +152,15 @@ QTableMarginal::QTableMarginal(QWidget *parent)
 
 
         setColumnCount(5);
-
-        //item->setForeground(QBrush(Qt::black));
         #define QMARG_INIT_HEADER_ITEM(__COLUMN__, __TEXT__) \
         {   \
             item = new QTableWidgetItem(); \
-            item->setForeground(QBrush(QColor(30,0,100)));  \
             item->setText(__TEXT__);   \
             setHorizontalHeaderItem(__COLUMN__, item);   \
-            QFont font(item->font());   \
-            font.setBold(true);   \
-            item->setFont(font);    \
         }
 
         {
             QTableWidgetItem *item=0;
-            //QFont font(this->font());
-            //font.setBold(true);
-            //font.setPointSize(11);
             QMARG_INIT_HEADER_ITEM(0, tr("Product"))
             QMARG_INIT_HEADER_ITEM(1, tr("Qty bid"))
             QMARG_INIT_HEADER_ITEM(2, tr("BID")    )
@@ -185,7 +170,6 @@ QTableMarginal::QTableMarginal(QWidget *parent)
         horizontalHeader()->setMovable(true);
     }
     this->setFrameShape(QFrame::NoFrame);
-    connect(this->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), SLOT(slot_column_resized(int,int,int)));
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     action_buy = new QAction(tr("buy"), this);
@@ -223,39 +207,8 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     connect(action_remove_product, SIGNAL(triggered()), this, SLOT(slot_remove_current_row()));
     this->addAction(action_remove_product);
     this->disable_actions();
+    this->horizontalHeader()->setResizeMode(this->columnCount()-1, QHeaderView::Stretch);
 }
-
-void QTableMarginal::slot_column_resized(int li, int, int)
-{
-    if(li == this->columnCount()-1)
-        this->horizontalHeader()->resizeSection(li, 20);
-}
-
-/*
-void QTableMarginal::resizeEvent(QResizeEvent *event)
-{
-    static mtk::vector<int>  previus_size;
-    double total_size=0.;
-
-    //  get proportions
-    for(int i=0; i<this->columnCount(); ++i)
-    {
-        if(previus_size.size() < this->columnCount())
-            previus_size.push_back(this->horizontalHeader()->sectionSize(i));
-        else
-            previus_size[i] = this->horizontalHeader()->sectionSize(i);
-        total_size += double(this->horizontalHeader()->sectionSize(i));
-    }
-    QTableWidget::resizeEvent(event);
-
-    for(int i=0; i<this->columnCount(); ++i)
-    {
-        double prev_proportion = double(previus_size[i]) / total_size;
-        this->horizontalHeader()->resizeSection(i, int(prev_proportion * total_size));
-    }
-}
-*/
-
 
 
 
@@ -728,7 +681,6 @@ void QTableMarginal::request_lift_the_offer(void)
 
 void QTableMarginal::make_transparent(void)
 {
-    //this->setStyleSheet("background-color: rgb(191,219,255, 150);");
     mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it =  marginals.begin();
     while (it != marginals.end())
     {
@@ -793,7 +745,6 @@ void QTableMarginal::request_sell_market(void)
 
 void QTableMarginal::remove_transparency(void)
 {
-    //this->setStyleSheet("background-color: rgb(191,219,255);");
     mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it =  marginals.begin();
     while (it != marginals.end())
     {

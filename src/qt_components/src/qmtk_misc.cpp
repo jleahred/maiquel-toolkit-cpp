@@ -50,7 +50,7 @@ mtk::msg::sub_product_code  get_product_code(QDropEvent *event)
 
 
 namespace {
-    int base_font_size=10;
+    int base_font_size=14;
 };
 
 int get_base_font_size(void)
@@ -138,8 +138,8 @@ mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk& order)
 
 QString   side_as_text(mtk::trd::msg::enBuySell side)
 {
-    if(side  == mtk::trd::msg::buy)             return QLatin1String("buy");
-    else  if(side  == mtk::trd::msg::sell)      return QLatin1String("sell");
+    if(side  == mtk::trd::msg::buy)             return QObject::tr("buy");
+    else  if(side  == mtk::trd::msg::sell)      return QObject::tr("sell");
     else                                        return QLatin1String("???");
 }
 

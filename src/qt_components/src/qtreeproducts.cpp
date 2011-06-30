@@ -87,10 +87,8 @@ public:
         //p.setColor(QPalette::Background, QColor(0,0,255,160));
         //setPalette(p);
 
-        //this->setStyleSheet("background-color: rgba(0,0,255,160, 0);");
         raise();
         setMouseTracking(true);
-        this->setStyleSheet(QLatin1String("background-color: rgba(0, 0, 255, 0); color:rgba(255,255,255)"));
     }
 
     void paintEvent(QPaintEvent /**event*/)

@@ -107,7 +107,6 @@ QOrderBook::QOrderBook(QWidget *parent) :
         new_button->setToolTip(tr("Create a new tab"));
 
         tab_widget->setCornerWidget(w, Qt::TopLeftCorner);
-        //w->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
     }
 
     {
@@ -124,7 +123,6 @@ QOrderBook::QOrderBook(QWidget *parent) :
         hl->addWidget(filter_button);
 
         tab_widget->setCornerWidget(w);
-        //w->setStyleSheet(QLatin1String("background-color: rgb(191,219,255);"));
     }
     create_new_tab();
 

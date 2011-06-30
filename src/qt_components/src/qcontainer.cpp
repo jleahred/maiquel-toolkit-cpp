@@ -24,7 +24,6 @@
 qContainer::qContainer(QWidget *parent) :
     QScrollArea(parent), counter_insertions(0)
 {
-    this->viewport()->setBackgroundRole(QPalette::Dark);
 }
 
 
