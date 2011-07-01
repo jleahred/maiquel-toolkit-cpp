@@ -174,7 +174,7 @@ void QOrderBook::delete_current_tab(bool ask)
     delete tab_widget->widget(tab_widget->currentIndex());
     if(tab_widget->count() <= 5)
         new_button->setEnabled(true);
-    if(tab_widget->count() == 2)        //  2 because of deletelater  IMPORTANT
+    if(tab_widget->count() == 1)
         close_button->setEnabled(false);
 
 }

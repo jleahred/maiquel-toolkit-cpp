@@ -21,6 +21,7 @@ namespace qtmisc {
 
 
 QString     fn_as_QString(const mtk::FixedNumber& fn);
+QString     nullable_fn_as_QString(const mtk::nullable<mtk::FixedNumber>& fn);
 QString     side_as_text(mtk::trd::msg::enBuySell side);
 
 
@@ -89,10 +90,10 @@ std::string       get_order_remarks (ORDER_TYPE& order)
 
 
 //  by order type   access   ****************************************************************************************
-mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
-mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);
-mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_ls                             & order);
-mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_mk                             & order);
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_ls                             & order);
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_mk                             & order);
 
 mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
 mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);

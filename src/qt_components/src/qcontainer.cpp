@@ -30,6 +30,7 @@ qContainer::qContainer(QWidget *parent) :
 QMarginal*  qContainer::insert_qmarginal(void)
 {
     QMarginal* marginals= new QMarginal(this->widget());
+    connect(marginals, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved()));
     marginals->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
@@ -41,6 +42,7 @@ QMarginal*  qContainer::insert_qmarginal(void)
 QDepth* qContainer::insert_qdepth()
 {
     QDepth* depth= new QDepth(this->widget());
+    connect(depth, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved()));
     depth->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
@@ -91,10 +93,26 @@ void     operator>> (const YAML::Node & node   , qContainer& c)
         QDepth* d = c.insert_qdepth();
         node["tables_depths"][i] >>  *d;
     }
+    c.slot_widget_moved();
 }
 
 
+void qContainer::slot_widget_moved(void)
+{
+    int maxwith = 30;
+    int maxheigh = 30;
+    for(int i=0; i<this->children().at(0)->children().at(0)->children().count(); ++i)
+    {
+        mtkContainerWidget* mtkwidget = dynamic_cast<mtkContainerWidget*>(this->children().at(0)->children().at(0)->children().at(i));
+        if(mtkwidget != 0)
+        {
+            if(maxheigh < mtkwidget->geometry().top()+mtkwidget->geometry().height())
+                maxheigh = mtkwidget->geometry().top()+mtkwidget->geometry().height();
+            if(maxwith < mtkwidget->geometry().left()+mtkwidget->geometry().width())
+                maxwith = mtkwidget->geometry().left()+mtkwidget->geometry().width();
+        }
+    }
+    this->widget()->setGeometry(0,0,maxwith, maxheigh);
+}
 
-
-using namespace std;
 

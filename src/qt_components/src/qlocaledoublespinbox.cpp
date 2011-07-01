@@ -4,8 +4,11 @@
 #include <iostream>
 #include <math.h>
 
-
 #include <QKeyEvent>
+
+
+#include "support/mtk_double.h"
+
 
 
 
@@ -45,7 +48,9 @@ QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) con
 
 QString qLocaleDoubleSpinBox::textFromValue(double val) const
 {
-    if(this->text() != QLatin1String("+")  &&   this->text() != QLatin1String("-"))
+    if(this->text() == QLatin1String("")  &&  mtk::Double(val) == mtk::Double(0))
+        return this->text();
+    else if(this->text() != QLatin1String("+")  &&   this->text() != QLatin1String("-"))
         return QDoubleSpinBox::textFromValue(val);
     else
         return this->text();

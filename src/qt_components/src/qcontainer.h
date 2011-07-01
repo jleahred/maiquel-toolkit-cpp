@@ -30,6 +30,9 @@ signals:
 
 public slots:
 
+
+private slots:
+    void slot_widget_moved(void);
 };
 
 #endif // QCONTAINER_H

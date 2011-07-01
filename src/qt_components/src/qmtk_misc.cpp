@@ -17,6 +17,13 @@ QString fn_as_QString(const mtk::FixedNumber& fn)
     else    return QLocale::system().toString(fn.GetDouble().get()._0, 'f', fn.GetExt().GetDec());
 }
 
+QString     nullable_fn_as_QString(const mtk::nullable<mtk::FixedNumber>& fn)
+{
+    if(fn.HasValue() == false)      return QLatin1String("");
+    else                            return fn_as_QString(fn.Get());
+}
+
+
 
 
 
@@ -50,7 +57,7 @@ mtk::msg::sub_product_code  get_product_code(QDropEvent *event)
 
 
 namespace {
-    int base_font_size=14;
+    int base_font_size=13;
 };
 
 int get_base_font_size(void)
@@ -71,31 +78,33 @@ void set_base_font_size(int new_size)
 
 
 //  by order type   access   ****************************************************************************************
-mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order)
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order)
 {
     if(order.has_pending_rq())
-        return order.last_request().Get().request_pos.price;
+        return mtk::make_nullable(order.last_request().Get().request_pos.price);
     else
-        return order.last_confirmation().Get().market_pos.price;
+        return mtk::make_nullable(order.last_confirmation().Get().market_pos.price);
 }
-mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_ls& order)
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_ls& order)
 {
     if(order.has_pending_rq())
-        return order.last_request().Get().request_pos.price;
+        return mtk::make_nullable(order.last_request().Get().request_pos.price);
     else
-        return order.last_confirmation().Get().market_pos.price;
+        return mtk::make_nullable(order.last_confirmation().Get().market_pos.price);
 }
 
 
 
-mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& /*order*/)
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& /*order*/)
 {
-    return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(0), mtk::fnInc(0));
+    return mtk::nullable<mtk::FixedNumber>();
 }
-mtk::FixedNumber   get_order_position_price  (mtk::trd::trd_cli_mk& /*order*/)
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_mk& /*order*/)
 {
-    return mtk::FixedNumber(mtk::fnDouble(0.), mtk::fnDec(0), mtk::fnInc(0));
+    return mtk::nullable<mtk::FixedNumber>();
 }
+
+
 
 mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order)
 {

@@ -142,6 +142,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     }
     ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
+    ui->price->setVisible(false);
+    ui->price->setEnabled(false);
     ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
     ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
     if(rq.request_pos.quantity.GetIntCode()!=0)

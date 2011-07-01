@@ -27,11 +27,11 @@ namespace {
     const int col_market        = 5;
     const int col_product       = 6;
     const int col_side          = 7;
-    const int col_price         = 8;
-    const int col_quantity      = 9;
-    const int col_exec_price    = 10;
-    const int col_exec_quantity = 11;
-    const int col_rem_quantity  = 12;
+    const int col_quantity      = 8;
+    const int col_price         = 9;
+    const int col_exec_quantity = 10;
+    const int col_rem_quantity  = 11;
+    const int col_exec_price    = 12;
     const int col_remarks       = 13;
 
     const int count_items       = 14;
@@ -350,7 +350,7 @@ public:
     void update_item_price(void)
     {
         QTableWidgetItem* item = items[col_price];
-        item->setText(qtmisc::fn_as_QString(qtmisc::get_order_position_price(*inner_order)));
+        item->setText(qtmisc::nullable_fn_as_QString(qtmisc::get_order_position_price(*inner_order)));
         item->setBackgroundColor(get_default_color());
     }
 
@@ -591,11 +591,11 @@ qorder_table::qorder_table(QWidget *parent) :
                                                          QT_TR_NOOP("market"),
                                                          QT_TR_NOOP("product"),
                                                          QT_TR_NOOP("side"),
-                                                         QT_TR_NOOP("price"),
                                                          QT_TR_NOOP("qty"),
-                                                         QT_TR_NOOP("exec price"),
+                                                         QT_TR_NOOP("price"),
                                                          QT_TR_NOOP("exec qty"),
                                                          QT_TR_NOOP("rem qty"),
+                                                         QT_TR_NOOP("exec price"),
                                                          QT_TR_NOOP("remarks"),
                                                          0                 };
 
