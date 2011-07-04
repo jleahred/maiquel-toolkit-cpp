@@ -657,6 +657,7 @@ qorder_table::qorder_table(QWidget *parent) :
     //setContentsMargins(0,0,0,0);
     connect(table_widget, SIGNAL(doubleClicked(QModelIndex)), SLOT(slot_on_double_clicked(QModelIndex)));
     connect(table_widget, SIGNAL(currentCellChanged(int,int,int,int)), this, SLOT(slot_current_cell_changed(int,int,int,int)));
+    connect(this->table_widget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SIGNAL(signal_sectionResized(int,int,int)));
 }
 
 qorder_table::~qorder_table()
@@ -1234,3 +1235,16 @@ mtk::nullable<mtk::trd::msg::sub_order_id>   qorder_table::get_current_order_id(
         return  mtk::nullable<mtk::trd::msg::sub_order_id>();
 }
 
+void qorder_table::resize_header_section(int index, int /*old_size*/, int new_size)
+{
+    if(index != table_widget->horizontalHeader()->count()-1  &&    table_widget->horizontalHeader()->sectionSize(index) !=  new_size)
+        table_widget->horizontalHeader()->resizeSection(index, new_size);
+}
+
+void qorder_table::resize_header_sections(const qorder_table& ot)
+{
+    for(int i=0; i<this->table_widget->horizontalHeader()->count(); ++i)
+    {
+        table_widget->horizontalHeader()->resizeSection(i, ot.table_widget->horizontalHeader()->sectionSize(i));
+    }
+}

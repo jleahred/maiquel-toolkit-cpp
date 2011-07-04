@@ -196,7 +196,7 @@ void QOrderBook::slot_current_tab_name_changed(const QString& new_name)
     tab_widget->setTabText(tab_widget->currentIndex(), new_name);
 }
 
-void QOrderBook::slot_tab_index_changed(int)
+void QOrderBook::slot_tab_index_changed(int /*index*/)
 {
     qorder_table* tw = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->currentIndex()));
     if(tw != 0)
@@ -224,6 +224,16 @@ void QOrderBook::slot_filter_changed()
 qorder_table* QOrderBook::create_new_tab(void)
 {
     qorder_table* order_table = new qorder_table(this);
+
+    //  set header sections sizes
+    {
+        qorder_table* ot = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->currentIndex()));
+        if(ot != 0)
+        {
+            order_table->resize_header_sections(*ot);
+        }
+    }
+
     order_table->setFont(this->font());
     tab_widget->addTab(order_table, QLatin1String("."));
     connect(order_table, SIGNAL(signal_named_changed(QString)), this, SLOT(slot_current_tab_name_changed(QString)));
@@ -245,6 +255,7 @@ qorder_table* QOrderBook::create_new_tab(void)
     connect(order_table, SIGNAL(signal_cell_changed(int, int, int, int)), this, SLOT(slot_order_table_cell_changed(int,int,int,int)));
     connect(order_table, SIGNAL(signal_request_show_historic()), SLOT(slot_show_historic()));
     connect(order_table, SIGNAL(signal_request_hide_historic()), SLOT(slot_hide_historic()));
+    connect(order_table, SIGNAL(signal_sectionResized(int,int,int)), this, SLOT(slot_sectionResized(int,int,int)));
 
     return order_table;
 }
@@ -323,4 +334,17 @@ void QOrderBook::slot_order_table_cell_changed(int, int, int, int)
 void QOrderBook::slot_order_table_double_clicked(QModelIndex)
 {
     slot_show_historic();
+}
+
+
+void QOrderBook::slot_sectionResized(int index, int old_size, int new_size)
+{
+    for(int i=0; i<tab_widget->count(); ++i)
+    {
+        qorder_table* ot = dynamic_cast<qorder_table*>(tab_widget->widget(i));
+        if(ot != 0)
+        {
+            ot->resize_header_section(index, old_size, new_size);
+        }
+    }
 }

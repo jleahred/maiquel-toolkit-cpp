@@ -34,6 +34,8 @@ public:
     void show_filter(bool);
     bool is_filter_visible(void);
     mtk::nullable<mtk::trd::msg::sub_order_id>       get_current_order_id(void);
+    void resize_header_section(int index, int old_size, int new_size);
+    void resize_header_sections(const qorder_table&);
 
 
 signals:
@@ -43,6 +45,7 @@ signals:
     void signal_cell_changed(int, int, int, int);
     void signal_request_show_historic(void);
     void signal_request_hide_historic(void);
+    void signal_sectionResized(int, int, int);
 
 private slots:
     void request_cancel(void);

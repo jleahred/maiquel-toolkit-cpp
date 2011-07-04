@@ -31,7 +31,9 @@ public:
 
 signals:
 
+
 public slots:
+    void slot_sectionResized(int, int, int);
 
 
 private slots:
