@@ -652,8 +652,35 @@ void CF_EX_LS::before_send(void) const
 
 
 
-RJ_NW_LS::RJ_NW_LS ( const CF_XX_LS&  parent,   const std::string&  _reject_description)
-    :  CF_XX_LS(parent),   reject_description(_reject_description) 
+RJ_XX_LS::RJ_XX_LS ( const CF_XX_LS&  parent,   const std::string&  _reject_description,   const sub_position_ls&  _request_pos)
+    :  CF_XX_LS(parent),   reject_description(_reject_description),   request_pos(_request_pos) 
+       
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string RJ_XX_LS::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void RJ_XX_LS::before_send(void) const
+{
+
+}
+
+
+
+
+RJ_NW_LS::RJ_NW_LS ( const RJ_XX_LS&  parent)
+    :  RJ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -679,8 +706,8 @@ void RJ_NW_LS::before_send(void) const
 
 
 
-RJ_MD_LS::RJ_MD_LS ( const CF_XX_LS&  parent,   const std::string&  _reject_description)
-    :  CF_XX_LS(parent),   reject_description(_reject_description) 
+RJ_MD_LS::RJ_MD_LS ( const RJ_XX_LS&  parent)
+    :  RJ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -706,8 +733,8 @@ void RJ_MD_LS::before_send(void) const
 
 
 
-RJ_CC_LS::RJ_CC_LS ( const CF_XX_LS&  parent,   const std::string&  _reject_description)
-    :  CF_XX_LS(parent),   reject_description(_reject_description) 
+RJ_CC_LS::RJ_CC_LS ( const RJ_XX_LS&  parent)
+    :  RJ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -1056,11 +1083,45 @@ void  operator >> (const YAML::Node& node, CF_EX_LS & c)
 };
 
 
-std::ostream& operator<< (std::ostream& o, const RJ_NW_LS & c)
+std::ostream& operator<< (std::ostream& o, const RJ_XX_LS & c)
 {
     o << "{ "
     << "("  <<  static_cast<const CF_XX_LS&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "request_pos:"<< c.request_pos<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const RJ_XX_LS & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "CF_XX_LS" <<  YAML::Value << static_cast<const CF_XX_LS&>(c)  
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "request_pos"  << YAML::Value << c.request_pos
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, RJ_XX_LS & c)
+{
+
+    node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
+
+        node["reject_description"]  >> c.reject_description;
+        node["request_pos"]  >> c.request_pos;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const RJ_NW_LS & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const RJ_XX_LS&>(c)  << ")" 
+
         << " }";
     return o;
 };
@@ -1070,8 +1131,8 @@ std::ostream& operator<< (std::ostream& o, const RJ_NW_LS & c)
 YAML::Emitter& operator << (YAML::Emitter& o, const RJ_NW_LS & c)
 {
     o << YAML::BeginMap
-    << YAML::Key << "CF_XX_LS" <<  YAML::Value << static_cast<const CF_XX_LS&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
+    << YAML::Key << "RJ_XX_LS" <<  YAML::Value << static_cast<const RJ_XX_LS&>(c)  
+
         << YAML::EndMap;
     return o;
 };
@@ -1081,9 +1142,8 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_NW_LS & c)
 void  operator >> (const YAML::Node& node, RJ_NW_LS & c)
 {
 
-    node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
+    node["RJ_XX_LS"]   >>   static_cast<RJ_XX_LS&>(c)  ;
 
-        node["reject_description"]  >> c.reject_description;
 
 
 };
@@ -1092,8 +1152,8 @@ void  operator >> (const YAML::Node& node, RJ_NW_LS & c)
 std::ostream& operator<< (std::ostream& o, const RJ_MD_LS & c)
 {
     o << "{ "
-    << "("  <<  static_cast<const CF_XX_LS&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "
+    << "("  <<  static_cast<const RJ_XX_LS&>(c)  << ")" 
+
         << " }";
     return o;
 };
@@ -1103,8 +1163,8 @@ std::ostream& operator<< (std::ostream& o, const RJ_MD_LS & c)
 YAML::Emitter& operator << (YAML::Emitter& o, const RJ_MD_LS & c)
 {
     o << YAML::BeginMap
-    << YAML::Key << "CF_XX_LS" <<  YAML::Value << static_cast<const CF_XX_LS&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
+    << YAML::Key << "RJ_XX_LS" <<  YAML::Value << static_cast<const RJ_XX_LS&>(c)  
+
         << YAML::EndMap;
     return o;
 };
@@ -1114,9 +1174,8 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_MD_LS & c)
 void  operator >> (const YAML::Node& node, RJ_MD_LS & c)
 {
 
-    node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
+    node["RJ_XX_LS"]   >>   static_cast<RJ_XX_LS&>(c)  ;
 
-        node["reject_description"]  >> c.reject_description;
 
 
 };
@@ -1125,8 +1184,8 @@ void  operator >> (const YAML::Node& node, RJ_MD_LS & c)
 std::ostream& operator<< (std::ostream& o, const RJ_CC_LS & c)
 {
     o << "{ "
-    << "("  <<  static_cast<const CF_XX_LS&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "
+    << "("  <<  static_cast<const RJ_XX_LS&>(c)  << ")" 
+
         << " }";
     return o;
 };
@@ -1136,8 +1195,8 @@ std::ostream& operator<< (std::ostream& o, const RJ_CC_LS & c)
 YAML::Emitter& operator << (YAML::Emitter& o, const RJ_CC_LS & c)
 {
     o << YAML::BeginMap
-    << YAML::Key << "CF_XX_LS" <<  YAML::Value << static_cast<const CF_XX_LS&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
+    << YAML::Key << "RJ_XX_LS" <<  YAML::Value << static_cast<const RJ_XX_LS&>(c)  
+
         << YAML::EndMap;
     return o;
 };
@@ -1147,9 +1206,8 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_CC_LS & c)
 void  operator >> (const YAML::Node& node, RJ_CC_LS & c)
 {
 
-    node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
+    node["RJ_XX_LS"]   >>   static_cast<RJ_XX_LS&>(c)  ;
 
-        node["reject_description"]  >> c.reject_description;
 
 
 };
@@ -1275,9 +1333,21 @@ bool operator!= (const CF_EX_LS& a, const CF_EX_LS& b)
 
 
 
+bool operator== (const RJ_XX_LS& a, const RJ_XX_LS& b)
+{
+    return ( (static_cast<const CF_XX_LS&>(a)   ==  static_cast<const CF_XX_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.request_pos ==  b.request_pos  &&   true  );
+};
+
+bool operator!= (const RJ_XX_LS& a, const RJ_XX_LS& b)
+{
+    return !(a==b);
+};
+
+
+
 bool operator== (const RJ_NW_LS& a, const RJ_NW_LS& b)
 {
-    return ( (static_cast<const CF_XX_LS&>(a)   ==  static_cast<const CF_XX_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
+    return ( (static_cast<const RJ_XX_LS&>(a)   ==  static_cast<const RJ_XX_LS&>(b))  &&    true  );
 };
 
 bool operator!= (const RJ_NW_LS& a, const RJ_NW_LS& b)
@@ -1289,7 +1359,7 @@ bool operator!= (const RJ_NW_LS& a, const RJ_NW_LS& b)
 
 bool operator== (const RJ_MD_LS& a, const RJ_MD_LS& b)
 {
-    return ( (static_cast<const CF_XX_LS&>(a)   ==  static_cast<const CF_XX_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
+    return ( (static_cast<const RJ_XX_LS&>(a)   ==  static_cast<const RJ_XX_LS&>(b))  &&    true  );
 };
 
 bool operator!= (const RJ_MD_LS& a, const RJ_MD_LS& b)
@@ -1301,7 +1371,7 @@ bool operator!= (const RJ_MD_LS& a, const RJ_MD_LS& b)
 
 bool operator== (const RJ_CC_LS& a, const RJ_CC_LS& b)
 {
-    return ( (static_cast<const CF_XX_LS&>(a)   ==  static_cast<const CF_XX_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
+    return ( (static_cast<const RJ_XX_LS&>(a)   ==  static_cast<const RJ_XX_LS&>(b))  &&    true  );
 };
 
 bool operator!= (const RJ_CC_LS& a, const RJ_CC_LS& b)
@@ -1690,8 +1760,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
-//void  __internal_qpid_fill (RJ_NW_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (RJ_NW_LS& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (RJ_XX_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (RJ_XX_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<CF_XX_LS&>(c), v);
@@ -1700,10 +1770,55 @@ copy(static_cast<CF_XX_LS&>(c), v);
 
                     it = mv.find("rjd");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_XX_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.reject_description, it->second);
                         //c.reject_description = it->second;
+//   sub_msg_type
+
+                    it = mv.find("rqp");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_pos on message RJ_XX_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.request_pos, it->second);
+                        //__internal_qpid_fill(c.request_pos, it->second.asMap());
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_LS& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const CF_XX_LS&>(a));
+
+//  field_type
+        __internal_add2map(map, a.reject_description, std::string("rjd"));
+//  sub_msg_type
+        __internal_add2map(map, a.request_pos, std::string("rqp"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_XX_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (RJ_NW_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (RJ_NW_LS& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<RJ_XX_LS&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
     }
 
@@ -1714,10 +1829,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_NW_LS& a)
     a.before_send();
 
 //  parent
-__internal_add2map(map, static_cast<const CF_XX_LS&>(a));
+__internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
-//  field_type
-        __internal_add2map(map, a.reject_description, std::string("rjd"));
 
 
 };
@@ -1737,16 +1850,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 void  copy (RJ_MD_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<CF_XX_LS&>(c), v);
+copy(static_cast<RJ_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("rjd");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_MD_LS::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.reject_description, it->second);
-                        //c.reject_description = it->second;
 
     }
 
@@ -1757,10 +1862,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_MD_LS& a)
     a.before_send();
 
 //  parent
-__internal_add2map(map, static_cast<const CF_XX_LS&>(a));
+__internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
-//  field_type
-        __internal_add2map(map, a.reject_description, std::string("rjd"));
 
 
 };
@@ -1780,16 +1883,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 void  copy (RJ_CC_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
-copy(static_cast<CF_XX_LS&>(c), v);
+copy(static_cast<RJ_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("rjd");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_CC_LS::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.reject_description, it->second);
-                        //c.reject_description = it->second;
 
     }
 
@@ -1800,10 +1895,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_CC_LS& a)
     a.before_send();
 
 //  parent
-__internal_add2map(map, static_cast<const CF_XX_LS&>(a));
+__internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
-//  field_type
-        __internal_add2map(map, a.reject_description, std::string("rjd"));
 
 
 };
@@ -1817,6 +1910,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 
 
 
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1994,11 +2088,8 @@ qpid::messaging::Message RJ_NW_LS::qpidmsg_codded_as_qpid_message (const std::st
     qpid::types::Variant::Map content;
 
 //  parent
-__internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
+__internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
 
-//  field_type
-//        content["rjd"] = this->reject_description;
-        __internal_add2map(content, this->reject_description, std::string("rjd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2019,11 +2110,8 @@ qpid::messaging::Message RJ_MD_LS::qpidmsg_codded_as_qpid_message (const std::st
     qpid::types::Variant::Map content;
 
 //  parent
-__internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
+__internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
 
-//  field_type
-//        content["rjd"] = this->reject_description;
-        __internal_add2map(content, this->reject_description, std::string("rjd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2044,11 +2132,8 @@ qpid::messaging::Message RJ_CC_LS::qpidmsg_codded_as_qpid_message (const std::st
     qpid::types::Variant::Map content;
 
 //  parent
-__internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
+__internal_add2map(content, static_cast<const RJ_XX_LS&>(*this));
 
-//  field_type
-//        content["rjd"] = this->reject_description;
-        __internal_add2map(content, this->reject_description, std::string("rjd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2139,27 +2224,34 @@ __internal_get_default((CF_XX_LS*)0), //   sub_msg_type
             );
     }
     
+    RJ_XX_LS  __internal_get_default(RJ_XX_LS*)
+    {
+        return RJ_XX_LS(
+__internal_get_default((CF_XX_LS*)0), //   field_type
+   __internal_get_default ((std::string*)0),
+//   sub_msg_type
+   __internal_get_default((sub_position_ls*)0)
+            );
+    }
+    
     RJ_NW_LS  __internal_get_default(RJ_NW_LS*)
     {
         return RJ_NW_LS(
-__internal_get_default((CF_XX_LS*)0), //   field_type
-   __internal_get_default ((std::string*)0)
+__internal_get_default((RJ_XX_LS*)0)
             );
     }
     
     RJ_MD_LS  __internal_get_default(RJ_MD_LS*)
     {
         return RJ_MD_LS(
-__internal_get_default((CF_XX_LS*)0), //   field_type
-   __internal_get_default ((std::string*)0)
+__internal_get_default((RJ_XX_LS*)0)
             );
     }
     
     RJ_CC_LS  __internal_get_default(RJ_CC_LS*)
     {
         return RJ_CC_LS(
-__internal_get_default((CF_XX_LS*)0), //   field_type
-   __internal_get_default ((std::string*)0)
+__internal_get_default((RJ_XX_LS*)0)
             );
     }
     
@@ -2320,9 +2412,26 @@ CF_EX_LS::CF_EX_LS (const qpid::messaging::Message& msg)
 
 
 
-RJ_NW_LS::RJ_NW_LS (const qpid::messaging::Message& msg)
+RJ_XX_LS::RJ_XX_LS (const qpid::messaging::Message& msg)
     :  CF_XX_LS(msg), //   field_type
-   reject_description(__internal_get_default((std::string*)0)) 
+   reject_description(__internal_get_default((std::string*)0)),
+//   sub_msg_type
+   request_pos(__internal_get_default((sub_position_ls*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+RJ_NW_LS::RJ_NW_LS (const qpid::messaging::Message& msg)
+    :  RJ_XX_LS(msg) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2337,8 +2446,7 @@ RJ_NW_LS::RJ_NW_LS (const qpid::messaging::Message& msg)
 
 
 RJ_MD_LS::RJ_MD_LS (const qpid::messaging::Message& msg)
-    :  CF_XX_LS(msg), //   field_type
-   reject_description(__internal_get_default((std::string*)0)) 
+    :  RJ_XX_LS(msg) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2353,8 +2461,7 @@ RJ_MD_LS::RJ_MD_LS (const qpid::messaging::Message& msg)
 
 
 RJ_CC_LS::RJ_CC_LS (const qpid::messaging::Message& msg)
-    :  CF_XX_LS(msg), //   field_type
-   reject_description(__internal_get_default((std::string*)0)) 
+    :  RJ_XX_LS(msg) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

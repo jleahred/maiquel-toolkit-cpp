@@ -263,7 +263,7 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
-  SEND_REJECT(sig_cli_rj_nw, RJ_NW_LS)  
+  SEND_REJECT(rq, sig_cli_rj_nw, RJ_NW_LS)  
 
         }
     else 
@@ -380,7 +380,7 @@ void init::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
-  SEND_REJECT(sig_cli_rj_md, RJ_MD_LS)  
+  SEND_REJECT(rq, sig_cli_rj_md, RJ_MD_LS)  
 
         }
     
@@ -416,7 +416,7 @@ void init::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
-  SEND_REJECT(sig_cli_rj_cc, RJ_CC_LS)  
+  SEND_REJECT(rq, sig_cli_rj_cc, RJ_CC_LS)  
 
         }
     
@@ -502,7 +502,7 @@ void market::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
-  SEND_REJECT(sig_cli_rj_nw, RJ_NW_LS)  
+  SEND_REJECT(rq, sig_cli_rj_nw, RJ_NW_LS)  
 //  inserting macro: cf_cc
 
                     if (last_confirmation().HasValue())
@@ -545,7 +545,7 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
-  SEND_REJECT(sig_cli_rj_md, RJ_MD_LS)  
+  SEND_REJECT(rq, sig_cli_rj_md, RJ_MD_LS)  
 
         }
     else 
@@ -650,6 +650,18 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
     try
     {
         
+        if (//  inserting macro: invalid_rq
+
+                    nerrors > 0
+                 ) {
+
+            new_status = mtk::make_cptr(new market (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: rj_rqcc
+  SEND_REJECT(rq, sig_cli_rj_cc, RJ_CC_LS)  
+
+        }
+    else 
         if (true ) {
 //  inserting macro: wcf
 
@@ -827,7 +839,7 @@ void canceled::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
-  SEND_REJECT(sig_cli_rj_nw, RJ_NW_LS)  
+  SEND_REJECT(rq, sig_cli_rj_nw, RJ_NW_LS)  
 
         }
     
@@ -863,7 +875,7 @@ void canceled::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
-  SEND_REJECT(sig_cli_rj_md, RJ_MD_LS)  
+  SEND_REJECT(rq, sig_cli_rj_md, RJ_MD_LS)  
 
         }
     
@@ -899,7 +911,7 @@ void canceled::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
-  SEND_REJECT(sig_cli_rj_cc, RJ_CC_LS)  
+  SEND_REJECT(rq, sig_cli_rj_cc, RJ_CC_LS)  
 
         }
     
@@ -974,7 +986,7 @@ void executed::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
-  SEND_REJECT(sig_cli_rj_nw, RJ_NW_LS)  
+  SEND_REJECT(rq, sig_cli_rj_nw, RJ_NW_LS)  
 
         }
     
@@ -1010,7 +1022,7 @@ void executed::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
-  SEND_REJECT(sig_cli_rj_md, RJ_MD_LS)  
+  SEND_REJECT(rq, sig_cli_rj_md, RJ_MD_LS)  
 
         }
     
@@ -1046,7 +1058,7 @@ void executed::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
-  SEND_REJECT(sig_cli_rj_cc, RJ_CC_LS)  
+  SEND_REJECT(rq, sig_cli_rj_cc, RJ_CC_LS)  
 
         }
     
@@ -1097,7 +1109,7 @@ void executed::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 
 };  // end   namespace fsmgen_ord_ls {
 
-ord_ls::ord_ls()
+ord_ls_dangerous_signals_not_warped::ord_ls_dangerous_signals_not_warped()
 {
     mtk::CountPtr<fsmgen_ord_ls::status_common_info> ci = mtk::make_cptr(
                             new fsmgen_ord_ls::status_common_info ( sig_ob_add_order,sig_ob_del_order,sig_ob_modif_order,sig_ob_check_execs,sig_ob_update_prices,sig_cli_cf_nw,sig_cli_cf_md,sig_cli_cf_cc,sig_cli_rj_nw,sig_cli_rj_md,sig_cli_rj_cc,sig_cli_cf_ex));
@@ -1109,54 +1121,138 @@ ord_ls::ord_ls()
 }
 
 
-ord_ls::~ord_ls()
+ord_ls_dangerous_signals_not_warped::~ord_ls_dangerous_signals_not_warped()
 {
 }
 
-void ord_ls::on_new_status (mtk::CountPtr<fsmgen_ord_ls::abstract_status>  new_status)
+void ord_ls_dangerous_signals_not_warped::on_new_status (mtk::CountPtr<fsmgen_ord_ls::abstract_status>  new_status)
 {
     current_status = new_status;
 }
 
-void ord_ls::on_keep_temp_status (void)
+void ord_ls_dangerous_signals_not_warped::on_keep_temp_status (void)
 {
     queue_temp_status.push_back(current_status);
 }
-void ord_ls::on_remove_temp_status (void)
+void ord_ls_dangerous_signals_not_warped::on_remove_temp_status (void)
 {
     queue_temp_status.pop_front();
 }
 
 
-void ord_ls::cli_rq_nw (const mtk::trd::msg::oms_RQ_NW_LS&   rq           )
+void ord_ls_dangerous_signals_not_warped::cli_rq_nw (const mtk::trd::msg::oms_RQ_NW_LS&   rq           )
 {
     mtk::CountPtr<fsmgen_ord_ls::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cli_rq_nw(rq);
 }
-void ord_ls::cli_rq_md (const mtk::trd::msg::oms_RQ_MD_LS&   rq           )
+void ord_ls_dangerous_signals_not_warped::cli_rq_md (const mtk::trd::msg::oms_RQ_MD_LS&   rq           )
 {
     mtk::CountPtr<fsmgen_ord_ls::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cli_rq_md(rq);
 }
-void ord_ls::cli_rq_cc (const mtk::trd::msg::oms_RQ_CC_LS&   rq           )
+void ord_ls_dangerous_signals_not_warped::cli_rq_cc (const mtk::trd::msg::oms_RQ_CC_LS&   rq           )
 {
     mtk::CountPtr<fsmgen_ord_ls::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cli_rq_cc(rq);
 }
-void ord_ls::mkt_cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           )
+void ord_ls_dangerous_signals_not_warped::mkt_cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           )
 {
     mtk::CountPtr<fsmgen_ord_ls::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->mkt_cf_ex(ex);
 }
-const mtk::nullable<mtk::trd::msg::CF_XX_LS>       & ord_ls::last_confirmation (void) const
+const mtk::nullable<mtk::trd::msg::CF_XX_LS>       & ord_ls_dangerous_signals_not_warped::last_confirmation (void) const
 {
     return current_status->last_confirmation();
 }
-const mtk::nullable<mtk::trd::msg::RQ_XX_LS>       & ord_ls::last_request (void) const
+const mtk::nullable<mtk::trd::msg::RQ_XX_LS>       & ord_ls_dangerous_signals_not_warped::last_request (void) const
 {
     return current_status->last_request();
 }
-const int                                          & ord_ls::sequence (void) const
+const int                                          & ord_ls_dangerous_signals_not_warped::sequence (void) const
 {
     return current_status->sequence();
+}
+
+//  warper RAII with signals and repository
+ord_ls::ord_ls (void)
+    : ptr (new ord_ls_dangerous_signals_not_warped())
+{
+    ptr->sig_ob_add_order.connect(&sig_ob_add_order);
+    ptr->sig_ob_del_order.connect(&sig_ob_del_order);
+    ptr->sig_ob_modif_order.connect(&sig_ob_modif_order);
+    ptr->sig_ob_check_execs.connect(&sig_ob_check_execs);
+    ptr->sig_ob_update_prices.connect(&sig_ob_update_prices);
+    ptr->sig_cli_cf_nw.connect(&sig_cli_cf_nw);
+    ptr->sig_cli_cf_md.connect(&sig_cli_cf_md);
+    ptr->sig_cli_cf_cc.connect(&sig_cli_cf_cc);
+    ptr->sig_cli_rj_nw.connect(&sig_cli_rj_nw);
+    ptr->sig_cli_rj_md.connect(&sig_cli_rj_md);
+    ptr->sig_cli_rj_cc.connect(&sig_cli_rj_cc);
+    ptr->sig_cli_cf_ex.connect(&sig_cli_cf_ex);
+}
+ord_ls::ord_ls (const mtk::CountPtr<ord_ls_dangerous_signals_not_warped>& _ptr)
+    :   ptr(_ptr)
+{
+    try
+    {
+    ptr->sig_ob_add_order.connect(&sig_ob_add_order);
+    ptr->sig_ob_del_order.connect(&sig_ob_del_order);
+    ptr->sig_ob_modif_order.connect(&sig_ob_modif_order);
+    ptr->sig_ob_check_execs.connect(&sig_ob_check_execs);
+    ptr->sig_ob_update_prices.connect(&sig_ob_update_prices);
+    ptr->sig_cli_cf_nw.connect(&sig_cli_cf_nw);
+    ptr->sig_cli_cf_md.connect(&sig_cli_cf_md);
+    ptr->sig_cli_cf_cc.connect(&sig_cli_cf_cc);
+    ptr->sig_cli_rj_nw.connect(&sig_cli_rj_nw);
+    ptr->sig_cli_rj_md.connect(&sig_cli_rj_md);
+    ptr->sig_cli_rj_cc.connect(&sig_cli_rj_cc);
+    ptr->sig_cli_cf_ex.connect(&sig_cli_cf_ex);
+    } MTK_CATCH_RETHROW("ord_ls","connecting signals")
+}
+
+void ord_ls::set (const mtk::CountPtr<ord_ls_dangerous_signals_not_warped>& _ptr)
+{
+ptr = _ptr;
+    ptr->sig_ob_add_order.connect(&sig_ob_add_order);
+    ptr->sig_ob_del_order.connect(&sig_ob_del_order);
+    ptr->sig_ob_modif_order.connect(&sig_ob_modif_order);
+    ptr->sig_ob_check_execs.connect(&sig_ob_check_execs);
+    ptr->sig_ob_update_prices.connect(&sig_ob_update_prices);
+    ptr->sig_cli_cf_nw.connect(&sig_cli_cf_nw);
+    ptr->sig_cli_cf_md.connect(&sig_cli_cf_md);
+    ptr->sig_cli_cf_cc.connect(&sig_cli_cf_cc);
+    ptr->sig_cli_rj_nw.connect(&sig_cli_rj_nw);
+    ptr->sig_cli_rj_md.connect(&sig_cli_rj_md);
+    ptr->sig_cli_rj_cc.connect(&sig_cli_rj_cc);
+    ptr->sig_cli_cf_ex.connect(&sig_cli_cf_ex);
+}
+
+
+void ord_ls::cli_rq_nw (const mtk::trd::msg::oms_RQ_NW_LS&   rq           )
+{
+    ptr->cli_rq_nw(rq);
+}
+void ord_ls::cli_rq_md (const mtk::trd::msg::oms_RQ_MD_LS&   rq           )
+{
+    ptr->cli_rq_md(rq);
+}
+void ord_ls::cli_rq_cc (const mtk::trd::msg::oms_RQ_CC_LS&   rq           )
+{
+    ptr->cli_rq_cc(rq);
+}
+void ord_ls::mkt_cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           )
+{
+    ptr->mkt_cf_ex(ex);
+}
+const mtk::nullable<mtk::trd::msg::CF_XX_LS>       & ord_ls::last_confirmation (void) const
+{
+    return  ptr->last_confirmation();
+}
+const mtk::nullable<mtk::trd::msg::RQ_XX_LS>       & ord_ls::last_request (void) const
+{
+    return  ptr->last_request();
+}
+const int                                          & ord_ls::sequence (void) const
+{
+    return  ptr->sequence();
 }

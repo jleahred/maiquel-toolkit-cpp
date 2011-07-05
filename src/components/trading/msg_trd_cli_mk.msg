@@ -85,23 +85,25 @@ CF_EX_MK  [< V:0, I:CF_XX_MK,  SUBJ:CONF.${invariant.account.client_code}.${inva
 
 //---------------------------------------------------------------------
 //	rejects  MK
-
-
-RJ_NW_MK  [< V:0, I:CF_XX_MK,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
+RJ_XX_MK  [< V:0, I:CF_XX_MK  >]
 {
     reject_description  (rjd)    :   string
+    request_pos         (rqp)    :   sub_position_mk
 }
 
 
-RJ_MD_MK  [< V:0, I:CF_XX_MK,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
+RJ_NW_MK  [< V:0, I:RJ_XX_MK,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
 {
-    reject_description  (rjd)    :   string
 }
 
 
-RJ_CC_MK  [< V:0, I:CF_XX_MK,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
+RJ_MD_MK  [< V:0, I:RJ_XX_MK,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
 {
-    reject_description  (rjd)    :   string
+}
+
+
+RJ_CC_MK  [< V:0, I:RJ_XX_MK,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}  >]
+{
 }
 
 

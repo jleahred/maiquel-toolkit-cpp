@@ -422,16 +422,55 @@ private:
 
 
 //-------------------------------
-//      RJ_NW_LS
+//      RJ_XX_LS
 //-------------------------------    
-class RJ_NW_LS        :  public  CF_XX_LS
+class RJ_XX_LS        :  public  CF_XX_LS
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit RJ_NW_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description );
+    explicit RJ_XX_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description,   const sub_position_ls&  _request_pos );
+    explicit RJ_XX_LS ( const qpid::messaging::Message& message );
+    virtual ~RJ_XX_LS (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_LS"; };
+    static  std::string static_get_message_type_as_string(void)        { return "RJ_XX_LS"; };
+    
+    
+
+    // fields
+    std::string                               reject_description; 
+    sub_position_ls                           request_pos; 
+
+
+
+    //  subject info
+    
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      RJ_NW_LS
+//-------------------------------    
+class RJ_NW_LS        :  public  RJ_XX_LS
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit RJ_NW_LS (  const RJ_XX_LS&  parent );
     explicit RJ_NW_LS ( const qpid::messaging::Message& message );
     virtual ~RJ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_NW_LS"; };
@@ -440,7 +479,6 @@ public:
     
 
     // fields
-    std::string                               reject_description; 
 
 
 
@@ -464,14 +502,14 @@ private:
 //-------------------------------
 //      RJ_MD_LS
 //-------------------------------    
-class RJ_MD_LS        :  public  CF_XX_LS
+class RJ_MD_LS        :  public  RJ_XX_LS
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit RJ_MD_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description );
+    explicit RJ_MD_LS (  const RJ_XX_LS&  parent );
     explicit RJ_MD_LS ( const qpid::messaging::Message& message );
     virtual ~RJ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_MD_LS"; };
@@ -480,7 +518,6 @@ public:
     
 
     // fields
-    std::string                               reject_description; 
 
 
 
@@ -504,14 +541,14 @@ private:
 //-------------------------------
 //      RJ_CC_LS
 //-------------------------------    
-class RJ_CC_LS        :  public  CF_XX_LS
+class RJ_CC_LS        :  public  RJ_XX_LS
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit RJ_CC_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description );
+    explicit RJ_CC_LS (  const RJ_XX_LS&  parent );
     explicit RJ_CC_LS ( const qpid::messaging::Message& message );
     virtual ~RJ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_CC_LS"; };
@@ -520,7 +557,6 @@ public:
     
 
     // fields
-    std::string                               reject_description; 
 
 
 
@@ -614,6 +650,13 @@ bool operator!= (const CF_CC_LS& a, const CF_CC_LS& b);
 bool operator== (const CF_EX_LS& a, const CF_EX_LS& b);
 bool operator!= (const CF_EX_LS& a, const CF_EX_LS& b);
 
+    std::ostream& operator<< (std::ostream& o, const RJ_XX_LS & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RJ_XX_LS & c);
+   void           operator >> (const YAML::Node& n,       RJ_XX_LS & c);
+
+bool operator== (const RJ_XX_LS& a, const RJ_XX_LS& b);
+bool operator!= (const RJ_XX_LS& a, const RJ_XX_LS& b);
+
     std::ostream& operator<< (std::ostream& o, const RJ_NW_LS & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const RJ_NW_LS & c);
    void           operator >> (const YAML::Node& n,       RJ_NW_LS & c);
@@ -675,6 +718,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_EX_LS& a)
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EX_LS>& a, const std::string& field);
 void copy (CF_EX_LS& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_XX_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_LS& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_XX_LS>& a, const std::string& field);
+void copy (RJ_XX_LS& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_NW_LS>& a, const std::string& field);
@@ -707,6 +754,8 @@ void copy (RJ_CC_LS& a, const qpid::types::Variant& map);
     CF_CC_LS  __internal_get_default(CF_CC_LS *);
     
     CF_EX_LS  __internal_get_default(CF_EX_LS *);
+    
+    RJ_XX_LS  __internal_get_default(RJ_XX_LS *);
     
     RJ_NW_LS  __internal_get_default(RJ_NW_LS *);
     

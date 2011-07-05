@@ -88,6 +88,7 @@ init    --   mkt_cf_ex                     /   LE                               
 market  --   cli_rq_nw                     /   LE &   del_queue            , rj_rqnw & cf_cc               ''>   canceled
 market  --   cli_rq_md  &&   invalid_rq    /                               , rj_rqmd                       ''>   market
 market  --   cli_rq_md                     /          wcf & modif_queue    , cf_md & check_ex  &  upd_pr   -->   market
+market  --   cli_rq_cc  &&   invalid_rq    /                               , rj_rqcc                       ''>   market
 market  --   cli_rq_cc                     /          wcf & del_queue      , cf_cc             &  upd_pr   -->   canceled
 market  --   mkt_cf_ex  &&   full_exec     /          wex                  , cf_ex                         -->   executed
 market  --   mkt_cf_ex                     /          wex                  , cf_ex                         -->   market
@@ -166,11 +167,11 @@ executed --   mkt_cf_ex                    /   LE                             ''
                 }]
 
 
-            rj_rqnw [{  SEND_REJECT(sig_cli_rj_nw, RJ_NW_LS)  }]
+            rj_rqnw [{  SEND_REJECT(rq, sig_cli_rj_nw, RJ_NW_LS)  }]
 
-            rj_rqmd [{  SEND_REJECT(sig_cli_rj_md, RJ_MD_LS)  }]
+            rj_rqmd [{  SEND_REJECT(rq, sig_cli_rj_md, RJ_MD_LS)  }]
                 
-            rj_rqcc [{  SEND_REJECT(sig_cli_rj_cc, RJ_CC_LS)  }]
+            rj_rqcc [{  SEND_REJECT(rq, sig_cli_rj_cc, RJ_CC_LS)  }]
 
                 
             add_queue
