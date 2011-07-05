@@ -17,7 +17,7 @@ check_request::check_request()
                             oms_RQ_NW_LS)
     std::cout << " ok" << std::endl;
     
-    std::cout << "connecting RQ_MD_LS... ";
+    std::cout << "connecting oms_RQ_MD_LS... ";
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_rqmdls,
                             mtk::admin::get_url("server"),
@@ -27,7 +27,7 @@ check_request::check_request()
                             oms_RQ_MD_LS)
     std::cout << " ok" << std::endl;
 
-    std::cout << "connecting RQ_CC_LS... ";
+    std::cout << "connecting oms_RQ_CC_LS... ";
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_rqccls,
                             mtk::admin::get_url("server"),
@@ -43,9 +43,13 @@ check_request::~check_request()
 {
 }
 
-std::string verif_is_valid_request(const mtk::trd::msg::RQ_XX_LS& /*rq*/)
+
+
+//std::string verif_is_valid_request(const mtk::trd::msg::oms_RQ_NW_LS& rq)
+template<typename  RQ_TYPE>
+std::string verif_is_valid_request(const RQ_TYPE& rq)
 {
-    return "";
+    return rq.reject_description;
 }
 
 void check_request::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
