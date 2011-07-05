@@ -698,7 +698,7 @@ void on_server_pub_partial_user_list_serv2acs(const mtk::acs_server::msg::pub_pa
         if(!located)
         {
             mtk::acs_server::msg::pub_del_user msg_del_user(session_info);
-            mtk::send_message(qpid_cli_session,  msg_del_user);
+            mtk::send_message(qpid_srv_session,  msg_del_user);
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"acs_user_list_serv2acs", MTK_SS("Not registered sessionid, could be a concurrency behaviour sending delete  " 
                                                 << session_info), mtk::alPriorError, mtk::alTypeNoPermisions));
         }
@@ -773,8 +773,8 @@ void command_logout(const std::string& /*command*/, const std::string& params, m
             
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"rqchangpwd", MTK_SS("logout command processed for " << session_id << "  user " << it->keep_alive_client_info.login_confirmation.user_name), mtk::alPriorWarning));
             response_lines.push_back(MTK_SS("logout command processed for " << session_id << "  user " << it->keep_alive_client_info.login_confirmation.user_name));
-            list_sessions_login_info->erase(it);
             mtk::acs_server::msg::pub_del_user msg_del_user(it->keep_alive_client_info.login_confirmation);
+            list_sessions_login_info->erase(it);
             mtk::send_message(qpid_srv_session, msg_del_user);
             return;
         }
