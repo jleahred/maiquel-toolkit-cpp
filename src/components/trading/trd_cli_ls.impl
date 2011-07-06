@@ -605,7 +605,7 @@ void init::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, ("invalid rqnw ")       ));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 
         }
     else 
@@ -643,7 +643,7 @@ void init::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -672,7 +672,7 @@ void init::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
- CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_LS)      ADD_HIST(csr_rj, rj,cc)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_LS)      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
 
         }
     
@@ -701,7 +701,7 @@ void init::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 
         }
     
@@ -730,7 +730,7 @@ void init::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 
         }
     
@@ -759,7 +759,7 @@ void init::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 
         }
     
@@ -916,7 +916,7 @@ void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -971,7 +971,7 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new w_cfnwcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1085,7 +1085,7 @@ void w_cfnw::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfnw ")       ));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1117,7 +1117,7 @@ void w_cfnw::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 
         }
     
@@ -1146,7 +1146,7 @@ void w_cfnw::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1198,7 +1198,7 @@ void w_cfnw::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 
         }
     
@@ -1227,7 +1227,7 @@ void w_cfnw::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 
         }
     
@@ -1256,7 +1256,7 @@ void w_cfnw::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1308,7 +1308,7 @@ void w_cfnw::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1416,7 +1416,7 @@ void market::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1471,7 +1471,7 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1582,7 +1582,7 @@ void market::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1634,7 +1634,7 @@ void market::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd_nr
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 
         }
     
@@ -1666,7 +1666,7 @@ void market::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfcc")   ));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc_nr
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1698,7 +1698,7 @@ void market::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc_nr
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 
         }
     
@@ -1727,7 +1727,7 @@ void market::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1779,7 +1779,7 @@ void market::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1831,7 +1831,7 @@ void market::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1930,7 +1930,7 @@ void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1985,7 +1985,7 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, ("invalid rqmd")));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2096,7 +2096,7 @@ void w_cfmd::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2151,7 +2151,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfmd")));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2182,7 +2182,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
 
                     ({  bool result = false;
                         if (ci->last_request().HasValue())
-                            result = cf.req_id == ci->last_request().Get().req_info.req_id;
+                            result = (cf.req_id == ci->last_request().Get().req_info.req_id);
                         else
                             result = false;
                         result;
@@ -2192,7 +2192,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 
         }
     else 
@@ -2201,7 +2201,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new w_cfmd (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd_pend
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 
         }
     
@@ -2233,7 +2233,7 @@ void w_cfmd::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfcc")  ));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc_nr
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2265,7 +2265,7 @@ void w_cfmd::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc_nr
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 
         }
     
@@ -2294,7 +2294,7 @@ void w_cfmd::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2346,7 +2346,7 @@ void w_cfmd::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 
         }
     
@@ -2375,7 +2375,7 @@ void w_cfmd::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2474,7 +2474,7 @@ void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2526,7 +2526,7 @@ void w_cfcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -2605,7 +2605,7 @@ void w_cfcc::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2657,7 +2657,7 @@ void w_cfcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 
         }
     
@@ -2689,7 +2689,7 @@ void w_cfcc::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfcc")  ));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc_nr
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2721,7 +2721,7 @@ void w_cfcc::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 
         }
     
@@ -2750,7 +2750,7 @@ void w_cfcc::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2802,7 +2802,7 @@ void w_cfcc::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2854,7 +2854,7 @@ void w_cfcc::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 
         }
     
@@ -2930,7 +2930,7 @@ void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2985,7 +2985,7 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new w_cfmdcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     else 
@@ -2994,7 +2994,7 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new w_cfmdcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3096,7 +3096,7 @@ void w_cfmdcc::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3151,7 +3151,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfmd")));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3182,7 +3182,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
 
                     ({  bool result = false;
                         if (ci->last_request().HasValue())
-                            result = cf.req_id == ci->last_request().Get().req_info.req_id;
+                            result = (cf.req_id == ci->last_request().Get().req_info.req_id);
                         else
                             result = false;
                         result;
@@ -3192,7 +3192,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 
         }
     else 
@@ -3201,7 +3201,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new w_cfmdcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd_pend
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 
         }
     
@@ -3233,7 +3233,7 @@ void w_cfmdcc::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfcc")  ));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc_nr
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3265,7 +3265,7 @@ void w_cfmdcc::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 
         }
     
@@ -3294,7 +3294,7 @@ void w_cfmdcc::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3346,7 +3346,7 @@ void w_cfmdcc::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 
         }
     
@@ -3375,7 +3375,7 @@ void w_cfmdcc::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new w_cfmd (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 
         }
     
@@ -3451,7 +3451,7 @@ void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3506,7 +3506,7 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new w_cfnwcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3620,7 +3620,7 @@ void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfnw")));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3652,7 +3652,7 @@ void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new w_cfmd (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 
         }
     
@@ -3681,7 +3681,7 @@ void w_cfnwmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3733,7 +3733,7 @@ void w_cfnwmd::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3785,7 +3785,7 @@ void w_cfnwmd::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 
         }
     
@@ -3814,7 +3814,7 @@ void w_cfnwmd::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3866,7 +3866,7 @@ void w_cfnwmd::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3974,7 +3974,7 @@ void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4131,7 +4131,7 @@ void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, ("invalid cfnw")));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4163,7 +4163,7 @@ void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 
         }
     
@@ -4192,7 +4192,7 @@ void w_cfnwcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4244,7 +4244,7 @@ void w_cfnwcc::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4296,7 +4296,7 @@ void w_cfnwcc::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 
         }
     
@@ -4325,7 +4325,7 @@ void w_cfnwcc::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4377,7 +4377,7 @@ void w_cfnwcc::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4485,7 +4485,7 @@ void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4537,7 +4537,7 @@ void canceled::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -4566,7 +4566,7 @@ void canceled::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
- CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_LS)      ADD_HIST(csr_rj, rj,cc)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_LS)      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
 
         }
     
@@ -4595,7 +4595,7 @@ void canceled::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4647,7 +4647,7 @@ void canceled::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4699,7 +4699,7 @@ void canceled::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4751,7 +4751,7 @@ void canceled::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4803,7 +4803,7 @@ void canceled::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4855,7 +4855,7 @@ void canceled::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 
         }
     
@@ -4940,7 +4940,7 @@ void executed::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4992,7 +4992,7 @@ void executed::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -5021,7 +5021,7 @@ void executed::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
- CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_LS)      ADD_HIST(csr_rj, rj,cc)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_LS)      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
 
         }
     
@@ -5050,7 +5050,7 @@ void executed::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5102,7 +5102,7 @@ void executed::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5154,7 +5154,7 @@ void executed::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5206,7 +5206,7 @@ void executed::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5258,7 +5258,7 @@ void executed::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5310,7 +5310,7 @@ void executed::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5418,7 +5418,7 @@ void error::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5470,7 +5470,7 @@ void error::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -5549,7 +5549,7 @@ void error::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
-  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5601,7 +5601,7 @@ void error::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
-  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5653,7 +5653,7 @@ void error::cf_cc ( const mtk::trd::msg::CF_CC_LS&   cf            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfcc
-  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5705,7 +5705,7 @@ void error::rj_nw ( const mtk::trd::msg::RJ_NW_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjnw
-  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5757,7 +5757,7 @@ void error::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
-  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5809,7 +5809,7 @@ void error::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
-  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
+  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
 
         }
     

@@ -17,91 +17,147 @@ order_historic_dangerous_not_signal_warped::order_historic_dangerous_not_signal_
 
 
 
-
-
-
-mtk::tuple<int, std::string>    check_for_previus_request_and_fill_delay_if_so(order_historic_item& item, mtk::list<order_historic_item>&   list_historic_item)
+std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(order_historic_item&   prev_item,   order_historic_item&   new_item)
 {
-    std::string result_errors;
-    int max_items2check=10;
-    bool located_previus_confirmed_request=false;
-    int i=0;
-    for(auto it=list_historic_item.begin(); it!=list_historic_item.end(); ++i, ++it)
+    if(new_item.type  != tt_cf   &&  new_item.type  != tt_rj)
     {
-        if(it->request_id  ==  item.request_id) 
+        std::string error = "not cf or rj on new_item ";
+        new_item.error = true;
+        new_item.remarks += "  "  + error;
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "historic", error, mtk::alPriorCritic, mtk::alTypeLogicError));
+        return error;
+    }
+    else
+    {
+        std::string  result_errors;
+        if(prev_item.type == tt_rq_confirmed)
+            result_errors += MTK_SS("confirmation on confirmated transaction. ");
+        if(prev_item.type == tt_cf)
+            result_errors += MTK_SS("confirmation on confirmation transaction. ");
+        if(prev_item.type == tt_rj)
+                result_errors += MTK_SS("confirmation on reject transaction. ");
+            
+        new_item.confirmation_delay = prev_item.date_time - new_item.date_time;
+        
+        if(prev_item.type == tt_rq_pending)
+            prev_item.type = tt_rq_confirmed;
+
+        if(prev_item.price.HasValue()  &&  new_item.price.HasValue())
         {
-            if(located_previus_confirmed_request==true)
-                result_errors += MTK_SS("out of order confirmation ");
-            if(it->type == tt_rq_confirmed)
-                result_errors += MTK_SS("confirmation on confirmated transaction ");
-            if(it->type == tt_cf)
-                    result_errors += MTK_SS("confirmation on confirmation transaction ");
-            if(it->type == tt_rj)
-                    result_errors += MTK_SS("confirmation on reject transaction ");
+            if(prev_item.price.Get() != new_item.price.Get())
+                result_errors += MTK_SS("diferent price " << prev_item.price.Get() << "  !=  " << new_item.price.Get());
+        }
+        if(prev_item.quantity  != new_item.quantity)
+                result_errors += MTK_SS("diferent quantity " << prev_item.quantity << "  !=  " << new_item.quantity);
+        if(prev_item.cli_ref  != new_item.cli_ref)
+                result_errors += MTK_SS("diferent client_code " << prev_item.cli_ref << "  !=  " << new_item.cli_ref);
                 
-            item.confirmation_delay = it->date_time - item.date_time;
-            
-            if(it->type == tt_rq_pending)
-                it->type = tt_rq_confirmed;
-
-            if(it->price.HasValue()  &&  item.price.HasValue())
-            {
-                if(it->price.Get() != item.price.Get())
-                    result_errors += MTK_SS("diferent price " << it->price.Get() << "  !=  " << item.price.Get());
-            }
-            if(it->quantity  != item.quantity)
-                    result_errors += MTK_SS("diferent quantity " << it->quantity << "  !=  " << item.quantity);
-            if(it->cli_ref  != item.cli_ref)
-                    result_errors += MTK_SS("diferent client_code " << it->cli_ref << "  !=  " << item.cli_ref);
-
-            if(result_errors != "")
-            {
-                item.error = true;
-                item.remarks += result_errors;
-            }
-
-            return mtk::make_tuple(i, result_errors);
-        }
-        if (it->type == tt_rq_confirmed)
-            located_previus_confirmed_request = true;
-            
-        if(--max_items2check  == 0)     break;
-    }
-    return mtk::make_tuple(-1, result_errors);
-}
-
-
-std::string    order_historic_dangerous_not_signal_warped::add_item(const order_historic_item& _item)
-{
-    auto item = _item;
-    
-    bool         result_located_request = true;
-    std::string  result_errors;
-    int located_distance=-1;
-    if((item.type == tt_cf  &&  item.type2 != tt2_ex)  ||  item.type == tt_rj)
-    {
-        check_for_previus_request_and_fill_delay_if_so(item, *list_historic_item).assign(located_distance, result_errors);
-        if(located_distance == -1)
-            result_located_request = false;
-        if(located_distance == 0)
+        if(result_errors=="")
         {
-            list_historic_item->pop_front();
+            return "";
+        }
+        else
+        {
+            new_item.error = true;
+            new_item.remarks += "  "  +  result_errors;
+            return result_errors;
         }
     }
-    
-    list_historic_item->push_front(item);
-    if(located_distance == -1)
-        signal_new_item_added.emit(item);
-    if(located_distance >= 0)
-        signal_modified_item.emit(located_distance, item);
-    
-    if(list_historic_item->size() > 50)
-    {
-        for (int items2delete = list_historic_item->size() -25; items2delete!=0; --items2delete)
-            list_historic_item->pop_front();
-    }
-    return result_errors;
 }
+
+
+
+std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new_or_modif_item(  order_historic_item                    item,  
+                                                                                        mtk::list<order_historic_item>&                 list_historic_item,
+                                                                                        mtk::Signal<const order_historic_item&>&        signal_new_item_added,
+                                                                                        mtk::Signal<int, const order_historic_item&>&   signal_modified_item)
+{
+    std::string  result_error;
+    if(item.type  == tt_cf   ||  item.type  == tt_rj)
+    {
+        
+        //  generally if it is a confirmation, it will confirm the previus transaction
+        //      we will modify previus transaction and we will send a modif signal
+        //  if not, we have to add a new item and look for previus request. It could not exist if request has been done for a diferente process
+        //      if we locate the previus request, we will modify it configuring it as not pending and we will send a modification signal
+        //      previus pending modifications request will be modified to  not pending modification request
+        
+        
+        //  confirmation of previus item
+        if(list_historic_item.front().request_id  ==  item.request_id)
+        {
+            order_historic_item&        last_inserted_item = list_historic_item.front();
+            result_error = check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(last_inserted_item, item);
+            last_inserted_item.confirmation_delay = item.confirmation_delay;
+            if(result_error == "")
+                signal_modified_item.emit(0, last_inserted_item);
+            else
+            {
+                list_historic_item.push_front(item);
+                signal_new_item_added.emit(item);
+            }
+        }
+        else
+        {
+            int item_pos = 0;
+            bool   just_change_rqpending_by_rqconfirmed = false;    //  items older than current confirmed are already confirmed
+                                                                    //  this also let order confirmation checking
+            for(auto it=list_historic_item.begin(); it!=list_historic_item.end(); ++it)
+            {
+                if(just_change_rqpending_by_rqconfirmed)
+                {
+                    if(it->type == tt_rq_pending)
+                    {
+                        it->type = tt_rq_confirmed;
+                        signal_modified_item.emit(item_pos, item);
+                    }
+                    else
+                        break;
+                }
+                else
+                {
+                    if(it->request_id  ==  item.request_id)
+                    {
+                        result_error = check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(*it, item);
+                        signal_modified_item.emit(item_pos, *it);
+                        just_change_rqpending_by_rqconfirmed = true;
+                    }
+                    //  pending change status to previus request pendings
+                }
+                
+                if(++item_pos > 10)        break;
+            }
+            list_historic_item.push_front(item);
+            signal_new_item_added.emit(item);
+        }
+    }
+    else    //  there is not confirmation or reject item
+    {
+        list_historic_item.push_front(item);
+        signal_new_item_added.emit(item);
+    }
+    return result_error;
+}
+
+
+
+std::string  order_historic_dangerous_not_signal_warped::add_item(const order_historic_item& item)
+{
+    return  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new_or_modif_item(item, 
+                                                                                            *list_historic_item,
+                                                                                            signal_new_item_added,
+                                                                                            signal_modified_item);
+}
+
+
+std::string   order_historic_dangerous_not_signal_warped::get_lasttr_rjdescr (void)  const    
+{   
+    if(list_historic_item->front().type  ==  tt_rj)
+        return list_historic_item->front().remarks;
+    else
+        return "";
+}
+
 
 
 };      //  namespace  hist {

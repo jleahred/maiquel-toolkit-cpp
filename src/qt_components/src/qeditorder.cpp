@@ -118,6 +118,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     this->check_if_order_can_be_sent();
     if(configure_default_field!=QLatin1String(""))
         ui->message->setText(configure_default_field);
+
+    this->adjustSize();
 }
 
 QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QWidget *parent) :

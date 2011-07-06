@@ -36,6 +36,17 @@ namespace mtk{namespace trd{
         else
             throw mtk::Alarm(MTK_HERE, "trd_cli_support", MTK_SS("no request no confirmation on order"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
     }
+
+
+    /**
+     *      It will return the reject description of last transaction (if it is a reject, in other case it will return "")
+     */
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    std::string    get_lasttr_rjdescr  (const ORDER_TYPE& order)        
+    {
+        return order.history()->get_lasttr_rjdescr();
+    }
+
     
 
     namespace  msg
@@ -253,9 +264,19 @@ namespace mtk{namespace trd{
                     serrors += MTK_SS("last_conf.Get().invariant  !=  rj.invariant  "  <<  last_conf.Get().invariant  << "  !=  " <<  rj.invariant);
                     ++nerrors;
                 }
-                if(last_conf.Get() != rj)
+                if(last_conf.Get().cli_ref != rj.cli_ref)
                 {
-                    serrors += MTK_SS("last_conf.Get() != rj  "  <<  last_conf.Get() << "  !=  "  << rj);
+                    serrors += MTK_SS("last_conf.cli_ref != rj.cli_ref  "  <<  last_conf.Get().cli_ref << "  !=  "  << rj.cli_ref);
+                    ++nerrors;
+                }
+                if(last_conf.Get().total_execs != rj.total_execs)
+                {
+                    serrors += MTK_SS("last_conf.total_execs != rj.total_execs  "  <<  last_conf.Get().total_execs << "  !=  "  << rj.total_execs);
+                    ++nerrors;
+                }
+                if(last_conf.Get().market_pos != rj.market_pos)
+                {
+                    serrors += MTK_SS("last_conf.market_pos != rj.market_pos  "  <<  last_conf.Get().market_pos << "  !=  "  << rj.market_pos);
                     ++nerrors;
                 }
 

@@ -128,7 +128,7 @@ COMMON_STATUS_INFO::
 STATUS::
 * We have to write a +::STATUS::+ section per status in our +fsm+
 * Each status, can have especific properties +
-  This is special interesting to work in +RIIA+ style
+  This is specialy interesting to work in +RAII+ style
 
 
 TRANSITIONS::

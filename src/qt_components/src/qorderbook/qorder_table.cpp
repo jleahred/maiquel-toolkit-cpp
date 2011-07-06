@@ -295,10 +295,14 @@ public:
     {
         if      (inner_order->serrors() != "")
             return qtmisc::mtk_color_problem;
+        else if (get_lasttr_rjdescr(*inner_order) != "")
+            return qtmisc::mtk_color_problem;
         else if (inner_order->in_market())
             return Qt::white;
         else if (inner_order->is_canceled())
+        {
             return Qt::gray;
+        }
         else if (inner_order->is_full_executed())
             return qtmisc::mtk_color_executed;
         //else if(inner_order->last_confirmation().HasValue()==false)

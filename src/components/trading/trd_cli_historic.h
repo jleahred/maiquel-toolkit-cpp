@@ -50,6 +50,9 @@ public:
     mtk::Signal<const order_historic_item&>             signal_new_item_added;
     mtk::Signal<int, const order_historic_item&>        signal_modified_item;
     
+
+
+    std::string   get_lasttr_rjdescr (void)  const;
     
     order_historic_dangerous_not_signal_warped(void);
         
@@ -70,6 +73,9 @@ public:
     
     mtk::Signal<const order_historic_item&>             signal_new_item_added;
     mtk::Signal<int, const order_historic_item&>        signal_modified_item;
+    
+    std::string   get_lasttr_rjdescr (void)  const  {  return ptr->get_lasttr_rjdescr();    }
+    
     
     
     explicit  order_historic2(const mtk::CountPtr<order_historic_dangerous_not_signal_warped> _ptr) : ptr(_ptr)

@@ -11,7 +11,7 @@
 #include "support/nullable.hpp"
 #include "support/mtk_double.h"
 
-
+#include "components/trading/msg_trd_common_support.h"
 
 
 
@@ -72,7 +72,9 @@
         (void)nerrors;  \
         tresult = mtk::trd::msg::check_reject__last_confirm<mtk::trd::msg::CF_XX_MK>(rj, last_confirmation());\
         nerrors += tresult._0;    \
-        ci->__serrors += tresult._1;    
+        ci->__serrors += tresult._1;    \
+        (void)nerrors;    \
+        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_MK>(rj)));   
 
 
 
@@ -89,7 +91,7 @@
     {               \
         mtk::trd::msg::CF_XX cfxx(rq.invariant, last_confirmation().Get().market_order_id, rq.req_info.req_id, rq.cli_ref, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
         mtk::trd::msg::CF_XX_MK  rjxx(cfxx, last_confirmation().Get().market_pos);      \
-        cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(rjxx, ci->__serrors)); \
+        cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_MK(rjxx, ci->__serrors, last_request().Get().request_pos))); \
         ci->__SIGNAL_TYPE__(*cptr_rj);  \
     }     \
     else      \
@@ -103,14 +105,14 @@
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)) );    \
             mtk::trd::msg::CF_XX cfxx(rq.invariant, MTK_SS(market_order_id), rq.req_info.req_id, rq.cli_ref, total_execs, mtk::admin::get_control_fluct_info());  \
             mtk::trd::msg::CF_XX_MK  rjxx(cfxx, last_request().Get().request_pos);      \
-            mtk::trd::msg::__MSG_TYPE__  _rj_(rjxx, ci->__serrors);  \
-            cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(rjxx, ci->__serrors)); \
+            cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_MK(rjxx, ci->__serrors, last_request().Get().request_pos))); \
             ci->__SIGNAL_TYPE__(*cptr_rj);  \
         }    \
         else     \
-            throw mtk::Alarm("SEND_REJECT", "trd_cli_mk.cpp", MTK_SS("Missing last_request trying to reject "), mtk::alPriorCritic, mtk::alTypeNoPermisions);    \
+            mtk::AlarmMsg(mtk::Alarm("SEND_REJECT", "trd_cli_mk.cpp", MTK_SS("Missing last_request trying to reject "), mtk::alPriorCritic, mtk::alTypeNoPermisions));    \
     }   \
     mtk::trd::msg::__MSG_TYPE__& csr_rj  = *cptr_rj;
+
 
 
 
@@ -125,21 +127,37 @@
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
-            throw mtk::Alarm(MTK_HERE, "ADD_HIST", result_additem, mtk::alPriorCritic, mtk::alTypeNoPermisions);    \
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "ADD_HIST", result_additem, mtk::alPriorCritic, mtk::alTypeNoPermisions));    \
         }       \
     }
 
-#define  ADD_HIST(__VAR_NAME__, __cf_rj__, __nw_md_cc__)  \
+
+
+#define  ADD_HIST_CF(__VAR_NAME__, __nw_md_cc__)  \
     {       \
         using namespace mtk::trd::hist;       \
-        std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_##__cf_rj__, tt2_##__nw_md_cc__,        \
+        std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_cf, tt2_##__nw_md_cc__,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::nullable<mtk::FixedNumber>(), __VAR_NAME__.market_pos.quantity,        \
                         __VAR_NAME__.cli_ref, "", ""}));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
-            throw mtk::Alarm(MTK_HERE, "ADD_HIST", result_additem, mtk::alPriorCritic, mtk::alTypeNoPermisions);    \
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "ADD_HIST", result_additem, mtk::alPriorCritic, mtk::alTypeNoPermisions));    \
+        }       \
+    }
+
+#define  ADD_HIST_RJ(__VAR_NAME__, __nw_md_cc__)  \
+    {       \
+        using namespace mtk::trd::hist;       \
+        std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_rj, tt2_##__nw_md_cc__,        \
+                        mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
+                        mtk::nullable<mtk::FixedNumber>(), __VAR_NAME__.request_pos.quantity,        \
+                        __VAR_NAME__.cli_ref, "", __VAR_NAME__.reject_description }));       \
+        if(result_additem != "")        \
+        {       \
+            ci->__serrors += result_additem;        \
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "ADD_HIST", result_additem, mtk::alPriorCritic, mtk::alTypeNoPermisions));    \
         }       \
     }
     
@@ -154,7 +172,7 @@
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
-            throw mtk::Alarm(MTK_HERE, "ADD_HIST", result_additem, mtk::alPriorCritic, mtk::alTypeNoPermisions);    \
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "ADD_HIST", result_additem, mtk::alPriorCritic, mtk::alTypeNoPermisions));    \
         }       \
     }
 

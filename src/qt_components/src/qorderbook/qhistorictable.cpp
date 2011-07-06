@@ -71,6 +71,9 @@ QHistoricTable::QHistoricTable(QWidget *parent) :
 
     verticalHeader()->setVisible(false);
     horizontalHeader()->setStretchLastSection(true);
+    horizontalHeader()->hideSection(6);
+    horizontalHeader()->setClickable(true);
+    connect(horizontalHeader(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(slot_doubleClicked_header(int)));
 
 
     {
@@ -127,7 +130,8 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
     else if (item.type2 == mtk::trd::hist::tt2_cc  &&  item.type != mtk::trd::hist::tt_rq_pending)
     {
         trans_text += tr(" canc");
-        color = Qt::gray;
+        if(item.type != mtk::trd::hist::tt_rj)
+            color = Qt::gray;
     }
     else if (item.type2 == mtk::trd::hist::tt2_ex)
     {
@@ -138,7 +142,7 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
 
     this->item(row, col_transaction_type)->setText(trans_text);
 
-    this->item(row, col_date_time)->setText(QLatin1String(MTK_SS(item.date_time).c_str()));
+    this->item(row, col_date_time)->setText(QLatin1String(MTK_SS(item.date_time).substr(11, 8).c_str()));
     if(item.price.HasValue())
         this->item(row, col_price)->setText(qtmisc::fn_as_QString(item.price.Get()));
     else
@@ -202,5 +206,12 @@ void        QHistoricTable::modified_item(int pos, const  mtk::trd::hist::order_
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qhistorictable", MTK_SS("error locating item on pos " << pos << " this->rowCount()==" << this->rowCount()),
                                  mtk::alPriorError, mtk::alTypeLogicError));
 
-    update_item(this->rowCount() - pos - 1, item);
+    update_item(this->rowCount()-1 - pos, item);
+}
+
+
+void  QHistoricTable::slot_doubleClicked_header(int index)
+{
+    if(index == 5)
+        horizontalHeader()->setSectionHidden(6, !horizontalHeader()->isSectionHidden(6));
 }

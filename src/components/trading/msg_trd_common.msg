@@ -94,7 +94,7 @@ CF_XX  [<  V:0  >]
     req_id              (rqid) :   mtk::msg::sub_request_id
     cli_ref             (clr)  :   string
     total_execs         (ext)  :   sub_total_executions      
-
+    
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
 

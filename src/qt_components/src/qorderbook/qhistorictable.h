@@ -31,7 +31,7 @@ public:
 signals:
 
 private slots:
-
+    void  slot_doubleClicked_header(int);
 
 private:
     mtk::CountPtr<mtk::trd::hist::order_historic2>   order_historic;

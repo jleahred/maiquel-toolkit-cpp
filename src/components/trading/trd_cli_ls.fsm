@@ -295,32 +295,32 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
             **************/
 
         //  progressing  confirmations.................................................
-            cf_cfnw         [{  ADD_HIST(cf, cf,nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  }]
+            cf_cfnw         [{  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  }]
 
-            cf_cfmd         [{  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
-            cf_cfmd_nr      [{  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
-            cf_cfmd_pend    [{  ADD_HIST(cf, cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
+            cf_cfmd         [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
+            cf_cfmd_nr      [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
+            cf_cfmd_pend    [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
 
-            cf_cfcc         [{  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
-            cf_cfcc_nr      [{  ADD_HIST(cf, cf,cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
+            cf_cfcc         [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
+            cf_cfcc_nr      [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
 
         //  CONFIRM EXECUTIONS..........................................
             cf_cfex         [{  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  }]
 
 
         //  progressing  rejects.................................................
-            cf_rjnw         [{  ADD_HIST(rj, rj,nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  }]
+            cf_rjnw         [{  ADD_HIST_RJ(rj, nw)     ci->sig_rj_nw(rj);  ci->sig_changed();  }]
 
-            cf_rjmd         [{  ADD_HIST(rj, rj,md)     ci->sig_rj_md(rj);  ci->sig_changed();  }]
+            cf_rjmd         [{  ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  }]
 
-            cf_rjcc         [{  ADD_HIST(rj, rj,cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  }]
+            cf_rjcc         [{  ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  }]
 
 
 
         //  rejecting request.................................................
-            rj_rqnw [{ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST(csr_rj, rj,nw)      ci->sig_changed();  }]
-            rj_rqmd [{ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST(csr_rj, rj,md)      ci->sig_changed();  }]
-            rj_rqcc [{ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_LS)      ADD_HIST(csr_rj, rj,cc)      ci->sig_changed();  }]
+            rj_rqnw [{ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_LS)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  }]
+            rj_rqmd [{ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  }]
+            rj_rqcc [{ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_LS)      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  }]
 
 
         //  requesting not requested..........................................
@@ -369,7 +369,7 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
                 [{
                     ({  bool result = false;
                         if (ci->last_request().HasValue())
-                            result = cf.req_id == ci->last_request().Get().req_info.req_id;
+                            result = (cf.req_id == ci->last_request().Get().req_info.req_id);
                         else
                             result = false;
                         result;
