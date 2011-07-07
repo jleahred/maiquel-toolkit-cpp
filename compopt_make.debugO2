@@ -1,6 +1,6 @@
 
 # compiler flags (-g -O2 -Wall)
-CXXFLAGS = -O2 -g
+CXXFLAGS = -std=gnu++0x -O2 -g
 CFLAGS = -O0
 
 

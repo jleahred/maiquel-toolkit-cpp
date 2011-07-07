@@ -256,11 +256,11 @@ print '=== NAME -> TAG'
 print_map(NAME_TAG)
 print
 
-print '=== MESSAGES WITH ALL FIELDS (brief)'
-for msg_name, msg_fields in MSG_FIELDS.items():
-    print_msg_fields(msg_name, msg_fields, '')
-
-
-print '=== MESSAGES WITH ALL FIELDS  enumeration'
-for msg_name, msg_fields in MSG_FIELDS.items():
-    print_msg_fields_enumeration(msg_name, msg_fields, '')
+##print '=== MESSAGES WITH ALL FIELDS (brief)'
+##for msg_name, msg_fields in MSG_FIELDS.items():
+##    print_msg_fields(msg_name, msg_fields, '')
+##
+##
+##print '=== MESSAGES WITH ALL FIELDS  enumeration'
+##for msg_name, msg_fields in MSG_FIELDS.items():
+##    print_msg_fields_enumeration(msg_name, msg_fields, '')

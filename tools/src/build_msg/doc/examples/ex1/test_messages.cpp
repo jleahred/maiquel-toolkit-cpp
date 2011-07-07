@@ -63,30 +63,6 @@ namespace testing {
     }
 
 
-	template <typename T>
-	inline void  operator >> (const YAML::Node& seq, mtk::list <T>& v) 
-    {
-        for(unsigned i=0; i<seq.size(); ++i)
-        {
-            T t = __internal_get_default((T*)0);
-            seq[i] >> t;
-            v.push_back(t);
-        }
-	}
-
-	template <typename T>
-	inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
-    {
-        if(n.size()!=0)
-        {
-            T t = __internal_get_default((T*)0);
-            n >> t;
-            nv = t;
-        }
-	}
-
-
-
 
     
 template<typename T>
@@ -338,7 +314,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
         {
             qpid::types::Variant::Map m;
             __internal_add2map(m, *it);
-            //list.push_back(*it);
+            list.push_back(m);
             ++it;
         }
         

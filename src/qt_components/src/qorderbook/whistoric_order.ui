@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>whistoric_order</class>
+ <widget class="QDialog" name="whistoric_order">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>795</width>
+    <height>337</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>order history</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel
+{
+  font: 20px;
+}
+
+QLabel#side
+{
+  font: 22px;
+	font-weight: bold;
+}
+
+
+QLabel#remarks
+{
+  font:14px;
+}
+
+
+QLabel#order_id
+{
+  font:11px;
+}
+
+
+QLabel#product_name
+{
+  font:26px;
+  font-weight: bold;
+}
+
+QLabel#exec_price, QLabel#exec_quantity
+{
+    color: rgb(51,230,255);
+}
+</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="product_name">
+     <property name="text">
+      <string notr="true">product_name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3" colspan="2">
+    <widget class="QLabel" name="order_id">
+     <property name="text">
+      <string notr="true">order_id</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="5">
+    <widget class="QHistoricTable" name="historic"/>
+   </item>
+   <item row="2" column="4">
+    <widget class="QLabel" name="exec_price">
+     <property name="text">
+      <string notr="true">exec_price</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLabel" name="price">
+     <property name="text">
+      <string notr="true">price</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="side">
+     <property name="text">
+      <string notr="true">side</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="4">
+    <widget class="QLabel" name="exec_quantity">
+     <property name="text">
+      <string notr="true">exec_quantity</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="4">
+    <widget class="QLabel" name="remarks">
+     <property name="text">
+      <string notr="true">remarks</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4">
+    <widget class="QLabel" name="rem_quantity">
+     <property name="text">
+      <string notr="true">rem_quantity</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLabel" name="quantity">
+     <property name="text">
+      <string notr="true">quantity</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QHistoricTable</class>
+   <extends>QTableWidget</extends>
+   <header>qorderbook/qhistorictable.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

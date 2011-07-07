@@ -4,6 +4,38 @@ include::../../VERSION[]
 
 
 
+0.50  2010-07-07::
+
+Fixed errors;;
+* Fixed numbers rounding negative numbers
+* Emarket some times produces bad prices
+** Instead of delete a specific order, the system was deleting a order by price and quantity
+
+
+New;;
+* Market orders
+* +ACS+ synchronization with servers
+* Script for messages analysis
+* Less operator option in message definition
+* +yaml+ integrated
+* c++11  (auto and initializers)
+* Account manager server
+* Trading db server
+* +mtk::reverse_iterator+
+* Order history
+* fsm warper for signals
+
+
+Modif interfaz;;
+* Account and invariant on trading messages
+
+Other;;
+* Patetic windows trick on qpid library
+* Added context info to multiresponse
+* seed +mtk::rand+ now is with milliseconds
+* New look on terminal (qss based)
+
+
 
 0.49  2010-05-04::
 

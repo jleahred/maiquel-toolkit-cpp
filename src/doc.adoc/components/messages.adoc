@@ -338,3 +338,4 @@ include::../../../src/components/prices/msg_prices.msg[]
 == Messages analysis
 
 include::msg_analysis.msg[]
+

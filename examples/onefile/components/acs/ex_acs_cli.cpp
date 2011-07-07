@@ -31,9 +31,7 @@ void stop(const int&)
 }
 
 
-
-
-void received_login_ok(const mtk::acs::msg::res_login::IC_login_response_info& log_conf)
+void received_login_ok(const mtk::acs::msg::res_login::IC_session_info&   log_conf)
 {
     std::cout << "received login ok  "  << log_conf << std::endl;
     //login_manager->user_rq_logout();

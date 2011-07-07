@@ -140,18 +140,17 @@ mtk::trd::msg::RQ_XX_LS MainWindow::get_xx_request(void)
         side = mtk::trd::msg::sell;
 
 
-    return mtk::trd::msg::RQ_XX_LS(mtk::trd::msg::RQ_XX(
-                                            mtk::msg::sub_request_info(mtk::msg::sub_request_id(ui->leReqInfo_SessionID->text().toStdString(),
-                                                                                                ui->leReqInfo_RequestCode->text().toStdString()),
-                                                                       get_process_info())
-                                            , ord_id
-                                            , pc
-                                            , ui->leCliRef->text().toStdString()
-                                            , mtk::admin::get_control_fluct_info())
-                                    , mtk::trd::msg::sub_position_ls(
-                                              mtk::FixedNumber(mtk::fnDouble(ui->lePrice->text().toDouble()),  mtk::fnDec(2),  mtk::fnInc(1))
-                                            , mtk::FixedNumber(mtk::fnDouble(ui->leQuantity->text().toDouble())     ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                            , side));
+
+    mtk::msg::sub_request_info req_info(mtk::msg::sub_request_id(ui->leReqInfo_SessionID->text().toStdString(),
+                                                ui->leReqInfo_RequestCode->text().toStdString()),
+                                                get_process_info());
+    mtk::trd::msg::sub_account_info  account("cli_code", "account");
+    mtk::trd::msg::sub_invariant_order_info invariant(ord_id, pc, side, account);
+    mtk::trd::msg::sub_position_ls  request_pos(
+              mtk::FixedNumber(mtk::fnDouble(ui->lePrice->text().toDouble()),  mtk::fnDec(2),  mtk::fnInc(1))
+            , mtk::FixedNumber(mtk::fnDouble(ui->leQuantity->text().toDouble())     ,  mtk::fnDec(0),  mtk::fnInc(1)));
+    mtk::trd::msg::RQ_XX  rqxx(invariant, req_info, ui->leCliRef->text().toStdString(), mtk::msg::sub_control_fluct("exsendorder", mtk::dtNowLocal()));
+    return mtk::trd::msg::RQ_XX_LS(rqxx, request_pos);
 }
 
 void MainWindow::on_pbNewOrder_clicked()
@@ -185,7 +184,12 @@ void MainWindow::on_pbSendCancelOrder_clicked()
 void MainWindow::on_pbNewOrderFromOrderBook_clicked()
 {
     mtk::trd::msg::RQ_NW_LS rq(get_xx_request());
-    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(rq.product_code, rq.request_pos, rq.cli_ref);
+    mtk::trd::msg::enBuySell side;
+    if (ui->buy->isChecked())
+        side = mtk::trd::msg::buy;
+    else
+        side = mtk::trd::msg::sell;
+    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(rq.invariant.product_code, side, rq.request_pos, rq.cli_ref);
 }
 void MainWindow::on_pushButton_clicked()
 {

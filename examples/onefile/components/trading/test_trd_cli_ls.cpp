@@ -116,110 +116,96 @@ int main(void)
         order_ls.sig_cf_ex.connect(confirm_exec);
 
         
+        mtk::trd::msg::sub_account_info  account("cli_code", "account");
+        mtk::trd::msg::sub_invariant_order_info invariant(ord_id, pc, mtk::trd::msg::buy, account);
+        
         //  we receive a request new...
-        order_ls.rq_nw (mtk::trd::msg::RQ_NW_LS (mtk::trd::msg::RQ_XX_LS(mtk::trd::msg::RQ_XX(
-                                                      mtk::msg::sub_request_info(mtk::msg::sub_request_id(ord_id.sess_id, 
-                                                                                  ord_id.req_code), 
-                                                                     mtk::msg::get_process_info())
-                                                      , ord_id
-                                                      , pc
-                                                      , "cli_ref"
-                                                      , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
-                                  , mtk::trd::msg::sub_position_ls(
-                                                   mtk::FixedNumber(mtk::fnDouble(100.123),  mtk::fnDec(3),  mtk::fnInc(1))
-                                                   , mtk::FixedNumber(mtk::fnDouble(30)   ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                   , mtk::trd::msg::buy))));
+        {
+            mtk::msg::sub_request_info  request_info(mtk::msg::sub_request_id(ord_id.session_id, ord_id.req_code), mtk::msg::get_process_info());
+            mtk::trd::msg::RQ_XX  rqxx(invariant, request_info, "cli_ref", mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()));
+            mtk::trd::msg::sub_position_ls request_pos( mtk::FixedNumber(mtk::fnDouble(100.123),  mtk::fnDec(3),  mtk::fnInc(1))
+                                            , mtk::FixedNumber(mtk::fnDouble(30)   ,  mtk::fnDec(0),  mtk::fnInc(1)));
+            mtk::trd::msg::RQ_XX_LS rqxxls(rqxx, request_pos);
 
+            order_ls.rq_nw(mtk::trd::msg::RQ_NW_LS (rqxxls));
+        }
 
         //  receiving a cf_nw
-        order_ls.cf_nw(mtk::trd::msg::CF_NW_LS( mtk::trd::msg::CF_XX_LS(mtk::trd::msg::CF_XX(
-                                                                                  mtk::msg::sub_request_info(mtk::msg::sub_request_id(ord_id.sess_id, ord_id.req_code), mtk::msg::get_process_info())
-                                                                                , pc
-                                                                                , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
-                                                                , mtk::trd::msg::sub_order_ls_confirmated( mtk::trd::msg::sub_order_xx_confirmated(
-                                                                                                                  ord_id
-                                                                                                                , mtk::trd::msg::sub_total_executions(
-                                                                                                                          0.
-                                                                                                                        , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                                                                        , mtk::FixedNumber(mtk::fnDouble(30),  mtk::fnDec(0),  mtk::fnInc(1)))
-                                                                                                                , "cli_ref")
-                                                                                                , mtk::trd::msg::sub_position_ls(
-                                                                                                          mtk::FixedNumber(mtk::fnDouble(100.123),  mtk::fnDec(3),  mtk::fnInc(1))
-                                                                                                        , mtk::FixedNumber(mtk::fnDouble(30)     ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                                                        , mtk::trd::msg::buy)))));
+        {
+            mtk::msg::sub_request_id request_id(ord_id.session_id, ord_id.req_code);
+            mtk::trd::msg::sub_total_executions  total_execs(0.
+                                            , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                            , mtk::FixedNumber(mtk::fnDouble(30),  mtk::fnDec(0),  mtk::fnInc(1)));
+            
+            mtk::trd::msg::CF_XX  cfxx(invariant, "market_order_id", request_id, "cli_ref", total_execs,    mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()));
+
+            mtk::trd::msg::sub_position_ls  position_ls(      mtk::FixedNumber(mtk::fnDouble(100.123),  mtk::fnDec(3),  mtk::fnInc(1))
+                                                            , mtk::FixedNumber(mtk::fnDouble(30)     ,  mtk::fnDec(0),  mtk::fnInc(1)));
+            mtk::trd::msg::CF_XX_LS  cfxxls  (cfxx, position_ls);
+
+            order_ls.cf_nw(mtk::trd::msg::CF_NW_LS(cfxxls));
+        }
 
         //  we receive a request modification
-        order_ls.rq_md(mtk::trd::msg::RQ_MD_LS(mtk::trd::msg::RQ_XX_LS(mtk::trd::msg::RQ_XX(
-                                                                                  mtk::msg::get_request_info()
-                                                                                , ord_id
-                                                                                , pc
-                                                                                , "cli_ref"
-                                                                                , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
-                                                                , mtk::trd::msg::sub_position_ls(
-                                                                          mtk::FixedNumber(mtk::fnDouble(100.333),  mtk::fnDec(3),  mtk::fnInc(1))
-                                                                        , mtk::FixedNumber(mtk::fnDouble(30)     ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                        , mtk::trd::msg::buy))));
+        {
+            mtk::trd::msg::RQ_XX  rqxx(invariant, mtk::msg::get_request_info(), "cli_ref", mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()));
+            mtk::trd::msg::sub_position_ls  request_pos(       mtk::FixedNumber(mtk::fnDouble(100.333),  mtk::fnDec(3),  mtk::fnInc(1))
+                                                             , mtk::FixedNumber(mtk::fnDouble(30)     ,  mtk::fnDec(0),  mtk::fnInc(1)));
+            mtk::trd::msg::RQ_XX_LS  rqxxls(rqxx, request_pos);
+            
+            order_ls.rq_md(mtk::trd::msg::RQ_MD_LS(rqxxls));
+        }
 
 
         //  receiving a cf_md
-        order_ls.cf_md(mtk::trd::msg::CF_MD_LS(mtk::trd::msg::CF_XX_LS(mtk::trd::msg::CF_XX(
-                                                                                  order_ls.last_request().Get().req_info
-                                                                                , order_ls.last_request().Get().product_code
-                                                                                , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
-                                                                  , mtk::trd::msg::sub_order_ls_confirmated(mtk::trd::msg::sub_order_xx_confirmated(
-                                                                                                          order_ls.last_request().Get().order_id
-                                                                                                        , order_ls.last_confirmation().Get().confirmated_info.total_execs
-                                                                                                        , order_ls.last_request().Get().cli_ref)
-                                                                                                , order_ls.last_request().Get().request_pos))));
+        {
+            mtk::msg::sub_request_id request_id(ord_id.session_id, ord_id.req_code);
+            mtk::trd::msg::sub_total_executions  total_execs = order_ls.last_confirmation().Get().total_execs;
+            mtk::trd::msg::CF_XX    cfxx  (invariant, "market_order_id", request_id, order_ls.last_request().Get().cli_ref, total_execs, mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()));
+            mtk::trd::msg::CF_XX_LS cfxxls(cfxx, order_ls.last_request().Get().request_pos);
+            order_ls.cf_md(mtk::trd::msg::CF_MD_LS(cfxxls));
+        }
 
-        //  receiving a modification with no modifications
-        order_ls.rq_md(mtk::trd::msg::RQ_MD_LS(mtk::trd::msg::RQ_XX_LS(mtk::trd::msg::RQ_XX(
-                                                                                  mtk::msg::get_request_info()
-                                                                                , ord_id
-                                                                                , pc
-                                                                                , "cli_ref"
-                                                                                , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
-                                                                , mtk::trd::msg::sub_position_ls(
-                                                                          mtk::FixedNumber(mtk::fnDouble(100.333),  mtk::fnDec(3),  mtk::fnInc(1))
-                                                                        , mtk::FixedNumber(mtk::fnDouble(30)     ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                        , mtk::trd::msg::buy))));
+        //  receiving a modification request with no modifications
+        {
+            mtk::trd::msg::RQ_XX  rqxx(invariant, mtk::msg::get_request_info(), "cli_ref", mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()));
+            mtk::trd::msg::sub_position_ls  request_pos(       mtk::FixedNumber(mtk::fnDouble(100.333),  mtk::fnDec(3),  mtk::fnInc(1))
+                                                             , mtk::FixedNumber(mtk::fnDouble(30)     ,  mtk::fnDec(0),  mtk::fnInc(1)));
+            mtk::trd::msg::RQ_XX_LS  rqxxls(rqxx, request_pos);
+            
+            order_ls.rq_md(mtk::trd::msg::RQ_MD_LS(rqxxls));
+        }
 
         //  receiving a non requested cf_md
-        order_ls.cf_md(mtk::trd::msg::CF_MD_LS(mtk::trd::msg::CF_XX_LS(mtk::trd::msg::CF_XX(
-                                                                                  mtk::msg::get_request_info()
-                                                                                , order_ls.last_confirmation().Get().product_code
-                                                                                , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
-                                                                  , mtk::trd::msg::sub_order_ls_confirmated(mtk::trd::msg::sub_order_xx_confirmated(
-                                                                                                  order_ls.last_confirmation().Get().confirmated_info.order_id
-                                                                                                , order_ls.last_confirmation().Get().confirmated_info.total_execs
-                                                                                                , order_ls.last_request().Get().cli_ref)
-                                                                                        , mtk::trd::msg::sub_position_ls(
-                                                                                                  mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
-                                                                                                , mtk::FixedNumber(mtk::fnDouble(45)     ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                                                , mtk::trd::msg::buy)))));
-
+        {
+            mtk::msg::sub_request_id request_id(mtk::msg::get_request_info().req_id);
+            mtk::trd::msg::sub_total_executions  total_execs = order_ls.last_confirmation().Get().total_execs;
+            mtk::trd::msg::CF_XX    cfxx  (invariant, "market_order_id", request_id, order_ls.last_request().Get().cli_ref, total_execs, mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()));
+            mtk::trd::msg::sub_position_ls  market_pos(
+                  mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
+                , mtk::FixedNumber(mtk::fnDouble(45)     ,  mtk::fnDec(0),  mtk::fnInc(1)));
+            mtk::trd::msg::CF_XX_LS cfxxls(cfxx, market_pos);
+            order_ls.cf_md(mtk::trd::msg::CF_MD_LS(cfxxls));
+        }
 
 
         //  receiving a cf_ex
-        order_ls.cf_ex(mtk::trd::msg::CF_EX_LS(
-                                                    mtk::trd::msg::CF_XX_LS(mtk::trd::msg::CF_XX(
-                                                                                      mtk::msg::get_request_info()
-                                                                                    , order_ls.last_confirmation().Get().product_code
-                                                                                    , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
-                                                                    , mtk::trd::msg::sub_order_ls_confirmated(mtk::trd::msg::sub_order_xx_confirmated(
-                                                                                                  order_ls.last_confirmation().Get().confirmated_info.order_id
-                                                                                                , order_ls.last_confirmation().Get().confirmated_info.total_execs
-                                                                                                , order_ls.last_request().Get().cli_ref)
-                                                                                    , mtk::trd::msg::sub_position_ls(
-                                                                                              mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
-                                                                                            , mtk::FixedNumber(mtk::fnDouble(40)     ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                                            , mtk::trd::msg::buy)))
-                                                                                                
-                                                    //  executed
-                                                    , mtk::trd::msg::sub_position_ls(
-                                                              mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
-                                                            , mtk::FixedNumber(mtk::fnDouble(5)      ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                            , mtk::trd::msg::buy)));
+        {
+            mtk::msg::sub_request_id request_id(mtk::msg::get_request_info().req_id);
+            mtk::trd::msg::sub_total_executions  total_execs = order_ls.last_confirmation().Get().total_execs;
+            
+            mtk::trd::msg::sub_exec_conf  executed_pos  ("execid_aa", 
+                                      mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
+                                    , mtk::FixedNumber(mtk::fnDouble(5)      ,  mtk::fnDec(0),  mtk::fnInc(1))
+                                    , mtk::trd::msg::buy);
+            mtk::trd::msg::CF_XX    cfxx  (invariant, "market_order_id", request_id, order_ls.last_request().Get().cli_ref, total_execs, mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()));
+            mtk::trd::msg::sub_position_ls  market_pos(
+                  mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
+                , mtk::FixedNumber(mtk::fnDouble(45)     ,  mtk::fnDec(0),  mtk::fnInc(1)));
+            mtk::trd::msg::CF_XX_LS  cfxxls(cfxx, market_pos);
+            mtk::trd::msg::CF_EX_LS  cfexls  (cfxxls, executed_pos);
+            order_ls.cf_ex(cfexls);
+        }
 
 
         //  receiving a rq_cc
@@ -227,18 +213,17 @@ int main(void)
 
 
         //  receiving a cf_cc  requested
-        order_ls.cf_cc(mtk::trd::msg::CF_CC_LS(mtk::trd::msg::CF_XX_LS(mtk::trd::msg::CF_XX(
-                                                                                      order_ls.last_request().Get().req_info
-                                                                                    , order_ls.last_confirmation().Get().product_code
-                                                                                    , mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()))
-                                                                  , mtk::trd::msg::sub_order_ls_confirmated(mtk::trd::msg::sub_order_xx_confirmated(
-                                                                                                  order_ls.last_confirmation().Get().confirmated_info.order_id
-                                                                                                , order_ls.last_confirmation().Get().confirmated_info.total_execs
-                                                                                                , order_ls.last_request().Get().cli_ref)
-                                                                                        , mtk::trd::msg::sub_position_ls(
-                                                                                                  mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
-                                                                                                , mtk::FixedNumber(mtk::fnDouble(40)     ,  mtk::fnDec(0),  mtk::fnInc(1))
-                                                                                                , mtk::trd::msg::buy)))));
+        {
+            mtk::msg::sub_request_id request_id(mtk::msg::get_request_info().req_id);
+            mtk::trd::msg::sub_total_executions  total_execs = order_ls.last_confirmation().Get().total_execs;
+            mtk::trd::msg::CF_XX    cfxx  (invariant, "market_order_id", request_id, order_ls.last_request().Get().cli_ref, total_execs, mtk::msg::sub_control_fluct("A", mtk::dtNowLocal()));
+            mtk::trd::msg::sub_position_ls  market_pos(
+                  mtk::FixedNumber(mtk::fnDouble(101.222),  mtk::fnDec(3),  mtk::fnInc(1))
+                , mtk::FixedNumber(mtk::fnDouble(45)     ,  mtk::fnDec(0),  mtk::fnInc(1)));
+            mtk::trd::msg::CF_XX_LS  cfxxls (cfxx, market_pos);
+            order_ls.cf_cc(mtk::trd::msg::CF_CC_LS(cfxxls));
+        }
+
 
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"
