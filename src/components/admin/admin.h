@@ -65,6 +65,8 @@ namespace mtk {
         void                                                set_config_property (const std::string& path, const std::string&  property_value);
 
         mtk::list<std::string>                              get_config_nodes    (const std::string& path);
+
+        mtk::Nullable<mtk::list<std::string> >              get_config_list     (const std::string& path);
         
         
         //  to be call from acs_client
