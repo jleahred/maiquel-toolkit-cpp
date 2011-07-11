@@ -226,7 +226,7 @@ namespace
     //      ORDER FILTER ..........................................................................
     std::string   get_order_grant_type (const mtk::trd::msg::RQ_XX&  rq)
     {
-        return  accmgr::db::get_grant_type(rq.req_info.req_id, rq.invariant.product_code.market, rq.invariant.account);
+        return  accmgr::db::get_grant_type(rq.request_info.req_id, rq.invariant.product_code.market, rq.invariant.account);
     }
 
 
@@ -281,7 +281,7 @@ namespace
                                         current_hqpid_orders.__ORDER_TYPE__,   \
                                         mtk::admin::get_url("client"),   \
                                         "CLITESTING",   \
-                                        mtk::trd::msg::__ORDER_TYPE__::get_in_subject("*", *it, "*"),   \
+                                        mtk::trd::msg::__ORDER_TYPE__::get_in_subject("*", *it, "*", "*"),   \
                                         mtk::trd::msg::__ORDER_TYPE__,   \
                                         on_##__ORDER_TYPE__)
             

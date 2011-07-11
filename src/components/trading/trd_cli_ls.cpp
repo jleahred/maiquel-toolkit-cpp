@@ -16,7 +16,7 @@
 
 
 
-#define CHECK_REQUEST \
+#define CHECK_REQUEST_AND_WRITE_LAST_REQ \
         int nerrors = 0;         \
         mtk::tuple<int, std::string> tresult;    \
         tresult = mtk::trd::msg::check_request_request<mtk::trd::msg::RQ_XX_LS>   (rq, last_request     ()   ); \
@@ -28,7 +28,7 @@
         (void)nerrors;   \
         ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_LS&>(rq)));  
 
-#define CHECK_REQUEST_MOD \
+#define CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ \
         int nerrors = 0;         \
         mtk::tuple<int, std::string> tresult;    \
         tresult = mtk::trd::msg::check_request_request<mtk::trd::msg::RQ_XX_LS>(rq, last_request     ()   ); \
@@ -47,7 +47,7 @@
 
 
 
-#define CHECK_CONFIRM \
+#define CHECK_CONFIRM_AND_WRITE_LAST_CONF \
         int nerrors = 0;         \
         mtk::tuple<int, std::string> tresult;    \
         tresult = check_confirm_request      (cf, last_request     ()); \
@@ -63,7 +63,7 @@
 
 
 
-#define CHECK_REJECT \
+#define CHECK_REJECT_AND_WRITE_LAST_CONF \
         int nerrors = 0;         \
         mtk::tuple<int, std::string> tresult;    \
         tresult = check_reject_request      (rj, last_request     ()); \
@@ -77,6 +77,10 @@
         ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_LS>(rj)));   
 
 
+#define IF_LAST_CONF_ISNULL__WRITE_IT  \
+        if(ci->last_confirmation().HasValue() == false)      \
+            ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_LS>(st)));   
+
 
 
 #define CHECK_EXEC     //nerrors += check_confirm__last_confirm(ex, last_confirmation());
@@ -89,7 +93,7 @@
     mtk::CountPtr<mtk::trd::msg::__MSG_TYPE__> cptr_rj;    \
     if (last_confirmation().HasValue())    \
     {               \
-        mtk::trd::msg::CF_XX cfxx(rq.invariant, last_confirmation().Get().market_order_id, rq.req_info.req_id, rq.cli_ref, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
+        mtk::trd::msg::CF_XX cfxx(rq.invariant, last_confirmation().Get().market_order_id, rq.request_info.req_id, rq.cli_ref, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
         mtk::trd::msg::CF_XX_LS  rjxx(cfxx, last_confirmation().Get().market_pos);      \
         cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rjxx, ci->__serrors, last_request().Get().request_pos))); \
         ci->__SIGNAL_TYPE__(*cptr_rj);  \
@@ -103,7 +107,7 @@
             mtk::trd::msg::sub_total_executions total_execs(0.,     \
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)),    \
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)) );    \
-            mtk::trd::msg::CF_XX cfxx(rq.invariant, MTK_SS(market_order_id), rq.req_info.req_id, rq.cli_ref, total_execs, mtk::admin::get_control_fluct_info());  \
+            mtk::trd::msg::CF_XX cfxx(rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, rq.cli_ref, total_execs, mtk::admin::get_control_fluct_info());  \
             mtk::trd::msg::CF_XX_LS  rjxx(cfxx, last_request().Get().request_pos);      \
             cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rjxx, ci->__serrors, last_request().Get().request_pos))); \
             ci->__SIGNAL_TYPE__(*cptr_rj);  \
@@ -121,7 +125,7 @@
     {       \
         using namespace mtk::trd::hist;       \
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_rq_pending, tt2_##__nw_md_cc__,        \
-                        mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_info.req_id,        \
+                        mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.request_info.req_id,        \
                         mtk::make_nullable(__VAR_NAME__.request_pos.price), __VAR_NAME__.request_pos.quantity,        \
                         __VAR_NAME__.cli_ref, "", ""}));       \
         if(result_additem != "")        \

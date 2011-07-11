@@ -759,6 +759,33 @@ void RJ_CC_MK::before_send(void) const
 
 
 
+
+CF_ST_MK::CF_ST_MK ( const CF_XX_MK&  parent,   const mtk::msg::sub_process_info&  _process_info,   const mtk::msg::sub_request_id&  _req_id)
+    :  CF_XX_MK(parent),   process_info(_process_info),   req_id(_req_id) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string CF_ST_MK::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void CF_ST_MK::before_send(void) const
+{
+
+}
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_position_mk & c)
 {
     o << "{ "
@@ -1212,6 +1239,40 @@ void  operator >> (const YAML::Node& node, RJ_CC_MK & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const CF_ST_MK & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const CF_XX_MK&>(c)  << ")" 
+        << "process_info:"<< c.process_info<<"  "        << "req_id:"<< c.req_id<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const CF_ST_MK & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "CF_XX_MK" <<  YAML::Value << static_cast<const CF_XX_MK&>(c)  
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "req_id"  << YAML::Value << c.req_id
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, CF_ST_MK & c)
+{
+
+    node["CF_XX_MK"]   >>   static_cast<CF_XX_MK&>(c)  ;
+
+        node["process_info"]  >> c.process_info;
+        node["req_id"]  >> c.req_id;
+
+
+};
+
+
 bool operator== (const sub_position_mk& a, const sub_position_mk& b)
 {
     return (          a.quantity ==  b.quantity  &&   true  );
@@ -1374,6 +1435,18 @@ bool operator== (const RJ_CC_MK& a, const RJ_CC_MK& b)
 };
 
 bool operator!= (const RJ_CC_MK& a, const RJ_CC_MK& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const CF_ST_MK& a, const CF_ST_MK& b)
+{
+    return ( (static_cast<const CF_XX_MK&>(a)   ==  static_cast<const CF_XX_MK&>(b))  &&           a.process_info ==  b.process_info  &&          a.req_id ==  b.req_id  &&   true  );
+};
+
+bool operator!= (const CF_ST_MK& a, const CF_ST_MK& b)
 {
     return !(a==b);
 };
@@ -1899,6 +1972,60 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 
 
 
+
+
+//void  __internal_qpid_fill (CF_ST_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (CF_ST_MK& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<CF_XX_MK&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("pi");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_info on message CF_ST_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.process_info, it->second);
+                        //__internal_qpid_fill(c.process_info, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("rqid");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field req_id on message CF_ST_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.req_id, it->second);
+                        //__internal_qpid_fill(c.req_id, it->second.asMap());
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_ST_MK& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const CF_XX_MK&>(a));
+
+//  sub_msg_type
+        __internal_add2map(map, a.process_info, std::string("pi"));
+//  sub_msg_type
+        __internal_add2map(map, a.req_id, std::string("rqid"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_ST_MK>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -2137,6 +2264,34 @@ __internal_add2map(content, static_cast<const RJ_XX_MK&>(*this));
 
 
 
+qpid::messaging::Message CF_ST_MK::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
+
+//  sub_msg_type
+//        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
+        __internal_add2map(content, this->process_info, std::string("pi"));
+//  sub_msg_type
+//        content["rqid"] =  qpidmsg_coded_as_qpid_Map(this->req_id);
+        __internal_add2map(content, this->req_id, std::string("rqid"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
     sub_position_mk  __internal_get_default(sub_position_mk*)
     {
         return sub_position_mk(
@@ -2239,6 +2394,16 @@ __internal_get_default((RJ_XX_MK*)0)
     {
         return RJ_CC_MK(
 __internal_get_default((RJ_XX_MK*)0)
+            );
+    }
+    
+    CF_ST_MK  __internal_get_default(CF_ST_MK*)
+    {
+        return CF_ST_MK(
+__internal_get_default((CF_XX_MK*)0), //   sub_msg_type
+   __internal_get_default((mtk::msg::sub_process_info*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_request_id*)0)
             );
     }
     
@@ -2458,6 +2623,24 @@ RJ_CC_MK::RJ_CC_MK (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
+
+
+CF_ST_MK::CF_ST_MK (const qpid::messaging::Message& msg)
+    :  CF_XX_MK(msg), //   sub_msg_type
+   process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
+//   sub_msg_type
+   req_id(__internal_get_default((mtk::msg::sub_request_id*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
 std::string  RQ_NW_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
         return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << "");
@@ -2537,6 +2720,14 @@ std::string  RQ_NW_MK::get_in_subject (const std::string& invariant_account_clie
     std::string  RJ_CC_MK::get_out_subject (void) const
     {
         return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << "");
+    }
+    std::string  CF_ST_MK::get_in_subject (const std::string& process_info_location_client_code,const std::string& process_info_location_machine,const std::string& process_info_process_uuid,const std::string& req_id_session_id,const std::string& req_id_req_code)
+    {
+        return MTK_SS("CONF." << process_info_location_client_code << ".STATUS_CF." << process_info_location_machine << "." << process_info_process_uuid << "." << req_id_session_id << "." << req_id_req_code << "");
+    }
+    std::string  CF_ST_MK::get_out_subject (void) const
+    {
+        return MTK_SS("CONF." << this->process_info.location.client_code << ".STATUS_CF." << this->process_info.location.machine << "." << this->process_info.process_uuid << "." << this->req_id.session_id << "." << this->req_id.req_code << "");
     }
     
 

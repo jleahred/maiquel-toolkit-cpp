@@ -1,0 +1,85 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= Orders Loader
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-07-08
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+* This process listen to trading confirmations and keep last order status in memory
+* It listen to request order status messages from +cli->account_manager+
+* If order is canceled, the process will delete from memory if it has no executions
+* It doesn't check values or message secuence. It is a very stupid process
+
+
+
+== Context DFD
+
+
+.DFD
+["graphviz", "orders_loader_dfd.png"]
+-----------
+digraph dfd0_graph {
+ rankdir=LR;
+ nodesep=0.3
+ ranksep = 1.5
+
+ // Nodos
+ node [fontsize=16];
+ CLIENT_ACCMGR [label="C\nL\nI\n->\na\nc\nc\nm\ng\nr" shape=box height=3];
+ CLIENT [label="C\nL\nI\n" shape=box height=3];
+ ORDERS_LOADER [label=" ORDERS LOADER " shape=circle height=3]
+ OMS [label="\n\nO\nM\nS\n\n" shape=box height=3];
+ // Conectores
+ edge [fontsize=12];
+
+
+ CLIENT_ACCMGR ->  ORDERS_LOADER  [label = "RQ_ORDERS_STATUS(mkt,account)"];
+
+ ORDERS_LOADER -> CLIENT   [label = "CF_ST_XX"];
+
+ OMS  ->  ORDERS_LOADER  [label = "CF_XX_XX"];
+
+}
+-----
+
+
+== Messages
+
+* Tradin messages
+* Look for  +CF_XX_xx+, +RQ_ORDERS_STATUS+, +CF_ST_xx+
+* To reconize canceled orders, the pending quantity has to be 0 con +st+ messages
+
+
+
+
+
+
+== Document modifications
+* Doesn't aply

@@ -575,6 +575,47 @@ private:
 
 
 
+
+//-------------------------------
+//      CF_ST_MK
+//-------------------------------    
+class CF_ST_MK        :  public  CF_XX_MK
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit CF_ST_MK (  const CF_XX_MK&  parent,   const mtk::msg::sub_process_info&  _process_info,   const mtk::msg::sub_request_id&  _req_id );
+    explicit CF_ST_MK ( const qpid::messaging::Message& message );
+    virtual ~CF_ST_MK (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "CF_ST_MK"; };
+    static  std::string static_get_message_type_as_string(void)        { return "CF_ST_MK"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
+
+    // fields
+    mtk::msg::sub_process_info                process_info; 
+    mtk::msg::sub_request_id                  req_id; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& process_info_location_client_code,const std::string& process_info_location_machine,const std::string& process_info_process_uuid,const std::string& req_id_session_id,const std::string& req_id_req_code);
+virtual std::string  get_out_subject (void) const;
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
     
     
     
@@ -677,6 +718,13 @@ bool operator!= (const RJ_MD_MK& a, const RJ_MD_MK& b);
 bool operator== (const RJ_CC_MK& a, const RJ_CC_MK& b);
 bool operator!= (const RJ_CC_MK& a, const RJ_CC_MK& b);
 
+    std::ostream& operator<< (std::ostream& o, const CF_ST_MK & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const CF_ST_MK & c);
+   void           operator >> (const YAML::Node& n,       CF_ST_MK & c);
+
+bool operator== (const CF_ST_MK& a, const CF_ST_MK& b);
+bool operator!= (const CF_ST_MK& a, const CF_ST_MK& b);
+
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_position_mk& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_mk& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_position_mk>& a, const std::string& field);
@@ -733,6 +781,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RJ_CC_MK& a)
 void __internal_add2map (qpid::types::Variant::Map& map, const RJ_CC_MK& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_CC_MK>& a, const std::string& field);
 void copy (RJ_CC_MK& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_ST_MK& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_ST_MK& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_ST_MK>& a, const std::string& field);
+void copy (CF_ST_MK& a, const qpid::types::Variant& map);
 
     sub_position_mk  __internal_get_default(sub_position_mk *);
     
@@ -762,6 +814,8 @@ void copy (RJ_CC_MK& a, const qpid::types::Variant& map);
     
     RJ_CC_MK  __internal_get_default(RJ_CC_MK *);
     
+    CF_ST_MK  __internal_get_default(CF_ST_MK *);
+    
 
 };   //namespace mtk {
 };   //namespace trd {
@@ -786,6 +840,7 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EX_MK)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RJ_NW_MK)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RJ_MD_MK)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RJ_CC_MK)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_ST_MK)
 
 
 

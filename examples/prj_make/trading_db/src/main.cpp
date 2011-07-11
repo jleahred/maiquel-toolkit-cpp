@@ -200,7 +200,7 @@ void fill_total_executions(record_info& full_record, const mtk::trd::msg::sub_to
 void  fill_rq_xx(record_info& full_record, const mtk::trd::msg::RQ_XX & rq)
 {
     fill_invariant  (full_record, rq.invariant);
-    fill_req_info   (full_record, rq.req_info);
+    fill_req_info   (full_record, rq.request_info);
     full_record.CLI_REF =  rq.cli_ref;
     fill_control_fluct (full_record,  rq.orig_control_fluct);
 }

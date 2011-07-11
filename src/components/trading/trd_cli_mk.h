@@ -55,6 +55,7 @@ public:
     void rj_md          ( const mtk::trd::msg::RJ_MD_MK&   rj           );
     void rj_cc          ( const mtk::trd::msg::RJ_CC_MK&   rj           );
     void cf_ex          ( const mtk::trd::msg::CF_EX_MK&   ex           );
+    void cf_st          ( const mtk::trd::msg::CF_ST_MK&   st           );
 
 
     //  OUTPUT
@@ -68,6 +69,7 @@ public:
     mtk::Signal< const mtk::trd::msg::CF_MD_MK&   /*cf*/          > sig_cf_md;
     mtk::Signal< const mtk::trd::msg::CF_CC_MK&   /*cf*/          > sig_cf_cc;
     mtk::Signal< const mtk::trd::msg::CF_EX_MK&   /*ex*/          > sig_cf_ex;
+    mtk::Signal< const mtk::trd::msg::CF_ST_MK&   /*st*/          > sig_cf_st;
     mtk::Signal<  > sig_changed;
 
 
@@ -118,6 +120,7 @@ public:
     void rj_md          ( const mtk::trd::msg::RJ_MD_MK&   rj           );
     void rj_cc          ( const mtk::trd::msg::RJ_CC_MK&   rj           );
     void cf_ex          ( const mtk::trd::msg::CF_EX_MK&   ex           );
+    void cf_st          ( const mtk::trd::msg::CF_ST_MK&   st           );
 
 
     //  OUTPUT
@@ -131,6 +134,7 @@ public:
     mtk::Signal< const mtk::trd::msg::CF_MD_MK&   /*cf*/          > sig_cf_md;
     mtk::Signal< const mtk::trd::msg::CF_CC_MK&   /*cf*/          > sig_cf_cc;
     mtk::Signal< const mtk::trd::msg::CF_EX_MK&   /*ex*/          > sig_cf_ex;
+    mtk::Signal< const mtk::trd::msg::CF_ST_MK&   /*st*/          > sig_cf_st;
     mtk::Signal<  > sig_changed;
 
 

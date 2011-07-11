@@ -422,6 +422,8 @@ void orders_in_product_queue::check_execs(void)
                             cf.market_pos.quantity.GetDouble()
                             -
                             cf.total_execs.acc_quantity.GetDouble());
+                cf.req_id.session_id += "em";
+                cf.req_id.req_code +=  "em";
                 best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::buy)));
                     
                 if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
@@ -436,6 +438,8 @@ void orders_in_product_queue::check_execs(void)
                             cf.market_pos.quantity.GetDouble()
                             -
                             cf.total_execs.acc_quantity.GetDouble());
+                cf.req_id.session_id += "em";
+                cf.req_id.req_code +=  "em";
                 best_sell->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::sell)));
                 if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
                     ask_queue.pop_front();

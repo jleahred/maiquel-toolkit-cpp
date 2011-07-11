@@ -74,7 +74,7 @@ RQ_XX  [< V:0 >]
 {
     invariant           (inv)  :   sub_invariant_order_info
 
-    req_info            (rqin) :   mtk::msg::sub_request_info
+    request_info        (rqi)  :   mtk::msg::sub_request_info
     cli_ref             (clr)  :   string
     
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
@@ -101,3 +101,13 @@ CF_XX  [<  V:0  >]
 
 
 
+//---------------------------------------------------------------------
+//	REQUEST ORDERS STATUS
+
+RQ_ORDERS_STATUS  [< V:0, SUBJ:RQ.${account.client_code}.${market} >]   
+{
+    request_info       (rqi)   :   mtk::msg::sub_request_info
+
+    market              (mk)    :    string    
+    account             (acc)   :    sub_account_info
+}

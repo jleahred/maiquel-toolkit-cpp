@@ -107,3 +107,13 @@ RJ_CC_MK  [< V:0, I:RJ_XX_MK,   SUBJ:CONF.${invariant.account.client_code}.${inv
 }
 
 
+//---------------------------------------------------------------------
+//	STATUS MESSAGES
+
+    //  if the order is canceled, remaining quantity will be 0
+
+CF_ST_MK  [< V:0,  I:CF_XX_MK,  SUBJ:CONF.${process_info.location.client_code}.STATUS_CF.${process_info.location.machine}.${process_info.process_uuid}.${req_id.session_id}.${req_id.req_code}   >]
+{
+    process_info    (pi)    :   mtk::msg::sub_process_info
+    req_id          (rqid)  :   mtk::msg::sub_request_id
+}

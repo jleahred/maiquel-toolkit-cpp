@@ -114,3 +114,15 @@ RJ_CC_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${inv
 }
 
 
+
+
+//---------------------------------------------------------------------
+//	STATUS MESSAGES
+
+    //  if the order is canceled, remaining quantity will be 0
+
+CF_ST_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${process_info.location.client_code}.STATUS_CF.${process_info.location.machine}.${process_info.process_uuid}.${req_id.session_id}.${req_id.req_code}   >]
+{
+    process_info    (pi)    :   mtk::msg::sub_process_info
+    req_id          (rqid)  :   mtk::msg::sub_request_id
+}

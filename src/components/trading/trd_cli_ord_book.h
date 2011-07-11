@@ -39,10 +39,10 @@ namespace mtk{namespace trd{
 
 
         //  OUTPUT
-        mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_exec_conf& >&   get_sig_execution       (void);
+        mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_exec_conf& >&                          get_sig_execution       (void);
         
-        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>&  >&          get_sig_order_ls_new    (void);
-        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>&  >&          get_sig_order_mk_new    (void);
+        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>&  >&    get_sig_order_ls_new    (void);
+        mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>&  >&    get_sig_order_mk_new    (void);
 
 
         //  ACCESS

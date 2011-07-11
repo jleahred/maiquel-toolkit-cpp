@@ -31,7 +31,7 @@ END_INIT
 
 req_login_key [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQK >]
 {
-    request_info    (rqi)       :   mtk::msg::sub_request_info
+    request_info    (rqi)        :   mtk::msg::sub_request_info
     
     user_name       (un)         :   string
 }

@@ -73,7 +73,7 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
                                                                                         mtk::Signal<int, const order_historic_item&>&   signal_modified_item)
 {
     std::string  result_error;
-    if(item.type  == tt_cf   ||  item.type  == tt_rj)
+    if((item.type  == tt_cf   ||  item.type  == tt_rj)  &&   list_historic_item.size()!=0)
     {
         
         //  generally if it is a confirmation, it will confirm the previus transaction
@@ -152,7 +152,7 @@ std::string  order_historic_dangerous_not_signal_warped::add_item(const order_hi
 
 std::string   order_historic_dangerous_not_signal_warped::get_lasttr_rjdescr (void)  const    
 {   
-    if(list_historic_item->front().type  ==  tt_rj)
+    if(list_historic_item->size()>0  &&  list_historic_item->front().type  ==  tt_rj)
         return list_historic_item->front().remarks;
     else
         return "";

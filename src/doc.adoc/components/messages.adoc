@@ -276,6 +276,12 @@ include::../../../src/components/trading/msg_trd_common.msg[]
 include::../../../src/components/trading/msg_trd_common_support.h[]
 -----
 
+=== Account manager
+.mtk/src/components/trading/accounts/msg_account_manager.msg
+[source,{cpp}]
+----
+include::../../../src/components/trading/accounts/msg_account_manager.msg[]
+----
 
 
 === Limit orders

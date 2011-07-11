@@ -162,7 +162,7 @@ namespace mtk{namespace trd{
                 std::string serrors;
                 int nerrors=0;
 
-                if (last_request.HasValue()== false  ||  last_request.Get().req_info.req_id ==  last_conf.Get().req_id)         //  there are no pending request
+                if (last_request.HasValue()== false  ||  last_request.Get().request_info.req_id ==  last_conf.Get().req_id)         //  there are no pending request
                     if (rq.request_pos == last_conf.Get().market_pos  &&  rq.cli_ref == last_conf.Get().cli_ref)
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request_not_modifying", MTK_SS("modification not modifing  " << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
 

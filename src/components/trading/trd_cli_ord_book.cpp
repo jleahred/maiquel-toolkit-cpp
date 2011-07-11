@@ -72,6 +72,7 @@ struct handles_qpid
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RJ_MD_LS> > rj_md_ls;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RJ_CC_LS> > rj_cc_ls;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_LS> > cf_ex_ls;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_ST_LS> > cf_st_ls;
     
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_MK> > cf_nw_mk;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_MK> > cf_md_mk;
@@ -80,6 +81,7 @@ struct handles_qpid
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RJ_MD_MK> > rj_md_mk;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RJ_CC_MK> > rj_cc_mk;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_MK> > cf_ex_mk;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_ST_MK> > cf_st_mk;
 };
 
 
@@ -117,6 +119,7 @@ void rj_nw_ls(const mtk::trd::msg::RJ_NW_LS& rj);
 void rj_md_ls(const mtk::trd::msg::RJ_MD_LS& rj);
 void rj_cc_ls(const mtk::trd::msg::RJ_CC_LS& rj);
 void cf_ex_ls(const mtk::trd::msg::CF_EX_LS& ex);
+void cf_st_ls(const mtk::trd::msg::CF_ST_LS& ex);
 
 
 void cf_nw_mk(const mtk::trd::msg::CF_NW_MK& cf);
@@ -126,6 +129,7 @@ void rj_nw_mk(const mtk::trd::msg::RJ_NW_MK& rj);
 void rj_md_mk(const mtk::trd::msg::RJ_MD_MK& rj);
 void rj_cc_mk(const mtk::trd::msg::RJ_CC_MK& rj);
 void cf_ex_mk(const mtk::trd::msg::CF_EX_MK& ex);
+void cf_st_mk(const mtk::trd::msg::CF_ST_MK& ex);
 
 
 
@@ -178,7 +182,7 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                     handles.cf_md_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_MD_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_MD_LS,
                                     cf_md_ls)
 
@@ -186,7 +190,7 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                     handles.cf_cc_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_CC_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_CC_LS,
                                     cf_cc_ls)
 
@@ -194,7 +198,7 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                     handles.rj_nw_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::RJ_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_NW_LS,
                                     rj_nw_ls)
 
@@ -202,7 +206,7 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                     handles.rj_md_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::RJ_MD_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_MD_LS,
                                     rj_md_ls)
 
@@ -210,14 +214,14 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                     handles.rj_cc_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::RJ_CC_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::RJ_CC_LS,
                                     rj_cc_ls)
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_ex_ls,
                                     mtk::admin::get_url("client"),
                                     "CLITESTING",
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_EX_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_EX_LS,
                                     cf_ex_ls)
 
@@ -277,6 +281,27 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                     mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_EX_MK,
                                     cf_ex_mk)
+
+
+            //  request load current orders and subscribe to response
+            mtk::msg::sub_request_info  ri = mtk::admin::get_request_info();
+            mtk::msg::sub_process_info  pi = mtk::admin::get_process_info();
+            MTK_QPID_RECEIVER_CONNECT_F(
+                                    handles.cf_st_ls,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::CF_ST_LS::get_in_subject(grant.key.account.client_code, pi.location.machine, pi.process_uuid, ri.req_id.session_id, ri.req_id.req_code),
+                                    mtk::trd::msg::CF_ST_LS,
+                                    cf_st_ls)
+            MTK_QPID_RECEIVER_CONNECT_F(
+                                    handles.cf_st_mk,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::CF_ST_MK::get_in_subject(grant.key.account.client_code, pi.location.machine, pi.process_uuid, ri.req_id.session_id, ri.req_id.req_code),
+                                    mtk::trd::msg::CF_ST_MK,
+                                    cf_st_mk)
+            mtk::trd::msg::RQ_ORDERS_STATUS  msg_rq_order_status(ri, grant.key.market, grant.key.account);
+            mtk::send_message(mtk::admin::get_qpid_session("client", "CLITESTING"), msg_rq_order_status);
 }
 
 
@@ -507,7 +532,7 @@ REQUEST_TYPE     get_new_request_from_last_request_or_build_from_confirmation (m
     if(order->has_pending_rq())
     {
         REQUEST_TYPE                rqxxls     (order->last_request().Get());
-        rqxxls.req_info             =  mtk::admin::get_request_info();
+        rqxxls.request_info         =  mtk::admin::get_request_info();
         rqxxls.orig_control_fluct   =  mtk::admin::get_control_fluct_info();
         return rqxxls;
     }
@@ -632,6 +657,13 @@ void cf_ex_xx(const EXEC_TYPE& ex)
     order->cf_ex(ex);
     
     get_status_ref().sig_execution.emit(ex.invariant.product_code, ex.executed_pos);
+}
+
+template<typename ORDER_TYPE, typename  CONF_TYPE>
+void cf_st_xx(const CONF_TYPE& cf)
+{
+    mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(cf.invariant.order_id);
+    order->cf_st(cf);
 }
 
 
@@ -774,6 +806,16 @@ void cf_ex_mk(const mtk::trd::msg::CF_EX_MK& ex)
     cf_ex_xx<trd_cli_mk_dangerous_signals_not_warped, mtk::trd::msg::CF_EX_MK>(ex);
 }
 
+
+void cf_st_ls(const mtk::trd::msg::CF_ST_LS& st)
+{
+    cf_st_xx<trd_cli_ls_dangerous_signals_not_warped, mtk::trd::msg::CF_ST_LS>(st);
+}
+
+void cf_st_mk(const mtk::trd::msg::CF_ST_MK& st)
+{
+    cf_st_xx<trd_cli_mk_dangerous_signals_not_warped, mtk::trd::msg::CF_ST_MK>(st);
+}
 
 
 

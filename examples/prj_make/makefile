@@ -12,6 +12,8 @@ test:
 	make -C alarms_db doc
 	make -C product_loader this
 	make -C product_loader doc
+	make -C orders_loader this
+	make -C orders_loader doc
 
 
 .PHONY: this
@@ -22,6 +24,7 @@ this:
 	make -C acs this
 	make -C alarms_db this
 	make -C product_loader this
+	make -C orders_loader this
 
 .PHONY: clean
 clean:
@@ -31,3 +34,4 @@ clean:
 	make -C acs clean
 	make -C alarms_db clean
 	make -C product_loader clean
+	make -C orders_loader clean

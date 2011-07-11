@@ -11,24 +11,26 @@
 
 
 ::INPUTS::
-    rq_nw           (rq   :  mtk::trd::msg::RQ_NW_LS)   [{  CHECK_REQUEST       }]
-    rq_md           (rq   :  mtk::trd::msg::RQ_MD_LS)   [{  CHECK_REQUEST_MOD   }]
-	rq_cc           (rq   :  mtk::trd::msg::RQ_CC_LS)   [{  CHECK_REQUEST       }]
+    rq_nw           (rq   :  mtk::trd::msg::RQ_NW_LS)   [{  CHECK_REQUEST_AND_WRITE_LAST_REQ      }]
+    rq_md           (rq   :  mtk::trd::msg::RQ_MD_LS)   [{  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ  }]
+	rq_cc           (rq   :  mtk::trd::msg::RQ_CC_LS)   [{  CHECK_REQUEST_AND_WRITE_LAST_REQ      }]
 
-	cf_nw           (cf   :  mtk::trd::msg::CF_NW_LS)   [{  CHECK_CONFIRM       }]
-	cf_md           (cf   :  mtk::trd::msg::CF_MD_LS)   [{  CHECK_CONFIRM       }]
-	cf_cc           (cf   :  mtk::trd::msg::CF_CC_LS)   [{  CHECK_CONFIRM       }]
+	cf_nw           (cf   :  mtk::trd::msg::CF_NW_LS)   [{  CHECK_CONFIRM_AND_WRITE_LAST_CONF     }]
+	cf_md           (cf   :  mtk::trd::msg::CF_MD_LS)   [{  CHECK_CONFIRM_AND_WRITE_LAST_CONF     }]
+	cf_cc           (cf   :  mtk::trd::msg::CF_CC_LS)   [{  CHECK_CONFIRM_AND_WRITE_LAST_CONF     }]
 
-	rj_nw           (rj   :  mtk::trd::msg::RJ_NW_LS)   [{  CHECK_REJECT        }]
-	rj_md           (rj   :  mtk::trd::msg::RJ_MD_LS)   [{  CHECK_REJECT        }]
-	rj_cc           (rj   :  mtk::trd::msg::RJ_CC_LS)   [{  CHECK_REJECT        }]
+	rj_nw           (rj   :  mtk::trd::msg::RJ_NW_LS)   [{  CHECK_REJECT_AND_WRITE_LAST_CONF      }]
+	rj_md           (rj   :  mtk::trd::msg::RJ_MD_LS)   [{  CHECK_REJECT_AND_WRITE_LAST_CONF      }]
+	rj_cc           (rj   :  mtk::trd::msg::RJ_CC_LS)   [{  CHECK_REJECT_AND_WRITE_LAST_CONF      }]
 
 	cf_ex           (ex   :  mtk::trd::msg::CF_EX_LS)   
                         [{      
                                 const mtk::trd::msg::CF_XX_LS& cf(ex);
-                                CHECK_CONFIRM  
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                                 CHECK_EXEC  
                         }]
+
+	cf_st           (st   :  mtk::trd::msg::CF_ST_LS)   [{  IF_LAST_CONF_ISNULL__WRITE_IT         }]
 
 
 
@@ -49,6 +51,8 @@
 	
 	
 	sig_cf_ex        (ex   :  mtk::trd::msg::CF_EX_LS)
+    
+    sig_cf_st        (st   :  mtk::trd::msg::CF_ST_LS)
     
     sig_changed      (                               )
 
@@ -130,6 +134,9 @@ init    --   rj_md                                                     ''>   err
 init    --   rj_cc                                                     ''>   error      (method_name)
 init    --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
 init    --   cf_ex                           /   , cf_cfex             -->   market
+init    --   cf_st  &&  full_exec            /   , cf_cfst             -->   executed
+init    --   cf_st  &&  is_rem_qty_zero      /   , cf_cfst             -->   canceled
+init    --   cf_st                           /   , cf_cfst             -->   market
 
 
 w_cfnw  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
@@ -144,6 +151,7 @@ w_cfnw  --   rj_nw                           /   , cf_rjnw             ''>   can
 w_cfnw  --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error      (method_name)
 w_cfnw  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
 w_cfnw  --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error      (method_name)
+w_cfnw  --   cf_st                                                     ''>   w_cfnw
 
 
 market  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
@@ -159,6 +167,7 @@ market  --   rj_md                           /   , cf_rjmd & rq_cc     ''>   err
 market  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
 market  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
 market  --   cf_ex                           /   , cf_cfex             ''>   market
+market  --   cf_st                                                     ''>   market
 
 
 w_cfmd  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
@@ -176,6 +185,7 @@ w_cfmd  --   rj_md                           /   , cf_rjmd             ''>   mar
 w_cfmd  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
 w_cfmd  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
 w_cfmd  --   cf_ex                           /   , cf_cfex             ''>   w_cfmd
+w_cfmd  --   cf_st                                                     ''>   w_cfmd
 
 
 
@@ -191,6 +201,7 @@ w_cfcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   erro
 w_cfcc  --   rj_cc                           /   , cf_rjcc            ''>   market
 w_cfcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
 w_cfcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfcc
+w_cfcc  --   cf_st                                                    ''>   w_cfcc  
 
 
 
@@ -209,6 +220,7 @@ w_cfmdcc  --   rj_md                           /   , cf_rjmd            ''>   w_
 w_cfmdcc  --   rj_cc                           /   , cf_rjcc            ''>   w_cfmd
 w_cfmdcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
 w_cfmdcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfmdcc
+w_cfmdcc  --   cf_st                                                    ''>   w_cfmdcc  
 
 
 
@@ -224,6 +236,7 @@ w_cfnwmd  --   rj_nw                           /   , cf_rjnw            ''>   ca
 w_cfnwmd  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
+w_cfnwmd  --   cf_st                                                    ''>   w_cfnwmd  
 
 
 w_cfnwcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
@@ -237,6 +250,7 @@ w_cfnwcc  --   rj_nw                           /   , cf_rjnw            ''>   ca
 w_cfnwcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
+w_cfnwcc  --   cf_st                                                    ''>   w_cfnwcc  
 
 
 
@@ -250,6 +264,7 @@ canceled --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   er
 canceled --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error     (method_name)
 canceled --   rj_cc                           /   , cf_rjcc             ''>   error     (method_name)
 canceled --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
+canceled --   cf_st                                                     ''>   canceled 
 
 
 executed --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
@@ -262,6 +277,7 @@ executed --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   er
 executed --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error     (method_name)
 executed --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error     (method_name)
 executed --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
+executed --   cf_st                                                     ''>   executed 
 
 
 
@@ -275,6 +291,7 @@ error    --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   er
 error    --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error     (method_name)
 error    --   rj_cc                           /   , cf_rjcc             ''>   error     (method_name)
 error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
+error    --   cf_st                                                     ''>   error     (method_name)
 
 
 
@@ -303,6 +320,8 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
 
             cf_cfcc         [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
             cf_cfcc_nr      [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
+            
+            cf_cfst         [{                          ci->sig_cf_st(st);  ci->sig_changed();  }]
 
         //  CONFIRM EXECUTIONS..........................................
             cf_cfex         [{  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  }]
@@ -369,7 +388,7 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
                 [{
                     ({  bool result = false;
                         if (ci->last_request().HasValue())
-                            result = (cf.req_id == ci->last_request().Get().req_info.req_id);
+                            result = (cf.req_id == ci->last_request().Get().request_info.req_id);
                         else
                             result = false;
                         result;
@@ -383,4 +402,8 @@ error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   er
                         == last_confirmation().Get().market_pos.quantity
                 }]
 
-
+            is_rem_qty_zero
+                [{
+                    last_confirmation().HasValue() == true
+                    &&  last_confirmation().Get().total_execs.remaining_qty.GetIntCode() == 0
+                }]
