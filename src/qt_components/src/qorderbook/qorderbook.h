@@ -34,6 +34,7 @@ signals:
 
 public slots:
     void slot_sectionResized(int, int, int);
+    void slot_columnMoved(qorder_table* origin, int, int, int);
 
 
 private slots:

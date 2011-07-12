@@ -17,6 +17,9 @@ public:
     void  keep_focus_paint(bool keep);
     void  set_horiz_line_each(int rows) { horiz_line_each_xrows=rows; }
 
+    int   get_left_visual_index  (void) const;
+    int   get_right_visual_index (void) const;
+
 protected:
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 private:

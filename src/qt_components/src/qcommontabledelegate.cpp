@@ -2,6 +2,7 @@
 
 #include <QTableWidget>
 #include <QPainter>
+#include <QHeaderView>
 
 /*
 QCommonTableDelegate::QCommonTableDelegate(QObject *parent) :
@@ -69,9 +70,9 @@ void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
             painter->drawLine(option.rect.topLeft()+QPoint(0,1)+urb, option.rect.topRight()+QPoint(0,1)+urb); //draw only horizontal line
             painter->drawLine(option.rect.bottomLeft()+QPoint(0,0)+urb, option.rect.bottomRight()+QPoint(0,0)+urb); //draw only horizontal line
 
-            if (index.column()==0)
+            if (index.column()==get_left_visual_index())
                 painter->drawLine(option.rect.topLeft()+QPoint(1,2), option.rect.bottomLeft()+QPoint(1,-2)); //draw only horizontal line
-            if (index.column()==tableView->columnCount()-1)
+            if (index.column()==get_right_visual_index())
                 painter->drawLine(option.rect.topRight()+QPoint(0,2), option.rect.bottomRight()+QPoint(0,-2)); //draw only horizontal line
 
             //painter->restore();
@@ -140,4 +141,14 @@ void  QCommonTableDelegate::keep_focus_paint(bool keep)
 {
 
     focus_paint = keep;
+}
+
+
+int   QCommonTableDelegate::get_left_visual_index  (void) const
+{
+    return  tableView->horizontalHeader()->logicalIndex(0);
+}
+int   QCommonTableDelegate::get_right_visual_index (void) const
+{
+    return  tableView->horizontalHeader()->logicalIndex(tableView->columnCount()-1);
 }

@@ -18,23 +18,24 @@
 
 
 
-namespace {
-    const int col_session_id    = 0;
-    const int col_req_code      = 1;
-    const int col_cli_code      = 2;
-    const int col_account       = 3;
-    const int col_order_type    = 4;
-    const int col_market        = 5;
-    const int col_product       = 6;
-    const int col_side          = 7;
-    const int col_quantity      = 8;
-    const int col_price         = 9;
-    const int col_exec_quantity = 10;
-    const int col_rem_quantity  = 11;
-    const int col_exec_price    = 12;
-    const int col_remarks       = 13;
 
-    const int count_items       = 14;
+
+namespace {
+    const int col_ord_id        = 0;
+    const int col_cli_code      = 1;
+    const int col_account       = 2;
+    const int col_order_type    = 3;
+    const int col_market        = 4;
+    const int col_product       = 5;
+    const int col_side          = 6;
+    const int col_quantity      = 7;
+    const int col_price         = 8;
+    const int col_exec_quantity = 9;
+    const int col_rem_quantity  = 10;
+    const int col_exec_price    = 11;
+    const int col_remarks       = 12;
+
+    const int count_items       = 13;
     /*
     const char* const col_captions[] = {    "sess_id",            defined later for translations
                                         QObject::tr("req_code"),
@@ -200,7 +201,15 @@ namespace {
 
 
 
+class  Item_ord_id   :  public  QTableWidgetItem
+{
+public:
+    mtk::trd::msg::sub_order_id   order_id;
 
+    Item_ord_id(const  mtk::trd::msg::sub_order_id&   _order_id)
+        :   order_id(_order_id)
+    {}
+};
 
 
 //----------------------------------------------------------------------------------------------------
@@ -212,7 +221,7 @@ public:
     QTableWidgetItem**                                  items;
     mtk::Signal<const mtk::trd::msg::sub_order_id&>     signal_executed_order;
 
-    order_in_qbook(QTableWidget *table_widget)
+    order_in_qbook(QTableWidget *table_widget, mtk::trd::msg::sub_order_id  order_id)
         :   items (new QTableWidgetItem*[count_items])
     {
         int row = table_widget->rowCount();
@@ -220,7 +229,10 @@ public:
 
         for (int column=0; column<count_items; ++column)
         {
-            items[column] = new QTableWidgetItem;
+            if(column == 0)
+                items[column] = new Item_ord_id(order_id);
+            else
+                items[column] = new QTableWidgetItem;
             items[column]->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             items[column]->setBackgroundColor(Qt::white);
             table_widget->setItem(row, column, items[column]);
@@ -242,8 +254,7 @@ public:
 
     void update(void)
     {
-        update_item_session_id          ();
-        update_item_req_code            ();
+        update_item_ord_id              ();
         update_item_market              ();
         update_item_product             ();
         update_item_price               ();
@@ -258,8 +269,7 @@ public:
         update_item_order_type          ();
     }
 
-    virtual void   update_item_session_id          ()=0;
-    virtual void   update_item_req_code            ()=0;
+    virtual void   update_item_ord_id              ()=0;
     virtual void   update_item_market              ()=0;
     virtual void   update_item_product             ()=0;
     virtual void   update_item_price               ()=0;
@@ -284,7 +294,7 @@ public:
     mtk::CountPtr<ORDER_TYPE>                 inner_order;
 
     order_in_qbook_xx(QTableWidget *table_widget, const mtk::CountPtr<ORDER_TYPE>& order)
-        : order_in_qbook(table_widget), inner_order(order)
+        : order_in_qbook(table_widget, qtmisc::get_order_invariant(*order).order_id), inner_order(order)
     {
     }
     ~order_in_qbook_xx() {
@@ -312,17 +322,11 @@ public:
             return Qt::white;
     }
 
-    void update_item_session_id(void)
+    void update_item_ord_id(void)
     {
-        QTableWidgetItem* item = items[col_session_id];
-        item->setText(QLatin1String(qtmisc::get_order_invariant(*inner_order).order_id.session_id.c_str()));
-        item->setBackgroundColor(get_default_color());
-    }
-
-    void update_item_req_code()
-    {
-        QTableWidgetItem* item = items[col_req_code];
-        item->setText(QLatin1String(qtmisc::get_order_invariant(*inner_order).order_id.req_code.c_str()));
+        QTableWidgetItem* item = items[col_ord_id];
+        std::string  ord_id = MTK_SS(qtmisc::get_order_invariant(*inner_order).order_id.session_id << ":" << qtmisc::get_order_invariant(*inner_order).order_id.req_code);
+        item->setText(QLatin1String(ord_id.c_str()));
         item->setBackgroundColor(get_default_color());
     }
 
@@ -501,7 +505,7 @@ class order_in_qbook_XX<mtk::trd::trd_cli_ls>  :
 {
     typedef order_in_qbook_XX  CLASS_NAME;
 public:
-    order_in_qbook_XX(QTableWidget *table_widget, const mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
+    order_in_qbook_XX(QTableWidget* table_widget, const mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
         : order_in_qbook_xx<mtk::trd::trd_cli_ls>(table_widget, order)
     {
         MTK_CONNECT_THIS(order_in_qbook_xx<mtk::trd::trd_cli_ls>::inner_order->sig_changed, update_on_change);
@@ -587,8 +591,7 @@ qorder_table::qorder_table(QWidget *parent) :
 
     QStringList headers_captions;
     {
-        static  const char* const col_captions[] = {     "sess_id",
-                                                         QT_TR_NOOP("req_code"),
+        static  const char* const col_captions[] = {     QT_TR_NOOP("ord_id"),
                                                          QT_TR_NOOP("cli_code"),
                                                          QT_TR_NOOP("account"),
                                                          QT_TR_NOOP("o.type"),
@@ -614,10 +617,11 @@ qorder_table::qorder_table(QWidget *parent) :
     table_widget->verticalHeader()->setVisible(false);
     //table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.4);  moved on_new_order
     //table_widget->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    table_widget->setColumnWidth(col_session_id, 20);
-    table_widget->setColumnWidth(col_req_code, 20);
+    table_widget->setColumnWidth(col_ord_id, 20);
     table_widget->setColumnWidth(col_remarks, 400);
     table_widget->horizontalHeader()->setStretchLastSection(true);
+    table_widget->horizontalHeader()->setMovable(true);
+
 
     delegate_paint->set_horiz_line_each(1);
     table_widget->setItemDelegate(delegate_paint);
@@ -662,6 +666,7 @@ qorder_table::qorder_table(QWidget *parent) :
     connect(table_widget, SIGNAL(doubleClicked(QModelIndex)), SLOT(slot_on_double_clicked(QModelIndex)));
     connect(table_widget, SIGNAL(currentCellChanged(int,int,int,int)), this, SLOT(slot_current_cell_changed(int,int,int,int)));
     connect(this->table_widget->horizontalHeader(), SIGNAL(sectionResized(int,int,int)), this, SIGNAL(signal_sectionResized(int,int,int)));
+    connect(this->table_widget->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(slot_columnMoved(int,int,int)));
 }
 
 qorder_table::~qorder_table()
@@ -708,19 +713,10 @@ void qorder_table::on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk
 
 mtk::trd::msg::sub_order_id   get_order_id_from_row(QTableWidget *table_widget, int row)
 {
-    std::string session_id;
-    std::string request_code;
-    QTableWidgetItem* item;
-
-    item = table_widget->item(row, col_session_id);
-    if (item)   session_id = item->text().toStdString();
+    Item_ord_id* ioid = dynamic_cast<Item_ord_id*>(table_widget->item(row, col_ord_id));
+    if(ioid != 0)
+        return ioid->order_id;
     else throw mtk::Alarm(MTK_HERE, "qorderbook", "missing item", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-
-    item = table_widget->item(row, col_req_code);
-    if (item)   request_code = item->text().toStdString();
-    else throw mtk::Alarm(MTK_HERE, "qorderbook", "missing item", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-
-    return mtk::trd::msg::sub_order_id(mtk::msg::sub_request_id(session_id, request_code));
 }
 
 
@@ -1164,15 +1160,19 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qorder_table& qot)
                     out << YAML::Key  << "client_code" << YAML::Value << qot.current_filter.client_code.toStdString();
                     out << YAML::Key  << "market" << YAML::Value << qot.current_filter.market.toStdString();
                     out << YAML::Key  << "name" << YAML::Value << qot.current_filter.name.toStdString();
-        out << YAML::EndMap;
+            out << YAML::EndMap;
 
-        out << YAML::Key  << "column_sizes"  << YAML::Value;
-            out << YAML::Flow << YAML::BeginSeq;
-                for(int i=0; i < qot.table_widget->horizontalHeader()->count(); ++i)
-                {
-                    out << qot.table_widget->horizontalHeader()->sectionSize(i);
-                }
-            out << YAML::EndSeq;
+
+            out << YAML::Key  << "header_status"  << YAML::Value;
+            out << qot.table_widget->horizontalHeader()->saveState().toHex().constData();
+
+            out << YAML::Key  << "column_sizes"  << YAML::Value;
+                out << YAML::Flow << YAML::BeginSeq;
+                    for(int i=0; i < qot.table_widget->horizontalHeader()->count(); ++i)
+                    {
+                        out << qot.table_widget->horizontalHeader()->sectionSize(i);
+                    }
+                out << YAML::EndSeq;
 
         out << YAML::EndMap;
 
@@ -1183,6 +1183,11 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qorder_table& qot)
 
 void     operator>> (const YAML::Node & node   , qorder_table& qot)
 {
+    std::string  header_status;
+    node["order_table"]["header_status"]  >> header_status;
+    qot.table_widget->horizontalHeader()->restoreState(QByteArray::fromHex(header_status.c_str()));
+
+    if(node["order_table"].FindValue("column_sizes"))
     {   //  column sizes
         for(int i =0; unsigned(i)< node["order_table"]["column_sizes"].size()   &&   i+1 < qot.table_widget->horizontalHeader()->count(); ++i)
         {
@@ -1241,9 +1246,24 @@ mtk::nullable<mtk::trd::msg::sub_order_id>   qorder_table::get_current_order_id(
 
 void qorder_table::resize_header_section(int index, int /*old_size*/, int new_size)
 {
-    if(index != table_widget->horizontalHeader()->count()-1  &&    table_widget->horizontalHeader()->sectionSize(index) !=  new_size)
+    if(index != table_widget->horizontalHeader()->logicalIndex(table_widget->horizontalHeader()->count()-1)  &&    table_widget->horizontalHeader()->sectionSize(index) !=  new_size)
+    {
+        table_widget->horizontalHeader()->blockSignals(true);
         table_widget->horizontalHeader()->resizeSection(index, new_size);
+        table_widget->horizontalHeader()->blockSignals(false);
+    }
 }
+
+void  qorder_table::move_column(qorder_table* origin, int /*logicalIndex*/, int oldVisualIndex, int newVisualIndex)
+{
+    if(origin != this)
+    {
+        table_widget->horizontalHeader()->blockSignals(true);
+        table_widget->horizontalHeader()->moveSection(oldVisualIndex, newVisualIndex);
+        table_widget->horizontalHeader()->blockSignals(false);
+    }
+}
+
 
 void qorder_table::resize_header_sections(const qorder_table& ot)
 {
@@ -1251,4 +1271,19 @@ void qorder_table::resize_header_sections(const qorder_table& ot)
     {
         table_widget->horizontalHeader()->resizeSection(i, ot.table_widget->horizontalHeader()->sectionSize(i));
     }
+}
+
+void qorder_table::set_header_positions  (const qorder_table& qot)
+{
+    for(int i=0; i<this->table_widget->horizontalHeader()->count(); ++i)
+    {
+        int move2 = qot.table_widget->horizontalHeader()->visualIndex(i);
+        if(move2 <= i)
+            table_widget->horizontalHeader()->moveSection(i, move2);
+    }
+}
+
+void qorder_table::slot_columnMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
+{
+    Q_EMIT(signal_columnMoved(this, logicalIndex, oldVisualIndex, newVisualIndex));
 }

@@ -19,6 +19,9 @@ namespace YAML { class Emitter;  class Node;  };
 
 
 
+
+
+
 class qorder_table : public QWidget , public mtk::SignalReceptor
 {
     Q_OBJECT
@@ -36,6 +39,8 @@ public:
     mtk::nullable<mtk::trd::msg::sub_order_id>       get_current_order_id(void);
     void resize_header_section(int index, int old_size, int new_size);
     void resize_header_sections(const qorder_table&);
+    void set_header_positions  (const qorder_table&);
+    void move_column(qorder_table* origin, int logicalIndex, int oldVisualIndex, int newVisualIndex);
 
 
 signals:
@@ -46,6 +51,7 @@ signals:
     void signal_request_show_historic(void);
     void signal_request_hide_historic(void);
     void signal_sectionResized(int, int, int);
+    void signal_columnMoved(qorder_table*, int, int, int);
 
 private slots:
     void request_cancel(void);
@@ -56,6 +62,7 @@ private slots:
     void slot_all_orders(void);
     void slot_on_double_clicked(QModelIndex);
     void slot_current_cell_changed(int, int, int, int);
+    void slot_columnMoved(int, int, int);
 
 
 private:

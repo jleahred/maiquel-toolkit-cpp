@@ -127,10 +127,10 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
         trans_text += tr(" new");
     else if (item.type2 == mtk::trd::hist::tt2_md)
         trans_text += tr(" mod");
-    else if (item.type2 == mtk::trd::hist::tt2_cc  &&  item.type != mtk::trd::hist::tt_rq_pending)
+    else if (item.type2 == mtk::trd::hist::tt2_cc)
     {
         trans_text += tr(" canc");
-        if(item.type != mtk::trd::hist::tt_rj)
+        if(item.type != mtk::trd::hist::tt_rj  &&  item.type != mtk::trd::hist::tt_rq_pending)
             color = Qt::gray;
     }
     else if (item.type2 == mtk::trd::hist::tt2_ex)

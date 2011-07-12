@@ -225,6 +225,16 @@ qorder_table* QOrderBook::create_new_tab(void)
 {
     qorder_table* order_table = new qorder_table(this);
 
+
+    //  set section positions
+    {
+        qorder_table* ot = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->currentIndex()));
+        if(ot != 0)
+        {
+            order_table->set_header_positions(*ot);
+        }
+    }
+
     //  set header sections sizes
     {
         qorder_table* ot = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->currentIndex()));
@@ -256,6 +266,7 @@ qorder_table* QOrderBook::create_new_tab(void)
     connect(order_table, SIGNAL(signal_request_show_historic()), SLOT(slot_show_historic()));
     connect(order_table, SIGNAL(signal_request_hide_historic()), SLOT(slot_hide_historic()));
     connect(order_table, SIGNAL(signal_sectionResized(int,int,int)), this, SLOT(slot_sectionResized(int,int,int)));
+    connect(order_table, SIGNAL(signal_columnMoved(qorder_table*, int,int,int)), this, SLOT(slot_columnMoved(qorder_table*, int,int,int)));
 
     return order_table;
 }
@@ -300,8 +311,16 @@ void     operator>> (const YAML::Node & node   , QOrderBook& qob)
 
 void QOrderBook::slot_show_historic(void)
 {
-    historic_order_window->setVisible(true);
-    update_historic();
+    qorder_table* tw = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->currentIndex()));
+    if(tw != 0)
+    {
+        mtk::nullable<mtk::trd::msg::sub_order_id>   order_id = tw->get_current_order_id();
+        if(order_id.HasValue())
+        {
+            historic_order_window->setVisible(true);
+            update_historic();
+        }
+    }
 }
 
 void QOrderBook::slot_hide_historic(void)
@@ -345,6 +364,18 @@ void QOrderBook::slot_sectionResized(int index, int old_size, int new_size)
         if(ot != 0)
         {
             ot->resize_header_section(index, old_size, new_size);
+        }
+    }
+}
+
+void QOrderBook::slot_columnMoved(qorder_table* origin, int logicalIndex, int oldVisualIndex, int newVisualIndex)
+{
+    for(int i=0; i<tab_widget->count(); ++i)
+    {
+        qorder_table* ot = dynamic_cast<qorder_table*>(tab_widget->widget(i));
+        if(ot != 0)
+        {
+            ot->move_column(origin, logicalIndex, oldVisualIndex, newVisualIndex);
         }
     }
 }
