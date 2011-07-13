@@ -269,6 +269,45 @@ private:
 
 
 //-------------------------------
+//      sub_gen_response_location
+//-------------------------------    
+class sub_gen_response_location     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_gen_response_location (    const std::string&  _session_id,   const std::string&  _client_code );
+    explicit sub_gen_response_location ( const qpid::messaging::Message& message );
+    virtual ~sub_gen_response_location (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_gen_response_location"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_gen_response_location"; };
+    
+    
+
+    // fields
+    std::string                               session_id; 
+    std::string                               client_code; 
+
+
+
+    //  subject info
+    
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
 //      sub_product_code
 //-------------------------------    
 class sub_product_code     
@@ -352,6 +391,13 @@ bool operator!= (const sub_request_info& a, const sub_request_info& b);
 bool operator== (const sub_r_response& a, const sub_r_response& b);
 bool operator!= (const sub_r_response& a, const sub_r_response& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_gen_response_location & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_gen_response_location & c);
+   void           operator >> (const YAML::Node& n,       sub_gen_response_location & c);
+
+bool operator== (const sub_gen_response_location& a, const sub_gen_response_location& b);
+bool operator!= (const sub_gen_response_location& a, const sub_gen_response_location& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_product_code & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_product_code & c);
    void           operator >> (const YAML::Node& n,       sub_product_code & c);
@@ -383,6 +429,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_r_respon
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_r_response>& a, const std::string& field);
 void copy (sub_r_response& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_gen_response_location& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_gen_response_location& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_gen_response_location>& a, const std::string& field);
+void copy (sub_gen_response_location& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_code>& a, const std::string& field);
@@ -399,6 +449,8 @@ void copy (sub_product_code& a, const qpid::types::Variant& map);
     sub_request_info  __internal_get_default(sub_request_info *);
     
     sub_r_response  __internal_get_default(sub_r_response *);
+    
+    sub_gen_response_location  __internal_get_default(sub_gen_response_location *);
     
     sub_product_code  __internal_get_default(sub_product_code *);
     

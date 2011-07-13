@@ -37,11 +37,13 @@ rq_accounts  [<  V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.
 }
 
 
-add_accounts [<  V:0, SUBJ:CONF.${session_info.client_code}.ACCOUNTS.${session_info.session_id}   >]
+add_accounts [<  V:0, SUBJ:CONF.${gen_response_location.client_code}.ACCOUNTS.${gen_response_location.session_id}  >]
+    //  this "generic" subject let us send accounts with no request from user
+    //  it's possible receive account several times
 {
-    session_info    (si)    :   mtk::acs::msg::res_login::IC_session_info
+    gen_response_location   (grl)   :   mtk::msg::sub_gen_response_location
 
-    [grant_list]    (grl)   :   sub_grant       //  grant type is empty to revoque permision
+    [grant_list]            (gl)    :   sub_grant       //  grant type is empty to revoque permision
 }
 
 

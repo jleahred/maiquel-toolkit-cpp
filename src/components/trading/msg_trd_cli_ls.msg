@@ -1,7 +1,7 @@
 BEGIN_INIT
 
 NAMESPACES = ['mtk', 'trd', 'msg']
-INCLUDES = ['#include "components/msg_common.h"', '#include "msg_trd_common.h"']
+INCLUDES = ['#include "components/msg_common.h"', '#include "msg_trd_common.h"', '#include "components/acs/msg_acs.h"' ]
 
 END_INIT
 
@@ -121,8 +121,9 @@ RJ_CC_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${inv
 
     //  if the order is canceled, remaining quantity will be 0
 
-CF_ST_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${process_info.location.client_code}.STATUS_CF.${process_info.location.machine}.${process_info.process_uuid}.${req_id.session_id}.${req_id.req_code}   >]
+CF_ST_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${gen_response_location.client_code}.STATUS_CF.${gen_response_location.session_id}  >]
+    //  this "generic" subject let us send order status with no request from user
+    //  it's possible receive order status several times
 {
-    process_info    (pi)    :   mtk::msg::sub_process_info
-    req_id          (rqid)  :   mtk::msg::sub_request_id
+    gen_response_location    (grl)    :   mtk::msg::sub_gen_response_location
 }

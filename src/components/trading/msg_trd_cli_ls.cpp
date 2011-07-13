@@ -760,8 +760,8 @@ void RJ_CC_LS::before_send(void) const
 
 
 
-CF_ST_LS::CF_ST_LS ( const CF_XX_LS&  parent,   const mtk::msg::sub_process_info&  _process_info,   const mtk::msg::sub_request_id&  _req_id)
-    :  CF_XX_LS(parent),   process_info(_process_info),   req_id(_req_id) 
+CF_ST_LS::CF_ST_LS ( const CF_XX_LS&  parent,   const mtk::msg::sub_gen_response_location&  _gen_response_location)
+    :  CF_XX_LS(parent),   gen_response_location(_gen_response_location) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -1244,7 +1244,7 @@ std::ostream& operator<< (std::ostream& o, const CF_ST_LS & c)
 {
     o << "{ "
     << "("  <<  static_cast<const CF_XX_LS&>(c)  << ")" 
-        << "process_info:"<< c.process_info<<"  "        << "req_id:"<< c.req_id<<"  "
+        << "gen_response_location:"<< c.gen_response_location<<"  "
         << " }";
     return o;
 };
@@ -1255,7 +1255,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_ST_LS & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "CF_XX_LS" <<  YAML::Value << static_cast<const CF_XX_LS&>(c)  
-        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "req_id"  << YAML::Value << c.req_id
+        << YAML::Key << "gen_response_location"  << YAML::Value << c.gen_response_location
         << YAML::EndMap;
     return o;
 };
@@ -1267,8 +1267,7 @@ void  operator >> (const YAML::Node& node, CF_ST_LS & c)
 
     node["CF_XX_LS"]   >>   static_cast<CF_XX_LS&>(c)  ;
 
-        node["process_info"]  >> c.process_info;
-        node["req_id"]  >> c.req_id;
+        node["gen_response_location"]  >> c.gen_response_location;
 
 
 };
@@ -1444,7 +1443,7 @@ bool operator!= (const RJ_CC_LS& a, const RJ_CC_LS& b)
 
 bool operator== (const CF_ST_LS& a, const CF_ST_LS& b)
 {
-    return ( (static_cast<const CF_XX_LS&>(a)   ==  static_cast<const CF_XX_LS&>(b))  &&           a.process_info ==  b.process_info  &&          a.req_id ==  b.req_id  &&   true  );
+    return ( (static_cast<const CF_XX_LS&>(a)   ==  static_cast<const CF_XX_LS&>(b))  &&           a.gen_response_location ==  b.gen_response_location  &&   true  );
 };
 
 bool operator!= (const CF_ST_LS& a, const CF_ST_LS& b)
@@ -1993,20 +1992,12 @@ copy(static_cast<CF_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("pi");
+                    it = mv.find("grl");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_info on message CF_ST_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field gen_response_location on message CF_ST_LS::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.process_info, it->second);
-                        //__internal_qpid_fill(c.process_info, it->second.asMap());
-//   sub_msg_type
-
-                    it = mv.find("rqid");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field req_id on message CF_ST_LS::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.req_id, it->second);
-                        //__internal_qpid_fill(c.req_id, it->second.asMap());
+                        copy(c.gen_response_location, it->second);
+                        //__internal_qpid_fill(c.gen_response_location, it->second.asMap());
 
     }
 
@@ -2020,9 +2011,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_ST_LS& a)
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
 //  sub_msg_type
-        __internal_add2map(map, a.process_info, std::string("pi"));
-//  sub_msg_type
-        __internal_add2map(map, a.req_id, std::string("rqid"));
+        __internal_add2map(map, a.gen_response_location, std::string("grl"));
 
 
 };
@@ -2284,11 +2273,8 @@ qpid::messaging::Message CF_ST_LS::qpidmsg_codded_as_qpid_message (const std::st
 __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
 
 //  sub_msg_type
-//        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
-        __internal_add2map(content, this->process_info, std::string("pi"));
-//  sub_msg_type
-//        content["rqid"] =  qpidmsg_coded_as_qpid_Map(this->req_id);
-        __internal_add2map(content, this->req_id, std::string("rqid"));
+//        content["grl"] =  qpidmsg_coded_as_qpid_Map(this->gen_response_location);
+        __internal_add2map(content, this->gen_response_location, std::string("grl"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2414,9 +2400,7 @@ __internal_get_default((RJ_XX_LS*)0)
     {
         return CF_ST_LS(
 __internal_get_default((CF_XX_LS*)0), //   sub_msg_type
-   __internal_get_default((mtk::msg::sub_process_info*)0),
-//   sub_msg_type
-   __internal_get_default((mtk::msg::sub_request_id*)0)
+   __internal_get_default((mtk::msg::sub_gen_response_location*)0)
             );
     }
     
@@ -2642,9 +2626,7 @@ RJ_CC_LS::RJ_CC_LS (const qpid::messaging::Message& msg)
 
 CF_ST_LS::CF_ST_LS (const qpid::messaging::Message& msg)
     :  CF_XX_LS(msg), //   sub_msg_type
-   process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
-//   sub_msg_type
-   req_id(__internal_get_default((mtk::msg::sub_request_id*)0)) 
+   gen_response_location(__internal_get_default((mtk::msg::sub_gen_response_location*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2736,13 +2718,13 @@ std::string  RQ_NW_LS::get_in_subject (const std::string& invariant_account_clie
     {
         return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << "");
     }
-    std::string  CF_ST_LS::get_in_subject (const std::string& process_info_location_client_code,const std::string& process_info_location_machine,const std::string& process_info_process_uuid,const std::string& req_id_session_id,const std::string& req_id_req_code)
+    std::string  CF_ST_LS::get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id)
     {
-        return MTK_SS("CONF." << process_info_location_client_code << ".STATUS_CF." << process_info_location_machine << "." << process_info_process_uuid << "." << req_id_session_id << "." << req_id_req_code << "");
+        return MTK_SS("CONF." << gen_response_location_client_code << ".STATUS_CF." << gen_response_location_session_id << "");
     }
     std::string  CF_ST_LS::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->process_info.location.client_code << ".STATUS_CF." << this->process_info.location.machine << "." << this->process_info.process_uuid << "." << this->req_id.session_id << "." << this->req_id.req_code << "");
+        return MTK_SS("CONF." << this->gen_response_location.client_code << ".STATUS_CF." << this->gen_response_location.session_id << "");
     }
     
 

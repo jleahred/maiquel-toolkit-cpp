@@ -464,8 +464,8 @@ void rq_accounts::before_send(void) const
 
 
 
-add_accounts::add_accounts (   const mtk::acs::msg::res_login::IC_session_info&  _session_info,   const mtk::list<sub_grant >&  _grant_list)
-    :     session_info(_session_info),   grant_list(_grant_list) 
+add_accounts::add_accounts (   const mtk::msg::sub_gen_response_location&  _gen_response_location,   const mtk::list<sub_grant >&  _grant_list)
+    :     gen_response_location(_gen_response_location),   grant_list(_grant_list) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -646,7 +646,7 @@ std::ostream& operator<< (std::ostream& o, const add_accounts & c)
 {
     o << "{ "
 
-        << "session_info:"<< c.session_info<<"  "        << "grant_list:"<< c.grant_list<<"  "
+        << "gen_response_location:"<< c.gen_response_location<<"  "        << "grant_list:"<< c.grant_list<<"  "
         << " }";
     return o;
 };
@@ -657,7 +657,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const add_accounts & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "session_info"  << YAML::Value << c.session_info        << YAML::Key << "grant_list"  << YAML::Value << c.grant_list
+        << YAML::Key << "gen_response_location"  << YAML::Value << c.gen_response_location        << YAML::Key << "grant_list"  << YAML::Value << c.grant_list
         << YAML::EndMap;
     return o;
 };
@@ -668,7 +668,7 @@ void  operator >> (const YAML::Node& node, add_accounts & c)
 {
 
 
-        node["session_info"]  >> c.session_info;
+        node["gen_response_location"]  >> c.gen_response_location;
         node["grant_list"]  >> c.grant_list;
 
 
@@ -793,7 +793,7 @@ bool operator!= (const rq_accounts& a, const rq_accounts& b)
 
 bool operator== (const add_accounts& a, const add_accounts& b)
 {
-    return (          a.session_info ==  b.session_info  &&          a.grant_list ==  b.grant_list  &&   true  );
+    return (          a.gen_response_location ==  b.gen_response_location  &&          a.grant_list ==  b.grant_list  &&   true  );
 };
 
 bool operator!= (const add_accounts& a, const add_accounts& b)
@@ -975,15 +975,15 @@ void  copy (add_accounts& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
-                    it = mv.find("si");
+                    it = mv.find("grl");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_info on message add_accounts::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field gen_response_location on message add_accounts::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.session_info, it->second);
-                        //__internal_qpid_fill(c.session_info, it->second.asMap());
+                        copy(c.gen_response_location, it->second);
+                        //__internal_qpid_fill(c.gen_response_location, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("grl");
+                    it = mv.find("gl");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field grant_list on message add_accounts::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1000,9 +1000,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const add_accounts& a)
 
 
 //  sub_msg_type
-        __internal_add2map(map, a.session_info, std::string("si"));
+        __internal_add2map(map, a.gen_response_location, std::string("grl"));
 //  sub_msg_type
-        __internal_add2map(map, a.grant_list, std::string("grl"));
+        __internal_add2map(map, a.grant_list, std::string("gl"));
 
 
 };
@@ -1155,11 +1155,11 @@ qpid::messaging::Message add_accounts::qpidmsg_codded_as_qpid_message (const std
 
 
 //  sub_msg_type
-//        content["si"] =  qpidmsg_coded_as_qpid_Map(this->session_info);
-        __internal_add2map(content, this->session_info, std::string("si"));
+//        content["grl"] =  qpidmsg_coded_as_qpid_Map(this->gen_response_location);
+        __internal_add2map(content, this->gen_response_location, std::string("grl"));
 //  sub_msg_type
-//        content["grl"] =  qpidmsg_coded_as_qpid_Map(this->grant_list);
-        __internal_add2map(content, this->grant_list, std::string("grl"));
+//        content["gl"] =  qpidmsg_coded_as_qpid_Map(this->grant_list);
+        __internal_add2map(content, this->grant_list, std::string("gl"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1258,7 +1258,7 @@ qpid::messaging::Message rq_accounts_oninit::qpidmsg_codded_as_qpid_message (con
     {
         return add_accounts(
 //   sub_msg_type
-   __internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0),
+   __internal_get_default((mtk::msg::sub_gen_response_location*)0),
 //   sub_msg_type
    __internal_get_default((mtk::list<sub_grant >*)0)
             );
@@ -1339,7 +1339,7 @@ rq_accounts::rq_accounts (const qpid::messaging::Message& msg)
 
 add_accounts::add_accounts (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
-   session_info(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)),
+   gen_response_location(__internal_get_default((mtk::msg::sub_gen_response_location*)0)),
 //   sub_msg_type
    grant_list(__internal_get_default((mtk::list<sub_grant >*)0)) 
     {
@@ -1397,13 +1397,13 @@ std::string  rq_accounts::get_in_subject (const std::string& request_info_proces
     {
         return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACCOUNT.GRANTS");
     }
-    std::string  add_accounts::get_in_subject (const std::string& session_info_client_code,const std::string& session_info_session_id)
+    std::string  add_accounts::get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id)
     {
-        return MTK_SS("CONF." << session_info_client_code << ".ACCOUNTS." << session_info_session_id << "");
+        return MTK_SS("CONF." << gen_response_location_client_code << ".ACCOUNTS." << gen_response_location_session_id << "");
     }
     std::string  add_accounts::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->session_info.client_code << ".ACCOUNTS." << this->session_info.session_id << "");
+        return MTK_SS("CONF." << this->gen_response_location.client_code << ".ACCOUNTS." << this->gen_response_location.session_id << "");
     }
     std::string  pub_accmgr_init::get_in_subject ()
     {

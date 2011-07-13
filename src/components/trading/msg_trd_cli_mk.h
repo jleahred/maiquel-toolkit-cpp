@@ -24,6 +24,7 @@
 
 #include "components/msg_common.h"
 #include "msg_trd_common.h"
+#include "components/acs/msg_acs.h"
 
 namespace mtk { 
 namespace trd { 
@@ -586,7 +587,7 @@ public:
 
     
     // constructor
-    explicit CF_ST_MK (  const CF_XX_MK&  parent,   const mtk::msg::sub_process_info&  _process_info,   const mtk::msg::sub_request_id&  _req_id );
+    explicit CF_ST_MK (  const CF_XX_MK&  parent,   const mtk::msg::sub_gen_response_location&  _gen_response_location );
     explicit CF_ST_MK ( const qpid::messaging::Message& message );
     virtual ~CF_ST_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_ST_MK"; };
@@ -595,13 +596,12 @@ public:
     
 
     // fields
-    mtk::msg::sub_process_info                process_info; 
-    mtk::msg::sub_request_id                  req_id; 
+    mtk::msg::sub_gen_response_location       gen_response_location; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& process_info_location_client_code,const std::string& process_info_location_machine,const std::string& process_info_process_uuid,const std::string& req_id_session_id,const std::string& req_id_req_code);
+    static std::string  get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id);
 virtual std::string  get_out_subject (void) const;
 
     

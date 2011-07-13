@@ -162,7 +162,7 @@ public:
 
     
     // constructor
-    explicit add_accounts (    const mtk::acs::msg::res_login::IC_session_info&  _session_info,   const mtk::list<sub_grant >&  _grant_list );
+    explicit add_accounts (    const mtk::msg::sub_gen_response_location&  _gen_response_location,   const mtk::list<sub_grant >&  _grant_list );
     explicit add_accounts ( const qpid::messaging::Message& message );
     virtual ~add_accounts (){};
     virtual std::string get_message_type_as_string       (void) const  { return "add_accounts"; };
@@ -171,13 +171,13 @@ public:
     
 
     // fields
-    mtk::acs::msg::res_login::IC_session_info  session_info; 
+    mtk::msg::sub_gen_response_location       gen_response_location; 
     mtk::list<sub_grant >                     grant_list; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& session_info_client_code,const std::string& session_info_session_id);
+    static std::string  get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id);
 virtual std::string  get_out_subject (void) const;
 
     

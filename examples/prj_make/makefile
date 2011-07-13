@@ -14,6 +14,10 @@ test:
 	make -C product_loader doc
 	make -C orders_loader this
 	make -C orders_loader doc
+	make -C account_manager this
+	make -C account_manager doc
+	make -C trading_db this
+	make -C trading_db doc
 
 
 .PHONY: this
@@ -25,6 +29,8 @@ this:
 	make -C alarms_db this
 	make -C product_loader this
 	make -C orders_loader this
+	make -C account_manager this
+	make -C trading_db this
 
 .PHONY: clean
 clean:
@@ -35,3 +41,6 @@ clean:
 	make -C alarms_db clean
 	make -C product_loader clean
 	make -C orders_loader clean
+	make -C account_manager clean
+	make -C trading_db clean
+	find . -name 'ct__*' | xargs rm

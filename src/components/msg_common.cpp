@@ -543,6 +543,33 @@ void sub_r_response::before_send(void) const
 
 
 
+sub_gen_response_location::sub_gen_response_location (   const std::string&  _session_id,   const std::string&  _client_code)
+    :     session_id(_session_id),   client_code(_client_code) 
+       
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_gen_response_location::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void sub_gen_response_location::before_send(void) const
+{
+
+}
+
+
+
+
 sub_product_code::sub_product_code (   const std::string&  _market,   const std::string&  _product)
     :     market(_market),   product(_product) 
        
@@ -770,6 +797,39 @@ void  operator >> (const YAML::Node& node, sub_r_response & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const sub_gen_response_location & c)
+{
+    o << "{ "
+
+        << "session_id:"<<   c.session_id << "  "        << "client_code:"<<   c.client_code << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_gen_response_location & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_gen_response_location & c)
+{
+
+
+        node["session_id"]  >> c.session_id;
+        node["client_code"]  >> c.client_code;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
 {
     o << "{ "
@@ -869,6 +929,18 @@ bool operator== (const sub_r_response& a, const sub_r_response& b)
 };
 
 bool operator!= (const sub_r_response& a, const sub_r_response& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const sub_gen_response_location& a, const sub_gen_response_location& b)
+{
+    return (          a.session_id ==  b.session_id  &&          a.client_code ==  b.client_code  &&   true  );
+};
+
+bool operator!= (const sub_gen_response_location& a, const sub_gen_response_location& b)
 {
     return !(a==b);
 };
@@ -1224,6 +1296,57 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+//void  __internal_qpid_fill (sub_gen_response_location& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_gen_response_location& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("sid");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field session_id on message sub_gen_response_location::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.session_id, it->second);
+                        //c.session_id = it->second;
+//   field_type
+
+                    it = mv.find("cc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field client_code on message sub_gen_response_location::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.client_code, it->second);
+                        //c.client_code = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_gen_response_location& a)
+{
+
+    a.before_send();
+
+
+//  field_type
+        __internal_add2map(map, a.session_id, std::string("sid"));
+//  field_type
+        __internal_add2map(map, a.client_code, std::string("cc"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_gen_response_location>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
 //void  __internal_qpid_fill (sub_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_product_code& c, const qpid::types::Variant& v)
     {  
@@ -1273,6 +1396,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1344,6 +1468,16 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
    __internal_get_default ((int16_t*)0),
 //   sub_msg_type
    __internal_get_default((bool*)0)
+            );
+    }
+    
+    sub_gen_response_location  __internal_get_default(sub_gen_response_location*)
+    {
+        return sub_gen_response_location(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
             );
     }
     
@@ -1459,6 +1593,24 @@ sub_r_response::sub_r_response (const qpid::messaging::Message& msg)
    sec_number(__internal_get_default((int16_t*)0)),
 //   sub_msg_type
    is_last_response(__internal_get_default((bool*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+sub_gen_response_location::sub_gen_response_location (const qpid::messaging::Message& msg)
+    :  //   field_type
+   session_id(__internal_get_default((std::string*)0)),
+//   field_type
+   client_code(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

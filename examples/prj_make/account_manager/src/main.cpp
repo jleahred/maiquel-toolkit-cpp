@@ -154,7 +154,8 @@ namespace
             ++grants_in_packet;
             if(grants_in_packet == max_grants_per_message)
             {
-                mtk::trd::account::msg::add_accounts msg(session_info, partial_user_grants);
+                mtk::trd::account::msg::add_accounts msg(   mtk::msg::sub_gen_response_location(session_info.session_id, session_info.client_code), 
+                                                            partial_user_grants);
                 mtk::send_message(qpid_session, msg);
                 grants_in_packet = 0;
                 partial_user_grants.clear();
@@ -162,7 +163,8 @@ namespace
         }
         if(partial_user_grants.size() > 0)
         {
-            mtk::trd::account::msg::add_accounts msg(session_info, partial_user_grants);
+            mtk::trd::account::msg::add_accounts msg(   mtk::msg::sub_gen_response_location(session_info.session_id, session_info.client_code), 
+                                                        partial_user_grants);
             mtk::send_message(qpid_session, msg);
         }
     }

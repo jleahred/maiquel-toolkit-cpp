@@ -82,6 +82,20 @@ sub_r_response [< V:0 >]
 }
 
 
+//---------------------------------------------------------------------
+//        NON SPECIFIC RESPONSE LOCATION
+//---------------------------------------------------------------------
+
+//  it will be used in generic responses subject
+//  letting to send "responses" or confirmations not requested
+//  ex:  CF_ST_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${gen_response_location.client_code}.STATUS_CF.${gen_response_location.session_id}  >]
+sub_gen_response_location [< V:0 >]   
+{
+    session_id      (sid) :     string
+    client_code     (cc)  :     string
+}
+
+
 
 //---------------------------------------------------------------------
 //        COMMON TRADING  AND  PRICES
