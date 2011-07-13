@@ -46,3 +46,12 @@ oms_RQ_CC_MK  [< V:0, I:RQ_CC_MK,  SUBJ:RQ.OMS.${invariant.product_code.market}.
     reject_description   (rjd)  :  string  //  empty means ok
 }
 
+
+
+//---------------------------------------------------------------------
+//	REQUEST ORDERS STATUS
+
+oms_RQ_ORDERS_STATUS  [< V:0, I:RQ_ORDERS_STATUS,  SUBJ:RQ.OMS.${account.client_code}.${market} >]   
+{
+    reject_description   (rjd)  :  string  //  empty means ok
+}

@@ -42,7 +42,7 @@ namespace
     
     void susbcribe_request_accounts(void);
     void suscribe_recovery_subject(void);
-    void suscribe_order_request();
+    void suscribe_order_request(void);      //  included orders status
 }
 
 
@@ -228,7 +228,10 @@ namespace
     {
         return  accmgr::db::get_grant_type(rq.request_info.req_id, rq.invariant.product_code.market, rq.invariant.account);
     }
-
+    std::string   get_order_grant_type (const mtk::trd::msg::RQ_ORDERS_STATUS&  rq)
+    {
+        return  accmgr::db::get_grant_type(rq.request_info.req_id, rq.market, rq.account);
+    }
 
     #define ON_RQ_XX_XX(__MESSAGE_TYPE__, __GRANT_TYPE__) \
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
@@ -257,6 +260,19 @@ namespace
 
 
 
+    void on_RQ_ORDERS_STATUS(const mtk::trd::msg::RQ_ORDERS_STATUS& rq) 
+    {   
+        static mtk::CountPtr<mtk::qpid_session>  server_session  = mtk::admin::get_qpid_session ("server", "SRVTESTING");   
+           
+        std::string description;   
+        if(get_order_grant_type(rq) == "")   
+            description = "account not granted";   
+        mtk::trd::msg::oms_RQ_ORDERS_STATUS msg (rq, description);   
+        mtk::send_message(server_session, msg);   
+    }
+
+
+
     struct  hqpid_rq_orders
     {
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_NW_LS> >  RQ_NW_LS;
@@ -266,6 +282,8 @@ namespace
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_NW_MK> >  RQ_NW_MK;
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_MD_MK> >  RQ_MD_MK;
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_CC_MK> >  RQ_CC_MK;
+
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_ORDERS_STATUS> >  RQ_ORDERS_STATUS;
     };
     
     void suscribe_order_request()
@@ -292,6 +310,17 @@ namespace
             CONNECT_RECEIVER_ORDER(RQ_NW_MK)
             CONNECT_RECEIVER_ORDER(RQ_MD_MK)
             CONNECT_RECEIVER_ORDER(RQ_CC_MK)
+            
+            
+            MTK_QPID_RECEIVER_CONNECT_F(
+                                    current_hqpid_orders.RQ_ORDERS_STATUS,
+                                    mtk::admin::get_url("client"),
+                                    "CLITESTING",
+                                    mtk::trd::msg::RQ_ORDERS_STATUS::get_in_subject("*", *it),
+                                    mtk::trd::msg::RQ_ORDERS_STATUS,
+                                    on_RQ_ORDERS_STATUS)
+            
+            
             map_hqpid_rqnwls.insert(std::make_pair(*it, current_hqpid_orders));
         }
     }

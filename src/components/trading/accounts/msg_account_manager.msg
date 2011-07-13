@@ -51,6 +51,8 @@ add_accounts [<  V:0, SUBJ:CONF.${session_info.client_code}.ACCOUNTS.${session_i
 //  when account server manager starts, it will send   pub_accmgr_init
 //  clients has the oportunity to send an specific request to load or reload the account
 //  list managed by this server
+//  instead of requesting to all servers, as rq_accounts, rq_accounts_oninit is a specific
+//  request to one specific server
 //--------------------------------------------------------------------------------------
 
 pub_accmgr_init [<  V:0, SUBJ:ADM.ALL.ACCMGRINIT   >]

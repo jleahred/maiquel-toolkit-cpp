@@ -1183,9 +1183,12 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qorder_table& qot)
 
 void     operator>> (const YAML::Node & node   , qorder_table& qot)
 {
-    std::string  header_status;
-    node["order_table"]["header_status"]  >> header_status;
-    qot.table_widget->horizontalHeader()->restoreState(QByteArray::fromHex(header_status.c_str()));
+    if(node["order_table"].FindValue("header_status"))
+    {
+        std::string  header_status;
+        node["order_table"]["header_status"]  >> header_status;
+        qot.table_widget->horizontalHeader()->restoreState(QByteArray::fromHex(header_status.c_str()));
+    }
 
     if(node["order_table"].FindValue("column_sizes"))
     {   //  column sizes

@@ -543,6 +543,33 @@ void oms_RQ_CC_MK::before_send(void) const
 
 
 
+
+oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS ( const RQ_ORDERS_STATUS&  parent,   const std::string&  _reject_description)
+    :  RQ_ORDERS_STATUS(parent),   reject_description(_reject_description) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string oms_RQ_ORDERS_STATUS::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void oms_RQ_ORDERS_STATUS::before_send(void) const
+{
+
+}
+
+
+
 std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_LS & c)
 {
     o << "{ "
@@ -741,6 +768,39 @@ void  operator >> (const YAML::Node& node, oms_RQ_CC_MK & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const oms_RQ_ORDERS_STATUS & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const RQ_ORDERS_STATUS&>(c)  << ")" 
+        << "reject_description:"<<   c.reject_description << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_ORDERS_STATUS & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "RQ_ORDERS_STATUS" <<  YAML::Value << static_cast<const RQ_ORDERS_STATUS&>(c)  
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, oms_RQ_ORDERS_STATUS & c)
+{
+
+    node["RQ_ORDERS_STATUS"]   >>   static_cast<RQ_ORDERS_STATUS&>(c)  ;
+
+        node["reject_description"]  >> c.reject_description;
+
+
+};
+
+
 bool operator== (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b)
 {
     return ( (static_cast<const RQ_NW_LS&>(a)   ==  static_cast<const RQ_NW_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
@@ -807,6 +867,18 @@ bool operator== (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b)
 };
 
 bool operator!= (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const oms_RQ_ORDERS_STATUS& a, const oms_RQ_ORDERS_STATUS& b)
+{
+    return ( (static_cast<const RQ_ORDERS_STATUS&>(a)   ==  static_cast<const RQ_ORDERS_STATUS&>(b))  &&           a.reject_description ==  b.reject_description  &&   true  );
+};
+
+bool operator!= (const oms_RQ_ORDERS_STATUS& a, const oms_RQ_ORDERS_STATUS& b)
 {
     return !(a==b);
 };
@@ -1070,6 +1142,50 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
+
+
+//void  __internal_qpid_fill (oms_RQ_ORDERS_STATUS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (oms_RQ_ORDERS_STATUS& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<RQ_ORDERS_STATUS&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("rjd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message oms_RQ_ORDERS_STATUS::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.reject_description, it->second);
+                        //c.reject_description = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_ORDERS_STATUS& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const RQ_ORDERS_STATUS&>(a));
+
+//  field_type
+        __internal_add2map(map, a.reject_description, std::string("rjd"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_ORDERS_STATUS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1227,6 +1343,31 @@ __internal_add2map(content, static_cast<const RQ_CC_MK&>(*this));
 
 
 
+qpid::messaging::Message oms_RQ_ORDERS_STATUS::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const RQ_ORDERS_STATUS&>(*this));
+
+//  field_type
+//        content["rjd"] = this->reject_description;
+        __internal_add2map(content, this->reject_description, std::string("rjd"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
     oms_RQ_NW_LS  __internal_get_default(oms_RQ_NW_LS*)
     {
         return oms_RQ_NW_LS(
@@ -1271,6 +1412,14 @@ __internal_get_default((RQ_MD_MK*)0), //   field_type
     {
         return oms_RQ_CC_MK(
 __internal_get_default((RQ_CC_MK*)0), //   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    oms_RQ_ORDERS_STATUS  __internal_get_default(oms_RQ_ORDERS_STATUS*)
+    {
+        return oms_RQ_ORDERS_STATUS(
+__internal_get_default((RQ_ORDERS_STATUS*)0), //   field_type
    __internal_get_default ((std::string*)0)
             );
     }
@@ -1370,6 +1519,22 @@ oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
+
+
+oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::messaging::Message& msg)
+    :  RQ_ORDERS_STATUS(msg), //   field_type
+   reject_description(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
 std::string  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product)
     {
         return MTK_SS("RQ.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "");
@@ -1417,6 +1582,14 @@ std::string  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_product_
     std::string  oms_RQ_CC_MK::get_out_subject (void) const
     {
         return MTK_SS("RQ.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "");
+    }
+    std::string  oms_RQ_ORDERS_STATUS::get_in_subject (const std::string& account_client_code,const std::string& market)
+    {
+        return MTK_SS("RQ.OMS." << account_client_code << "." << market << "");
+    }
+    std::string  oms_RQ_ORDERS_STATUS::get_out_subject (void) const
+    {
+        return MTK_SS("RQ.OMS." << this->account.client_code << "." << this->market << "");
     }
     
 

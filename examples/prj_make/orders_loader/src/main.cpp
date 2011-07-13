@@ -8,6 +8,7 @@
 #include "components/request_response.hpp"
 #include "support/nullable.hpp"
 #include "support/re/RegExp.h"
+#include "components/trading/msg_trd_oms_rq.h"
 
 
 
@@ -220,9 +221,16 @@ void command_find_order(const std::string& /*command*/, const std::string& param
 
 
 template<typename  CF_TYPE,  typename  STATUS_TYPE>     //  ex:  mtk::trd::msg::CF_XX_LS     STATUS_TYPE:  mtk::trd::msg::CF_ST_LS
-void send_orders_from_request(const mtk::trd::msg::RQ_ORDERS_STATUS&  rq)
+void send_orders_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 {
     static auto client_qpid_session = mtk::admin::get_qpid_session  ("client", "CLITESTING");
+    
+    if(rq.reject_description != "")
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "orders_loader", MTK_SS("received request status rejected (ignoring)... " << rq.reject_description << "  full message " << rq), 
+                                                mtk::alPriorError, mtk::alTypeNoPermisions));
+        return;
+    }
     
     {       //      limit orders
         mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders = get_map_order<CF_TYPE>();
@@ -238,7 +246,7 @@ void send_orders_from_request(const mtk::trd::msg::RQ_ORDERS_STATUS&  rq)
     }
 }
 
-void on_rq_order_status(const mtk::trd::msg::RQ_ORDERS_STATUS&  rq)
+void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 {
     send_orders_from_request<mtk::trd::msg::CF_XX_LS, mtk::trd::msg::CF_ST_LS>(rq);
     send_orders_from_request<mtk::trd::msg::CF_XX_MK, mtk::trd::msg::CF_ST_MK>(rq);
@@ -288,15 +296,15 @@ int main(int argc, char ** argv)
 
 
         //  too keep in scope handles created in for
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_LS>          > >   list_hqpid_CF_NW_LS;
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_LS>          > >   list_hqpid_CF_MD_LS;
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_LS>          > >   list_hqpid_CF_CC_LS;
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_LS>          > >   list_hqpid_CF_EX_LS;
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_MK>          > >   list_hqpid_CF_NW_MK;
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_MK>          > >   list_hqpid_CF_MD_MK;
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_MK>          > >   list_hqpid_CF_CC_MK;
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_MK>          > >   list_hqpid_CF_EX_MK;
-        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_ORDERS_STATUS>  > >   list_hqpid_RQ_ORDERS_STATUS;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_LS>             > >   list_hqpid_CF_NW_LS;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_LS>             > >   list_hqpid_CF_MD_LS;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_LS>             > >   list_hqpid_CF_CC_LS;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_LS>             > >   list_hqpid_CF_EX_LS;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_MK>             > >   list_hqpid_CF_NW_MK;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_MK>             > >   list_hqpid_CF_MD_MK;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_MK>             > >   list_hqpid_CF_CC_MK;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_MK>             > >   list_hqpid_CF_EX_MK;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_ORDERS_STATUS> > >   list_hqpid_oms_RQ_ORDERS_STATUS;
         for(auto it_market=list_markets.Get().begin(); it_market!=list_markets.Get().end(); ++it_market)
         {
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "order_loader", MTK_SS("adding market " << *it_market), mtk::alPriorDebug, mtk::alTypeLogicError));
@@ -320,15 +328,15 @@ int main(int argc, char ** argv)
             
             
             //      STATUS
-            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_ORDERS_STATUS>            > hqpid_RQ_ORDERS_STATUS;
+            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_ORDERS_STATUS>            > hqpid_oms_RQ_ORDERS_STATUS;
             MTK_QPID_RECEIVER_CONNECT_F(
-                                    hqpid_RQ_ORDERS_STATUS,
-                                    mtk::admin::get_url("client"),
-                                    "CLITESTING",
-                                    mtk::trd::msg::RQ_ORDERS_STATUS::get_in_subject("*", *it_market),
-                                    mtk::trd::msg::RQ_ORDERS_STATUS,
+                                    hqpid_oms_RQ_ORDERS_STATUS,
+                                    mtk::admin::get_url("server"),
+                                    "SRVTESTING",
+                                    mtk::trd::msg::oms_RQ_ORDERS_STATUS::get_in_subject("*", *it_market),
+                                    mtk::trd::msg::oms_RQ_ORDERS_STATUS,
                                     on_rq_order_status)
-            list_hqpid_RQ_ORDERS_STATUS.push_back(hqpid_RQ_ORDERS_STATUS);         
+            list_hqpid_oms_RQ_ORDERS_STATUS.push_back(hqpid_oms_RQ_ORDERS_STATUS);         
         }
 
 
