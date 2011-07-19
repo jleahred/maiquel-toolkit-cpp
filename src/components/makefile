@@ -100,3 +100,8 @@ debug:
 	@echo $(VPATH);
 	@echo $(OBJS_CXX);
 	@echo $(OBJS_C);
+
+
+# dangerous, it will try to compile the minimum,
+# in several cases it won't be enough (as modifying .h files)
+incremental:  $(OUT)
