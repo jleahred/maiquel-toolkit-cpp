@@ -305,7 +305,7 @@ public:
     {
         if      (inner_order->serrors() != "")
             return qtmisc::mtk_color_problem;
-        else if (get_lasttr_rjdescr(*inner_order) != "")
+        else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market()==false)
             return qtmisc::mtk_color_problem;
         else if (inner_order->in_market())
             return Qt::white;
@@ -339,7 +339,10 @@ public:
             item->setText(QLatin1String(inner_order->last_request().Get().invariant.product_code.market.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-        item->setBackgroundColor(get_default_color());
+        if (get_lasttr_rjdescr(*inner_order)!="")
+            item->setBackgroundColor(qtmisc::mtk_color_problem);
+        else
+            item->setBackgroundColor(get_default_color());
     }
 
     void update_item_product(void)
@@ -351,7 +354,10 @@ public:
             item->setText(QLatin1String(inner_order->last_request().Get().invariant.product_code.product.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-        item->setBackgroundColor(get_default_color());
+        if (get_lasttr_rjdescr(*inner_order)!="")
+            item->setBackgroundColor(qtmisc::mtk_color_problem);
+        else
+            item->setBackgroundColor(get_default_color());
     }
 
 
