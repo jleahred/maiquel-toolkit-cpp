@@ -1,0 +1,222 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= QuantityFilterServer
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-06-01
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+* Small process to filter quantity (fat finger filter)
+* I will filter quantity per each order
+* This process will be afger +account filter+ and will receive +oms request+
+* If +oms+ message isn't rejected by +account filter+, I will check quantity filter
+
+
+== Context DFD
+
+
+.DFD
+["graphviz", "quantity_filter_server_dfd.png"]
+-----------
+digraph dfd0_graph {
+ rankdir=LR;
+ nodesep=0.3
+ ranksep = 1.5
+
+ // Nodos
+ node [fontsize=16];
+ CLIENT [label="\n\ncli \n -> \nacc_filter\n\n" shape=box height=4];
+ PRICE_FILTER [label=" PRICE FILTER " shape=circle height=3]
+ OMS [label="\n\nO\nM\nS\n\n" shape=box height=3];
+ ACS [label="ACS" shape=box height=2];
+ // Conectores
+ edge [fontsize=12];
+
+
+ CLIENT ->  PRICE_FILTER  [label = "oms_RQ_NW_XX"];
+ CLIENT ->  PRICE_FILTER  [label = "oms_RQ_MD_XX"];
+ CLIENT ->  PRICE_FILTER  [label = "oms_RQ_CC_XX"];
+
+ PRICE_FILTER -> OMS [label = "oms_RQ_NW_XX"];
+ PRICE_FILTER -> OMS [label = "oms_RQ_MD_XX"];
+ PRICE_FILTER -> OMS [label = "oms_RQ_CC_XX"];
+
+ PRICE_FILTER -> ACS [label = "syncrh"];
+ ACS -> PRICE_FILTER [label = "syncrh"];
+
+
+}
+-----
+
+
+
+== OMS messages
+
+.mtk/src/components/trading/msg_trd_oms_rq.msg
+[source,{cpp}]
+----
+include::../mtk/src/components/trading/msg_trd_oms_rq.msg[]
+----
+
+
+
+== Commands
+
+* Markets
++
+----------
+__clear
+qf.market.list
+qf.market.add MARKET __cfD2088188
+qf.market.add MARKET __cfD2088188
+qf.market.list
+qf.market.add AAAA __cf5DE85230
+qf.market.list
+qf.market.del AAAA __cf02D19326
+qf.market.list
+----------
++
+[IMPORTANT]
+The suscription on market is done on first run. +
+If you add a market, you have to save, stop and rerun
+
+
+* Products
++
+---------
+__clear
+qf.product.list
+qf.product.add  ALL MARKET  .*
+qf.product.list
+qf.product.add  ALL MARKET  .*
+qf.product.add SOME MARKET SOME
+qf.product.list
+qf.product.del SOME MARKET  __cf5504746B
+qf.product.list
+---------
+
+
+
+
+* Client with filters
++
+------------
+__clear
+qf.client.list
+qf.client.add CIMD
+qf.client.list
+qf.client.add PRUEBA
+qf.client.list
+qf.client.filter.add CIMD KK 100
+qf.client.filter.add CIMD KK 100
+qf.client.find CIMD
+qf.client.find .*
+qf.client.filter.modif CIMD KK 100 101
+qf.client.filter.modif CIMD KK 0 102
+qf.client.find CIMD
+qf.client.filter.modif CIMD KK 101 102
+qf.client.find CIMD
+qf.client.filter.add CIMD ALL 11
+qf.client.find CIMD
+qf.client.filter.del CIMD KK 103 __cfEBA53F36
+qf.client.find CIMD
+qf.client.filter.del CIMD KK 102 __cf270F3FA8
+qf.client.find CIMD
+qf.client.del CIMD __cfE014532E
+------------
+
+
+* User with filters
++
+------------
+__clear
+qf.user.find .*
+qf.user.add jose CIMD
+qf.user.find .*
+qf.user.add PRUEBA KK
+qf.user.find .*
+qf.user.filter.add josE KK 100
+qf.user.find .*
+qf.user.filter.add josE KK2 1001
+qf.user.find .*
+qf.user.filter.modif jose KK 101 1002
+qf.user.filter.modif jose KK2 1001 1002
+qf.user.find .*
+qf.user.filter.del jose KK2 1002  __cfAD540235
+qf.user.find .*
+qf.user.del jose CIMD __cf109F2243
+qf.user.find .*
+------------
+
+
+
+* Preparing a configuration from scratch
++
+-----------
+__clear
+qf.product.add A M1 ^a.*$
+qf.product.list
+qf.product.add B M1 ^b.*$
+qf.product.list
+qf.save __cf331590C5
+
+
+__clear
+qf.client.add CIMD
+qf.client.list
+qf.client.filter.add CIMD A 10
+qf.client.filter.add CIMD B 2
+qf.client.find .*
+
+
+__clear
+qf.save __cfEB86DF8A
+qf.user.add joseluis.esteban@desarrollo CIMD
+qf.user.find .*
+qf.user.filter.add joseluis.esteban@desarrollo A 7
+qf.user.filter.add joseluis.esteban@desarrollo B 111
+qf.user.find .*
+
+
+qf.debug.getfilter joseluis.esteban@desarrolloo CIMMD M1 AA
+qf.debug.getfilter CIMD  joseluis.esteban@desarrollo M1 Aaaaaa
+qf.debug.getfilter CIMD  joseluis.esteban@desarrollo M1 baaaaa
+
+qf.save
+-----------
+
+
+
+
+== Document modifications
+* Non aply
+
+== Pending...
+* Generate a cache with all grants expanded
+** Better performance

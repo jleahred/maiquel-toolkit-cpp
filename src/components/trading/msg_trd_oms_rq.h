@@ -44,7 +44,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_NW_LS (  const RQ_NW_LS&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_NW_LS (  const RQ_NW_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from );
     explicit oms_RQ_NW_LS ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_LS"; };
@@ -54,11 +54,12 @@ public:
 
     // fields
     std::string                               reject_description; 
+    std::string                               from; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -84,7 +85,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_MD_LS (  const RQ_MD_LS&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_MD_LS (  const RQ_MD_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from );
     explicit oms_RQ_MD_LS ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_LS"; };
@@ -94,11 +95,12 @@ public:
 
     // fields
     std::string                               reject_description; 
+    std::string                               from; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -124,7 +126,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_CC_LS (  const RQ_CC_LS&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_CC_LS (  const RQ_CC_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from );
     explicit oms_RQ_CC_LS ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_LS"; };
@@ -134,11 +136,12 @@ public:
 
     // fields
     std::string                               reject_description; 
+    std::string                               from; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -164,7 +167,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_NW_MK (  const RQ_NW_MK&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_NW_MK (  const RQ_NW_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from );
     explicit oms_RQ_NW_MK ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_NW_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_MK"; };
@@ -174,11 +177,12 @@ public:
 
     // fields
     std::string                               reject_description; 
+    std::string                               from; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -204,7 +208,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_MD_MK (  const RQ_MD_MK&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_MD_MK (  const RQ_MD_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from );
     explicit oms_RQ_MD_MK ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_MD_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_MK"; };
@@ -214,11 +218,12 @@ public:
 
     // fields
     std::string                               reject_description; 
+    std::string                               from; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -244,7 +249,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_CC_MK (  const RQ_CC_MK&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_CC_MK (  const RQ_CC_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from );
     explicit oms_RQ_CC_MK ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_CC_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_MK"; };
@@ -254,11 +259,12 @@ public:
 
     // fields
     std::string                               reject_description; 
+    std::string                               from; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product);
+    static std::string  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
 virtual std::string  get_out_subject (void) const;
 
     
@@ -284,7 +290,7 @@ public:
 
     
     // constructor
-    explicit oms_RQ_ORDERS_STATUS (  const RQ_ORDERS_STATUS&  parent,   const std::string&  _reject_description );
+    explicit oms_RQ_ORDERS_STATUS (  const RQ_ORDERS_STATUS&  parent,   const std::string&  _reject_description,   const std::string&  _from );
     explicit oms_RQ_ORDERS_STATUS ( const qpid::messaging::Message& message );
     virtual ~oms_RQ_ORDERS_STATUS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_ORDERS_STATUS"; };
@@ -294,11 +300,12 @@ public:
 
     // fields
     std::string                               reject_description; 
+    std::string                               from; 
 
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& account_client_code,const std::string& market);
+    static std::string  get_in_subject (const std::string& account_client_code,const std::string& market,const std::string& from);
 virtual std::string  get_out_subject (void) const;
 
     

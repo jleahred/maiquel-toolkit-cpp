@@ -239,6 +239,7 @@ namespace
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
                 static mtk::CountPtr<mtk::qpid_session>  server_session  = mtk::admin::get_qpid_session ("server", "SRVTESTING");   \
+                static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
                    \
                 std::string description;   \
                 bool granted=false;   \
@@ -248,7 +249,7 @@ namespace
                     granted = true;   \
                 if(!granted)   \
                     description = "account not granted";   \
-                mtk::trd::msg::oms_##__MESSAGE_TYPE__ msg (rq, description);   \
+                mtk::trd::msg::oms_##__MESSAGE_TYPE__ msg (rq, description, oms_current);   \
                 mtk::send_message(server_session, msg);   \
             }
 
@@ -265,11 +266,12 @@ namespace
     void on_RQ_ORDERS_STATUS(const mtk::trd::msg::RQ_ORDERS_STATUS& rq) 
     {   
         static mtk::CountPtr<mtk::qpid_session>  server_session  = mtk::admin::get_qpid_session ("server", "SRVTESTING");   
+        static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
            
         std::string description;   
         if(get_order_grant_type(rq) == "")   
             description = "account not granted";   
-        mtk::trd::msg::oms_RQ_ORDERS_STATUS msg (rq, description);   
+        mtk::trd::msg::oms_RQ_ORDERS_STATUS msg (rq, description, oms_current);   
         mtk::send_message(server_session, msg);   
     }
 

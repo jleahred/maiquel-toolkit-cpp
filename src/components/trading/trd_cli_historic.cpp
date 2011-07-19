@@ -30,7 +30,9 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
     else
     {
         std::string  result_errors;
-        if(prev_item.type == tt_rq_confirmed)
+        if(prev_item.type == tt_rq_not_pending)
+            result_errors += MTK_SS("confirmation on non pending transaction. ");
+        if(prev_item.type == tt_rq_confirmated)
             result_errors += MTK_SS("confirmation on confirmated transaction. ");
         if(prev_item.type == tt_cf)
             result_errors += MTK_SS("confirmation on confirmation transaction. ");
@@ -40,7 +42,14 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
         new_item.confirmation_delay = prev_item.date_time - new_item.date_time;
         
         if(prev_item.type == tt_rq_pending)
-            prev_item.type = tt_rq_confirmed;
+        {
+            if(new_item.type == tt_cf)
+                prev_item.type = tt_rq_confirmated;
+            else if (new_item.type == tt_rj)        //  rejects will be added as new item
+                prev_item.type = tt_rq_not_pending;
+            else
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "historic", "expected ttcf or ttrj", mtk::alPriorCritic, mtk::alTypeLogicError));
+        }
 
         if(prev_item.price.HasValue()  &&  new_item.price.HasValue())
         {
@@ -84,7 +93,7 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
         
         
         //  confirmation of previus item
-        if(list_historic_item.front().request_id  ==  item.request_id)
+        if(list_historic_item.front().request_id  ==  item.request_id    &&  item.type  != tt_rj)
         {
             order_historic_item&        last_inserted_item = list_historic_item.front();
             result_error = check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(last_inserted_item, item);
@@ -108,7 +117,7 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
                 {
                     if(it->type == tt_rq_pending)
                     {
-                        it->type = tt_rq_confirmed;
+                        it->type = tt_rq_not_pending;
                         signal_modified_item.emit(item_pos, item);
                     }
                     else

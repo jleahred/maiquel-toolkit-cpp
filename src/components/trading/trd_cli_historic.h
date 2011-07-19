@@ -15,7 +15,7 @@ namespace  trd {
 namespace  hist {
     
 
-enum en_trans_type  {  tt_rq_pending,  tt_rq_confirmed,   tt_cf,  tt_rj  };
+enum en_trans_type  {  tt_rq_pending,  tt_rq_confirmated, tt_rq_not_pending, tt_cf,  tt_rj  };
 enum en_trans_type2 {  tt2_nw,      tt2_md,     tt2_cc,     tt2_ex  };
 
 

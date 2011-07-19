@@ -18,6 +18,8 @@ test:
 	make -C account_manager doc
 	make -C trading_db this
 	make -C trading_db doc
+	make -C quantity_filter this
+	make -C quantity_filter doc
 
 
 .PHONY: this
@@ -31,6 +33,7 @@ this:
 	make -C orders_loader this
 	make -C account_manager this
 	make -C trading_db this
+	make -C quantity_filter this
 
 .PHONY: clean
 clean:
@@ -43,4 +46,5 @@ clean:
 	make -C orders_loader clean
 	make -C account_manager clean
 	make -C trading_db clean
+	make -C quantity_filter clean
 	find . -name 'ct__*' | xargs rm

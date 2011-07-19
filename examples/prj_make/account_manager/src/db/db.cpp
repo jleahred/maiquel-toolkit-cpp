@@ -91,8 +91,8 @@ namespace db {
         mtk::admin::register_command("accmgr",  "grant",        "<market> <user_name>  <cli-code-reg-expr> <account-name-reg-expr>  <grant_type__F|C|V>")->connect(command_grant);
         mtk::admin::register_command("accmgr",  "revoke",       "<market> <user_name>  <cli-code-reg-expr> <account-name-reg-expr>  <grant_type__F|C|V>")->connect(command_revoke);
         
-        mtk::admin::register_command("accmgr",  "load",        "load current accounts db to file", true)->connect(command_load);
-        mtk::admin::register_command("accmgr",  "save",        "DANGEROUS delete current accounts and load from file", true)->connect(command_save);
+        mtk::admin::register_command("accmgr",  "load",        "DANGEROUS delete current accounts and load from file", true)->connect(command_load);
+        mtk::admin::register_command("accmgr",  "save",        "save accounts configuration to file", true)->connect(command_save);
         mtk::admin::register_command("accmgr",  "purge",       "remove all deleted grants", true)->connect(command_purge);
 
         mtk::admin::register_command("accmgr",  "get_effective_user_grants",        "<user_name-re-pattern>")->connect(command_get_effective_user_grants);

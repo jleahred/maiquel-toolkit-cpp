@@ -1,0 +1,31 @@
+version: 1
+markets:
+  []
+products:
+  A:
+    gen_product_name: A
+    market: M1
+    re_product_code: ^A.*$
+  B:
+    gen_product_name: B
+    market: M1
+    re_product_code: ^B.*$
+clients:
+  CIMD:
+    name: CIMD
+    created: 2011-07-18 16:40:40.141
+    filter_list:
+      - gen_product_name: A
+        quantity: 10
+      - gen_product_name: B
+        quantity: 2
+user_info:
+  JOSELUIS.ESTEBAN@DESARROLLO:
+    name: JOSELUIS.ESTEBAN@DESARROLLO
+    created: 2011-07-18 16:42:47.034
+    client_code: CIMD
+    filter_list:
+      - gen_product_name: A
+        quantity: 7
+      - gen_product_name: B
+        quantity: 111

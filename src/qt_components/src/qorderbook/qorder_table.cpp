@@ -440,6 +440,9 @@ public:
             remarks = ref_cli;
         remarks += QLatin1String(inner_order->serrors().c_str());
         item->setText(remarks);
+        std::string  reject_reason = get_lasttr_rjdescr(*inner_order);
+        if(reject_reason != "")
+            item->setText(QLatin1String(reject_reason.c_str()) + QLatin1String("  ") + item->text());
     }
     void update_item_cli_code            ()
     {

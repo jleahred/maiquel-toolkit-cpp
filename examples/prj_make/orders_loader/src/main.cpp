@@ -329,12 +329,13 @@ int main(int argc, char ** argv)
             
             
             //      STATUS
+            static  std::string  oms_from = mtk::admin::get_config_property("OMS_CHAIN.from").Get();
             mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_ORDERS_STATUS>            > hqpid_oms_RQ_ORDERS_STATUS;
             MTK_QPID_RECEIVER_CONNECT_F(
                                     hqpid_oms_RQ_ORDERS_STATUS,
                                     mtk::admin::get_url("server"),
                                     "SRVTESTING",
-                                    mtk::trd::msg::oms_RQ_ORDERS_STATUS::get_in_subject("*", *it_market),
+                                    mtk::trd::msg::oms_RQ_ORDERS_STATUS::get_in_subject("*", *it_market, oms_from),
                                     mtk::trd::msg::oms_RQ_ORDERS_STATUS,
                                     on_rq_order_status)
             list_hqpid_oms_RQ_ORDERS_STATUS.push_back(hqpid_oms_RQ_ORDERS_STATUS);         

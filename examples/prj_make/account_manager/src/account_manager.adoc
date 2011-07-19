@@ -58,6 +58,8 @@ digraph dfd0_graph {
  CLIENT [label="\n\nC\n\nL\n\nI\n\nE\n\nN\n\nT\n\n" shape=box height=4];
  ACC_MANAGER [label=" ACCOUNT MANAGER " shape=circle height=3]
  OMS [label="\n\nO\nM\nS\n\n" shape=box height=4];
+ ACS [label="ACS" shape=box height=2];
+
  // Conectores
  edge [fontsize=12];
 
@@ -77,12 +79,16 @@ digraph dfd0_graph {
  ACC_MANAGER  -> CLIENT [label = "pub_accmgr_init"];
  CLIENT ->  ACC_MANAGER  [label = "rq_accounts_oninit"];
 
+ ACC_MANAGER -> ACS [label = "syncrh"];
+ ACS -> ACC_MANAGER [label = "syncrh"];
+
 }
 -----
 
 
 
-== Client Messages
+== Client Messages (account)
+Look for client trading messages on messages document
 
 .mtk/src/components/trading/accounts/msg_account_manager.msg
 [source,{cpp}]
@@ -90,6 +96,14 @@ digraph dfd0_graph {
 include::../mtk/src/components/trading/accounts/msg_account_manager.msg[]
 ----
 
+
+== OMS messages
+
+.mtk/src/components/trading/msg_trd_oms_rq.msg
+[source,{cpp}]
+----
+include::../mtk/src/components/trading/msg_trd_oms_rq.msg[]
+----
 
 
 == Recovery sequence

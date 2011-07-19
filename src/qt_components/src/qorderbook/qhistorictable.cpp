@@ -113,7 +113,9 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
         trans_text = tr("rq pend");
         color = qtmisc::mtk_color_pending;
     }
-    else if (item.type == mtk::trd::hist::tt_rq_confirmed)
+    else if (item.type == mtk::trd::hist::tt_rq_not_pending)
+        trans_text = tr("rq");
+    else if (item.type == mtk::trd::hist::tt_rq_confirmated)
         trans_text = tr("rq conf");
     else if (item.type == mtk::trd::hist::tt_cf)
         trans_text = tr("conf");
