@@ -14,7 +14,7 @@
 namespace
 {
     
-    const char*   APP_NAME          = "GEN_PRICE_FILTER";
+    const char*   APP_NAME          = "GEN_QUANTITY_FILTER";
     const char*   APP_VER           = "2011-07-14";
     const char*   APP_DESCRIPTION   = "Fat fingers filters \n"
                                       "I will check the order quantity with filter configuration\n"
@@ -120,7 +120,9 @@ namespace
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
                 static mtk::CountPtr<mtk::qpid_session>  server_session  = mtk::admin::get_qpid_session ("server", "SRVTESTING");   \
+                static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
                 mtk::trd::msg::__MESSAGE_TYPE__ msg (rq);   \
+                msg.from = oms_current;  \
                 mtk::send_message(server_session, msg);   \
             }
             

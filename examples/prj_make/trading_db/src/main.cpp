@@ -361,7 +361,7 @@ void on_rj_xx_mk(const T&  rj)
 
 
 //  ex msg_type   RQ_NW_LS   __RECEIVER__  on_rq_xx_ls
-#define  MAKE_TRADING_SUSCRIPTION(__MSG_TYPE__, __RECEIVER__)    \
+#define  MAKE_TRADING_SUSCRIPTION_RQ(__MSG_TYPE__, __RECEIVER__)    \
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::__MSG_TYPE__>            > hqpid_##__MSG_TYPE__;    \
         MTK_QPID_RECEIVER_CONNECT_F(     \
                                 hqpid_##__MSG_TYPE__,     \
@@ -370,6 +370,17 @@ void on_rj_xx_mk(const T&  rj)
                                 mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", "*", "*", "*"),     \
                                 mtk::trd::msg::__MSG_TYPE__,     \
                                 __RECEIVER__)
+
+#define  MAKE_TRADING_SUSCRIPTION_CF(__MSG_TYPE__, __RECEIVER__)    \
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::__MSG_TYPE__>            > hqpid_##__MSG_TYPE__;    \
+        MTK_QPID_RECEIVER_CONNECT_F(     \
+                                hqpid_##__MSG_TYPE__,     \
+                                mtk::admin::get_url("client"),     \
+                                "CLITESTING",     \
+                                mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", "*", "*", "*", "*"),     \
+                                mtk::trd::msg::__MSG_TYPE__,     \
+                                __RECEIVER__)
+
 
 
 
@@ -385,37 +396,37 @@ int main(int argc, char ** argv)
 
 
         //      LS
-        MAKE_TRADING_SUSCRIPTION(RQ_NW_LS, on_rq_xx_ls);
-        MAKE_TRADING_SUSCRIPTION(RQ_MD_LS, on_rq_xx_ls);
-        MAKE_TRADING_SUSCRIPTION(RQ_CC_LS, on_rq_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_NW_LS, on_rq_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_MD_LS, on_rq_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_CC_LS, on_rq_xx_ls);
 
-        MAKE_TRADING_SUSCRIPTION(CF_NW_LS, on_cf_xx_ls);
-        MAKE_TRADING_SUSCRIPTION(CF_MD_LS, on_cf_xx_ls);
-        MAKE_TRADING_SUSCRIPTION(CF_CC_LS, on_cf_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_NW_LS, on_cf_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_MD_LS, on_cf_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_CC_LS, on_cf_xx_ls);
 
-        MAKE_TRADING_SUSCRIPTION(RJ_NW_LS, on_rj_xx_ls);
-        MAKE_TRADING_SUSCRIPTION(RJ_MD_LS, on_rj_xx_ls);
-        MAKE_TRADING_SUSCRIPTION(RJ_CC_LS, on_rj_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_NW_LS, on_rj_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_MD_LS, on_rj_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_CC_LS, on_rj_xx_ls);
 
-        MAKE_TRADING_SUSCRIPTION(CF_EX_LS, on_cf_ex_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_EX_LS, on_cf_ex_ls);
 
 
 
         
         //      MK
-        MAKE_TRADING_SUSCRIPTION(RQ_NW_MK, on_rq_xx_mk);
-        MAKE_TRADING_SUSCRIPTION(RQ_MD_MK, on_rq_xx_mk);
-        MAKE_TRADING_SUSCRIPTION(RQ_CC_MK, on_rq_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_NW_MK, on_rq_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_MD_MK, on_rq_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_CC_MK, on_rq_xx_mk);
 
-        MAKE_TRADING_SUSCRIPTION(CF_NW_MK, on_cf_xx_mk);
-        MAKE_TRADING_SUSCRIPTION(CF_MD_MK, on_cf_xx_mk);
-        MAKE_TRADING_SUSCRIPTION(CF_CC_MK, on_cf_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_NW_MK, on_cf_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_MD_MK, on_cf_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_CC_MK, on_cf_xx_mk);
 
-        MAKE_TRADING_SUSCRIPTION(RJ_NW_MK, on_rj_xx_mk);
-        MAKE_TRADING_SUSCRIPTION(RJ_MD_MK, on_rj_xx_mk);
-        MAKE_TRADING_SUSCRIPTION(RJ_CC_MK, on_rj_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_NW_MK, on_rj_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_MD_MK, on_rj_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_CC_MK, on_rj_xx_mk);
 
-        MAKE_TRADING_SUSCRIPTION(CF_EX_MK, on_cf_ex_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_EX_MK, on_cf_ex_mk);
 
 
 

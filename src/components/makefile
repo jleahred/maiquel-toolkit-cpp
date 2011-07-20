@@ -57,7 +57,7 @@ default: all
 
 
 
-all:  prepare lib clean
+all:  clean prepare lib
 
 
 

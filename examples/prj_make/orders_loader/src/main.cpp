@@ -266,17 +266,18 @@ void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 
 
 
-//  ex msg_type   RQ_NW_LS   __RECEIVER__  on_rq_xx_ls
+//  ex msg_type   CF_NW_LS   __RECEIVER__  on_cf_xx_ls
 #define  MAKE_TRADING_SUSCRIPTION(__MARKET__, __MSG_TYPE__, __RECEIVER__)    \
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::__MSG_TYPE__>            > hqpid_##__MSG_TYPE__;    \
         MTK_QPID_RECEIVER_CONNECT_F(     \
                                 hqpid_##__MSG_TYPE__,     \
                                 mtk::admin::get_url("client"),     \
                                 "CLITESTING",     \
-                                mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", __MARKET__, "*", "*"),     \
+                                mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", __MARKET__, "*", "*", "*"),     \
                                 mtk::trd::msg::__MSG_TYPE__,     \
                                 __RECEIVER__)    \
         list_hqpid_##__MSG_TYPE__.push_back(hqpid_##__MSG_TYPE__);         
+
 
 
 
