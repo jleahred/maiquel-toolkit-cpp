@@ -177,6 +177,7 @@ void mtkContainerWidget::title_mouseMoveEvent(QMouseEvent* event)
         if (new_pos.y() >= 1080-30)
             new_pos.setY(1080-30);
         move(new_pos/10*10 + QPoint(6,6));
+        Q_EMIT signal_moving(this->geometry());
     }
 }
 
@@ -191,6 +192,7 @@ void	mtkContainerWidget::resizeEvent ( QResizeEvent * /*event*/ )
 {
     resizer->setGeometry(this->width()-20, this->height()-20, 20, 20);
     resizer->raise();
+    Q_EMIT signal_moving(this->geometry());
 }
 
 

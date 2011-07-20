@@ -30,7 +30,8 @@ qContainer::qContainer(QWidget *parent) :
 QMarginal*  qContainer::insert_qmarginal(void)
 {
     QMarginal* marginals= new QMarginal(this->widget());
-    connect(marginals, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved()));
+    connect(marginals, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    connect(marginals, SIGNAL(signal_moving(QRect)), this, SLOT(slot_widget_moved_or_deleted()));
     marginals->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
@@ -42,7 +43,8 @@ QMarginal*  qContainer::insert_qmarginal(void)
 QDepth* qContainer::insert_qdepth()
 {
     QDepth* depth= new QDepth(this->widget());
-    connect(depth, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved()));
+    connect(depth, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    connect(depth, SIGNAL(signal_moving(QRect)), this, SLOT(slot_widget_moved_or_deleted()));
     depth->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
@@ -93,11 +95,11 @@ void     operator>> (const YAML::Node & node   , qContainer& c)
         QDepth* d = c.insert_qdepth();
         node["tables_depths"][i] >>  *d;
     }
-    c.slot_widget_moved();
+    c.slot_widget_moved_or_deleted();
 }
 
 
-void qContainer::slot_widget_moved(void)
+void qContainer::slot_widget_moved_or_deleted(void)
 {
     int maxwith = 30;
     int maxheigh = 30;

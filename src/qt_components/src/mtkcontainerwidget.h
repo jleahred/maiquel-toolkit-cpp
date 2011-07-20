@@ -103,6 +103,7 @@ protected:
 signals:
     void signal_start_moving(void);
     void signal_stop_moving (void);
+    void signal_moving(const QRect&);
 
 
 public slots:

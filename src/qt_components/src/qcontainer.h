@@ -32,7 +32,7 @@ public slots:
 
 
 private slots:
-    void slot_widget_moved(void);
+    void slot_widget_moved_or_deleted(void);
 };
 
 #endif // QCONTAINER_H
