@@ -95,7 +95,7 @@
     {               \
         mtk::trd::msg::CF_XX cfxx(rq.invariant, last_confirmation().Get().market_order_id, rq.request_info.req_id, rq.cli_ref, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
         mtk::trd::msg::CF_XX_MK  rjxx(cfxx, last_confirmation().Get().market_pos);      \
-        cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_MK(rjxx, ci->__serrors, last_request().Get().request_pos))); \
+        cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_MK(rjxx, MTK_SS(ci->__serrors << " in " << method_name), last_request().Get().request_pos))); \
         ci->__SIGNAL_TYPE__(*cptr_rj);  \
     }     \
     else      \
