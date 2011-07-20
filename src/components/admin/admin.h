@@ -51,6 +51,7 @@ namespace mtk {
         
         std::string                                         get_url                         (const std::string& url_for);
 
+        std::string                                         get_session_id                  (void);
         mtk::msg::sub_request_info                          get_request_info                (void);
         
         

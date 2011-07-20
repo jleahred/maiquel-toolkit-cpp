@@ -80,6 +80,7 @@ namespace {
             
             mtk::ConfigFile&      get_config_file     (void)    { return config_file;  };
 
+            std::string                  get_session_id   (void);
             mtk::msg::sub_request_info   get_request_info (void);
 
 
@@ -969,21 +970,34 @@ namespace {
         config_file.SaveToFile();
     }
 
+    std::string                  admin_status::get_session_id   (void)
+    {
+        if(role=="server")
+        {
+            return app_name;
+        }
+        else if(role=="client")
+        {
+            std::string session_id = client_login_confirmation.session_id;
+            if(session_id=="")
+                session_id = "provisional";
+            return session_id;
+        }
+        else
+            throw mtk::Alarm(MTK_HERE, "admin", MTK_SS(role << "  request info with invalid role"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    }
     
     mtk::msg::sub_request_info   admin_status::get_request_info (void)
     {
         if(role=="server")
         {
             static int counter=0;
-            return mtk::msg::sub_request_info (mtk::msg::sub_request_id(app_name, MTK_SS(++counter)), get_process_info());
+            return mtk::msg::sub_request_info (mtk::msg::sub_request_id(get_session_id(), MTK_SS(++counter)), get_process_info());
         }
         else if(role=="client")
         {
             static int contador =1;
-            std::string session_id = client_login_confirmation.session_id;
-            if(session_id=="")
-                session_id = "provisional";
-            return mtk::msg::sub_request_info(mtk::msg::sub_request_id(session_id, MTK_SS(++contador)), get_process_info());
+            return mtk::msg::sub_request_info(mtk::msg::sub_request_id(get_session_id(), MTK_SS(++contador)), get_process_info());
         }
         else
             throw mtk::Alarm(MTK_HERE, "admin", MTK_SS(role << "  request info with invalid role"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1045,6 +1059,10 @@ mtk::CountPtr< mtk::qpid_session >     get_qpid_session(const std::string&  url_
 
 
     
+std::string     get_session_id   (void)
+{
+    return admin_status::i()->get_session_id();
+}
     
 mtk::msg::sub_request_info   get_request_info (void)
 {
