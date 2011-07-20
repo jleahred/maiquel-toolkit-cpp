@@ -46,7 +46,7 @@ echo '|=========================='
 
 echo ; echo
 
-echo 'BIGEST files::'
+echo 'BIGGEST files::'
 echo '+'
 echo '--------------'
 find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | grep -v 'msg_*' | xargs wc -l | sort -nr -k1 | head -15

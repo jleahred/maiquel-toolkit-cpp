@@ -793,16 +793,36 @@ namespace {
         }
         mtk::list<mtk::admin::msg::sub_command_rd>  data_list;
         mtk::list<std::string>::iterator it2 = response_lines.begin();
+        int max_lines_to_respond = 300;
         while(it2 != response_lines.end())
         {
             if(it2->size() > 500)
             {
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in response to command " << command << " truncating"), mtk::alPriorError));
-                (*it2) = it2->substr(0, 200) + std::string("  ... truncated line");
+                mtk::vector<std::string>  splitted_lines  =  mtk::s_split(*it2, "\n");
+                for(unsigned ii=0; ii<splitted_lines.size(); ++ii)
+                {
+                    if(splitted_lines.size() > 600)
+                    {
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in response to command " << command << " truncating"), mtk::alPriorError));
+                        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii].substr(0, 200) << std::endl << " truncated line... " << std::endl)));
+                        it2 = response_lines.end(); //  to exit while
+                        break;
+                    }
+                    else
+                        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii] << std::endl)));
+                }
             }
+            else
+                data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(*it2 << std::endl)));
                 
-            data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(*it2 << std::endl)));
             ++it2;
+            --max_lines_to_respond;
+            if(max_lines_to_respond == 0)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("too many lines to respond on  " << command << " truncating"), mtk::alPriorError));
+                data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS("too many lines in response, truncating...  " << std::endl)));
+                break;
+            }
         }
                                     
         //  sending multiresponses in asyncronous way
