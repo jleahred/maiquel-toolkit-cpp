@@ -456,7 +456,12 @@ void clean_timeout_requests(void)
 
 void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_clients&  client_keep_alive)
 {
-        if(client_keep_alive.login_confirmation.session_id=="")     
+        if(     (client_keep_alive.login_confirmation.session_id==""  
+            ||  client_keep_alive.login_confirmation.client_code == ""
+            ||  client_keep_alive.login_confirmation.user_name == "")
+            &&  MTK_SS(client_keep_alive.login_confirmation.session_id
+                    <<  client_keep_alive.login_confirmation.client_code
+                    <<  client_keep_alive.login_confirmation.user_name) != "")
         {
             MTK_EXEC_MAX_FREC_NO_FIRST_S(mtk::dtMinutes(1))
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clikeepaliverec", MTK_SS("received keep alive with invalid session id " << client_keep_alive), mtk::alPriorError));
