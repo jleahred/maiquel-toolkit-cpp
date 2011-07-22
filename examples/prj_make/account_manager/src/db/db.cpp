@@ -63,11 +63,15 @@ namespace db {
     void command_purge(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
     void command_get_effective_user_grants(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_get_effective_user_grants_yaml(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_get_effective_client_grants(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_get_effective_client_grants_yaml(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_get_all_effective_grants(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
     void command_get_raw_user_grants(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_get_raw_user_grants_yaml(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_get_raw_client_grants(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_get_raw_client_grants_yaml(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_get_all_raw_grants(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
     
@@ -96,12 +100,16 @@ namespace db {
         mtk::admin::register_command("accmgr",  "purge",       "remove all deleted grants", true)->connect(command_purge);
 
         mtk::admin::register_command("accmgr",  "get_effective_user_grants",        "<user_name-re-pattern>")->connect(command_get_effective_user_grants);
+        mtk::admin::register_command("accmgr",  "get_effective_user_grants.yaml",        "<user_name-re-pattern>")->connect(command_get_effective_user_grants_yaml);
         mtk::admin::register_command("accmgr",  "get_effective_client_grants",      "<client_code-re-pattern>")->connect(command_get_effective_client_grants);
-        mtk::admin::register_command("accmgr",  "get_all_effective_grants",      "", true)->connect(command_get_all_effective_grants);
+        mtk::admin::register_command("accmgr",  "get_effective_client_grants.yaml",      "<client_code-re-pattern>")->connect(command_get_effective_client_grants_yaml);
+        mtk::admin::register_command("accmgr",  "get_all_effective_grants",      "depreciated", true)->connect(command_get_all_effective_grants);
 
         mtk::admin::register_command("accmgr",  "get_raw_user_grants",        "<user_name-re-pattern>")->connect(command_get_raw_user_grants);
+        mtk::admin::register_command("accmgr",  "get_raw_user_grants.yaml",        "<user_name-re-pattern>")->connect(command_get_raw_user_grants_yaml);
         mtk::admin::register_command("accmgr",  "get_raw_client_grants",      "<client_code-re-pattern>")->connect(command_get_raw_client_grants);
-        mtk::admin::register_command("accmgr",  "get_all_raq_grants",      "", true)->connect(command_get_all_raw_grants);
+        mtk::admin::register_command("accmgr",  "get_raw_client_grants.yaml",      "<client_code-re-pattern>")->connect(command_get_raw_client_grants_yaml);
+        mtk::admin::register_command("accmgr",  "get_all_raw_grants",      "depreciated", true)->connect(command_get_all_raw_grants);
     }
     
     
@@ -118,6 +126,26 @@ namespace db {
     mtk::list<std::string>                              get_market_list(void)
     {
         return *get_list_markets();
+    }
+
+
+    bool  check_and_split_params__converting2upper(const std::string& params, mtk::list<std::string>&  response_lines, int number_of_params, mtk::vector<std::string>& vparams)
+    {
+        mtk::vector<std::string> temp_vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
+        //  remove empty params
+        vparams.clear();
+        for(unsigned i=0; i<temp_vparams.size(); ++i)
+        {
+            std::string param = mtk::s_trim(temp_vparams[i], ' ');
+            if(param != "")
+                vparams.push_back(mtk::s_toUpper(param));
+        }
+        if(vparams.size() != unsigned(number_of_params))
+        {
+            response_lines.push_back(MTK_SS("invalid number of params. There is needed "  <<  number_of_params  <<  "  params:   "  << params));
+            return  false;
+        }
+        return true;
     }
 
 
@@ -146,8 +174,11 @@ namespace db {
     
     
 
-    void command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+    void command_stats(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 0, vparams)  == false)     return;
+
         response_lines.push_back(MTK_SS("[account_manager] ________________________________ " << get_map_user_info()->size()));
         response_lines.push_back(MTK_SS("#users: " << get_map_user_info()->size()));
         response_lines.push_back(MTK_SS("#accounts: " << get_map_registered_accounts()->size()));
@@ -195,12 +226,9 @@ namespace db {
 
     void command_add_market(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        mtk::vector<std::string>  vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
-        if(vparams.size() != 1)
-        {
-            response_lines.push_back(MTK_SS("invalid number of params. There is needed 1 params:   "  << params));
-            return;
-        }
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+        
         response_lines.push_back(MTK_SS("before adding ... " << get_list_markets()->size()));
         std::string result = try_add_market(vparams[0]);
         response_lines.push_back(result);
@@ -223,12 +251,9 @@ namespace db {
 
     void command_del_market(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        mtk::vector<std::string>  vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
-        if(vparams.size() != 1)
-        {
-            response_lines.push_back(MTK_SS("invalid number of params. There is needed 1 params:   "  << params));
-            return;
-        }
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
         response_lines.push_back(MTK_SS("before deleting ... " << get_list_markets()->size()));
         std::string result = try_del_market(vparams[0]);
         response_lines.push_back(result);
@@ -279,12 +304,9 @@ namespace db {
     }
     void command_add_account(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        mtk::vector<std::string>  vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
-        if(vparams.size() != 2)
-        {
-            response_lines.push_back(MTK_SS("invalid number of params. There is needed 2 params:   "  << params));
-            return;
-        }
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 2, vparams)  == false)     return;
+
         mtk::trd::msg::sub_account_info account(mtk::s_toUpper(vparams[0]), mtk::s_toUpper(vparams[1]));
         std::string result = try_add_account(account);
         response_lines.push_back(result);
@@ -311,12 +333,9 @@ namespace db {
     }
     void command_del_account(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        mtk::vector<std::string>  vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
-        if(vparams.size() != 2)
-        {
-            response_lines.push_back(MTK_SS("invalid number of params. There is needed 2 params"));
-            return;
-        }
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 2, vparams)  == false)     return;
+
         mtk::trd::msg::sub_account_info account(mtk::s_toUpper(vparams[0]), mtk::s_toUpper(vparams[1]));
         std::string result = try_del_account(account);
         response_lines.push_back(result);
@@ -357,12 +376,9 @@ namespace db {
     }
     void command_add_user(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        mtk::vector<std::string>  vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
-        if(vparams.size() != 2)
-        {
-            response_lines.push_back(MTK_SS("invalid number of params. There is needed 2 params"));
-            return;
-        }
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 2, vparams)  == false)     return;
+
         std::string result = try_add_user(mtk::s_toUpper(vparams[0]), mtk::s_toUpper(vparams[1]));
         response_lines.push_back(result);
     }
@@ -389,24 +405,17 @@ namespace db {
     }
     void command_del_user(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        mtk::vector<std::string>  vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
-        if(vparams.size() != 2)
-        {
-            response_lines.push_back(MTK_SS("invalid number of params. There is needed 2 params"));
-            return;
-        }
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 2, vparams)  == false)     return;
+
         std::string result = try_del_user(mtk::s_toUpper(vparams[0]), mtk::s_toUpper(vparams[1]));
         response_lines.push_back(result);
     }
     
     void command_grant(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        mtk::vector<std::string>  vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
-        if(vparams.size() != 5)
-        {
-            response_lines.push_back(MTK_SS("invalid number of params. There is needed 5 params"));
-            return;
-        }
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 5, vparams)  == false)     return;
         
         std::string market = mtk::s_toUpper(vparams[0]);
         std::string user_name = mtk::s_toUpper(vparams[1]);
@@ -487,12 +496,8 @@ namespace db {
     
     void command_revoke(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        mtk::vector<std::string>  vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
-        if(vparams.size() != 5)
-        {
-            response_lines.push_back(MTK_SS("invalid number of params. There is needed 5 params"));
-            return;
-        }
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 5, vparams)  == false)     return;
         
         std::string market = mtk::s_toUpper(vparams[0]);
         std::string user_name = mtk::s_toUpper(vparams[1]);
@@ -740,7 +745,10 @@ namespace db {
     
     void command_get_effective_user_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        std::string filter_user = mtk::s_toUpper(mtk::s_trim(params, ' '));
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
+        std::string filter_user = vparams[0];
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
@@ -769,9 +777,64 @@ namespace db {
         response_lines.push_back(MTK_SS(std::endl << "<<<  end of command  " << command));
     }
     
+    
+    void   fill_yaml_with_user_info  (YAML::Emitter&  yo,  const  msg::sub_user_info&  user_info, const std::string& market)
+    {
+        yo << YAML::BeginMap;
+            yo << YAML::Key << "name"  <<  YAML::Value <<  user_info.name;
+            yo << YAML::Key << "cli_code"  <<  YAML::Value <<  user_info.client_code;
+            yo << YAML::Key << "market"  <<  YAML::Value <<  market;
+
+            yo << YAML::Key << "accounts"  <<  YAML::Value;
+            mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >  map_accounts = get_map_registered_accounts();
+            yo << YAML::BeginSeq;
+            for(mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info >::iterator it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
+            {
+                auto  account_info = it_accounts->second;
+                std::string  grants = __get_grant_type(market, user_info, account_info);
+                if(grants != "")
+                {
+                    yo << YAML::BeginMap;
+                        yo << YAML::Key << "account" <<  YAML::Value <<  account_info;
+                        yo << YAML::Key << "grants"  <<  YAML::Value <<  grants;
+                    yo << YAML::EndMap;
+                }
+            }
+            yo << YAML::EndSeq;
+        yo << YAML::EndMap;
+    }
+    
+    void command_get_effective_user_grants_yaml(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+    {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
+        YAML::Emitter yo;
+        yo << YAML::BeginSeq;
+
+        std::string filter_user = vparams[0];
+        for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
+        {
+            std::string market = *it_markets;
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+                                it_user_info != get_map_user_info()->end(); ++it_user_info)
+            {
+                if(mtk::RegExp(filter_user).Match(it_user_info->second.name))
+                    fill_yaml_with_user_info(yo, it_user_info->second, market);
+            }
+        }
+        yo << YAML::EndSeq;
+        response_lines.push_back(yo.c_str());
+    }
+    
+
+
     void command_get_effective_client_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        std::string filter_client = mtk::s_toUpper(mtk::s_trim(params, ' '));
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
+        std::string filter_client = vparams[0];
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
@@ -798,9 +861,36 @@ namespace db {
         }
         response_lines.push_back(MTK_SS(std::endl << "<<<  end of command  " << command));
     }
-    
-    void command_get_all_effective_grants(const std::string& command, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+
+    void command_get_effective_client_grants_yaml(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
+        YAML::Emitter yo;
+        yo << YAML::BeginSeq;
+
+        std::string filter_client = vparams[0];
+        for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
+        {
+            std::string market = *it_markets;
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+                                it_user_info != get_map_user_info()->end(); ++it_user_info)
+            {
+                if(mtk::RegExp(filter_client).Match(it_user_info->second.client_code))
+                    fill_yaml_with_user_info(yo, it_user_info->second, market);
+            }
+        }
+        yo << YAML::EndSeq;
+        response_lines.push_back(yo.c_str());
+    }
+
+    
+    void command_get_all_effective_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
+    {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 0, vparams)  == false)     return;
+
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
@@ -828,7 +918,10 @@ namespace db {
 
     void command_get_raw_user_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        std::string filter_user = mtk::s_toUpper(mtk::s_trim(params, ' '));
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
+        std::string filter_user = vparams[0];
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
@@ -854,10 +947,36 @@ namespace db {
         }
         response_lines.push_back(MTK_SS(std::endl << "<<<  end of command  " << command));
     }
+
+    void command_get_raw_user_grants_yaml(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+    {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
+        YAML::Emitter yo;
+        yo << YAML::BeginSeq;
+        
+        std::string filter_user = vparams[0];
+        for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
+        {
+            std::string market = *it_markets;
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+                                it_user_info != get_map_user_info()->end(); ++it_user_info)
+            {
+                if(mtk::RegExp(filter_user).Match(it_user_info->second.name))
+                    yo << it_user_info->second;
+            }
+        }
+        yo << YAML::EndSeq;
+        response_lines.push_back(yo.c_str());
+    }
     
     void command_get_raw_client_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
     {
-        std::string filter_client = mtk::s_toUpper(mtk::s_trim(params, ' '));
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
+        std::string filter_client = vparams[0];
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
@@ -882,9 +1001,31 @@ namespace db {
         }
         response_lines.push_back(MTK_SS(std::endl << "<<<  end of command  " << command));
     }
-    
-    void command_get_all_raw_grants(const std::string& command, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+
+    void command_get_raw_client_grants_yaml(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
+
+        YAML::Emitter yo;
+        yo << YAML::BeginSeq;
+
+        std::string filter_client = vparams[0];
+        for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+                            it_user_info != get_map_user_info()->end(); ++it_user_info)
+        {
+            if(mtk::RegExp(filter_client).Match(it_user_info->second.client_code))
+                yo << it_user_info->second;
+        }
+        yo << YAML::EndSeq;
+        response_lines.push_back(yo.c_str());
+    }
+    
+    void command_get_all_raw_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
+    {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 0, vparams)  == false)     return;
+
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;

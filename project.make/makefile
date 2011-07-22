@@ -115,6 +115,9 @@ prepare:
 this: clean prepare $(OUT)
 
 
+incremental: $(OUT)
+
+
 .PHONY : mtk
 mtk:
 	make -C mtk libs
