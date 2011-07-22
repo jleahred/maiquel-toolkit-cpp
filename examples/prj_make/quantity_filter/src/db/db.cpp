@@ -8,6 +8,7 @@
 #include "components/acs/serv/acs_synchr.h"
 
 #include <fstream>
+#include <set>
 
 
 namespace qfmgr { 
@@ -100,7 +101,9 @@ namespace db {
 
 
     void command_debug_get_filter(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
-
+    
+    void command_check(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void timer_check(void);
 
 
 
@@ -149,6 +152,8 @@ namespace db {
 
         mtk::admin::register_command("qf",  "debug.getfilter",        "<user_name> <cli_name> <market> <product_name>")->connect(command_debug_get_filter);
 
+        mtk::admin::register_command("qf",  "check",        "it will look for inconsistent info configured in db", true)->connect(command_check);
+
     }
     
     
@@ -160,6 +165,8 @@ namespace db {
         register_global_commands(); 
         db_file_name  =  _db_file_name;   
         load(); 
+        
+        MTK_TIMER_1SF(timer_check)
     }
 
 
@@ -940,6 +947,113 @@ namespace db {
 
 
 
+    std::string  look_mising_in_second_set(const std::set<std::string>& first, const std::set<std::string>& second)
+    {
+        std::string  result;
+        for(auto it=first.begin(); it!=first.end(); ++it)
+        {
+            if(second.find(*it) == second.end())
+                result += *it + " ";
+        }
+        return result;
+    }
+
+    std::string                 check(void)
+    {
+        std::string result;
+        
+        mtk::list<std::string>                                        list_markets    =   *ref_list_markets();
+        mtk::map<std::string, msg::sub_product >                      map_products    =   *ref_map_registered_products();
+        mtk::map<std::string  /*client_name*/, msg::sub_client_info>  map_client_info =   *ref_map_client_info();
+        mtk::map<std::string  /*user_name*/, msg::sub_user_info>      map_user_info   =   *ref_map_user_info();
+        
+        
+        std::set<std::string>       markets_set;
+        std::set<std::string>       markets_in_products_set;
+        std::set<std::string>       product_names_set;
+        std::set<std::string>       product_names_in_clients_set;
+        std::set<std::string>       product_names_in_users_set;
+        std::set<std::string>       clients_set;
+        std::set<std::string>       clients_in_users_set;
+        
+        
+        for(auto it=list_markets.begin(); it!=list_markets.end(); ++it)         
+            markets_set.insert(*it);
+        for(auto it=map_products.begin(); it!=map_products.end(); ++it)         
+            markets_in_products_set.insert(it->second.market);
+        for(auto it=map_products.begin(); it!=map_products.end(); ++it)
+            product_names_set.insert(it->second.gen_product_name);
+        for(auto it=map_client_info.begin(); it!=map_client_info.end(); ++it)
+            for(auto it2=it->second.filter_list.begin(); it2!=it->second.filter_list.end(); ++it2)
+                product_names_in_clients_set.insert(it2->gen_product_name);
+        for(auto it=map_user_info.begin(); it!=map_user_info.end(); ++it)
+            for(auto it2=it->second.filter_list.begin(); it2!=it->second.filter_list.end(); ++it2)
+                product_names_in_users_set.insert(it2->gen_product_name);
+        for(auto it=map_client_info.begin(); it!=map_client_info.end(); ++it)
+            clients_set.insert(it->second.name);
+        for(auto it=map_user_info.begin(); it!=map_user_info.end(); ++it)
+            clients_in_users_set.insert(it->second.client_code);
+            
+        std::string missings;
+        
+        missings = look_mising_in_second_set(markets_set, markets_in_products_set);
+        if(missings != "")          result += MTK_SS("markets not configured in products  "  <<  missings << std::endl);
+
+        missings = look_mising_in_second_set(markets_in_products_set, markets_set);
+        if(missings != "")          result += MTK_SS("markets not registered but configured in products  "  <<  missings << std::endl);
+
+        missings = look_mising_in_second_set(product_names_set, product_names_in_clients_set);
+        if(missings != "")          result += MTK_SS("products registered not configured in any client  "  <<  missings << std::endl);
+
+        missings = look_mising_in_second_set(product_names_in_clients_set, product_names_set);
+        if(missings != "")          result += MTK_SS("products configured on client but not registered  "  <<  missings << std::endl);
+
+        missings = look_mising_in_second_set(product_names_set, product_names_in_users_set);
+        if(missings != "")          result += MTK_SS("products registered not configured in any user  "  <<  missings << std::endl);
+
+        missings = look_mising_in_second_set(product_names_in_users_set, product_names_set);
+        if(missings != "")          result += MTK_SS("products configured on users but not registered  "  <<  missings << std::endl);
+        
+        missings = look_mising_in_second_set(clients_in_users_set, clients_set);
+        if(missings != "")          result += MTK_SS("client configured on users but not registered  "  <<  missings << std::endl);
+
+        missings = look_mising_in_second_set(clients_set, clients_in_users_set);
+        if(missings != "")          result += MTK_SS("client registered not configured in any user  "  <<  missings << std::endl);
+
+
+        for(auto it=map_client_info.begin(); it!=map_client_info.end(); ++it)
+            if(it->second.filter_list.size() == 0)
+                result += MTK_SS("client " << it->second.name  << "has no filters configured");
+        for(auto it=map_user_info.begin(); it!=map_user_info.end(); ++it)
+            if(it->second.filter_list.size() == 0)
+                result += MTK_SS("client " << it->second.name  << "has no filters configured");
+        
+        
+        
+        return result;
+    }
+
+    void command_check(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
+    {
+        std::string  result_check = check();
+        
+        if(result_check == "")
+            response_lines.push_back("db looks ok");
+        else
+            response_lines.push_back(result_check);
+    }
+
+    void timer_check(void)
+    {
+        if((mtk::dtToday_0Time() + mtk::dtHours(18)) + mtk::dtMinutes(30)  <  mtk::dtNowLocal())
+        {
+            MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(25))
+                std::string  result_check = check();
+                if(result_check != "")
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qf.db", result_check, mtk::alPriorError, mtk::alTypeNoPermisions));
+            MTK_END_EXEC_MAX_FREC
+        }
+    }
 
 
 

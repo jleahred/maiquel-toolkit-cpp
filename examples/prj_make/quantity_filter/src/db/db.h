@@ -21,14 +21,13 @@ namespace qfmgr {
 
 
         
-        mtk::list<std::string>&   get_market_list(void);
+        mtk::list<std::string>&     get_market_list(void);
         
-        mtk::tuple<int, int>    get_user_filters____tpl_cli_user(   const std::string&  cli_name, 
-                                                                    const std::string&  user_name, 
-                                                                    const std::string& market, 
-                                                                    const std::string&  product);
-        
-        
+        mtk::tuple<int, int>        get_user_filters____tpl_cli_user(   const std::string&  cli_name, 
+                                                                        const std::string&  user_name, 
+                                                                        const std::string&  market, 
+                                                                        const std::string&  product);
+                                                                    
         
     };  //      namespace db {
 };      //  namespace qfmgr { 
