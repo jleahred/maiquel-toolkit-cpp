@@ -454,8 +454,10 @@ private:
 DateTime        dtNowUTC                    (void);
 DateTime        dtNowLocal                  (void);
 dtTimeQuantity  dtMachineGetTotalMillisecs  (void);
+DateTime        dtToday_0Time               (void);
 
-dtTimeQuantity abs(const dtTimeQuantity& ti);
+dtTimeQuantity  abs(const dtTimeQuantity& ti);
+
 
 int ARE_YOU_SURE_YOU_WANT_GetMillisecsDay(const mtk::dtTimeQuantity& tq);
 

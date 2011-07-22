@@ -1046,57 +1046,74 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
 #if (MTK_PLATFORM == MTK_WIN_PLATFORM)
 
 
-DateTime    dtNowUTC(void)
-{
-    SYSTEMTIME systemtime;
-    GetSystemTime(&systemtime);
-
-    return DateTime(
-            dtYear        (systemtime.wYear        ),
-            dtMonth       (systemtime.wMonth       ),
-            dtDay         (systemtime.wDay         ),
-            dtHours       (systemtime.wHour        ),
-            dtMinutes     (systemtime.wMinute      ),
-            dtSeconds     (systemtime.wSecond      ),
-            dtMilliseconds(systemtime.wMilliseconds)
-        );
-}
-
-
-DateTime    dtNowLocal(void)
-{
-    SYSTEMTIME systemtime;
-    GetLocalTime(&systemtime);
-
-    return DateTime (
-            dtYear        (systemtime.wYear        ),
-            dtMonth       (systemtime.wMonth       ),
-            dtDay         (systemtime.wDay         ),
-            dtHours       (systemtime.wHour        ),
-            dtMinutes     (systemtime.wMinute      ),
-            dtSeconds     (systemtime.wSecond      ),
-            dtMilliseconds(systemtime.wMilliseconds)
-        );
-}
-
-
-dtTimeQuantity  dtMachineGetTotalMillisecs (void)
-{
-//    return  dtTotalMillisecs(GetTickCount());
-
-    static __int64          vueltas64           = 0;
-    static const __int64    _2pow32             = 4294967296LL;	//	en bcb hay que dejar una sola L
-    static unsigned         previusTickCount32  = 0;
-    unsigned                currentTickCount32  = GetTickCount();
-
-    if (currentTickCount32 < previusTickCount32)    //  casi seguro que hemos dado la vuelta al int32
+    DateTime    dtNowUTC(void)
     {
-        vueltas64 += _2pow32;
+        SYSTEMTIME systemtime;
+        GetSystemTime(&systemtime);
+
+        return DateTime(
+                dtYear        (systemtime.wYear        ),
+                dtMonth       (systemtime.wMonth       ),
+                dtDay         (systemtime.wDay         ),
+                dtHours       (systemtime.wHour        ),
+                dtMinutes     (systemtime.wMinute      ),
+                dtSeconds     (systemtime.wSecond      ),
+                dtMilliseconds(systemtime.wMilliseconds)
+            );
     }
 
-    previusTickCount32 = currentTickCount32;
-    return  dtTotalMillisecs((__int64)(currentTickCount32) + (__int64)(vueltas64));
-}
+
+    DateTime    dtNowLocal(void)
+    {
+        SYSTEMTIME systemtime;
+        GetLocalTime(&systemtime);
+
+        return DateTime (
+                dtYear        (systemtime.wYear        ),
+                dtMonth       (systemtime.wMonth       ),
+                dtDay         (systemtime.wDay         ),
+                dtHours       (systemtime.wHour        ),
+                dtMinutes     (systemtime.wMinute      ),
+                dtSeconds     (systemtime.wSecond      ),
+                dtMilliseconds(systemtime.wMilliseconds)
+            );
+    }
+
+    DateTime        dtToday_0Time               (void)
+    {
+        SYSTEMTIME systemtime;
+        GetLocalTime(&systemtime);
+
+        return DateTime (
+                dtYear        (systemtime.wYear        ),
+                dtMonth       (systemtime.wMonth       ),
+                dtDay         (systemtime.wDay         ),
+                dtHours       (0                       ),
+                dtMinutes     (0                       ),
+                dtSeconds     (0                       ),
+                dtMilliseconds(0                       ) 
+            );
+    }
+
+
+
+    dtTimeQuantity  dtMachineGetTotalMillisecs (void)
+    {
+    //    return  dtTotalMillisecs(GetTickCount());
+
+        static __int64          vueltas64           = 0;
+        static const __int64    _2pow32             = 4294967296LL;	//	en bcb hay que dejar una sola L
+        static unsigned         previusTickCount32  = 0;
+        unsigned                currentTickCount32  = GetTickCount();
+
+        if (currentTickCount32 < previusTickCount32)    //  casi seguro que hemos dado la vuelta al int32
+        {
+            vueltas64 += _2pow32;
+        }
+
+        previusTickCount32 = currentTickCount32;
+        return  dtTotalMillisecs((__int64)(currentTickCount32) + (__int64)(vueltas64));
+    }
 
 
 #elif MTK_PLATFORM == MTK_LINUX_PLATFORM
@@ -1136,6 +1153,22 @@ dtTimeQuantity  dtMachineGetTotalMillisecs (void)
             );
     }
 
+    DateTime        dtToday_0Time               (void)
+    {
+        static struct timeb tp;
+        ftime(&tp);
+        tm* now = localtime(&tp.time);
+
+        return DateTime (
+                dtYear        (now->tm_year+1900        ),
+                dtMonth       (now->tm_mon+1            ),
+                dtDay         (now->tm_mday             ),
+                dtHours       (0                       ),
+                dtMinutes     (0                       ),
+                dtSeconds     (0                       ),
+                dtMilliseconds(0                       ) 
+            );
+    }
 
     dtTimeQuantity  dtMachineGetTotalMillisecs (void)
     {
