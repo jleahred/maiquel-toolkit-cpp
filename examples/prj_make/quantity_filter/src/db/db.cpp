@@ -5,10 +5,10 @@
 #include "msg_structs.h"
 #include "components/admin/admin.h"
 #include "support/re/RegExp.h"
+#include "support/set.hpp"
 #include "components/acs/serv/acs_synchr.h"
 
 #include <fstream>
-#include <set>
 
 
 namespace qfmgr { 
