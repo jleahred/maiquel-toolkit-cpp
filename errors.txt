@@ -45,304 +45,65 @@ ex_udp_socket.exec   lost:-----------------------------------
 ex_yaml.exec   lost:-----------------------------------
 ex_fb.exec   lost:-----------------------------------
 ex_qpid1.exec   lost:-----------------------------------
-2011-07-07 13:33:20 warning Connection [45409 127.0.0.1:5672] closed
+2011-07-26 12:32:24 warning Connection [52538 127.0.0.1:5672] closed
 ex_qpid2.exec   lost:-----------------------------------
-2011-07-07 13:33:28 warning Connection [45410 127.0.0.1:5672] closed
+2011-07-26 12:32:32 warning Connection [52539 127.0.0.1:5672] closed
 ex_qpid_direct_msg.exec   lost:-----------------------------------
-2011-07-07 13:33:36 warning Connection [45411 127.0.0.1:5672] closed
+2011-07-26 12:32:40 warning Connection [52540 127.0.0.1:5672] closed
 ex_qpid_msg_parsing.exec   lost:-----------------------------------
-2011-07-07 13:33:47 warning Connection [45412 127.0.0.1:5672] closed
+2011-07-26 12:32:51 warning Connection [52541 127.0.0.1:5672] closed
 ex_request_response.exec   lost:-----------------------------------
-2011-07-07 13:33:56 warning Connection [45414 127.0.0.1:5672] closed
-2011-07-07 13:33:58 warning Connection [45413 127.0.0.1:5672] closed
+2011-07-26 12:33:00 warning Connection [52543 127.0.0.1:5672] closed
+2011-07-26 12:33:02 warning Connection [52542 127.0.0.1:5672] closed
 ex_admin.exec   lost:-----------------------------------
-2011-07-07 13:34:13 warning Connection [45415 127.0.0.1:5672] closed
+2011-07-26 12:33:17 warning Connection [52544 127.0.0.1:5672] closed
 test_trd_cli_ls.exec   lost:-----------------------------------
-2011-07-07 13:34:16 warning Connection [45416 127.0.0.1:5672] closed
+2011-07-26 12:33:20 warning Connection [52545 127.0.0.1:5672] closed
 ex_acs_cli.exec   lost:-----------------------------------
-2011-07-07 13:34:29 warning Connection [45417 127.0.0.1:5672] closed
+2011-07-26 12:33:33 warning Connection [52546 127.0.0.1:5672] closed
 ex_acs_serv.exec   lost:-----------------------------------
-2011-07-07 13:34:42 warning Connection [45418 127.0.0.1:5672] closed
+2011-07-26 12:33:46 warning Connection [52547 127.0.0.1:5672] closed
 ex_msg_yaml.exec   lost:-----------------------------------
 ex_fbinsert.exec   lost:-----------------------------------
-2011-07-07 13:34:55 warning Connection [45419 127.0.0.1:5672] closed
+2011-07-26 12:34:00 warning Connection [52548 127.0.0.1:5672] closed
 asocmem0.exec   lost:-----------------------------------
-asciidoc: reading: /etc/asciidoc/asciidoc.conf
-asciidoc: reading: /etc/asciidoc/docbook.conf
-asciidoc: reading: /etc/asciidoc/filters/source/source-highlight-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/code/code-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/music/music-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/graphviz/graphviz-filter.conf
-asciidoc: reading: /etc/asciidoc/lang-en.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/python_gen_temp/python_gen_temp-filter.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/jle_temp_and_run/jle_temp_and_run-filter.conf
-asciidoc: reading: /home/maiquel/develop/mtk/examples/prj_make/houselight/src/houselight.adoc
-asciidoc: writing: /home/maiquel/develop/mtk/examples/prj_make/houselight/doc/houselight.xml
-asciidoc: houselight.adoc: line 43: reading: /home/maiquel/develop/mtk/examples/prj_make/houselight/mtk/src/components/admin/msg_admin.msg
-asciidoc: houselight.adoc: line 52: reading: /home/maiquel/develop/mtk/examples/prj_make/houselight/src/main.cpp
-/usr/share/dblatex/lib/dbtexmf/dblatex/grubber/util.py:8: DeprecationWarning: the md5 module is deprecated; use hashlib instead
-  import md5
-Build the book set list...
-xsltproc -o /tmp/tmpNkNhM4/doclist.txt --xinclude --xincludestyle doclist.xsl /home/maiquel/develop/mtk/examples/prj_make/houselight/doc/houselight.xml
-Build the listings...
-xsltproc -o /tmp/tmpNkNhM4/listings.xml --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/houselight/doc' /usr/share/dblatex/xsl/common/mklistings.xsl /home/maiquel/develop/mtk/examples/prj_make/houselight/doc/houselight.xml
-xsltproc -o houselight.rtex --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/houselight/doc' --param listings.xml '/tmp/tmpNkNhM4/listings.xml' /tmp/tmpNkNhM4/custom.xsl /home/maiquel/develop/mtk/examples/prj_make/houselight/doc/houselight.xml
-XSLT stylesheets DocBook - LaTeX 2e (0.3-1)
-===================================================
-Build houselight.pdf
-built-in module pdftex registered
-no support found for ifxetex
-no support found for fontspec
-no support found for xltxtra
-no support found for fontenc
-no support found for inputenc
-no support found for fancybox
-built-in module makeidx registered
-no support found for asciidoc-dblatex
-building additional files...
-checking if compiling is necessary...
-the output file doesn't exist
-pdflatex -interaction=batchmode houselight.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmpNkNhM4/houselight.idx is empty
-houselight.toc MD5 checksum changed
-houselight.aux MD5 checksum changed
-the /tmp/tmpNkNhM4/houselight.toc file has changed
-pdflatex -interaction=batchmode houselight.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmpNkNhM4/houselight.idx is empty
-no new compilation is needed
-running last-compilation scripts...
-asciidoc: reading: /etc/asciidoc/asciidoc.conf
-asciidoc: reading: /etc/asciidoc/docbook.conf
-asciidoc: reading: /etc/asciidoc/filters/source/source-highlight-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/code/code-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/music/music-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/graphviz/graphviz-filter.conf
-asciidoc: reading: /etc/asciidoc/lang-en.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/python_gen_temp/python_gen_temp-filter.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/jle_temp_and_run/jle_temp_and_run-filter.conf
-asciidoc: reading: /home/maiquel/develop/mtk/examples/prj_make/tree_server/src/tree_server_cfg.adoc
-asciidoc: writing: /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
-asciidoc: tree_server_cfg.adoc: line 43: reading: /home/maiquel/develop/mtk/examples/prj_make/tree_server/mtk/src/components/gen/msg_tree_server.msg
-asciidoc: tree_server_cfg.adoc: line 52: reading: /home/maiquel/develop/mtk/examples/prj_make/tree_server/src/main.cpp
-/usr/share/dblatex/lib/dbtexmf/dblatex/grubber/util.py:8: DeprecationWarning: the md5 module is deprecated; use hashlib instead
-  import md5
-Build the book set list...
-xsltproc -o /tmp/tmpjRYmMH/doclist.txt --xinclude --xincludestyle doclist.xsl /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
-Build the listings...
-xsltproc -o /tmp/tmpjRYmMH/listings.xml --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/tree_server/doc' /usr/share/dblatex/xsl/common/mklistings.xsl /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
-xsltproc -o tree_server_cfg.rtex --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/tree_server/doc' --param listings.xml '/tmp/tmpjRYmMH/listings.xml' /tmp/tmpjRYmMH/custom.xsl /home/maiquel/develop/mtk/examples/prj_make/tree_server/doc/tree_server_cfg.xml
-XSLT stylesheets DocBook - LaTeX 2e (0.3-1)
-===================================================
-Build tree_server_cfg.pdf
-built-in module pdftex registered
-no support found for ifxetex
-no support found for fontspec
-no support found for xltxtra
-no support found for fontenc
-no support found for inputenc
-no support found for fancybox
-built-in module makeidx registered
-no support found for asciidoc-dblatex
-building additional files...
-checking if compiling is necessary...
-the output file doesn't exist
-pdflatex -interaction=batchmode tree_server_cfg.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmpjRYmMH/tree_server_cfg.idx is empty
-tree_server_cfg.aux MD5 checksum changed
-tree_server_cfg.toc MD5 checksum changed
-the /tmp/tmpjRYmMH/tree_server_cfg.aux file has changed
-pdflatex -interaction=batchmode tree_server_cfg.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmpjRYmMH/tree_server_cfg.idx is empty
-no new compilation is needed
-running last-compilation scripts...
-asciidoc: reading: /etc/asciidoc/asciidoc.conf
-asciidoc: reading: /etc/asciidoc/docbook.conf
-asciidoc: reading: /etc/asciidoc/filters/source/source-highlight-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/code/code-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/music/music-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/graphviz/graphviz-filter.conf
-asciidoc: reading: /etc/asciidoc/lang-en.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/python_gen_temp/python_gen_temp-filter.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/jle_temp_and_run/jle_temp_and_run-filter.conf
-asciidoc: reading: /home/maiquel/develop/mtk/examples/prj_make/acs/src/acs.adoc
-asciidoc: writing: /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
-asciidoc: acs.adoc: line 77: filtering: "/etc/asciidoc/filters/graphviz/graphviz2png.py" -v -o "/home/maiquel/develop/mtk/examples/prj_make/acs/doc/emarket_dfd.png" -L dot -
-Execute: dot -Tpng "/home/maiquel/develop/mtk/examples/prj_make/acs/doc/emarket_dfd.txt" > "/home/maiquel/develop/mtk/examples/prj_make/acs/doc/emarket_dfd.png"
-asciidoc: acs.adoc: line 90: reading: /home/maiquel/develop/mtk/examples/prj_make/acs/mtk/src/components/acs/cli/fsm_cli_acs.dot
-asciidoc: fsm_cli_acs.dot: line 20: filtering: "/etc/asciidoc/filters/graphviz/graphviz2png.py" -v -o "/home/maiquel/develop/mtk/examples/prj_make/acs/doc/fsm_cli_acs.png" -L dot -
-Execute: dot -Tpng "/home/maiquel/develop/mtk/examples/prj_make/acs/doc/fsm_cli_acs.txt" > "/home/maiquel/develop/mtk/examples/prj_make/acs/doc/fsm_cli_acs.png"
-Warning: node 'logout', graph 'automata' size too small for label
-Warning: node 'w_login', graph 'automata' size too small for label
-Warning: node 'login_ok', graph 'automata' size too small for label
-Warning: node 'w_k_chp', graph 'automata' size too small for label
-Warning: node 'w_chpwd', graph 'automata' size too small for label
-asciidoc: acs.adoc: line 99: reading: /home/maiquel/develop/mtk/examples/prj_make/acs/mtk/src/components/acs/msg_acs.msg
-asciidoc: acs.adoc: line 117: reading: /home/maiquel/develop/mtk/examples/prj_make/acs/mtk/src/components/acs/serv/msg_acs_server.msg
-/usr/share/dblatex/lib/dbtexmf/dblatex/grubber/util.py:8: DeprecationWarning: the md5 module is deprecated; use hashlib instead
-  import md5
-Build the book set list...
-xsltproc -o /tmp/tmpwn9ui3/doclist.txt --xinclude --xincludestyle doclist.xsl /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
-Build the listings...
-xsltproc -o /tmp/tmpwn9ui3/listings.xml --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/acs/doc' /usr/share/dblatex/xsl/common/mklistings.xsl /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
-xsltproc -o acs.rtex --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/acs/doc' --param listings.xml '/tmp/tmpwn9ui3/listings.xml' /tmp/tmpwn9ui3/custom.xsl /home/maiquel/develop/mtk/examples/prj_make/acs/doc/acs.xml
-XSLT stylesheets DocBook - LaTeX 2e (0.3-1)
-===================================================
-Build acs.pdf
-built-in module pdftex registered
-no support found for ifxetex
-no support found for fontspec
-no support found for xltxtra
-no support found for fontenc
-no support found for inputenc
-no support found for fancybox
-built-in module makeidx registered
-no support found for asciidoc-dblatex
-building additional files...
-checking if compiling is necessary...
-the output file doesn't exist
-pdflatex -interaction=batchmode acs.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmpwn9ui3/acs.idx is empty
-acs.aux MD5 checksum changed
-acs.toc MD5 checksum changed
-the /tmp/tmpwn9ui3/acs.aux file has changed
-pdflatex -interaction=batchmode acs.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmpwn9ui3/acs.idx is empty
-no new compilation is needed
-running last-compilation scripts...
-asciidoc: reading: /etc/asciidoc/asciidoc.conf
-asciidoc: reading: /etc/asciidoc/docbook.conf
-asciidoc: reading: /etc/asciidoc/filters/source/source-highlight-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/code/code-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/music/music-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/graphviz/graphviz-filter.conf
-asciidoc: reading: /etc/asciidoc/lang-en.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/python_gen_temp/python_gen_temp-filter.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/jle_temp_and_run/jle_temp_and_run-filter.conf
-asciidoc: reading: /home/maiquel/develop/mtk/examples/prj_make/alarms_db/src/alarms_db.adoc
-asciidoc: writing: /home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc/alarms_db.xml
-asciidoc: alarms_db.adoc: line 42: reading: /home/maiquel/develop/mtk/examples/prj_make/alarms_db/mtk/src/components/admin/msg_admin.msg
-asciidoc: alarms_db.adoc: line 51: reading: /home/maiquel/develop/mtk/examples/prj_make/alarms_db/src/main.cpp
-/usr/share/dblatex/lib/dbtexmf/dblatex/grubber/util.py:8: DeprecationWarning: the md5 module is deprecated; use hashlib instead
-  import md5
-Build the book set list...
-xsltproc -o /tmp/tmpcrxMWk/doclist.txt --xinclude --xincludestyle doclist.xsl /home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc/alarms_db.xml
-Build the listings...
-xsltproc -o /tmp/tmpcrxMWk/listings.xml --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc' /usr/share/dblatex/xsl/common/mklistings.xsl /home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc/alarms_db.xml
-xsltproc -o alarms_db.rtex --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc' --param listings.xml '/tmp/tmpcrxMWk/listings.xml' /tmp/tmpcrxMWk/custom.xsl /home/maiquel/develop/mtk/examples/prj_make/alarms_db/doc/alarms_db.xml
-XSLT stylesheets DocBook - LaTeX 2e (0.3-1)
-===================================================
-Build alarms_db.pdf
-built-in module pdftex registered
-no support found for ifxetex
-no support found for fontspec
-no support found for xltxtra
-no support found for fontenc
-no support found for inputenc
-no support found for fancybox
-built-in module makeidx registered
-no support found for asciidoc-dblatex
-building additional files...
-checking if compiling is necessary...
-the output file doesn't exist
-pdflatex -interaction=batchmode alarms_db.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmpcrxMWk/alarms_db.idx is empty
-alarms_db.aux MD5 checksum changed
-alarms_db.toc MD5 checksum changed
-the /tmp/tmpcrxMWk/alarms_db.aux file has changed
-pdflatex -interaction=batchmode alarms_db.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmpcrxMWk/alarms_db.idx is empty
-no new compilation is needed
-running last-compilation scripts...
-asciidoc: reading: /etc/asciidoc/asciidoc.conf
-asciidoc: reading: /etc/asciidoc/docbook.conf
-asciidoc: reading: /etc/asciidoc/filters/source/source-highlight-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/code/code-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/music/music-filter.conf
-asciidoc: reading: /etc/asciidoc/filters/graphviz/graphviz-filter.conf
-asciidoc: reading: /etc/asciidoc/lang-en.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/python_gen_temp/python_gen_temp-filter.conf
-asciidoc: reading: /home/maiquel/.asciidoc/filters/jle_temp_and_run/jle_temp_and_run-filter.conf
-asciidoc: reading: /home/maiquel/develop/mtk/examples/prj_make/product_loader/src/product_loader.adoc
-asciidoc: writing: /home/maiquel/develop/mtk/examples/prj_make/product_loader/doc/product_loader.xml
-asciidoc: product_loader.adoc: line 44: reading: /home/maiquel/develop/mtk/examples/prj_make/product_loader/mtk/src/components/prices/msg_prices.msg
-/usr/share/dblatex/lib/dbtexmf/dblatex/grubber/util.py:8: DeprecationWarning: the md5 module is deprecated; use hashlib instead
-  import md5
-Build the book set list...
-xsltproc -o /tmp/tmp0wbgKs/doclist.txt --xinclude --xincludestyle doclist.xsl /home/maiquel/develop/mtk/examples/prj_make/product_loader/doc/product_loader.xml
-Build the listings...
-xsltproc -o /tmp/tmp0wbgKs/listings.xml --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/product_loader/doc' /usr/share/dblatex/xsl/common/mklistings.xsl /home/maiquel/develop/mtk/examples/prj_make/product_loader/doc/product_loader.xml
-xsltproc -o product_loader.rtex --xinclude --xincludestyle --param current.dir '/home/maiquel/develop/mtk/examples/prj_make/product_loader/doc' --param listings.xml '/tmp/tmp0wbgKs/listings.xml' /tmp/tmp0wbgKs/custom.xsl /home/maiquel/develop/mtk/examples/prj_make/product_loader/doc/product_loader.xml
-XSLT stylesheets DocBook - LaTeX 2e (0.3-1)
-===================================================
-Build product_loader.pdf
-built-in module pdftex registered
-no support found for ifxetex
-no support found for fontspec
-no support found for xltxtra
-no support found for fontenc
-no support found for inputenc
-no support found for fancybox
-built-in module makeidx registered
-no support found for asciidoc-dblatex
-building additional files...
-checking if compiling is necessary...
-the output file doesn't exist
-pdflatex -interaction=batchmode product_loader.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmp0wbgKs/product_loader.idx is empty
-product_loader.toc MD5 checksum changed
-product_loader.aux MD5 checksum changed
-the /tmp/tmp0wbgKs/product_loader.toc file has changed
-pdflatex -interaction=batchmode product_loader.tex
-running post-compilation scripts...
-[index] the index file /tmp/tmp0wbgKs/product_loader.idx is empty
-no new compilation is needed
-running last-compilation scripts...
-(3219) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
-(3219) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
-(3219) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
-(3219) KSharedDataCache::Private::mapSharedMemory: 4349952 bytes available out of 10485760
-(3266) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
-(3266) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
-(3266) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
-(3266) KSharedDataCache::Private::mapSharedMemory: 4349952 bytes available out of 10485760
+(30550) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
+(30550) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
+(30550) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
+(30550) KSharedDataCache::Private::mapSharedMemory: 4337664 bytes available out of 10485760
+(30581) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
+(30581) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
+(30581) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
+(30581) KSharedDataCache::Private::mapSharedMemory: 4337664 bytes available out of 10485760
 QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
 QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
 Bus::open: Can not get ibus-daemon's address. 
 IBusInputContext::createInputContext: no connection to ibus-daemon 
-2011-07-07 13:36:33 warning Connection [45422 127.0.0.1:5672] closed
-(3316) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
-(3316) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
-(3316) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
-(3316) KSharedDataCache::Private::mapSharedMemory: 4349952 bytes available out of 10485760
+2011-07-26 12:36:14 warning Connection [48981 127.0.0.1:5672] closed
+(30631) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
+(30631) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
+(30631) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
+(30631) KSharedDataCache::Private::mapSharedMemory: 4345856 bytes available out of 10485760
 WARNING: Phonon needs QCoreApplication::applicationName to be set to export audio output names through the DBUS interface 
-Qt Application(3316): couldn't create slave: "Unable to create io-slave:
+Qt Application(30631): couldn't create slave: "Unable to create io-slave:
 klauncher said: Unknown protocol ''.
 " 
 QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
 QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
 Bus::open: Can not get ibus-daemon's address. 
 IBusInputContext::createInputContext: no connection to ibus-daemon 
-2011-07-07 13:36:44 warning Connection [45423 127.0.0.1:5672] closed
-(3437) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
-(3437) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
-(3437) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
-(3437) KSharedDataCache::Private::mapSharedMemory: 4349952 bytes available out of 10485760
+2011-07-26 12:36:27 warning Connection [48982 127.0.0.1:5672] closed
+(30759) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
+(30759) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
+(30759) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
+(30759) KSharedDataCache::Private::mapSharedMemory: 4345856 bytes available out of 10485760
 QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
 QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
 Bus::open: Can not get ibus-daemon's address. 
 IBusInputContext::createInputContext: no connection to ibus-daemon 
-2011-07-07 13:37:21 warning Connection [36424 127.0.0.1:5672] closed
-2011-07-07 13:37:22 warning Connection [36423 127.0.0.1:5672] closed
+2011-07-26 12:37:04 warning Connection [48984 127.0.0.1:5672] closed
+2011-07-26 12:37:05 warning Connection [48983 127.0.0.1:5672] closed
 
-real	8m3.913s
-user	4m6.920s
-sys	0m15.340s
+real	8m41.815s
+user	4m50.100s
+sys	0m17.440s

@@ -9,7 +9,9 @@ allall:  libs qtlibs tools clean doc check_files
 
 # time make testjustcompile  2> errors.txt
 #   time (make testrelease > full_test.txt) 2> errors.txt
-#   cat full_test.txt | grep -v '^__NR__:' | grep -v '^del._='  | grep -v ccccc  | grep  -v '^   sum..______'  |  grep  -v '^code:         '  |  grep  -v '^NODE NAME:    '| grep  -v '^[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9] ' | grep -v sess_id:  > test.txt; rm full_test.txt
+#   cat full_test.txt | grep -v '^__NR__:' | grep -v '^del._='  | grep -v ccccc  | grep  -v '^   sum..______'  |  grep  -v '^code:         '  |  grep  -v '^NODE NAME:    '| grep  -v '^[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9] ' | grep -v sess_id:  > test.txt; 
+#   check differences with previus version
+#   rm full_test.txt
 
 
 #  conviene pasar también el test con valgrind  
@@ -43,19 +45,14 @@ allall:  libs qtlibs tools clean doc check_files
 # actualizar modificaciones documento adoc
 # editar fichero VERSION
 
-# make allall  
+# make allall
 
-
-#  OLD-----------------------
-#               (ctrl-c p para generar doc en muse, 
-#               ctrl-c v para visualizar 
-#                      hay que copiar la estadística de la versión actual en el histórico)
-#  OLD-----------------------
 
 # al final se ejecuta checkfiles y tiene que volver sin error y escribir un 0 (provisionalmente está escribiendo un 1)
 # commit en git
 # etiquetar la nueva versión en git
-# sincronizar con svn
+# subir documentación al servidor
+#   dolphin doc/mtk.chunked/ fish:tfdev@192.168.7.2/home/tfdev/mtk.html/
 
 
 
@@ -209,5 +206,5 @@ doc:
 	echo '*' > doc/.gitignore
 	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/ src/doc.adoc/mtk.adoc
 	a2x --verbose -d book -r . --icons --icons-dir adoc.images/icons -f chunked -D doc/ src/doc.adoc/mtk.adoc
-
-	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/   examples/prj_make/emarket/doc/emarket.adoc
+	cd examples/prj_make; find . -name doc -type d  | xargs rm -rf; make doc; find . -name doc -type d  | wc -l
+	a2x --verbose -d book --icons --dblatex-opts "-T native -P doc.pdfcreator.show=0 -P doc.collab.show=0 -P latex.output.revhistory=0 -P doc.toc.show=1 -P table.title.top" -f pdf  -D doc/   examples/prj_make/emarket/src/emarket.adoc

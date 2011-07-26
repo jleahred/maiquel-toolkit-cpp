@@ -35,7 +35,7 @@ int main(void)
         mtk::acs_server::synchr::init();
      
      
-        MTK_CALL_LATER1S_F(mtk::dtSeconds(10), 0, stop);
+        MTK_CALL_LATER1S_F(mtk::dtSeconds(120), 0, stop);
         
         mtk::start_timer_wait_till_end();
         
