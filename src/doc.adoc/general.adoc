@@ -183,7 +183,7 @@ Creating a project::
 | src  | source code
 | etc  | config files
 | data | data files (when necessary)
-| mkt  | int to +mtk+ library folder
+| mtk  | link to +mtk+ library folder
 | bin  | generated executables
 | temp | temporary files
 | doc  | 

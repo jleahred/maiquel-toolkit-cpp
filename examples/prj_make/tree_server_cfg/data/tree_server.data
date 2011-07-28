@@ -3,13 +3,6 @@ ROOT
     #  permisions:~     means, that all can access to it
     #  if market: is not emtpy ('~'), it means that is a draggable product and this is the market code
     #
-    #   at this moment is supported     sub_product_code.sys_code   
-    #   and is not supported...         sub_product_code.aditional_code
-    #
-    #   sys_code will be filled with 
-    #           market      from  market field on node
-    #           product     from  node name
-    #           user_code   from  description field on node
     
     
     MG0

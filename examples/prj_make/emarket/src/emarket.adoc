@@ -2,6 +2,33 @@
 = emarket
 
 
+
+== Document info
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| lib version |  **
+include::../../../../VERSION[]
+**
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2010-12-01
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+<<<
+
+
 == DFD emarket
 
 .DFD

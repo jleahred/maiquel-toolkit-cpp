@@ -192,6 +192,19 @@ include::../../../src/components/acs/msg_acs.msg[]
 
 
 
+== Tree server (product list)
+
+* There is no reject message or code
+* If not configured or not granted, there will not be response
+* This behaivor lets to configure several +tree_servers+ for diferent users, having the posibility to show diferent trees to diferent users
++
+.components/gen/msg_tree_server.msg
+[source,{cpp}]
+----
+include::../../../src/components/gen/msg_tree_server.msg[]
+----
+
+
 
 
 == Trading

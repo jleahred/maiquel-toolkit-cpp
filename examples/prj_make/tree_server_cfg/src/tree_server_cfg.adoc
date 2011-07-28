@@ -35,7 +35,6 @@
 
 * This is a very simple and small process to serve the products tree reading them from a file
 * The products tree is fully flexible
-
 +
 .components/gen/msg_tree_server.msg
 [source,{cpp}]

@@ -3,7 +3,7 @@ test:
 	make -C umtktcp test
 	make -C emarket this
 	make -C houselight this
-	make -C tree_server this
+	make -C tree_server_cfg this
 	make -C acs this
 	make -C alarms_db this
 	make -C product_loader this
@@ -17,7 +17,7 @@ test:
 this:
 	make -C emarket this
 	make -C houselight this
-	make -C tree_server this
+	make -C tree_server_cfg this
 	make -C acs this
 	make -C alarms_db this
 	make -C product_loader this
@@ -30,7 +30,7 @@ this:
 clean:
 	make -C emarket clean
 	make -C houselight clean
-	make -C tree_server clean
+	make -C tree_server_cfg clean
 	make -C acs clean
 	make -C alarms_db clean
 	make -C product_loader clean
@@ -45,7 +45,7 @@ clean:
 doc:
 	make -C emarket doc
 	make -C houselight doc
-	make -C tree_server doc
+	make -C tree_server_cfg doc
 	make -C acs doc
 	make -C alarms_db doc
 	make -C product_loader doc

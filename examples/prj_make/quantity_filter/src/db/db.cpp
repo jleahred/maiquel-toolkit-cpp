@@ -947,7 +947,7 @@ namespace db {
 
 
 
-    std::string  look_mising_in_second_set(const std::set<std::string>& first, const std::set<std::string>& second)
+    std::string  look_mising_in_second_set(const mtk::set<std::string>& first, const mtk::set<std::string>& second)
     {
         std::string  result;
         for(auto it=first.begin(); it!=first.end(); ++it)
@@ -968,13 +968,13 @@ namespace db {
         mtk::map<std::string  /*user_name*/, msg::sub_user_info>      map_user_info   =   *ref_map_user_info();
         
         
-        std::set<std::string>       markets_set;
-        std::set<std::string>       markets_in_products_set;
-        std::set<std::string>       product_names_set;
-        std::set<std::string>       product_names_in_clients_set;
-        std::set<std::string>       product_names_in_users_set;
-        std::set<std::string>       clients_set;
-        std::set<std::string>       clients_in_users_set;
+        mtk::set<std::string>       markets_set;
+        mtk::set<std::string>       markets_in_products_set;
+        mtk::set<std::string>       product_names_set;
+        mtk::set<std::string>       product_names_in_clients_set;
+        mtk::set<std::string>       product_names_in_users_set;
+        mtk::set<std::string>       clients_set;
+        mtk::set<std::string>       clients_in_users_set;
         
         
         for(auto it=list_markets.begin(); it!=list_markets.end(); ++it)         

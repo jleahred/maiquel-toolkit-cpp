@@ -1,5 +1,6 @@
 #include "trd_cli_historic.h"
 
+#include "support/exec_max_frec.h"
 
 
 namespace  mtk {
@@ -40,6 +41,10 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
                 result_errors += MTK_SS("confirmation on reject transaction. ");
             
         new_item.confirmation_delay = prev_item.date_time - new_item.date_time;
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
+            if(new_item.confirmation_delay > mtk::dtMilliseconds(800))
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "historic_msf30s", "delay on response bigger than 800ms", mtk::alPriorError, mtk::alTypeRealTime));
+        MTK_END_EXEC_MAX_FREC
         
         if(prev_item.type == tt_rq_pending)
         {
