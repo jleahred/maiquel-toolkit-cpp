@@ -137,6 +137,9 @@ The subject identify a message that can be sent or received directly
 | res_...   |    responses (from request responses)
 | conf_...  |    confirmations (as order confirmations)
 | pub_...   |    publications (as prices, keepalives, etc...)
+| |
+| oms_ ...  |    oms prefix means internal Order Management System message (not client)
+| ps_ ...   |    ps prefix means internal price system message (not client)
 |=====================
 
 

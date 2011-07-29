@@ -6,6 +6,7 @@
 #include "components/request_response.hpp"
 #include "components/gen/msg_tree_server.h"
 #include "support/configfile.h"
+#include "components/prices/msg_prices.h"
 
 
 
@@ -26,6 +27,8 @@ namespace
 
 
 void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request);
+void on_request_prodinf_received(const mtk::prices::msg::req_prod_info&  pi_request);
+
 mtk::CountPtr< mtk::qpid_session > cli_session;
 
 mtk::CountPtr<mtk::ConfigFile>   data_file;
@@ -46,7 +49,7 @@ int main(int argc, char ** argv)
         std::string dataf = mtk::admin::get_config_property("MISC.data").Get();
         data_file = mtk::make_cptr(new mtk::ConfigFile(dataf));
     
-        //  suscription to request
+        //  suscription to request tree item
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::gen::msg::req_tree_items> >    hqpid_tree_request;
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_tree_request,
@@ -55,6 +58,16 @@ int main(int argc, char ** argv)
                                 mtk::gen::msg::req_tree_items::get_in_subject("*"),     //  from anyone
                                 mtk::gen::msg::req_tree_items,
                                 on_request_tree_received)
+
+        //  suscription to request product information
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::req_prod_info> >    hqpid_prodinf_request;
+        MTK_QPID_RECEIVER_CONNECT_F(
+                                hqpid_prodinf_request,
+                                mtk::admin::get_url("server"),
+                                "SRVTESTING",
+                                mtk::prices::msg::req_prod_info::get_in_subject("*"),     //  from anyone
+                                mtk::prices::msg::req_prod_info,
+                                on_request_prodinf_received)
         
     
         mtk::start_timer_wait_till_end();
@@ -74,6 +87,14 @@ int main(int argc, char ** argv)
 
 }
  
+
+void on_request_prodinf_received(const mtk::prices::msg::req_prod_info&  pi_request)
+{
+    static mtk::CountPtr<mtk::qpid_session>  qpid_server_session = mtk::admin::get_qpid_session("server", "SRVTESTING");
+    mtk::prices::msg::ps_req_prod_info  granted_msg (pi_request, "pigrant");
+    mtk::send_message(qpid_server_session, granted_msg);
+}
+
 
 void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)
 {

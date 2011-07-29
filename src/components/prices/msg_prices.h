@@ -275,6 +275,46 @@ private:
 
 
 
+
+//-------------------------------
+//      ps_req_prod_info
+//-------------------------------    
+class ps_req_prod_info        :  public  req_prod_info
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit ps_req_prod_info (  const req_prod_info&  parent,   const std::string&  _from );
+    explicit ps_req_prod_info ( const qpid::messaging::Message& message );
+    virtual ~ps_req_prod_info (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_req_prod_info"; };
+    static  std::string static_get_message_type_as_string(void)        { return "ps_req_prod_info"; };
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
+
+    // fields
+    std::string                               from; 
+
+
+
+    //  subject info
+    static std::string  get_in_subject (const std::string& from);
+virtual std::string  get_out_subject (void) const;
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
     
     
     
@@ -325,6 +365,13 @@ bool operator!= (const res_product_info& a, const res_product_info& b);
 bool operator== (const res_product_info::IC_response& a, const res_product_info::IC_response& b);
 bool operator!= (const res_product_info::IC_response& a, const res_product_info::IC_response& b);
 
+    std::ostream& operator<< (std::ostream& o, const ps_req_prod_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const ps_req_prod_info & c);
+   void           operator >> (const YAML::Node& n,       ps_req_prod_info & c);
+
+bool operator== (const ps_req_prod_info& a, const ps_req_prod_info& b);
+bool operator!= (const ps_req_prod_info& a, const ps_req_prod_info& b);
+
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_level>& a, const std::string& field);
@@ -349,6 +396,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_product_
 void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info::IC_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_product_info::IC_response>& a, const std::string& field);
 void copy (res_product_info::IC_response& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const ps_req_prod_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_req_prod_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_req_prod_info>& a, const std::string& field);
+void copy (ps_req_prod_info& a, const qpid::types::Variant& map);
 
     sub_price_level  __internal_get_default(sub_price_level *);
     
@@ -361,6 +412,8 @@ void copy (res_product_info::IC_response& a, const qpid::types::Variant& map);
     res_product_info  __internal_get_default(res_product_info *);
     
     res_product_info::IC_response  __internal_get_default(res_product_info::IC_response *);
+    
+    ps_req_prod_info  __internal_get_default(ps_req_prod_info *);
     
 
 };   //namespace mtk {
@@ -379,6 +432,7 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_best_prices)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::req_prod_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::res_product_info)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_req_prod_info)
 
 
 

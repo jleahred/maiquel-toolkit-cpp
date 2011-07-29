@@ -74,7 +74,7 @@ namespace
 
 
     //  requests
-    void on_request_load_prices(const mtk::prices::msg::req_prod_info& req)
+    void on_request_load_prices(const mtk::prices::msg::ps_req_prod_info& req)
     {
         if(lock_request_status)
         {
@@ -196,13 +196,13 @@ int main(int argc, char ** argv)
                                 mtk::prices::msg::pub_best_prices,
                                 on_price_update)
 
-        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::req_prod_info> >  hqpid_request_product_info;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ps_req_prod_info> >  hqpid_ps_request_product_info;
         MTK_QPID_RECEIVER_CONNECT_F(
-                                hqpid_request_product_info,
-                                mtk::admin::get_url("client"),
-                                "CLITESTING",
-                                mtk::prices::msg::req_prod_info::get_in_subject("*"),
-                                mtk::prices::msg::req_prod_info,
+                                hqpid_ps_request_product_info,
+                                mtk::admin::get_url("server"),
+                                "SRVTESTING",
+                                mtk::prices::msg::ps_req_prod_info::get_in_subject("pigrant"),
+                                mtk::prices::msg::ps_req_prod_info,
                                 on_request_load_prices)
 
 

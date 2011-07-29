@@ -63,3 +63,11 @@ res_product_info   [< V:0 , SUBJ:RS.${response_info.request_info.process_info.lo
         best_prices     (bp)    :   pub_best_prices
     }
 }
+
+
+ps_req_prod_info [< V:0, I:req_prod_info, SUBJ:RQ.PRC.PI.${from} >]
+{
+    from                 (from) :  string   //  id from process who send the message, or   pigrant   on last step, when request is granted
+}
+
+
