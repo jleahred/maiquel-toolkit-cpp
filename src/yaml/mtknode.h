@@ -63,16 +63,22 @@ namespace YAML
 	inline void operator >> (const Node& node, mtk::map<K, V>& m)
 	{
 		m.clear();
-		for(Iterator it=node.begin();it!=node.end();++it) {
-            K k = __internal_get_default((K*)0);
+		for(unsigned i=0;i<node.size();++i)
+        {
             V v = __internal_get_default((V*)0);
-			//K k;
-			//V v;
-			it.first() >> k;
-			it.second() >> v;
-			//m[k] = v;
-            m.insert(std::make_pair(k,v));
-		}
+            node[i] >> v;
+            m.insert(std::make_pair(v.get_key(), v));
+        }
+//		for(Iterator it=node.begin();it!=node.end();++it) {
+//            K k = __internal_get_default((K*)0);
+//            V v = __internal_get_default((V*)0);
+//			//K k;
+//			//V v;
+//			it.first() >> k;
+//			it.second() >> v;
+//			//m[k] = v;
+//            m.insert(std::make_pair(k,v));
+//		}
 	}
     
     template <typename T>

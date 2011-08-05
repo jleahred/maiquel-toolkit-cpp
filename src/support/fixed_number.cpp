@@ -521,14 +521,14 @@ std::ostream& operator<< (std::ostream& os, const fnExt& fnExt)
 
 YAML::Emitter& operator<< (YAML::Emitter& os, const FixedNumber& fn)
 {
-    return os << YAML::BeginSeq << YAML::Flow
+    return os << YAML::Flow << YAML::BeginSeq
         << fn.GetDouble() << fn.GetExt()
         << YAML::EndSeq;
 }
 
 YAML::Emitter& operator<< (YAML::Emitter& os, const fnExt& fnExt)
 {
-    return os << YAML::BeginSeq << YAML::Flow
+    return os << YAML::Flow << YAML::BeginSeq
         << fnExt.GetDec() << fnExt.GetInc()
         << YAML::EndSeq;
 }

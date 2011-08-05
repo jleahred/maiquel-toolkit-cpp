@@ -155,6 +155,7 @@ field_type  ::= 'int32'          ##transf2->int32_t
 field_type  ::= 'int64'          ##transf2->int64_t
 field_type  ::= 'double'         ##transf2->mtk::Double
 field_type  ::= 'fix_num'        ##transf2->mtk::FixedNumber
+field_type  ::= 'fn_ext'         ##transf2->mtk::fnExt
 field_type  ::= 'date_time'      ##transf2->mtk::DateTime
 field_type  ::= 'time_quantity'  ##transf2->mtk::dtTimeQuantity
 
@@ -173,6 +174,7 @@ OPT_IDS  ::=  option
 option ::=  'mandatory'   ##transf2->'mandatory'
 option ::=  'recomended'  ##transf2->'recomended'
 option ::=  'optional'    ##transf2->'optional'
+option ::=  'key'         ##transf2->'key'
 
 
 

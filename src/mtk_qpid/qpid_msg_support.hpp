@@ -31,6 +31,13 @@
     m_fn;  \
     });
 
+#define QPID_DESCOMPOSE_FN_EXT(__fnex__)  \
+    ({  \
+    qpid::types::Variant::Map m_fn;  \
+    m_fn["d"] = int8_t(__fnex__.GetDec());  \
+    m_fn["i"] = int8_t(__fnex__.GetInc());  \
+    m_fn;  \
+    });
 
 
 

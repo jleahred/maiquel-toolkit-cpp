@@ -31,6 +31,8 @@
 |====================================================================
 | Date | Desciption
 
+| 2011-08-05 | Added  +key+  support
+
 | 2011-06-03 | Create less operator on messages with +LessOP+
 
 | 2011-04-18 | NEW  #send section
@@ -110,7 +112,50 @@ include::examples/ex1/test_messages.h[]
 ----
 
 
-== Example 2
+
+== Example 2, using keys
+
+* Definition of messages and fields..
++
+.examples/ex2/test_msg_key.msg
+----
+include::examples/ex2/test_msg_key.msg[]
+----
++
+* Using the generated code in our program
++
+.examples/ex2/main.cpp
+[source,{cpp}]
+----
+include::examples/ex2/main.cpp[]
+----
++
+* This is the generated code...
++
+.examples/ex2/test_msg_key.h
+[source,{cpp}]
+----
+include::examples/ex2/test_msg_key.h[]
+----
++
+* Generated file saving directly from +map+ (it is saved as list)
++
+.examples/ex2/test_db__map.yaml
+[source,{yaml}]
+----
+include::examples/ex2/test_db__map.yaml[]
+----
++
+* This is the file saved as list
++
+.examples/ex2/test_db__list.yaml
+[source,{yaml}]
+----
+include::examples/ex2/test_db__list.yaml[]
+----
+
+
+== Example 3
 
 * Creating a less than +<+ operator for a set of fields with +LessOP+
 +

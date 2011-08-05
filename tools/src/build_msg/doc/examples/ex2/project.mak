@@ -31,4 +31,3 @@ _def:  default
 .PHONY : build_msg
 build_msg:
 	find . -name '*.msg' | xargs python tools/build_msg.py
-    #./tools/build_msg.py test_messages.msg

@@ -28,6 +28,8 @@ namespace mtk {
 
 
 
+
+
     ///////////////////////////////
     //  div0 control
 #if (MTK_PLATFORM == MTK_WIN_PLATFORM)
@@ -149,6 +151,7 @@ namespace mtk {
     void InitHandleSignalFPE_intdiv0 (void);
     extern jmp_buf envJmpDiv0;
     extern bool    initJumpDiv0;
+
 
 
 

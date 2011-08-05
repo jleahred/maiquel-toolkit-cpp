@@ -1,0 +1,12 @@
+- name: et
+  address: mi casa
+  telephone: telefono
+  email: not invented
+- name: fulano
+  address: su casa
+  telephone: unkown
+  email: fulano@gmail.com
+- name: mengano
+  address: mengano's house
+  telephone: unkown
+  email: mengano@gmail

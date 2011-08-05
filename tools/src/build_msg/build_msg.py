@@ -128,6 +128,9 @@ $INNER_CLASSES
     virtual ~${CLASS_NAME} (){};
     virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
     static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
+
+    
+    
     $CODE_AS_QPID_MESSAGE
     
 
@@ -155,6 +158,13 @@ private:
 
     #   member definitions
     for field in class_info:
+        if field.has_key('OPTIONS') > 0  :
+            if field['OPTIONS'].count('key') > 0  :
+                CLASS_FIELDS += '    //   KEY INFO\n'
+                CLASS_FIELDS += '    {0:<40}  {1}\n'.format(field['field_type'], 'get_key(void) const  {   return  ' +  field['FIELD_NAME']  +  ';  }')
+                CLASS_FIELDS += '    {0:<40}  {1}\n'.format('typedef ' , field['field_type']+'   key_type;')
+                CLASS_FIELDS += '    //   KEY INFO\n\n'
+
         if field.has_key('field_type'):
             if field['OPTIONS'].count('optional') > 0   or  field['OPTIONS'].count('recomended') > 0:
                 CLASS_FIELDS += '    {0:<40}  {1}; \n'.format( 'mtk::nullable<' + field['field_type']+'>', field['FIELD_NAME'])
@@ -1296,6 +1306,10 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
     {
         return mtk::FixedNumber(mtk::fnDouble(0), mtk::fnDec(0), mtk::fnInc(1));
     }
+    inline mtk::fnExt  __internal_get_default(mtk::fnExt*)
+    {
+        return mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1));
+    }
     
     inline mtk::DateTime __internal_get_default(mtk::DateTime*)
     {
@@ -1369,6 +1383,13 @@ inline void  copy(mtk::FixedNumber& result, const qpid::types::Variant& v)
 {
     result = ({   std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> ifn = /*it->second*/v.asMap();
                     mtk::FixedNumber(mtk::fnIntCode(ifn["n"].asInt32()), mtk::fnDec(ifn["d"].asInt8()), mtk::fnInc(ifn["i"].asInt8()));
+            });
+}
+
+inline void  copy(mtk::fnExt& result, const qpid::types::Variant& v)
+{
+    result = ({   std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> ifn = /*it->second*/v.asMap();
+                    mtk::fnExt(mtk::fnDec(ifn["d"].asInt8()), mtk::fnInc(ifn["i"].asInt8()));
             });
 }
 
@@ -1454,6 +1475,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::FixedNumber& a, const std::string& key)
     {
         map[key] = QPID_DESCOMPOSE_FIXED_NUMBER(a);
+    }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::fnExt& a, const std::string& key)
+    {
+        map[key] = QPID_DESCOMPOSE_FN_EXT(a);
     }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::Double& a, const std::string& key)

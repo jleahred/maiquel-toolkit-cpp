@@ -50,10 +50,14 @@ namespace YAML
 	template <typename K, typename V>
 	inline Emitter& operator << (Emitter& emitter, const mtk::map <K, V>& m) {
 		typedef typename mtk::map <K, V> map;
-		emitter << BeginMap;
+        emitter << BeginSeq;
 		for(typename map::const_iterator it=m.begin();it!=m.end();++it)
-			emitter << Key << it->first << Value << it->second;
-		emitter << EndMap;
+			emitter << it->second;
+		emitter << EndSeq;
+//		emitter << BeginMap;
+//		for(typename map::const_iterator it=m.begin();it!=m.end();++it)
+//			emitter << Key << it->first << Value << it->second;
+//		emitter << EndMap;
 		return emitter;
 	}
     

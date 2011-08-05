@@ -44,6 +44,9 @@ public:
     virtual ~LimitPosition (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPosition"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPosition"; };
+
+    
+    
     
     
 
@@ -93,6 +96,9 @@ public:
         virtual ~IC_control_fields_ (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_control_fields_"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_control_fields_"; };
+    
+        
+        
         
         
     
@@ -132,6 +138,9 @@ public:
         virtual ~IC_product_code (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_product_code"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_product_code"; };
+    
+        
+        
         
         
     
@@ -163,6 +172,9 @@ public:
     virtual ~RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -210,6 +222,9 @@ public:
     virtual ~LimitPositionChild (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPositionChild"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPositionChild"; };
+
+    
+    
     
     
 
