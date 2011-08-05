@@ -83,8 +83,15 @@ private:
     QTableDeph   *table_widget;
     QLabel       *title;
 
+    QString       style_sheet_normal;
+    QString       style_sheet_null;
+    QString       style_sheet_focus;
+
     mtk::CountPtr<mtk::prices::price_manager>       price_manager;
-    void on_message(const mtk::prices::msg::pub_best_prices& msg);
+    void on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg);
+    void update_prices(const mtk::prices::msg::sub_best_prices&   best_prices);
+    void update_prices(const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices);
+    void upate_null_prices(void);
 
     QPoint startPos;
 

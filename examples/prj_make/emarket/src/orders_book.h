@@ -6,6 +6,7 @@
 #include "ord_ls.h"
 
 class internal_orders_book;
+namespace  emarket {  class  sub_product_config;  };
 
 
 
@@ -16,11 +17,11 @@ public:
 	orders_book();
 	~orders_book();
 
-
     //  in  check_request->book_orders
     void oms_RQ_NW_LS(const mtk::trd::msg::oms_RQ_NW_LS& rq);
     void oms_RQ_MD_LS(const mtk::trd::msg::oms_RQ_MD_LS& rq);
     void oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq);
+    void add_product (const emarket::sub_product_config&  product_config);
 
 
 private:

@@ -50,23 +50,24 @@ digraph dfd0_graph {
  CLIENT_out -> emarket [label = "rq_md" ];
  CLIENT_out -> emarket [label = "rq_cc" ];
 
- CLIENT_out -> emarket [label = "rq_prod_list" color=red];
- CLIENT_out -> emarket [label = "rq_init_prices_best" color=red];
- CLIENT_out -> emarket [label = "rq_init_prices_queue" color=red];
+ CLIENT_out -> emarket [label = "ps_req_init_prod_info_tp"];
 
 
-emarket -> CLIENT_in   [label = "cf_xx" color=red];
+emarket -> CLIENT_in   [label = "cf_xx"];
 
-emarket -> CLIENT_in   [label = "rj_xx" color=red];
+emarket -> CLIENT_in   [label = "rj_xx"];
 
 
-emarket -> CLIENT_in   [label = "cf_ex" color=red];
+emarket -> CLIENT_in   [label = "cf_ex"];
 
-emarket -> CLIENT_in   [label = "prices" color=red];
-emarket -> CLIENT_in   [label = "cf_prod_list" color=red];
-emarket -> CLIENT_in   [label = "cf_init_prices_best" color=red];
-emarket -> CLIENT_in   [label = "cf_init_prices_queue" color=red];
+emarket -> CLIENT_in   [label = "prices"];
+emarket -> CLIENT_in   [label = "ps_conf_full_product_info_init_fp"];
+emarket -> CLIENT_in   [label = "ps_conf_full_product_info_fp"];
+emarket -> CLIENT_in   [label = "ps_pub_prod_info_mtk_ready_fp"];
+emarket -> CLIENT_in   [label = "pub_prod_stopped" color=red];
+emarket -> CLIENT_in   [label = "pub_market_stopped" color=red];
 
+emarket -> CLIENT_in   [label = "pub_new_products"];
 
 }
 -----
@@ -80,31 +81,38 @@ digraph dfd0_graph {
 node [shape=box width=1.7] CLIENT config;
 node [shape=circle, width=1.5] book_ord check_rq;
 
+
+config -> check_rq [label=products_cfg]
+
 CLIENT -> check_rq [label=rq_xx];
-CLIENT -> check_rq [label=rq_init_prices_xxx color=red];
+CLIENT -> book_ord [label=req_init_prod_info];
 
 check_rq -> book_ord [label=oms_rq_xx];
-check_rq -> CLIENT [label=rj_xx color=red];
-check_rq -> book_ord [label=rq_init_prices_xxx color=red];
+check_rq -> book_ord [label=add_product];
+check_rq -> CLIENT [label="ps_pub_prod_info_mtk_ready_fp"]
+
 
 order -> book_ord [label=add_order]
 order -> book_ord [label=del_order]
 order -> book_ord [label=modif_order]
 order -> book_ord [label=check_execs]
-order -> book_ord [label=price_update color=red]
+order -> book_ord [label=price_update]
 
 book_ord -> order [label=cf_ex]
 book_ord -> order [label=oms_rq_xx]
 
-book_ord -> CLIENT [label=prices_xxx color=red]
+book_ord -> CLIENT [label=prices_xxx]
 
-book_ord -> CLIENT [label=init_prices_xxx color=red]
+book_ord -> CLIENT [label="ps_conf_full_product_info_init_fp\nps_conf_full_product_info_fp"]
+
+book_ord -> CLIENT   [label = "pub_new_products"];
+
+
 
 order -> CLIENT [label=cf_xx]
 order -> CLIENT [label=rj_xx]
 order -> CLIENT [label=cf_ex]
 
-config -> check_rq [label=products color=red]
 
 }
 -----

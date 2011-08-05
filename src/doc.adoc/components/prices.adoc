@@ -7,7 +7,7 @@
 ==== prices_manager
 * It will manage all publishing information related to a product (prices, status, etc...)
 * It will request for load
-* It will mantein the last received value
+* It will mantain the last received value
 * It will signal updates
 +
 [source,{cpp}]
@@ -15,4 +15,4 @@
 include::../../components/prices/cli/price_manager.h[]
 ----
 +
-* It works with factory
+* It works internally with factory, you just have to create an instance of this class

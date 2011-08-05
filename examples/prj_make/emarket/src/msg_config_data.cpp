@@ -7,10 +7,9 @@
 #include "support/fixed_number.h"
 #include "support/date_time.h"
 
-#include "msg_control_fields.h"
+#include "msg_config_data.h"
 
-namespace mtk { 
-namespace msg { 
+namespace emarket { 
 
 
 
@@ -396,8 +395,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_control_fields::sub_control_fields (   const std::string&  _message_type,   const std::string&  _control_fluct_key,   const mtk::DateTime&  _sent_date_time)
-    :     message_type(_message_type),   control_fluct_key(_control_fluct_key),   sent_date_time(_sent_date_time) 
+sub_product_config::sub_product_config (   const std::string&  _product_name,   const std::string&  _product_user_name,   const std::string&  _group,   const std::string&  _group_user_name,   const mtk::fnExt&  _price_fnext)
+    :     product_name(_product_name),   product_user_name(_product_user_name),   group(_group),   group_user_name(_group_user_name),   price_fnext(_price_fnext) 
        
     {  
         std::string cr = check_recomended ();  
@@ -408,60 +407,62 @@ sub_control_fields::sub_control_fields (   const std::string&  _message_type,   
 
 
 
-std::string sub_control_fields::check_recomended(void) const
+std::string sub_product_config::check_recomended(void) const
 {
     std::string result;
 
     return result;
 }
 
-void sub_control_fields::before_send(void) const
+void sub_product_config::before_send(void) const
 {
 
 }
 
 
 
-std::ostream& operator<< (std::ostream& o, const sub_control_fields & c)
+std::ostream& operator<< (std::ostream& o, const sub_product_config & c)
 {
     o << "{ "
 
-        << "message_type:"<<   c.message_type << "  "        << "control_fluct_key:"<<   c.control_fluct_key << "  "        << "sent_date_time:"<<   c.sent_date_time << "  "
+        << "product_name:"<<   c.product_name << "  "        << "product_user_name:"<<   c.product_user_name << "  "        << "group:"<<   c.group << "  "        << "group_user_name:"<<   c.group_user_name << "  "        << "price_fnext:"<<   c.price_fnext << "  "
         << " }";
     return o;
 };
 
 
 
-YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fields & c)
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_product_config & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "message_type"  << YAML::Value <<   c.message_type        << YAML::Key << "control_fluct_key"  << YAML::Value <<   c.control_fluct_key        << YAML::Key << "sent_date_time"  << YAML::Value <<   c.sent_date_time
+        << YAML::Key << "product_name"  << YAML::Value <<   c.product_name        << YAML::Key << "product_user_name"  << YAML::Value <<   c.product_user_name        << YAML::Key << "group"  << YAML::Value <<   c.group        << YAML::Key << "group_user_name"  << YAML::Value <<   c.group_user_name        << YAML::Key << "price_fnext"  << YAML::Value <<   c.price_fnext
         << YAML::EndMap;
     return o;
 };
 
 
 
-void  operator >> (const YAML::Node& node, sub_control_fields & c)
+void  operator >> (const YAML::Node& node, sub_product_config & c)
 {
 
 
-        node["message_type"]  >> c.message_type;
-        node["control_fluct_key"]  >> c.control_fluct_key;
-        node["sent_date_time"]  >> c.sent_date_time;
+        node["product_name"]  >> c.product_name;
+        node["product_user_name"]  >> c.product_user_name;
+        node["group"]  >> c.group;
+        node["group_user_name"]  >> c.group_user_name;
+        node["price_fnext"]  >> c.price_fnext;
 
 
 };
 
 
-bool operator== (const sub_control_fields& a, const sub_control_fields& b)
+bool operator== (const sub_product_config& a, const sub_product_config& b)
 {
-    return (          a.message_type ==  b.message_type  &&          a.control_fluct_key ==  b.control_fluct_key  &&          a.sent_date_time ==  b.sent_date_time  &&   true  );
+    return (          a.product_name ==  b.product_name  &&          a.product_user_name ==  b.product_user_name  &&          a.group ==  b.group  &&          a.group_user_name ==  b.group_user_name  &&          a.price_fnext ==  b.price_fnext  &&   true  );
 };
 
-bool operator!= (const sub_control_fields& a, const sub_control_fields& b)
+bool operator!= (const sub_product_config& a, const sub_product_config& b)
 {
     return !(a==b);
 };
@@ -469,58 +470,78 @@ bool operator!= (const sub_control_fields& a, const sub_control_fields& b)
 
 
 
-//void  __internal_qpid_fill (sub_control_fields& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_control_fields& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (sub_product_config& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_product_config& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("mt");
+                    it = mv.find("pn");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field message_type on message sub_control_fields::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_name on message sub_product_config::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.message_type, it->second);
-                        //c.message_type = it->second;
+                        copy(c.product_name, it->second);
+                        //c.product_name = it->second;
 //   field_type
 
-                    it = mv.find("cfk");
+                    it = mv.find("pun");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field control_fluct_key on message sub_control_fields::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_user_name on message sub_product_config::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.control_fluct_key, it->second);
-                        //c.control_fluct_key = it->second;
+                        copy(c.product_user_name, it->second);
+                        //c.product_user_name = it->second;
 //   field_type
 
-                    it = mv.find("sdt");
+                    it = mv.find("grp");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sent_date_time on message sub_control_fields::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field group on message sub_product_config::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.sent_date_time, it->second);
-                        //c.sent_date_time = it->second;
+                        copy(c.group, it->second);
+                        //c.group = it->second;
+//   field_type
+
+                    it = mv.find("gun");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field group_user_name on message sub_product_config::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.group_user_name, it->second);
+                        //c.group_user_name = it->second;
+//   field_type
+
+                    it = mv.find("pfe");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field price_fnext on message sub_product_config::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.price_fnext, it->second);
+                        //c.price_fnext = it->second;
 
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fields& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_config& a)
 {
 
     a.before_send();
 
 
 //  field_type
-        __internal_add2map(map, a.message_type, std::string("mt"));
+        __internal_add2map(map, a.product_name, std::string("pn"));
 //  field_type
-        __internal_add2map(map, a.control_fluct_key, std::string("cfk"));
+        __internal_add2map(map, a.product_user_name, std::string("pun"));
 //  field_type
-        __internal_add2map(map, a.sent_date_time, std::string("sdt"));
+        __internal_add2map(map, a.group, std::string("grp"));
+//  field_type
+        __internal_add2map(map, a.group_user_name, std::string("gun"));
+//  field_type
+        __internal_add2map(map, a.price_fnext, std::string("pfe"));
 
 
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_control_fields>& a, const std::string& field)
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_config>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -530,26 +551,34 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
-    sub_control_fields  __internal_get_default(sub_control_fields*)
+    sub_product_config  __internal_get_default(sub_product_config*)
     {
-        return sub_control_fields(
+        return sub_product_config(
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((mtk::DateTime*)0)
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((mtk::fnExt*)0)
             );
     }
     
 
-sub_control_fields::sub_control_fields (const qpid::messaging::Message& msg)
+sub_product_config::sub_product_config (const qpid::messaging::Message& msg)
     :  //   field_type
-   message_type(__internal_get_default((std::string*)0)),
+   product_name(__internal_get_default((std::string*)0)),
 //   field_type
-   control_fluct_key(__internal_get_default((std::string*)0)),
+   product_user_name(__internal_get_default((std::string*)0)),
 //   field_type
-   sent_date_time(__internal_get_default((mtk::DateTime*)0)) 
+   group(__internal_get_default((std::string*)0)),
+//   field_type
+   group_user_name(__internal_get_default((std::string*)0)),
+//   field_type
+   price_fnext(__internal_get_default((mtk::fnExt*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -563,7 +592,6 @@ sub_control_fields::sub_control_fields (const qpid::messaging::Message& msg)
 
 
 
-};   //namespace mtk {
-};   //namespace msg {
+};   //namespace emarket {
 
 

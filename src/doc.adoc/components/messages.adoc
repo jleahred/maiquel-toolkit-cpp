@@ -348,12 +348,231 @@ include::../../../src/components/trading/msg_trd_oms_rq.msg[]
 -----
 
 
-== Prices
 
-.Online prices messages
+//:leveloffset: 1
+//include::../../../src/doc.adoc/components/prices_system.adoc[]
+//:leveloffset: 0
+
+== Prices System
+
+
+This is a general idea of organization of prices and products publishing
+
+
+
+=== General diagram
+
+.DFD
+["graphviz", "tree_items_dfd0.png"]
+-----------
+digraph dfd0_graph {
+ rankdir=LR;
+ nodesep=0.3
+ ranksep = 1.5
+ // Nodos
+ node [fontsize=16];
+ CLIENT [label="\n\nC\n\nL\n\nI\n\nE\n\nN\n\nT\n\n" shape=box height=4];
+ price_system [label=" price_system " shape=circle height=3]
+ MARKET [label="\n\nM\n\nA\n\nR\n\nK\n\nE\n\nT\n\n" shape=box height=4];
+ // Conectores
+ edge [fontsize=12];
+
+ CLIENT -> price_system [label = "req_tree_items" ];
+ price_system -> CLIENT [label = "res_tree_items" ];
+ price_system -> CLIENT [label = "pub_tree_colapse_branch" ];
+
+
+ CLIENT -> price_system [label = "req_prod_info" ];
+ price_system -> CLIENT  [label = "res_prod_info" ];
+ price_system -> CLIENT  [label = "pub_(marg,depth,trades...)" ];
+ price_system -> CLIENT  [label = "pub_product_stopped" ];
+ price_system -> CLIENT  [label = "pub_market_stopped" ];
+ price_system -> CLIENT  [label = "pub_new_products" ];
+
+
+ price_system -> MARKET  [label = "ps_req_init_prod_info_fp" ];
+ MARKET  ->  price_system   [label = "ps_pub_prod_info_mtk_ready_fp" ];
+ MARKET  ->  price_system   [label = "ps_conf_full_product_info_init_fp" ];
+ MARKET  ->  price_system   [label = "ps_conf_full_product_info_fp" ];
+ MARKET  ->  price_system   [label = "(cli) pub_(marg,depth,trades...)" ];
+ MARKET  ->  price_system   [label = "(cli) pub_product_stopped" ];
+ MARKET  ->  price_system   [label = "(cli) pub_market_stopped" ];
+
+}
+-----
+
+
+=== Tree Servers
+
+* +tree_servers+ will receive the +rq_tree_items+ and they will send response to client
+* +tree_servers+ will check permisions for +rq_tree_items+ and +rq_prod_info+
+* If the request is not configurated on +tree_server+ or the user has no permision, the tree server will not reject the message
+* This behavior gives the oportunity to a diferent +tree_server+ instance, to check and send response (if so). In this case, +tree_servers+ will work in parallalel
+* A +tree_server+ could verify the request, and if it's ok, it could send this request to another +tree_server+ with the information to send the response. Working in pipeline
+* The easiest case is when tree_server on level 1 send response directly
+* When a +tree_server+ detects new products on tree, it will send a colapse brach (where new products were inserted)
++
+.DFD  rq_tree_items  res_tree_items  option A
+["graphviz", "tree_items_dfdA.png"]
+-----------
+digraph dfd0_graph {
+
+node [shape=box width=1.7] CLIENT;
+node [shape=circle, width=1.5] tree_server1;
+
+CLIENT ->  tree_server1  [label = rq_tree_items ]
+tree_server1  ->  CLIENT   [label = res_tree_items ]
+
+}
+-----
+
+* This diagram shows +tree_servers+ working in pipe line
++
+.DFD  rq_tree_items  res_tree_items  option B
+["graphviz", "tree_items_dfdB.png"]
+-----------
+digraph dfd0_graph {
+
+node [shape=box width=1.7] CLIENT;
+node [shape=circle, width=1.5] tree_server1 tree_server2;
+
+CLIENT ->  tree_server1  [label = rq_tree_items ]
+tree_server1 ->  tree_server2  [label = rq_tree_items ]
+tree_server2 ->  CLIENT  [label = rs_tree_items ]
+
+}
+-----
+
+
+=== Product Loader
+
+* +product_loader+ will keep products info in order to send a snapshot of an specific product
+* They will work after +tree_server+. The +tree_server+ will check the permisions for each product info request.
+* +product_loader+ will listen on client_side the messages +pub_(marg,depth,trades...)+ to build the status info per product
+* It will listen on server side, messages +pub_full_product_info+ and +pub_end_product_info_init+ for a initialization
+* When the process starts, it will send +req_init_prod_info+
+** This message gives the oportunity to market price server, to start sendind initialization (i.e.)
+* This process will listen to +pub_market_pubisher_ready+, to send +req_init_prod_info+ to publisher
++
+.DFD  resquest response product info
+["graphviz", "product_loaderA.png"]
+-----------
+digraph dfd0_graph {
+
+node [shape=box width=1.7] CLIENT;
+node [shape=circle, width=1.5] tree_server1 product_loader;
+
+CLIENT ->  tree_server1  [label = req_prod_info ]
+tree_server1 ->  product_loader  [label = req_prod_info ]
+product_loader ->  CLIENT  [label = res_prod_info ]
+
+}
+-----
+
+=== DFD0
+
+.DFD
+["graphviz", "tree_items_dfd0a.png"]
+-----------
+digraph dfd0_graph {
+ //rankdir=LR;
+ nodesep=0.3
+ ranksep = 1.5
+ // Nodos
+ node [fontsize=16];
+ CLIENT [label="CLIENT" shape=box height=0.1];
+ tree_server [label="tree\nserver" shape=circle height=1]
+ product_loader [label="product\nloader" shape=circle height=1]
+
+
+
+ conect_market_2_all [shape=circle,style=filled,label="ts pl\ncli",height=1]
+
+ MARKET [label="MARKET" shape=box height=0.1];
+ // Conectores
+ edge [fontsize=12];
+
+
+
+ CLIENT -> tree_server [label = "req_tree_items" ];
+ CLIENT -> tree_server [label = "req_prod_info" ];
+
+ tree_server -> CLIENT [label = "res_tree_items" ];
+ tree_server -> CLIENT [label = "pub_tree_colapse_branch" ];
+ tree_server -> product_loader  [label = "req_init_prod_info" ];
+ tree_server -> product_loader [label = "req_prod_info\n(cli)" ];
+
+ product_loader -> tree_server   [label = "ps_pub_prod_info_mtk_ready" ];
+ product_loader -> tree_server   [label = "ps_conf_full_product_info_init\nps_conf_full_product_info" ];
+
+ product_loader -> CLIENT  [label = "res_prod_info" ];
+
+ product_loader -> MARKET  [label = "ps_req_init_prod_info" ];
+
+ MARKET  ->  product_loader   [label = "ps_pub_prod_info_mtk_ready_fp" ];
+
+ MARKET  ->  product_loader   [label = "ps_conf_full_product_info_init_fp\nps_conf_full_product_info_fp" ];
+
+ MARKET  ->  conect_market_2_all   [label = "(cli) pub_(marg,depth,trades...)" ];
+ MARKET  ->  conect_market_2_all   [label = "(cli) pub_product_stopped" ];
+ MARKET  ->  conect_market_2_all   [label = "(cli) pub_market_stopped" ];
+ MARKET  ->  conect_market_2_all   [label = "(cli) pub_new_products" ];
+
+}
+-----
+
+
+=== Initialization
+
+* Sequence
+.. +product_loader+ starts
+.. +market+  starts
++
+["graphviz", "prices_system_init0.png"]
+-----------
+digraph dfd0_graph {
+    prod_load0 [label ="prod\nload\nstart" shape=circle height=1];
+    none0  [label ="" shape=circle height=1];
+    market0    [label ="market\nstart" shape=circle height=1];
+    prod_load1 [label ="prod\nload" shape=circle height=1];
+    market1    [label ="market" shape=circle height=1];
+    all  [label ="all" shape=circle height=1];
+
+
+    prod_load0 ->  none0  [label = req_init_prod_info];
+    none0  ->  market0 ;
+    market0 -> prod_load1 [label = pub_market_loader_ready];
+    prod_load1 ->  market1  [label = req_init_prod_info];
+    market1  -> all [label = "pub_full_product_info\npub_(*)"];
+}
+-----------
+* Same initialization between +product_loader+ and +tree_server+
+** +product_loader+ will start sending a ready message
+** +product_loader+ will start sending +pub_full_prod_info+ as soon as it receives a +req_init_prod_info+
+** +tree_server+ will send a +req_price_recept+ on starting (just in case), and it will also send this message (if necessary) when receiving +pub_market_publisher_ready+
+** And same with other pieces as +product2db+
+
+
+=== Messages
+
+.TreeServer messages
+-----
+include::../../../src/components/gen/msg_tree_server.msg[]
+-----
+
+
+.Product info
 -----
 include::../../../src/components/prices/msg_prices.msg[]
 -----
+
+.Product info internal to +priceSystem+
+-----
+include::../../../src/components/prices/msg_ps_prices.msg[]
+-----
+
+
+
 
 
 

@@ -53,7 +53,10 @@ private:
 
     QTableWidget* table_widget;
 
-    void on_message(const mtk::prices::msg::pub_best_prices& msg);
+    void clean_prices(void);
+    void update_prices(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices);
+    void update_prices(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_best_prices&   best_prices);
+    void on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg);
 
     static int counter;
 };

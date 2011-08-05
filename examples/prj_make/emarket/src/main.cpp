@@ -19,7 +19,9 @@ namespace
     const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "This is a testing market.\n";
 
-    const char*   APP_MODIFICATIONS = "           2011-03-16     first version\n";
+    const char*   APP_MODIFICATIONS =   "           2011-03-16     first version\n"
+                                        "           2011-08-01     product loader comunication\n"
+                                        ;
 
 }
 
@@ -39,9 +41,11 @@ int main(int argc, char ** argv)
         check_request  cr;
         orders_book    ob;
         
-        cr.sig_oms_rq_nw.connect(&ob, &orders_book::oms_RQ_NW_LS);
-        cr.sig_oms_rq_md.connect(&ob, &orders_book::oms_RQ_MD_LS);
-        cr.sig_oms_rq_cc.connect(&ob, &orders_book::oms_RQ_CC_LS);
+        cr.sig_oms_rq_nw.connect  (&ob, &orders_book::oms_RQ_NW_LS);
+        cr.sig_oms_rq_md.connect  (&ob, &orders_book::oms_RQ_MD_LS);
+        cr.sig_oms_rq_cc.connect  (&ob, &orders_book::oms_RQ_CC_LS);
+        cr.sig_add_product.connect(&ob, &orders_book::add_product);
+        cr.init();
         
         mtk::start_timer_wait_till_end();
         

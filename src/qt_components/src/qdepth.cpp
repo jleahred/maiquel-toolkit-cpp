@@ -154,6 +154,16 @@ QDepth::QDepth(QWidget *parent) :
     this->setAcceptDrops(true);
 
     {
+        QString  snullcolor = QLatin1String("rgb(")+ QString::number(qtmisc::mtk_color_null.red()) + QLatin1String(", ") +
+                                        QString::number(qtmisc::mtk_color_null.green()) + QLatin1String(", ") +
+                                        QString::number(qtmisc::mtk_color_null.blue()) +  QLatin1String(");");
+        style_sheet_null = QString::fromUtf8("background-color: ") + snullcolor  + QString::fromUtf8("\n" "color: rgb(0, 220, 0); font-weight: 1000;");
+        style_sheet_normal = QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0); font-weight: 1000;");
+        //style_sheet_focus = QString::fromUtf8("background-color: rgb(0, 0, 70);\n" "color: rgb(0, 220, 0); font-weight: 1000;");
+        style_sheet_focus = QString::fromUtf8("background-color: rgb(0, 0, 70);\n" "color: rgb(0, 220, 0); font-weight: 1000;");
+    }
+
+    {
         title = new QLabel(this);
         //QPalette titlePalette = title->palette();
         //titlePalette.setColor(QPalette::Foreground, Qt::white);
@@ -177,7 +187,7 @@ QDepth::QDepth(QWidget *parent) :
 
     {
         layout->addWidget(table_widget);
-        table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
+        table_widget->setStyleSheet(style_sheet_normal);//QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
         table_widget->setRowCount(10);
         table_widget->setColumnCount(3);
         table_widget->verticalHeader()->setVisible(false);
@@ -289,6 +299,19 @@ void	QDepth::resizeEvent ( QResizeEvent *  event )
 
 
 
+
+void delete_cells(QTableWidget* table_widget)
+{
+    for(int r=0;r<table_widget->rowCount(); ++r)
+    {
+        for(int c=0;c<table_widget->columnCount();++c)
+        {
+            table_widget->item(r, c)->setText(QLatin1String(""));
+        }
+    }
+}
+
+
 void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_level& level, QTableWidget* table_widget, const mtk::msg::sub_product_code& product_code)
 {
     if (level.quantity.GetIntCode() != 0)
@@ -309,50 +332,62 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
 }
 
 
-void QDepth::on_message(const mtk::prices::msg::pub_best_prices& msg)
+void QDepth::on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg)
 {
-    write_in_cell(5, 0, msg.bids.level0, table_widget, price_manager->get_product_code());
-    write_in_cell(6, 0, msg.bids.level1, table_widget, price_manager->get_product_code());
-    write_in_cell(7, 0, msg.bids.level2, table_widget, price_manager->get_product_code());
-    write_in_cell(8, 0, msg.bids.level3, table_widget, price_manager->get_product_code());
-    write_in_cell(9, 0, msg.bids.level4, table_widget, price_manager->get_product_code());
-
-    write_in_cell(4, 2, msg.asks.level0, table_widget, price_manager->get_product_code());
-    write_in_cell(3, 2, msg.asks.level1, table_widget, price_manager->get_product_code());
-    write_in_cell(2, 2, msg.asks.level2, table_widget, price_manager->get_product_code());
-    write_in_cell(1, 2, msg.asks.level3, table_widget, price_manager->get_product_code());
-    write_in_cell(0, 2, msg.asks.level4, table_widget, price_manager->get_product_code());
-
+    update_prices(msg);
 }
+
+void QDepth::update_prices(const mtk::prices::msg::sub_best_prices&   best_prices)
+{
+    write_in_cell(5, 0, best_prices.bids.level0, table_widget, price_manager->get_product_code());
+    write_in_cell(6, 0, best_prices.bids.level1, table_widget, price_manager->get_product_code());
+    write_in_cell(7, 0, best_prices.bids.level2, table_widget, price_manager->get_product_code());
+    write_in_cell(8, 0, best_prices.bids.level3, table_widget, price_manager->get_product_code());
+    write_in_cell(9, 0, best_prices.bids.level4, table_widget, price_manager->get_product_code());
+
+    write_in_cell(4, 2, best_prices.asks.level0, table_widget, price_manager->get_product_code());
+    write_in_cell(3, 2, best_prices.asks.level1, table_widget, price_manager->get_product_code());
+    write_in_cell(2, 2, best_prices.asks.level2, table_widget, price_manager->get_product_code());
+    write_in_cell(1, 2, best_prices.asks.level3, table_widget, price_manager->get_product_code());
+    write_in_cell(0, 2, best_prices.asks.level4, table_widget, price_manager->get_product_code());
+
+    if(table_widget->styleSheet() != style_sheet_normal)
+        table_widget->setStyleSheet(style_sheet_normal);
+}
+
+void QDepth::update_prices(const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices)
+{
+    if(n_best_prices.HasValue())
+        update_prices(n_best_prices.Get());
+    else
+        upate_null_prices();
+}
+void QDepth::upate_null_prices(void)
+{
+    delete_cells(table_widget);
+    table_widget->setStyleSheet(style_sheet_null);
+}
+
+
 
 
 void QDepth::request_side(mtk::trd::msg::enBuySell bs)
 {
     //  proposed price
-    if(price_manager.isValid() == false)
+    if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue()==false)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
     else
     {
-        mtk::FixedNumber price(price_manager->get_best_prices().bids.level0.price);
-        mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+        mtk::FixedNumber price(price_manager->get_best_prices().Get().bids.level0.price);
+        mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
         if(bs == mtk::trd::msg::sell)
         {
-            price = price_manager->get_best_prices().asks.level0.price;
-            quantity= price_manager->get_best_prices().asks.level0.quantity;
+            price = price_manager->get_best_prices().Get().asks.level0.price;
+            quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
         }
-        if(quantity.GetIntCode() != 0)  //  provisional, remove it
-        {
-            quantity.SetIntCode(0);
-            mtk::trd::msg::sub_position_ls     pos(price, quantity);
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
-        }
-        else        //  provisional, remove it
-        {
-            mtk::trd::msg::sub_position_ls     pos(
-                                                              mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(2),  mtk::fnInc(1))
-                                                            , mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1)));
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
-        }
+        quantity.SetIntCode(0);
+        mtk::trd::msg::sub_position_ls     pos(price, quantity);
+        mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
     }
 }
 
@@ -375,26 +410,18 @@ void QDepth::request_sell(void)
 
 void QDepth::request_side_market(mtk::trd::msg::enBuySell bs)
 {
-    if(price_manager.isValid() == false)
+    if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue()==false)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
     else
     {
-        mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+        mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
         if(bs == mtk::trd::msg::sell)
         {
-            quantity= price_manager->get_best_prices().asks.level0.quantity;
+            quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
         }
-        if(quantity.GetIntCode() != 0)  //  provisional, remove it
-        {
-            quantity.SetIntCode(0);
-            mtk::trd::msg::sub_position_mk     pos(quantity);
-            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
-        }
-        else        //  provisional, remove it
-        {
-            mtk::trd::msg::sub_position_mk     pos(mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1)));
-            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
-        }
+        quantity.SetIntCode(0);
+        mtk::trd::msg::sub_position_mk     pos(quantity);
+        mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), bs, pos, "" /*cli ref*/);
     }
 }
 
@@ -419,16 +446,16 @@ void QDepth::request_sell_market(void)
 void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
 {
     //  proposed price
-    if(price_manager.isValid() == false)
+    if(price_manager.isValid() == false   ||   price_manager->get_best_prices().HasValue()==false)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "marginal", "marginal not located", mtk::alPriorError));
     else
     {
-        mtk::FixedNumber price(price_manager->get_best_prices().bids.level0.price);
-        mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+        mtk::FixedNumber price(price_manager->get_best_prices().Get().bids.level0.price);
+        mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
         if(bs == mtk::trd::msg::buy)
         {
-            price = price_manager->get_best_prices().asks.level0.price;
-            quantity= price_manager->get_best_prices().asks.level0.quantity;
+            price = price_manager->get_best_prices().Get().asks.level0.price;
+            quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
         }
         if(quantity.GetIntCode() != 0)
         {
@@ -475,12 +502,11 @@ void QDepth::dropEvent(QDropEvent *event)
 
 void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
 {
-    if(price_manager.isValid())
-        price_manager->signal_best_prices_update.disconnect(this, &QDepth::on_message);
-    price_manager = mtk::get_from_factory<mtk::prices::price_manager>(_product_code);
+    price_manager = mtk::make_cptr(new mtk::prices::price_manager(_product_code));
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
-    on_message(price_manager->get_best_prices());
+    //  this will make a permanent suscription  for this prices_manager instance
+    update_prices(price_manager->get_best_prices());
     title->setText(QLatin1String(MTK_SS(price_manager->get_product_code().market << "."<< price_manager->get_product_code().product).c_str()));
 }
 
@@ -643,8 +669,14 @@ void QDepth::enable_trading_actions(void)
 void QDepth::paint_focus(void)
 {
     //title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(191,219,255, 230); font-weight: 1000;"));
-    title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(255,255,255); font-weight: 1000;"));
-    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 70);\n" "color: rgb(0, 220, 0);"));
+    title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(255,255,255, 255); font-weight: 1000;"));
+
+    if(price_manager.isValid()   &&   price_manager->get_best_prices().HasValue()==true)
+        table_widget->setStyleSheet(style_sheet_focus);
+    else if(price_manager.isValid()==false)
+        table_widget->setStyleSheet(style_sheet_normal);
+    else
+        table_widget->setStyleSheet(style_sheet_null);
 }
 
 void QDepth::remove_focus(void)
@@ -652,7 +684,12 @@ void QDepth::remove_focus(void)
     if(keep_paint_focus==false)
     {
         title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
-        table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
+        if(price_manager.isValid()   &&   price_manager->get_best_prices().HasValue()==true)
+            table_widget->setStyleSheet(style_sheet_normal);
+        else if(price_manager.isValid()==false)
+            table_widget->setStyleSheet(style_sheet_normal);
+        else
+            table_widget->setStyleSheet(style_sheet_null);
     }
 }
 

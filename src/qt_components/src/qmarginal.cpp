@@ -81,7 +81,7 @@ namespace {
     const QColor  color_qty     = Qt::white;
     //const QColor  color_qty     = QColor(237,240,249);
     //const QColor  color_price   = mtk_color_header;
-    const QColor  color_price   = QColor(Qt::lightGray).lighter(125);
+    const QColor  color_price   =  QColor(240,245,250);//QColor(Qt::lightGray).lighter(125);
 
 
 
@@ -275,11 +275,10 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
         tw_qty_ask->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
 
-
-    price_manager = mtk::get_from_factory<mtk::prices::price_manager>(product_code);
+    price_manager = mtk::make_cptr(new mtk::prices::price_manager(product_code));
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
-    on_message(price_manager->get_best_prices());
+    update_prices(product_code, price_manager->get_best_prices());
 }
 
 
@@ -302,6 +301,14 @@ void marginal_in_table::set_normal_color(int transparency)
     tw_ASK->setBackgroundColor(color_transparency(color_price, transparency));
     tw_qty_bid->setBackgroundColor(color_transparency(color_qty, transparency));
     tw_qty_ask->setBackgroundColor(color_transparency(color_qty, transparency));
+
+    if((price_manager.isValid()==false)  ||  (price_manager.isValid()  &&  price_manager->get_best_prices().HasValue()==false))
+    {
+        tw_BID->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+        tw_ASK->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+        tw_qty_bid->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+        tw_qty_ask->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+    }
 }
 
 void marginal_in_table::set_dark_color(void)
@@ -341,20 +348,53 @@ namespace {
 };
 
 
-void marginal_in_table::on_message(const mtk::prices::msg::pub_best_prices& msg)
-{
 
+void marginal_in_table::clean_prices(void)
+{
+    tw_ASK->setText(QLatin1String(""));
+    tw_qty_ask->setText(QLatin1String(""));
+    tw_BID->setText(QLatin1String(""));
+    tw_qty_bid->setText(QLatin1String(""));
+
+    tw_ASK->setBackgroundColor(qtmisc::mtk_color_null);
+    tw_qty_ask->setBackgroundColor(qtmisc::mtk_color_null);
+    tw_BID->setBackgroundColor(qtmisc::mtk_color_null);
+    tw_qty_bid->setBackgroundColor(qtmisc::mtk_color_null);
+}
+
+void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_best_prices&   best_prices)
+{
     mtk::tuple<QString, QString>  tprice_tquantity;
 
-    tprice_tquantity = get_price_quantity(msg.product_code, msg.bids.level0);
+    tprice_tquantity = get_price_quantity(pc, best_prices.bids.level0);     //  pc is just for log if necessary
     tw_BID->setText(tprice_tquantity._0);
     tw_qty_bid->setText(tprice_tquantity._1);
 
-    tprice_tquantity = get_price_quantity(msg.product_code, msg.asks.level0);
+    tprice_tquantity = get_price_quantity(pc, best_prices.asks.level0);
     tw_ASK->setText(tprice_tquantity._0);
     tw_qty_ask->setText(tprice_tquantity._1);
 
+    if(tw_BID->backgroundColor() == qtmisc::mtk_color_null)
+    {
+        tw_ASK->setBackgroundColor(color_price);
+        tw_qty_ask->setBackgroundColor(color_qty);
+        tw_BID->setBackgroundColor(color_price);
+        tw_qty_bid->setBackgroundColor(color_qty);
+    }
 }
+
+void marginal_in_table::on_message(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_best_prices& msg)
+{
+    update_prices(pc, msg);
+}
+void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices)
+{
+    if(n_best_prices.HasValue())
+        update_prices(pc, n_best_prices.Get());
+    else
+        clean_prices();
+}
+
 
 
 
@@ -579,30 +619,20 @@ void QTableMarginal::request_side(mtk::trd::msg::enBuySell bs)
 
         //  proposed price
         mtk::CountPtr<mtk::prices::price_manager>  price_manager =   locate_price_manager(marginals, item->id);
-        if(price_manager.isValid() == false)
+        if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue() == false)
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "marginal", "marginal not located", mtk::alPriorError));
         else
         {
-            mtk::FixedNumber price(price_manager->get_best_prices().bids.level0.price);
-            mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+            mtk::FixedNumber price(price_manager->get_best_prices().Get().bids.level0.price);
+            mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
             if(bs == mtk::trd::msg::sell)
             {
-                price = price_manager->get_best_prices().asks.level0.price;
-                quantity= price_manager->get_best_prices().asks.level0.quantity;
+                price = price_manager->get_best_prices().Get().asks.level0.price;
+                quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
             }
-            if(quantity.GetIntCode() != 0)     //  provisional, remove it
-            {
-                quantity.SetIntCode(0);
-                mtk::trd::msg::sub_position_ls     pos(price, quantity);
-                mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, "" /*cli ref*/);
-            }
-            else        //  provisional, remove it
-            {
-                mtk::trd::msg::sub_position_ls     pos(
-                                                                  mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(2),  mtk::fnInc(1))
-                                                                , mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1)));
-                mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, "" /*cli ref*/);
-            }
+            quantity.SetIntCode(0);
+            mtk::trd::msg::sub_position_ls     pos(price, quantity);
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, "" /*cli ref*/);
         }
 
     }
@@ -637,16 +667,16 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
 
         //  proposed price
         mtk::CountPtr<mtk::prices::price_manager>  price_manager =   locate_price_manager(marginals, item->id);
-        if(price_manager.isValid() == false)
+        if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue() == false)
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "marginal", "marginal not located", mtk::alPriorError));
         else
         {
-            mtk::FixedNumber price(price_manager->get_best_prices().bids.level0.price);
-            mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+            mtk::FixedNumber price(price_manager->get_best_prices().Get().bids.level0.price);
+            mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
             if(bs == mtk::trd::msg::buy)
             {
-                price = price_manager->get_best_prices().asks.level0.price;
-                quantity= price_manager->get_best_prices().asks.level0.quantity;
+                price = price_manager->get_best_prices().Get().asks.level0.price;
+                quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
             }
             if(quantity.GetIntCode() != 0)
             {
@@ -702,24 +732,16 @@ void QTableMarginal::request_side_market(mtk::trd::msg::enBuySell bs)
 
         //  proposed price
         mtk::CountPtr<mtk::prices::price_manager>  price_manager =   locate_price_manager(marginals, item->id);
-        if(price_manager.isValid() == false)
+        if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue() == false)
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "marginal", "marginal not located", mtk::alPriorError));
         else
         {
-            mtk::FixedNumber quantity(price_manager->get_best_prices().bids.level0.quantity);
+            mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
             if(bs == mtk::trd::msg::sell)
-                quantity= price_manager->get_best_prices().asks.level0.quantity;
-            if(quantity.GetIntCode() != 0)     //  provisional, remove it
-            {
-                quantity.SetIntCode(0);
-                mtk::trd::msg::sub_position_mk     pos(quantity);
-                mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, bs, pos, "" /*cli ref*/);
-            }
-            else        //  provisional, remove it
-            {
-                mtk::trd::msg::sub_position_mk     pos(mtk::FixedNumber(mtk::fnDouble(0.)  ,  mtk::fnDec(0),  mtk::fnInc(1)));
-                mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, bs, pos, "" /*cli ref*/);
-            }
+                quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
+            quantity.SetIntCode(0);
+            mtk::trd::msg::sub_position_mk     pos(quantity);
+            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, bs, pos, "" /*cli ref*/);
         }
     }
 }

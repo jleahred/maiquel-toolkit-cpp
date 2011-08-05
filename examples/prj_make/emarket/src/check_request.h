@@ -9,10 +9,17 @@
 #include "mtk_qpid/mtk_qpid.hpp"
 
 
+namespace  emarket {  class  sub_product_config;  };
+
+
+
 class check_request : public mtk::SignalReceptor {
 typedef check_request CLASS_NAME;
 
 public:
+    void  init(void);
+
+
     //  in  cli(permisions/filter) -> check_request
     void oms_RQ_NW_LS(const mtk::trd::msg::oms_RQ_NW_LS& rq);
     void oms_RQ_MD_LS(const mtk::trd::msg::oms_RQ_MD_LS& rq);
@@ -23,6 +30,9 @@ public:
     mtk::Signal<const mtk::trd::msg::oms_RQ_NW_LS&>   sig_oms_rq_nw;
     mtk::Signal<const mtk::trd::msg::oms_RQ_MD_LS&>   sig_oms_rq_md;
     mtk::Signal<const mtk::trd::msg::oms_RQ_CC_LS&>   sig_oms_rq_cc;
+    
+    mtk::Signal<const emarket::sub_product_config&>   sig_add_product;
+    
 
 	check_request();
 	~check_request();

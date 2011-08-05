@@ -1,0 +1,16 @@
+product_config:
+  - product_name: PRD1
+    product_user_name: PRODUCT 1
+    group: GRP1
+    group_user_name: GROUP 1
+    price_fnext: [2, 2]
+  - product_name: PRD2
+    product_user_name: PRODUCT 2
+    group: GRP1
+    group_user_name: GROUP 1
+    price_fnext: [0, 1]
+  - product_name: PRD3
+    product_user_name: PRODUCT 3
+    group: GRP3
+    group_user_name: GROUP 3
+    price_fnext: [2, 5]

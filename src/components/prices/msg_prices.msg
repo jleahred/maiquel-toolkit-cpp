@@ -29,15 +29,46 @@ sub_price_deph5 [<V:0>]
 
 
 
-pub_best_prices [<V:0,  SUBJ:PUB.${product_code.market}.${product_code.product}  >]
+sub_best_prices [< V:0  >]
 {
-    product_code        (pc)    :   mtk::msg::sub_product_code     
-
     bids                (bids)  :  sub_price_deph5
     asks                (asks)  :  sub_price_deph5
-    
-    orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
+
+
+pub_best_prices [<V:0,  SUBJ:PUB.${product_code.market}.${product_code.product}.BP  >]
+{
+    product_code        (pc)    :   mtk::msg::sub_product_code     
+    best_prices         (bp)    :   sub_best_prices
+    orig_control_fluct  (ocf)   :   mtk::msg::sub_control_fluct
+}
+
+
+pub_new_products [<V:0,  SUBJ:PUB.${market}.NP  >]
+{
+    market              (mk)    :   string
+}
+
+
+
+sub_full_product_info [< V:0  >]
+{
+    product_code        (pc)        :       mtk::msg::sub_product_code     
+    
+    best_prices         (bp)        :       sub_best_prices
+    //  ...
+}
+
+
+sub_full_product_info_optionals [< V:0  >]
+{
+    initialized         (init)      :       bool
+    product_code        (pc)        :       mtk::msg::sub_product_code     
+    
+    best_prices         (bp)        :       sub_best_prices                 [optional]
+    //  ...
+}
+
 
 
 
@@ -45,7 +76,7 @@ pub_best_prices [<V:0,  SUBJ:PUB.${product_code.market}.${product_code.product} 
 //    REQUEST/RESPONSE
 //---------------------------------------------------------------------
 
-req_prod_info [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.PRC.PI >]
+req_product_info [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.${product_code.market}.PRC.PI >]
 {
     request_info        (rqi)       :   mtk::msg::sub_request_info
     
@@ -60,14 +91,8 @@ res_product_info   [< V:0 , SUBJ:RS.${response_info.request_info.process_info.lo
     
     response        (rs)  [< V:0 >]
     {
-        best_prices     (bp)    :   pub_best_prices
+        full_product_info     (bp)    :   sub_full_product_info
     }
-}
-
-
-ps_req_prod_info [< V:0, I:req_prod_info, SUBJ:RQ.PRC.PI.${from} >]
-{
-    from                 (from) :  string   //  id from process who send the message, or   pigrant   on last step, when request is granted
 }
 
 
