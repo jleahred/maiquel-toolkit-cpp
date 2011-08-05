@@ -156,10 +156,10 @@ private:
         last_received = mtk::dtNowLocal();
         
         
-        if(++espected_secuence != response.response_info.sec_number)
+        if(++espected_secuence != response.response_info.seq_number)
         {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "req_response", 
-                                MTK_SS("invalid secuence espected/received  " << espected_secuence << "/" << response.response_info.sec_number
+                                MTK_SS("invalid secuence espected/received  " << espected_secuence << "/" << response.response_info.seq_number
                                     << " canceled response"), mtk::alPriorError));
                 MTK_CALL_LATER1S_F(mtk::dtMilliseconds(10), this, delete_later);
                 programed_to_delete = true;

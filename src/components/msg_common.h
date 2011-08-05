@@ -46,6 +46,9 @@ public:
     virtual ~sub_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_location"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_location"; };
+
+    
+    
     
     
 
@@ -85,6 +88,9 @@ public:
     virtual ~sub_process_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_process_info"; };
+
+    
+    
     
     
 
@@ -126,6 +132,9 @@ public:
     virtual ~sub_control_fluct (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fluct"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fluct"; };
+
+    
+    
     
     
 
@@ -165,6 +174,9 @@ public:
     virtual ~sub_request_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_id"; };
+
+    
+    
     
     
 
@@ -204,6 +216,9 @@ public:
     virtual ~sub_request_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_info"; };
+
+    
+    
     
     
 
@@ -238,17 +253,20 @@ public:
 
     
     // constructor
-    explicit sub_r_response (    const sub_request_info&  _request_info,   const int16_t&  _sec_number,   const bool&  _is_last_response );
+    explicit sub_r_response (    const sub_request_info&  _request_info,   const int16_t&  _seq_number,   const bool&  _is_last_response );
     explicit sub_r_response ( const qpid::messaging::Message& message );
     virtual ~sub_r_response (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_r_response"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_r_response"; };
+
+    
+    
     
     
 
     // fields
     sub_request_info                          request_info; 
-    int16_t                                   sec_number; 
+    int16_t                                   seq_number; 
     bool                                      is_last_response; 
 
 
@@ -283,6 +301,9 @@ public:
     virtual ~sub_gen_response_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_gen_response_location"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_gen_response_location"; };
+
+    
+    
     
     
 
@@ -322,6 +343,9 @@ public:
     virtual ~sub_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_product_code"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_product_code"; };
+
+    
+    
     
     
 

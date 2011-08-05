@@ -47,6 +47,9 @@ public:
     virtual ~sub_tree_item (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_tree_item"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_tree_item"; };
+
+    
+    
     
     
 
@@ -87,6 +90,9 @@ public:
     virtual ~req_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_tree_items"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -128,6 +134,9 @@ public:
     virtual ~res_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_tree_items"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 

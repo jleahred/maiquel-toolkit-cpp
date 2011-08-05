@@ -31,6 +31,10 @@ namespace msg {
     {
         return mtk::FixedNumber(mtk::fnDouble(0), mtk::fnDec(0), mtk::fnInc(1));
     }
+    inline mtk::fnExt  __internal_get_default(mtk::fnExt*)
+    {
+        return mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1));
+    }
     
     inline mtk::DateTime __internal_get_default(mtk::DateTime*)
     {
@@ -104,6 +108,13 @@ inline void  copy(mtk::FixedNumber& result, const qpid::types::Variant& v)
 {
     result = ({   std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> ifn = /*it->second*/v.asMap();
                     mtk::FixedNumber(mtk::fnIntCode(ifn["n"].asInt32()), mtk::fnDec(ifn["d"].asInt8()), mtk::fnInc(ifn["i"].asInt8()));
+            });
+}
+
+inline void  copy(mtk::fnExt& result, const qpid::types::Variant& v)
+{
+    result = ({   std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> ifn = /*it->second*/v.asMap();
+                    mtk::fnExt(mtk::fnDec(ifn["d"].asInt8()), mtk::fnInc(ifn["i"].asInt8()));
             });
 }
 
@@ -189,6 +200,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::FixedNumber& a, const std::string& key)
     {
         map[key] = QPID_DESCOMPOSE_FIXED_NUMBER(a);
+    }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::fnExt& a, const std::string& key)
+    {
+        map[key] = QPID_DESCOMPOSE_FN_EXT(a);
     }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::Double& a, const std::string& key)
@@ -516,8 +531,8 @@ void sub_request_info::before_send(void) const
 
 
 
-sub_r_response::sub_r_response (   const sub_request_info&  _request_info,   const int16_t&  _sec_number,   const bool&  _is_last_response)
-    :     request_info(_request_info),   sec_number(_sec_number),   is_last_response(_is_last_response) 
+sub_r_response::sub_r_response (   const sub_request_info&  _request_info,   const int16_t&  _seq_number,   const bool&  _is_last_response)
+    :     request_info(_request_info),   seq_number(_seq_number),   is_last_response(_is_last_response) 
        
     {  
         std::string cr = check_recomended ();  
@@ -767,7 +782,7 @@ std::ostream& operator<< (std::ostream& o, const sub_r_response & c)
 {
     o << "{ "
 
-        << "request_info:"<< c.request_info<<"  "        << "sec_number:"<<   c.sec_number << "  "        << "is_last_response:"<< c.is_last_response<<"  "
+        << "request_info:"<< c.request_info<<"  "        << "seq_number:"<<   c.seq_number << "  "        << "is_last_response:"<< c.is_last_response<<"  "
         << " }";
     return o;
 };
@@ -778,7 +793,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_r_response & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "sec_number"  << YAML::Value <<   c.sec_number        << YAML::Key << "is_last_response"  << YAML::Value << c.is_last_response
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "seq_number"  << YAML::Value <<   c.seq_number        << YAML::Key << "is_last_response"  << YAML::Value << c.is_last_response
         << YAML::EndMap;
     return o;
 };
@@ -790,7 +805,7 @@ void  operator >> (const YAML::Node& node, sub_r_response & c)
 
 
         node["request_info"]  >> c.request_info;
-        node["sec_number"]  >> c.sec_number;
+        node["seq_number"]  >> c.seq_number;
         node["is_last_response"]  >> c.is_last_response;
 
 
@@ -925,7 +940,7 @@ bool operator!= (const sub_request_info& a, const sub_request_info& b)
 
 bool operator== (const sub_r_response& a, const sub_r_response& b)
 {
-    return (          a.request_info ==  b.request_info  &&          a.sec_number ==  b.sec_number  &&          a.is_last_response ==  b.is_last_response  &&   true  );
+    return (          a.request_info ==  b.request_info  &&          a.seq_number ==  b.seq_number  &&          a.is_last_response ==  b.is_last_response  &&   true  );
 };
 
 bool operator!= (const sub_r_response& a, const sub_r_response& b)
@@ -1253,10 +1268,10 @@ void  copy (sub_r_response& c, const qpid::types::Variant& v)
 
                     it = mv.find("sqn");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sec_number on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field seq_number on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.sec_number, it->second);
-                        //c.sec_number = it->second;
+                        copy(c.seq_number, it->second);
+                        //c.seq_number = it->second;
 //   sub_msg_type
 
                     it = mv.find("lr");
@@ -1278,7 +1293,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
-        __internal_add2map(map, a.sec_number, std::string("sqn"));
+        __internal_add2map(map, a.seq_number, std::string("sqn"));
 //  sub_msg_type
         __internal_add2map(map, a.is_last_response, std::string("lr"));
 
@@ -1590,7 +1605,7 @@ sub_r_response::sub_r_response (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    request_info(__internal_get_default((sub_request_info*)0)),
 //   field_type
-   sec_number(__internal_get_default((int16_t*)0)),
+   seq_number(__internal_get_default((int16_t*)0)),
 //   sub_msg_type
    is_last_response(__internal_get_default((bool*)0)) 
     {

@@ -48,6 +48,9 @@ public:
     virtual ~pub_add_user (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_add_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_add_user"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -88,6 +91,9 @@ public:
     virtual ~pub_del_user (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_del_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_del_user"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -128,6 +134,9 @@ public:
     virtual ~req_session_id_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_session_id_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_session_id_conf"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -168,6 +177,9 @@ public:
     virtual ~pub_partial_user_list_acs2serv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_acs2serv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_acs2serv"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -208,6 +220,9 @@ public:
     virtual ~pub_partial_user_list_serv2acs (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_serv2acs"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_serv2acs"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -248,6 +263,9 @@ public:
     virtual ~req_user_list (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_user_list"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -288,6 +306,9 @@ public:
     virtual ~res_user_list (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_user_list"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 

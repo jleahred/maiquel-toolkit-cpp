@@ -48,6 +48,9 @@ public:
     virtual ~sub_order_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_order_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_order_id"; };
+
+    
+    
     
     
 
@@ -85,6 +88,9 @@ public:
     virtual ~sub_exec_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_exec_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_exec_conf"; };
+
+    
+    
     
     
 
@@ -126,6 +132,9 @@ public:
     virtual ~sub_total_executions (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_total_executions"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_total_executions"; };
+
+    
+    
     
     
 
@@ -166,6 +175,9 @@ public:
     virtual ~sub_account_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_account_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_account_info"; };
+
+    
+    
     
     
 
@@ -205,6 +217,9 @@ public:
     virtual ~sub_invariant_order_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_invariant_order_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_invariant_order_info"; };
+
+    
+    
     
     
 
@@ -246,6 +261,9 @@ public:
     virtual ~RQ_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX"; };
+
+    
+    
     
     
 
@@ -287,6 +305,9 @@ public:
     virtual ~CF_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX"; };
+
+    
+    
     
     
 
@@ -330,6 +351,9 @@ public:
     virtual ~RQ_ORDERS_STATUS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_ORDERS_STATUS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_ORDERS_STATUS"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 

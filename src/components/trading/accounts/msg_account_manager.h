@@ -58,6 +58,9 @@ public:
         virtual ~IC_key (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_key"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_key"; };
+    
+        
+        
         
         
     
@@ -88,6 +91,9 @@ public:
     virtual ~sub_grant (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_grant"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_grant"; };
+
+    
+    
     
     
 
@@ -127,6 +133,9 @@ public:
     virtual ~rq_accounts (){};
     virtual std::string get_message_type_as_string       (void) const  { return "rq_accounts"; };
     static  std::string static_get_message_type_as_string(void)        { return "rq_accounts"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -153,20 +162,23 @@ private:
 
 
 //-------------------------------
-//      add_accounts
+//      conf_add_accounts
 //-------------------------------    
-class add_accounts     
+class conf_add_accounts     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit add_accounts (    const mtk::msg::sub_gen_response_location&  _gen_response_location,   const mtk::list<sub_grant >&  _grant_list );
-    explicit add_accounts ( const qpid::messaging::Message& message );
-    virtual ~add_accounts (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "add_accounts"; };
-    static  std::string static_get_message_type_as_string(void)        { return "add_accounts"; };
+    explicit conf_add_accounts (    const mtk::msg::sub_gen_response_location&  _gen_response_location,   const mtk::list<sub_grant >&  _grant_list );
+    explicit conf_add_accounts ( const qpid::messaging::Message& message );
+    virtual ~conf_add_accounts (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "conf_add_accounts"; };
+    static  std::string static_get_message_type_as_string(void)        { return "conf_add_accounts"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -208,6 +220,9 @@ public:
     virtual ~pub_accmgr_init (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_accmgr_init"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_accmgr_init"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -249,6 +264,9 @@ public:
     virtual ~rq_accounts_oninit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "rq_accounts_oninit"; };
     static  std::string static_get_message_type_as_string(void)        { return "rq_accounts_oninit"; };
+
+    
+    
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
     
 
@@ -306,12 +324,12 @@ bool operator!= (const sub_grant::IC_key& a, const sub_grant::IC_key& b);
 bool operator== (const rq_accounts& a, const rq_accounts& b);
 bool operator!= (const rq_accounts& a, const rq_accounts& b);
 
-    std::ostream& operator<< (std::ostream& o, const add_accounts & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const add_accounts & c);
-   void           operator >> (const YAML::Node& n,       add_accounts & c);
+    std::ostream& operator<< (std::ostream& o, const conf_add_accounts & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const conf_add_accounts & c);
+   void           operator >> (const YAML::Node& n,       conf_add_accounts & c);
 
-bool operator== (const add_accounts& a, const add_accounts& b);
-bool operator!= (const add_accounts& a, const add_accounts& b);
+bool operator== (const conf_add_accounts& a, const conf_add_accounts& b);
+bool operator!= (const conf_add_accounts& a, const conf_add_accounts& b);
 
     std::ostream& operator<< (std::ostream& o, const pub_accmgr_init & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const pub_accmgr_init & c);
@@ -339,10 +357,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const rq_accounts&
 void __internal_add2map (qpid::types::Variant::Map& map, const rq_accounts& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<rq_accounts>& a, const std::string& field);
 void copy (rq_accounts& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const add_accounts& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const add_accounts& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<add_accounts>& a, const std::string& field);
-void copy (add_accounts& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const conf_add_accounts& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const conf_add_accounts& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<conf_add_accounts>& a, const std::string& field);
+void copy (conf_add_accounts& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_accmgr_init& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_accmgr_init& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_accmgr_init>& a, const std::string& field);
@@ -358,7 +376,7 @@ void copy (rq_accounts_oninit& a, const qpid::types::Variant& map);
     
     rq_accounts  __internal_get_default(rq_accounts *);
     
-    add_accounts  __internal_get_default(add_accounts *);
+    conf_add_accounts  __internal_get_default(conf_add_accounts *);
     
     pub_accmgr_init  __internal_get_default(pub_accmgr_init *);
     
@@ -380,7 +398,7 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::account::msg::rq_accounts)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::account::msg::add_accounts)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::account::msg::conf_add_accounts)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::account::msg::pub_accmgr_init)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::account::msg::rq_accounts_oninit)
 

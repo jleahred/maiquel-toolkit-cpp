@@ -17,7 +17,7 @@ NAME_TAG = {}
 TAG_NAME = {}
 MSG_FIELDS = {}
 MSG_FIELDS__NAMES_WITHOUT_NAMESPACES = {}
-
+MSG_NAMES = {}
 
 
 
@@ -87,7 +87,16 @@ def fill_msg_fields():
                 MSG_FIELDS__NAMES_WITHOUT_NAMESPACES[class_name] = []
             MSG_FIELDS__NAMES_WITHOUT_NAMESPACES[class_name].append({'fn':field_name, 'ft':field_type__or__sub_msg_type, 'cp':__class_properties})
             
-    
+
+def fill_msg_names():
+    for class_name, class_info, __class_properties, send_code  in MESSAGES:
+        msg_full_name = msg_full_name = '::'.join(NAMESPACES) + '::' + class_name
+        if MSG_NAMES.has_key(class_name) == False:
+            MSG_NAMES[class_name] = []
+        if __class_properties.has_key('SUBJ'):
+            MSG_NAMES[class_name].append(__class_properties['SUBJ'].replace('$', ' $'))
+        else:
+            MSG_NAMES[class_name].append("_")
 
 
 
@@ -246,14 +255,19 @@ for file in sys.argv[1:] :
 
     fill_tag_field_name();
     fill_msg_fields();
+    fill_msg_names();
 
 
-print '=== TAG -> NAME'
+print '=== TAG -> FIELD_NAME'
 print_map(TAG_NAME)
 print
 
-print '=== NAME -> TAG'
+print '=== FIELD_NAME -> TAG'
 print_map(NAME_TAG)
+print
+
+print '=== NAMES'
+print_map(MSG_NAMES)
 print
 
 ##print '=== MESSAGES WITH ALL FIELDS (brief)'

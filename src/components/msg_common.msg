@@ -77,7 +77,7 @@ sub_request_info [< V:0 >]
 sub_r_response [< V:0 >]   
 {
     request_info       (rqi)    :   sub_request_info
-    sec_number         (sqn)    :   int16       //  it will start with 0
+    seq_number         (sqn)    :   int16       //  it will start with 0
     is_last_response   (lr)     :   bool
 }
 

@@ -130,7 +130,7 @@ namespace mtk {
 namespace {
     
     
-    void on_add_accounts(const mtk::trd::account::msg::add_accounts&  add_accounts)
+    void on_add_accounts(const mtk::trd::account::msg::conf_add_accounts&  add_accounts)
     {
 
             //add_accounts [<  V:0, SUBJ:CONF.${location.client_code}.ACCOUNTS.${session_id}   >]
@@ -166,7 +166,7 @@ namespace {
     {
         mtk::msg::sub_request_info  ri (mtk::admin::get_request_info());
         
-        static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::account::msg::add_accounts> >    hqpid_add_accounts;
+        static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::account::msg::conf_add_accounts> >    hqpid_add_accounts;
         std::string  client_code = ri.process_info.location.client_code;
         std::string  session_id = ri.req_id.session_id;
         
@@ -174,8 +174,8 @@ namespace {
                                 hqpid_add_accounts,
                                 mtk::admin::get_url("client"),
                                 "CLITESTING",
-                                mtk::trd::account::msg::add_accounts::get_in_subject(client_code, session_id),
-                                mtk::trd::account::msg::add_accounts,
+                                mtk::trd::account::msg::conf_add_accounts::get_in_subject(client_code, session_id),
+                                mtk::trd::account::msg::conf_add_accounts,
                                 on_add_accounts)
                                 
                                 
