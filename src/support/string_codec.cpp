@@ -1,5 +1,4 @@
 #include "string_codec.h"
-#include "foreach.hpp"
 #include "alarm.h"
 
 
@@ -76,7 +75,8 @@ std::string  CodecStringList::Encode      (void)
 
 
 
-    MTK_FOREACH (itItemEncoding, internalList2Encode) {
+    for(auto itItemEncoding = internalList2Encode.begin(); itItemEncoding != internalList2Encode.end(); ++itItemEncoding)
+    {
 
 
         if (itItemEncoding != internalList2Encode.begin())
@@ -85,7 +85,8 @@ std::string  CodecStringList::Encode      (void)
 
 
         std::string value = *itItemEncoding;
-        MTK_FOREACH(itChar, value) {
+        for(auto itChar = value.begin(); itChar != value.end(); ++itChar)
+        {
             if (specialCodes.find(*itChar) != std::string::npos)
             {
                 result.push_back('\\');
@@ -276,7 +277,8 @@ std::string  CodecStringProperties::Encode      (void)
 
 
     cslItem.InitEncode();
-    MTK_FOREACH (itItemEncoding, internalMap2Encode) {
+    for(auto itItemEncoding = internalMap2Encode.begin(); itItemEncoding != internalMap2Encode.end(); ++itItemEncoding)
+    {
 
         cslEncodeProp.InitEncode();
         cslEncodeProp.AddString(itItemEncoding->first);
@@ -301,7 +303,7 @@ std::string CodecStringProperties::Encode (const std::map<std::string, std::stri
 //            it != mp.end();
 //            ++it
 //    )
-    MTK_FOREACH_CONST_ITERATOR(it, mp)
+    for(auto it = mp.begin(); it != mp.end(); ++it)
         AddProperty(it->first, it->second);
 
     return Encode();
@@ -345,12 +347,7 @@ CodecStringProperties::Decode      (const std::string& s)
     CodecStringList cslParseProperty ("", '\\' , '=');
 
 
-    MTK_FOREACH_CONTAINER_POINTER(it, items)
-//    for (
-//                std::list<std::string>::iterator it = items->begin();
-//                it != items->end();
-//                ++it
-//        )
+    for(auto it = items->begin(); it != items->end(); ++it)
     {
         mtk::CountPtr<std::list<std::string> > propValue = cslParseProperty.Decode (*it);
         std::string nombre  =   propValue->front();

@@ -3,7 +3,6 @@
 #include <iostream>
 
 
-#include "support/foreach.hpp"
 #include "support/mtk_string.h"
 #include "support/date_time.h"
 
@@ -177,7 +176,7 @@ void CheckScopeTime::PrintTimes(void)
         );
 
         std::cout   << std::endl << "times...  " << std::endl;
-        MTK_FOREACH_CONST_ITERATOR(it, mNameTime)
+        for(auto it=mNameTime.begin(); it!=mNameTime.begin(); ++it)
         {
             std::cout   << std::endl << "   "
                         << s_AlignLeft( it->first, 30, '_')
@@ -187,7 +186,7 @@ void CheckScopeTime::PrintTimes(void)
         }
     #elif MTK_PLATFORM == MTK_LINUX_PLATFORM
         std::cout   << std::endl << "times...  " << std::endl;
-        MTK_FOREACH_CONST_ITERATOR(it, mNameTime)
+        for(auto it=mNameTime.begin(); it!=mNameTime.begin(); ++it)
         {
             std::cout   << std::endl << "   "
                         << s_AlignLeft( it->first, 30, '_')

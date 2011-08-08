@@ -3,7 +3,6 @@
 
 #include "string_codec.h"
 #include "mtk_string.h"
-#include "foreach.hpp"
 #include "alarm.h"
 
 
@@ -88,7 +87,7 @@ std::list<std::string>  ConfigINI::GetSectionsNames        (void) const
 {
     std::list<std::string> result;
 
-    MTK_FOREACH_CONST_ITERATOR(itSection, listSeccionesOriginalOrder) {
+    for(auto itSection=listSeccionesOriginalOrder.begin(); itSection!=listSeccionesOriginalOrder.end(); ++itSection) {
         result.push_back(*itSection);
     }
 
@@ -108,7 +107,8 @@ std::list<std::string>  ConfigINI::GetPropertiesInSection  (const std::string& _
         return result;
     const std::list<LineInfo>& llif = mapSecciones.find(_section)->second.lLineInfo;
 
-    MTK_FOREACH_CONST_ITERATOR(itLineInfo, llif) {
+    for(auto itLineInfo=llif.begin(); itLineInfo!=llif.end(); ++itLineInfo) 
+    {
         if (itLineInfo->propertyName != "")
             result.push_back(itLineInfo->propertyName);
     }
@@ -130,7 +130,8 @@ mtk::Nullable<std::string> ConfigINI::GetValue (
 
     const std::list<LineInfo>& llif = mapSecciones.find(_section)->second.lLineInfo;
 
-    MTK_FOREACH_CONST_ITERATOR(itLineInfo, llif) {
+    for(auto itLineInfo = llif.cbegin();  itLineInfo != llif.cend(); ++itLineInfo)
+    {
         if (itLineInfo->propertyName == _propName)
             return mtk::Nullable<std::string>(itLineInfo->propertyValue);
     }
@@ -154,7 +155,8 @@ void  ConfigINI::SetValue   (
     std::list<LineInfo>& llif = mapSecciones[section].lLineInfo;
 
         bool propiedadEncontrada = false;
-        MTK_FOREACH(itLineInfo, llif) {
+        for(auto itLineInfo = llif.begin(); itLineInfo != llif.end(); ++itLineInfo)
+        {
             if (itLineInfo->propertyName == propName) {
                 propiedadEncontrada = true;
                 if (itLineInfo->propertyValue != value)
@@ -187,7 +189,8 @@ bool  ConfigINI::DeleteValue (
 
 
     std::list<LineInfo>& llif = mapSecciones.find(_section)->second.lLineInfo;
-    MTK_FOREACH(itLineInfo, llif) {
+    for(auto itLineInfo=llif.begin(); itLineInfo!=llif.end(); ++itLineInfo) 
+    {
         if (itLineInfo->propertyName == _propName) {
                 llif.erase(itLineInfo);
                 modified = true;
@@ -225,12 +228,12 @@ void ConfigINI::Write      ( void )
 
     CodecStringList csl("", '\\', '=');
 
-    MTK_FOREACH(itSectionName, lSections) {
+    for(auto itSectionName = lSections.begin(); itSectionName != lSections.end(); ++itSectionName) {
         std::list<LineInfo> llif = mapSecciones[*itSectionName].lLineInfo;
         if ( *itSectionName != "___none___")
             file << "[" << *itSectionName << "]" << std::endl;
 
-        MTK_FOREACH(itLineInfo, llif) {
+        for(auto itLineInfo = llif.begin(); itLineInfo != llif.end(); ++itLineInfo) {
             if (itLineInfo->propertyName!="" /*&&  itLineInfo->propertyValue!=""*/) {
                 csl.AddString(itLineInfo->propertyName);
                 csl.AddString(itLineInfo->propertyValue);
@@ -251,12 +254,12 @@ std::string ConfigINI::GetStringConfigFileLines () const
     unsigned short linesNumber=0;
     std::string result;
 
-    MTK_FOREACH_CONST_ITERATOR(itSection, listSeccionesOriginalOrder) {
+    for(auto itSection = listSeccionesOriginalOrder.begin(); itSection != listSeccionesOriginalOrder.end(); ++itSection) {
         result.append("[" + *itSection + "]" + "\n\r");
         linesNumber++;
         const std::list<LineInfo>& llif = mapSecciones.find(*itSection)->second.lLineInfo;
 
-        MTK_FOREACH_CONST_ITERATOR(itLineInfo, llif) {
+        for(auto itLineInfo = llif.begin(); itLineInfo != llif.end(); ++itLineInfo) {
             if (itLineInfo->propertyName != "")
             {
                 result.append(itLineInfo->propertyName + "=" + itLineInfo->propertyValue + "\n\r");

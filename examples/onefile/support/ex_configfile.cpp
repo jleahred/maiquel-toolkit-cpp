@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "support/foreach.hpp"
 #include "support/configfile.h"
 #include "support/alarm.h"
 #include "support/list.hpp"
@@ -34,7 +33,7 @@ int main(void)
         //  obtener los nodos de un nodo
         std::cout << "NODES..."  << std::endl;
         mtk::list<std::string>  vnodes0 = config.GetNodes("ADMIN");
-        MTK_FOREACH(itnodes, vnodes0)
+        for(auto itnodes = vnodes0.begin(); itnodes != vnodes0.end(); ++itnodes)
 	      std::cout << *itnodes << std::endl;
 
 
@@ -42,7 +41,7 @@ int main(void)
         {
             std::cout << "NODES..."  << std::endl;
             mtk::list<std::string>  vnodes1 = config.GetNodes("");
-            MTK_FOREACH(itnodes, vnodes1)
+            for(auto itnodes = vnodes1.begin(); itnodes != vnodes1.end(); ++itnodes)
                 std::cout << *itnodes << std::endl;
         }
 
@@ -51,7 +50,7 @@ int main(void)
         {
             std::cout << "PROPERTIES..."  << std::endl;
             mtk::list<mtk::tuple<std::string, mtk::ConfigFile::enPropertyType> >  vproperties = config.GetProperties("ADMIN");
-            MTK_FOREACH(itnodes, vproperties)
+            for(auto itnodes = vproperties.begin(); itnodes != vproperties.end(); ++itnodes)
                 std::cout << itnodes->_0 << std::endl;
         }
 
@@ -59,7 +58,7 @@ int main(void)
         {
             std::cout << "PROPERTIES..."  << std::endl;
             mtk::list<mtk::tuple<std::string, mtk::ConfigFile::enPropertyType> >  vproperties = config.GetProperties("ADMIN.ADMIN11");
-            MTK_FOREACH(itnodes, vproperties)
+            for(auto itnodes = vproperties.begin(); itnodes != vproperties.end(); ++itnodes)
             {
                 if (itnodes->_1 == mtk::ConfigFile::ptValue)    std::cout << "type value:  ";
                 if (itnodes->_1 == mtk::ConfigFile::ptList)     std::cout << "type list :  ";
@@ -72,7 +71,7 @@ int main(void)
         {
             std::cout << "UNA LISTA..."  << std::endl;
             mtk::list<std::string>   listitems = config.GetList("ADMIN2.lista").Get();  //  ya lo sé, no compruebo HasValue
-            MTK_FOREACH(items, listitems) 
+            for(auto items = listitems.begin(); items != listitems.end(); ++items)
                 std::cout << *items << std::endl;
         }
 

@@ -2,7 +2,6 @@
 
 #include "support/re/RegExp.h"
 #include "support/mtk_string.h"
-#include "support/foreach.hpp"
 #include "support/mtk_string.h"
 
 
@@ -114,7 +113,7 @@ mtk::tuple<bool, int> HumbleParser::ExecuteNonTerminal( int str2parsePos, const 
 
         //  probamos todos los símbolos de la derecha
         mtk::CountPtr<AST_Node_Item> currentAstNode;
-        MTK_FOREACH_CONST_ITERATOR(it1, rightSymbols)
+        for(auto it1 = rightSymbols.begin(); it1 != rightSymbols.end(); ++it1)
         {
             int remainingStr2ParsePos = strPosRule;
             result = false;
@@ -511,7 +510,7 @@ HumbleParser::Parse(const std::string& input, const std::string& init) const
             if (deeperErrorExpectedSymbols.size() > 0)
             {
                 expectedSymbols  <<  "   expected:  ";
-                MTK_FOREACH(it, deeperErrorExpectedSymbols)
+                for(auto it = deeperErrorExpectedSymbols.begin(); it != deeperErrorExpectedSymbols.end(); ++it)
                     expectedSymbols << " " << *it;
             }
             return mtk::make_tuple(false, MTK_SS("ERROR parsing... " << string2parse.substr(deeperErrorParsingPos, 50) << "." << expectedSymbols.str()), astRoot);
@@ -818,7 +817,7 @@ mtk::tuple<bool, int> HumbleParser::ExecuteLiteral(int str2parsePos, const std::
 std::list<std::string>   HumbleParser::GetTerminalRules(void)const
 {
     std::list<std::string> result;
-    MTK_FOREACH_CONST_ITERATOR(it, terminalRules)
+    for(auto it = terminalRules.begin(); it != terminalRules.end(); ++it)
     {
         result.push_back(it->first);
     }
@@ -828,7 +827,7 @@ std::list<std::string>   HumbleParser::GetTerminalRules(void)const
 std::list<std::string>   HumbleParser::GetNonTerminalRules(void)const
 {
     std::list<std::string> result;
-    MTK_FOREACH_CONST_ITERATOR(it, nonTerminalRules)
+    for(auto it = nonTerminalRules.begin(); it != nonTerminalRules.end(); ++it)
     {
         result.push_back(it->first);
     }

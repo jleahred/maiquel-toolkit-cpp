@@ -2,7 +2,6 @@
 
 
 #include "support/mtk_string.h"
-#include "support/foreach.hpp"
 
 
 
@@ -72,7 +71,7 @@ void ArithMachine::AddInstruction   (const Instruction&     instruction )
 void ArithMachine::AddProgram(const t_program&   _program)
 {
     PartialReset();
-    MTK_FOREACH_CONST_ITERATOR(itInstruction, _program)
+    for(auto itInstruction = _program.begin(); itInstruction != _program.end(); ++itInstruction)
         AddInstruction(*itInstruction);
 }
 
@@ -98,7 +97,7 @@ mtk::Double ArithMachine::Eval(void)
     //  verificar que al final queda sólo 1 elemento en la pila
     //  scarlo y devolverlo como resultado
 
-    MTK_FOREACH (itInstruction, program)
+    for(auto itInstruction = program.begin(); itInstruction != program.end(); ++itInstruction)
     {
         switch (itInstruction->operatorCode)
         {

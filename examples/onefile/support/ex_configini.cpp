@@ -2,7 +2,6 @@
 
 
 
-#include "support/foreach.hpp"
 #include "support/alarm.h"
 #include "support/configini.h"
 #include "support/mtk_string.h"
@@ -50,12 +49,14 @@ int main()
             //  recogemos la lista de secciones
             std::list<std::string>  sn = ci.GetSectionsNames();
             //  recorremos todas las secciones
-            MTK_FOREACH (its, sn) {
+            for(auto its = sn.begin(); its != sn.end(); ++its)
+            {
                 std::cout << std::endl << "_[" << *its << "]_";
 
                 //  recorremos todas las propiedades de la sección *its
                 std::list<std::string> properties = ci.GetPropertiesInSection(*its);
-                MTK_FOREACH (itp, properties) {
+                for(auto itp = properties.begin(); itp != properties.end(); ++itp)
+                {
                     std::cout << std::endl << *itp << "_=_" << ci.GetValue(*its, *itp).Get();
                 }
 

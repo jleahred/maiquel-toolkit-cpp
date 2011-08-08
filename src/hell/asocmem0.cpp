@@ -1,7 +1,6 @@
 #include "asocmem0.h"
 
 
-#include "support/foreach.hpp"
 #include "support/mtk_string.h"
 
 
@@ -47,8 +46,8 @@ void asoc_mem0::scope::add2inherited(const scope& scope2add)
 
     inherited_map_name2ref = scope2add.inherited_map_name2ref;
 
-    std::map<std::string, mtk::CountPtr<std::string> >::const_iterator it = scope2add.local_map_name2ref.begin();
-    for ( ; it!= scope2add.local_map_name2ref.end(); ++it) {
+    //std::map<std::string, mtk::CountPtr<std::string> >::const_iterator it = scope2add.local_map_name2ref.begin();
+    for(auto  it = scope2add.local_map_name2ref.begin(); it!= scope2add.local_map_name2ref.end(); ++it) {
         inherited_map_name2ref[it->first] = it->second;
     }
 }

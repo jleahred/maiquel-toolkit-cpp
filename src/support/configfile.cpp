@@ -2,7 +2,6 @@
 #include "support/mtk_string.h"
 #include "support/alarm.h"
 #include "support/re/RegExp.h"
-#include "foreach.hpp"
 
 
 #include <iostream>  // I/O
@@ -432,7 +431,7 @@ void ModifListOfNode(const std::string& keys, mtk::CountPtr<AST_Node_Item> node,
             firstItem = make_cptr(new AST_Node_Item("LIST_ITEM", NOVALUE_SYMBOL));
         else
         {
-            MTK_FOREACH_CONST_ITERATOR (itItemList, list)
+            for(auto itItemList=list.begin(); itItemList!=list.end(); ++itItemList)
             {
                 if (!firstItem.isValid())
                 {
@@ -662,7 +661,7 @@ void   ConfigFile::CreateList   (const std::string& keys, const mtk::list<std::s
                 firstItem = make_cptr(new AST_Node_Item("LIST_ITEM", NOVALUE_SYMBOL));
             else
             {
-                MTK_FOREACH_CONST_ITERATOR (itItemList, list)
+                for(auto itItemList=list.begin();itItemList!=list.end(); ++itItemList)
                 {
                     if (!firstItem.isValid())
                     {

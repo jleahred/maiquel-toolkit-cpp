@@ -4,7 +4,6 @@
 
 
 #include "support/alarm.h"
-#include "support/foreach.hpp"
 #include <iostream>
 
 
@@ -60,7 +59,7 @@ int main(void)
                 std::cout << (*it).first << "  ,  " << it->second << std::endl;
             }
 
-            MTK_FOREACH(it2, mis)
+            for(auto it2 = mis.begin(); it2 != mis.end(); ++it2)
                 std::cout << (*it2).first << "  ,  " << it2->second << std::endl;
 
 
@@ -90,7 +89,7 @@ int main(void)
             std::cout << "copia iterator lista" << std::endl;
             mtk::list<std::string>::const_iterator itb;
             itb = li.begin();
-            MTK_FOREACH(itl, li)
+            for(auto itl = li.begin(); itl != li.end(); ++itl)
                 std::cout << *itl << std::endl;
 
 

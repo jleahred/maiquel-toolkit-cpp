@@ -3,7 +3,6 @@
 
 
 
-#include "support/foreach.hpp"
 #include "support/alarm.h"
 #include "support/string_codec.h"
 
@@ -74,10 +73,10 @@ int main()
 
     //  Originales...
     std::cout << std::endl << std::endl << "lista 1... ";
-    MTK_FOREACH(its, list1)
+    for(auto its = list1.begin(); its != list1.end(); ++its)
         std::cout << std::endl << *its;
     std::cout << std::endl << std::endl << "lista 2... ";
-    MTK_FOREACH(its, list2)
+    for(auto its = list2.begin(); its != list2.end(); ++its)
         std::cout << std::endl << *its;
 
 

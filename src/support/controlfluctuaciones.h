@@ -7,7 +7,6 @@
 #include "support/date_time.h"
 #include "support/tuples.hpp"
 #include "support/alarm.h"
-//#include "support/foreach.hpp"
 #include "support/mtk_string.h"
 #include "support/count_ptr.hpp"
 #include "support/list.hpp"

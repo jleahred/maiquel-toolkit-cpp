@@ -3,7 +3,6 @@
 #include "support/mtk_string.h"
 #include "support/configfile.h"
 #include "support/nullable.hpp"
-#include "support/foreach.hpp"
 #include "support/alarm.h"
 #include "support/list.hpp"
 
@@ -259,7 +258,7 @@ int main(void)
         std::cout << "************************************************************************************" << std::endl;
         std::cout << "Obtenemos la lista de propiedades de [ADMIN.TibcoServices]"  << std::endl;
         const mtk::list<mtk::tuple<std::string, mtk::ConfigFile::enPropertyType> > lproperties = config.GetProperties("ADMIN.TibcoServices");
-        MTK_FOREACH_CONST_ITERATOR (itProperty, lproperties)
+        for(auto itProperty = lproperties.begin(); itProperty != lproperties.end(); ++itProperty)
         {
             std::cout <<  itProperty->_0 << std::endl;
         }
@@ -271,7 +270,7 @@ int main(void)
         std::cout << "************************************************************************************" << std::endl;
         std::cout << "Obtenemos la lista de nodos de [ADMIN.PR1]"  << std::endl;
         const mtk::list<std::string> lnodes = config.GetNodes("ADMIN.PR1");
-        MTK_FOREACH_CONST_ITERATOR (itNode, lnodes)
+        for(auto itNode = lnodes.begin(); itNode != lnodes.end(); ++itNode)
         {
             std::cout <<  *itNode << std::endl;
         }

@@ -2,7 +2,6 @@
 
 #include "support/re/RegExp.h"
 #include "support/mtk_string.h"
-#include "support/foreach.hpp"
 #include <map>
 #include <sstream>
 
@@ -232,7 +231,7 @@ std::string Replace(const std::map<std::string, std::string>& mapItemsFounded, c
 
 bool  in_list   (const mtk::list<std::string>& lNodes2mantein, const std::string& value)
 {
-    MTK_FOREACH_CONST_ITERATOR(it, lNodes2mantein)
+    for(auto it = lNodes2mantein.begin(); it != lNodes2mantein.end(); ++it)
     {
         if (*it  ==  value)
             return true;

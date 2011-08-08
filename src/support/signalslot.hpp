@@ -37,7 +37,6 @@
 
 #include "support/basic_types.hpp"
 #include "support/count_ptr.hpp"
-#include "support/foreach.hpp"
 #include "support/tuples.hpp"
 
 
@@ -155,7 +154,7 @@ public:
     };
 
     void UnRegisterConnection(cptrBaseConnection connection) {
-        MTK_FOREACH (itConnection, listConnections)
+        for(auto itConnection = listConnections.begin(); itConnection != listConnections.end(); ++itConnection)
         {
             //  es seguro borrar directamente desde aquí, porque sólo se itera
             //  la lista en este punto y en el destructor
@@ -179,7 +178,7 @@ public:
 
     virtual ~SignalReceptor(void) {
     //  avisar a las señales que nos apuntan de que nos vamos...
-        MTK_FOREACH (itConnection, listConnections)
+        for(auto itConnection = listConnections.begin(); itConnection != listConnections.end(); ++itConnection)
         {
             if ( (*itConnection).isValid()==false ) {
                 itConnection = listConnections.erase(itConnection);
@@ -338,7 +337,8 @@ public:
 
     template<typename TReceiver>
     bool disconnect(TReceiver* receiver, void (TReceiver::*fpt)(void)) {
-        MTK_FOREACH (it2ptrBaseConnection, connections) {
+        for(auto it2ptrBaseConnection = connections.begin(); it2ptrBaseConnection != connections.end(); ++it2ptrBaseConnection) 
+        {
             Connection<TReceiver>* pconnection = dynamic_cast<Connection<TReceiver>* > (it2ptrBaseConnection->get2());
             if  (
                     pconnection
@@ -378,7 +378,8 @@ public:
 
     void disconnect_all(void) {
         //  limpieza
-        MTK_FOREACH (it2ptrBaseConnection, connections) {
+        for(auto it2ptrBaseConnection = connections.begin(); it2ptrBaseConnection != connections.end(); ++it2ptrBaseConnection)
+        {
             if ( (*it2ptrBaseConnection)->IsDisconnected() == false) {
                 SignalReceptor* sr = (*it2ptrBaseConnection)->GetSignalReceptor();
                 sr->UnRegisterConnection(
@@ -394,7 +395,8 @@ public:
         //functConnections.clear();
 		if (processing_emit>0)
 		{
-			MTK_FOREACH(itconnection2funct, functConnections) {
+            for(auto itconnection2funct = functConnections.begin(); itconnection2funct != functConnections.end(); ++itconnection2funct)
+            {
 				itconnection2funct->_1 = false;
 			}
 		}
@@ -414,7 +416,8 @@ public:
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
 				throw std::runtime_error("too deep recursion on emit");
 
-			MTK_FOREACH(itconnection, connections) {
+            for(auto itconnection = connections.begin(); itconnection != connections.end(); ++itconnection)
+            {
 				if ( (*itconnection)->IsDisconnected() == false) {
 					//  OJO alguien podría tener la genial idea de desconectar desde
 					//  el método llamado por emit (o sucedáneos)
@@ -432,7 +435,7 @@ public:
 
 
 					//  ahora para las funciones
-			MTK_FOREACH(itconnection2funct, functConnections) 
+            for(auto itconnection2funct = functConnections.begin(); itconnection2funct != functConnections.end(); ++itconnection2funct)
 			{
 				if (itconnection2funct->_1)
 				{
@@ -478,7 +481,8 @@ public:
         // esto no sirve, porque aquí no se deberían borrar, sólo se deberían anotar como borrados
         //  el borrado tiene que estar luego en el emit
         //  functConnections.remove(pt2Function);   esto es más corto, pero no nos indica si había algún elemento
-        MTK_FOREACH(itconnection2funct, functConnections) {
+        for(auto itconnection2funct = functConnections.begin(); itconnection2funct != functConnections.end(); ++itconnection2funct)
+        {
             if (pt2Function == itconnection2funct->_0) {
 				if(processing_emit>0)
 					itconnection2funct->_1 = false;
@@ -598,8 +602,7 @@ class Signal
         :   public SignalReceptor//,private non_copyable
 {
 	int processing_emit;
-    typedef std::list< CountPtr<BaseConnection1<TP1> > > t_listConnections;
-	t_listConnections	connections;
+    std::list< CountPtr<BaseConnection1<TP1> > >    connections;
 
     //  conexión con funciones
     std::list< mtk::tuple<void (*)(TP1), bool> >  functConnections;
@@ -636,9 +639,8 @@ public:
 
     template<typename TReceiver>
     bool disconnect(TReceiver* receiver, void(TReceiver::*fpt)(TP1)) {
-        //MTK_FOREACH (it2ptrBaseConnection, connections) {
         for (
-                typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+                auto  it2ptrBaseConnection = connections.begin();
                 it2ptrBaseConnection != connections.end();
                 ++it2ptrBaseConnection
             )
@@ -682,9 +684,8 @@ public:
 
     void disconnect_all(void) {
         //  limpieza
-        //MTK_FOREACH (it2ptrBaseConnection, connections) {
         for (
-                typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+                auto  it2ptrBaseConnection = connections.begin();
                 it2ptrBaseConnection != connections.end();
                 ++it2ptrBaseConnection
             )
@@ -726,9 +727,8 @@ public:
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
 				throw std::runtime_error("too deep recursion on emit");
-			//MTK_FOREACH(itconnection, connections) {
 			for (
-					typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+					auto  it2ptrBaseConnection = connections.begin();
 					it2ptrBaseConnection != connections.end();
 					++it2ptrBaseConnection
 				)
@@ -911,8 +911,7 @@ class Signal
         :   public SignalReceptor//,private non_copyable
 {
 	int processing_emit;
-    typedef std::list< CountPtr<BaseConnection2<TP1, TP2> > > t_listConnections;
-	t_listConnections	connections;
+    std::list< CountPtr<BaseConnection2<TP1, TP2> > > connections;
 
     //  conexión con funciones
     std::list< mtk::tuple<void (*)(TP1, TP2), bool> >  functConnections;
@@ -949,9 +948,8 @@ public:
 
     template<typename TReceiver>
     bool disconnect(TReceiver* receiver, void(TReceiver::*fpt)(TP1, TP2)) {
-        //MTK_FOREACH (it2ptrBaseConnection, connections) {
         for (
-                typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+                auto  it2ptrBaseConnection = connections.begin();
                 it2ptrBaseConnection != connections.end();
                 ++it2ptrBaseConnection
             )
@@ -995,9 +993,8 @@ public:
 
     void disconnect_all(void) {
         //  limpieza
-        //MTK_FOREACH (it2ptrBaseConnection, connections) {
         for (
-                typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+                auto  it2ptrBaseConnection = connections.begin();
                 it2ptrBaseConnection != connections.end();
                 ++it2ptrBaseConnection
             )
@@ -1039,9 +1036,8 @@ public:
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
 				throw std::runtime_error("too deep recursion on emit");
-			//MTK_FOREACH(itconnection, connections) {
 			for (
-					typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+					auto  it2ptrBaseConnection = connections.begin();
 					it2ptrBaseConnection != connections.end();
 					++it2ptrBaseConnection
 				)
@@ -1223,8 +1219,7 @@ class Signal
         :   public SignalReceptor//,private non_copyable
 {
 	int processing_emit;
-    typedef std::list< CountPtr<BaseConnection3<TP1, TP2, TP3> > > t_listConnections;
-	t_listConnections	connections;
+    std::list< CountPtr<BaseConnection3<TP1, TP2, TP3> > >   connections;
 
     //  conexión con funciones
     std::list< mtk::tuple<void (*)(TP1, TP2, TP3), bool> >  functConnections;
@@ -1261,9 +1256,8 @@ public:
 
     template<typename TReceiver>
     bool disconnect(TReceiver* receiver, void(TReceiver::*fpt)(TP1, TP2, TP3)) {
-        //MTK_FOREACH (it2ptrBaseConnection, connections) {
         for (
-                typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+                auto  it2ptrBaseConnection = connections.begin();
                 it2ptrBaseConnection != connections.end();
                 ++it2ptrBaseConnection
             )
@@ -1307,9 +1301,8 @@ public:
 
     void disconnect_all(void) {
         //  limpieza
-        //MTK_FOREACH (it2ptrBaseConnection, connections) {
         for (
-                typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+                auto  it2ptrBaseConnection = connections.begin();
                 it2ptrBaseConnection != connections.end();
                 ++it2ptrBaseConnection
             )
@@ -1351,9 +1344,8 @@ public:
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
 				throw std::runtime_error("too deep recursion on emit");
-			//MTK_FOREACH(itconnection, connections) {
 			for (
-					typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+					auto  it2ptrBaseConnection = connections.begin();
 					it2ptrBaseConnection != connections.end();
 					++it2ptrBaseConnection
 				)
@@ -1536,8 +1528,7 @@ class Signal
         :   public SignalReceptor//,private non_copyable
 {
 	int processing_emit;
-    typedef std::list< CountPtr<BaseConnection4<TP1, TP2, TP3, TP4> > > t_listConnections;
-	t_listConnections	connections;
+    std::list< CountPtr<BaseConnection4<TP1, TP2, TP3, TP4> > >   connections;
 
     //  conexión con funciones
     std::list< mtk::tuple<void (*)(TP1, TP2, TP3, TP4), bool> >  functConnections;
@@ -1574,9 +1565,8 @@ public:
 
     template<typename TReceiver>
     bool disconnect(TReceiver* receiver, void(TReceiver::*fpt)(TP1, TP2, TP3, TP4)) {
-        //MTK_FOREACH (it2ptrBaseConnection, connections) {
         for (
-                typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+                auto  it2ptrBaseConnection = connections.begin();
                 it2ptrBaseConnection != connections.end();
                 ++it2ptrBaseConnection
             )
@@ -1620,9 +1610,8 @@ public:
 
     void disconnect_all(void) {
         //  limpieza
-        //MTK_FOREACH (it2ptrBaseConnection, connections) {
         for (
-                typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+                auto  it2ptrBaseConnection = connections.begin();
                 it2ptrBaseConnection != connections.end();
                 ++it2ptrBaseConnection
             )
@@ -1664,9 +1653,8 @@ public:
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
 				throw std::runtime_error("too deep recursion on emit");
-			//MTK_FOREACH(itconnection, connections) {
 			for (
-					typename t_listConnections::iterator it2ptrBaseConnection = connections.begin();
+					auto  it2ptrBaseConnection = connections.begin();
 					it2ptrBaseConnection != connections.end();
 					++it2ptrBaseConnection
 				)

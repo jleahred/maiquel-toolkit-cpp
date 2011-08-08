@@ -4,7 +4,6 @@
 #include "support/hvm/bhvm.h"
 #include "support/mtk_string.h"
 #include "support/nullable.hpp"
-#include "support/foreach.hpp"
 
 
 
@@ -662,7 +661,8 @@ std::string get_vars_status(void)
     result << "vars" << std::endl;
     result << "==========" << std::endl;
 
-    MTK_FOREACH(it, map_var_value) {
+    for(auto it = map_var_value.begin(); it != map_var_value.end(); ++it)
+    {
         result << it->first << " ==  " << it->second << std::endl;
     }
     return result.str();
