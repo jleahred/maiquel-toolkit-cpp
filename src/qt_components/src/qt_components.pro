@@ -7,6 +7,9 @@
 QT       += core gui
 QT       += phonon
 
+#QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=gnu++0x
+
 
 TARGET = ../../../lib/qt_components
 TEMPLATE = lib
