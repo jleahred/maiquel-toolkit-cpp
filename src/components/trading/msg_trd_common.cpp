@@ -478,8 +478,8 @@ void sub_total_executions::before_send(void) const
 
 
 
-sub_account_info::sub_account_info (   const std::string&  _client_code,   const std::string&  _name)
-    :     client_code(_client_code),   name(_name) 
+sub_account_info::sub_account_info (   const std::string&  _name,   const std::string&  _client_code)
+    :     name(_name),   client_code(_client_code) 
        
     {  
         std::string cr = check_recomended ();  
@@ -717,7 +717,7 @@ std::ostream& operator<< (std::ostream& o, const sub_account_info & c)
 {
     o << "{ "
 
-        << "client_code:"<<   c.client_code << "  "        << "name:"<<   c.name << "  "
+        << "name:"<<   c.name << "  "        << "client_code:"<<   c.client_code << "  "
         << " }";
     return o;
 };
@@ -728,7 +728,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_account_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code        << YAML::Key << "name"  << YAML::Value <<   c.name
+        << YAML::Key << "name"  << YAML::Value <<   c.name        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code
         << YAML::EndMap;
     return o;
 };
@@ -739,8 +739,8 @@ void  operator >> (const YAML::Node& node, sub_account_info & c)
 {
 
 
-        node["client_code"]  >> c.client_code;
         node["name"]  >> c.name;
+        node["client_code"]  >> c.client_code;
 
 
 };
@@ -892,8 +892,8 @@ bool operator< (const sub_account_info& a, const sub_account_info& b)
     if (false)   return true;
     else if (true)
     {
-        auto ca = mtk::make_tuple( 0          , a.client_code       , a.name );
-        auto cb = mtk::make_tuple( 0          , b.client_code       , b.name );
+        auto ca = mtk::make_tuple( 0          , a.name       , a.client_code );
+        auto cb = mtk::make_tuple( 0          , b.name       , b.client_code );
         return ca < cb;
     }
     else
@@ -939,7 +939,7 @@ bool operator!= (const sub_total_executions& a, const sub_total_executions& b)
 
 bool operator== (const sub_account_info& a, const sub_account_info& b)
 {
-    return (          a.client_code ==  b.client_code  &&          a.name ==  b.name  &&   true  );
+    return (          a.name ==  b.name  &&          a.client_code ==  b.client_code  &&   true  );
 };
 
 bool operator!= (const sub_account_info& a, const sub_account_info& b)
@@ -1171,20 +1171,20 @@ void  copy (sub_account_info& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("cc");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field client_code on message sub_account_info::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.client_code, it->second);
-                        //c.client_code = it->second;
-//   field_type
-
                     it = mv.find("nm");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field name on message sub_account_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.name, it->second);
                         //c.name = it->second;
+//   field_type
+
+                    it = mv.find("cc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field client_code on message sub_account_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.client_code, it->second);
+                        //c.client_code = it->second;
 
     }
 
@@ -1196,9 +1196,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_account_info&
 
 
 //  field_type
-        __internal_add2map(map, a.client_code, std::string("cc"));
-//  field_type
         __internal_add2map(map, a.name, std::string("nm"));
+//  field_type
+        __internal_add2map(map, a.client_code, std::string("cc"));
 
 
 };
@@ -1705,9 +1705,9 @@ sub_total_executions::sub_total_executions (const qpid::messaging::Message& msg)
 
 sub_account_info::sub_account_info (const qpid::messaging::Message& msg)
     :  //   field_type
-   client_code(__internal_get_default((std::string*)0)),
+   name(__internal_get_default((std::string*)0)),
 //   field_type
-   name(__internal_get_default((std::string*)0)) 
+   client_code(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

@@ -13,9 +13,9 @@ END_INIT
 //---------------------------------------------------------------------
 
 
-sub_product [<V:0>]
+sub_product [< V:0, KEY:gen_product_name >]
 {
-    gen_product_name    (gpn)   :       string      //  key
+    gen_product_name    (gpn)   :       string
     
     market              (mk)    :       string
     re_product_code     (repc)  :       string
@@ -32,9 +32,9 @@ sub_filter_info [<V:0>]
 
 
 
-sub_client_info  [<V:0>]
+sub_client_info  [<V:0, KEY:name  >]
 {
-    name            (nm)    :   string          //      this is the key
+    name            (nm)    :   string
 
     created         (cdt)   :   date_time
     [filter_list]   (fl)    :   sub_filter_info
@@ -42,7 +42,7 @@ sub_client_info  [<V:0>]
 
 
 
-sub_user_info  [<V:0>]
+sub_user_info  [<V:0, KEY:name >]
 {
     name            (nm)    :   string
     

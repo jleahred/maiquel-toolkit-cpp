@@ -13,9 +13,9 @@ END_INIT
 //---------------------------------------------------------------------
 
 
-sub_product_config [<V:0>]
+sub_product_config [< V:0, KEY:product_name >]
 {
-    product_name        (pn)    :       string      [key]
+    product_name        (pn)    :       string
     
     product_user_name   (pun)   :       string
     group               (grp)   :       string

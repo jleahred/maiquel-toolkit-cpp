@@ -170,7 +170,7 @@ public:
 
     
     // constructor
-    explicit sub_account_info (    const std::string&  _client_code,   const std::string&  _name );
+    explicit sub_account_info (    const std::string&  _name,   const std::string&  _client_code );
     explicit sub_account_info ( const qpid::messaging::Message& message );
     virtual ~sub_account_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_account_info"; };
@@ -182,9 +182,16 @@ public:
     
 
     // fields
-    std::string                               client_code; 
     std::string                               name; 
+    std::string                               client_code; 
 
+
+
+
+    //   KEY INFO
+        typedef decltype(name) key_type;
+        key_type    get_key(void) const  {   return  name;  }
+    //   KEY INFO
 
 
     //  subject info

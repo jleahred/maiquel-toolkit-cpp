@@ -9,7 +9,7 @@ END_INIT
 
 
 
-sub_grant  [<V:0>]
+sub_grant  [<V:0, KEY:key>]
 {
     key  [< V:0,  LessOP:1 >]
     {

@@ -47,6 +47,9 @@ public:
     virtual ~sub_user_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_user_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_user_info"; };
+
+    
+    
     
     
 
@@ -55,6 +58,13 @@ public:
     mtk::DateTime                             created; 
     std::string                               client_code; 
     mtk::list<mtk::trd::account::msg::sub_grant >  grant_list; 
+
+
+
+    //   KEY INFO
+        typedef decltype(name) key_type;
+        key_type    get_key(void) const  {   return  name;  }
+    //   KEY INFO
 
 
 

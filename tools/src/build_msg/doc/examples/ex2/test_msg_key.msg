@@ -6,9 +6,9 @@ END_INIT
 
 
 
-sub_test_key  [< V:0 >]
+sub_test_key  [< V:0, KEY:name >]
 {
-    name        (nm)    :       string      [key]
+    name        (nm)    :       string
 
     address     (add)   :       string
     telephone   (tf)    :       string

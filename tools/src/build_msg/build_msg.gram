@@ -45,11 +45,15 @@ SUB_MESSAGE  ::= NR_ENDL* _  MSG_NAME _  ( _ FIELD_TAG _ ) _  NR_ENDL*
 __endrule__
 
 
-MSG_PROPERTIES  ::=  _ mp_name _ : _ mp_value _ ,  MSG_PROPERTIES   ##transf2->'$(mp_name)':'$(mp_value)' , $(MSG_PROPERTIES)
-MSG_PROPERTIES  ::=  _ mp_name _ : _ mp_value                       ##transf2->'$(mp_name)':'$(mp_value)'
 
-mp_name  ::=  ([VI]|SUBJ|LessOP)
+
+MSG_PROPERTIES  ::=  _ mp_name _ : _ mp_value _     ,  MSG_PROPERTIES   ##transf2->'$(mp_name)':'$(mp_value)' , $(MSG_PROPERTIES)
+MSG_PROPERTIES  ::=  _ mp_name _ : _ mp_value                           ##transf2->'$(mp_name)':'$(mp_value)'
+
+mp_name  ::=  (V|I|SUBJ|LessOP|KEY)
 mp_value ::=  ([a-zA-Z0-9_\:\.\$\{\}\(\)]+)
+
+
 
 
 //  composed message definition
@@ -132,7 +136,7 @@ __endrule__
 
 
 
-//	SEND
+//  SEND
 SEND ::= _ #send _  [{  code*  }]     ##transf2->'$(code*)'
 SEND ::= _                            ##transf2->''
 #send ::= '#send'
@@ -174,7 +178,6 @@ OPT_IDS  ::=  option
 option ::=  'mandatory'   ##transf2->'mandatory'
 option ::=  'recomended'  ##transf2->'recomended'
 option ::=  'optional'    ##transf2->'optional'
-option ::=  'key'         ##transf2->'key'
 
 
 

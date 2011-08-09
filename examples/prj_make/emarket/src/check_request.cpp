@@ -57,9 +57,7 @@ void __load_config(void)
             std::string config_version;
             
             
-            mtk::list<emarket::sub_product_config>  list_product_config_temp;
-            doc["product_config"] >>  list_product_config_temp;
-            (*get_map_product_config()) = get_map_from_list_with_key(list_product_config_temp);
+            doc["product_config"] >>  *get_map_product_config();
             
             
             file.close();

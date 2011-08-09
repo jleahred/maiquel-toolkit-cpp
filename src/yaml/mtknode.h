@@ -92,6 +92,20 @@ namespace YAML
         }
     }
 
+
+    template<typename T>
+    T  parse_from_yaml_string(const std::string&  yaml_string)
+    {
+        T  result =  __internal_get_default((T*) 0);
+        std::istringstream  istr(yaml_string);
+        YAML::Parser parser(istr);
+        YAML::Node doc;
+        parser.GetNextDocument(doc);
+        doc >> result;
+        
+        return result;
+    }
+
 }
 
 #endif // MTKNODE_H_62B23520_7C8E_11DE_8A39_0800200C9A66

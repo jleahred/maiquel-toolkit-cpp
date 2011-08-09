@@ -31,6 +31,10 @@ namespace msg {
     {
         return mtk::FixedNumber(mtk::fnDouble(0), mtk::fnDec(0), mtk::fnInc(1));
     }
+    inline mtk::fnExt  __internal_get_default(mtk::fnExt*)
+    {
+        return mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1));
+    }
     
     inline mtk::DateTime __internal_get_default(mtk::DateTime*)
     {
@@ -104,6 +108,13 @@ inline void  copy(mtk::FixedNumber& result, const qpid::types::Variant& v)
 {
     result = ({   std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> ifn = /*it->second*/v.asMap();
                     mtk::FixedNumber(mtk::fnIntCode(ifn["n"].asInt32()), mtk::fnDec(ifn["d"].asInt8()), mtk::fnInc(ifn["i"].asInt8()));
+            });
+}
+
+inline void  copy(mtk::fnExt& result, const qpid::types::Variant& v)
+{
+    result = ({   std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> ifn = /*it->second*/v.asMap();
+                    mtk::fnExt(mtk::fnDec(ifn["d"].asInt8()), mtk::fnInc(ifn["i"].asInt8()));
             });
 }
 
@@ -189,6 +200,10 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::FixedNumber& a, const std::string& key)
     {
         map[key] = QPID_DESCOMPOSE_FIXED_NUMBER(a);
+    }
+    inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::fnExt& a, const std::string& key)
+    {
+        map[key] = QPID_DESCOMPOSE_FN_EXT(a);
     }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::Double& a, const std::string& key)

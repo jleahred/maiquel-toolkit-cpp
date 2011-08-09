@@ -72,6 +72,17 @@ namespace YAML
         }
 	}
     */
+
+
+    template<typename T> 
+    std::string   string_from_yaml(const T&  user_info, bool oneline=false)
+    {
+        YAML::Emitter yo;
+        if(oneline)
+            yo << YAML::Flow;
+        yo << user_info;
+        return yo.c_str();
+    }
     
 }
 

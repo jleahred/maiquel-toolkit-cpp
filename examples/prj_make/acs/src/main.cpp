@@ -42,8 +42,6 @@ namespace
         mtk::admin::register_command("sessions",  "logout",     "generate a logout for a specific session", true)->connect(command_logout);
         mtk::admin::register_command("sessions",  "lock_logings",     "lock new login request", true)->connect(command_lock);
         mtk::admin::register_command("sessions",  "unlock_logings",     "lock new login request", true)->connect(command_unlock);
-        
-        users_manager::Instance();      //  create instance and it will register aditional commands on constructor  (tick)
     }
     
     
@@ -122,6 +120,8 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
+
+        users_manager::init();
 
         qpid_cli_session =  mtk::admin::get_qpid_session("client", "CLITESTING");
         qpid_srv_session =  mtk::admin::get_qpid_session("server", "SRVTESTING");
@@ -218,6 +218,8 @@ int main(int argc, char ** argv)
     
         mtk::start_timer_wait_till_end();
         
+        
+        users_manager::save_user_list();
 
         qpid_cli_session = mtk::CountPtr< mtk::qpid_session > ();
         std::cout << "FIN..... " << std::endl;
@@ -253,7 +255,7 @@ void on_request_key_received(const mtk::acs::msg::req_login_key& req_login_key)
         
         
     //  check the client code
-    if(users_manager::Instance()->check_user_client_code(req_login_key.user_name, req_login_key.request_info.process_info.location.client_code) == false)
+    if(users_manager::check_user_client_code(req_login_key.user_name, req_login_key.request_info.process_info.location.client_code) == false)
     {
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("received invalid  user_name/client_code  " << req_login_key.user_name << "/" << req_login_key.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
@@ -286,7 +288,7 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
     }
     
     //  check the client code
-    if(users_manager::Instance()->check_user_client_code(req_login.user_name, req_login.request_info.process_info.location.client_code) == false)
+    if(users_manager::check_user_client_code(req_login.user_name, req_login.request_info.process_info.location.client_code) == false)
     {
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("received invalid  user_name/client_code  " << req_login.user_name << "/" << req_login.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
@@ -314,7 +316,7 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
         if(users_manager::Instance()->exists_user(req_login.user_name)  
                                 &&  req_login.coded_pass== mtk::crc32_as_string(MTK_SS(req_login.user_name <<  users_manager::Instance()->get_passwordcrc32(req_login.user_name) << req_login.key)))
                                  */
-        if(users_manager::Instance()->check_user_password(req_login.user_name, req_login.key, req_login.coded_pass))
+        if(users_manager::check_user_password(req_login.user_name, req_login.key, req_login.coded_pass))
         {
             static int counter=1;
             mtk::DateTime  dt_now(mtk::dtNowLocal());
@@ -584,13 +586,13 @@ void on_request_change_password_received(const mtk::acs::msg::req_change_passwor
         else if (session_info.client_code !=  req_change_password.request_info.process_info.location.client_code)
             throw mtk::Alarm(MTK_HERE, "rqchangpwd", MTK_SS("client code name doesn't match  " << req_change_password  << "   "  << session_info.user_name), mtk::alPriorError, mtk::alTypeNoPermisions);
         
-        std::string decoded_new_password = users_manager::Instance()->decode_modif_password(    req_change_password.user_name, 
+        std::string decoded_new_password = users_manager::decode_modif_password(    req_change_password.user_name, 
                                                                                                 req_change_password.key, 
                                                                                                 req_change_password.new_password);
         //  verify password
-        if(users_manager::Instance()->check_user_password(req_change_password.user_name, req_change_password.key, req_change_password.old_password))
+        if(users_manager::check_user_password(req_change_password.user_name, req_change_password.key, req_change_password.old_password))
         {
-            users_manager::Instance()->save_new_password(req_change_password.user_name, decoded_new_password);
+            users_manager::save_new_password(req_change_password.user_name, decoded_new_password);
             
             mtk::list<mtk::acs::msg::res_change_password::IC_change_password_info>  data_list;
             data_list.push_back(mtk::acs::msg::res_change_password::IC_change_password_info(true));

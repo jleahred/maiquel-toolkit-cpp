@@ -51,16 +51,18 @@ public:
     
 
     // fields
-    //   KEY INFO
-    std::string                               get_key(void) const  {   return  name;  }
-    typedef                                   std::string   key_type;
-    //   KEY INFO
-
     std::string                               name; 
     std::string                               address; 
     std::string                               telephone; 
     std::string                               email; 
 
+
+
+
+    //   KEY INFO
+        typedef decltype(name) key_type;
+        key_type    get_key(void) const  {   return  name;  }
+    //   KEY INFO
 
 
     //  subject info

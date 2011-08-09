@@ -51,16 +51,18 @@ public:
     
 
     // fields
-    //   KEY INFO
-    std::string                               get_key(void) const  {   return  product_name;  }
-    typedef                                   std::string   key_type;
-    //   KEY INFO
-
     std::string                               product_name; 
     std::string                               product_user_name; 
     std::string                               group; 
     std::string                               group_user_name; 
     mtk::fnExt                                price_fnext; 
+
+
+
+    //   KEY INFO
+        typedef decltype(product_name) key_type;
+        key_type    get_key(void) const  {   return  product_name;  }
+    //   KEY INFO
 
 
 

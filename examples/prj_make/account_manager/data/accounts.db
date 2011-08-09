@@ -3,27 +3,20 @@ markets:
   - MARKET
   - KK
 accounts:
-  CLIENT:
+  - name: AC1@CLIENT
     client_code: CLIENT
-    name: AC1@CLIENT
-  JOSE2@DESARR:
+  - name: JOSE2@DESARR
     client_code: CIMD
-    name: JOSE2@DESARR
-  JOSE@DESARR:
+  - name: JOSE@DESARR
     client_code: CIMD
-    name: JOSE@DESARR
-  JOSE@PRU:
+  - name: JOSE@PRU
     client_code: CIMD
-    name: JOSE@PRU
-  KKK:
+  - name: KKK
     client_code: KKK
-    name: KKK
-  LALALA:
+  - name: LALALA
     client_code: KKK
-    name: LALALA
 user_info:
-  JOSELUIS.ESTEBAN@DESARROLLO:
-    name: JOSELUIS.ESTEBAN@DESARROLLO
+  - name: JOSELUIS.ESTEBAN@DESARROLLO
     created: 2011-06-02 11:30:51.720
     client_code: CIMD
     grant_list:
@@ -45,8 +38,7 @@ user_info:
             client_code: KKK
             name: LALALA
         type: V
-  PR:
-    name: PR
+  - name: PR
     created: 2011-06-02 11:30:51.720
     client_code: CIMD
     grant_list:
@@ -56,8 +48,7 @@ user_info:
             client_code: CIMD
             name: .*
         type: V
-  PR_CLIENT:
-    name: PR_CLIENT
+  - name: PR_CLIENT
     created: 2011-06-02 11:30:51.720
     client_code: CLIENT
     grant_list:

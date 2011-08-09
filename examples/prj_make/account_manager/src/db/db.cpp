@@ -86,8 +86,8 @@ namespace db {
         mtk::admin::register_command("accmgr",  "add_market",  "<market_name>", true)->connect(command_add_market);
         mtk::admin::register_command("accmgr",  "del_market",  "<market_name>", true)->connect(command_del_market);
 
-        mtk::admin::register_command("accmgr",  "add_account",  "<cli-code> <account-name>")->connect(command_add_account);
-        mtk::admin::register_command("accmgr",  "del_account",  "<cli-code> <account-name>")->connect(command_del_account);
+        mtk::admin::register_command("accmgr",  "add_account",  "<account-name> <cli-code>")->connect(command_add_account);
+        mtk::admin::register_command("accmgr",  "del_account",  "<account-name> <cli-code>")->connect(command_del_account);
         
         mtk::admin::register_command("accmgr",  "add_user",     "<user_name> <client-code>")->connect(command_add_user);
         mtk::admin::register_command("accmgr",  "del_user",     "<user_name> <client-code>")->connect(command_del_user);
@@ -540,59 +540,24 @@ namespace db {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-	void operator >> (const YAML::Node& node, mtk::map<std::string, mtk::trd::msg::sub_account_info>& m)
-	{
-		m.clear();
-		for(YAML::Iterator it=node.begin();it!=node.end();++it) {
-			std::string k;
-			mtk::trd::msg::sub_account_info v (mtk::trd::msg::__internal_get_default((mtk::trd::msg::sub_account_info*) 0));
-			it.first() >> k;
-			it.second() >> v;
-			m.insert(std::make_pair(k, v));
-		}
-	}
-
-	void operator >> (const YAML::Node& node, mtk::map<std::string, msg::sub_user_info>& m)
-	{
-		m.clear();
-		for(YAML::Iterator it=node.begin();it!=node.end();++it) {
-			std::string k;
-			msg::sub_user_info v (msg::__internal_get_default((msg::sub_user_info*) 0));
-			it.first() >> k;
-			it.second() >> v;
-			m.insert(std::make_pair(k, v));
-		}
-	}
+   
 
     
     void load(void)
     {
+        get_list_markets()->clear();
         get_map_registered_accounts()->clear();
         get_map_user_info()->clear();
-        
-        std::ifstream file(db_file_name.c_str());
 
+        std::ifstream file(db_file_name.c_str());
         try
         {
             YAML::Parser parser(file);
 
             YAML::Node doc;
             parser.GetNextDocument(doc);
-            std::string config_version;
-            
+            //std::string config_version;
+
             doc["markets"] >> *get_list_markets();
             doc["accounts"] >> *get_map_registered_accounts();
             doc["user_info"] >> *get_map_user_info();
@@ -605,7 +570,7 @@ namespace db {
     void save(void)
     {
         std::ofstream file;
-        file.open (db_file_name.c_str());
+        file.open (db_file_name.c_str(), std::ios::out | std::ios::trunc);
 
 
         try

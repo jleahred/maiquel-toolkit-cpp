@@ -103,6 +103,13 @@ public:
 
 
 
+
+    //   KEY INFO
+        typedef decltype(key) key_type;
+        key_type    get_key(void) const  {   return  key;  }
+    //   KEY INFO
+
+
     //  subject info
     
     

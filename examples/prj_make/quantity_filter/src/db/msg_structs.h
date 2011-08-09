@@ -45,6 +45,9 @@ public:
     virtual ~sub_product (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_product"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_product"; };
+
+    
+    
     
     
 
@@ -52,6 +55,13 @@ public:
     std::string                               gen_product_name; 
     std::string                               market; 
     std::string                               re_product_code; 
+
+
+
+    //   KEY INFO
+        typedef decltype(gen_product_name) key_type;
+        key_type    get_key(void) const  {   return  gen_product_name;  }
+    //   KEY INFO
 
 
 
@@ -85,12 +95,17 @@ public:
     virtual ~sub_filter_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_filter_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_filter_info"; };
+
+    
+    
     
     
 
     // fields
     std::string                               gen_product_name; 
     int                                       quantity; 
+
+
 
 
 
@@ -124,6 +139,9 @@ public:
     virtual ~sub_client_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_client_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_client_info"; };
+
+    
+    
     
     
 
@@ -131,6 +149,13 @@ public:
     std::string                               name; 
     mtk::DateTime                             created; 
     mtk::list<sub_filter_info >               filter_list; 
+
+
+
+    //   KEY INFO
+        typedef decltype(name) key_type;
+        key_type    get_key(void) const  {   return  name;  }
+    //   KEY INFO
 
 
 
@@ -164,6 +189,9 @@ public:
     virtual ~sub_user_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_user_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_user_info"; };
+
+    
+    
     
     
 
@@ -172,6 +200,13 @@ public:
     mtk::DateTime                             created; 
     std::string                               client_code; 
     mtk::list<sub_filter_info >               filter_list; 
+
+
+
+    //   KEY INFO
+        typedef decltype(name) key_type;
+        key_type    get_key(void) const  {   return  name;  }
+    //   KEY INFO
 
 
 

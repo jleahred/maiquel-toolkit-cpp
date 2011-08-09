@@ -110,6 +110,13 @@ def generate_class(class_name, class_info, class_properties, send_code):
     INHERITS_FROM = ''
     if class_properties.has_key('I') :
         INHERITS_FROM = '   :  public  ' +  class_properties['I']
+    KEY_CODE = ''
+    if class_properties.has_key('KEY'):
+        KEY_CODE += '\n\n    //   KEY INFO\n'
+        KEY_CODE += '        typedef decltype(' + class_properties['KEY'] + ') key_type;\n'
+        KEY_CODE += '        key_type    get_key(void) const  {   return  ' +  class_properties['KEY']  +  ';  }\n'
+        KEY_CODE += '    //   KEY INFO\n\n'
+    
     
     CLASS_TEMPLATE = """
 
@@ -137,7 +144,7 @@ $INNER_CLASSES
     // fields
 $CLASS_FIELDS
 
-
+$KEY_CODE
     //  subject info
     $SUBJECT_METHODS
     
@@ -158,13 +165,6 @@ private:
 
     #   member definitions
     for field in class_info:
-        if field.has_key('OPTIONS') > 0  :
-            if field['OPTIONS'].count('key') > 0  :
-                CLASS_FIELDS += '    //   KEY INFO\n'
-                CLASS_FIELDS += '    {0:<40}  {1}\n'.format(field['field_type'], 'get_key(void) const  {   return  ' +  field['FIELD_NAME']  +  ';  }')
-                CLASS_FIELDS += '    {0:<40}  {1}\n'.format('typedef ' , field['field_type']+'   key_type;')
-                CLASS_FIELDS += '    //   KEY INFO\n\n'
-
         if field.has_key('field_type'):
             if field['OPTIONS'].count('optional') > 0   or  field['OPTIONS'].count('recomended') > 0:
                 CLASS_FIELDS += '    {0:<40}  {1}; \n'.format( 'mtk::nullable<' + field['field_type']+'>', field['FIELD_NAME'])
@@ -211,7 +211,8 @@ private:
                                                     INHERITS_FROM = INHERITS_FROM,
                                                     SUBJECT_METHODS = SUBJECT_METHODS,
                                                     POINTER_TO_CONTROL_FIELDS = pointer_to_control_fields,
-                                                    CODE_AS_QPID_MESSAGE = code_as_qpid_message
+                                                    CODE_AS_QPID_MESSAGE = code_as_qpid_message,
+                                                    KEY_CODE = KEY_CODE
                                                 )
 
 

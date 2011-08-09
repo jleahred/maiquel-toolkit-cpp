@@ -7,10 +7,9 @@
 #include "support/fixed_number.h"
 #include "support/date_time.h"
 
-#include "msg_structs.h"
+#include "msg_users_manager.h"
 
-namespace accmgr { 
-namespace msg { 
+namespace users_manager { 
 
 
 
@@ -396,8 +395,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_user_info::sub_user_info (   const std::string&  _name,   const mtk::DateTime&  _created,   const std::string&  _client_code,   const mtk::list<mtk::trd::account::msg::sub_grant >&  _grant_list)
-    :     name(_name),   created(_created),   client_code(_client_code),   grant_list(_grant_list) 
+sub_user_info::sub_user_info (   const std::string&  _name,   const std::string&  _client_code,   const std::string&  _requested_by,   const std::string&  _notes)
+    :     name(_name),   client_code(_client_code),   requested_by(_requested_by),   notes(_notes) 
        
     {  
         std::string cr = check_recomended ();  
@@ -422,11 +421,38 @@ void sub_user_info::before_send(void) const
 
 
 
+
+sub_user_acs_info::sub_user_acs_info (   const sub_user_info&  _user_info,   const std::string&  _passwordcrc32,   const mtk::DateTime&  _created_on,   const mtk::DateTime&  _last_access,   const int&  _check_pass_ok,   const int&  _check_pass_wrong)
+    :     user_info(_user_info),   passwordcrc32(_passwordcrc32),   created_on(_created_on),   last_access(_last_access),   check_pass_ok(_check_pass_ok),   check_pass_wrong(_check_pass_wrong) 
+       
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_user_acs_info::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void sub_user_acs_info::before_send(void) const
+{
+
+}
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_user_info & c)
 {
     o << "{ "
 
-        << "name:"<<   c.name << "  "        << "created:"<<   c.created << "  "        << "client_code:"<<   c.client_code << "  "        << "grant_list:"<< c.grant_list<<"  "
+        << "name:"<<   c.name << "  "        << "client_code:"<<   c.client_code << "  "        << "requested_by:"<<   c.requested_by << "  "        << "notes:"<<   c.notes << "  "
         << " }";
     return o;
 };
@@ -437,7 +463,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_user_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "name"  << YAML::Value <<   c.name        << YAML::Key << "created"  << YAML::Value <<   c.created        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code        << YAML::Key << "grant_list"  << YAML::Value << c.grant_list
+        << YAML::Key << "name"  << YAML::Value <<   c.name        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code        << YAML::Key << "requested_by"  << YAML::Value <<   c.requested_by        << YAML::Key << "notes"  << YAML::Value <<   c.notes
         << YAML::EndMap;
     return o;
 };
@@ -449,9 +475,46 @@ void  operator >> (const YAML::Node& node, sub_user_info & c)
 
 
         node["name"]  >> c.name;
-        node["created"]  >> c.created;
         node["client_code"]  >> c.client_code;
-        node["grant_list"]  >> c.grant_list;
+        node["requested_by"]  >> c.requested_by;
+        node["notes"]  >> c.notes;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const sub_user_acs_info & c)
+{
+    o << "{ "
+
+        << "user_info:"<< c.user_info<<"  "        << "passwordcrc32:"<<   c.passwordcrc32 << "  "        << "created_on:"<<   c.created_on << "  "        << "last_access:"<<   c.last_access << "  "        << "check_pass_ok:"<< c.check_pass_ok<<"  "        << "check_pass_wrong:"<< c.check_pass_wrong<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_user_acs_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "user_info"  << YAML::Value << c.user_info        << YAML::Key << "passwordcrc32"  << YAML::Value <<   c.passwordcrc32        << YAML::Key << "created_on"  << YAML::Value <<   c.created_on        << YAML::Key << "last_access"  << YAML::Value <<   c.last_access        << YAML::Key << "check_pass_ok"  << YAML::Value << c.check_pass_ok        << YAML::Key << "check_pass_wrong"  << YAML::Value << c.check_pass_wrong
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_user_acs_info & c)
+{
+
+
+        node["user_info"]  >> c.user_info;
+        node["passwordcrc32"]  >> c.passwordcrc32;
+        node["created_on"]  >> c.created_on;
+        node["last_access"]  >> c.last_access;
+        node["check_pass_ok"]  >> c.check_pass_ok;
+        node["check_pass_wrong"]  >> c.check_pass_wrong;
 
 
 };
@@ -459,10 +522,22 @@ void  operator >> (const YAML::Node& node, sub_user_info & c)
 
 bool operator== (const sub_user_info& a, const sub_user_info& b)
 {
-    return (          a.name ==  b.name  &&          a.created ==  b.created  &&          a.client_code ==  b.client_code  &&          a.grant_list ==  b.grant_list  &&   true  );
+    return (          a.name ==  b.name  &&          a.client_code ==  b.client_code  &&          a.requested_by ==  b.requested_by  &&          a.notes ==  b.notes  &&   true  );
 };
 
 bool operator!= (const sub_user_info& a, const sub_user_info& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const sub_user_acs_info& a, const sub_user_acs_info& b)
+{
+    return (          a.user_info ==  b.user_info  &&          a.passwordcrc32 ==  b.passwordcrc32  &&          a.created_on ==  b.created_on  &&          a.last_access ==  b.last_access  &&          a.check_pass_ok ==  b.check_pass_ok  &&          a.check_pass_wrong ==  b.check_pass_wrong  &&   true  );
+};
+
+bool operator!= (const sub_user_acs_info& a, const sub_user_acs_info& b)
 {
     return !(a==b);
 };
@@ -486,28 +561,28 @@ void  copy (sub_user_info& c, const qpid::types::Variant& v)
                         //c.name = it->second;
 //   field_type
 
-                    it = mv.find("cdt");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field created on message sub_user_info::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.created, it->second);
-                        //c.created = it->second;
-//   field_type
-
                     it = mv.find("cc");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field client_code on message sub_user_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.client_code, it->second);
                         //c.client_code = it->second;
-//   sub_msg_type
+//   field_type
 
-                    it = mv.find("gl");
+                    it = mv.find("rb");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field grant_list on message sub_user_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field requested_by on message sub_user_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.grant_list, it->second);
-                        //__internal_qpid_fill(c.grant_list, it->second.asMap());
+                        copy(c.requested_by, it->second);
+                        //c.requested_by = it->second;
+//   field_type
+
+                    it = mv.find("nt");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field notes on message sub_user_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.notes, it->second);
+                        //c.notes = it->second;
 
     }
 
@@ -521,11 +596,11 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_user_info& a)
 //  field_type
         __internal_add2map(map, a.name, std::string("nm"));
 //  field_type
-        __internal_add2map(map, a.created, std::string("cdt"));
-//  field_type
         __internal_add2map(map, a.client_code, std::string("cc"));
-//  sub_msg_type
-        __internal_add2map(map, a.grant_list, std::string("gl"));
+//  field_type
+        __internal_add2map(map, a.requested_by, std::string("rb"));
+//  field_type
+        __internal_add2map(map, a.notes, std::string("nt"));
 
 
 };
@@ -539,6 +614,98 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+
+
+//void  __internal_qpid_fill (sub_user_acs_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_user_acs_info& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("ui");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_info on message sub_user_acs_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.user_info, it->second);
+                        //__internal_qpid_fill(c.user_info, it->second.asMap());
+//   field_type
+
+                    it = mv.find("pw32");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field passwordcrc32 on message sub_user_acs_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.passwordcrc32, it->second);
+                        //c.passwordcrc32 = it->second;
+//   field_type
+
+                    it = mv.find("dtc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field created_on on message sub_user_acs_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.created_on, it->second);
+                        //c.created_on = it->second;
+//   field_type
+
+                    it = mv.find("dt");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field last_access on message sub_user_acs_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.last_access, it->second);
+                        //c.last_access = it->second;
+//   sub_msg_type
+
+                    it = mv.find("cpok");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field check_pass_ok on message sub_user_acs_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.check_pass_ok, it->second);
+                        //__internal_qpid_fill(c.check_pass_ok, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("cpwr");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field check_pass_wrong on message sub_user_acs_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.check_pass_wrong, it->second);
+                        //__internal_qpid_fill(c.check_pass_wrong, it->second.asMap());
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_user_acs_info& a)
+{
+
+    a.before_send();
+
+
+//  sub_msg_type
+        __internal_add2map(map, a.user_info, std::string("ui"));
+//  field_type
+        __internal_add2map(map, a.passwordcrc32, std::string("pw32"));
+//  field_type
+        __internal_add2map(map, a.created_on, std::string("dtc"));
+//  field_type
+        __internal_add2map(map, a.last_access, std::string("dt"));
+//  sub_msg_type
+        __internal_add2map(map, a.check_pass_ok, std::string("cpok"));
+//  sub_msg_type
+        __internal_add2map(map, a.check_pass_wrong, std::string("cpwr"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_user_acs_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
     sub_user_info  __internal_get_default(sub_user_info*)
@@ -547,11 +714,29 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((mtk::DateTime*)0),
+   __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    sub_user_acs_info  __internal_get_default(sub_user_acs_info*)
+    {
+        return sub_user_acs_info(
 //   sub_msg_type
-   __internal_get_default((mtk::list<mtk::trd::account::msg::sub_grant >*)0)
+   __internal_get_default((sub_user_info*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0),
+//   sub_msg_type
+   __internal_get_default((int*)0),
+//   sub_msg_type
+   __internal_get_default((int*)0)
             );
     }
     
@@ -560,11 +745,11 @@ sub_user_info::sub_user_info (const qpid::messaging::Message& msg)
     :  //   field_type
    name(__internal_get_default((std::string*)0)),
 //   field_type
-   created(__internal_get_default((mtk::DateTime*)0)),
-//   field_type
    client_code(__internal_get_default((std::string*)0)),
-//   sub_msg_type
-   grant_list(__internal_get_default((mtk::list<mtk::trd::account::msg::sub_grant >*)0)) 
+//   field_type
+   requested_by(__internal_get_default((std::string*)0)),
+//   field_type
+   notes(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -578,7 +763,32 @@ sub_user_info::sub_user_info (const qpid::messaging::Message& msg)
 
 
 
-};   //namespace accmgr {
-};   //namespace msg {
+sub_user_acs_info::sub_user_acs_info (const qpid::messaging::Message& msg)
+    :  //   sub_msg_type
+   user_info(__internal_get_default((sub_user_info*)0)),
+//   field_type
+   passwordcrc32(__internal_get_default((std::string*)0)),
+//   field_type
+   created_on(__internal_get_default((mtk::DateTime*)0)),
+//   field_type
+   last_access(__internal_get_default((mtk::DateTime*)0)),
+//   sub_msg_type
+   check_pass_ok(__internal_get_default((int*)0)),
+//   sub_msg_type
+   check_pass_wrong(__internal_get_default((int*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+};   //namespace users_manager {
 
 

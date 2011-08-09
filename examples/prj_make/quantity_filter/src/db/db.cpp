@@ -787,7 +787,7 @@ namespace db {
     void save(void)
     {
         std::ofstream file;
-        file.open (db_file_name.c_str());
+        file.open (db_file_name.c_str(), std::ios::out | std::ios::trunc);
 
 
         try

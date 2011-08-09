@@ -38,10 +38,10 @@ sub_total_executions [<V:0>]
 
 
 
-sub_account_info [< V:0, LessOP:1 >]
+sub_account_info [< V:0, LessOP:1, KEY:name >]
 {
-    client_code         (cc)    :   string
     name                (nm)    :   string
+    client_code         (cc)    :   string
 }
 
 
