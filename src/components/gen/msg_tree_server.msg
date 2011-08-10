@@ -11,10 +11,10 @@ END_INIT
 
 
 
-sub_tree_item [< V:0 >]
+sub_tree_item [< V:0, KEY:branch >]
 {
-    branch          (br)        :   string      //  separating by dots the full path (including current item name)
-    user_name       (un)        :   string
+    branch          (br)        :   string      //  starting and separated by  .  the full path (including current item name)
+    description     (desc)      :   string
     product_code    (pc)        :   mtk::msg::sub_product_code   [optional]       //  if exists, means it is a product
 }
 

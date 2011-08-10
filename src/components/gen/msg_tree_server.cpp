@@ -397,8 +397,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_tree_item::sub_tree_item (   const std::string&  _branch,   const std::string&  _user_name,   const mtk::nullable<mtk::msg::sub_product_code>&  _product_code)
-    :     branch(_branch),   user_name(_user_name),   product_code(_product_code) 
+sub_tree_item::sub_tree_item (   const std::string&  _branch,   const std::string&  _description,   const mtk::nullable<mtk::msg::sub_product_code>&  _product_code)
+    :     branch(_branch),   description(_description),   product_code(_product_code) 
        
     {  
         std::string cr = check_recomended ();  
@@ -481,7 +481,7 @@ std::ostream& operator<< (std::ostream& o, const sub_tree_item & c)
 {
     o << "{ "
 
-        << "branch:"<<   c.branch << "  "        << "user_name:"<<   c.user_name << "  "        << "product_code:"<< c.product_code<<"  "
+        << "branch:"<<   c.branch << "  "        << "description:"<<   c.description << "  "        << "product_code:"<< c.product_code<<"  "
         << " }";
     return o;
 };
@@ -492,7 +492,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_tree_item & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "branch"  << YAML::Value <<   c.branch        << YAML::Key << "user_name"  << YAML::Value <<   c.user_name        << YAML::Key << "product_code"  << YAML::Value << c.product_code
+        << YAML::Key << "branch"  << YAML::Value <<   c.branch        << YAML::Key << "description"  << YAML::Value <<   c.description        << YAML::Key << "product_code"  << YAML::Value << c.product_code
         << YAML::EndMap;
     return o;
 };
@@ -504,7 +504,7 @@ void  operator >> (const YAML::Node& node, sub_tree_item & c)
 
 
         node["branch"]  >> c.branch;
-        node["user_name"]  >> c.user_name;
+        node["description"]  >> c.description;
         node["product_code"]  >> c.product_code;
 
 
@@ -579,7 +579,7 @@ void  operator >> (const YAML::Node& node, res_tree_items & c)
 
 bool operator== (const sub_tree_item& a, const sub_tree_item& b)
 {
-    return (          a.branch ==  b.branch  &&          a.user_name ==  b.user_name  &&          a.product_code ==  b.product_code  &&   true  );
+    return (          a.branch ==  b.branch  &&          a.description ==  b.description  &&          a.product_code ==  b.product_code  &&   true  );
 };
 
 bool operator!= (const sub_tree_item& a, const sub_tree_item& b)
@@ -630,12 +630,12 @@ void  copy (sub_tree_item& c, const qpid::types::Variant& v)
                         //c.branch = it->second;
 //   field_type
 
-                    it = mv.find("un");
+                    it = mv.find("desc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field user_name on message sub_tree_item::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field description on message sub_tree_item::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.user_name, it->second);
-                        //c.user_name = it->second;
+                        copy(c.description, it->second);
+                        //c.description = it->second;
 //   sub_msg_type
 
                     it = mv.find("pc");
@@ -655,7 +655,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item& a)
 //  field_type
         __internal_add2map(map, a.branch, std::string("br"));
 //  field_type
-        __internal_add2map(map, a.user_name, std::string("un"));
+        __internal_add2map(map, a.description, std::string("desc"));
 if (a.product_code.HasValue())
 //  sub_msg_type
         __internal_add2map(map, a.product_code, std::string("pc"));
@@ -867,7 +867,7 @@ sub_tree_item::sub_tree_item (const qpid::messaging::Message& msg)
     :  //   field_type
    branch(__internal_get_default((std::string*)0)),
 //   field_type
-   user_name(__internal_get_default((std::string*)0)) 
+   description(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

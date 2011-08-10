@@ -10,7 +10,7 @@
 
 [width="75%", cols="1, 2" , options=""]
 |==========================================================
-| version |  0.1
+| version |  0.2
 
 | Writter   |   José Luis Esteban
 
@@ -55,7 +55,7 @@ include::main.cpp[]
 
 == Pending
 
-* permisions
+* bypass
 
 
 == Document modifications

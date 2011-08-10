@@ -1,6 +1,5 @@
 ROOT
 {
-    #  permisions:~     means, that all can access to it
     #  if market: is not emtpy ('~'), it means that is a draggable product and this is the market code
     #
     
@@ -9,32 +8,27 @@ ROOT
     {
         description:MARKET GROUP
         market:~
-        permisions:~
         
         MKT1
         {
             description:MARKET 1
             market:~
-            permisions:~
             
             GRP1
             {
                 description:GROUP 1
                 market:~
-                permisions:~
                 
                 PRD1
                 {
                     description:PRODUCT 1
                     market:MARKET
-                    permisions:~
                 }
                 
                 PRD2
                 {
                     description:PRODUCT 2
                     market:MARKET
-                    permisions:~
                 }
             }
             
@@ -42,20 +36,17 @@ ROOT
             {
                 description:GROUP 2
                 market:~
-                permisions:~
                 
                 PRD5
                 {
                     description:PRODUCT 5
                     market:MARKET
-                    permisions:~
                 }
                 
                 PRD6
                 {
                     description:PRODUCT 6
                     market:MARKET
-                    permisions:~
                 }
             }
             
@@ -63,14 +54,12 @@ ROOT
             {
                 description:PRODUCT 6
                 market:MKT1
-                permisions:~
             }
             
             PRD7
             {
                 description:PRODUCT 7
                 market:MARKET
-                permisions:~
             }
         }
     }
@@ -80,27 +69,23 @@ ROOT
     {
         description:MARKET 2
         market:~
-        permisions:~
         
         PM1
         {
             description:PRODUCT1 MARKET2
             market:MKT2
-            permisions:~
         }
         
         PM2
         {
             description:PRODUCT2 MARKET2
             market:MKT2
-            permisions:~
         }
         PM3
         
         {
             description:PRODUCT3 MARKET2
             market:MARKET
-            permisions:~
         }
     }
     

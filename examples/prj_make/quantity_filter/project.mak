@@ -17,6 +17,12 @@ INCLUDES = -I./src -I./mtk/src
 
 .PHONY : default__
 default__:  default
+	@echo "make doc"
+	@echo "--------------"
+	@echo "it will compile de adoc files..."
+	@echo
+	@echo
+	@echo
 	@echo "make fsm"
 	@echo "--------------"
 	@echo "it will compile de fsm files..."

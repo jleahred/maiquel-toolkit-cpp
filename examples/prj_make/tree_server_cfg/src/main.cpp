@@ -8,20 +8,23 @@
 #include "support/configfile.h"
 #include "components/prices/msg_prices.h"
 #include "components/prices/msg_ps_prices.h"
+#include "components/acs/serv/acs_synchr.h"
 
+#include "db/tree_db.h"
 
 
 namespace
 {
     
-    const char*   APP_NAME          = "GEN_TREESERVER";
-    const char*   APP_VER           = "2011-03-16";
+    const char*   APP_NAME          = "GEN_TREESERVER2";
+    const char*   APP_VER           = "2011-08-10";
     const char*   APP_DESCRIPTION   = "This process will send, the markets and groups.\n"
                                       "It also check the permisions\n"
                                       "It doesn't have the full information, there are others specific THREESERVERS cooperating.";
 
-    const char*   APP_MODIFICATIONS = "           2011-03-16     first version\n";
-
+    const char*   APP_MODIFICATIONS =   "           2011-03-16     first version\n"
+                                        "           2011-08-10     working with grants and bypass (cfg on separated yaml file)\n"
+                                        ;
 }
 
 
@@ -30,9 +33,14 @@ namespace
 void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request);
 void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_request);
 
-mtk::CountPtr< mtk::qpid_session > cli_session;
+mtk::CountPtr< mtk::qpid_session >   get_cli_session(bool  clean=false)
+{
+    static   auto   result  = mtk::admin::get_qpid_session("client", "CLITESTING");
+    if(clean)
+        result = mtk::CountPtr< mtk::qpid_session >();
+    return result;
+}
 
-mtk::CountPtr<mtk::ConfigFile>   data_file;
 
 
 
@@ -45,10 +53,11 @@ int main(int argc, char ** argv)
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
 
-        cli_session =  mtk::admin::get_qpid_session("client", "CLITESTING");
-        
-        std::string dataf = mtk::admin::get_config_property("MISC.data").Get();
-        data_file = mtk::make_cptr(new mtk::ConfigFile(dataf));
+        tree_server2::db::init(     mtk::admin::get_config_property("MISC.data_tree").Get(),
+                                    mtk::admin::get_config_property("MISC.data_grants").Get());
+        mtk::acs_server::synchr::init();
+
+
     
         //  suscription to request tree item
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::gen::msg::req_tree_items> >    hqpid_tree_request;
@@ -74,8 +83,8 @@ int main(int argc, char ** argv)
         mtk::start_timer_wait_till_end();
         
 
-        cli_session = mtk::CountPtr< mtk::qpid_session > ();
-        data_file = mtk::CountPtr<mtk::ConfigFile>   ();
+        tree_server2::db::save();
+        get_cli_session(true);      //      to delete resource
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"
         return 0;
@@ -99,32 +108,11 @@ void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_r
 
 void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)
 {
-    mtk::list<mtk::gen::msg::sub_tree_item>  data_list;
-    
-    mtk::list<std::string>  nodes = data_file->GetNodes(tree_request.branch);
-    
-    mtk::list<std::string>::iterator it = nodes.begin();
-    while(it != nodes.end())
-    {
-        std::string name = *it;
-        std::string description = data_file->GetValue(MTK_SS(tree_request.branch<<"."<<*it<<".description")).Get();
-        std::string market_code = data_file->GetValue(MTK_SS(tree_request.branch<<"."<<*it<<".market")).Get();
-        std::string full_branch = MTK_SS(tree_request.branch << "." <<*it);
-        if(market_code != "")
-        {
-            mtk::msg::sub_product_code pc ( mtk::msg::sub_product_code(market_code, *it));
-            data_list.push_back(mtk::gen::msg::sub_tree_item(full_branch, description, mtk::make_nullable(pc)));
-        }
-        else
-            data_list.push_back(mtk::gen::msg::sub_tree_item(full_branch, description, mtk::nullable<mtk::msg::sub_product_code>()));
-        
-        ++it;
-    }
-    
+    mtk::list<mtk::gen::msg::sub_tree_item>  data_list = tree_server2::db::get_items_for_branch__ifso(tree_request);
     //  sending multiresponses in asyncronous way
     MTK_SEND_MULTI_RESPONSE(        mtk::gen::msg::res_tree_items,
                                     mtk::gen::msg::sub_tree_item, 
-                                    cli_session,
+                                    get_cli_session(),
                                     tree_request.request_info,
                                     data_list)
-}
+    }

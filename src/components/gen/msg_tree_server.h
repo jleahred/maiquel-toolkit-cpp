@@ -42,7 +42,7 @@ public:
 
     
     // constructor
-    explicit sub_tree_item (    const std::string&  _branch,   const std::string&  _user_name,   const mtk::nullable<mtk::msg::sub_product_code>&  _product_code );
+    explicit sub_tree_item (    const std::string&  _branch,   const std::string&  _description,   const mtk::nullable<mtk::msg::sub_product_code>&  _product_code );
     explicit sub_tree_item ( const qpid::messaging::Message& message );
     virtual ~sub_tree_item (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_tree_item"; };
@@ -55,9 +55,16 @@ public:
 
     // fields
     std::string                               branch; 
-    std::string                               user_name; 
+    std::string                               description; 
     mtk::nullable<mtk::msg::sub_product_code>  product_code; 
 
+
+
+
+    //   KEY INFO
+        typedef decltype(branch) key_type;
+        key_type    get_key(void) const  {   return  branch;  }
+    //   KEY INFO
 
 
     //  subject info

@@ -280,7 +280,7 @@ void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::res_
             else
                 new_item = new mtkQtreeItem(insert_into_item, item);
         }
-        new_item->setText(0, QLatin1String(item.user_name.c_str()));
+        new_item->setText(0, QLatin1String(item.description.c_str()));
         if(item.product_code.HasValue())
             new_item->setForeground(0, QBrush(Qt::blue));
         ++it;
