@@ -1,0 +1,9 @@
+version: 1
+grants:
+  - client_code: CIMD
+    users_pattern:
+      - user_pattern: .*
+        re_product_code_list:
+          - market: MARKET
+            product: .*
+        last_applied_rule: 2011-08-11 09:18:58.486

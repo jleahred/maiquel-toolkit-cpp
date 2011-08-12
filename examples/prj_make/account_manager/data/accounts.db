@@ -23,20 +23,20 @@ user_info:
       - key:
           market: MARKET
           account:
+            name: .*@.*
             client_code: CLIENT
-            name: .*@.*
         type: F
       - key:
           market: MARKET
           account:
+            name: .*@.*
             client_code: CIMD
-            name: .*@.*
         type: F
       - key:
           market: MARKET
           account:
-            client_code: KKK
             name: LALALA
+            client_code: KKK
         type: V
   - name: PR
     created: 2011-06-02 11:30:51.720
@@ -45,8 +45,8 @@ user_info:
       - key:
           market: MARKET
           account:
-            client_code: CIMD
             name: .*
+            client_code: CIMD
         type: V
   - name: PR_CLIENT
     created: 2011-06-02 11:30:51.720
@@ -55,6 +55,6 @@ user_info:
       - key:
           market: MARKET
           account:
-            client_code: CLIENT
             name: AC1@CLIENT
+            client_code: CLIENT
         type: F

@@ -1,0 +1,55 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= ProdInfoGrant
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.2
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2011-10-10
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This process will check all product info load request and will progress the request or will reject it (or ignore it, perhaps) depending on configurated grants
+
+* The source code of main...
++
+.main.cpp
+[source,{cpp}]
+----
+include::main.cpp[]
+----
+
+
+
+== Pending
+
+* bypass
+
+
+== Document modifications
+* Non aply
+

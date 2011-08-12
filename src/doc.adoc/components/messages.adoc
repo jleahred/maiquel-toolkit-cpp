@@ -402,6 +402,11 @@ digraph dfd0_graph {
 -----
 
 
+=== ProductInfoGrants
+
+* This process will receive the process info request and will check if request has grants
+* It will receive message +mtk::prices::msg::req_product_info+ and it will send +mtk::prices::msg::ps_req_product_info+ if there are grants
+
 === Tree Servers
 
 * +tree_servers+ will receive the +rq_tree_items+ and they will send response to client
@@ -447,7 +452,7 @@ tree_server2 ->  CLIENT  [label = rs_tree_items ]
 === Product Loader
 
 * +product_loader+ will keep products info in order to send a snapshot of an specific product
-* They will work after +tree_server+. The +tree_server+ will check the permisions for each product info request.
+* They will work after +prodinfo_grants+. The +prodinfo_grants+ will check the permisions for each product info request.
 * +product_loader+ will listen on client_side the messages +pub_(marg,depth,trades...)+ to build the status info per product
 * It will listen on server side, messages +pub_full_product_info+ and +pub_end_product_info_init+ for a initialization
 * When the process starts, it will send +req_init_prod_info+
@@ -460,10 +465,10 @@ tree_server2 ->  CLIENT  [label = rs_tree_items ]
 digraph dfd0_graph {
 
 node [shape=box width=1.7] CLIENT;
-node [shape=circle, width=1.5] tree_server1 product_loader;
+node [shape=circle, width=1.5] prodinfo_grants product_loader;
 
-CLIENT ->  tree_server1  [label = req_prod_info ]
-tree_server1 ->  product_loader  [label = req_prod_info ]
+CLIENT ->  prodinfo_grants  [label = req_prod_info ]
+prodinfo_grants ->  product_loader  [label = req_prod_info ]
 product_loader ->  CLIENT  [label = res_prod_info ]
 
 }
@@ -482,6 +487,7 @@ digraph dfd0_graph {
  node [fontsize=16];
  CLIENT [label="CLIENT" shape=box height=0.1];
  tree_server [label="tree\nserver" shape=circle height=1]
+ prodinfo_grants [label="prodinf\ngrants" shape=circle height=1]
  product_loader [label="product\nloader" shape=circle height=1]
 
 
@@ -495,15 +501,15 @@ digraph dfd0_graph {
 
 
  CLIENT -> tree_server [label = "req_tree_items" ];
- CLIENT -> tree_server [label = "req_prod_info" ];
+ CLIENT -> prodinfo_grants [label = "req_prod_info" ];
 
  tree_server -> CLIENT [label = "res_tree_items" ];
  tree_server -> CLIENT [label = "pub_tree_colapse_branch" ];
- tree_server -> product_loader  [label = "req_init_prod_info" ];
- tree_server -> product_loader [label = "req_prod_info\n(cli)" ];
+ tree_server -> product_loader  [label = "req_init_prod_info" color=red];
+ prodinfo_grants -> product_loader [label = "req_prod_info\n(cli)" ];
 
- product_loader -> tree_server   [label = "ps_pub_prod_info_mtk_ready" ];
- product_loader -> tree_server   [label = "ps_conf_full_product_info_init\nps_conf_full_product_info" ];
+ product_loader -> tree_server   [label = "ps_pub_prod_info_mtk_ready" color=red];
+ product_loader -> tree_server   [label = "ps_conf_full_product_info_init\nps_conf_full_product_info" color=red];
 
  product_loader -> CLIENT  [label = "res_prod_info" ];
 

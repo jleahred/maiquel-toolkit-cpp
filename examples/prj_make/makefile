@@ -11,6 +11,7 @@ test:
 	make -C account_manager this
 	make -C trading_db this
 	make -C quantity_filter this
+	make -C prodinfo_grant this
 
 
 .PHONY: this
@@ -25,6 +26,7 @@ this:
 	make -C account_manager this
 	make -C trading_db this
 	make -C quantity_filter this
+	make -C prodinfo_grant this
 
 .PHONY: clean
 clean:
@@ -38,6 +40,7 @@ clean:
 	make -C account_manager clean
 	make -C trading_db clean
 	make -C quantity_filter clean
+	make -C prodinfo_grant clean
 	find . -name 'ct__*' | xargs rm
 
 
@@ -53,3 +56,4 @@ doc:
 	make -C account_manager doc
 	make -C trading_db doc
 	make -C quantity_filter doc
+	make -C prodinfo_grant doc

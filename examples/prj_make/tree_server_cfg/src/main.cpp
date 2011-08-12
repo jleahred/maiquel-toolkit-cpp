@@ -69,17 +69,6 @@ int main(int argc, char ** argv)
                                 mtk::gen::msg::req_tree_items,
                                 on_request_tree_received)
 
-        //  suscription to request product information
-        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::req_product_info> >    hqpid_prodinf_request;
-        MTK_QPID_RECEIVER_CONNECT_F(
-                                hqpid_prodinf_request,
-                                mtk::admin::get_url("client"),
-                                "CLITESTING",
-                                mtk::prices::msg::req_product_info::get_in_subject("*", "*"),     //  from anyone, for any market
-                                mtk::prices::msg::req_product_info,
-                                on_request_prodinf_received)
-        
-    
         mtk::start_timer_wait_till_end();
         
 
@@ -97,13 +86,6 @@ int main(int argc, char ** argv)
 
 }
  
-
-void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_request)
-{
-    static mtk::CountPtr<mtk::qpid_session>  qpid_server_session = mtk::admin::get_qpid_session("server", "SRVTESTING");
-    mtk::prices::msg::ps_req_product_info  granted_msg (pi_request, "pigrant");
-    mtk::send_message(qpid_server_session, granted_msg);
-}
 
 
 void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)

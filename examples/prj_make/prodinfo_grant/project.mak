@@ -1,6 +1,6 @@
 #
 # Output...
-OUT = bin/ct__treeserver_cfg
+OUT = bin/ct__prodinfo_grant
 #
 #
 # Directories with source code
