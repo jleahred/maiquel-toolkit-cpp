@@ -24,7 +24,7 @@ include::/tmp/adoc/field_analysis.txt[]
 
 [jle_temp_and_run]
 ++++++++++++++++++++++++
-run=[('bash analysis_fields.bash', 'field_analysis.txt', 'wt')]
+run=[('bash analysis_fields.bash', 'field_analysist.txt', 'wt')]
 print ''
 
 file_name='analysis_fields.bash'
@@ -38,4 +38,4 @@ find {docdir}/../../src/components  -name '*.msg' | xargs python {docdir}/../../
 
 ++++++++++++++++
 
-include::/tmp/adoc/field_analysis.txt[]
+include::/tmp/adoc/field_analysist.txt[]

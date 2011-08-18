@@ -94,7 +94,7 @@ def fill_msg_names():
         if MSG_NAMES.has_key(class_name) == False:
             MSG_NAMES[class_name] = []
         if __class_properties.has_key('SUBJ'):
-            MSG_NAMES[class_name].append(__class_properties['SUBJ'].replace('$', ' $'))
+            MSG_NAMES[class_name].append(__class_properties['SUBJ'].replace('$', ' ').replace('{', '<').replace('}', '>'))
         else:
             MSG_NAMES[class_name].append("_")
 
