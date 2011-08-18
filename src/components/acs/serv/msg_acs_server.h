@@ -129,7 +129,7 @@ public:
 
     
     // constructor
-    explicit req_session_id_conf (    const std::string&  _session_id );
+    explicit req_session_id_conf (    const std::string&  _session_id,   const mtk::msg::sub_process_info&  _from );
     explicit req_session_id_conf ( const qpid::messaging::Message& message );
     virtual ~req_session_id_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_session_id_conf"; };
@@ -142,6 +142,7 @@ public:
 
     // fields
     std::string                               session_id; 
+    mtk::msg::sub_process_info                from; 
 
 
 

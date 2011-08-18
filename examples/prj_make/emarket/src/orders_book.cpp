@@ -285,7 +285,7 @@ void orders_book::add_product (const emarket::sub_product_config&  product_confi
 template<typename T>
 void send_to_client (const T& toclient)
 {
-    auto cli_session = mtk::admin::get_qpid_session("client", "CLITESTING");
+    static auto cli_session = mtk::admin::get_qpid_session("client", "CLITESTING");
     send_message(cli_session, toclient, "");
     std::cout << mtk::dtNowLocal() <<"  response sent to client " << toclient.get_message_type_as_string() <<  std::endl;
 }
@@ -577,7 +577,7 @@ mtk::prices::msg::sub_full_product_info    get_emtpy_sub_full_product_info   (co
 template<typename T>
 void send_prices (const T& mtk_msg)
 {
-    auto cli_session = mtk::admin::get_qpid_session("client", "CLITESTING");
+    static auto cli_session = mtk::admin::get_qpid_session("client", "CLITESTING");
     send_message(cli_session, mtk_msg, "");
     std::cout << mtk::dtNowLocal() <<"  updated prices " << mtk_msg.get_message_type_as_string() <<  std::endl;
 }

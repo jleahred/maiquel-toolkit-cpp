@@ -451,8 +451,8 @@ void pub_del_user::before_send(void) const
 
 
 
-req_session_id_conf::req_session_id_conf (   const std::string&  _session_id)
-    :     session_id(_session_id) 
+req_session_id_conf::req_session_id_conf (   const std::string&  _session_id,   const mtk::msg::sub_process_info&  _from)
+    :     session_id(_session_id),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -653,7 +653,7 @@ std::ostream& operator<< (std::ostream& o, const req_session_id_conf & c)
 {
     o << "{ "
 
-        << "session_id:"<<   c.session_id << "  "
+        << "session_id:"<<   c.session_id << "  "        << "from:"<< c.from<<"  "
         << " }";
     return o;
 };
@@ -664,7 +664,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_session_id_conf & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id
+        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "from"  << YAML::Value << c.from
         << YAML::EndMap;
     return o;
 };
@@ -676,6 +676,7 @@ void  operator >> (const YAML::Node& node, req_session_id_conf & c)
 
 
         node["session_id"]  >> c.session_id;
+        node["from"]  >> c.from;
 
 
 };
@@ -836,7 +837,7 @@ bool operator!= (const pub_del_user& a, const pub_del_user& b)
 
 bool operator== (const req_session_id_conf& a, const req_session_id_conf& b)
 {
-    return (          a.session_id ==  b.session_id  &&   true  );
+    return (          a.session_id ==  b.session_id  &&          a.from ==  b.from  &&   true  );
 };
 
 bool operator!= (const req_session_id_conf& a, const req_session_id_conf& b)
@@ -991,6 +992,14 @@ void  copy (req_session_id_conf& c, const qpid::types::Variant& v)
                     else
                         copy(c.session_id, it->second);
                         //c.session_id = it->second;
+//   sub_msg_type
+
+                    it = mv.find("from");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field from on message req_session_id_conf::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.from, it->second);
+                        //__internal_qpid_fill(c.from, it->second.asMap());
 
     }
 
@@ -1003,6 +1012,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_session_id_co
 
 //  field_type
         __internal_add2map(map, a.session_id, std::string("sid"));
+//  sub_msg_type
+        __internal_add2map(map, a.from, std::string("from"));
 
 
 };
@@ -1253,6 +1264,9 @@ qpid::messaging::Message req_session_id_conf::qpidmsg_codded_as_qpid_message (co
 //  field_type
 //        content["sid"] = this->session_id;
         __internal_add2map(content, this->session_id, std::string("sid"));
+//  sub_msg_type
+//        content["from"] =  qpidmsg_coded_as_qpid_Map(this->from);
+        __internal_add2map(content, this->from, std::string("from"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1382,7 +1396,9 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     {
         return req_session_id_conf(
 //   field_type
-   __internal_get_default ((std::string*)0)
+   __internal_get_default ((std::string*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_process_info*)0)
             );
     }
     
@@ -1455,7 +1471,9 @@ pub_del_user::pub_del_user (const qpid::messaging::Message& msg)
 
 req_session_id_conf::req_session_id_conf (const qpid::messaging::Message& msg)
     :  //   field_type
-   session_id(__internal_get_default((std::string*)0)) 
+   session_id(__internal_get_default((std::string*)0)),
+//   sub_msg_type
+   from(__internal_get_default((mtk::msg::sub_process_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);

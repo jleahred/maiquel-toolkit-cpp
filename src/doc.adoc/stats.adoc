@@ -34,7 +34,8 @@ echo '+'
 echo '|=========================='
 
 echo '| # lines (non externals) | '
-find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | grep -v 'msg_*' | xargs cat | wc -l
+find {docdir}/../ -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v /fb/ | grep -v /yaml/ | grep -v /pcre/ | grep -v 'msg_.*cpp' | grep -v 'msg_.*h' | xargs cat | wc -l
+
 
 
 echo '| # external lines  | '
@@ -45,6 +46,24 @@ echo '|=========================='
 
 
 echo ; echo
+
+
+echo 'PROJECT  EXAMPLES::'
+echo '+'
+echo '|=========================='
+
+echo '| # files  | '
+find {docdir}/../../examples/prj_make -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm | grep -v '.*tcp' | wc -l
+
+echo '| # lines  | '
+find {docdir}/../../examples/prj_make -name *.cpp -or -name *.h -or -name *.hpp -or -name *.msg -or -name *.fsm| grep -v 'msg_.*cpp' | grep -v 'msg_.*h' | grep -v '.*tcp' | xargs cat | wc -l
+
+
+
+echo '|=========================='
+
+
+
 
 echo 'BIGGEST files::'
 echo '+'

@@ -540,7 +540,8 @@ void on_server_req_session_id_conf(const mtk::acs_server::msg::req_session_id_co
     //  look for session id
     //  send partial list with this session id
     
-    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acs request sessid conf", MTK_SS("Requested session confirmation for...  " << req_session_id_conf.session_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acs request sessid conf", MTK_SS("Requested session confirmation for...  " << req_session_id_conf.session_id
+                    << std::endl << req_session_id_conf), mtk::alPriorError, mtk::alTypeNoPermisions));
     if(list_sessions_login_info.isValid()  &&  list_sessions_login_info->size() > 0)
     {
         std::string session_id = req_session_id_conf.session_id;

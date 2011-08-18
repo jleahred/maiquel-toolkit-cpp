@@ -224,6 +224,10 @@ namespace   //anonymous
     
     mtk::acs::msg::res_login::IC_session_info  __get_session_info_for_session_id(const std::string& session_id)
     {
+        if(session_id == ""  ||  session_id == "provisional")
+            return  mtk::acs::msg::res_login::IC_session_info("", "", "");
+            
+        
         mtk::CountPtr<mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info> >    map_session_id__session_info = get_map_session_id__session_info();
         mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info>::const_iterator  it =  map_session_id__session_info->find(session_id);
         if(it != map_session_id__session_info->end())
@@ -232,10 +236,9 @@ namespace   //anonymous
         }
         else
         {
-            mtk::acs_server::msg::req_session_id_conf  msg(session_id);
+            mtk::acs_server::msg::req_session_id_conf  msg(session_id, mtk::admin::get_process_info());
             mtk::send_message(get_server_qpid_session(), msg);
             return  mtk::acs::msg::res_login::IC_session_info("", "", "");
-            
         }
     }
     mtk::list<mtk::acs::msg::res_login::IC_session_info>  __bad_performance_get_sessions_info( const std::string& user_name)

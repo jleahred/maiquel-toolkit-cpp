@@ -31,7 +31,9 @@ pub_del_user [<  V:0, SUBJ:SYS.PUB.ACS_SYNC  >]
 
 req_session_id_conf  [<  V:0, SUBJ:SYS.RQ.ACS_ASK_SESSID  >]
 {
-    session_id      (sid)   :       string
+    session_id          (sid)   :       string
+    
+    from                (from)  :       mtk::msg::sub_process_info
 }
 
 pub_partial_user_list_acs2serv  [<  V:0, SUBJ:SYS.PUB.ACS2SERV_SYNC  >]
