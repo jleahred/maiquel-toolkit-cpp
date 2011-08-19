@@ -5,11 +5,17 @@ default:
 
 
 allall:  libs qtlibs tools clean doc check_files
-#  conviene pasar el test  time (make clean ; make libs ; make qtlibs; make tools) 2> errors.txt
 
+#  compila librerías
+#  time (make clean ; make libs ; make qtlibs; make tools) 2> errors.txt
+#  check errors.txt
+
+# compila ejemplos
 # time make testjustcompile  2> errors.txt
-#   time (make testrelease > full_test.txt) 2> errors.txt
-#   cat full_test.txt | grep -v '^__NR__:' | grep -v '^del._='  | grep -v ccccc  | grep  -v '^   sum..______'  |  grep  -v '^code:         '  |  grep  -v '^NODE NAME:    '| grep  -v '^[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9] ' | grep -v sess_id:  > test.txt; 
+
+# compila y ejecuta ejemplos
+# time (make testrelease > full_test.txt) 2> errors.txt
+# cat full_test.txt | grep -v '^__NR__:' | grep -v '^del._='  | grep -v ccccc  | grep  -v '^   sum..______'  |  grep  -v '^code:         '  |  grep  -v '^NODE NAME:    '| grep  -v '^[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9] ' | grep -v sess_id:  > test.txt; 
 #   check differences with previus version
 #   rm full_test.txt
 
@@ -17,16 +23,10 @@ allall:  libs qtlibs tools clean doc check_files
 #  conviene pasar también el test con valgrind  
 #  time (make clean; make libsdebug; make qtlibs; make testdebug 2> temp.txt)
 #  if no errors on execution, continue
-#  cat temp.txt | grep 'lost:' > valgrind.txt ; rm temp.txt
-# revisar cat valgrind.txt
+#  cat temp.txt | grep 'lost:' > valgrind.txt
+#  revisar cat valgrind.txt
+#  rm temp.txt
 
-#  OLD-----------------------
-# conviene pasar también el test con valgrind  make clean ; make libsdebug ; make qtlibs ; make testdebug 2> valgrind.txt
-#     esto lo deja configurado con las opciones de compilación de depuración, se pondrán otra vez en release
-#          en la llamada a make libs
-#     cat valgrind.txt | grep 'lost:'  dará información de la memoria
-#     cat valgrind.txt | grep ' possibly lost:'    tiene que salir todo a 0
-#  OLD-----------------------
 
 #  y también conviene ejecutar cppcheck
 # time (find ./src/ -name *.cpp -or -name *.h -or -name *.hpp | grep -v /mig_liffe/ | grep -v /yaml/ | grep -v /fb/ | xargs cppcheck --all --verbose --style -I src 2> cppcheck.txt)
@@ -34,18 +34,11 @@ allall:  libs qtlibs tools clean doc check_files
 
 # revisar las diferencias en los ficheros test.txt valgrind.txt y cppcheck.txt
 
-# para generar una versión nueva...
-
-
-# make clean; make libs; make qtlibs; make tools; make testrelease
-
-# todavía no... make allall  compilará todo de nuevo en versión release y generará la documentación
-
 
 # actualizar modificaciones documento adoc
 # editar fichero VERSION
 
-# make allall
+# make allall  compilará todo de nuevo en versión release y generará la documentación
 
 
 # al final se ejecuta checkfiles y tiene que volver sin error y escribir un 0 (provisionalmente está escribiendo un 1)
@@ -143,7 +136,7 @@ check_files :
 	@find ./examples -type f | grep -v .png | grep -v temp | grep -v doxys | grep -v .git | grep -v '*~'| grep -v '.*o' | grep -v '/bin/' | xargs isutf8
 	#verificamos si se utilizan contenedores no mtk (no seguros)
 	@echo 'we don`t have to use std::containers pending!!!! to reactivate'
-	#@find src/components -name '*.h' -or -name '*.cpp' -or -name '*.hpp' | xargs grep -w 'std::map\|std::vector\|std::list' -sl | wc -l
+	#@find src/components -name '*.h' -or -name '*.cpp' -or -name '*.hpp' | xargs grep -w 'std::map\|std::vector\|std::list' -sl | grep -v 'msg_*' | wc -l
 
 
 

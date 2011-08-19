@@ -13,7 +13,6 @@ ex_exec_max_frec.exec   lost:-----------------------------------
 ex_factory.exec   lost:-----------------------------------
 ex_fixed_number2.exec   lost:-----------------------------------
 ex_fixed_number.exec   lost:-----------------------------------
-ex_foreach.exec   lost:-----------------------------------
 ex_mtk_connect_this.exec   lost:-----------------------------------
 ex_nullable.exec   lost:-----------------------------------
 ex_signal2function.exec   lost:-----------------------------------
@@ -45,65 +44,44 @@ ex_udp_socket.exec   lost:-----------------------------------
 ex_yaml.exec   lost:-----------------------------------
 ex_fb.exec   lost:-----------------------------------
 ex_qpid1.exec   lost:-----------------------------------
-2011-07-26 12:32:24 warning Connection [52538 127.0.0.1:5672] closed
+2011-08-19 10:22:07 warning Connection [53196 127.0.0.1:5672] closed
 ex_qpid2.exec   lost:-----------------------------------
-2011-07-26 12:32:32 warning Connection [52539 127.0.0.1:5672] closed
+2011-08-19 10:22:15 warning Connection [53197 127.0.0.1:5672] closed
 ex_qpid_direct_msg.exec   lost:-----------------------------------
-2011-07-26 12:32:40 warning Connection [52540 127.0.0.1:5672] closed
+2011-08-19 10:22:24 warning Connection [53198 127.0.0.1:5672] closed
 ex_qpid_msg_parsing.exec   lost:-----------------------------------
-2011-07-26 12:32:51 warning Connection [52541 127.0.0.1:5672] closed
+2011-08-19 10:22:34 warning Connection [53199 127.0.0.1:5672] closed
 ex_request_response.exec   lost:-----------------------------------
-2011-07-26 12:33:00 warning Connection [52543 127.0.0.1:5672] closed
-2011-07-26 12:33:02 warning Connection [52542 127.0.0.1:5672] closed
+2011-08-19 10:22:43 warning Connection [53201 127.0.0.1:5672] closed
+2011-08-19 10:22:45 warning Connection [53200 127.0.0.1:5672] closed
 ex_admin.exec   lost:-----------------------------------
-2011-07-26 12:33:17 warning Connection [52544 127.0.0.1:5672] closed
+2011-08-19 10:23:00 warning Connection [53202 127.0.0.1:5672] closed
 test_trd_cli_ls.exec   lost:-----------------------------------
-2011-07-26 12:33:20 warning Connection [52545 127.0.0.1:5672] closed
+2011-08-19 10:23:03 warning Connection [53203 127.0.0.1:5672] closed
 ex_acs_cli.exec   lost:-----------------------------------
-2011-07-26 12:33:33 warning Connection [52546 127.0.0.1:5672] closed
+2011-08-19 10:23:16 warning Connection [53204 127.0.0.1:5672] closed
 ex_acs_serv.exec   lost:-----------------------------------
-2011-07-26 12:33:46 warning Connection [52547 127.0.0.1:5672] closed
+2011-08-19 10:25:18 warning Connection [53205 127.0.0.1:5672] closed
 ex_msg_yaml.exec   lost:-----------------------------------
 ex_fbinsert.exec   lost:-----------------------------------
-2011-07-26 12:34:00 warning Connection [52548 127.0.0.1:5672] closed
+2011-08-19 10:25:32 warning Connection [56966 127.0.0.1:5672] closed
 asocmem0.exec   lost:-----------------------------------
-(30550) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
-(30550) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
-(30550) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
-(30550) KSharedDataCache::Private::mapSharedMemory: 4337664 bytes available out of 10485760
-(30581) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
-(30581) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
-(30581) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
-(30581) KSharedDataCache::Private::mapSharedMemory: 4337664 bytes available out of 10485760
 QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
 QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
 Bus::open: Can not get ibus-daemon's address. 
 IBusInputContext::createInputContext: no connection to ibus-daemon 
-2011-07-26 12:36:14 warning Connection [48981 127.0.0.1:5672] closed
-(30631) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
-(30631) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
-(30631) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
-(30631) KSharedDataCache::Private::mapSharedMemory: 4345856 bytes available out of 10485760
 WARNING: Phonon needs QCoreApplication::applicationName to be set to export audio output names through the DBUS interface 
-Qt Application(30631): couldn't create slave: "Unable to create io-slave:
+(19768): couldn't create slave: "Unable to create io-slave:
 klauncher said: Unknown protocol ''.
 " 
 QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
 QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
 Bus::open: Can not get ibus-daemon's address. 
 IBusInputContext::createInputContext: no connection to ibus-daemon 
-2011-07-26 12:36:27 warning Connection [48982 127.0.0.1:5672] closed
-(30759) KSharedDataCache::Private::mapSharedMemory: Opening cache "/var/tmp/kdecache-maiquel/icon-cache.kcache" page size is 4096
-(30759) KSharedDataCache::Private::mapSharedMemory: Attached to cache, determining if it must be initialized
-(30759) KSharedDataCache::Private::mapSharedMemory: Cache fully initialized -- attached to memory mapping
-(30759) KSharedDataCache::Private::mapSharedMemory: 4345856 bytes available out of 10485760
-QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
-QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
-Bus::open: Can not get ibus-daemon's address. 
-IBusInputContext::createInputContext: no connection to ibus-daemon 
-2011-07-26 12:37:04 warning Connection [48984 127.0.0.1:5672] closed
-2011-07-26 12:37:05 warning Connection [48983 127.0.0.1:5672] closed
+2011-08-19 10:28:33 warning Connection [56969 127.0.0.1:5672] closed
+2011-08-19 10:29:09 warning Connection [38021 127.0.0.1:5672] closed
+2011-08-19 10:29:09 warning Connection [38022 127.0.0.1:5672] closed
 
-real	8m41.815s
-user	4m50.100s
-sys	0m17.440s
+real	11m2.078s
+user	5m9.240s
+sys	0m18.260s

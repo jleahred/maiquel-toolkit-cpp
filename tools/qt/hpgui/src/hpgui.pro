@@ -1,6 +1,11 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-12-12T22:42:07
 # -------------------------------------------------
+
+#QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=gnu++0x
+
+
 TARGET = hpgui
 TEMPLATE = app
 SOURCES +=     *.cpp \

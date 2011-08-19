@@ -4,6 +4,25 @@ include::../../VERSION[]
 
 
 
+0.52  2011-08-19::
+
+Fixed errors;;
+
+
+New;;
+* publishing protocol for prices
+* msg_build  extended info from fixed number is now a valid type
+* product_info grant process
+
+Modif interfaz;;
+* msg_build with keys
+* yaml with key and writting/reading maps as list (to avoid duplicated info)
+
+Other;;
+* Removed MTK_FOR_EACH macro
+
+
+
 0.51  2011-07-26::
 
 Fixed errors;;
