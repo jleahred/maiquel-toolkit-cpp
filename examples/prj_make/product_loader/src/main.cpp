@@ -280,8 +280,9 @@ void suscribe_publisher_conf_full_prod_info_init__from_publisher(void)
 void on_ps_conf_full_product_info__from_publisher(const mtk::prices::msg::ps_conf_full_product_info__from_publisher&  pi)
 {
     static int sequence=0;
+    ++secuence;
     if(pi.seq_number != sequence)
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "prod_loader", MTK_SS("out of sequence  spected " << sequence << "  received " << pi.seq_number), 
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "prod_loader", MTK_SS("out of sequence  expected " << sequence << "  received " << pi.seq_number), 
                                                                                         mtk::alPriorDebug, mtk::alTypeUnknown));
     
     ++stats_prod_init;
