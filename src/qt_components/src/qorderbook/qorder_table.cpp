@@ -301,7 +301,7 @@ public:
     }
 
 
-    QColor  get_default_color(void)
+    QColor  get_default_background_color(void)
     {
         if      (inner_order->serrors() != "")
             return qtmisc::mtk_color_problem;
@@ -322,12 +322,23 @@ public:
             return Qt::white;
     }
 
+    QColor  get_default_font_color(void)
+    {
+        if      (inner_order->serrors() != "")
+            return Qt::white;
+        else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market()==false)
+            return Qt::white;
+        else
+            return Qt::black;
+    }
+
     void update_item_ord_id(void)
     {
         QTableWidgetItem* item = items[col_ord_id];
         std::string  ord_id = MTK_SS(qtmisc::get_order_invariant(*inner_order).order_id.session_id << ":" << qtmisc::get_order_invariant(*inner_order).order_id.req_code);
         item->setText(QLatin1String(ord_id.c_str()));
-        item->setBackgroundColor(get_default_color());
+        item->setBackgroundColor(get_default_background_color());
+        item->setForeground(QBrush(get_default_font_color()));
     }
 
     void update_item_market(void)
@@ -340,9 +351,15 @@ public:
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (get_lasttr_rjdescr(*inner_order)!="")
+        {
             item->setBackgroundColor(qtmisc::mtk_color_problem);
+            item->setForeground(Qt::white);
+        }
         else
-            item->setBackgroundColor(get_default_color());
+        {
+            item->setBackgroundColor(get_default_background_color());
+            item->setForeground(QBrush(get_default_font_color()));
+        }
     }
 
     void update_item_product(void)
@@ -355,9 +372,15 @@ public:
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (get_lasttr_rjdescr(*inner_order)!="")
+        {
             item->setBackgroundColor(qtmisc::mtk_color_problem);
+            item->setForeground(Qt::white);
+        }
         else
-            item->setBackgroundColor(get_default_color());
+        {
+            item->setBackgroundColor(get_default_background_color());
+            item->setForeground(QBrush(get_default_font_color()));
+        }
     }
 
 
@@ -365,14 +388,16 @@ public:
     {
         QTableWidgetItem* item = items[col_price];
         item->setText(qtmisc::nullable_fn_as_QString(qtmisc::get_order_position_price(*inner_order)));
-        item->setBackgroundColor(get_default_color());
+        item->setBackgroundColor(get_default_background_color());
+        item->setForeground(QBrush(get_default_font_color()));
     }
 
     void update_item_quantity(void)
     {
         QTableWidgetItem* item = items[col_quantity];
         item->setText(qtmisc::fn_as_QString(qtmisc::get_order_position_quantity(*inner_order)));
-        item->setBackgroundColor(get_default_color());
+        item->setBackgroundColor(get_default_background_color());
+        item->setForeground(QBrush(get_default_font_color()));
     }
 
     void update_item_side(void)
@@ -381,11 +406,20 @@ public:
         mtk::trd::msg::enBuySell side = qtmisc::get_order_invariant(*inner_order).side;
         item->setText(qtmisc::side_as_text(side));
         if (side == mtk::trd::msg::buy)
+        {
             item->setBackgroundColor(qtmisc::mtk_color_buy_cell);
+            //item->setForeground(Qt::white);
+        }
         else if (side == mtk::trd::msg::sell)
+        {
             item->setBackgroundColor(qtmisc::mtk_color_sell_cell);
+            //item->setForeground(Qt::white);
+        }
        else
+       {
            item->setBackgroundColor(qtmisc::mtk_color_problem);
+           item->setForeground(Qt::white);
+       }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }
 
@@ -402,11 +436,13 @@ public:
         if (confirmed.HasValue()  &&  confirmed.Get().GetIntCode() != 0)
         {
             item->setBackgroundColor(qtmisc::mtk_color_executed);
+            item->setForeground(QBrush(get_default_font_color()));
         }
         else
         {
             item->setText(QLatin1String(""));
-            item->setBackgroundColor(get_default_color());
+            item->setBackgroundColor(get_default_background_color());
+            item->setForeground(QBrush(get_default_font_color()));
         }
     }
     void update_item_exec_price (void)
@@ -424,18 +460,21 @@ public:
         if (confirmed.IsValid())
         {
             item->setBackgroundColor(qtmisc::mtk_color_executed);
+            item->setForeground(QBrush(get_default_font_color()));
         }
         else
         {
             item->setText(QLatin1String(""));
-            item->setBackgroundColor(get_default_color());
+            item->setBackgroundColor(get_default_background_color());
+            item->setForeground(QBrush(get_default_font_color()));
         }
     }
 
     void update_item_exec_observations   (void)
     {
         QTableWidgetItem* item = items[col_remarks];
-        item->setBackgroundColor(get_default_color());
+        item->setBackgroundColor(get_default_background_color());
+        item->setForeground(QBrush(get_default_font_color()));
         QString ref_cli;
         QString remarks;
         if(inner_order->has_pending_rq())
@@ -453,7 +492,8 @@ public:
     void update_item_cli_code            ()
     {
         QTableWidgetItem* item = items[col_cli_code];
-        item->setBackgroundColor(get_default_color());
+        item->setBackgroundColor(get_default_background_color());
+        item->setForeground(QBrush(get_default_font_color()));
         if (inner_order->last_confirmation().HasValue())
             item->setText(QLatin1String(inner_order->last_confirmation().Get().invariant.account.client_code.c_str()));
         else if (inner_order->last_request().HasValue())
@@ -465,7 +505,8 @@ public:
     void update_item_account             ()
     {
         QTableWidgetItem* item = items[col_account];
-        item->setBackgroundColor(get_default_color());
+        item->setBackgroundColor(get_default_background_color());
+        item->setForeground(QBrush(get_default_font_color()));
         if (inner_order->last_confirmation().HasValue())
             item->setText(QLatin1String(inner_order->last_confirmation().Get().invariant.account.name.c_str()));
         else if (inner_order->last_request().HasValue())
@@ -481,12 +522,14 @@ public:
         else
             item->setText(QLatin1String(""));
 
-        item->setBackgroundColor(get_default_color());
+        item->setBackgroundColor(get_default_background_color());
+        item->setForeground(QBrush(get_default_font_color()));
     }
     void update_item_order_type        ()
     {
         QTableWidgetItem* item = items[col_order_type];
-        item->setBackgroundColor(get_default_color());
+        item->setBackgroundColor(get_default_background_color());
+        item->setForeground(QBrush(get_default_font_color()));
         if(dynamic_cast<mtk::trd::trd_cli_ls*>(inner_order.get2()) != 0)
             item->setText(QObject::tr("limit"));
         else if(dynamic_cast<mtk::trd::trd_cli_mk*>(inner_order.get2()) != 0)
