@@ -30,7 +30,8 @@
 |====================================================================
 | Date | Desciption
 
-| 2010-11-12 | xxxx
+| 2011-09-12 |If a macro is not defined on fsm, it will insert this macro directly con c++ code +
+Added carry-returns on status tag
 
 |==========================================================
 
@@ -145,8 +146,9 @@ Transitions endind with +''>+ instead of +-\->+  will not be draw on diagram
 
 MACROS::
 * Here we can write C++ code for our actions or guards
-* If no macro is defined on +fsm+ file, the system will write the macro name with prefix +fsm_gen_+ on c++ code +
+* If no macro is defined on +fsm+ file, the system will write the macro name with prefix +fsmgen__+ on c++ code +
   This lets you write the macros code on your program instead on fsm definition
+* This section can be empty
 
 --
 

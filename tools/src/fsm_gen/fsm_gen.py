@@ -635,6 +635,8 @@ def get_code_from_macro(macro_name):
         ##return 'mtk::AlarmMsg(mtk::Alarm(method_name, "logic error", mtk::alPriorError));'
     else :
         code  = '//  inserting macro: ' + macro_name + '\n'
+        if MACROS.get(macro_name) == None:
+            return  "fsmgen__" + macro_name  + "   /*  macro_name not defined on fsm, inserting macro_name in impl   */"
         code += MACROS.get(macro_name)
         if code == None:
             ##return 'macro code not located ' + macro_name
@@ -1164,8 +1166,8 @@ def generate_graphviz():
                     label += ', color=' +COLOR + ', fontcolor=' + COLOR
                     label += ', fontsize=10, fixedsize=true'
                     TRANS += Template('    $FROM_STATUS  ->  $TO_STATUS  [ $label ];\n').substitute(
-                                                FROM_STATUS  = transition["name"],
-                                                TO_STATUS    = transition["new_status"]["name"],
+                                                FROM_STATUS  = '"' + transition["name"].replace("__", "\\n") + '"',
+                                                TO_STATUS    = '"' + transition["new_status"]["name"].replace("__", "\\n") + '"', 
                                                 label    = label
                                         )
 

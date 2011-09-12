@@ -2,18 +2,18 @@ digraph automata {
     node [shape = circle, fontsize=10, fixedsize=true width=0.7];
     logout [ style = filled, color=lightgrey ];
 
-        logout  ->  w_key  [ label = "user_rq_login\nprep_rq_login_key, srv_rq", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
-    w_key  ->  w_login  [ label = "srv_rs_login_key\nprep_rq_login, srv_rq", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
-    w_key  ->  logout  [ label = "timeout\n, sig_login_rj", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
-    w_login  ->  login_ok  [ label = "srv_rs_login & rlok\n, sig_login_ok", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
-    w_login  ->  logout  [ label = "srv_rs_login\n, sig_login_rj", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
-    w_login  ->  logout  [ label = "timeout\n, sig_login_rj", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
-    login_ok  ->  logout  [ label = "user_rq_logout\nprep_rq_logout, srv_rq        & sig_logout", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
-    login_ok  ->  logout  [ label = "srv_cf_logout\n, sig_logout", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
-    login_ok  ->  w_k_chp  [ label = "user_rq_changepass\nprep_rq_login_key, srv_rq", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
-    w_k_chp  ->  w_chpwd  [ label = "srv_rs_login_key\nprep_rq_chpwd, srv_rq", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
-    w_chpwd  ->  login_ok  [ label = "srv_rs_chpwd & rchpwok\n, sig_chpwd_ok", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
-    w_chpwd  ->  login_ok  [ label = "srv_rs_chpwd\n, sig_chpwd_rj", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
+        "logout"  ->  "w_key"  [ label = "user_rq_login\nprep_rq_login_key, srv_rq", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    "w_key"  ->  "w_login"  [ label = "srv_rs_login_key\nprep_rq_login, srv_rq", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    "w_key"  ->  "logout"  [ label = "timeout\n, sig_login_rj", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
+    "w_login"  ->  "login_ok"  [ label = "srv_rs_login & rlok\n, sig_login_ok", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
+    "w_login"  ->  "logout"  [ label = "srv_rs_login\n, sig_login_rj", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    "w_login"  ->  "logout"  [ label = "timeout\n, sig_login_rj", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    "login_ok"  ->  "logout"  [ label = "user_rq_logout\nprep_rq_logout, srv_rq        & sig_logout", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    "login_ok"  ->  "logout"  [ label = "srv_cf_logout\n, sig_logout", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
+    "login_ok"  ->  "w_k_chp"  [ label = "user_rq_changepass\nprep_rq_login_key, srv_rq", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
+    "w_k_chp"  ->  "w_chpwd"  [ label = "srv_rs_login_key\nprep_rq_chpwd, srv_rq", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
+    "w_chpwd"  ->  "login_ok"  [ label = "srv_rs_chpwd & rchpwok\n, sig_chpwd_ok", color=black, fontcolor=black, fontsize=10, fixedsize=true ];
+    "w_chpwd"  ->  "login_ok"  [ label = "srv_rs_chpwd\n, sig_chpwd_rj", color=blue, fontcolor=blue, fontsize=10, fixedsize=true ];
  
 
     //fsm_cli_acs  [ shape = plaintext ];
