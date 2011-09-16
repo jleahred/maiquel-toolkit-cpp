@@ -101,7 +101,6 @@ struct qpid_session
     { 
             connection.open(); 
             session = connection.createSession();
-            mtk::sleep(mtk::dtMilliseconds(50));        //  PATHETIC windows trick
             sender = session.createSender(MTK_SS(address<< "; {assert:always, node:{type:topic} }"));
             sender.setCapacity(1000);     
             ++mtk_qpid_stats::num_created_sessions();
@@ -205,7 +204,6 @@ inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const std::s
     ++mtk_qpid_stats::num_created_suscriptions_no_parsing();
     //std::string session_config = MTK_SS(address<< "; {assert:always, create:always}");
     //std::string session_config = MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always, filter:[control, "<< filter <<"]}");
-    mtk::sleep(mtk::dtMilliseconds(50));        //  PATHETIC windows trick
     receiver = session->createReceiver(filter);
 
     MTK_TIMER_1C(check_queue);
