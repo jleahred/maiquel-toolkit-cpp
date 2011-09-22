@@ -216,12 +216,11 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
         CountPtr<qpid_session>              local_session  = session;
         //  this is to protect in case of  handle_qpid_exchange_receiver is out of scope when is processing a message 
     
-        if (local_receiver.getAvailable() == 0)
-            return;
 			
 		qpid::messaging::Message message;
-        while(local_receiver.fetch(message, qpid::messaging::Duration(0)))
+        while(local_receiver.getAvailable())
         {
+            local_receiver.fetch(message, qpid::messaging::Duration(0));
             //  pending, not too much fetches each time
             
             ++mtk_qpid_stats::num_messages_received();
@@ -294,7 +293,8 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
             }
             
         }
-        local_session->session.acknowledge();     //  configure it asynchronous?
+        //  local_session->session.acknowledge();     //  configure it asynchronous?        working with publish subscription is not necesary
+                                                      //  if it would be necessary, it has to be called just after message reception
 }
 
 
