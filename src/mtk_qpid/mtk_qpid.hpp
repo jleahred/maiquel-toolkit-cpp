@@ -191,7 +191,10 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
 
     public:
         explicit handle_qpid_exchange_receiver(const std::string& url, const std::string& address, const std::string& filter);
-        ~handle_qpid_exchange_receiver(void) { ++mtk_qpid_stats::num_deleted_suscriptions_no_parsing(); }
+        ~handle_qpid_exchange_receiver(void) {
+                    receiver.close();           //  http://apache-qpid-users.2158936.n2.nabble.com/receptor-out-of-scope-with-no-calling-receptor-close-td6858408.html
+                                                //  this not is a fully solution  http://192.168.7.10/wiki/index.php?n=Main.QPIDProblems
+                    ++mtk_qpid_stats::num_deleted_suscriptions_no_parsing(); }
 
         CountPtr< Signal<const qpid::messaging::Message&> >       signalMessage;
 
