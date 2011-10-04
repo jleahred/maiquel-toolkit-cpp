@@ -237,7 +237,7 @@ digraph trading_inheritance {
     RQ_XX  ->  RQ_XX_LS
     RQ_XX_LS  ->  RQ_NW_LS  
     RQ_XX_LS  ->  RQ_MD_LS
-    RQ_XX_LS  ->  RQ_EX_LS
+    RQ_XX_LS  ->  RQ_CC_LS
 
     RQ_XX  ->  RQ_XX_MK
     RQ_XX_MK  ->  RQ_NW_MK

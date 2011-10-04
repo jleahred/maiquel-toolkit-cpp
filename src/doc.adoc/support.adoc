@@ -84,24 +84,6 @@ include::../../src/support/release_on_exit.hpp[]
 
 
 
-=== foreach
-  foreach.hpp
-
-* Using some +gcc+ tricks, we can build a partial solution for iterating all elements of a container
-* With _C++0x_  it will not be necessary (and we will have a full solution)
-* This is not very usefull because it's not supported by <<mtk_containers,mtk_containers>>
-+
-.Example MTK_FOREACH
-[source,{cpp}]
-----
-include::../../examples/onefile/support/ex_foreach.cpp[]
-----
-+
-.foreach.hpp
-[source,{cpp}]
-----
-include::../../src/support/foreach.hpp[]
-----
 
 === crc32
  support/crc32.h
@@ -336,23 +318,25 @@ include::../../examples/onefile/support/ex_alarm.cpp[]
   support/vector.hpp
   support/list.hpp
   support/map.hpp
+  support/set.hpp
 
 * We have a small warper of main STL containers
 ** vector
 ** map
 ** list
+** set
 * At the moment there is no implementation of adapters
 * This warper is almost compatible with STL
 ** Most of code can be adapted to mtk::containers just modifying std::list for mkt::list (or the specific container type)
 * There is not fully implemented all the STL interfaz
 * Iterators aren't in STL hierarchy, therefore, it's not possible to use STL algorithms
-* There are not iterators on mtk::vectors
+* There are not iterators on mtk::vectors (at the moment)
 STL iterators::
 ** They try to look as pointers
 *** They have pointer arithmetic
 *** They can point to no place
 *** They can point to wrong place
-*** There aren't any kind of check
+*** There haven't any kind of check
 ** This is not good for critical aplications [red]#pending link#
 ** There are not verification on _deref_
 ** The value could be gone
