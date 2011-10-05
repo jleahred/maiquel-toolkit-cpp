@@ -15,6 +15,43 @@ accounts:
     client_code: KKK
   - name: LALALA
     client_code: KKK
+
+  - name: 1@DESARR
+    client_code: CIMD
+  - name: 2@DESARR
+    client_code: CIMD
+  - name: 3@DESARR
+    client_code: CIMD
+  - name: 4@DESARR
+    client_code: CIMD
+  - name: 5@DESARR
+    client_code: CIMD
+  - name: 6@DESARR
+    client_code: CIMD
+  - name: 7@DESARR
+    client_code: CIMD
+  - name: 8@DESARR
+    client_code: CIMD
+  - name: 9@DESARR
+    client_code: CIMD
+  - name: 0@DESARR
+    client_code: CIMD
+  - name: A@DESARR
+    client_code: CIMD
+  - name: B@DESARR
+    client_code: CIMD
+  - name: C@DESARR
+    client_code: CIMD
+  - name: D@DESARR
+    client_code: CIMD
+  - name: E@DESARR
+    client_code: CIMD
+  - name: F@DESARR
+    client_code: CIMD
+  - name: G@DESARR
+    client_code: CIMD
+  - name: H@DESARR
+    client_code: CIMD
 user_info:
   - name: JOSELUIS.ESTEBAN@DESARROLLO
     created: 2011-06-02 11:30:51.720

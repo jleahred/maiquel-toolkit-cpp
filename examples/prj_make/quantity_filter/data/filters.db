@@ -5,11 +5,16 @@ products:
   - gen_product_name: 1
     market: MARKET
     re_product_code: .*1$
+  - gen_product_name: 2
+    market: MARKET
+    re_product_code: .*2$
 clients:
   - name: CIMD
     created: 2011-07-19 11:09:06.232
     filter_list:
       - gen_product_name: 1
+        quantity: 10
+      - gen_product_name: 2
         quantity: 10
 user_info:
   - name: JOSELUIS.ESTEBAN@DESARROLLO
@@ -18,3 +23,5 @@ user_info:
     filter_list:
       - gen_product_name: 1
         quantity: 7
+      - gen_product_name: 2
+        quantity: 17
