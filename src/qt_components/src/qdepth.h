@@ -14,7 +14,6 @@
 
 class QTableDeph;
 class QLabel;
-class depth_in_table;
 namespace YAML { class Emitter;  class Node;      };
 
 
@@ -87,8 +86,12 @@ private:
     QString       style_sheet_null;
     QString       style_sheet_focus;
 
+    bool          pending_screen_update;
     mtk::CountPtr<mtk::prices::price_manager>       price_manager;
     void on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg);
+    void check_for_pending_screen_update(void);
+
+
     void update_prices(const mtk::prices::msg::sub_best_prices&   best_prices);
     void update_prices(const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices);
     void upate_null_prices(void);

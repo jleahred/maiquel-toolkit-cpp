@@ -137,6 +137,7 @@ private:
 QDepth::QDepth(QWidget *parent) :
     mtkContainerWidget(parent),
     table_widget(new QTableDeph(this)),
+    pending_screen_update(false),
     action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
     action_buy_market(0), action_sell_market(0),
     showing_menu(false),
@@ -278,6 +279,8 @@ QDepth::QDepth(QWidget *parent) :
     this->addAction(action_sell_market);
 
     this->disable_actions();
+
+    MTK_TIMER_1D(check_for_pending_screen_update);
 }
 
 QDepth::~QDepth()
@@ -332,10 +335,22 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
 }
 
 
-void QDepth::on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg)
+void QDepth::on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& /*msg*/)
 {
-    update_prices(msg);
+    pending_screen_update = true;
 }
+
+void QDepth::check_for_pending_screen_update(void)
+{
+    if(pending_screen_update   &&   price_manager.get2())
+    {
+        //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
+            update_prices(price_manager->get_best_prices());
+            pending_screen_update = false;
+        //MTK_END_EXEC_MAX_FREC
+    }
+}
+
 
 void QDepth::update_prices(const mtk::prices::msg::sub_best_prices&   best_prices)
 {

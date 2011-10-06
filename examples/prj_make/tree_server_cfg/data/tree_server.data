@@ -30,6 +30,21 @@ ROOT
                     description:PRODUCT 2
                     market:MARKET
                 }
+                PRD3
+                {
+                    description:PRODUCT 3
+                    market:MARKET
+                }
+                PRD4
+                {
+                    description:PRODUCT 4
+                    market:MARKET
+                }
+                PRD5
+                {
+                    description:PRODUCT 5
+                    market:MARKET
+                }
             }
             
             GRP2
