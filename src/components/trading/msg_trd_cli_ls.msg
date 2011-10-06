@@ -12,9 +12,9 @@ END_INIT
 
 
 
-//  QUEUES
+//  QUEUES  subjects
 //  SUBJ:RQ.client.market.account.product_code
-//  SUBJ:CONF.client.market.account.product_code.session_id
+//  SUBJ:CONF.client.market.account.session_id
 
 //  rejects has to be private for terminal who makes the request
 //  then, we have to add session_id in confirm subject
@@ -31,7 +31,7 @@ END_INIT
 
 
 sub_position_ls   [<V:0>]
-{ 
+{
     price    (pri)  :   fix_num
     quantity (qt)   :   fix_num
 }
@@ -67,17 +67,17 @@ RQ_CC_LS  [< V:0, I:RQ_XX_LS,    SUBJ:RQ.${invariant.account.client_code}.${inva
 
 CF_XX_LS  [< V:0,  I:CF_XX >]
 {
-    market_pos     (mkp)   :   sub_position_ls      
+    market_pos     (mkp)   :   sub_position_ls
 }
 
 
-CF_NW_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.${req_id.session_id}   >]   {}
+CF_NW_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}   >]   {}
 
 
-CF_MD_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.${req_id.session_id}   >]   {}
+CF_MD_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}   >]   {}
 
 
-CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.${req_id.session_id}   >]   {}
+CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}   >]   {}
 
 
 
@@ -85,7 +85,7 @@ CF_CC_LS  [< V:0,  I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${inv
 //---------------------------------------------------------------------
 //	executions  LS
 
-CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.${req_id.session_id}   >]
+CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}   >]
 {
     executed_pos  (exp)   :  sub_exec_conf
 }
@@ -97,7 +97,7 @@ CF_EX_LS  [< V:0, I:CF_XX_LS,  SUBJ:CONF.${invariant.account.client_code}.${inva
 //---------------------------------------------------------------------
 //	rejects  LS
 
-RJ_XX_LS  [< V:0, I:CF_XX_LS  >]  
+RJ_XX_LS  [< V:0, I:CF_XX_LS  >]
 {
     reject_description  (rjd)    :   string
     request_pos         (rqp)    :   sub_position_ls
@@ -106,17 +106,17 @@ RJ_XX_LS  [< V:0, I:CF_XX_LS  >]
 
 
 
-RJ_NW_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.${req_id.session_id}  >]  
+RJ_NW_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}  >]
 {
 }
 
 
-RJ_MD_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.${req_id.session_id}  >]
+RJ_MD_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}  >]
 {
 }
 
 
-RJ_CC_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.${req_id.session_id}  >]
+RJ_CC_LS  [< V:0, I:RJ_XX_LS,   SUBJ:CONF.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}  >]
 {
 }
 

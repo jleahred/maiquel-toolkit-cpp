@@ -377,7 +377,7 @@ void on_rj_xx_mk(const T&  rj)
                                 hqpid_##__MSG_TYPE__,     \
                                 mtk::admin::get_url("client"),     \
                                 "CLITESTING",     \
-                                mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", "*", "*", "*", "*"),     \
+                                mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", "*", "*", "*"),     \
                                 mtk::trd::msg::__MSG_TYPE__,     \
                                 __RECEIVER__)
 
