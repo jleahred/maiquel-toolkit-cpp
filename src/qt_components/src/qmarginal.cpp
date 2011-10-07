@@ -214,7 +214,7 @@ QTableMarginal::QTableMarginal(QWidget *parent)
 
 
 marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg::sub_product_code& product_code, int row)
-    : id(++counter), table_widget(_table_widget)
+    : id(++counter), table_widget(_table_widget), pending_screen_update(false)
 {
     tw_product  = new QTableWidgetItemProduct(product_code, this->id);
     tw_BID      = new QTableWidgetItem();
@@ -279,6 +279,8 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
     update_prices(product_code, price_manager->get_best_prices());
+
+    MTK_TIMER_1D(check_for_pending_screen_update)
 }
 
 
@@ -383,10 +385,22 @@ void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, cons
     }
 }
 
-void marginal_in_table::on_message(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_best_prices& msg)
+void marginal_in_table::on_message(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_best_prices& /*msg*/)
 {
-    update_prices(pc, msg);
+    pending_screen_update = true;
 }
+
+void marginal_in_table::check_for_pending_screen_update(void)
+{
+    if(pending_screen_update   &&   price_manager.get2())
+    {
+        //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
+            update_prices(price_manager->get_product_code(), price_manager->get_best_prices());
+            pending_screen_update = false;
+        //MTK_END_EXEC_MAX_FREC
+    }
+}
+
 void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices)
 {
     if(n_best_prices.HasValue())

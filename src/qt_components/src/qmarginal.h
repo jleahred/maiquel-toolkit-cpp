@@ -53,6 +53,12 @@ private:
 
     QTableWidget* table_widget;
 
+
+    bool        pending_screen_update;
+    void        check_for_pending_screen_update(void);
+
+
+
     void clean_prices(void);
     void update_prices(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices);
     void update_prices(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_best_prices&   best_prices);
