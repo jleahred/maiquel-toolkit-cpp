@@ -205,6 +205,7 @@ internal_price_manager__factory::get_best_prices(void) const
 price_manager::price_manager(const mtk::msg::sub_product_code&  product_code) 
     : ptr(mtk::get_from_factory<internal_price_manager__factory>(product_code))
 {
+    ptr->signal_best_prices_update.connect(&signal_best_prices_update);
 }
 
 
@@ -216,7 +217,6 @@ mtk::msg::sub_product_code        price_manager::get_product_code(void) const
 
 mtk::nullable<mtk::prices::msg::sub_best_prices>     price_manager::get_best_prices(void)
 {
-    ptr->signal_best_prices_update.connect(&signal_best_prices_update);
     handle_best_prices_suscrp  =  ptr->get_best_prices_suscrp_handle();
     
     return  ptr->get_best_prices();

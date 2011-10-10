@@ -68,12 +68,27 @@ ROOT
             PRD6
             {
                 description:PRODUCT 6
-                market:MKT1
+                market:MARKET
             }
             
             PRD7
             {
                 description:PRODUCT 7
+                market:MARKET
+            }
+            PRD8
+            {
+                description:PRODUCT 8
+                market:MARKET
+            }
+            PRD9
+            {
+                description:PRODUCT 9
+                market:MARKET
+            }
+            PRD10
+            {
+                description:PRODUCT 10
                 market:MARKET
             }
         }
