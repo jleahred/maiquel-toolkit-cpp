@@ -12,19 +12,19 @@ END_INIT
 
 
 
-oms_RQ_NW_LS  [< V:0, I:RQ_NW_LS ,  SUBJ:RQ.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from} >]
+oms_RQ_NW_LS  [< I:RQ_NW_LS ,  QE:CLI_MK, SUBJ:MK.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from}.TRD >]
 {
     reject_description   (rjd)  :  string   //  empty means ok
     from                 (from) :  string   //  id from process who send the message
 }
 
-oms_RQ_MD_LS  [< V:0, I:RQ_MD_LS ,  SUBJ:RQ.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from} >]
+oms_RQ_MD_LS  [< I:RQ_MD_LS ,  QE:CLI_MK, SUBJ:MK.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from}.TRD >]
 {
     reject_description   (rjd)  :  string  //  empty means ok
     from                 (from) :  string   //  id from process who send the message
 }
 
-oms_RQ_CC_LS  [< V:0, I:RQ_CC_LS ,  SUBJ:RQ.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from} >]
+oms_RQ_CC_LS  [< I:RQ_CC_LS ,  QE:CLI_MK, SUBJ:MK.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from}.TRD >]
 {
     reject_description   (rjd)  :  string  //  empty means ok
     from                 (from) :  string   //  id from process who send the message
@@ -34,19 +34,19 @@ oms_RQ_CC_LS  [< V:0, I:RQ_CC_LS ,  SUBJ:RQ.OMS.${invariant.product_code.market}
 
 
 
-oms_RQ_NW_MK  [< V:0, I:RQ_NW_MK,  SUBJ:RQ.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from} >]
+oms_RQ_NW_MK  [< I:RQ_NW_MK,  QE:CLI_MK, SUBJ:MK.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from}.TRD >]
 {
     reject_description   (rjd)  :  string  //  empty means ok
     from                 (from) :  string   //  id from process who send the message
 }
 
-oms_RQ_MD_MK  [< V:0, I:RQ_MD_MK,  SUBJ:RQ.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from} >]
+oms_RQ_MD_MK  [< I:RQ_MD_MK,  QE:CLI_MK, SUBJ:MK.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from}.TRD >]
 {
     reject_description   (rjd)  :  string  //  empty means ok
     from                 (from) :  string   //  id from process who send the message
 }
 
-oms_RQ_CC_MK  [< V:0, I:RQ_CC_MK,  SUBJ:RQ.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from} >]
+oms_RQ_CC_MK  [< I:RQ_CC_MK,  QE:CLI_MK, SUBJ:MK.OMS.${invariant.product_code.market}.${invariant.product_code.product}.${from}.TRD >]
 {
     reject_description   (rjd)  :  string  //  empty means ok
     from                 (from) :  string   //  id from process who send the message
@@ -57,7 +57,7 @@ oms_RQ_CC_MK  [< V:0, I:RQ_CC_MK,  SUBJ:RQ.OMS.${invariant.product_code.market}.
 //---------------------------------------------------------------------
 //	REQUEST ORDERS STATUS
 
-oms_RQ_ORDERS_STATUS  [< V:0, I:RQ_ORDERS_STATUS,  SUBJ:RQ.OMS.${account.client_code}.${market}.${from} >]   
+oms_RQ_ORDERS_STATUS  [< I:RQ_ORDERS_STATUS,  QE:CLI_MK,  SUBJ:MK.OMS.${market}.${from}.RQORDST >]
 {
     reject_description   (rjd)  :  string  //  empty means ok
     from                 (from) :  string   //  id from process who send the message

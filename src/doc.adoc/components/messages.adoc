@@ -78,58 +78,83 @@ include::/tmp/adoc/generate_messages_doc.txt[]
 
 == General INFO
 
-=== ADDRESSES
 
-* CLIPROD
-* SRVPROD
+=== Levels
 
-* CLITESTING
-* SRVTESTING
+--
+. *SYS* Servers with logic
+.. *MK* Market servers
+.. *GS*  General servesr
+. *CLI* Terminals and servers for them
+.. *TS*, *CS*, *CTS*  Terminal servers, client servers, client terminal servers
+. *TERMINALS*
+--
+
+=== QUEUES/EXCHANGES
+
+See topology later
+
+Production::
+* ALL_GS
+* CLI_MK
+* PRICES
+* LOCAL
+
+Testing::
+Same as production ended with TESTING
+
+
 
 === Routing keys
-* We will try to keep the +client+ on second field and +market+ on third field (specially on output messages) +
-  Ex:  PUB.PRC.<mtk>.PROD,   PUB.ADM.GEN...
 
-CLI ->  SYS::
+ALL_GS::
 +
+[cols="1, 1, 3" , options=""]
 |=====================
-| RQ.<from_client>.#
+| ALL.<gs_name>.#  |  GS->ALL | This messages will be sent to all servers (included TS) +
+                                <gs_name> is the +GS+ generator of message +
+                                Necessary to filter to avoid duplicated paths
+| CLI.<cli_code>.# |  GS->CLI | confirmations, responses, ...
+| GS.<cli_code>.#  |  CLI->GS | request from client (password, grants, ...) +
+                                This format is for client request +
+                                The <cli_code> is used to filter on +CS+
+| GS.#             |  ALL->GS | comunication to +GS+ from other servers
+| MK.<market>.#    |  GS->MK  | Market is used to filter for specific server +
+                                ps_conf, ps_req, ...
+| SYS.#            |  GS->SYS |  Internal messages to spread on +SYS+ level
 |=====================
 
-CLI <-  SYS::
+CLI_MK::
 +
+[cols="1, 1, 3" , options=""]
 |=====================
-| RS.<client>.<machine>.<process_uuid>.<request_code>#   |    Request responses
-| CONF.<client>.#   |    Permanent topics responses (as order confirmations)
-| PUB.#   |    One direcction publications
+| CLI.<client_code>.#  |  MK->CLI |   Messages to client and +GS+ +
+                                      client will be filtered con +CS+ +
+                                      trading confs, cli res, ...
+| CLI.ALL.#            |  MK->CLI |   Messages to all clients and +GS+  generated from +MK+ 
+| MK.<client_code>.#   |  MK->CLI |   Messages from clients and +GS+  generated +
+                                      <client_code> will be filtered con +CS+
+| MK.(OMS\|PS).#        |  MK->CLI |   Messages to market servers generated on +SYS+
+
 |=====================
 
-CLI <-->  SYS::
+
+PRICES::
 +
+[cols="1, 1, 3" , options=""]
 |=====================
-| ADM.#   |    keep alives, request commands, response commands
+| #  |  MK->(CLI\|GS) |   prices broadcast
 |=====================
 
 
-SYS <-->  SYS::
-+
---
-* Server to server comunication
-* Same routing keys preceded by +SYS.+
---
-
-* +PUB+ will be used on messages sent to many. Broadcast with no response and therefore no end response
-* +CONF+ to send messages to many but they depend from any request or previus suscription information and the suscription is _permanent_. +
-  Orders confirmation for example
-* +REQ+ is for request responses and request confirmation patterns
-* +REP+ responses of request response pattern. _Non permanent_ suscriptions
 
 
+// * +PUB+ will be used on messages sent to many. Broadcast with no response and therefore no end response
+// * +CONF+ to send messages to many but they depend from any request or previus suscription information and the suscription is  _permanent_. +
+//   Orders confirmation for example
+// * +REQ+ is for request responses and request confirmation patterns
+// * +REP+ responses of request response pattern. _Non permanent_ suscriptions
 
-
-
-[NOTE]
-The subject identify a message that can be sent or received directly
 
 === Message name convention
 |=====================
@@ -141,6 +166,320 @@ The subject identify a message that can be sent or received directly
 | oms_ ...  |    oms prefix means internal Order Management System message (not client)
 | ps_ ...   |    ps prefix means internal price system message (not client)
 |=====================
+
+
+=== QUEUES/Exchanges Topology
+
+
+* Names are defined as path from point to point
+* This doesn't mean, the message has to be initiated and received on both path extremes
+* The message can be initiated on an intermediate point and can be consumed before the end point
+
+[TIP]
+Dotted lines mean filtered routes
+
+PRICES::
+* This is a one direccion *dynamic* exchange route
+* This is a special case with LVQ queues
+* Information starts on market connections and is distribuited to terminals
+* i.e. prices
+["graphviz", "queue_topology_prices.png"]
+-----------
+digraph queue_topology_prices
+{
+	// rankdir = LR;
+node [shape=box];  T1; T2, T3, Tn, Tn2, TCA1, TCA2, TCB1, TCB2, TCB3, TCC1
+node [shape=ellipse];  
+subgraph cluster_cimd {
+
+   subgraph cluster_system {
+           label = "system";
+           EU     ->  {SG1, SG2}
+
+   }
+
+   subgraph cluster_terminal_servers {
+           label = "";
+           style=filled;
+	color=lightgrey;
+           ST1, ST2, STC1, STC2
+           EU     ->  { ST1, ST2, STC1, STC2 }
+
+   }
+
+
+    ST1 ->  { T1, T3, Tn }
+
+    ST2 ->  { T2, Tn2 }
+
+    STC1 -> { STC_A, STC_B }
+
+    STC2 -> STC_C
+
+    label = "cimd";
+}
+
+  STC_A  ->  { TCA1, TCA2 }
+
+  STC_B  ->  STC2_B
+
+  STC2_B->  { TCB1, TCB2, TCB3 }
+
+  STC_C->  TCC1
+}
+------------
+
+
+
+
+ALL_GS::
+
+ALL.<gs_server>.#;;
+* Messages generated on +GS+ to all clients and servers
++
+["graphviz", "queue_topology_all_gs__all.png"]
+-----------
+graph queue_topology_prices
+{
+	// rankdir = LR;
+	
+subgraph cluster_cimd {
+
+   subgraph cluster_system {
+           label = "system";
+           MK GS1 GS2
+
+          GS1 -- GS2 [ dir= both, color=red, style=dotted ]
+
+          MK -- { GS1, GS2 }    [dir=back, style=dotted];
+
+   }
+      subgraph cluster_terminal_servers {
+           label = "";
+           style=filled;
+	color=lightgrey;
+
+           {GS1, GS2} -- { TS, CS } [dir=forward, style=dotted]
+
+      }
+
+    CS -- CTSx  [dir=forward]
+
+    label = "cimd";
+}
+
+
+}
+------------
+
+
+
+
+
+CLI.<cli_code>.#;;
+* Messages generated on +GS+ to clients
++
+["graphviz", "queue_topology_all_gs__cli.png"]
+-----------
+graph queue_topology_prices
+{
+	// rankdir = LR;
+	
+subgraph cluster_cimd {
+
+   subgraph cluster_system {
+           label = "system";
+           MK GS1 GS2
+
+          MK -- { GS1, GS2 }    [dir=back, style=invis];
+
+   }
+      subgraph cluster_terminal_servers {
+           label = "";
+           style=filled;
+	color=lightgrey;
+
+           {GS1, GS2} -- { TS, CS } [dir=forward]
+
+      }
+
+    CS -- CTSx [dir=forward]
+
+    label = "cimd";
+}
+
+
+}
+------------
+
+
+
+GS.#;;
+* Messages generated on clients or servers to +GS+
++
+["graphviz", "queue_topology_all_gs__gs.png"]
+-----------
+graph queue_topology_prices
+{
+	// rankdir = LR;
+	
+subgraph cluster_cimd {
+
+   subgraph cluster_system {
+           label = "system";
+           MK GS1 GS2
+
+          MK -- { GS1, GS2 }    [dir=forward];
+
+   }
+      subgraph cluster_terminal_servers {
+           label = "";
+           style=filled;
+	color=lightgrey;
+
+           {GS1, GS2} -- { TS, CS } [dir=back]
+
+      }
+
+    CS -- CTSx [dir=back, style=dotted]
+
+    label = "cimd";
+}
+
+
+}
+------------
+
+
+
+
+
+MK.<market>#;;
+* Messages generated on +GS+ or servers to +MK+
++
+["graphviz", "queue_topology_all_gs__mk.png"]
+-----------
+graph queue_topology_prices
+{
+	// rankdir = LR;
+	
+subgraph cluster_cimd {
+
+   subgraph cluster_system {
+           label = "system";
+           MK GS1 GS2
+
+          MK -- { GS1, GS2 }    [dir=back, style=dotted];
+
+   }
+      subgraph cluster_terminal_servers {
+           label = "";
+           style=filled;
+	color=lightgrey;
+
+           {GS1, GS2} -- { TS, CS } [dir=back, style=invis]
+
+      }
+
+    CS -- CTSx [dir=back, style=dotted, style=invis]
+
+    label = "cimd";
+}
+
+
+}
+------------
+
+
+
+
+
+
+
+CLI_MK::
+
+CLI.<cli_code>|ALL.#;;
+* Messages generated on +MK+ to clients and +GS+
++
+["graphviz", "queue_topology_cli_mk__cli.png"]
+-----------
+graph queue_topology_prices
+{
+	// rankdir = LR;
+	
+subgraph cluster_cimd {
+
+   subgraph cluster_system {
+           label = "system";
+           MK GS1 GS2
+
+          MK -- { GS1, GS2 }    [dir=forward];
+
+   }
+      subgraph cluster_terminal_servers {
+           label = "";
+           style=filled;
+	color=lightgrey;
+
+          MK -- { CS, TS }    [dir=forward];
+      }
+
+    CS -- CTSx  [dir=forward, style=dotted]
+
+    label = "cimd";
+}
+
+
+}
+------------
+
+
+
+
+
+MK.<client_code>|PS|OMS.<market>#;;
+* Messages generated on +CLI+ to a market and +GS+
++
+["graphviz", "queue_topology_cli_mk__mkcc.png"]
+-----------
+graph queue_topology_prices
+{
+	// rankdir = LR;
+	
+subgraph cluster_cimd {
+
+   subgraph cluster_system {
+           label = "system";
+           MK GS1 GS2
+
+          MK -- { GS1, GS2 }    [dir=forward];
+
+   }
+      subgraph cluster_terminal_servers {
+           label = "";
+           style=filled;
+	color=lightgrey;
+
+          MK -- { CS, TS }    [dir=back, style=dotted];
+      }
+
+    CS -- CTSx  [dir=back, style=dotted]
+
+    label = "cimd";
+}
+
+
+}
+------------
+
+
+
+
+
+
+
+
+
 
 
 === YAML support

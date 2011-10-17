@@ -2064,35 +2064,35 @@ res_product_info::IC_response::IC_response (const qpid::messaging::Message& msg)
 
 std::string  pub_best_prices::get_in_subject (const std::string& product_code_market,const std::string& product_code_product)
     {
-        return MTK_SS("PUB." << product_code_market << "." << product_code_product << ".BP");
+        return MTK_SS("BP." << product_code_market << "." << product_code_product << "");
     }
     std::string  pub_best_prices::get_out_subject (void) const
     {
-        return MTK_SS("PUB." << this->product_code.market << "." << this->product_code.product << ".BP");
+        return MTK_SS("BP." << this->product_code.market << "." << this->product_code.product << "");
     }
     std::string  pub_new_products::get_in_subject (const std::string& market)
     {
-        return MTK_SS("PUB." << market << ".NP");
+        return MTK_SS("CLI.ALL." << market << ".NP");
     }
     std::string  pub_new_products::get_out_subject (void) const
     {
-        return MTK_SS("PUB." << this->market << ".NP");
+        return MTK_SS("CLI.ALL." << this->market << ".NP");
     }
     std::string  req_product_info::get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& product_code_market)
     {
-        return MTK_SS("RQ." << request_info_process_info_location_client_code << "." << product_code_market << ".PRC.PI");
+        return MTK_SS("GS." << request_info_process_info_location_client_code << "." << product_code_market << ".REQPI");
     }
     std::string  req_product_info::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->request_info.process_info.location.client_code << "." << this->product_code.market << ".PRC.PI");
+        return MTK_SS("GS." << this->request_info.process_info.location.client_code << "." << this->product_code.market << ".REQPI");
     }
     std::string  res_product_info::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".PRC.PI");
+        return MTK_SS("CLI." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".PRC.RESPI");
     }
     std::string  res_product_info::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".PRC.PI");
+        return MTK_SS("CLI." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".PRC.RESPI");
     }
     
 

@@ -7,7 +7,7 @@ END_INIT
 
 
 
-LimitPosition   [<V:0>]      // <2>
+LimitPosition   [< >]      // <2>
 {
    buy_sell (bs)   :  string       [optional]        // <3>
    price    (pr)   :  fix_num      [recomended]
@@ -17,7 +17,7 @@ LimitPosition   [<V:0>]      // <2>
 
 
 
-RQ_NW_LS  [<V:0, SUBJ:hola.pajaarito >]   // <4>
+RQ_NW_LS  [< SUBJ:hola.pajaarito, QE:testing >]   // <4>
 {
    //  single fields
    order_id (oid)  :  string       [mandatory]
@@ -33,14 +33,14 @@ RQ_NW_LS  [<V:0, SUBJ:hola.pajaarito >]   // <4>
 
 
    //  group of fields not nested on "wired" message   <7>
-   control_fields_  [<V:0>]
+   control_fields_  [< >]
    {
       clock_id (ci)       :  date_time    [mandatory]
       secuence (sec)      :  int32        [mandatory]
    }
 
    //  group of fields nested on "wired" message    <8>
-   product_code (pc)   [<V:0>]
+   product_code (pc)   [< >]
    {
       market        (mk)       :  string       [mandatory]
       product_code  (pr)       :  string       [mandatory]
@@ -53,7 +53,7 @@ RQ_NW_LS  [<V:0, SUBJ:hola.pajaarito >]   // <4>
 
 
 
-LimitPositionChild   [< V:0, I:LimitPosition >]      // <12>
+LimitPositionChild   [< I:LimitPosition >]      // <12>
 {
    new_field   (nf)  : string 
 

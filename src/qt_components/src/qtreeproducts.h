@@ -23,7 +23,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event);
 
 private:
-    mtk::CountPtr< mtk::qpid_session >       qpid_session;
+    mtk::CountPtr< mtk::mtkqpid_sender>       qpid_sender;
 
     void on_response_request_tree(const mtk::list<mtk::gen::msg::res_tree_items>& list_items);
 

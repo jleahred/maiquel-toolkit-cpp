@@ -10,9 +10,9 @@ namespace mtk
 {
 
 namespace mtk_qpid_stats {
-    
-    
-    
+
+
+
 //  stats info
 long& num_messages_received                  (void);
 long& num_messages_sent                      (void);
@@ -26,6 +26,12 @@ long& num_deleted_suscriptions_no_parsing    (void);
 long& num_created_sessions                   (void);
 long& num_deleted_sessions                   (void);
 
+long& num_created_senders                    (void);
+long& num_deleted_senders                    (void);
+
+long& num_created_receivers                  (void);
+long& num_deleted_receivers                  (void);
+
 
 std::string get_mtk_qpid_stats_string        (void);
 
@@ -35,7 +41,7 @@ mtk::DateTime&  last_received_message     (void);
 }
 
 //  stats info
-    
+
 
 
 }

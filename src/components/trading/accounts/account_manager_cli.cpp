@@ -7,7 +7,7 @@
 
 namespace {
     const char*   VERSION = "2011-05-25";
-    
+
     const char*   MODIFICATIONS =
                         "           2011-05-25     first version\n";
     void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
@@ -21,10 +21,10 @@ namespace {
         response_lines.push_back(".......................................");
         response_lines.push_back(MODIFICATIONS);
     }
-    
-    
+
+
     void  request__and__susbcribe_add_accounts_and_initserver(void);
-    
+
     mtk::CountPtr<mtk::map <mtk::trd::account::msg::sub_grant::IC_key,   mtk::trd::account::msg::sub_grant > >   get_grants_map(void)
     {
         static mtk::CountPtr<mtk::map <mtk::trd::account::msg::sub_grant::IC_key,   mtk::trd::account::msg::sub_grant > >  result;
@@ -34,11 +34,11 @@ namespace {
         }
         return result;
     }
-    
+
     void command_list_accounts(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_stats  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines);
-    
+
     void register_global_commands (void)
     {
         mtk::admin::register_command("__GLOBAL__",    "ver",   "")->connect(command_version);
@@ -50,9 +50,9 @@ namespace {
 };
 
 
-namespace mtk { 
+namespace mtk {
     namespace accmgrcli {
-        
+
 
 
         void init()
@@ -80,7 +80,7 @@ namespace mtk {
             {
                 result.push_back(it->second);
             }
-            
+
             return result;
         }
 
@@ -100,9 +100,9 @@ namespace mtk {
                     else if(it->second.type == "V"  &&  result != "C")
                         result = "V";
                 }
-                    
+
             }
-            
+
             return result;
         }
 
@@ -121,15 +121,15 @@ namespace mtk {
 
 
     };  //      namespace accmgrcli {
-};      //  namespace mtk { 
- 
+};      //  namespace mtk {
+
 
 
 
 
 namespace {
-    
-    
+
+
     void on_add_accounts(const mtk::trd::account::msg::conf_add_accounts&  add_accounts)
     {
 
@@ -143,7 +143,7 @@ namespace {
         mtk::CountPtr<mtk::Signal<const mtk::trd::account::msg::sub_grant&> >      signal_new_grant_received  = mtk::accmgrcli::get_signal_new_grant_received();
         const mtk::list<mtk::trd::account::msg::sub_grant>&  rec_grants = add_accounts.grant_list;
         mtk::CountPtr<mtk::map <mtk::trd::account::msg::sub_grant::IC_key,   mtk::trd::account::msg::sub_grant > > grants = get_grants_map();
-        
+
         for(mtk::list<mtk::trd::account::msg::sub_grant>::const_iterator it = rec_grants.begin(); it!= rec_grants.end(); ++it)
         {
             mtk::map <mtk::trd::account::msg::sub_grant::IC_key,   mtk::trd::account::msg::sub_grant >::iterator find_grant = get_grants_map()->find(it->key);
@@ -158,18 +158,18 @@ namespace {
     void  on_pub_accmgr_init(const mtk::trd::account::msg::pub_accmgr_init&   pub_accmgr_init)
     {
         mtk::trd::account::msg::rq_accounts_oninit    rq_accounts_oninit (mtk::admin::get_request_info(), pub_accmgr_init.request_sufix_subjetc);
-        mtk::send_message(mtk::admin::get_qpid_session("client", "CLITESTING"), rq_accounts_oninit);
+        mtk::send_message(mtk::admin::get_qpid_sender("client", "CLITESTING"), rq_accounts_oninit);
     }
-    
-    
+
+
     void  request__and__susbcribe_add_accounts_and_initserver(void)
     {
         mtk::msg::sub_request_info  ri (mtk::admin::get_request_info());
-        
+
         static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::account::msg::conf_add_accounts> >    hqpid_add_accounts;
         std::string  client_code = ri.process_info.location.client_code;
         std::string  session_id = ri.req_id.session_id;
-        
+
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_add_accounts,
                                 mtk::admin::get_url("client"),
@@ -177,10 +177,10 @@ namespace {
                                 mtk::trd::account::msg::conf_add_accounts::get_in_subject(client_code, session_id),
                                 mtk::trd::account::msg::conf_add_accounts,
                                 on_add_accounts)
-                                
-                                
+
+
         mtk::trd::account::msg::rq_accounts msg_rq_accounts(ri);
-        mtk::send_message(mtk::admin::get_qpid_session("client", "CLITESTING"), msg_rq_accounts);
+        mtk::send_message(mtk::admin::get_qpid_sender("client", "CLITESTING"), msg_rq_accounts);
 
 
         //  suscription to init server
@@ -193,8 +193,8 @@ namespace {
                                 mtk::trd::account::msg::pub_accmgr_init,
                                 on_pub_accmgr_init)
     }
-    
-    
+
+
     void command_list_accounts(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
     {
         command_stats("", "", response_lines);
@@ -210,7 +210,7 @@ namespace {
     {
         response_lines.push_back(MTK_SS("#accounts: " << get_grants_map()->size()));
     }
-    
-    
-    
+
+
+
 };

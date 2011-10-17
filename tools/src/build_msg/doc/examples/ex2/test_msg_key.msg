@@ -6,7 +6,7 @@ END_INIT
 
 
 
-sub_test_key  [< V:0, KEY:name >]
+sub_test_key  [< KEY:name >]
 {
     name        (nm)    :       string
 

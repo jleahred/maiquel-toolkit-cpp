@@ -9,30 +9,30 @@
 
 namespace
 {
-    
+
     const char*   APP_NAME          = "ADM_HOUSELIGHT";
     const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "This process will send the keep alive to servers and clients\n"
                                       "It will be checked by admin component";
-                                      
+
     const char*   APP_MODIFICATIONS = "           2011-03-16     first version\n";
-                                      
+
 }
 
 
 void send_central_keep_alive(void)
 {
-    
+
     MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(3))
-        static  mtk::CountPtr< mtk::qpid_session >  adm_client_session = mtk::admin::get_qpid_session("admin_cli", "CLITESTING");
-        static  mtk::CountPtr< mtk::qpid_session >  adm_server_session = mtk::admin::get_qpid_session("admin_srv", "SRVTESTING");
-        
-        
-        
-        mtk::admin::msg::pub_central_keep_alive msg(mtk::admin::get_process_info(), mtk::dtSeconds(3), mtk::dtSeconds(5));
-        
-        mtk::send_message(adm_client_session, msg);
-        mtk::send_message(adm_server_session , msg);
+        static  mtk::CountPtr< mtk::mtkqpid_sender >  adm_client_sender = mtk::admin::get_qpid_sender("admin_cli", "CLITESTING");
+        static  mtk::CountPtr< mtk::mtkqpid_sender >  adm_server_sender = mtk::admin::get_qpid_sender("admin_srv", "SRVTESTING");
+
+
+
+        mtk::admin::msg::pub_central_keep_alive msg(mtk::admin::get_process_info(), mtk::dtSeconds(3), mtk::dtSeconds(5), "GS1");
+
+        mtk::send_message(adm_client_sender, msg);
+        mtk::send_message(adm_server_sender, msg);
     MTK_END_EXEC_MAX_FREC
 }
 
@@ -45,13 +45,13 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
-        
-    
+
+
 
         MTK_TIMER_1SF(send_central_keep_alive);
 
         mtk::start_timer_wait_till_end();
-        
+
 
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"

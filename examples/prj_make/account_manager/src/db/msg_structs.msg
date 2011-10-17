@@ -15,7 +15,7 @@ END_INIT
 
 
 
-sub_user_info  [< V:0, KEY:name >]
+sub_user_info  [< KEY:name >]
 {
     name        (nm)    : string
     created     (cdt)   : date_time

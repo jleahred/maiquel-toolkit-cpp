@@ -1553,59 +1553,59 @@ res_user_list::res_user_list (const qpid::messaging::Message& msg)
 
 std::string  pub_add_user::get_in_subject ()
     {
-        return MTK_SS("SYS.PUB.ACS_SYNC");
+        return MTK_SS("SYS.SRV.ACS_SYNC.AU");
     }
     std::string  pub_add_user::get_out_subject (void) const
     {
-        return MTK_SS("SYS.PUB.ACS_SYNC");
+        return MTK_SS("SYS.SRV.ACS_SYNC.AU");
     }
     std::string  pub_del_user::get_in_subject ()
     {
-        return MTK_SS("SYS.PUB.ACS_SYNC");
+        return MTK_SS("SYS.SRV.ACS_SYNC.DU");
     }
     std::string  pub_del_user::get_out_subject (void) const
     {
-        return MTK_SS("SYS.PUB.ACS_SYNC");
+        return MTK_SS("SYS.SRV.ACS_SYNC.DU");
     }
     std::string  req_session_id_conf::get_in_subject ()
     {
-        return MTK_SS("SYS.RQ.ACS_ASK_SESSID");
+        return MTK_SS("GS.ACS.ASK_SESSID");
     }
     std::string  req_session_id_conf::get_out_subject (void) const
     {
-        return MTK_SS("SYS.RQ.ACS_ASK_SESSID");
+        return MTK_SS("GS.ACS.ASK_SESSID");
     }
     std::string  pub_partial_user_list_acs2serv::get_in_subject ()
     {
-        return MTK_SS("SYS.PUB.ACS2SERV_SYNC");
+        return MTK_SS("SYS.SRV.ACS_SYNC.PUL");
     }
     std::string  pub_partial_user_list_acs2serv::get_out_subject (void) const
     {
-        return MTK_SS("SYS.PUB.ACS2SERV_SYNC");
+        return MTK_SS("SYS.SRV.ACS_SYNC.PUL");
     }
     std::string  pub_partial_user_list_serv2acs::get_in_subject ()
     {
-        return MTK_SS("SYS.PUB.SERV2ACS_SYNC");
+        return MTK_SS("SYS.ACS.ACS_SYNC.PUL");
     }
     std::string  pub_partial_user_list_serv2acs::get_out_subject (void) const
     {
-        return MTK_SS("SYS.PUB.SERV2ACS_SYNC");
+        return MTK_SS("SYS.ACS.ACS_SYNC.PUL");
     }
     std::string  req_user_list::get_in_subject ()
     {
-        return MTK_SS("SYS.REQ.ACS.USER_LIST");
+        return MTK_SS("GS.ACS.RQ_USER_LIST");
     }
     std::string  req_user_list::get_out_subject (void) const
     {
-        return MTK_SS("SYS.REQ.ACS.USER_LIST");
+        return MTK_SS("GS.ACS.RQ_USER_LIST");
     }
     std::string  res_user_list::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("SYS.RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << "");
+        return MTK_SS("SYS.SRV.ACS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSUL");
     }
     std::string  res_user_list::get_out_subject (void) const
     {
-        return MTK_SS("SYS.RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << "");
+        return MTK_SS("SYS.SRV.ACS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSUL");
     }
     
 

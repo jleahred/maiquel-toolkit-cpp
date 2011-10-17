@@ -326,7 +326,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& account_client_code,const std::string& market,const std::string& from);
+    static std::string  get_in_subject (const std::string& market,const std::string& from);
 virtual std::string  get_out_subject (void) const;
 
     

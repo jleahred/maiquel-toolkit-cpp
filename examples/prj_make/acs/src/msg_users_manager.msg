@@ -13,7 +13,7 @@ END_INIT
 //---------------------------------------------------------------------
 
 
-sub_user_info  [<V:0,  KEY:name  >]
+sub_user_info  [< KEY:name  >]
 {
     name                (nm)            :       string
     client_code         (cc)            :       string
@@ -23,7 +23,7 @@ sub_user_info  [<V:0,  KEY:name  >]
 
 
 
-sub_user_acs_info  [<  V:0,  KEY:user_info.name  >]
+sub_user_acs_info  [<  KEY:user_info.name  >]
 {
     user_info           (ui)            :       sub_user_info
     passwordcrc32       (pw32)          :       string

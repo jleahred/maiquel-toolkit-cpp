@@ -2217,67 +2217,67 @@ res_change_password::IC_change_password_info::IC_change_password_info (const qpi
 
 std::string  req_login_key::get_in_subject (const std::string& request_info_process_info_location_client_code)
     {
-        return MTK_SS("RQ." << request_info_process_info_location_client_code << ".ACS.RQK");
+        return MTK_SS("GS." << request_info_process_info_location_client_code << ".ACS.RQK");
     }
     std::string  req_login_key::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACS.RQK");
+        return MTK_SS("GS." << this->request_info.process_info.location.client_code << ".ACS.RQK");
     }
     std::string  res_login_key::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSK");
+        return MTK_SS("CLI." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSK");
     }
     std::string  res_login_key::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSK");
+        return MTK_SS("CLI." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSK");
     }
     std::string  req_login::get_in_subject (const std::string& request_info_process_info_location_client_code)
     {
-        return MTK_SS("RQ." << request_info_process_info_location_client_code << ".ACS.RQL");
+        return MTK_SS("GS." << request_info_process_info_location_client_code << ".ACS.RQL");
     }
     std::string  req_login::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACS.RQL");
+        return MTK_SS("GS." << this->request_info.process_info.location.client_code << ".ACS.RQL");
     }
     std::string  res_login::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".LRES");
+        return MTK_SS("CLI." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RESLOGIN");
     }
     std::string  res_login::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".LRES");
+        return MTK_SS("CLI." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RESLOGIN");
     }
     std::string  conf_logout::get_in_subject (const std::string& location_client_code,const std::string& location_machine,const std::string& session_id)
     {
-        return MTK_SS("CONF." << location_client_code << "." << location_machine << "." << session_id << ".LOGOUT");
+        return MTK_SS("CLI." << location_client_code << "." << location_machine << "." << session_id << ".CONFLOGOUT");
     }
     std::string  conf_logout::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->location.client_code << "." << this->location.machine << "." << this->session_id << ".LOGOUT");
+        return MTK_SS("CLI." << this->location.client_code << "." << this->location.machine << "." << this->session_id << ".CONFLOGOUT");
     }
     std::string  req_logout::get_in_subject (const std::string& request_info_process_info_location_client_code)
     {
-        return MTK_SS("RQ." << request_info_process_info_location_client_code << ".ACS.RQK");
+        return MTK_SS("GS." << request_info_process_info_location_client_code << ".ACS.RQLO");
     }
     std::string  req_logout::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACS.RQK");
+        return MTK_SS("GS." << this->request_info.process_info.location.client_code << ".ACS.RQLO");
     }
     std::string  req_change_password::get_in_subject (const std::string& request_info_process_info_location_client_code)
     {
-        return MTK_SS("RQ." << request_info_process_info_location_client_code << ".ACS.RQCP");
+        return MTK_SS("GS." << request_info_process_info_location_client_code << ".ACS.RQCP");
     }
     std::string  req_change_password::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACS.RQCP");
+        return MTK_SS("GS." << this->request_info.process_info.location.client_code << ".ACS.RQCP");
     }
     std::string  res_change_password::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("RS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".LCP");
+        return MTK_SS("CLI." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RESLCP");
     }
     std::string  res_change_password::get_out_subject (void) const
     {
-        return MTK_SS("RS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".LCP");
+        return MTK_SS("CLI." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RESLCP");
     }
     
 

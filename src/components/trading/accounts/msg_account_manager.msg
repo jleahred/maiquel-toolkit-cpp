@@ -9,13 +9,13 @@ END_INIT
 
 
 
-sub_grant  [<V:0, KEY:key>]
+sub_grant  [<KEY:key>]
 {
-    key  [< V:0,  LessOP:1 >]
+    key  [< LessOP:1 >]
     {
         market      (mk)        :   string
         account     (acc)       :   mtk::trd::msg::sub_account_info
-        
+
     }
     type        (ty)    : string        //  F   C  V   (Full  Cancel  View    <deleted>)
 }
@@ -31,13 +31,13 @@ sub_grant  [<V:0, KEY:key>]
 
 
 
-rq_accounts  [<  V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACCOUNT.GRANTS  >]
+rq_accounts  [<  QE:CLI_MK, SUBJ:MK.${request_info.process_info.location.client_code}.ALL.ACCOUNT.RQGRANTS  >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
 }
 
 
-conf_add_accounts [<  V:0, SUBJ:CONF.${gen_response_location.client_code}.ACCOUNTS.${gen_response_location.session_id}  >]
+conf_add_accounts [<  QE:CLI_MK, SUBJ:CLI.${gen_response_location.client_code}.${gen_response_location.session_id}.CONF_ADD_ACOUNTS  >]
     //  this "generic" subject let us send accounts with no request from user
     //  it's possible receive account several times
 {
@@ -57,14 +57,14 @@ conf_add_accounts [<  V:0, SUBJ:CONF.${gen_response_location.client_code}.ACCOUN
 //  request to one specific server
 //--------------------------------------------------------------------------------------
 
-pub_accmgr_init [<  V:0, SUBJ:ADM.ALL.ACCMGRINIT   >]
+pub_accmgr_init [<  QE:CLI_MK, SUBJ:CLI.ALL.ACCMGRINIT   >]
 {
     process_info                (pi)        :       mtk::msg::sub_process_info
     request_sufix_subjetc       (rss)       :       string
 }
 
 
-rq_accounts_oninit  [<  V:0, SUBJ:ADM.ALL.ACCMGRINIT.${request_sufix_subjetc}   >]
+rq_accounts_oninit  [<  QE:CLI_MK, SUBJ:MK.${request_info.process_info.location.client_code}.ALL.${request_sufix_subjetc}.ACCOUNTS.RQINIT   >]  // mising market on subject
 {
     request_info                (rqi)       :   mtk::msg::sub_request_info
     request_sufix_subjetc       (rss)       :   string

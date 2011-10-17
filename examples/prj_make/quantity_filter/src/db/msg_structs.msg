@@ -13,7 +13,7 @@ END_INIT
 //---------------------------------------------------------------------
 
 
-sub_product [< V:0, KEY:gen_product_name >]
+sub_product [< KEY:gen_product_name >]
 {
     gen_product_name    (gpn)   :       string
     
@@ -24,7 +24,7 @@ sub_product [< V:0, KEY:gen_product_name >]
 
 
 
-sub_filter_info [<V:0>]
+sub_filter_info [< >]
 {
     gen_product_name    (gpn)   :       string      //  this is not the product on system, is a generic (could match with more than one product) user code
     quantity            (qt)    :       int
@@ -32,7 +32,7 @@ sub_filter_info [<V:0>]
 
 
 
-sub_client_info  [<V:0, KEY:name  >]
+sub_client_info  [< KEY:name  >]
 {
     name            (nm)    :   string
 
@@ -42,7 +42,7 @@ sub_client_info  [<V:0, KEY:name  >]
 
 
 
-sub_user_info  [<V:0, KEY:name >]
+sub_user_info  [< KEY:name >]
 {
     name            (nm)    :   string
     

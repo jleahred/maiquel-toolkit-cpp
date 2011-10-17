@@ -2640,91 +2640,91 @@ CF_ST_MK::CF_ST_MK (const qpid::messaging::Message& msg)
 
 std::string  RQ_NW_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << "");
+        return MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD");
     }
     std::string  RQ_NW_MK::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << "");
+        return MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD");
     }
     std::string  RQ_MD_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << "");
+        return MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD");
     }
     std::string  RQ_MD_MK::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << "");
+        return MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD");
     }
     std::string  RQ_CC_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("RQ." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << "");
+        return MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD");
     }
     std::string  RQ_CC_MK::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << "");
+        return MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD");
     }
     std::string  CF_NW_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CONF." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << "");
+        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
     }
     std::string  CF_NW_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << "");
+        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
     }
     std::string  CF_MD_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CONF." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << "");
+        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
     }
     std::string  CF_MD_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << "");
+        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
     }
     std::string  CF_CC_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CONF." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << "");
+        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
     }
     std::string  CF_CC_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << "");
+        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
     }
     std::string  CF_EX_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CONF." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << "");
+        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
     }
     std::string  CF_EX_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << "");
+        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
     }
     std::string  RJ_NW_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CONF." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << "");
+        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
     }
     std::string  RJ_NW_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << "");
+        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
     }
     std::string  RJ_MD_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CONF." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << "");
+        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
     }
     std::string  RJ_MD_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << "");
+        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
     }
     std::string  RJ_CC_MK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CONF." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << "");
+        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
     }
     std::string  RJ_CC_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << "");
+        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
     }
     std::string  CF_ST_MK::get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id)
     {
-        return MTK_SS("CONF." << gen_response_location_client_code << ".STATUS_CF." << gen_response_location_session_id << "");
+        return MTK_SS("CLI." << gen_response_location_client_code << "." << gen_response_location_session_id << ".STATUS_CF");
     }
     std::string  CF_ST_MK::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->gen_response_location.client_code << ".STATUS_CF." << this->gen_response_location.session_id << "");
+        return MTK_SS("CLI." << this->gen_response_location.client_code << "." << this->gen_response_location.session_id << ".STATUS_CF");
     }
     
 

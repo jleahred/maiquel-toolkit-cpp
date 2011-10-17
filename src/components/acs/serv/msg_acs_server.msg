@@ -8,18 +8,18 @@ END_INIT
 
 
 //---------------------------------------------------------------------
-//        
+//
 //
 //---------------------------------------------------------------------
 
 
-pub_add_user  [<  V:0, SUBJ:SYS.PUB.ACS_SYNC  >]
+pub_add_user  [<  QE:ALL_GS, SUBJ:SYS.SRV.ACS_SYNC.AU  >]
 {
     login_confirmation  (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
 
-pub_del_user [<  V:0, SUBJ:SYS.PUB.ACS_SYNC  >]
+pub_del_user [<  QE:ALL_GS, SUBJ:SYS.SRV.ACS_SYNC.DU  >]
 {
     login_confirmation  (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
@@ -29,18 +29,18 @@ pub_del_user [<  V:0, SUBJ:SYS.PUB.ACS_SYNC  >]
 //  partial user list sent  to synchornize   servers  <-->  acs
 
 
-req_session_id_conf  [<  V:0, SUBJ:SYS.RQ.ACS_ASK_SESSID  >]
+req_session_id_conf  [<  QE:ALL_GS, SUBJ:GS.ACS.ASK_SESSID  >]
 {
     session_id          (sid)   :       string
-    
+
     from                (from)  :       mtk::msg::sub_process_info
 }
 
-pub_partial_user_list_acs2serv  [<  V:0, SUBJ:SYS.PUB.ACS2SERV_SYNC  >]
+pub_partial_user_list_acs2serv  [<  QE:ALL_GS, SUBJ:SYS.SRV.ACS_SYNC.PUL  >]
 {
     [list_login_confirmation] (slc)  :   mtk::acs::msg::res_login::IC_session_info
 }
-pub_partial_user_list_serv2acs  [<  V:0, SUBJ:SYS.PUB.SERV2ACS_SYNC  >]
+pub_partial_user_list_serv2acs  [<  QE:ALL_GS, SUBJ:SYS.ACS.ACS_SYNC.PUL  >]
 {
     [list_login_confirmation] (slc)  :   mtk::acs::msg::res_login::IC_session_info
 }
@@ -53,12 +53,12 @@ pub_partial_user_list_serv2acs  [<  V:0, SUBJ:SYS.PUB.SERV2ACS_SYNC  >]
 //      REQUEST LIST
 //---------------------------------------------------------------------
 
-req_user_list [<  V:0, SUBJ:SYS.REQ.ACS.USER_LIST  >]
+req_user_list [<  QE:ALL_GS, SUBJ:GS.ACS.RQ_USER_LIST  >]
 {
     request_info    (rqi)    :   mtk::msg::sub_request_info
 }
 
-res_user_list  [< V:0 , SUBJ:SYS.RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code} >]
+res_user_list  [< QE:ALL_GS, SUBJ:SYS.SRV.ACS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RSUL >]
 {
     response_info                (rsi)   :   mtk::msg::sub_r_response
     [list_login_confirmation]    (slc)   :   mtk::acs::msg::res_login::IC_session_info

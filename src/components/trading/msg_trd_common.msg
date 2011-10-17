@@ -15,13 +15,13 @@ END_INIT
 //---------------------------------------------------------------------
 
 
-sub_order_id   [< V:0, I:mtk::msg::sub_request_id  >]   {}
+sub_order_id   [< I:mtk::msg::sub_request_id  >]   {}
 
 
 
 
-sub_exec_conf   [<V:0>]
-{ 
+sub_exec_conf   [< >]
+{
     exec_id  (eid)  :   string
     price    (pri)  :   fix_num
     quantity (qt)   :   fix_num
@@ -29,7 +29,7 @@ sub_exec_conf   [<V:0>]
 }
 
 
-sub_total_executions [<V:0>]
+sub_total_executions [< >]
 {
     sum_price_by_qty    (spq)   :  double
     acc_quantity        (aqt)   :  fix_num
@@ -38,7 +38,7 @@ sub_total_executions [<V:0>]
 
 
 
-sub_account_info [< V:0, LessOP:1, KEY:name >]
+sub_account_info [< LessOP:1, KEY:name >]
 {
     name                (nm)    :   string
     client_code         (cc)    :   string
@@ -47,10 +47,10 @@ sub_account_info [< V:0, LessOP:1, KEY:name >]
 
 
 
-sub_invariant_order_info  [<V:0>]
+sub_invariant_order_info  [< >]
 {
     order_id            (oid)  :   sub_order_id
-    product_code        (pc)   :   mtk::msg::sub_product_code     
+    product_code        (pc)   :   mtk::msg::sub_product_code
     side                (sd)   :   enBuySell
     account             (acc)  :   sub_account_info
 }
@@ -70,13 +70,13 @@ sub_invariant_order_info  [<V:0>]
 //	request XX
 
 
-RQ_XX  [< V:0 >]
+RQ_XX  [<  >]
 {
     invariant           (inv)  :   sub_invariant_order_info
 
     request_info        (rqi)  :   mtk::msg::sub_request_info
     cli_ref             (clr)  :   string
-    
+
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
 
@@ -86,15 +86,15 @@ RQ_XX  [< V:0 >]
 //---------------------------------------------------------------------
 //	confirmations  XX
 
-CF_XX  [<  V:0  >]
+CF_XX  [< >]
 {
     invariant           (inv)  :   sub_invariant_order_info
     market_order_id     (moi)  :   string
-    
+
     req_id              (rqid) :   mtk::msg::sub_request_id
     cli_ref             (clr)  :   string
-    total_execs         (ext)  :   sub_total_executions      
-    
+    total_execs         (ext)  :   sub_total_executions
+
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
 
@@ -104,10 +104,10 @@ CF_XX  [<  V:0  >]
 //---------------------------------------------------------------------
 //	REQUEST ORDERS STATUS
 
-RQ_ORDERS_STATUS  [< V:0, SUBJ:RQ.${account.client_code}.${market} >]   
+RQ_ORDERS_STATUS  [< QE:CLI_MK, SUBJ:MK.${account.client_code}.${market}.RQORDST >]
 {
     request_info       (rqi)   :   mtk::msg::sub_request_info
 
-    market              (mk)    :    string    
+    market              (mk)    :    string
     account             (acc)   :    sub_account_info
 }

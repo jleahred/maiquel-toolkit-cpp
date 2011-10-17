@@ -9,7 +9,7 @@ END_INIT
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//      
+//
 //      Out messages->    ADM.<cli_code>.<machine_code>....
 //      In  messages->    ADM.CIMD....
 //
@@ -28,7 +28,8 @@ END_INIT
 
 
 
-pub_enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
+
+pub_enter  [< QE:ALL_GS, SUBJ:GS.MON.ENTER >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (kas)   :   time_quantity
@@ -36,25 +37,29 @@ pub_enter  [< V:0, SUBJ:ADM.CIMD.ENTER >]
 }
 
 
-pub_keep_alive_srv  [< V:0, SUBJ:ADM.CIMD.KA >]
+
+pub_keep_alive_srv  [< QE:ALL_GS, SUBJ:GS.MON.KA >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (kas)   :   time_quantity
     ka_interval_check   (kac)   :   time_quantity
 }
 
-pub_keep_alive_clients  [< V:0, I:pub_keep_alive_srv,  SUBJ:ADM.CIMD.KA >]
+pub_keep_alive_cli  [< QE:ALL_GS, I:pub_keep_alive_srv,  SUBJ:GS.MON.KACLI >]
 {
     //  aditional info for ACS  (hot registration)
     login_confirmation  (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
 
-pub_exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
+pub_exit  [< QE:ALL_GS, SUBJ:GS.MON.EXIT >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     reason              (r)     :   string
 }
+
+
+
 
 
 
@@ -63,7 +68,7 @@ pub_exit  [< V:0, SUBJ:ADM.CIMD.EXIT >]
 //-------------------------------------------------------------------
 
 
-pub_alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
+pub_alarm  [< QE:ALL_GS,  SUBJ:GS.MON.ALARMS >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     code_source         (cs)    :   string
@@ -80,11 +85,12 @@ pub_alarm  [< V:0,  SUBJ:ADM.CIMD.ALARMS >]
 
 
 
+
 //-------------------------------------------------------------------
 //  COMMANDS
 //-------------------------------------------------------------------
 
-req_command  [< V:0, SUBJ:ADM.${proc_info__destination.location.client_code}.${proc_info__destination.location.machine}.${proc_info__destination.process_name}.${proc_info__destination.process_uuid}.COMMAND >]
+req_command  [< QE:ALL_GS, SUBJ:CLI.${proc_info__destination.location.client_code}.${proc_info__destination.location.machine}.${proc_info__destination.process_name}.${proc_info__destination.process_uuid}.MON.COMMAND >]
 {
     request_info            (rqi)   :   mtk::msg::sub_request_info
 
@@ -93,12 +99,12 @@ req_command  [< V:0, SUBJ:ADM.${proc_info__destination.location.client_code}.${p
 }
 
 
-sub_command_rd [< V:0 >]
+sub_command_rd [< >]
 {
     text                (txt)       :   string
 }
 
-res_command  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.req_code} >]
+res_command  [< QE:ALL_GS, SUBJ:GS.MON.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.req_code}.RSCOMM >]
 {
     response_info       (rsi)   :   mtk::msg::sub_r_response
     response_data       (rsd)   :   sub_command_rd
@@ -106,7 +112,7 @@ res_command  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process
 
 
 //-------------------------------------------------------------------
-//  central keep alive 
+//  central keep alive
 //
 //  messages from system to clients
 //  or system to server processes
@@ -114,10 +120,11 @@ res_command  [< V:0,  SUBJ:ADM.CIMD.COMMRES.${response_info.request_info.process
 //  it will be sent by houselight
 //-------------------------------------------------------------------
 
-pub_central_keep_alive  [< V:0, SUBJ:ADM.ALL.KA >]
+pub_central_keep_alive  [< QE:ALL_GS, SUBJ:ALL.${gs_name}.MON.LHKA >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (kas)   :   time_quantity
     ka_interval_check   (kac)   :   time_quantity
+    gs_name             (gn)    :   string              //  this is the gs identificator to use for filtering
 }
 

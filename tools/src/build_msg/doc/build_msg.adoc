@@ -31,6 +31,9 @@
 |====================================================================
 | Date | Desciption
 
+| 2011-10-13 | Removed version info. +
+               Added Queue/Exchange for qpid
+
 | 2011-08-05 | Added  +key+  support
 
 | 2011-06-03 | Create less operator on messages with +LessOP+
@@ -160,9 +163,9 @@ include::examples/ex2/test_db__list.yaml[]
 * Creating a less than +<+ operator for a set of fields with +LessOP+
 +
 ------
-sub_grant  [<V:0>]
+sub_grant  [< >]
 {
-    key  [< V:0,  LessOP:1 >]
+    key  [< LessOP:1 >]
     {
         market      (mk)        :   string
         account     (acc)       :   mtk::trd::msg::sub_account_info

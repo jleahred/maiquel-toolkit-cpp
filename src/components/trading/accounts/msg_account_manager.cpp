@@ -1406,35 +1406,35 @@ rq_accounts_oninit::rq_accounts_oninit (const qpid::messaging::Message& msg)
 
 std::string  rq_accounts::get_in_subject (const std::string& request_info_process_info_location_client_code)
     {
-        return MTK_SS("RQ." << request_info_process_info_location_client_code << ".ACCOUNT.GRANTS");
+        return MTK_SS("MK." << request_info_process_info_location_client_code << ".ALL.ACCOUNT.RQGRANTS");
     }
     std::string  rq_accounts::get_out_subject (void) const
     {
-        return MTK_SS("RQ." << this->request_info.process_info.location.client_code << ".ACCOUNT.GRANTS");
+        return MTK_SS("MK." << this->request_info.process_info.location.client_code << ".ALL.ACCOUNT.RQGRANTS");
     }
     std::string  conf_add_accounts::get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id)
     {
-        return MTK_SS("CONF." << gen_response_location_client_code << ".ACCOUNTS." << gen_response_location_session_id << "");
+        return MTK_SS("CLI." << gen_response_location_client_code << "." << gen_response_location_session_id << ".CONF_ADD_ACOUNTS");
     }
     std::string  conf_add_accounts::get_out_subject (void) const
     {
-        return MTK_SS("CONF." << this->gen_response_location.client_code << ".ACCOUNTS." << this->gen_response_location.session_id << "");
+        return MTK_SS("CLI." << this->gen_response_location.client_code << "." << this->gen_response_location.session_id << ".CONF_ADD_ACOUNTS");
     }
     std::string  pub_accmgr_init::get_in_subject ()
     {
-        return MTK_SS("ADM.ALL.ACCMGRINIT");
+        return MTK_SS("CLI.ALL.ACCMGRINIT");
     }
     std::string  pub_accmgr_init::get_out_subject (void) const
     {
-        return MTK_SS("ADM.ALL.ACCMGRINIT");
+        return MTK_SS("CLI.ALL.ACCMGRINIT");
     }
-    std::string  rq_accounts_oninit::get_in_subject (const std::string& request_sufix_subjetc)
+    std::string  rq_accounts_oninit::get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& request_sufix_subjetc)
     {
-        return MTK_SS("ADM.ALL.ACCMGRINIT." << request_sufix_subjetc << "");
+        return MTK_SS("MK." << request_info_process_info_location_client_code << ".ALL." << request_sufix_subjetc << ".ACCOUNTS.RQINIT");
     }
     std::string  rq_accounts_oninit::get_out_subject (void) const
     {
-        return MTK_SS("ADM.ALL.ACCMGRINIT." << this->request_sufix_subjetc << "");
+        return MTK_SS("MK." << this->request_info.process_info.location.client_code << ".ALL." << this->request_sufix_subjetc << ".ACCOUNTS.RQINIT");
     }
     
 

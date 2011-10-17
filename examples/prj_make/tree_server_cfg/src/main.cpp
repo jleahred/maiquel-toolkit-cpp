@@ -15,7 +15,7 @@
 
 namespace
 {
-    
+
     const char*   APP_NAME          = "GEN_TREESERVER2";
     const char*   APP_VER           = "2011-08-10";
     const char*   APP_DESCRIPTION   = "This process will send, the markets and groups.\n"
@@ -33,11 +33,11 @@ namespace
 void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request);
 void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_request);
 
-mtk::CountPtr< mtk::qpid_session >   get_cli_session(bool  clean=false)
+mtk::CountPtr< mtk::mtkqpid_sender >   get_cli_session(bool  clean=false)
 {
-    static   auto   result  = mtk::admin::get_qpid_session("client", "CLITESTING");
+    static   auto   result  = mtk::admin::get_qpid_sender("client", "CLITESTING");
     if(clean)
-        result = mtk::CountPtr< mtk::qpid_session >();
+        result = mtk::CountPtr< mtk::mtkqpid_sender >();
     return result;
 }
 
@@ -58,7 +58,7 @@ int main(int argc, char ** argv)
         mtk::acs_server::synchr::init();
 
 
-    
+
         //  suscription to request tree item
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::gen::msg::req_tree_items> >    hqpid_tree_request;
         MTK_QPID_RECEIVER_CONNECT_F(
@@ -70,7 +70,7 @@ int main(int argc, char ** argv)
                                 on_request_tree_received)
 
         mtk::start_timer_wait_till_end();
-        
+
 
         tree_server2::db::save();
         get_cli_session(true);      //      to delete resource
@@ -85,7 +85,7 @@ int main(int argc, char ** argv)
     return -1;
 
 }
- 
+
 
 
 void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)
@@ -93,7 +93,7 @@ void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)
     mtk::list<mtk::gen::msg::sub_tree_item>  data_list = tree_server2::db::get_items_for_branch__ifso(tree_request);
     //  sending multiresponses in asyncronous way
     MTK_SEND_MULTI_RESPONSE(        mtk::gen::msg::res_tree_items,
-                                    mtk::gen::msg::sub_tree_item, 
+                                    mtk::gen::msg::sub_tree_item,
                                     get_cli_session(),
                                     tree_request.request_info,
                                     data_list)

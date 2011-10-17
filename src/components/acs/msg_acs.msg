@@ -9,8 +9,8 @@ END_INIT
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//      
-//      
+//
+//
 //
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -29,24 +29,24 @@ END_INIT
 
 
 
-req_login_key [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQK >]
+req_login_key [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.ACS.RQK >]
 {
     request_info    (rqi)        :   mtk::msg::sub_request_info
-    
+
     user_name       (un)         :   string
 }
 
-res_login_key [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RSK >]
+res_login_key [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RSK >]
 {
     response_info   (rsi)   :   mtk::msg::sub_r_response
     key             (k)     :   string
 }
 
 
-req_login [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQL >]
+req_login [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.ACS.RQL >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
-    
+
     user_name       (un)        :   string
     key             (k)         :   string
     coded_pass      (cpw)       :   string
@@ -54,11 +54,11 @@ req_login [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.
 
 
 
-res_login   [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.LRES >]
+res_login   [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RESLOGIN >]
 {
     response_info   (rsi)       :   mtk::msg::sub_r_response
-    
-    session_info (lr)  [< V:0 >]
+
+    session_info (lr)  [<  >]
     {
         user_name      (un)     :   string      //  empty if login rejected
         client_code    (cc)     :   string
@@ -69,16 +69,16 @@ res_login   [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.
 
 
 
-conf_logout [< V:0 , SUBJ:CONF.${location.client_code}.${location.machine}.${session_id}.LOGOUT >]
+conf_logout [< QE:ALL_GS, SUBJ:CLI.${location.client_code}.${location.machine}.${session_id}.CONFLOGOUT >]
 {
     location        (lc)    :   mtk::msg::sub_location
     session_id      (sid)   :   string
-    
+
     description     (desc)  :   string
 }
 
 
-req_logout [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQK >]
+req_logout [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.ACS.RQLO >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
 }
@@ -91,10 +91,10 @@ req_logout [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS
 //---------------------------------------------
 
 
-req_change_password [< V:0, SUBJ:RQ.${request_info.process_info.location.client_code}.ACS.RQCP >]
+req_change_password [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.ACS.RQCP >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
-    
+
     user_name       (un)        :   string
     key             (k)         :   string
     old_password    (opw)       :   string
@@ -104,11 +104,11 @@ req_change_password [< V:0, SUBJ:RQ.${request_info.process_info.location.client_
 
 
 
-res_change_password    [< V:0 , SUBJ:RS.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.LCP >]
+res_change_password    [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RESLCP >]
 {
     response_info   (rsi)       :   mtk::msg::sub_r_response
-    
-    change_password_info (cpi)  [< V:0 >]
+
+    change_password_info (cpi)  [<  >]
     {
         accepted    (a)         :    bool
     }

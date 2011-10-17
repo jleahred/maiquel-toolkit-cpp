@@ -13,17 +13,14 @@ END_INIT
 //---------------------------------------------------------------------
 
 
-sub_user_info  [<V:0,  KEY:name  >]
+sub_user  [<    >]
 {
-    name                (nm)            :       string
-    client_code         (cc)            :       string
-    requested_by        (rb)            :       string
-    notes               (nt)            :       string
+    check_pass_wrong    (cpwr)          :       int
 }
 
 
 
-sub_user_acs_info  [<  V:0,  KEY:user_info.name  >]
+sub_user_acs_info  [<  QE: PUB  >]
 {
     user_info           (ui)            :       sub_user_info
     passwordcrc32       (pw32)          :       string

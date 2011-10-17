@@ -13,7 +13,7 @@ END_INIT
 //---------------------------------------------------------------------
 
 
-sub_product_config [< V:0, KEY:product_name >]
+sub_product_config [< KEY:product_name >]
 {
     product_name        (pn)    :       string
     

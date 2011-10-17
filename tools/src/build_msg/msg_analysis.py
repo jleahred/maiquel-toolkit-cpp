@@ -18,6 +18,7 @@ TAG_NAME = {}
 MSG_FIELDS = {}
 MSG_FIELDS__NAMES_WITHOUT_NAMESPACES = {}
 MSG_NAMES = {}
+QE__MSG_SUBJECT = {}
 
 
 
@@ -100,6 +101,29 @@ def fill_msg_names():
 
 
 
+def fill_QE__msg_subject():
+    for class_name, class_info, __class_properties, send_code  in MESSAGES:
+        msg_full_name = msg_full_name = '::'.join(NAMESPACES) + '::' + class_name
+        qe_name=''
+        subject = ''
+        if __class_properties.has_key('SUBJ')  and  __class_properties.has_key('QE')==False:
+            qe_name = "missing"
+        elif __class_properties.has_key('SUBJ')==False  and  __class_properties.has_key('QE'):
+            subject = "missing"
+        
+        if __class_properties.has_key('QE')  and  __class_properties.has_key('SUBJ'):
+            qe_name = __class_properties['QE']
+            subject = __class_properties['SUBJ'].replace('$', ' ').replace('{', '<').replace('}', '>')
+            
+        if qe_name != '' :
+            if QE__MSG_SUBJECT.has_key(qe_name) == False:
+                QE__MSG_SUBJECT[qe_name] = {}
+            if QE__MSG_SUBJECT[qe_name].has_key(subject) == False:
+                QE__MSG_SUBJECT[qe_name][subject] = []
+            QE__MSG_SUBJECT[qe_name][subject].append(class_name)
+
+
+
 def print_map(map) :
     print """[cols="1, 2" , options=""]
 |==========================================================
@@ -121,6 +145,19 @@ def print_map(map) :
 ##                print '|  '  +  k  + '  |  ' + str(v)
 ##    print """|========================================================
 ##    """
+
+
+
+
+
+def print_qe__msg_subject(map) :
+    for k in sorted(map.iterkeys()):
+        m = map[k]
+        print k +'::\n+\n'
+        print_map (m)
+    print '\n\n'
+
+
 
 
 
@@ -256,6 +293,15 @@ for file in sys.argv[1:] :
     fill_tag_field_name();
     fill_msg_fields();
     fill_msg_names();
+    
+    fill_QE__msg_subject();
+
+
+
+
+print '===  QUEUE/EXCHANGE'
+print_qe__msg_subject(QE__MSG_SUBJECT)
+print
 
 
 print '=== TAG -> FIELD_NAME'
@@ -269,6 +315,8 @@ print
 print '=== NAMES'
 print_map(MSG_NAMES)
 print
+
+
 
 ##print '=== MESSAGES WITH ALL FIELDS (brief)'
 ##for msg_name, msg_fields in MSG_FIELDS.items():

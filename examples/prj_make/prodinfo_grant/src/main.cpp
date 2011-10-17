@@ -15,11 +15,11 @@
 
 namespace
 {
-    
+
     const char*   APP_NAME          = "GEN_PRODUCTINFO_GRANT";
     const char*   APP_VER           = "2011-08-10";
     const char*   APP_DESCRIPTION   = "Checking grants for productinfo request\n";
-                                      
+
 
     const char*   APP_MODIFICATIONS =   "           2011-08-10     first version\n"
                                         ;
@@ -31,11 +31,11 @@ namespace
 void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_request);
 
 
-mtk::CountPtr< mtk::qpid_session >   get_cli_session(bool  clean=false)
+mtk::CountPtr< mtk::mtkqpid_sender >   get_cli_sender(bool  clean=false)
 {
-    static   auto   result  = mtk::admin::get_qpid_session("client", "CLITESTING");
+    static   auto   result  = mtk::admin::get_qpid_sender("client", "CLITESTING");
     if(clean)
-        result = mtk::CountPtr< mtk::qpid_session >();
+        result = mtk::CountPtr< mtk::mtkqpid_sender >();
     return result;
 }
 
@@ -54,7 +54,7 @@ int main(int argc, char ** argv)
         prodinfo_grant::db::init(mtk::admin::get_config_property("MISC.data").Get());
         mtk::acs_server::synchr::init();
 
-    
+
 
         //  suscription to request product information
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::req_product_info> >    hqpid_prodinf_request;
@@ -65,13 +65,13 @@ int main(int argc, char ** argv)
                                 mtk::prices::msg::req_product_info::get_in_subject("*", "*"),     //  from anyone, for any market
                                 mtk::prices::msg::req_product_info,
                                 on_request_prodinf_received)
-        
-    
+
+
         mtk::start_timer_wait_till_end();
-        
+
 
         prodinfo_grant::db::save();
-        get_cli_session(true);      //      to delete resource
+        get_cli_sender(true);      //      to delete resource
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"
         return 0;
@@ -83,14 +83,14 @@ int main(int argc, char ** argv)
     return -1;
 
 }
- 
+
 
 void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_request)
 {
     if(prodinfo_grant::db::has_grants(pi_request))      //  it will generate an alarm message if there is no grants
     {
-        static mtk::CountPtr<mtk::qpid_session>  qpid_server_session = mtk::admin::get_qpid_session("server", "SRVTESTING");
+        static mtk::CountPtr<mtk::mtkqpid_sender>  qpid_server_sender = mtk::admin::get_qpid_sender("server", "SRVTESTING");
         mtk::prices::msg::ps_req_product_info  granted_msg (pi_request, "pigrant");
-        mtk::send_message(qpid_server_session, granted_msg);
+        mtk::send_message(qpid_server_sender, granted_msg);
     }
 }

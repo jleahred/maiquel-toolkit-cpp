@@ -13,14 +13,14 @@
 
 namespace
 {
-    
+
     const char*   APP_NAME          = "ADM_TRADING_DB";
     const char*   APP_VER           = "2011-06-13";
     const char*   APP_DESCRIPTION   = "This process save alarms on database\n"
                                       "";
-                                      
+
     const char*   APP_MODIFICATIONS = "           2011-06-13     first version\n";
-                                      
+
 }
 
 
@@ -28,48 +28,48 @@ namespace
 
 struct  record_info
 {
-        mtk::nullable<mtk::DateTime>    REC_TIME; 
-        mtk::nullable<mtk::DateTime>    SENT_TIME; 
-        mtk::nullable<std::string>      MARKET_ORDER_ID; 
-        mtk::nullable<std::string>      OID_SESSION_ID; 
-        mtk::nullable<std::string>      OID_RQ_CODE; 
-        mtk::nullable<std::string>      PC_MARKET; 
-        mtk::nullable<std::string>      PC_PRODUCT_CODE; 
-        mtk::nullable<std::string>      SIDE; 
-        mtk::nullable<std::string>      ACCOUNT_CC; 
-        mtk::nullable<std::string>      ACCOUNT_NAME; 
-        mtk::nullable<std::string>      RID_SESSION_ID; 
-        mtk::nullable<std::string>      RID_RQ_CODE; 
-        mtk::nullable<std::string>      CLI_REF; 
-        mtk::nullable<std::string>      CFLUCT_KEY; 
-        mtk::nullable<mtk::DateTime>    CFLUCT_DATE_TIME; 
-        mtk::nullable<std::string>      ORDER_TYPE; 
-        mtk::nullable<int>              RQ_POS_PRICE; 
-        mtk::nullable<int>              RQ_POS_PRICE_DEC; 
-        mtk::nullable<int>              RQ_POS_PRICE_INC; 
-        mtk::nullable<int>              RQ_POS_QUANTITY; 
-        mtk::nullable<int>              RQ_POS_QUANTITY_DEC; 
-        mtk::nullable<int>              RQ_POS_QUANTITY_INC; 
-        mtk::nullable<int>              CF_POS_PRICE; 
-        mtk::nullable<int>              CF_POS_PRICE_DEC; 
-        mtk::nullable<int>              CF_POS_PRICE_INC; 
-        mtk::nullable<int>              CF_POS_QUANTITY; 
-        mtk::nullable<int>              CF_POS_QUANTITY_DEC; 
-        mtk::nullable<int>              CF_POS_QUANTITY_INC; 
-        mtk::nullable<std::string>      EXCF_EXEC_ID; 
-        mtk::nullable<int>              EXCF_EXEC_PRICE; 
-        mtk::nullable<int>              EXCF_EXEC_PRICE_DEC; 
-        mtk::nullable<int>              EXCF_EXEC_PRICE_INC; 
-        mtk::nullable<int>              EXCF_EXEC_QUANTITY; 
-        mtk::nullable<int>              EXCF_EXEC_QUANTITY_DEC; 
-        mtk::nullable<int>              EXCF_EXEC_QUANTITY_INC; 
-        mtk::nullable<double>           TEX_SUM_PRICE_QTY; 
-        mtk::nullable<int>              TEX_ACC_QTY; 
-        mtk::nullable<int>              TEX_ACC_QTY_DEC; 
-        mtk::nullable<int>              TEX_ACC_QTY_INC; 
-        mtk::nullable<int>              TEX_REM_QTY; 
-        mtk::nullable<int>              TEX_REM_QTY_DEC; 
-        mtk::nullable<int>              TEX_REM_QTY_INC; 
+        mtk::nullable<mtk::DateTime>    REC_TIME;
+        mtk::nullable<mtk::DateTime>    SENT_TIME;
+        mtk::nullable<std::string>      MARKET_ORDER_ID;
+        mtk::nullable<std::string>      OID_SESSION_ID;
+        mtk::nullable<std::string>      OID_RQ_CODE;
+        mtk::nullable<std::string>      PC_MARKET;
+        mtk::nullable<std::string>      PC_PRODUCT_CODE;
+        mtk::nullable<std::string>      SIDE;
+        mtk::nullable<std::string>      ACCOUNT_CC;
+        mtk::nullable<std::string>      ACCOUNT_NAME;
+        mtk::nullable<std::string>      RID_SESSION_ID;
+        mtk::nullable<std::string>      RID_RQ_CODE;
+        mtk::nullable<std::string>      CLI_REF;
+        mtk::nullable<std::string>      CFLUCT_KEY;
+        mtk::nullable<mtk::DateTime>    CFLUCT_DATE_TIME;
+        mtk::nullable<std::string>      ORDER_TYPE;
+        mtk::nullable<int>              RQ_POS_PRICE;
+        mtk::nullable<int>              RQ_POS_PRICE_DEC;
+        mtk::nullable<int>              RQ_POS_PRICE_INC;
+        mtk::nullable<int>              RQ_POS_QUANTITY;
+        mtk::nullable<int>              RQ_POS_QUANTITY_DEC;
+        mtk::nullable<int>              RQ_POS_QUANTITY_INC;
+        mtk::nullable<int>              CF_POS_PRICE;
+        mtk::nullable<int>              CF_POS_PRICE_DEC;
+        mtk::nullable<int>              CF_POS_PRICE_INC;
+        mtk::nullable<int>              CF_POS_QUANTITY;
+        mtk::nullable<int>              CF_POS_QUANTITY_DEC;
+        mtk::nullable<int>              CF_POS_QUANTITY_INC;
+        mtk::nullable<std::string>      EXCF_EXEC_ID;
+        mtk::nullable<int>              EXCF_EXEC_PRICE;
+        mtk::nullable<int>              EXCF_EXEC_PRICE_DEC;
+        mtk::nullable<int>              EXCF_EXEC_PRICE_INC;
+        mtk::nullable<int>              EXCF_EXEC_QUANTITY;
+        mtk::nullable<int>              EXCF_EXEC_QUANTITY_DEC;
+        mtk::nullable<int>              EXCF_EXEC_QUANTITY_INC;
+        mtk::nullable<double>           TEX_SUM_PRICE_QTY;
+        mtk::nullable<int>              TEX_ACC_QTY;
+        mtk::nullable<int>              TEX_ACC_QTY_DEC;
+        mtk::nullable<int>              TEX_ACC_QTY_INC;
+        mtk::nullable<int>              TEX_REM_QTY;
+        mtk::nullable<int>              TEX_REM_QTY_DEC;
+        mtk::nullable<int>              TEX_REM_QTY_INC;
         mtk::nullable<std::string>      REJECT_DESCRIPTION;
         mtk::nullable<std::string>      REMARKS;
 };
@@ -88,55 +88,55 @@ void insert_record (const record_info&  record)
                                 " VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
     mtk::fbInsertParams params;
-    
+
     #define ADD_OPTIONAL_FIELD(__FIELD_NAME__) \
         if(record.__FIELD_NAME__.HasValue())    \
             params.Add(record.__FIELD_NAME__.Get());  \
         else    \
             params.AddNull();
-        
-        params.Add(record.REC_TIME.Get()); 
-        params.Add(record.SENT_TIME.Get()); 
-        ADD_OPTIONAL_FIELD(MARKET_ORDER_ID); 
-        params.Add(record.OID_SESSION_ID.Get()); 
-        params.Add(record.OID_RQ_CODE.Get()); 
-        params.Add(record.PC_MARKET.Get()); 
-        params.Add(record.PC_PRODUCT_CODE.Get()); 
-        params.Add(record.SIDE.Get()); 
-        params.Add(record.ACCOUNT_CC.Get()); 
-        params.Add(record.ACCOUNT_NAME.Get()); 
-        params.Add(record.RID_SESSION_ID.Get()); 
-        params.Add(record.RID_RQ_CODE.Get()); 
-        params.Add(record.CLI_REF.Get()); 
-        params.Add(record.CFLUCT_KEY.Get()); 
-        params.Add(record.CFLUCT_DATE_TIME.Get()); 
-        params.Add(record.ORDER_TYPE.Get()); 
-        ADD_OPTIONAL_FIELD(RQ_POS_PRICE); 
-        ADD_OPTIONAL_FIELD(RQ_POS_PRICE_DEC); 
-        ADD_OPTIONAL_FIELD(RQ_POS_PRICE_INC); 
-        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY); 
-        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY_DEC); 
-        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY_INC); 
-        ADD_OPTIONAL_FIELD(CF_POS_PRICE); 
-        ADD_OPTIONAL_FIELD(CF_POS_PRICE_DEC); 
-        ADD_OPTIONAL_FIELD(CF_POS_PRICE_INC); 
-        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY); 
-        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY_DEC); 
-        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY_INC); 
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_ID); 
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE); 
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE_DEC); 
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE_INC); 
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY); 
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY_DEC); 
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY_INC); 
-        ADD_OPTIONAL_FIELD(TEX_SUM_PRICE_QTY); 
-        ADD_OPTIONAL_FIELD(TEX_ACC_QTY); 
-        ADD_OPTIONAL_FIELD(TEX_ACC_QTY_DEC); 
-        ADD_OPTIONAL_FIELD(TEX_ACC_QTY_INC); 
-        ADD_OPTIONAL_FIELD(TEX_REM_QTY); 
-        ADD_OPTIONAL_FIELD(TEX_REM_QTY_DEC); 
-        ADD_OPTIONAL_FIELD(TEX_REM_QTY_INC); 
+
+        params.Add(record.REC_TIME.Get());
+        params.Add(record.SENT_TIME.Get());
+        ADD_OPTIONAL_FIELD(MARKET_ORDER_ID);
+        params.Add(record.OID_SESSION_ID.Get());
+        params.Add(record.OID_RQ_CODE.Get());
+        params.Add(record.PC_MARKET.Get());
+        params.Add(record.PC_PRODUCT_CODE.Get());
+        params.Add(record.SIDE.Get());
+        params.Add(record.ACCOUNT_CC.Get());
+        params.Add(record.ACCOUNT_NAME.Get());
+        params.Add(record.RID_SESSION_ID.Get());
+        params.Add(record.RID_RQ_CODE.Get());
+        params.Add(record.CLI_REF.Get());
+        params.Add(record.CFLUCT_KEY.Get());
+        params.Add(record.CFLUCT_DATE_TIME.Get());
+        params.Add(record.ORDER_TYPE.Get());
+        ADD_OPTIONAL_FIELD(RQ_POS_PRICE);
+        ADD_OPTIONAL_FIELD(RQ_POS_PRICE_DEC);
+        ADD_OPTIONAL_FIELD(RQ_POS_PRICE_INC);
+        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY);
+        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY_DEC);
+        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY_INC);
+        ADD_OPTIONAL_FIELD(CF_POS_PRICE);
+        ADD_OPTIONAL_FIELD(CF_POS_PRICE_DEC);
+        ADD_OPTIONAL_FIELD(CF_POS_PRICE_INC);
+        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY);
+        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY_DEC);
+        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY_INC);
+        ADD_OPTIONAL_FIELD(EXCF_EXEC_ID);
+        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE);
+        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE_DEC);
+        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE_INC);
+        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY);
+        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY_DEC);
+        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY_INC);
+        ADD_OPTIONAL_FIELD(TEX_SUM_PRICE_QTY);
+        ADD_OPTIONAL_FIELD(TEX_ACC_QTY);
+        ADD_OPTIONAL_FIELD(TEX_ACC_QTY_DEC);
+        ADD_OPTIONAL_FIELD(TEX_ACC_QTY_INC);
+        ADD_OPTIONAL_FIELD(TEX_REM_QTY);
+        ADD_OPTIONAL_FIELD(TEX_REM_QTY_DEC);
+        ADD_OPTIONAL_FIELD(TEX_REM_QTY_INC);
         ADD_OPTIONAL_FIELD(REJECT_DESCRIPTION);
         ADD_OPTIONAL_FIELD(REMARKS);
 
@@ -151,33 +151,33 @@ void insert_record (const record_info&  record)
 #define FILL_FIXED_NUMBER(__RECORD_FIELD_NAME__, __FIELD_VALUE__)  \
     __RECORD_FIELD_NAME__ = __FIELD_VALUE__.GetIntCode();   \
     __RECORD_FIELD_NAME__##_DEC = __FIELD_VALUE__.GetExt().GetDec();   \
-    __RECORD_FIELD_NAME__##_INC = __FIELD_VALUE__.GetExt().GetInc();  
+    __RECORD_FIELD_NAME__##_INC = __FIELD_VALUE__.GetExt().GetInc();
 
 void  fill_invariant  (record_info& full_record, const mtk::trd::msg::sub_invariant_order_info& invariant)
 {
     full_record.ACCOUNT_CC =  invariant.account.client_code;
     full_record.ACCOUNT_NAME =  invariant.account.name;
-    
+
     full_record.OID_RQ_CODE = invariant.order_id.req_code;
     full_record.OID_SESSION_ID = invariant.order_id.session_id;
-    
+
     full_record.PC_MARKET = invariant.product_code.market;
     full_record.PC_PRODUCT_CODE = invariant.product_code.product;
-    
+
     if(invariant.side == mtk::trd::msg::buy)
         full_record.SIDE = "buy";
     else if(invariant.side == mtk::trd::msg::sell)
         full_record.SIDE = "sell";
     else
-        full_record.SIDE = "???";        
+        full_record.SIDE = "???";
 }
 
 void  fill_req_info  (record_info& full_record, const mtk::msg::sub_request_info& req_info)
 {
     full_record.RID_RQ_CODE = req_info.req_id.req_code;
     full_record.RID_SESSION_ID = req_info.req_id.session_id;
-    
-    full_record.REMARKS = MTK_SS("from: " << req_info.process_info.location 
+
+    full_record.REMARKS = MTK_SS("from: " << req_info.process_info.location
                 << " " << req_info.process_info.process_name  << "  " <<  req_info.process_info.version);
 }
 
@@ -213,7 +213,7 @@ void  fill_cf_xx(record_info& full_record, const mtk::trd::msg::CF_XX & cf)
     full_record.RID_SESSION_ID = cf.req_id.session_id;
     full_record.CLI_REF =  cf.cli_ref;
     fill_control_fluct (full_record,  cf.orig_control_fluct);
-    
+
     fill_total_executions(full_record, cf.total_execs);
 }
 
@@ -226,19 +226,19 @@ void  fill_ex_xx(record_info& full_record, const mtk::trd::msg::sub_exec_conf& e
 }
 
 
-    
-    
+
+
 
 //      LIMIT ORDERS
 template<typename T>        //  ie:  mtk::trd::msg::RQ_NW_LS
 void on_rq_xx_ls(const T&  rq)
 {
     record_info  full_record;
-    
+
     //  RQ_XX_LS   position
     FILL_FIXED_NUMBER(full_record.RQ_POS_PRICE,        rq.request_pos.price);
     FILL_FIXED_NUMBER(full_record.RQ_POS_QUANTITY,     rq.request_pos.quantity);
-    
+
     fill_rq_xx(full_record, rq);
     full_record.SENT_TIME  =  rq.__internal_warning_control_fields->sent_date_time;
     full_record.ORDER_TYPE =  rq.__internal_warning_control_fields->message_type;
@@ -251,7 +251,7 @@ void  fill_cf_xx_ls(record_info& full_record, const mtk::trd::msg::CF_XX_LS & cf
 {
     FILL_FIXED_NUMBER(full_record.CF_POS_PRICE,        cf.market_pos.price);
     FILL_FIXED_NUMBER(full_record.CF_POS_QUANTITY,     cf.market_pos.quantity);
-    
+
     fill_cf_xx(full_record, cf);
 }
 
@@ -259,7 +259,7 @@ template<typename T>        //  ie:  mtk::trd::msg::CF_NW_LS
 void on_cf_xx_ls(const T&  cf)
 {
     record_info  full_record;
-    
+
     fill_cf_xx_ls(full_record, cf);
     full_record.SENT_TIME  =  cf.__internal_warning_control_fields->sent_date_time;
     full_record.ORDER_TYPE =  cf.__internal_warning_control_fields->message_type;
@@ -302,10 +302,10 @@ template<typename T>        //  ie:  mtk::trd::msg::RQ_NW_MK
 void on_rq_xx_mk(const T&  rq)
 {
     record_info  full_record;
-    
+
     //  RQ_XX_LS   position
     FILL_FIXED_NUMBER(full_record.RQ_POS_QUANTITY,     rq.request_pos.quantity);
-    
+
     fill_rq_xx(full_record, rq);
     full_record.SENT_TIME  =  rq.__internal_warning_control_fields->sent_date_time;
     full_record.ORDER_TYPE =  rq.__internal_warning_control_fields->message_type;
@@ -316,7 +316,7 @@ void on_rq_xx_mk(const T&  rq)
 void  fill_cf_xx_mk(record_info& full_record, const mtk::trd::msg::CF_XX_MK & cf)
 {
     FILL_FIXED_NUMBER(full_record.CF_POS_QUANTITY,     cf.market_pos.quantity);
-    
+
     fill_cf_xx(full_record, cf);
 }
 
@@ -324,7 +324,7 @@ template<typename T>        //  ie:  mtk::trd::msg::CF_NW_MK
 void on_cf_xx_mk(const T&  cf)
 {
     record_info  full_record;
-    
+
     fill_cf_xx_mk(full_record, cf);
     full_record.SENT_TIME  =  cf.__internal_warning_control_fields->sent_date_time;
     full_record.ORDER_TYPE =  cf.__internal_warning_control_fields->message_type;
@@ -392,7 +392,7 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
-        
+
 
 
         //      LS
@@ -412,7 +412,7 @@ int main(int argc, char ** argv)
 
 
 
-        
+
         //      MK
         MAKE_TRADING_SUSCRIPTION_RQ   (RQ_NW_MK, on_rq_xx_mk);
         MAKE_TRADING_SUSCRIPTION_RQ   (RQ_MD_MK, on_rq_xx_mk);
@@ -432,7 +432,7 @@ int main(int argc, char ** argv)
 
 
         mtk::start_timer_wait_till_end();
-        
+
 
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"

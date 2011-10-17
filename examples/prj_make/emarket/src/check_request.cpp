@@ -35,19 +35,19 @@ void __load_config(void)
 //                    out  <<  YAML::BeginMap  <<  YAML::Key << "product_config" << YAML::Value;
 //                        out << list_product_config;
 //                    out  <<  YAML::EndMap;
-//                        
+//
 //                    file_save << out.c_str();
 //                    file_save.close();
 //                }
 //                MTK_CATCH_CALLFUNCION(mtk::AlarmMsg, "...", "error saving data")
 //        }
-    
-    
+
+
         //std::ifstream file("../data/config_data.yaml");
         //std::ifstream file("config_data.yaml");
         std::string   file_name = mtk::admin::get_config_property("MISC.markets_conf").Get();
         std::ifstream file(file_name.c_str());
-        
+
         try
         {
             YAML::Parser parser(file);
@@ -55,11 +55,11 @@ void __load_config(void)
             YAML::Node doc;
             parser.GetNextDocument(doc);
             std::string config_version;
-            
-            
+
+
             doc["product_config"] >>  *get_map_product_config();
-            
-            
+
+
             file.close();
         }
         MTK_CATCH_CALLFUNCION(mtk::AlarmMsg, "accmgr_db", "error loading db")
@@ -84,7 +84,7 @@ void  check_request::init(void)
         sig_add_product.emit(it->second);
 
     static  std::string   oms_from = mtk::admin::get_config_property("OMS_CHAIN.from").Get();
-    
+
     std::cout << "connecting oms_RQ_NW_LS... ";
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_rqnwls,
@@ -94,7 +94,7 @@ void  check_request::init(void)
                             mtk::trd::msg::oms_RQ_NW_LS,
                             oms_RQ_NW_LS)
     std::cout << " ok" << std::endl;
-    
+
     std::cout << "connecting oms_RQ_MD_LS... ";
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_rqmdls,
@@ -114,10 +114,10 @@ void  check_request::init(void)
                             mtk::trd::msg::oms_RQ_CC_LS,
                             oms_RQ_CC_LS)
     std::cout << " ok" << std::endl;
-    
-    mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher   
+
+    mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher
                     ps_pub_prod_info_mtk_ready__from_publisher  (mtk::prices::msg::ps_pub_prod_info_mtk_ready("MARKET"));
-    mtk::send_message(mtk::admin::get_qpid_session("server", "SRVTESTING"), ps_pub_prod_info_mtk_ready__from_publisher);
+    mtk::send_message(mtk::admin::get_qpid_sender("server", "SRVTESTING"), ps_pub_prod_info_mtk_ready__from_publisher);
 }
 
 
@@ -146,7 +146,7 @@ std::string verif_is_valid_request(const RQ_TYPE& rq)
     if(itpc == get_map_product_config()->end())
         result += MTK_SS("product code " << rq.invariant.product_code.product << " not configured");
     result += check_request_pos(itpc->second, rq.request_pos);
-    
+
     return result;
 }
 

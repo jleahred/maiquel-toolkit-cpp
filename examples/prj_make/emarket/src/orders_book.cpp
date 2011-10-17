@@ -19,7 +19,7 @@
 
 namespace {
     const char*   VERSION = "2011-06-10";
-    
+
     const char*   MODIFICATIONS =
                         "           2010-06-10     Added command print orders queue\n"
                         "           2010-12-01     first version\n";
@@ -84,7 +84,7 @@ public:
     mtk::list<mtk::CountPtr<ord_ls> >  bid_queue;
     mtk::list<mtk::CountPtr<ord_ls> >  ask_queue;
     const int                          adjust_product_comparation;
-    
+
 public:
 
     void add_order  (mtk::CountPtr<ord_ls> order);
@@ -92,10 +92,10 @@ public:
     void modif_order(mtk::CountPtr<ord_ls> order);
     void check_execs(void                       );     //  here will be generated the output  cf_ex if so
     void update_prices(const mtk::msg::sub_product_code& product_code);
-    
+
     orders_in_product_queue()
         : bid_queue(), ask_queue(), adjust_product_comparation(1) {}
-    
+
 private:
     mtk::tuple<mtk::list<mtk::CountPtr<ord_ls> >*/*queue*/, int/*adjust_comparation*/> get_queue_adjust_comparation(mtk::CountPtr<ord_ls> order);
 
@@ -111,20 +111,20 @@ private:
 //----------------------------------------------------------------------------------------
 class internal_orders_book : public mtk::SignalReceptor
 {
-typedef internal_orders_book  CLASS_NAME;    
-    
+typedef internal_orders_book  CLASS_NAME;
+
     mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<ord_ls> >    orders_by_id;
     mtk::map<mtk::msg::sub_product_code, orders_in_product_queue >   queue_by_product;
-    
-    mtk::CountPtr<ord_ls> cached_last_request;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ps_req_init_prod_info__to_publisher> > hqpid_ps_req_init_prod_info;    
 
-    mtk::CountPtr< mtk::qpid_session >  srv_session;
-    
-public:    
+    mtk::CountPtr<ord_ls> cached_last_request;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ps_req_init_prod_info__to_publisher> > hqpid_ps_req_init_prod_info;
+
+    mtk::CountPtr< mtk::mtkqpid_sender >  srv_session;
+
+public:
     internal_orders_book();
-    
-    
+
+
 
     //  in  check_request->book_orders
     void oms_RQ_NW_LS (const mtk::trd::msg::oms_RQ_NW_LS& rq);
@@ -136,23 +136,23 @@ public:
     void modif_order  (const mtk::trd::msg::CF_XX_LS& order_info);
     void check_execs  (const mtk::trd::msg::CF_XX_LS& order_info);     //  here will be generated the output  cf_ex if so
     void update_prices(const mtk::trd::msg::CF_XX_LS& order_info);
-    
+
     void add_product  (const emarket::sub_product_config&  product_config);
 
 
     void command_print_queue(const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines);
-    
+
     void  on_ps_req_init_prod_info(const mtk::prices::msg::ps_req_init_prod_info__to_publisher&  ps_req_init_prod_info);
     void  publish_all_product_full_info(const mtk::msg::sub_process_info&);
 };
 
 
 internal_orders_book::internal_orders_book()
-    :   srv_session(mtk::admin::get_qpid_session("server", "SRVTESTING"))
+    :   srv_session(mtk::admin::get_qpid_sender("server", "SRVTESTING"))
 {
     MTK_CONNECT_THIS(*mtk::admin::register_command("ob",            "print_queue",   ""), command_print_queue)
-    
-    
+
+
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_ps_req_init_prod_info,
                             mtk::admin::get_url("server"),
@@ -160,7 +160,7 @@ internal_orders_book::internal_orders_book()
                             mtk::prices::msg::ps_req_init_prod_info__to_publisher::get_in_subject("MARKET"),
                             mtk::prices::msg::ps_req_init_prod_info__to_publisher,
                             on_ps_req_init_prod_info)
-    
+
 }
 
 void internal_orders_book::command_print_queue(const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
@@ -194,7 +194,7 @@ void  internal_orders_book::on_ps_req_init_prod_info(const mtk::prices::msg::ps_
     if(ps_req_init_prod_info.market == "MARKET")
         publish_all_product_full_info(ps_req_init_prod_info.process_info);
     else
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "orders_book", MTK_SS("received request on invalid market code" << ps_req_init_prod_info), mtk::alPriorError, mtk::alTypeNoPermisions)); 
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "orders_book", MTK_SS("received request on invalid market code" << ps_req_init_prod_info), mtk::alPriorError, mtk::alTypeNoPermisions));
 }
 
 
@@ -285,8 +285,8 @@ void orders_book::add_product (const emarket::sub_product_config&  product_confi
 template<typename T>
 void send_to_client (const T& toclient)
 {
-    static auto cli_session = mtk::admin::get_qpid_session("client", "CLITESTING");
-    send_message(cli_session, toclient, "");
+    static auto cli_sender = mtk::admin::get_qpid_sender("client", "CLITESTING");
+    send_message(cli_sender, toclient, "");
     std::cout << mtk::dtNowLocal() <<"  response sent to client " << toclient.get_message_type_as_string() <<  std::endl;
 }
 
@@ -399,15 +399,15 @@ void orders_in_product_queue::add_order(mtk::CountPtr<ord_ls> order)
     mtk::list<mtk::CountPtr<ord_ls> >* queue=0;
     int adjust_comparation = 1;
     get_queue_adjust_comparation(order).assign(queue, adjust_comparation);
-    
+
     adjust_comparation *= this->adjust_product_comparation;
-    
+
     // iterate queue looking for position
     mtk::list<mtk::CountPtr<ord_ls> >::iterator it = queue->begin();
     while (it != queue->end())
     {
-        if ( mtk::Double((*it)->last_confirmation().Get().market_pos.price.GetDouble()*adjust_comparation)  
-             <  
+        if ( mtk::Double((*it)->last_confirmation().Get().market_pos.price.GetDouble()*adjust_comparation)
+             <
              mtk::Double(order->last_confirmation().Get().market_pos.price.GetDouble()*adjust_comparation))
         //  atention: if they are equal, the order to add, will be back
         //  GetDouble returns a mtk::Double (comparations safe)
@@ -427,7 +427,7 @@ void orders_in_product_queue::del_order(mtk::CountPtr<ord_ls> order)
     mtk::list<mtk::CountPtr<ord_ls> >* queue=0;
     int adjust_comparation = 1;
     get_queue_adjust_comparation(order).assign(queue, adjust_comparation);
-    
+
     // iterate queue looking for position
     mtk::list<mtk::CountPtr<ord_ls> >::iterator it = queue->begin();
     while (it != queue->end())
@@ -477,23 +477,23 @@ void orders_in_product_queue::check_execs(void)
     {
         mtk::CountPtr<ord_ls> best_buy = bid_queue.front();
         mtk::CountPtr<ord_ls> best_sell = ask_queue.front();
-       
+
         mtk::tuple<mtk::FixedNumber, int> best_buy_price = get_price(best_buy);
         mtk::tuple<mtk::FixedNumber, int> best_sell_price = get_price(best_sell);
-        
+
         while (best_buy_price._0 >= best_sell_price._0)
         {
             mtk::FixedNumber exec_price = get_exec_price(best_buy_price, best_sell_price);
             mtk::FixedNumber exec_quantity = min(get_pending_quantity(best_buy), get_pending_quantity(best_sell));
-            
-            if (exec_quantity.GetDouble() == mtk::Double(0.))   
+
+            if (exec_quantity.GetDouble() == mtk::Double(0.))
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "emarket", "exec_quantity.GetDouble() == mtk::Double(0.)", mtk::alPriorCritic, mtk::alTypeLogicError));
                 break;
             }
-            
-            
-            
+
+
+
             //  confirmation buy
             {
                 mtk::trd::msg::CF_XX_LS cf = best_buy->last_confirmation().Get();
@@ -506,7 +506,7 @@ void orders_in_product_queue::check_execs(void)
                 cf.req_id.session_id += "em";
                 cf.req_id.req_code +=  "em";
                 best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS(ex_counter), exec_price, exec_quantity, mtk::trd::msg::buy)));
-                    
+
                 if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
                     bid_queue.pop_front();
             }
@@ -529,7 +529,7 @@ void orders_in_product_queue::check_execs(void)
                 break;
             best_buy = bid_queue.front();
             best_sell = ask_queue.front();
-            
+
             best_buy_price = get_price(best_buy);
             best_sell_price = get_price(best_sell);
         }
@@ -551,12 +551,12 @@ mtk::prices::msg::sub_price_level   get_emtpy_level_prices(const mtk::tuple<mtk:
 mtk::prices::msg::sub_best_prices    get_empty_sub_best_prices   (const mtk::tuple<mtk::fnExt, mtk::fnExt>&  ext_pr_qty)
 {
     return mtk::prices::msg::sub_best_prices(
-        mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(ext_pr_qty),  
-                                            get_emtpy_level_prices(ext_pr_qty),  
+        mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(ext_pr_qty),
+                                            get_emtpy_level_prices(ext_pr_qty),
                                             get_emtpy_level_prices(ext_pr_qty),
                                             get_emtpy_level_prices(ext_pr_qty),
                                             get_emtpy_level_prices(ext_pr_qty)),
-        mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(ext_pr_qty), 
+        mtk::prices::msg::sub_price_deph5(  get_emtpy_level_prices(ext_pr_qty),
                                             get_emtpy_level_prices(ext_pr_qty),
                                             get_emtpy_level_prices(ext_pr_qty),
                                             get_emtpy_level_prices(ext_pr_qty),
@@ -567,7 +567,7 @@ mtk::prices::msg::sub_best_prices    get_empty_sub_best_prices   (const mtk::tup
 mtk::prices::msg::sub_full_product_info    get_emtpy_sub_full_product_info   (const mtk::tuple<mtk::fnExt, mtk::fnExt>&  ext_pr_qty)
 {
     return mtk::prices::msg::sub_full_product_info(
-                    mtk::msg::sub_product_code("", ""), 
+                    mtk::msg::sub_product_code("", ""),
                     get_empty_sub_best_prices(ext_pr_qty));
                     //mtk::msg::sub_control_fluct("EMARKET.PRC", mtk::dtNowLocal());
 }
@@ -577,8 +577,8 @@ mtk::prices::msg::sub_full_product_info    get_emtpy_sub_full_product_info   (co
 template<typename T>
 void send_prices (const T& mtk_msg)
 {
-    static auto cli_session = mtk::admin::get_qpid_session("client", "CLITESTING");
-    send_message(cli_session, mtk_msg, "");
+    static auto cli_sender = mtk::admin::get_qpid_sender("client", "CLITESTING");
+    send_message(cli_sender, mtk_msg, "");
     std::cout << mtk::dtNowLocal() <<"  updated prices " << mtk_msg.get_message_type_as_string() <<  std::endl;
 }
 
@@ -597,8 +597,8 @@ void fill_side (const mtk::list<mtk::CountPtr<ord_ls> >& xxx_queue, mtk::prices:
                 levels.front().quantity.SetDouble( levels.front().quantity.GetDouble() + cf.total_execs.remaining_qty.GetDouble() );
             else
                 throw mtk::Alarm(MTK_HERE, "ordersbook", "imposible!?!", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-                
-                
+
+
             ++it;
         }
 
@@ -610,14 +610,14 @@ void fill_side (const mtk::list<mtk::CountPtr<ord_ls> >& xxx_queue, mtk::prices:
 }
 void orders_in_product_queue::update_prices(const mtk::msg::sub_product_code& product_code)
 {
-    mtk::prices::msg::pub_best_prices pub_best_prices(  product_code, 
-                                                        get_empty_sub_best_prices(get_ext_price_quantity_for_product(product_code.product)), 
+    mtk::prices::msg::pub_best_prices pub_best_prices(  product_code,
+                                                        get_empty_sub_best_prices(get_ext_price_quantity_for_product(product_code.product)),
                                                         mtk::msg::sub_control_fluct("EMARKET.PRC", mtk::dtNowLocal()));
-    
-    
+
+
     fill_side(bid_queue, pub_best_prices.best_prices.bids);
     fill_side(ask_queue, pub_best_prices.best_prices.asks);
-    
+
     send_prices(pub_best_prices);
 }
 
@@ -627,7 +627,7 @@ void orders_in_product_queue::update_prices(const mtk::msg::sub_product_code& pr
 
 void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_process_info&  pi)
 {
-    mtk::prices::msg::ps_conf_full_product_info_init__from_publisher  
+    mtk::prices::msg::ps_conf_full_product_info_init__from_publisher
                 ps_conf_full_product_info_init(mtk::prices::msg::ps_conf_full_product_info_init("MARKET", mtk::admin::get_process_info()));
     send_message(srv_session, ps_conf_full_product_info_init);
     int counter = 0;
@@ -635,17 +635,17 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
     {
         //        mtk::list<mtk::CountPtr<ord_ls> >  bid_queue;
         //        mtk::list<mtk::CountPtr<ord_ls> >  ask_queue;
-        mtk::prices::msg::sub_full_product_info   sub_full_product_info(  it_queue_by_product->first, 
+        mtk::prices::msg::sub_full_product_info   sub_full_product_info(  it_queue_by_product->first,
                                                             get_empty_sub_best_prices(get_ext_price_quantity_for_product(it_queue_by_product->first.product)));
         fill_side(it_queue_by_product->second.bid_queue, sub_full_product_info.best_prices.bids);
         fill_side(it_queue_by_product->second.ask_queue, sub_full_product_info.best_prices.asks);
-        
-        mtk::prices::msg::ps_conf_full_product_info__from_publisher  
+
+        mtk::prices::msg::ps_conf_full_product_info__from_publisher
                     ps_conf_full_product_info(mtk::prices::msg::ps_conf_full_product_info(sub_full_product_info, pi, counter++));
-        
+
         send_message(srv_session, ps_conf_full_product_info);
     }
-    
+
     mtk::prices::msg::pub_new_products  pub_new_products ("MARKET");
     mtk::send_message(srv_session, pub_new_products);
 }

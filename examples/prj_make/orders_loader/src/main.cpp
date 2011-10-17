@@ -14,22 +14,22 @@
 
 namespace
 {
-    
+
     const char*   APP_NAME          = "ORDERS_LOADER";
     const char*   APP_VER           = "2011-07-08";
     const char*   APP_DESCRIPTION   = "I send current order status to clients\n"
                                       "I'm a stupid process\n"
                                       "I'm not checking order sequence, or values on orders\n"
                                       "I receive, I keep, I response. Not checkings at all\n";
-                                      
+
     const char*   APP_MODIFICATIONS = "           2011-07-08     first version\n";
-                                      
+
 
 
     void command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_find_order(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
-    
+
     void register_global_commands (void)
     {
         mtk::admin::register_command("__GLOBAL__",  "stats",     "")->connect(command_stats);
@@ -37,10 +37,10 @@ namespace
         mtk::admin::register_command("orderserver",  "find_order",     "<market> <regexp_product_code> <regexp_sessionid> <regexp_requestid>"
                                                                         "  it returns maximun 10 matches")->connect(command_find_order);
     }
-    
-    
-    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)    
-                                      
+
+
+    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
+
 }
 
 
@@ -48,16 +48,16 @@ namespace
 
 namespace
 {
-    
-    
 
-    
+
+
+
 
 template<typename  CF_TYPE>     //  ex:    mtk::trd::msg::CF_XX_LS
 mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    get_map_order(void)
 {
     static mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >  map_ordersls;
-    
+
     if(map_ordersls.isValid() == false)
         map_ordersls = mtk::make_cptr(new mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE>);
     return map_ordersls;
@@ -68,7 +68,7 @@ void update_or_insert(const CF_TYPE&  orders_status)
 {
     mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders_ls = get_map_order<CF_TYPE>();
     //auto  map_orders_ls = get_map_order<CF_TYPE>();
-    
+
     auto it = map_orders_ls->find(orders_status.invariant.order_id);
     if(it == map_orders_ls->end())
         map_orders_ls->insert(std::make_pair(orders_status.invariant.order_id, orders_status));
@@ -82,7 +82,7 @@ void delete_order(const CF_TYPE&  orders_status)
 {
     mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders_ls = get_map_order<CF_TYPE>();
     //auto  map_orders_ls = get_map_order<CF_TYPE>();
-    
+
     auto it = map_orders_ls->find(orders_status.invariant.order_id);
     if(it != map_orders_ls->end())
         map_orders_ls->erase(it);
@@ -168,18 +168,18 @@ void find_orders(const std::string&  market, const std::string&  re_product_code
                                 mtk::list<std::string>&  response_lines)
 {
     mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders = get_map_order<CF_TYPE>();
-    
+
     mtk::RegExp re_sid(re_session_id);
     mtk::RegExp re_rid(re_req_code);
     mtk::RegExp re_pc(re_product_code);
-    
-    
+
+
     int located_lines=0;
     for(auto it = map_orders->begin(); it != map_orders->end(); ++it)
     {
         int matches = 0;
         mtk::trd::msg::sub_order_id oi = it->first;
-        
+
         if(re_sid.Match(oi.session_id))
             ++matches;
         if(re_rid.Match(oi.req_code))
@@ -188,7 +188,7 @@ void find_orders(const std::string&  market, const std::string&  re_product_code
             ++matches;
         if(market == it->second.invariant.product_code.market)
             ++matches;
-        
+
         if(matches == 4)
         {
             response_lines.push_back(MTK_SS(it->second));
@@ -210,8 +210,8 @@ void command_find_order(const std::string& /*command*/, const std::string& param
         response_lines.push_back(MTK_SS("expected 4 parameters received " << vparams.size()));
         return;
     }
-    
-    
+
+
     response_lines.push_back(MTK_SS("\n\nLIMITED"));
     find_orders<mtk::trd::msg::CF_XX_LS>(vparams[0], vparams[1], vparams[2], vparams[3], response_lines);
     response_lines.push_back(MTK_SS("\n\nMARKET"));
@@ -223,15 +223,15 @@ void command_find_order(const std::string& /*command*/, const std::string& param
 template<typename  CF_TYPE,  typename  STATUS_TYPE>     //  ex:  mtk::trd::msg::CF_XX_LS     STATUS_TYPE:  mtk::trd::msg::CF_ST_LS
 void send_orders_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 {
-    static auto client_qpid_session = mtk::admin::get_qpid_session  ("client", "CLITESTING");
-    
+    static auto client_qpid_sender = mtk::admin::get_qpid_sender  ("client", "CLITESTING");
+
     if(rq.reject_description != "")
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "orders_loader", MTK_SS("received request status rejected (ignoring)... " << rq.reject_description << "  full message " << rq), 
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "orders_loader", MTK_SS("received request status rejected (ignoring)... " << rq.reject_description << "  full message " << rq),
                                                 mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
-    
+
     {       //      limit orders
         mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders = get_map_order<CF_TYPE>();
         for(auto it = map_orders->begin(); it != map_orders->end(); ++it)
@@ -241,7 +241,7 @@ void send_orders_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
                 mtk::msg::sub_gen_response_location gen_response_location (rq.request_info.req_id.session_id, rq.request_info.process_info.location.client_code);
                 STATUS_TYPE   msg(it->second, gen_response_location);
                 msg.orig_control_fluct = mtk::msg::sub_control_fluct("__none__", mtk::dtNowLocal());
-                mtk::send_message(client_qpid_session, msg);
+                mtk::send_message(client_qpid_sender, msg);
             }
         }
     }
@@ -276,7 +276,7 @@ void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
                                 mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", __MARKET__, "*", "*"),     \
                                 mtk::trd::msg::__MSG_TYPE__,     \
                                 __RECEIVER__)    \
-        list_hqpid_##__MSG_TYPE__.push_back(hqpid_##__MSG_TYPE__);         
+        list_hqpid_##__MSG_TYPE__.push_back(hqpid_##__MSG_TYPE__);
 
 
 
@@ -289,10 +289,10 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
-        
+
 
         mtk::Nullable<mtk::list<std::string> >  list_markets = mtk::admin::get_config_list("MISC.markets");
-        
+
         if(list_markets.HasValue() == false)
             throw mtk::Alarm(MTK_HERE, "main", "no markets defined on config file", mtk::alPriorCritic, mtk::alTypeLogicError);
 
@@ -320,15 +320,15 @@ int main(int argc, char ** argv)
 
 
 
-            
+
             //      MK
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_NW_MK, on_cf_xx_mk);
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_MD_MK, on_cf_xx_mk);
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_CC_MK, on_cf_cc_mk);
 
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_EX_MK, on_cf_ex_mk);
-            
-            
+
+
             //      STATUS
             static  std::string  oms_from = mtk::admin::get_config_property("OMS_CHAIN.from").Get();
             mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_ORDERS_STATUS>            > hqpid_oms_RQ_ORDERS_STATUS;
@@ -336,16 +336,16 @@ int main(int argc, char ** argv)
                                     hqpid_oms_RQ_ORDERS_STATUS,
                                     mtk::admin::get_url("server"),
                                     "SRVTESTING",
-                                    mtk::trd::msg::oms_RQ_ORDERS_STATUS::get_in_subject("*", *it_market, oms_from),
+                                    mtk::trd::msg::oms_RQ_ORDERS_STATUS::get_in_subject(*it_market, oms_from),
                                     mtk::trd::msg::oms_RQ_ORDERS_STATUS,
                                     on_rq_order_status)
-            list_hqpid_oms_RQ_ORDERS_STATUS.push_back(hqpid_oms_RQ_ORDERS_STATUS);         
+            list_hqpid_oms_RQ_ORDERS_STATUS.push_back(hqpid_oms_RQ_ORDERS_STATUS);
         }
 
 
 
         mtk::start_timer_wait_till_end();
-        
+
 
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"

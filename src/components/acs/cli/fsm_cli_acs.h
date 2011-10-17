@@ -57,7 +57,7 @@ public:
 
 
     //  ACCESS
-    const mtk::CountPtr< mtk::qpid_session >    &  qpid_session () const;
+    const mtk::CountPtr< mtk::mtkqpid_sender >    &  mtkqpid_sender () const;
     const std::string                         &  user_name () const;
 
 
@@ -101,7 +101,7 @@ public:
 
 
     //  ACCESS
-    const mtk::CountPtr< mtk::qpid_session >    &  qpid_session () const;
+    const mtk::CountPtr< mtk::mtkqpid_sender >    &  mtkqpid_sender () const;
     const std::string                         &  user_name () const;
 
 

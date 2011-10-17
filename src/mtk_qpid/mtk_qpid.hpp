@@ -94,52 +94,83 @@ namespace mtk{
                     "  } "
                     "} ";
 
+    static const char* const  QUEUE__DEFAULT_SENDER_CONFIG  =  "{assert:always, node:{type:topic} }";
+
+
 
     //  to be defined externally  (when not using admin)
     void check_control_flields_flucts    (const std::string&  key, const mtk::DateTime&  dt);
 
 
 
-namespace  OUT_CONFIG {
-    void SetIdReloj         (int idReloj);
-    int  GetIdReloj         (void);
-    //int  GetNumSecuencia    (void);
-};
 
 
-struct qpid_session
+struct mtkqpid_session
 {
     qpid::messaging::Connection         connection;
-    qpid::messaging::Session            session;
+    qpid::messaging::Session            qpid_session;
     const std::string                   url;
-    const std::string                   address;
-    qpid::messaging::Sender             sender;
 
-    qpid::messaging::Receiver      createReceiver(const std::string& filter)  {
-            //std::string session_config = MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always, filter:[control, "<< filter <<"]}");
-            //std::string session_config = MTK_SS(address<< "/" << filter << "; {assert:always, node:{type:topic}}");
-            std::string receptor_config = MTK_SS(address << "/" <<  filter << "; " <<   QUEUE__DEFAULT_RECEPTOR_CONFIG);
-            qpid::messaging::Receiver receiver = session.createReceiver(receptor_config);
-            receiver.setCapacity(100);
-            return receiver;
-        }
-
-    qpid_session(const std::string& _url, const std::string& _address)
+    mtkqpid_session(const std::string& _url)
         :  connection   (_url)
-         //, session      (connection.newSession())
          , url          (_url)
-         , address      (_address)
-         ////, sender       (session.createSender(MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always}")))
-         //, sender       (session.createSender(MTK_SS(address<< "; {assert:always, node-properties:{type:topic} }")))
     {
             connection.open();
-            session = connection.createSession();
-            sender = session.createSender(MTK_SS(address<< "; {assert:always, node:{type:topic} }"));
-            sender.setCapacity(100);
+            qpid_session = connection.createSession();
             ++mtk_qpid_stats::num_created_sessions();
     }
-    ~qpid_session() {session.close();   --mtk_qpid_stats::num_deleted_sessions();  }
+    ~mtkqpid_session() {qpid_session.close();   --mtk_qpid_stats::num_deleted_sessions();  }
 };
+
+
+
+struct mtkqpid_sender
+{
+    mtk::CountPtr<mtkqpid_session>      session;
+    const std::string                   address;
+    qpid::messaging::Sender             qpid_sender;
+
+
+    mtkqpid_sender(const std::string& _url, const std::string& _address, std::string  qe_config=std::string())
+        :  session (mtk::get_from_factory<mtkqpid_session>(_url))
+         , address      (_address)
+    {
+            if(qe_config == "")
+                qpid_sender = session->qpid_session.createSender(MTK_SS(address<< ";" << QUEUE__DEFAULT_SENDER_CONFIG));
+            else
+                qpid_sender = session->qpid_session.createSender(MTK_SS(address<< ";" <<  qe_config));
+            qpid_sender.setCapacity(100);
+            ++mtk_qpid_stats::num_created_senders();
+    }
+    ~mtkqpid_sender() { qpid_sender.close();      --mtk_qpid_stats::num_deleted_senders();  }
+};
+
+
+
+struct mtkqpid_receiver
+{
+    mtk::CountPtr<mtkqpid_session>      session;
+    const std::string                   address;
+    const std::string                   filter;
+    qpid::messaging::Receiver           qpid_receiver;
+
+
+    mtkqpid_receiver(const std::string& _url, const std::string&  _address, const std::string& _filter)
+        :  session (mtk::get_from_factory<mtkqpid_session>(_url))
+         , address      (_address)
+         , filter       (_filter)
+    {
+        std::string receptor_config = MTK_SS(address << "/" <<  filter << "; " <<   QUEUE__DEFAULT_RECEPTOR_CONFIG);
+        qpid_receiver = session->qpid_session.createReceiver(receptor_config);
+        qpid_receiver.setCapacity(100);
+        ++mtk_qpid_stats::num_created_receivers();
+    }
+    ~mtkqpid_receiver() {       qpid_receiver.close();      //  http://apache-qpid-users.2158936.n2.nabble.com/receptor-out-of-scope-with-no-calling-receptor-close-td6858408.html
+                                                //  this not is a fully solution  http://192.168.7.10/wiki/index.php?n=Main.QPIDProblems
+                                --mtk_qpid_stats::num_deleted_receivers();  }
+};
+
+
 
 //--------------------------------------------------------------------
 
@@ -153,7 +184,7 @@ struct qpid_session
 
 
     template<typename T>
-    void send_message (mtk::CountPtr< mtk::qpid_session > qpid_session, const T& message, std::string subject = "")
+    void send_message (mtk::CountPtr< mtk::mtkqpid_sender >  sender, const T& message, std::string subject = "")
     {
         static std::string  control_fluct_key="";
 
@@ -168,7 +199,7 @@ struct qpid_session
         //qpid::messaging::Sender sender = qpid_session->createSender(subject);
         qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message(control_fluct_key));
         msg.setSubject(subject);
-        qpid_session->sender.send(msg);
+        sender->qpid_sender.send(msg);
     }
 
 
@@ -192,8 +223,6 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
     public:
         explicit handle_qpid_exchange_receiver(const std::string& url, const std::string& address, const std::string& filter);
         ~handle_qpid_exchange_receiver(void) {
-                    receiver.close();           //  http://apache-qpid-users.2158936.n2.nabble.com/receptor-out-of-scope-with-no-calling-receptor-close-td6858408.html
-                                                //  this not is a fully solution  http://192.168.7.10/wiki/index.php?n=Main.QPIDProblems
                     ++mtk_qpid_stats::num_deleted_suscriptions_no_parsing(); }
 
         CountPtr< Signal<const qpid::messaging::Message&> >       signalMessage;
@@ -202,8 +231,7 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
 
 
     private:
-        qpid::messaging::Receiver           receiver;
-        CountPtr<qpid_session>              session;
+        CountPtr<mtkqpid_receiver>             receiver;
 
         void check_queue(void);
 
@@ -211,6 +239,31 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
 };
 
 
+
+
+
+
+template<>
+inline mtk::CountPtr< mtk::mtkqpid_session> create_instance_for_factory (const std::string& key_url, mtk::CountPtr<mtk::mtkqpid_session> result)
+{
+    result = mtk::make_cptr(new mtk::mtkqpid_session(key_url));
+    return result;
+}
+
+template<>
+inline mtk::CountPtr< mtk::mtkqpid_receiver> create_instance_for_factory (const mtk::tuple<std::string, std::string, std::string>& key_url_address_filter, mtk::CountPtr<mtk::mtkqpid_receiver> result)
+{
+    result = mtk::make_cptr(new mtk::mtkqpid_receiver(key_url_address_filter._0, key_url_address_filter._1, key_url_address_filter._2));
+    return result;
+}
+
+
+template<>
+inline mtk::CountPtr< mtk::mtkqpid_sender> create_instance_for_factory (const mtk::tuple<std::string, std::string>& key_url_address, mtk::CountPtr<mtk::mtkqpid_sender> result)
+{
+    result = mtk::make_cptr(new mtk::mtkqpid_sender(key_url_address._0, key_url_address._1));
+    return result;
+}
 
 
 
@@ -223,24 +276,15 @@ inline mtk::CountPtr< mtk::handle_qpid_exchange_receiver> create_instance_for_fa
 
 
 
-template<>
-inline CountPtr< qpid_session > create_instance_for_factory (const mtk::tuple<std::string/*url*/, std::string/*address*/>& key, CountPtr< qpid_session > result)
-{
-    result = mtk::make_cptr(new qpid_session(key._0, key._1));
-    return result;
-}
 
 
 
 
 inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const std::string& url, const std::string& address, const std::string& filter)
     :     signalMessage(mtk::make_cptr(new Signal<const qpid::messaging::Message&>))
-        , session(get_from_factory<qpid_session>(mtk::make_tuple(url, address)))
+        , receiver(get_from_factory<mtkqpid_receiver>(mtk::make_tuple(url, address, filter)))
 {
     ++mtk_qpid_stats::num_created_suscriptions_no_parsing();
-    //std::string session_config = MTK_SS(address<< "; {assert:always, create:always}");
-    //std::string session_config = MTK_SS(address<< "; {assert:always, create:always, node-properties:{type:topic}, delete:always, filter:[control, "<< filter <<"]}");
-    receiver = session->createReceiver(filter);
 
     MTK_TIMER_1C(check_queue);
 
@@ -248,8 +292,7 @@ inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const std::s
 
 inline void handle_qpid_exchange_receiver::check_queue(void)
 {
-        qpid::messaging::Receiver           local_receiver = receiver;
-        CountPtr<qpid_session>              local_session  = session;
+        qpid::messaging::Receiver           local_receiver = receiver->qpid_receiver;
         //  this is to protect in case of  handle_qpid_exchange_receiver is out of scope when is processing a message
 
 

@@ -12,18 +12,18 @@
 
 namespace
 {
-    
+
     const char*   APP_NAME          = "GEN_PRODUCT_LOADER";
     const char*   APP_VER           = "2011-04-12";
     const char*   APP_DESCRIPTION   = "I will keep prices and other product information on memory and I will serve it to clients or other proceses\n"
                                       "I will receive this information listening as a client";
-                                      
+
     const char*   APP_MODIFICATIONS =   "           2011-04-12     first version\n"
                                         "           2011-08-01     filling product publishing protocol (update)\n"
                                         ;
 
 
-    mtk::CountPtr<mtk::qpid_session>  serv_session;
+    mtk::CountPtr<mtk::mtkqpid_sender>  serv_sender;
 
 }
 
@@ -36,7 +36,7 @@ namespace
     void command_lock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_unlock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_status(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
-    
+
     void register_global_commands (void)
     {
         mtk::admin::register_command("__GLOBAL__"  ,   "stats",     "")->connect(command_stats);
@@ -46,8 +46,8 @@ namespace
         mtk::admin::register_command("__GLOBAL__",     "status",    "Info about my current status")->connect(command_status);
         mtk::admin::register_command("product_loader", "status",    "Info about my current status")->connect(command_status);
     }
-    
-    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)    
+
+    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
 
 
     //  status
@@ -59,13 +59,13 @@ namespace
         public:
             market_info(const std::string& _name, const mtk::dtTimeQuantity& tq)
                 :  name(_name), check_interval(tq), last_update_received(mtk::dtNowLocal())  {}
-                
+
             std::string             name;
             mtk::dtTimeQuantity     check_interval;
             mtk::DateTime           last_update_received;
     };
     mtk::map<std::string, market_info >    map_market_info;
-    
+
 
 
     //      stats
@@ -110,11 +110,11 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
-        serv_session = mtk::admin::get_qpid_session("server", "SRVTESTING");
-        
+        serv_sender = mtk::admin::get_qpid_sender("server", "SRVTESTING");
+
         //  init map_market_info
         init_map_market_info();
-        
+
         //  last update info
         map_products = mtk::make_cptr(new mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::sub_full_product_info_optionals>);
 
@@ -124,12 +124,12 @@ int main(int argc, char ** argv)
         suscribe_publisher_conf_full_prod_info_init__from_publisher();
         suscribe_publisher_conf_full_prod_info__from_publisher();
         send_req_init_prod_info_to_markets__to_publisher();
-        
+
 
         MTK_TIMER_1SF(check_inactivity)
 
         mtk::start_timer_wait_till_end();
-        
+
 
         map_products = mtk::CountPtr<mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::sub_full_product_info_optionals> > ();
         std::cout << "FIN..... " << std::endl;
@@ -187,9 +187,9 @@ void send_req_init_prod_info_to_markets__to_publisher(void)
 {
     for(auto it=map_market_info.begin(); it!=map_market_info.end(); ++it)
     {
-        mtk::prices::msg::ps_req_init_prod_info__to_publisher   
+        mtk::prices::msg::ps_req_init_prod_info__to_publisher
                 ps_req_init_prod_info__to_publisher(mtk::prices::msg::ps_req_init_prod_info(it->first, mtk::admin::get_process_info()));
-        mtk::send_message(serv_session, ps_req_init_prod_info__to_publisher);
+        mtk::send_message(serv_sender, ps_req_init_prod_info__to_publisher);
     }
 }
 
@@ -230,7 +230,7 @@ void on_ps_pub_prod_info_mtk_ready__from_publisher(const mtk::prices::msg::ps_pu
 {
     mtk::prices::msg::ps_req_init_prod_info__to_publisher    ps_req_init_prod_info__to_publisher(
             mtk::prices::msg::ps_req_init_prod_info(ps_pub_prod_info_mtk_ready__from_publisher.market, mtk::admin::get_process_info()));
-    mtk::send_message(serv_session, ps_req_init_prod_info__to_publisher);
+    mtk::send_message(serv_sender, ps_req_init_prod_info__to_publisher);
 }
 void suscribe_publisher_ready__from_publisher(void)
 {
@@ -239,7 +239,7 @@ void suscribe_publisher_ready__from_publisher(void)
     for(auto it=map_market_info.begin(); it!=map_market_info.end(); ++it)
     {
         hqpid_ps_pub_prod_info_mtk_ready_by_market.push_back(type_cptrhandle());
-        
+
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_ps_pub_prod_info_mtk_ready_by_market.back(),
                                 mtk::admin::get_url("server"),
@@ -282,9 +282,9 @@ void on_ps_conf_full_product_info__from_publisher(const mtk::prices::msg::ps_con
     static int sequence=0;
     ++sequence;
     if(pi.seq_number != sequence)
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "prod_loader", MTK_SS("out of sequence  expected " << sequence << "  received " << pi.seq_number), 
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "prod_loader", MTK_SS("out of sequence  expected " << sequence << "  received " << pi.seq_number),
                                                                                         mtk::alPriorDebug, mtk::alTypeUnknown));
-    
+
     ++stats_prod_init;
     mtk::msg::sub_product_code  pc =  pi.full_prod_info.product_code;
     mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::sub_full_product_info_optionals>::iterator it = map_products->find(pc);
@@ -324,7 +324,7 @@ void on_request_load_prices(const mtk::prices::msg::ps_req_product_info& req)
         return;
     }
     ++stats_req_rec;
-    static mtk::CountPtr<mtk::qpid_session>  response_session(mtk::admin::get_qpid_session("client", "CLITESTING"));
+    static mtk::CountPtr<mtk::mtkqpid_sender>  response_sender(mtk::admin::get_qpid_sender("client", "CLITESTING"));
 
     mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::sub_full_product_info_optionals>::iterator it = map_products->find(req.product_code);
     if(it == map_products->end())
@@ -345,15 +345,15 @@ void on_request_load_prices(const mtk::prices::msg::ps_req_product_info& req)
         mtk::prices::msg::sub_full_product_info   sub_full_product_info =  mtk::prices::get_full_product_info_from_optional(it->second);
         mtk::prices::msg::res_product_info::IC_response response(sub_full_product_info);
         response_list.push_back(response);
-        MTK_SEND_MULTI_RESPONSE(        mtk::prices::msg::res_product_info, 
-                                        mtk::prices::msg::res_product_info::IC_response, 
-                                        response_session,
+        MTK_SEND_MULTI_RESPONSE(        mtk::prices::msg::res_product_info,
+                                        mtk::prices::msg::res_product_info::IC_response,
+                                        response_sender,
                                         req.request_info,
                                         response_list)
     }
-    
+
 }
-    
+
 
 
 
@@ -367,7 +367,7 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
     else
         it->second.best_prices = msg_update_price.best_prices;
     mtk::admin::check_control_fluct(msg_update_price.orig_control_fluct);
-    
+
     //  update last received message for this market
     mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(msg_update_price.product_code.market);
     if(itlu==map_market_info.end())
@@ -391,7 +391,7 @@ void check_inactivity(void)
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too many time with no activity " << it->first), mtk::alPriorError, mtk::alTypeOverflow));
             }
         }
-        
+
     MTK_END_EXEC_MAX_FREC
 }
 

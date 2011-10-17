@@ -284,7 +284,7 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_sufix_subjetc);
+    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& request_sufix_subjetc);
 virtual std::string  get_out_subject (void) const;
 
     
