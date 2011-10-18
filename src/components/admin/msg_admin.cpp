@@ -2141,69 +2141,69 @@ pub_central_keep_alive::pub_central_keep_alive (const qpid::messaging::Message& 
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  pub_enter::get_in_subject ()
+mtk::t_qpid_filter  pub_enter::get_in_subject ()
     {
-        return MTK_SS("GS.MON.ENTER");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.ENTER"));
     }
-    std::string  pub_enter::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_enter::get_out_subject (void) const
     {
-        return MTK_SS("GS.MON.ENTER");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.ENTER"));
     }
-    std::string  pub_keep_alive_srv::get_in_subject ()
+    mtk::t_qpid_filter  pub_keep_alive_srv::get_in_subject ()
     {
-        return MTK_SS("GS.MON.KA");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.KA"));
     }
-    std::string  pub_keep_alive_srv::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_keep_alive_srv::get_out_subject (void) const
     {
-        return MTK_SS("GS.MON.KA");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.KA"));
     }
-    std::string  pub_keep_alive_cli::get_in_subject ()
+    mtk::t_qpid_filter  pub_keep_alive_cli::get_in_subject ()
     {
-        return MTK_SS("GS.MON.KACLI");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.KACLI"));
     }
-    std::string  pub_keep_alive_cli::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_keep_alive_cli::get_out_subject (void) const
     {
-        return MTK_SS("GS.MON.KACLI");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.KACLI"));
     }
-    std::string  pub_exit::get_in_subject ()
+    mtk::t_qpid_filter  pub_exit::get_in_subject ()
     {
-        return MTK_SS("GS.MON.EXIT");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.EXIT"));
     }
-    std::string  pub_exit::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_exit::get_out_subject (void) const
     {
-        return MTK_SS("GS.MON.EXIT");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.EXIT"));
     }
-    std::string  pub_alarm::get_in_subject ()
+    mtk::t_qpid_filter  pub_alarm::get_in_subject ()
     {
-        return MTK_SS("GS.MON.ALARMS");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.ALARMS"));
     }
-    std::string  pub_alarm::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_alarm::get_out_subject (void) const
     {
-        return MTK_SS("GS.MON.ALARMS");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON.ALARMS"));
     }
-    std::string  req_command::get_in_subject (const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
+    mtk::t_qpid_filter  req_command::get_in_subject (const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
     {
-        return MTK_SS("CLI." << proc_info__destination_location_client_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".MON.COMMAND");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << proc_info__destination_location_client_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".MON.COMMAND"));
     }
-    std::string  req_command::get_out_subject (void) const
+    mtk::t_qpid_filter  req_command::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->proc_info__destination.location.client_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".MON.COMMAND");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->proc_info__destination.location.client_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".MON.COMMAND"));
     }
-    std::string  res_command::get_in_subject (const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_req_code)
+    mtk::t_qpid_filter  res_command::get_in_subject (const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("GS.MON." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_req_code << ".RSCOMM");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_req_code << ".RSCOMM"));
     }
-    std::string  res_command::get_out_subject (void) const
+    mtk::t_qpid_filter  res_command::get_out_subject (void) const
     {
-        return MTK_SS("GS.MON." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.req_code << ".RSCOMM");
+        return mtk::t_qpid_filter(MTK_SS("GS.MON." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.req_code << ".RSCOMM"));
     }
-    std::string  pub_central_keep_alive::get_in_subject (const std::string& gs_name)
+    mtk::t_qpid_filter  pub_central_keep_alive::get_in_subject (const std::string& gs_name)
     {
-        return MTK_SS("ALL." << gs_name << ".MON.LHKA");
+        return mtk::t_qpid_filter(MTK_SS("ALL." << gs_name << ".MON.LHKA"));
     }
-    std::string  pub_central_keep_alive::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_central_keep_alive::get_out_subject (void) const
     {
-        return MTK_SS("ALL." << this->gs_name << ".MON.LHKA");
+        return mtk::t_qpid_filter(MTK_SS("ALL." << this->gs_name << ".MON.LHKA"));
     }
     
 

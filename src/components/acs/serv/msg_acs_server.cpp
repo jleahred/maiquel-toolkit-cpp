@@ -1551,61 +1551,61 @@ res_user_list::res_user_list (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  pub_add_user::get_in_subject ()
+mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
-        return MTK_SS("SYS.SRV.ACS_SYNC.AU");
+        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.AU"));
     }
-    std::string  pub_add_user::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_add_user::get_out_subject (void) const
     {
-        return MTK_SS("SYS.SRV.ACS_SYNC.AU");
+        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.AU"));
     }
-    std::string  pub_del_user::get_in_subject ()
+    mtk::t_qpid_filter  pub_del_user::get_in_subject ()
     {
-        return MTK_SS("SYS.SRV.ACS_SYNC.DU");
+        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.DU"));
     }
-    std::string  pub_del_user::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_del_user::get_out_subject (void) const
     {
-        return MTK_SS("SYS.SRV.ACS_SYNC.DU");
+        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.DU"));
     }
-    std::string  req_session_id_conf::get_in_subject ()
+    mtk::t_qpid_filter  req_session_id_conf::get_in_subject ()
     {
-        return MTK_SS("GS.ACS.ASK_SESSID");
+        return mtk::t_qpid_filter(MTK_SS("GS.ACS.ASK_SESSID"));
     }
-    std::string  req_session_id_conf::get_out_subject (void) const
+    mtk::t_qpid_filter  req_session_id_conf::get_out_subject (void) const
     {
-        return MTK_SS("GS.ACS.ASK_SESSID");
+        return mtk::t_qpid_filter(MTK_SS("GS.ACS.ASK_SESSID"));
     }
-    std::string  pub_partial_user_list_acs2serv::get_in_subject ()
+    mtk::t_qpid_filter  pub_partial_user_list_acs2serv::get_in_subject ()
     {
-        return MTK_SS("SYS.SRV.ACS_SYNC.PUL");
+        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.PUL"));
     }
-    std::string  pub_partial_user_list_acs2serv::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_partial_user_list_acs2serv::get_out_subject (void) const
     {
-        return MTK_SS("SYS.SRV.ACS_SYNC.PUL");
+        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.PUL"));
     }
-    std::string  pub_partial_user_list_serv2acs::get_in_subject ()
+    mtk::t_qpid_filter  pub_partial_user_list_serv2acs::get_in_subject ()
     {
-        return MTK_SS("SYS.ACS.ACS_SYNC.PUL");
+        return mtk::t_qpid_filter(MTK_SS("SYS.ACS.ACS_SYNC.PUL"));
     }
-    std::string  pub_partial_user_list_serv2acs::get_out_subject (void) const
+    mtk::t_qpid_filter  pub_partial_user_list_serv2acs::get_out_subject (void) const
     {
-        return MTK_SS("SYS.ACS.ACS_SYNC.PUL");
+        return mtk::t_qpid_filter(MTK_SS("SYS.ACS.ACS_SYNC.PUL"));
     }
-    std::string  req_user_list::get_in_subject ()
+    mtk::t_qpid_filter  req_user_list::get_in_subject ()
     {
-        return MTK_SS("GS.ACS.RQ_USER_LIST");
+        return mtk::t_qpid_filter(MTK_SS("GS.ACS.RQ_USER_LIST"));
     }
-    std::string  req_user_list::get_out_subject (void) const
+    mtk::t_qpid_filter  req_user_list::get_out_subject (void) const
     {
-        return MTK_SS("GS.ACS.RQ_USER_LIST");
+        return mtk::t_qpid_filter(MTK_SS("GS.ACS.RQ_USER_LIST"));
     }
-    std::string  res_user_list::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
+    mtk::t_qpid_filter  res_user_list::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return MTK_SS("SYS.SRV.ACS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSUL");
+        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSUL"));
     }
-    std::string  res_user_list::get_out_subject (void) const
+    mtk::t_qpid_filter  res_user_list::get_out_subject (void) const
     {
-        return MTK_SS("SYS.SRV.ACS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSUL");
+        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSUL"));
     }
     
 

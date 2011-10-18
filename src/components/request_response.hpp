@@ -126,14 +126,14 @@ class __kamikaze_receive_r   :   public  mtk::SignalReceptor  {
 
 public:
 	__kamikaze_receive_r(       mtk::CountPtr< mtk::mtkqpid_sender>     _sender,
-                                const std::string in_subject,
+                                mtk::t_qpid_filter in_subject,
                                 const std::string _req_context_info)
                     : programed_to_delete(false), last_received(mtk::dtNowLocal()+mtk::dtSeconds(30)), espected_secuence(-1),  req_context_info(_req_context_info)
             {
                 MTK_QPID_RECEIVER_CONNECT_THIS(
                                         hqpid_response,
-                                        _sender->session->url,
-                                        _sender->address,
+                                        t_qpid_url(_sender->session->url),
+                                        t_qpid_address(_sender->address),
                                         in_subject,
                                         MSG_T,
                                         on_command_response)

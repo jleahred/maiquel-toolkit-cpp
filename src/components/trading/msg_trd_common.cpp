@@ -1809,13 +1809,13 @@ RQ_ORDERS_STATUS::RQ_ORDERS_STATUS (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  RQ_ORDERS_STATUS::get_in_subject (const std::string& account_client_code,const std::string& market)
+mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_in_subject (const std::string& account_client_code,const std::string& market)
     {
-        return MTK_SS("MK." << account_client_code << "." << market << ".RQORDST");
+        return mtk::t_qpid_filter(MTK_SS("MK." << account_client_code << "." << market << ".RQORDST"));
     }
-    std::string  RQ_ORDERS_STATUS::get_out_subject (void) const
+    mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->account.client_code << "." << this->market << ".RQORDST");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->account.client_code << "." << this->market << ".RQORDST"));
     }
     
 

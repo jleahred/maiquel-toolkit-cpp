@@ -158,7 +158,7 @@ namespace {
     void  on_pub_accmgr_init(const mtk::trd::account::msg::pub_accmgr_init&   pub_accmgr_init)
     {
         mtk::trd::account::msg::rq_accounts_oninit    rq_accounts_oninit (mtk::admin::get_request_info(), pub_accmgr_init.request_sufix_subjetc);
-        mtk::send_message(mtk::admin::get_qpid_sender("client", "CLITESTING"), rq_accounts_oninit);
+        mtk::send_message(mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING")), rq_accounts_oninit);
     }
 
 
@@ -173,14 +173,14 @@ namespace {
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_add_accounts,
                                 mtk::admin::get_url("client"),
-                                "CLITESTING",
+                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::trd::account::msg::conf_add_accounts::get_in_subject(client_code, session_id),
                                 mtk::trd::account::msg::conf_add_accounts,
                                 on_add_accounts)
 
 
         mtk::trd::account::msg::rq_accounts msg_rq_accounts(ri);
-        mtk::send_message(mtk::admin::get_qpid_sender("client", "CLITESTING"), msg_rq_accounts);
+        mtk::send_message(mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING")), msg_rq_accounts);
 
 
         //  suscription to init server
@@ -188,7 +188,7 @@ namespace {
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_pub_accmgr_init,
                                 mtk::admin::get_url("client"),
-                                "CLITESTING",
+                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::trd::account::msg::pub_accmgr_init::get_in_subject(),
                                 mtk::trd::account::msg::pub_accmgr_init,
                                 on_pub_accmgr_init)

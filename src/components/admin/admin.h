@@ -43,15 +43,15 @@ namespace mtk {
         bool                                                is_production(void);
 
         //mtk::CountPtr< mtk::qpid_session >                get_qpid_session(const std::string&  url_for, const std::string& address);
-        mtk::CountPtr<mtk::mtkqpid_receiver>                get_qpid_receiver(const std::string&  url_for, const std::string& address, const std::string& filter);
-        mtk::CountPtr<mtk::mtkqpid_sender>                  get_qpid_sender  (const std::string&  url_for, const std::string& address);
+        mtk::CountPtr<mtk::mtkqpid_receiver>                get_qpid_receiver(const std::string&  url_for, const mtk::t_qpid_address& address, const std::string& filter);
+        mtk::CountPtr<mtk::mtkqpid_sender>                  get_qpid_sender  (const std::string&  url_for, const mtk::t_qpid_address& address);
 
         mtk::msg::sub_process_info                          get_process_info            (void);
 
         //std::string                                         get_session                     (void);     //  with server role, this is the process name
 
 
-        std::string                                         get_url                         (const std::string& url_for);
+        t_qpid_url                                          get_url                         (const std::string& url_for);
 
         std::string                                         get_session_id                  (void);
         mtk::msg::sub_request_info                          get_request_info                (void);

@@ -135,7 +135,7 @@ qTreeProducts::qTreeProducts(QWidget *parent) :
     MTK_CONNECT_THIS(open_tree->signal_click, show_tree)
     setVisible(false);
 
-    qpid_sender = mtk::admin::get_qpid_sender("client", "CLITESTING");
+    qpid_sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
 
     MTK_TIMER_1S(request_root_items);
 

@@ -2653,93 +2653,93 @@ CF_ST_LS::CF_ST_LS (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  RQ_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
+mtk::t_qpid_filter  RQ_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD"));
     }
-    std::string  RQ_NW_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  RQ_NW_LS::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD"));
     }
-    std::string  RQ_MD_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
+    mtk::t_qpid_filter  RQ_MD_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD"));
     }
-    std::string  RQ_MD_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  RQ_MD_LS::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD"));
     }
-    std::string  RQ_CC_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
+    mtk::t_qpid_filter  RQ_CC_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
-        return MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD"));
     }
-    std::string  RQ_CC_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  RQ_CC_LS::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->invariant.product_code.product << ".TRD"));
     }
-    std::string  CF_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
+    mtk::t_qpid_filter  CF_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD"));
     }
-    std::string  CF_NW_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  CF_NW_LS::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD"));
     }
-    std::string  CF_MD_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
+    mtk::t_qpid_filter  CF_MD_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD"));
     }
-    std::string  CF_MD_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  CF_MD_LS::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD"));
     }
-    std::string  CF_CC_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
+    mtk::t_qpid_filter  CF_CC_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD"));
     }
-    std::string  CF_CC_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  CF_CC_LS::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD"));
     }
-    std::string  CF_EX_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
+    mtk::t_qpid_filter  CF_EX_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD"));
     }
-    std::string  CF_EX_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  CF_EX_LS::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD"));
     }
-    std::string  RJ_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
+    mtk::t_qpid_filter  RJ_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD"));
     }
-    std::string  RJ_NW_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  RJ_NW_LS::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD"));
     }
-    std::string  RJ_MD_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
+    mtk::t_qpid_filter  RJ_MD_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD"));
     }
-    std::string  RJ_MD_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  RJ_MD_LS::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD"));
     }
-    std::string  RJ_CC_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
+    mtk::t_qpid_filter  RJ_CC_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id)
     {
-        return MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << req_id_session_id << ".TRD"));
     }
-    std::string  RJ_CC_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  RJ_CC_LS::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << "." << this->req_id.session_id << ".TRD"));
     }
-    std::string  CF_ST_LS::get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id)
+    mtk::t_qpid_filter  CF_ST_LS::get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id)
     {
-        return MTK_SS("CLI." << gen_response_location_client_code << "." << gen_response_location_session_id << ".STATUS_CF");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << gen_response_location_client_code << "." << gen_response_location_session_id << ".STATUS_CF"));
     }
-    std::string  CF_ST_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  CF_ST_LS::get_out_subject (void) const
     {
-        return MTK_SS("CLI." << this->gen_response_location.client_code << "." << this->gen_response_location.session_id << ".STATUS_CF");
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->gen_response_location.client_code << "." << this->gen_response_location.session_id << ".STATUS_CF"));
     }
     
 

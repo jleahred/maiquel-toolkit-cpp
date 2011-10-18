@@ -33,7 +33,7 @@ void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_r
 
 mtk::CountPtr< mtk::mtkqpid_sender >   get_cli_sender(bool  clean=false)
 {
-    static   auto   result  = mtk::admin::get_qpid_sender("client", "CLITESTING");
+    static   auto   result  = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
     if(clean)
         result = mtk::CountPtr< mtk::mtkqpid_sender >();
     return result;
@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_prodinf_request,
                                 mtk::admin::get_url("client"),
-                                "CLITESTING",
+                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::prices::msg::req_product_info::get_in_subject("*", "*"),     //  from anyone, for any market
                                 mtk::prices::msg::req_product_info,
                                 on_request_prodinf_received)
@@ -89,7 +89,7 @@ void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_r
 {
     if(prodinfo_grant::db::has_grants(pi_request))      //  it will generate an alarm message if there is no grants
     {
-        static mtk::CountPtr<mtk::mtkqpid_sender>  qpid_server_sender = mtk::admin::get_qpid_sender("server", "SRVTESTING");
+        static mtk::CountPtr<mtk::mtkqpid_sender>  qpid_server_sender = mtk::admin::get_qpid_sender("server", mtk::t_qpid_address("SRVTESTING"));
         mtk::prices::msg::ps_req_product_info  granted_msg (pi_request, "pigrant");
         mtk::send_message(qpid_server_sender, granted_msg);
     }

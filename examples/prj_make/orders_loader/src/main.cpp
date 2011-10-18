@@ -223,7 +223,7 @@ void command_find_order(const std::string& /*command*/, const std::string& param
 template<typename  CF_TYPE,  typename  STATUS_TYPE>     //  ex:  mtk::trd::msg::CF_XX_LS     STATUS_TYPE:  mtk::trd::msg::CF_ST_LS
 void send_orders_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 {
-    static auto client_qpid_sender = mtk::admin::get_qpid_sender  ("client", "CLITESTING");
+    static auto client_qpid_sender = mtk::admin::get_qpid_sender  ("client", mtk::t_qpid_address("CLITESTING"));
 
     if(rq.reject_description != "")
     {
@@ -272,7 +272,7 @@ void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
         MTK_QPID_RECEIVER_CONNECT_F(     \
                                 hqpid_##__MSG_TYPE__,     \
                                 mtk::admin::get_url("client"),     \
-                                "CLITESTING",     \
+                                mtk::t_qpid_address("CLITESTING"),     \
                                 mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", __MARKET__, "*", "*"),     \
                                 mtk::trd::msg::__MSG_TYPE__,     \
                                 __RECEIVER__)    \
@@ -335,7 +335,7 @@ int main(int argc, char ** argv)
             MTK_QPID_RECEIVER_CONNECT_F(
                                     hqpid_oms_RQ_ORDERS_STATUS,
                                     mtk::admin::get_url("server"),
-                                    "SRVTESTING",
+                                    mtk::t_qpid_address("SRVTESTING"),
                                     mtk::trd::msg::oms_RQ_ORDERS_STATUS::get_in_subject(*it_market, oms_from),
                                     mtk::trd::msg::oms_RQ_ORDERS_STATUS,
                                     on_rq_order_status)

@@ -1868,77 +1868,77 @@ ps_conf_full_product_info__from_publisher::ps_conf_full_product_info__from_publi
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  ps_req_product_info::get_in_subject (const std::string& product_code_market,const std::string& from)
+mtk::t_qpid_filter  ps_req_product_info::get_in_subject (const std::string& product_code_market,const std::string& from)
     {
-        return MTK_SS("MK." << product_code_market << ".REQ.PI." << from << "");
+        return mtk::t_qpid_filter(MTK_SS("MK." << product_code_market << ".REQ.PI." << from << ""));
     }
-    std::string  ps_req_product_info::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_req_product_info::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->product_code.market << ".REQ.PI." << this->from << "");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->product_code.market << ".REQ.PI." << this->from << ""));
     }
-    std::string  ps_pub_prod_info_mtk_ready::get_in_subject (const std::string& market)
+    mtk::t_qpid_filter  ps_pub_prod_info_mtk_ready::get_in_subject (const std::string& market)
     {
-        return MTK_SS("MK." << market << ".PS.START_INIT");
+        return mtk::t_qpid_filter(MTK_SS("MK." << market << ".PS.START_INIT"));
     }
-    std::string  ps_pub_prod_info_mtk_ready::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_pub_prod_info_mtk_ready::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->market << ".PS.START_INIT");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->market << ".PS.START_INIT"));
     }
-    std::string  ps_req_init_prod_info::get_in_subject (const std::string& market)
+    mtk::t_qpid_filter  ps_req_init_prod_info::get_in_subject (const std::string& market)
     {
-        return MTK_SS("MK.PS." << market << ".RQINIT");
+        return mtk::t_qpid_filter(MTK_SS("MK.PS." << market << ".RQINIT"));
     }
-    std::string  ps_req_init_prod_info::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_req_init_prod_info::get_out_subject (void) const
     {
-        return MTK_SS("MK.PS." << this->market << ".RQINIT");
+        return mtk::t_qpid_filter(MTK_SS("MK.PS." << this->market << ".RQINIT"));
     }
-    std::string  ps_conf_full_product_info_init::get_in_subject (const std::string& market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid)
+    mtk::t_qpid_filter  ps_conf_full_product_info_init::get_in_subject (const std::string& market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid)
     {
-        return MTK_SS("MK." << market << ".PS.START_INIT." << to_process_info_process_name << "." << to_process_info_process_uuid << ".CONFFULLPI");
+        return mtk::t_qpid_filter(MTK_SS("MK." << market << ".PS.START_INIT." << to_process_info_process_name << "." << to_process_info_process_uuid << ".CONFFULLPI"));
     }
-    std::string  ps_conf_full_product_info_init::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_conf_full_product_info_init::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->market << ".PS.START_INIT." << this->to_process_info.process_name << "." << this->to_process_info.process_uuid << ".CONFFULLPI");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->market << ".PS.START_INIT." << this->to_process_info.process_name << "." << this->to_process_info.process_uuid << ".CONFFULLPI"));
     }
-    std::string  ps_conf_full_product_info::get_in_subject (const std::string& full_prod_info_product_code_market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid)
+    mtk::t_qpid_filter  ps_conf_full_product_info::get_in_subject (const std::string& full_prod_info_product_code_market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid)
     {
-        return MTK_SS("MK." << full_prod_info_product_code_market << ".PS.FPI." << to_process_info_process_name << "." << to_process_info_process_uuid << ".CONFPI");
+        return mtk::t_qpid_filter(MTK_SS("MK." << full_prod_info_product_code_market << ".PS.FPI." << to_process_info_process_name << "." << to_process_info_process_uuid << ".CONFPI"));
     }
-    std::string  ps_conf_full_product_info::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_conf_full_product_info::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->full_prod_info.product_code.market << ".PS.FPI." << this->to_process_info.process_name << "." << this->to_process_info.process_uuid << ".CONFPI");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->full_prod_info.product_code.market << ".PS.FPI." << this->to_process_info.process_name << "." << this->to_process_info.process_uuid << ".CONFPI"));
     }
-    std::string  ps_pub_prod_info_mtk_ready__from_publisher::get_in_subject (const std::string& market)
+    mtk::t_qpid_filter  ps_pub_prod_info_mtk_ready__from_publisher::get_in_subject (const std::string& market)
     {
-        return MTK_SS("MK.PS." << market << ".START_INIT.PUBLISHER");
+        return mtk::t_qpid_filter(MTK_SS("MK.PS." << market << ".START_INIT.PUBLISHER"));
     }
-    std::string  ps_pub_prod_info_mtk_ready__from_publisher::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_pub_prod_info_mtk_ready__from_publisher::get_out_subject (void) const
     {
-        return MTK_SS("MK.PS." << this->market << ".START_INIT.PUBLISHER");
+        return mtk::t_qpid_filter(MTK_SS("MK.PS." << this->market << ".START_INIT.PUBLISHER"));
     }
-    std::string  ps_req_init_prod_info__to_publisher::get_in_subject (const std::string& market)
+    mtk::t_qpid_filter  ps_req_init_prod_info__to_publisher::get_in_subject (const std::string& market)
     {
-        return MTK_SS("MK." << market << ".PS.RQINIT.PUBLISHER");
+        return mtk::t_qpid_filter(MTK_SS("MK." << market << ".PS.RQINIT.PUBLISHER"));
     }
-    std::string  ps_req_init_prod_info__to_publisher::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_req_init_prod_info__to_publisher::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->market << ".PS.RQINIT.PUBLISHER");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->market << ".PS.RQINIT.PUBLISHER"));
     }
-    std::string  ps_conf_full_product_info_init__from_publisher::get_in_subject (const std::string& market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid)
+    mtk::t_qpid_filter  ps_conf_full_product_info_init__from_publisher::get_in_subject (const std::string& market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid)
     {
-        return MTK_SS("MK.PS." << market << "." << to_process_info_process_name << "." << to_process_info_process_uuid << ".START_INIT.PUBLISHER");
+        return mtk::t_qpid_filter(MTK_SS("MK.PS." << market << "." << to_process_info_process_name << "." << to_process_info_process_uuid << ".START_INIT.PUBLISHER"));
     }
-    std::string  ps_conf_full_product_info_init__from_publisher::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_conf_full_product_info_init__from_publisher::get_out_subject (void) const
     {
-        return MTK_SS("MK.PS." << this->market << "." << this->to_process_info.process_name << "." << this->to_process_info.process_uuid << ".START_INIT.PUBLISHER");
+        return mtk::t_qpid_filter(MTK_SS("MK.PS." << this->market << "." << this->to_process_info.process_name << "." << this->to_process_info.process_uuid << ".START_INIT.PUBLISHER"));
     }
-    std::string  ps_conf_full_product_info__from_publisher::get_in_subject (const std::string& full_prod_info_product_code_market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid)
+    mtk::t_qpid_filter  ps_conf_full_product_info__from_publisher::get_in_subject (const std::string& full_prod_info_product_code_market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid)
     {
-        return MTK_SS("MK." << full_prod_info_product_code_market << ".PS.FPI." << to_process_info_process_name << "." << to_process_info_process_uuid << ".CONFFPI_FMK");
+        return mtk::t_qpid_filter(MTK_SS("MK." << full_prod_info_product_code_market << ".PS.FPI." << to_process_info_process_name << "." << to_process_info_process_uuid << ".CONFFPI_FMK"));
     }
-    std::string  ps_conf_full_product_info__from_publisher::get_out_subject (void) const
+    mtk::t_qpid_filter  ps_conf_full_product_info__from_publisher::get_out_subject (void) const
     {
-        return MTK_SS("MK." << this->full_prod_info.product_code.market << ".PS.FPI." << this->to_process_info.process_name << "." << this->to_process_info.process_uuid << ".CONFFPI_FMK");
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->full_prod_info.product_code.market << ".PS.FPI." << this->to_process_info.process_name << "." << this->to_process_info.process_uuid << ".CONFFPI_FMK"));
     }
     
 

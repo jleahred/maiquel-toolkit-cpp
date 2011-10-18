@@ -1676,61 +1676,61 @@ oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
+mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
-        return MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
     }
-    std::string  oms_RQ_NW_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  oms_RQ_NW_LS::get_out_subject (void) const
     {
-        return MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
-    std::string  oms_RQ_MD_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
+    mtk::t_qpid_filter  oms_RQ_MD_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
-        return MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
     }
-    std::string  oms_RQ_MD_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  oms_RQ_MD_LS::get_out_subject (void) const
     {
-        return MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
-    std::string  oms_RQ_CC_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
+    mtk::t_qpid_filter  oms_RQ_CC_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
-        return MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
     }
-    std::string  oms_RQ_CC_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  oms_RQ_CC_LS::get_out_subject (void) const
     {
-        return MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
-    std::string  oms_RQ_NW_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
+    mtk::t_qpid_filter  oms_RQ_NW_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
-        return MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
     }
-    std::string  oms_RQ_NW_MK::get_out_subject (void) const
+    mtk::t_qpid_filter  oms_RQ_NW_MK::get_out_subject (void) const
     {
-        return MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
-    std::string  oms_RQ_MD_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
+    mtk::t_qpid_filter  oms_RQ_MD_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
-        return MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
     }
-    std::string  oms_RQ_MD_MK::get_out_subject (void) const
+    mtk::t_qpid_filter  oms_RQ_MD_MK::get_out_subject (void) const
     {
-        return MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
-    std::string  oms_RQ_CC_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
+    mtk::t_qpid_filter  oms_RQ_CC_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
-        return MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
     }
-    std::string  oms_RQ_CC_MK::get_out_subject (void) const
+    mtk::t_qpid_filter  oms_RQ_CC_MK::get_out_subject (void) const
     {
-        return MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
-    std::string  oms_RQ_ORDERS_STATUS::get_in_subject (const std::string& market,const std::string& from)
+    mtk::t_qpid_filter  oms_RQ_ORDERS_STATUS::get_in_subject (const std::string& market,const std::string& from)
     {
-        return MTK_SS("MK.OMS." << market << "." << from << ".RQORDST");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << market << "." << from << ".RQORDST"));
     }
-    std::string  oms_RQ_ORDERS_STATUS::get_out_subject (void) const
+    mtk::t_qpid_filter  oms_RQ_ORDERS_STATUS::get_out_subject (void) const
     {
-        return MTK_SS("MK.OMS." << this->market << "." << this->from << ".RQORDST");
+        return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->market << "." << this->from << ".RQORDST"));
     }
     
 

@@ -352,12 +352,12 @@ namespace {
                                                             mtk::crc32_as_string(MTK_SS(app_name<<get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())),
                                                             app_version));
 
-            sender_admin   = mtk::admin::get_qpid_sender("client", "CLITESTING");
+            sender_admin   = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("client"),
-                                    "CLITESTING",
+                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
@@ -368,7 +368,7 @@ namespace {
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
                                     mtk::admin::get_url("client"),
-                                    "CLITESTING",
+                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::admin::msg::pub_central_keep_alive::get_in_subject("*"),
                                     mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)
@@ -378,12 +378,12 @@ namespace {
             process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("SYS", mtk::GetMachineCode()), app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())), app_version));
 
-            sender_admin   = mtk::admin::get_qpid_sender("admin", "CLITESTING");
+            sender_admin   = mtk::admin::get_qpid_sender("admin", mtk::t_qpid_address("CLITESTING"));
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("admin"),
-                                    "SRVTESTING",
+                                    mtk::t_qpid_address("SRVTESTING"),
                                     mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
@@ -394,7 +394,7 @@ namespace {
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
                                     mtk::admin::get_url("admin"),
-                                    "SRVTESTING",
+                                    mtk::t_qpid_address("SRVTESTING"),
                                     mtk::admin::msg::pub_central_keep_alive::get_in_subject("*"),
                                     mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)
@@ -1051,7 +1051,7 @@ void init(const std::string& config_file_name, const std::string& app_name,
 
 
 
-mtk::CountPtr< mtk::mtkqpid_receiver >     get_qpid_receiver(const std::string&  url_for, const std::string& address, const std::string& filter)
+mtk::CountPtr< mtk::mtkqpid_receiver >     get_qpid_receiver(const std::string&  url_for, const mtk::t_qpid_address& address, const mtk::t_qpid_filter& filter)
 {
     static int counter;
     if(++counter > 500)
@@ -1069,7 +1069,7 @@ mtk::CountPtr< mtk::mtkqpid_receiver >     get_qpid_receiver(const std::string& 
 
     if(admin_status::i()->role=="client")
     {
-        if(url_for != "client"  ||  address != "CLITESTING")
+        if(url_for != "client"  ||  MTK_SS(address) != "CLITESTING")
         {
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("url_for: " << url_for << "  address: " << address
                         << "  weird for a client") , mtk::alPriorWarning, mtk::alTypeOverflow));
@@ -1082,7 +1082,7 @@ mtk::CountPtr< mtk::mtkqpid_receiver >     get_qpid_receiver(const std::string& 
 
 
 
-mtk::CountPtr< mtk::mtkqpid_sender >     get_qpid_sender(const std::string&  url_for, const std::string& address)
+mtk::CountPtr< mtk::mtkqpid_sender >     get_qpid_sender(const std::string&  url_for, const mtk::t_qpid_address& address)
 {
     static int counter;
     if(++counter > 500)
@@ -1100,7 +1100,7 @@ mtk::CountPtr< mtk::mtkqpid_sender >     get_qpid_sender(const std::string&  url
 
     if(admin_status::i()->role=="client")
     {
-        if(url_for != "client"  ||  address != "CLITESTING")
+        if(url_for != "client"  ||  MTK_SS(address) != "CLITESTING")
         {
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("url_for: " << url_for << "  address: " << address
                         << "  weird for a client") , mtk::alPriorWarning, mtk::alTypeOverflow));
@@ -1135,13 +1135,13 @@ std::string                             get_request_code    (void)
 }
 
 
-std::string                             get_url             (const std::string& url_for)
+t_qpid_url      get_url             (const std::string& url_for)
 {
     mtk::Nullable<std::string> url = admin_status::i()->get_config_file().GetValue(MTK_SS("ADMIN.URLS." << url_for));
     if(url.HasValue()==false)
         throw mtk::Alarm(MTK_HERE, "admin", MTK_SS(url_for  << "   requested invalid url"), mtk::alPriorCritic);
     else
-        return url.Get();
+        return t_qpid_url(url.Get());
 }
 
 

@@ -35,7 +35,7 @@ void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_r
 
 mtk::CountPtr< mtk::mtkqpid_sender >   get_cli_session(bool  clean=false)
 {
-    static   auto   result  = mtk::admin::get_qpid_sender("client", "CLITESTING");
+    static   auto   result  = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
     if(clean)
         result = mtk::CountPtr< mtk::mtkqpid_sender >();
     return result;
@@ -64,7 +64,7 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_tree_request,
                                 mtk::admin::get_url("client"),
-                                "CLITESTING",
+                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::gen::msg::req_tree_items::get_in_subject("*"),     //  from anyone
                                 mtk::gen::msg::req_tree_items,
                                 on_request_tree_received)

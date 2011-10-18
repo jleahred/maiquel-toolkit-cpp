@@ -106,6 +106,7 @@ def generate_class(class_name, class_info, class_properties, send_code):
     CONSTRUCTOR_PARAMS_DEBUG_DECL = ''
     INNER_CLASSES = ''
     SUBJECT_METHODS = ''
+    QUEUE_EXCHANGE_NAME = ''
     
     INHERITS_FROM = ''
     if class_properties.has_key('I') :
@@ -116,6 +117,9 @@ def generate_class(class_name, class_info, class_properties, send_code):
         KEY_CODE += '        typedef decltype(' + class_properties['KEY'] + ') key_type;\n'
         KEY_CODE += '        key_type    get_key(void) const  {   return  ' +  class_properties['KEY']  +  ';  }\n'
         KEY_CODE += '    //   KEY INFO\n\n'
+
+    if class_properties.has_key('QE') :
+        QUEUE_EXCHANGE_NAME = class_properties['QE']
     
     
     CLASS_TEMPLATE = """
@@ -135,6 +139,8 @@ $INNER_CLASSES
     virtual ~${CLASS_NAME} (){};
     virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
     static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
+
+    static  mtk::Ś_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("${QUEUE_EXCHANGE_NAME}"); };
 
     
     
@@ -199,7 +205,7 @@ private:
     # SUBJECT_METHODS
     if class_properties.has_key('SUBJ'):
         SUBJECT_METHODS += get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties, send_code)   
-        SUBJECT_METHODS += Template("""virtual std::string  get_out_subject (void) const;\n""").substitute(class_name=class_name)
+        SUBJECT_METHODS += Template("""virtual mtk::t_qpid_filter  get_out_subject (void) const;\n""").substitute(class_name=class_name)
     if is_message_not_submessage(class_properties):
         pointer_to_control_fields = 'mtk::msg::sub_control_fields*   __internal_warning_control_fields;'
         code_as_qpid_message = 'qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;'
@@ -212,7 +218,8 @@ private:
                                                     SUBJECT_METHODS = SUBJECT_METHODS,
                                                     POINTER_TO_CONTROL_FIELDS = pointer_to_control_fields,
                                                     CODE_AS_QPID_MESSAGE = code_as_qpid_message,
-                                                    KEY_CODE = KEY_CODE
+                                                    KEY_CODE = KEY_CODE,
+                                                    QUEUE_EXCHANGE_NAME = QUEUE_EXCHANGE_NAME
                                                 )
 
 
@@ -1102,7 +1109,7 @@ def get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties,
         for p in re.findall('[^\$\{]*\$\{([^\}]*)', class_properties["SUBJ"]):
             param_name = p.replace('.', '_').replace('(','').replace(')','')
             qpidmsg_get_in_subject_params.append("const std::string& "+ param_name)
-        result += Template("""static std::string  get_in_subject ($PARAMS);\n""").substitute(class_name=class_name, PARAMS=','.join(qpidmsg_get_in_subject_params))
+        result += Template("""static mtk::t_qpid_filter  get_in_subject ($PARAMS);\n""").substitute(class_name=class_name, PARAMS=','.join(qpidmsg_get_in_subject_params))
     return result
 
 def get_qpidmsg_get_in_subject(class_name, class_info, class_properties, send_code) :
@@ -1114,9 +1121,9 @@ def get_qpidmsg_get_in_subject(class_name, class_info, class_properties, send_co
             param_name = p.replace('.', '_').replace('(','').replace(')','')
             qpidmsg_get_in_subject_params.append("const std::string& "+ param_name)
             subject = subject.replace(p, p.replace('.', '_'))
-        result += Template("""std::string  ${class_name}::get_in_subject ($PARAMS)
+        result += Template("""mtk::t_qpid_filter  ${class_name}::get_in_subject ($PARAMS)
     {
-        return MTK_SS("$BUILD_STRING");
+        return mtk::t_qpid_filter(MTK_SS("$BUILD_STRING"));
     }
     """).substitute(class_name=class_name, PARAMS=','.join(qpidmsg_get_in_subject_params), BUILD_STRING=subject.replace('${','" << ').replace('}',' << "').replace('(','').replace(')',''))
     return result
@@ -1124,9 +1131,9 @@ def get_qpidmsg_get_in_subject(class_name, class_info, class_properties, send_co
 def get_qpidmsg_get_out_subject(class_name, class_info, class_properties, send_code) :
     result = ''
     if class_properties.has_key('SUBJ'):
-        result += Template("""std::string  ${class_name}::get_out_subject (void) const
+        result += Template("""mtk::t_qpid_filter  ${class_name}::get_out_subject (void) const
     {
-        return MTK_SS("$BUILD_STRING");
+        return mtk::t_qpid_filter(MTK_SS("$BUILD_STRING"));
     }
     """).substitute(class_name=class_name, 
                     BUILD_STRING=class_properties["SUBJ"].replace('${','" << this->').replace('}',' << "'))

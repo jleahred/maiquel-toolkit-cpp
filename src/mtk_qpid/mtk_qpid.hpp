@@ -1,9 +1,6 @@
 /*
         Verificar el control de fluctuaciones
 
-        Meter otra vez el control de versiones
-
-
         se lee dos veces control fields
 
 */
@@ -44,7 +41,7 @@
 #define MTK_QPID_RECEIVER_CONNECT_F(__HANDLER__, __URL__, __ADDRESS__, __FILTER__, __MSG_TYPE__, __FUNCT_RECEPTOR__)  \
     {    \
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
-                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(std::string(__URL__), std::string(__ADDRESS__), std::string(__FILTER__)));     \
+                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
         __internal_handler__->signalMessage->connect(__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
@@ -53,49 +50,18 @@
 #define MTK_QPID_RECEIVER_CONNECT_THIS(__HANDLER__, __URL__, __ADDRESS__, __FILTER__, __MSG_TYPE__, __FUNCT_RECEPTOR__)  \
     {    \
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
-                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(std::string(__URL__), std::string(__ADDRESS__), std::string(__FILTER__)));     \
+                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
         __internal_handler__->signalMessage->connect(this, &CLASS_NAME::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
 
+
+
+
+
+
 namespace mtk{
-
-
-
-
-    //      on qpid012 it's necessary to configure as this in order to delete the linked queue when receiver or session
-    //      get out of scope
-    //      This bug is fixed on qpid013  (pending to test)
-    static const char* const  QUEUE__DEFAULT_RECEPTOR_CONFIG  =
-                    "{ "
-                    "  assert: allways, "
-                    //"  create: never, "
-                    "  node : "
-                    "  { "
-                    "    type: topic "
-                    "  }, "
-                    "  link: "
-                    "  { "
-                    //"    name: 'testing1" << i << "', "
-                    "    durable: false, "
-                    "    x-declare: "
-                    "    { "
-                    "      auto-delete: true, "
-                    "      exclusive: True, "
-                    "      arguments: "
-                    "      { "
-                    //"         qpid.last_value_queue_key: 'qpid.subject', "
-                    "        'qpid.max_count': 2000, "
-                    "        'qpid.max_size': 2000000, "        //  in bytes
-                    "        'qpid.policy_type': ring "
-                    "      } "
-                    "    } "
-                    "  } "
-                    "} ";
-
-    static const char* const  QUEUE__DEFAULT_SENDER_CONFIG  =  "{assert:always, node:{type:topic} }";
-
 
 
     //  to be defined externally  (when not using admin)
@@ -109,10 +75,10 @@ struct mtkqpid_session
 {
     qpid::messaging::Connection         connection;
     qpid::messaging::Session            qpid_session;
-    const std::string                   url;
+    const t_qpid_url                    url;
 
-    mtkqpid_session(const std::string& _url)
-        :  connection   (_url)
+    mtkqpid_session(const t_qpid_url& _url)
+        :  connection   (_url.WarningDontDoThisGetInternal())
          , url          (_url)
     {
             connection.open();
@@ -127,15 +93,15 @@ struct mtkqpid_session
 struct mtkqpid_sender
 {
     mtk::CountPtr<mtkqpid_session>      session;
-    const std::string                   address;
+    const t_qpid_address                address;
     qpid::messaging::Sender             qpid_sender;
 
 
-    mtkqpid_sender(const std::string& _url, const std::string& _address, std::string  qe_config=std::string())
+    mtkqpid_sender(const t_qpid_url& _url, const t_qpid_address& _address, mtk::t_qpid_exch_sender_conf  qe_config=mtk::t_qpid_exch_sender_conf(""))
         :  session (mtk::get_from_factory<mtkqpid_session>(_url))
          , address      (_address)
     {
-            if(qe_config == "")
+            if(qe_config.WarningDontDoThisGetInternal() == "")
                 qpid_sender = session->qpid_session.createSender(MTK_SS(address<< ";" << QUEUE__DEFAULT_SENDER_CONFIG));
             else
                 qpid_sender = session->qpid_session.createSender(MTK_SS(address<< ";" <<  qe_config));
@@ -150,17 +116,22 @@ struct mtkqpid_sender
 struct mtkqpid_receiver
 {
     mtk::CountPtr<mtkqpid_session>      session;
-    const std::string                   address;
-    const std::string                   filter;
+    const t_qpid_address                address;
+    const t_qpid_filter                 filter;
     qpid::messaging::Receiver           qpid_receiver;
 
 
-    mtkqpid_receiver(const std::string& _url, const std::string&  _address, const std::string& _filter)
+    mtkqpid_receiver(const t_qpid_url& _url, const t_qpid_address&  _address, const t_qpid_filter& _filter, mtk::t_qpid_exch_recept_conf  qe_config=mtk::t_qpid_exch_recept_conf(""))
         :  session (mtk::get_from_factory<mtkqpid_session>(_url))
          , address      (_address)
          , filter       (_filter)
     {
-        std::string receptor_config = MTK_SS(address << "/" <<  filter << "; " <<   QUEUE__DEFAULT_RECEPTOR_CONFIG);
+        std::string receptor_config;
+        if(qe_config.WarningDontDoThisGetInternal() == "")
+            receptor_config = MTK_SS(address << "/" <<  filter << "; " <<   QUEUE__DEFAULT_RECEPTOR_CONFIG);
+        else
+            receptor_config = MTK_SS(address << "/" <<  filter << "; " <<   qe_config);
+
         qpid_receiver = session->qpid_session.createReceiver(receptor_config);
         qpid_receiver.setCapacity(100);
         ++mtk_qpid_stats::num_created_receivers();
@@ -184,7 +155,7 @@ struct mtkqpid_receiver
 
 
     template<typename T>
-    void send_message (mtk::CountPtr< mtk::mtkqpid_sender >  sender, const T& message, std::string subject = "")
+    void send_message (mtk::CountPtr< mtk::mtkqpid_sender >  sender, const T& message, mtk::t_qpid_filter subject =  mtk::t_qpid_filter(""))
     {
         static std::string  control_fluct_key="";
 
@@ -194,11 +165,11 @@ struct mtkqpid_receiver
         MTK_END_EXEC_MAX_FREC
 
         ++mtk_qpid_stats::num_messages_sent();
-        if (subject == "")
+        if (subject.WarningDontDoThisGetInternal() == "")
             subject = message.get_out_subject();
         //qpid::messaging::Sender sender = qpid_session->createSender(subject);
         qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message(control_fluct_key));
-        msg.setSubject(subject);
+        msg.setSubject(MTK_SS(subject));
         sender->qpid_sender.send(msg);
     }
 
@@ -221,7 +192,7 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
     typedef handle_qpid_exchange_receiver CLASS_NAME;
 
     public:
-        explicit handle_qpid_exchange_receiver(const std::string& url, const std::string& address, const std::string& filter);
+        explicit handle_qpid_exchange_receiver(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
         ~handle_qpid_exchange_receiver(void) {
                     ++mtk_qpid_stats::num_deleted_suscriptions_no_parsing(); }
 
@@ -244,31 +215,31 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
 
 
 template<>
-inline mtk::CountPtr< mtk::mtkqpid_session> create_instance_for_factory (const std::string& key_url, mtk::CountPtr<mtk::mtkqpid_session> result)
+inline mtk::CountPtr< mtk::mtkqpid_session> create_instance_for_factory (const t_qpid_url& key_url, mtk::CountPtr<mtk::mtkqpid_session> result)
 {
     result = mtk::make_cptr(new mtk::mtkqpid_session(key_url));
     return result;
 }
 
 template<>
-inline mtk::CountPtr< mtk::mtkqpid_receiver> create_instance_for_factory (const mtk::tuple<std::string, std::string, std::string>& key_url_address_filter, mtk::CountPtr<mtk::mtkqpid_receiver> result)
+inline mtk::CountPtr< mtk::mtkqpid_receiver> create_instance_for_factory (const mtk::tuple<t_qpid_url, t_qpid_address, t_qpid_filter>& key, mtk::CountPtr<mtk::mtkqpid_receiver> result)
 {
-    result = mtk::make_cptr(new mtk::mtkqpid_receiver(key_url_address_filter._0, key_url_address_filter._1, key_url_address_filter._2));
+    result = mtk::make_cptr(new mtk::mtkqpid_receiver(key._0, key._1, key._2));
     return result;
 }
 
 
 template<>
-inline mtk::CountPtr< mtk::mtkqpid_sender> create_instance_for_factory (const mtk::tuple<std::string, std::string>& key_url_address, mtk::CountPtr<mtk::mtkqpid_sender> result)
+inline mtk::CountPtr< mtk::mtkqpid_sender> create_instance_for_factory (const mtk::tuple<t_qpid_url, t_qpid_address>& key, mtk::CountPtr<mtk::mtkqpid_sender> result)
 {
-    result = mtk::make_cptr(new mtk::mtkqpid_sender(key_url_address._0, key_url_address._1));
+    result = mtk::make_cptr(new mtk::mtkqpid_sender(key._0, key._1));
     return result;
 }
 
 
 
 template<>
-inline mtk::CountPtr< mtk::handle_qpid_exchange_receiver> create_instance_for_factory (const mtk::tuple<std::string, std::string, std::string>& key, mtk::CountPtr< mtk::handle_qpid_exchange_receiver> result)
+inline mtk::CountPtr< mtk::handle_qpid_exchange_receiver> create_instance_for_factory (const mtk::tuple<t_qpid_url, t_qpid_address, t_qpid_filter>& key, mtk::CountPtr< mtk::handle_qpid_exchange_receiver> result)
 {
     result = mtk::make_cptr(new mtk::handle_qpid_exchange_receiver(key._0, key._1, key._2));
     return result;
@@ -280,7 +251,7 @@ inline mtk::CountPtr< mtk::handle_qpid_exchange_receiver> create_instance_for_fa
 
 
 
-inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const std::string& url, const std::string& address, const std::string& filter)
+inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter)
     :     signalMessage(mtk::make_cptr(new Signal<const qpid::messaging::Message&>))
         , receiver(get_from_factory<mtkqpid_receiver>(mtk::make_tuple(url, address, filter)))
 {
@@ -388,7 +359,7 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
     typedef handle_qpid_exchange_receiverMT CLASS_NAME;
 
     public:
-        explicit handle_qpid_exchange_receiverMT(const std::string& url, const std::string& address, const std::string& filter);
+        explicit handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
         ~handle_qpid_exchange_receiverMT(void) {  ++mtk_qpid_stats::num_deleted_suscriptions();  }
 
         CountPtr< Signal<const MESSAGE_TYPE&> >       signalMessage;
@@ -403,7 +374,7 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
 
 
 template<typename MESSAGE_TYPE>
-inline handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::handle_qpid_exchange_receiverMT(const std::string& url, const std::string& address, const std::string& filter)
+inline handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter)
     :     signalMessage(mtk::make_cptr(new Signal<const MESSAGE_TYPE&>()))
         , hqpid_receiver( get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(url, address, filter)) )
 {

@@ -366,7 +366,7 @@ void on_rj_xx_mk(const T&  rj)
         MTK_QPID_RECEIVER_CONNECT_F(     \
                                 hqpid_##__MSG_TYPE__,     \
                                 mtk::admin::get_url("client"),     \
-                                "CLITESTING",     \
+                                mtk::t_qpid_address("CLITESTING"),     \
                                 mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", "*", "*", "*"),     \
                                 mtk::trd::msg::__MSG_TYPE__,     \
                                 __RECEIVER__)
@@ -376,7 +376,7 @@ void on_rj_xx_mk(const T&  rj)
         MTK_QPID_RECEIVER_CONNECT_F(     \
                                 hqpid_##__MSG_TYPE__,     \
                                 mtk::admin::get_url("client"),     \
-                                "CLITESTING",     \
+                                mtk::t_qpid_address("CLITESTING"),     \
                                 mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", "*", "*", "*"),     \
                                 mtk::trd::msg::__MSG_TYPE__,     \
                                 __RECEIVER__)

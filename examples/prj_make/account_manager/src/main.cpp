@@ -130,7 +130,7 @@ namespace
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_rq_accounts_oninit,
                                 mtk::admin::get_url("client"),
-                                "CLITESTING",
+                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::trd::account::msg::rq_accounts_oninit::get_in_subject(client_code, request_sufix_subject),
                                 mtk::trd::account::msg::rq_accounts_oninit,
                                 on_rq_accounts_oninit)
@@ -138,14 +138,14 @@ namespace
 
 
         mtk::trd::account::msg::pub_accmgr_init msg_init(mtk::admin::get_process_info(), request_sufix_subject);
-        mtk::send_message(mtk::admin::get_qpid_sender("client", "CLITESTING"), msg_init);
+        mtk::send_message(mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING")), msg_init);
     }
 
 
 
     void add_accounts_fragmenting(const mtk::acs::msg::res_login::IC_session_info& session_info, const mtk::list<mtk::trd::account::msg::sub_grant>& user_grants)
     {
-        static mtk::CountPtr<mtk::mtkqpid_sender>  qpid_sender = mtk::admin::get_qpid_sender("client", "CLITESTING");
+        static mtk::CountPtr<mtk::mtkqpid_sender>  qpid_sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
         const unsigned  max_grants_per_message = 8;
         mtk::list<mtk::trd::account::msg::sub_grant>  partial_user_grants;
         unsigned  grants_in_packet = 0;
@@ -195,7 +195,7 @@ namespace
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_rq_accounts,
                                 mtk::admin::get_url("client"),
-                                "CLITESTING",
+                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::trd::account::msg::rq_accounts::get_in_subject("*"),
                                 mtk::trd::account::msg::rq_accounts,
                                 on_request_accounts)
@@ -237,7 +237,7 @@ namespace
     #define ON_RQ_XX_XX(__MESSAGE_TYPE__, __GRANT_TYPE__) \
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
-                static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", "SRVTESTING");   \
+                static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", mtk::t_qpid_address("SRVTESTING"));   \
                 static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
                    \
                 std::string description;   \
@@ -264,7 +264,7 @@ namespace
 
     void on_RQ_ORDERS_STATUS(const mtk::trd::msg::RQ_ORDERS_STATUS& rq)
     {
-        static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", "SRVTESTING");
+        static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", mtk::t_qpid_address("SRVTESTING"));
         static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
 
         std::string description;
@@ -301,7 +301,7 @@ namespace
                 MTK_QPID_RECEIVER_CONNECT_F(   \
                                         current_hqpid_orders.__ORDER_TYPE__,   \
                                         mtk::admin::get_url("client"),   \
-                                        "CLITESTING",   \
+                                        mtk::t_qpid_address("CLITESTING"),   \
                                         mtk::trd::msg::__ORDER_TYPE__::get_in_subject("*", *it, "*", "*"),   \
                                         mtk::trd::msg::__ORDER_TYPE__,   \
                                         on_##__ORDER_TYPE__)
@@ -318,7 +318,7 @@ namespace
             MTK_QPID_RECEIVER_CONNECT_F(
                                     current_hqpid_orders.RQ_ORDERS_STATUS,
                                     mtk::admin::get_url("client"),
-                                    "CLITESTING",
+                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::trd::msg::RQ_ORDERS_STATUS::get_in_subject("*", *it),
                                     mtk::trd::msg::RQ_ORDERS_STATUS,
                                     on_RQ_ORDERS_STATUS)

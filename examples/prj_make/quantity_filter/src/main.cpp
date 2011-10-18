@@ -107,7 +107,7 @@ namespace
     #define ON_RQ_XX_XX(__MESSAGE_TYPE__) \
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
-                static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", "SRVTESTING");   \
+                static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", mtk::t_qpid_address("SRVTESTING"));   \
                 static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
                 std::string description = rq.reject_description;   \
                 if(description =="")    \
@@ -119,7 +119,7 @@ namespace
     #define ON_RQ_PASS(__MESSAGE_TYPE__) \
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
-                static mtk::CountPtr<mtk::mtkqpid_sender>  servers_sender  = mtk::admin::get_qpid_sender ("server", "SRVTESTING");   \
+                static mtk::CountPtr<mtk::mtkqpid_sender>  servers_sender  = mtk::admin::get_qpid_sender ("server", mtk::t_qpid_address("SRVTESTING"));   \
                 static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
                 mtk::trd::msg::__MESSAGE_TYPE__ msg (rq);   \
                 msg.from = oms_current;  \
@@ -170,7 +170,7 @@ namespace
                 MTK_QPID_RECEIVER_CONNECT_F(   \
                                         current_hqpid_orders.__ORDER_TYPE__,   \
                                         mtk::admin::get_url("server"),   \
-                                        "SRVTESTING",   \
+                                        mtk::t_qpid_address("SRVTESTING"),   \
                                         mtk::trd::msg::__ORDER_TYPE__::get_in_subject(*it, "*", oms_from),   \
                                         mtk::trd::msg::__ORDER_TYPE__,   \
                                         on_##__ORDER_TYPE__)
@@ -186,7 +186,7 @@ namespace
 //	    MTK_QPID_RECEIVER_CONNECT_F(
 //				  current_hqpid_orders.oms_RQ_ORDERS_STATUS,
 //				  mtk::admin::get_url("client"),
-//				  "CLITESTING",
+//				  mtk::t_qpid_address("CLITESTING"),
 //				  mtk::trd::msg::oms_RQ_ORDERS_STATUS::get_in_subject("*", *it, oms_from),
 //				  mtk::trd::msg::oms_RQ_ORDERS_STATUS,
 //				  on_oms_RQ_ORDERS_STATUS)

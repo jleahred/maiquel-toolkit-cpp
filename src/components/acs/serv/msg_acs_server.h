@@ -49,6 +49,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_add_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_add_user"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -60,8 +62,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject ();
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject ();
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -92,6 +94,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_del_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_del_user"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -103,8 +107,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject ();
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject ();
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -135,6 +139,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_session_id_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_session_id_conf"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -147,8 +153,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject ();
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject ();
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -179,6 +185,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_acs2serv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_acs2serv"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -190,8 +198,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject ();
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject ();
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -222,6 +230,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_serv2acs"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_serv2acs"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -233,8 +243,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject ();
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject ();
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -265,6 +275,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_user_list"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -276,8 +288,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject ();
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject ();
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -308,6 +320,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_user_list"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -320,8 +334,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     

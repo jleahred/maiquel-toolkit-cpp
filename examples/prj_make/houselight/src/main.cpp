@@ -24,8 +24,8 @@ void send_central_keep_alive(void)
 {
 
     MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(3))
-        static  mtk::CountPtr< mtk::mtkqpid_sender >  adm_client_sender = mtk::admin::get_qpid_sender("admin_cli", "CLITESTING");
-        static  mtk::CountPtr< mtk::mtkqpid_sender >  adm_server_sender = mtk::admin::get_qpid_sender("admin_srv", "SRVTESTING");
+        static  mtk::CountPtr< mtk::mtkqpid_sender >  adm_client_sender = mtk::admin::get_qpid_sender("admin_cli", mtk::t_qpid_address("CLITESTING"));
+        static  mtk::CountPtr< mtk::mtkqpid_sender >  adm_server_sender = mtk::admin::get_qpid_sender("admin_srv", mtk::t_qpid_address("SRVTESTING"));
 
 
 

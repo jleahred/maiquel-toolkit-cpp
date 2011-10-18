@@ -110,7 +110,7 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
-        serv_sender = mtk::admin::get_qpid_sender("server", "SRVTESTING");
+        serv_sender = mtk::admin::get_qpid_sender("server", mtk::t_qpid_address("SRVTESTING"));
 
         //  init map_market_info
         init_map_market_info();
@@ -203,7 +203,7 @@ void suscribe_publisher_updates(void)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_update_best_prices_list_by_market.back(),
                                 mtk::admin::get_url("client"),
-                                "CLITESTING",
+                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::prices::msg::pub_best_prices::get_in_subject(it->first, "*"),
                                 mtk::prices::msg::pub_best_prices,
                                 on_price_update)
@@ -219,7 +219,7 @@ void suscribe_cli_request_product(void)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_ps_request_product_infolist_by_market.back(),
                                 mtk::admin::get_url("server"),
-                                "SRVTESTING",
+                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::prices::msg::ps_req_product_info::get_in_subject(it->first, "pigrant"),
                                 mtk::prices::msg::ps_req_product_info,
                                 on_request_load_prices)
@@ -243,7 +243,7 @@ void suscribe_publisher_ready__from_publisher(void)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_ps_pub_prod_info_mtk_ready_by_market.back(),
                                 mtk::admin::get_url("server"),
-                                "SRVTESTING",
+                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher::get_in_subject(it->first),
                                 mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher,
                                 on_ps_pub_prod_info_mtk_ready__from_publisher)
@@ -266,7 +266,7 @@ void suscribe_publisher_conf_full_prod_info_init__from_publisher(void)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_ps_conf_full_product_info_init_by_market.back(),
                                 mtk::admin::get_url("server"),
-                                "SRVTESTING",
+                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::prices::msg::ps_conf_full_product_info_init__from_publisher::get_in_subject(it->first, process_info.process_name, process_info.process_uuid),
                                 mtk::prices::msg::ps_conf_full_product_info_init__from_publisher,
                                 on_ps_conf_full_product_info_init__from_publisher)
@@ -304,7 +304,7 @@ void suscribe_publisher_conf_full_prod_info__from_publisher(void)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_ps_conf_full_product_info_by_market.back(),
                                 mtk::admin::get_url("server"),
-                                "SRVTESTING",
+                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::prices::msg::ps_conf_full_product_info__from_publisher::get_in_subject(it->first, process_info.process_name, process_info.process_uuid),
                                 mtk::prices::msg::ps_conf_full_product_info__from_publisher,
                                 on_ps_conf_full_product_info__from_publisher)
@@ -324,7 +324,7 @@ void on_request_load_prices(const mtk::prices::msg::ps_req_product_info& req)
         return;
     }
     ++stats_req_rec;
-    static mtk::CountPtr<mtk::mtkqpid_sender>  response_sender(mtk::admin::get_qpid_sender("client", "CLITESTING"));
+    static mtk::CountPtr<mtk::mtkqpid_sender>  response_sender(mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING")));
 
     mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::sub_full_product_info_optionals>::iterator it = map_products->find(req.product_code);
     if(it == map_products->end())

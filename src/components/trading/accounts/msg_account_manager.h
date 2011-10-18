@@ -59,6 +59,8 @@ public:
         virtual std::string get_message_type_as_string       (void) const  { return "IC_key"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_key"; };
     
+        static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+    
         
         
         
@@ -91,6 +93,8 @@ public:
     virtual ~sub_grant (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_grant"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_grant"; };
+
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
 
     
     
@@ -141,6 +145,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "rq_accounts"; };
     static  std::string static_get_message_type_as_string(void)        { return "rq_accounts"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -152,8 +158,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -184,6 +190,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "conf_add_accounts"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_add_accounts"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -196,8 +204,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -228,6 +236,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_accmgr_init"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_accmgr_init"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -240,8 +250,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject ();
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject ();
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -272,6 +282,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "rq_accounts_oninit"; };
     static  std::string static_get_message_type_as_string(void)        { return "rq_accounts_oninit"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -284,8 +296,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& request_sufix_subjetc);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& request_sufix_subjetc);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     

@@ -76,7 +76,7 @@ internal_price_manager__factory::internal_price_manager__factory(const mtk::msg:
     :     product_code(_product_code)
         , full_prod_info(mtk::prices::msg::__internal_get_default((mtk::prices::msg::sub_full_product_info_optionals*) 0))
 {
-    sender = mtk::admin::get_qpid_sender("client", "CLITESTING");
+    sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
 }
 
 internal_price_manager__factory::~internal_price_manager__factory()
@@ -159,7 +159,7 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             h_best_prices,
                             mtk::admin::get_url("client"),
-                            "CLITESTING",
+                            t_qpid_address("CLITESTING"),
                             mtk::prices::msg::pub_best_prices::get_in_subject(product_code.market, product_code.product),
                             mtk::prices::msg::pub_best_prices,
                             on_price_update);

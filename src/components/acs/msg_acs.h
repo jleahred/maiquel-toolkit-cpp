@@ -47,6 +47,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login_key"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -59,8 +61,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -91,6 +93,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login_key"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -103,8 +107,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -135,6 +139,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -149,8 +155,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -190,6 +196,8 @@ public:
         virtual std::string get_message_type_as_string       (void) const  { return "IC_session_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_session_info"; };
     
+        static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+    
         
         
         
@@ -224,6 +232,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -236,8 +246,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -268,6 +278,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "conf_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_logout"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -281,8 +293,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& location_client_code,const std::string& location_machine,const std::string& session_id);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& location_client_code,const std::string& location_machine,const std::string& session_id);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -313,6 +325,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_logout"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -324,8 +338,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -356,6 +370,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_change_password"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -371,8 +387,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -412,6 +428,8 @@ public:
         virtual std::string get_message_type_as_string       (void) const  { return "IC_change_password_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_change_password_info"; };
     
+        static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+    
         
         
         
@@ -444,6 +462,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_change_password"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -456,8 +476,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     

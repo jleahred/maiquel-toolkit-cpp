@@ -48,6 +48,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_level"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_level"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+
     
     
     
@@ -89,6 +91,8 @@ public:
     virtual ~sub_price_deph5 (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_deph5"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_deph5"; };
+
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
 
     
     
@@ -135,6 +139,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "sub_best_prices"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_best_prices"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+
     
     
     
@@ -177,6 +183,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_best_prices"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_best_prices"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("PRICES"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -190,8 +198,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& product_code_market,const std::string& product_code_product);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& product_code_market,const std::string& product_code_product);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -222,6 +230,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_new_products"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_new_products"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -233,8 +243,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& market);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& market);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -264,6 +274,8 @@ public:
     virtual ~sub_full_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_full_product_info"; };
+
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
 
     
     
@@ -306,6 +318,8 @@ public:
     virtual ~sub_full_product_info_optionals (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info_optionals"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_full_product_info_optionals"; };
+
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
 
     
     
@@ -350,6 +364,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_product_info"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -362,8 +378,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& product_code_market);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& product_code_market);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     
@@ -403,6 +419,8 @@ public:
         virtual std::string get_message_type_as_string       (void) const  { return "IC_response"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_response"; };
     
+        static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+    
         
         
         
@@ -435,6 +453,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_product_info"; };
 
+    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -447,8 +467,8 @@ public:
 
 
     //  subject info
-    static std::string  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
     
     

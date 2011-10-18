@@ -148,7 +148,7 @@ public:
 
 
 internal_orders_book::internal_orders_book()
-    :   srv_session(mtk::admin::get_qpid_sender("server", "SRVTESTING"))
+    :   srv_session(mtk::admin::get_qpid_sender("server", mtk::t_qpid_address("SRVTESTING")))
 {
     MTK_CONNECT_THIS(*mtk::admin::register_command("ob",            "print_queue",   ""), command_print_queue)
 
@@ -156,7 +156,7 @@ internal_orders_book::internal_orders_book()
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_ps_req_init_prod_info,
                             mtk::admin::get_url("server"),
-                            "SRVTESTING",
+                            mtk::t_qpid_address("SRVTESTING"),
                             mtk::prices::msg::ps_req_init_prod_info__to_publisher::get_in_subject("MARKET"),
                             mtk::prices::msg::ps_req_init_prod_info__to_publisher,
                             on_ps_req_init_prod_info)
@@ -285,8 +285,8 @@ void orders_book::add_product (const emarket::sub_product_config&  product_confi
 template<typename T>
 void send_to_client (const T& toclient)
 {
-    static auto cli_sender = mtk::admin::get_qpid_sender("client", "CLITESTING");
-    send_message(cli_sender, toclient, "");
+    static auto cli_sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
+    send_message(cli_sender, toclient);
     std::cout << mtk::dtNowLocal() <<"  response sent to client " << toclient.get_message_type_as_string() <<  std::endl;
 }
 
@@ -577,8 +577,8 @@ mtk::prices::msg::sub_full_product_info    get_emtpy_sub_full_product_info   (co
 template<typename T>
 void send_prices (const T& mtk_msg)
 {
-    static auto cli_sender = mtk::admin::get_qpid_sender("client", "CLITESTING");
-    send_message(cli_sender, mtk_msg, "");
+    static auto cli_sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
+    send_message(cli_sender, mtk_msg);
     std::cout << mtk::dtNowLocal() <<"  updated prices " << mtk_msg.get_message_type_as_string() <<  std::endl;
 }
 
