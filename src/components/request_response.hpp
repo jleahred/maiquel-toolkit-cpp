@@ -22,19 +22,19 @@ namespace mtk
 
 
 
-#define MTK_RECEIVE_MULTI_RESPONSE_F(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_SENDER__, __SUBJECT__, __METHOD_CALL__, __REQ_CONTEXT_INFO__)  \
+#define MTK_RECEIVE_MULTI_RESPONSE_F(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_URL__ , __SUBJECT__, __METHOD_CALL__, __REQ_CONTEXT_INFO__)  \
                 {   \
                     mtk::__kamikaze_receive_r<__MSG_RESPONSE__>* kamikaze_response =     \
                             new mtk::__kamikaze_receive_r<__MSG_RESPONSE__>     \
-                            ( __QPID_SENDER__, __SUBJECT__, __REQ_CONTEXT_INFO__);     \
+                            ( __QPID_URL__, __SUBJECT__, __REQ_CONTEXT_INFO__);     \
                     kamikaze_response->signal_received.connect(__METHOD_CALL__);  \
                 }
 
-#define MTK_RECEIVE_MULTI_RESPONSE_THIS(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_SENDER__, __SUBJECT__, __METHOD_CALL__, __REQ_CONTEXT_INFO__)  \
+#define MTK_RECEIVE_MULTI_RESPONSE_THIS(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_URL__, __SUBJECT__, __METHOD_CALL__, __REQ_CONTEXT_INFO__)  \
                 {   \
                     mtk::__kamikaze_receive_r<__MSG_RESPONSE__>* kamikaze_response =     \
                             new mtk::__kamikaze_receive_r<__MSG_RESPONSE__>     \
-                            ( __QPID_SENDER__, __SUBJECT__, __REQ_CONTEXT_INFO__);     \
+                            ( __QPID_URL__, __SUBJECT__, __REQ_CONTEXT_INFO__);     \
                     kamikaze_response->signal_received.connect(this, &CLASS_NAME::__METHOD_CALL__);  \
                 }
 
@@ -125,14 +125,14 @@ class __kamikaze_receive_r   :   public  mtk::SignalReceptor  {
     friend void delete_later<MSG_T>(__kamikaze_receive_r<MSG_T>* const & ptr_to_delete);
 
 public:
-	__kamikaze_receive_r(       mtk::CountPtr< mtk::mtkqpid_sender>     _sender,
-                                mtk::t_qpid_filter in_subject,
-                                const std::string _req_context_info)
+	__kamikaze_receive_r(       const mtk::t_qpid_url&      _url,
+                                mtk::t_qpid_filter          in_subject,
+                                const std::string           _req_context_info)
                     : programed_to_delete(false), last_received(mtk::dtNowLocal()+mtk::dtSeconds(30)), espected_secuence(-1),  req_context_info(_req_context_info)
             {
                 MTK_QPID_RECEIVER_CONNECT_THIS(
                                         hqpid_response,
-                                        t_qpid_url(_sender->session->url),
+                                        _url,
                                         in_subject,
                                         MSG_T,
                                         on_command_response)

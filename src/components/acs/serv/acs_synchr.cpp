@@ -211,7 +211,7 @@ namespace   //anonymous
         mtk::msg::sub_request_info  request_info = mtk::admin::get_request_info();
         MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::acs_server::msg::res_user_list,
                                         mtk::list<mtk::acs::msg::res_login::IC_session_info>,
-                                        get_server_mtkqpid_sender(),
+                                        mtk::admin::get_url("server"),
                                         mtk::acs_server::msg::res_user_list::get_in_subject(request_info.process_info.location.client_code,
                                                 msg_request_user_list.request_info.process_info.location.machine,
                                                 msg_request_user_list.request_info.process_info.process_uuid,

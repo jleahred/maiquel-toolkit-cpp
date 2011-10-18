@@ -90,14 +90,14 @@ struct mtkqpid_session
 
 
 
-struct mtkqpid_sender
+struct mtkqpid_sender2
 {
     mtk::CountPtr<mtkqpid_session>      session;
     const t_qpid_address                address;
     qpid::messaging::Sender             qpid_sender;
 
 
-    mtkqpid_sender(const t_qpid_url& _url, const t_qpid_address& _address, mtk::t_qpid_exch_sender_conf  qe_config=mtk::t_qpid_exch_sender_conf(""))
+    mtkqpid_sender2(const t_qpid_url& _url, const t_qpid_address& _address, mtk::t_qpid_exch_sender_conf  qe_config=mtk::t_qpid_exch_sender_conf(""))
         :  session (mtk::get_from_factory<mtkqpid_session>(_url))
          , address      (_address)
     {
@@ -108,7 +108,7 @@ struct mtkqpid_sender
             qpid_sender.setCapacity(100);
             ++mtk_qpid_stats::num_created_senders();
     }
-    ~mtkqpid_sender() { qpid_sender.close();      --mtk_qpid_stats::num_deleted_senders();  }
+    ~mtkqpid_sender2() { qpid_sender.close();      --mtk_qpid_stats::num_deleted_senders();  }
 };
 
 
@@ -155,7 +155,7 @@ struct mtkqpid_receiver
 
 
     template<typename T>
-    void send_message (mtk::CountPtr< mtk::mtkqpid_sender >  sender, const T& message, mtk::t_qpid_filter subject =  mtk::t_qpid_filter(""))
+    void send_message_with_sender (mtk::CountPtr< mtk::mtkqpid_sender2 >  sender, const T& message, mtk::t_qpid_filter subject =  mtk::t_qpid_filter(""))
     {
         static std::string  control_fluct_key="";
 
@@ -171,6 +171,12 @@ struct mtkqpid_receiver
         qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message(control_fluct_key));
         msg.setSubject(MTK_SS(subject));
         sender->qpid_sender.send(msg);
+    }
+
+    #define mtk_send_message(__URL_FOR__, __MESSAGE__)  \
+    {               \
+        static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(mtk::admin::get_url(__URL_FOR__), __MESSAGE__::static_get_qpid_address())));    \
+        send_message_with_sender(qpid_sender, __MESSAGE__);                                                                                                                     \
     }
 
 

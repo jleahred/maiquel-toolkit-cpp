@@ -168,7 +168,7 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
     mtk::msg::sub_request_info  request_info = mtk::admin::get_request_info();
     MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::prices::msg::res_product_info,
                                     mtk::prices::msg::res_product_info::IC_response,
-                                    sender,
+                                    mtk::admin::get_url("client"),
                                     mtk::prices::msg::res_product_info::get_in_subject( request_info.process_info.location.client_code,
                                                                                         request_info.process_info.location.machine,
                                                                                         request_info.process_info.process_uuid,
