@@ -159,7 +159,6 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             h_best_prices,
                             mtk::admin::get_url("client"),
-                            t_qpid_address("CLITESTING"),
                             mtk::prices::msg::pub_best_prices::get_in_subject(product_code.market, product_code.product),
                             mtk::prices::msg::pub_best_prices,
                             on_price_update);

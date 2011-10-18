@@ -357,7 +357,6 @@ namespace {
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
@@ -368,7 +367,6 @@ namespace {
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::admin::msg::pub_central_keep_alive::get_in_subject("*"),
                                     mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)
@@ -383,7 +381,6 @@ namespace {
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("admin"),
-                                    mtk::t_qpid_address("SRVTESTING"),
                                     mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
@@ -394,7 +391,6 @@ namespace {
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
                                     mtk::admin::get_url("admin"),
-                                    mtk::t_qpid_address("SRVTESTING"),
                                     mtk::admin::msg::pub_central_keep_alive::get_in_subject("*"),
                                     mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)

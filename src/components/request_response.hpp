@@ -133,7 +133,6 @@ public:
                 MTK_QPID_RECEIVER_CONNECT_THIS(
                                         hqpid_response,
                                         t_qpid_url(_sender->session->url),
-                                        t_qpid_address(_sender->address),
                                         in_subject,
                                         MSG_T,
                                         on_command_response)

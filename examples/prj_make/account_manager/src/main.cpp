@@ -130,7 +130,6 @@ namespace
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_rq_accounts_oninit,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::trd::account::msg::rq_accounts_oninit::get_in_subject(client_code, request_sufix_subject),
                                 mtk::trd::account::msg::rq_accounts_oninit,
                                 on_rq_accounts_oninit)
@@ -195,7 +194,6 @@ namespace
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_rq_accounts,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::trd::account::msg::rq_accounts::get_in_subject("*"),
                                 mtk::trd::account::msg::rq_accounts,
                                 on_request_accounts)
@@ -301,7 +299,6 @@ namespace
                 MTK_QPID_RECEIVER_CONNECT_F(   \
                                         current_hqpid_orders.__ORDER_TYPE__,   \
                                         mtk::admin::get_url("client"),   \
-                                        mtk::t_qpid_address("CLITESTING"),   \
                                         mtk::trd::msg::__ORDER_TYPE__::get_in_subject("*", *it, "*", "*"),   \
                                         mtk::trd::msg::__ORDER_TYPE__,   \
                                         on_##__ORDER_TYPE__)
@@ -318,7 +315,6 @@ namespace
             MTK_QPID_RECEIVER_CONNECT_F(
                                     current_hqpid_orders.RQ_ORDERS_STATUS,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::trd::msg::RQ_ORDERS_STATUS::get_in_subject("*", *it),
                                     mtk::trd::msg::RQ_ORDERS_STATUS,
                                     on_RQ_ORDERS_STATUS)

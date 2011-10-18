@@ -61,7 +61,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_prodinf_request,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::prices::msg::req_product_info::get_in_subject("*", "*"),     //  from anyone, for any market
                                 mtk::prices::msg::req_product_info,
                                 on_request_prodinf_received)

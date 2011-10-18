@@ -135,7 +135,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_key_request,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::acs::msg::req_login_key::get_in_subject("*"),
                                 mtk::acs::msg::req_login_key,
                                 on_request_key_received)
@@ -145,7 +144,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_request_login,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::acs::msg::req_login::get_in_subject("*"),
                                 mtk::acs::msg::req_login,
                                 on_request_login_received)
@@ -155,7 +153,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_request_logout,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::acs::msg::req_logout::get_in_subject("*"),
                                 mtk::acs::msg::req_logout,
                                 on_request_logout_received)
@@ -165,7 +162,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_request_change_password,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::acs::msg::req_change_password::get_in_subject("*"),
                                 mtk::acs::msg::req_change_password,
                                 on_request_change_password_received)
@@ -176,7 +172,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_clients_keep_alive,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::admin::msg::pub_keep_alive_cli::get_in_subject(),
                                 mtk::admin::msg::pub_keep_alive_cli,
                                 on_client_keep_alive_received)
@@ -186,7 +181,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_serv_req_session_id_conf,
                                 mtk::admin::get_url("server"),
-                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::acs_server::msg::req_session_id_conf::get_in_subject(),
                                 mtk::acs_server::msg::req_session_id_conf,
                                 on_server_req_session_id_conf)
@@ -196,7 +190,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_serv_pub_partial_user_list_serv2acs,
                                 mtk::admin::get_url("server"),
-                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::acs_server::msg::pub_partial_user_list_serv2acs::get_in_subject(),
                                 mtk::acs_server::msg::pub_partial_user_list_serv2acs,
                                 on_server_pub_partial_user_list_serv2acs)
@@ -206,7 +199,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_serv_req_user_list,
                                 mtk::admin::get_url("server"),
-                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::acs_server::msg::req_user_list::get_in_subject(),
                                 mtk::acs_server::msg::req_user_list,
                                 on_server_req_user_list)

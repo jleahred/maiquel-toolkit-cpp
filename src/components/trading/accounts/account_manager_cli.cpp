@@ -173,7 +173,6 @@ namespace {
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_add_accounts,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::trd::account::msg::conf_add_accounts::get_in_subject(client_code, session_id),
                                 mtk::trd::account::msg::conf_add_accounts,
                                 on_add_accounts)
@@ -188,7 +187,6 @@ namespace {
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_pub_accmgr_init,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::trd::account::msg::pub_accmgr_init::get_in_subject(),
                                 mtk::trd::account::msg::pub_accmgr_init,
                                 on_pub_accmgr_init)

@@ -156,7 +156,6 @@ internal_orders_book::internal_orders_book()
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_ps_req_init_prod_info,
                             mtk::admin::get_url("server"),
-                            mtk::t_qpid_address("SRVTESTING"),
                             mtk::prices::msg::ps_req_init_prod_info__to_publisher::get_in_subject("MARKET"),
                             mtk::prices::msg::ps_req_init_prod_info__to_publisher,
                             on_ps_req_init_prod_info)

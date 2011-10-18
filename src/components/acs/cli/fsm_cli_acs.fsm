@@ -68,7 +68,6 @@
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_confirm_login_key,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::acs::msg::res_login_key::get_in_subject(SUBJECT_RESPONSE_IN(req_key().request_info)),
                                     mtk::acs::msg::res_login_key,
                                     srv_rs_login_key)
@@ -83,7 +82,6 @@
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_confirm_login,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::acs::msg::res_login::get_in_subject(SUBJECT_RESPONSE_IN(req_login().request_info)),
                                     mtk::acs::msg::res_login,
                                     srv_rs_login)
@@ -102,7 +100,6 @@
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::acs::msg::conf_logout::get_in_subject(client_code, location_machine, session_id),
                                     mtk::acs::msg::conf_logout,
                                     srv_cf_logout)
@@ -122,7 +119,6 @@
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_confirm_login_key,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::acs::msg::res_login_key::get_in_subject(SUBJECT_RESPONSE_IN(req_key().request_info)),
                                     mtk::acs::msg::res_login_key,
                                     srv_rs_login_key)
@@ -133,7 +129,6 @@
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::acs::msg::conf_logout::get_in_subject(client_code, location_machine, session_id),
                                     mtk::acs::msg::conf_logout,
                                     srv_cf_logout)
@@ -152,7 +147,6 @@
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_confirm_change_password,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::acs::msg::res_change_password::get_in_subject(SUBJECT_RESPONSE_IN(req_change_password().request_info)),
                                     mtk::acs::msg::res_change_password,
                                     srv_rs_chpwd)
@@ -163,7 +157,6 @@
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     __hqpid_logout,
                                     mtk::admin::get_url("client"),
-                                    mtk::t_qpid_address("CLITESTING"),
                                     mtk::acs::msg::conf_logout::get_in_subject(client_code, location_machine, session_id),
                                     mtk::acs::msg::conf_logout,
                                     srv_cf_logout)

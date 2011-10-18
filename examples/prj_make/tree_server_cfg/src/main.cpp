@@ -64,7 +64,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_tree_request,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::gen::msg::req_tree_items::get_in_subject("*"),     //  from anyone
                                 mtk::gen::msg::req_tree_items,
                                 on_request_tree_received)

@@ -170,7 +170,6 @@ namespace
                 MTK_QPID_RECEIVER_CONNECT_F(   \
                                         current_hqpid_orders.__ORDER_TYPE__,   \
                                         mtk::admin::get_url("server"),   \
-                                        mtk::t_qpid_address("SRVTESTING"),   \
                                         mtk::trd::msg::__ORDER_TYPE__::get_in_subject(*it, "*", oms_from),   \
                                         mtk::trd::msg::__ORDER_TYPE__,   \
                                         on_##__ORDER_TYPE__)

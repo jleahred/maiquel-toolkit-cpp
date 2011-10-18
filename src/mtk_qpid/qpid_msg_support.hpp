@@ -12,10 +12,10 @@
     namespace mtk {   \
     template<>   \
     inline mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >    \
-    create_instance_for_factory (   const mtk::tuple<t_qpid_url, t_qpid_address, t_qpid_filter>& key,    \
+    create_instance_for_factory (   const mtk::tuple<t_qpid_url, t_qpid_filter>& key,    \
                                     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > result)   \
     {   \
-        result = mtk::make_cptr(new mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__>(key._0, key._1, key._2));   \
+        result = mtk::make_cptr(new mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__>(key._0, key._1));   \
         return result;   \
     }   \
     };

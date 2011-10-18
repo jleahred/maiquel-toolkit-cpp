@@ -90,7 +90,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_alarms_cli,
                                 mtk::admin::get_url("client"),
-                                mtk::t_qpid_address("CLITESTING"),
                                 mtk::admin::msg::pub_alarm::get_in_subject(),
                                 mtk::admin::msg::pub_alarm,
                                 on_alarm_received_cli)
@@ -99,7 +98,6 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_alarms_srv,
                                 mtk::admin::get_url("admin"),
-                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::admin::msg::pub_alarm::get_in_subject(),
                                 mtk::admin::msg::pub_alarm,
                                 on_alarm_received_srv)

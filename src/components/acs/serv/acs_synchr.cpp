@@ -272,7 +272,6 @@ namespace   //anonymous
         MTK_QPID_RECEIVER_CONNECT_F(
                                 handle_pub_add_user,
                                 mtk::admin::get_url("server"),
-                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::acs_server::msg::pub_add_user::get_in_subject(),
                                 mtk::acs_server::msg::pub_add_user,
                                 __received_add_session)
@@ -280,7 +279,6 @@ namespace   //anonymous
         MTK_QPID_RECEIVER_CONNECT_F(
                                 handle_pub_del_user,
                                 mtk::admin::get_url("server"),
-                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::acs_server::msg::pub_del_user::get_in_subject(),
                                 mtk::acs_server::msg::pub_del_user,
                                 __received_del_session)
@@ -338,7 +336,6 @@ namespace   //anonymous
         MTK_QPID_RECEIVER_CONNECT_F(
                                 handle_pub_partial_user_list_acs2serv,
                                 mtk::admin::get_url("server"),
-                                mtk::t_qpid_address("SRVTESTING"),
                                 mtk::acs_server::msg::pub_partial_user_list_acs2serv::get_in_subject(),
                                 mtk::acs_server::msg::pub_partial_user_list_acs2serv,
                                 __received_partial_session_list)

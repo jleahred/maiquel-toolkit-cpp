@@ -272,7 +272,6 @@ void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
         MTK_QPID_RECEIVER_CONNECT_F(     \
                                 hqpid_##__MSG_TYPE__,     \
                                 mtk::admin::get_url("client"),     \
-                                mtk::t_qpid_address("CLITESTING"),     \
                                 mtk::trd::msg::__MSG_TYPE__::get_in_subject("*", __MARKET__, "*", "*"),     \
                                 mtk::trd::msg::__MSG_TYPE__,     \
                                 __RECEIVER__)    \
@@ -335,7 +334,6 @@ int main(int argc, char ** argv)
             MTK_QPID_RECEIVER_CONNECT_F(
                                     hqpid_oms_RQ_ORDERS_STATUS,
                                     mtk::admin::get_url("server"),
-                                    mtk::t_qpid_address("SRVTESTING"),
                                     mtk::trd::msg::oms_RQ_ORDERS_STATUS::get_in_subject(*it_market, oms_from),
                                     mtk::trd::msg::oms_RQ_ORDERS_STATUS,
                                     on_rq_order_status)

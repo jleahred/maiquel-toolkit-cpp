@@ -89,7 +89,6 @@ void  check_request::init(void)
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_rqnwls,
                             mtk::admin::get_url("server"),
-                            mtk::t_qpid_address("SRVTESTING"),
                             mtk::trd::msg::oms_RQ_NW_LS::get_in_subject("MARKET", "*", oms_from),
                             mtk::trd::msg::oms_RQ_NW_LS,
                             oms_RQ_NW_LS)
@@ -99,7 +98,6 @@ void  check_request::init(void)
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_rqmdls,
                             mtk::admin::get_url("server"),
-                            mtk::t_qpid_address("SRVTESTING"),
                             mtk::trd::msg::oms_RQ_MD_LS::get_in_subject("MARKET", "*", oms_from),
                             mtk::trd::msg::oms_RQ_MD_LS,
                             oms_RQ_MD_LS)
@@ -109,7 +107,6 @@ void  check_request::init(void)
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_rqccls,
                             mtk::admin::get_url("server"),
-                            mtk::t_qpid_address("SRVTESTING"),
                             mtk::trd::msg::oms_RQ_CC_LS::get_in_subject("MARKET", "*", oms_from),
                             mtk::trd::msg::oms_RQ_CC_LS,
                             oms_RQ_CC_LS)
