@@ -114,7 +114,7 @@ void  check_request::init(void)
 
     mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher
                     ps_pub_prod_info_mtk_ready__from_publisher  (mtk::prices::msg::ps_pub_prod_info_mtk_ready("MARKET"));
-    mtk::send_message(mtk::admin::get_qpid_sender("server", mtk::t_qpid_address("SRVTESTING")), ps_pub_prod_info_mtk_ready__from_publisher);
+    mtk::send_message_with_sender(mtk::admin::get_qpid_sender("server", ps_pub_prod_info_mtk_ready__from_publisher.get_qpid_address()), ps_pub_prod_info_mtk_ready__from_publisher);
 }
 
 

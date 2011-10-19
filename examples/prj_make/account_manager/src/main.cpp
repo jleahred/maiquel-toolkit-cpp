@@ -137,14 +137,13 @@ namespace
 
 
         mtk::trd::account::msg::pub_accmgr_init msg_init(mtk::admin::get_process_info(), request_sufix_subject);
-        mtk::send_message(mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING")), msg_init);
+        mtk::send_message_with_sender(mtk::admin::get_qpid_sender("client", msg_init.get_qpid_address()), msg_init);
     }
 
 
 
     void add_accounts_fragmenting(const mtk::acs::msg::res_login::IC_session_info& session_info, const mtk::list<mtk::trd::account::msg::sub_grant>& user_grants)
     {
-        static mtk::CountPtr<mtk::mtkqpid_sender>  qpid_sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
         const unsigned  max_grants_per_message = 8;
         mtk::list<mtk::trd::account::msg::sub_grant>  partial_user_grants;
         unsigned  grants_in_packet = 0;
@@ -156,7 +155,7 @@ namespace
             {
                 mtk::trd::account::msg::conf_add_accounts msg(   mtk::msg::sub_gen_response_location(session_info.session_id, session_info.client_code),
                                                             partial_user_grants);
-                mtk::send_message(qpid_sender, msg);
+                mtk_send_message("client", msg);
                 grants_in_packet = 0;
                 partial_user_grants.clear();
             }
@@ -165,7 +164,7 @@ namespace
         {
             mtk::trd::account::msg::conf_add_accounts msg(   mtk::msg::sub_gen_response_location(session_info.session_id, session_info.client_code),
                                                         partial_user_grants);
-            mtk::send_message(qpid_sender, msg);
+            mtk_send_message("client", msg);
         }
     }
 
@@ -235,7 +234,6 @@ namespace
     #define ON_RQ_XX_XX(__MESSAGE_TYPE__, __GRANT_TYPE__) \
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
-                static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", mtk::t_qpid_address("SRVTESTING"));   \
                 static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
                    \
                 std::string description;   \
@@ -247,7 +245,7 @@ namespace
                 if(!granted)   \
                     description = "account not granted";   \
                 mtk::trd::msg::oms_##__MESSAGE_TYPE__ msg (rq, description, oms_current);   \
-                mtk::send_message(server_sender, msg);   \
+                mtk_send_message("server", msg);        \
             }
 
     ON_RQ_XX_XX(RQ_NW_LS, "F");
@@ -262,14 +260,13 @@ namespace
 
     void on_RQ_ORDERS_STATUS(const mtk::trd::msg::RQ_ORDERS_STATUS& rq)
     {
-        static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", mtk::t_qpid_address("SRVTESTING"));
         static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
 
         std::string description;
         if(get_order_grant_type(rq) == "")
             description = "account not granted";
         mtk::trd::msg::oms_RQ_ORDERS_STATUS msg (rq, description, oms_current);
-        mtk::send_message(server_sender, msg);
+        mtk_send_message("server", msg);
     }
 
 

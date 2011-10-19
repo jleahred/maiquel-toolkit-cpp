@@ -22,9 +22,6 @@ namespace
                                         "           2011-08-01     filling product publishing protocol (update)\n"
                                         ;
 
-
-    mtk::CountPtr<mtk::mtkqpid_sender>  serv_sender;
-
 }
 
 
@@ -110,7 +107,6 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
-        serv_sender = mtk::admin::get_qpid_sender("server", mtk::t_qpid_address("SRVTESTING"));
 
         //  init map_market_info
         init_map_market_info();
@@ -189,7 +185,7 @@ void send_req_init_prod_info_to_markets__to_publisher(void)
     {
         mtk::prices::msg::ps_req_init_prod_info__to_publisher
                 ps_req_init_prod_info__to_publisher(mtk::prices::msg::ps_req_init_prod_info(it->first, mtk::admin::get_process_info()));
-        mtk::send_message(serv_sender, ps_req_init_prod_info__to_publisher);
+        mtk_send_message("server", ps_req_init_prod_info__to_publisher);
     }
 }
 
@@ -228,7 +224,7 @@ void on_ps_pub_prod_info_mtk_ready__from_publisher(const mtk::prices::msg::ps_pu
 {
     mtk::prices::msg::ps_req_init_prod_info__to_publisher    ps_req_init_prod_info__to_publisher(
             mtk::prices::msg::ps_req_init_prod_info(ps_pub_prod_info_mtk_ready__from_publisher.market, mtk::admin::get_process_info()));
-    mtk::send_message(serv_sender, ps_req_init_prod_info__to_publisher);
+    mtk_send_message("server", ps_req_init_prod_info__to_publisher);
 }
 void suscribe_publisher_ready__from_publisher(void)
 {
@@ -319,7 +315,6 @@ void on_request_load_prices(const mtk::prices::msg::ps_req_product_info& req)
         return;
     }
     ++stats_req_rec;
-    static mtk::CountPtr<mtk::mtkqpid_sender>  response_sender(mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING")));
 
     mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::sub_full_product_info_optionals>::iterator it = map_products->find(req.product_code);
     if(it == map_products->end())
@@ -342,7 +337,7 @@ void on_request_load_prices(const mtk::prices::msg::ps_req_product_info& req)
         response_list.push_back(response);
         MTK_SEND_MULTI_RESPONSE(        mtk::prices::msg::res_product_info,
                                         mtk::prices::msg::res_product_info::IC_response,
-                                        response_sender,
+                                        mtk::admin::get_url("client"),
                                         req.request_info,
                                         response_list)
     }

@@ -17,6 +17,6 @@ data:
       notes: none
     passwordcrc32: DBF9C8F7
     created_on: 2011-08-09 13:25:42.931
-    last_access: 2011-10-18 13:54:35.025
-    check_pass_ok: 99
+    last_access: 2011-10-21 12:37:38.616
+    check_pass_ok: 128
     check_pass_wrong: 1

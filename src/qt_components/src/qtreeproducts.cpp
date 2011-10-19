@@ -135,8 +135,6 @@ qTreeProducts::qTreeProducts(QWidget *parent) :
     MTK_CONNECT_THIS(open_tree->signal_click, show_tree)
     setVisible(false);
 
-    qpid_sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
-
     MTK_TIMER_1S(request_root_items);
 
     connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), SLOT(on_itemDoubleClicked(QTreeWidgetItem*,int)));
@@ -210,7 +208,7 @@ void qTreeProducts::request_root_items(void)
             //  subscription to multiresponse
             MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::res_tree_items,
                                             mtk::gen::msg::sub_tree_item,
-                                            qpid_sender,
+                                            mtk::admin::get_url("client"),
                                             mtk::gen::msg::res_tree_items::get_in_subject( request_info.process_info.location.client_code,
                                                                                                 request_info.process_info.location.machine,
                                                                                                 request_info.process_info.process_uuid,
@@ -218,7 +216,7 @@ void qTreeProducts::request_root_items(void)
                                                                                                 request_info.req_id.req_code),
                                             on_response_request_tree,
                                             "tree prod ROOT")
-            mtk::send_message(qpid_sender, tree_request_message);
+            mtk_send_message("client", tree_request_message);
         }
         else
             MTK_TIMER_1S_STOP(request_root_items)
@@ -305,7 +303,7 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
         //  subscription to multiresponse
         MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::res_tree_items,
                                         mtk::gen::msg::sub_tree_item,
-                                        qpid_sender,
+                                        mtk::admin::get_url("client"),
                                         mtk::gen::msg::res_tree_items::get_in_subject( request_info.process_info.location.client_code,
                                                                                             request_info.process_info.location.machine,
                                                                                             request_info.process_info.process_uuid,
@@ -313,6 +311,6 @@ void qTreeProducts::on_itemDoubleClicked ( QTreeWidgetItem * item, int /*column*
                                                                                             request_info.req_id.req_code),
                                         on_response_request_tree,
                                         MTK_SS("tree prod " << mtk_item->item.branch))
-        mtk::send_message(qpid_sender, tree_request_message);
+        mtk_send_message("client", tree_request_message);
     }
 }

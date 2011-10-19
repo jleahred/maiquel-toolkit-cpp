@@ -119,8 +119,6 @@ typedef internal_orders_book  CLASS_NAME;
     mtk::CountPtr<ord_ls> cached_last_request;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ps_req_init_prod_info__to_publisher> > hqpid_ps_req_init_prod_info;
 
-    mtk::CountPtr< mtk::mtkqpid_sender >  srv_session;
-
 public:
     internal_orders_book();
 
@@ -148,7 +146,6 @@ public:
 
 
 internal_orders_book::internal_orders_book()
-    :   srv_session(mtk::admin::get_qpid_sender("server", mtk::t_qpid_address("SRVTESTING")))
 {
     MTK_CONNECT_THIS(*mtk::admin::register_command("ob",            "print_queue",   ""), command_print_queue)
 
@@ -284,8 +281,7 @@ void orders_book::add_product (const emarket::sub_product_config&  product_confi
 template<typename T>
 void send_to_client (const T& toclient)
 {
-    static auto cli_sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
-    send_message(cli_sender, toclient);
+    mtk_send_message("client", toclient);
     std::cout << mtk::dtNowLocal() <<"  response sent to client " << toclient.get_message_type_as_string() <<  std::endl;
 }
 
@@ -576,8 +572,7 @@ mtk::prices::msg::sub_full_product_info    get_emtpy_sub_full_product_info   (co
 template<typename T>
 void send_prices (const T& mtk_msg)
 {
-    static auto cli_sender = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
-    send_message(cli_sender, mtk_msg);
+    mtk_send_message("client", mtk_msg);
     std::cout << mtk::dtNowLocal() <<"  updated prices " << mtk_msg.get_message_type_as_string() <<  std::endl;
 }
 
@@ -628,7 +623,7 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
 {
     mtk::prices::msg::ps_conf_full_product_info_init__from_publisher
                 ps_conf_full_product_info_init(mtk::prices::msg::ps_conf_full_product_info_init("MARKET", mtk::admin::get_process_info()));
-    send_message(srv_session, ps_conf_full_product_info_init);
+    mtk_send_message("server", ps_conf_full_product_info_init);
     int counter = 0;
     for(auto it_queue_by_product = queue_by_product.begin(); it_queue_by_product != queue_by_product.end(); ++it_queue_by_product)
     {
@@ -642,11 +637,11 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
         mtk::prices::msg::ps_conf_full_product_info__from_publisher
                     ps_conf_full_product_info(mtk::prices::msg::ps_conf_full_product_info(sub_full_product_info, pi, counter++));
 
-        send_message(srv_session, ps_conf_full_product_info);
+        mtk_send_message("server", ps_conf_full_product_info);
     }
 
     mtk::prices::msg::pub_new_products  pub_new_products ("MARKET");
-    mtk::send_message(srv_session, pub_new_products);
+    mtk_send_message("server", pub_new_products);
 }
 
 

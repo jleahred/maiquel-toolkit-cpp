@@ -47,7 +47,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login_key"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -93,7 +94,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login_key"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -139,7 +141,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -196,7 +199,8 @@ public:
         virtual std::string get_message_type_as_string       (void) const  { return "IC_session_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_session_info"; };
     
-        static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+        mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address(""); };
+        static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
     
         
         
@@ -232,7 +236,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -278,7 +283,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "conf_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_logout"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -325,7 +331,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_logout"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -370,7 +377,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_change_password"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -428,7 +436,8 @@ public:
         virtual std::string get_message_type_as_string       (void) const  { return "IC_change_password_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_change_password_info"; };
     
-        static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+        mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address(""); };
+        static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
     
         
         
@@ -462,7 +471,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_change_password"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     

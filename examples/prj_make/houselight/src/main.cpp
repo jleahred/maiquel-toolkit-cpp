@@ -24,15 +24,10 @@ void send_central_keep_alive(void)
 {
 
     MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(3))
-        static  mtk::CountPtr< mtk::mtkqpid_sender >  adm_client_sender = mtk::admin::get_qpid_sender("admin_cli", mtk::t_qpid_address("CLITESTING"));
-        static  mtk::CountPtr< mtk::mtkqpid_sender >  adm_server_sender = mtk::admin::get_qpid_sender("admin_srv", mtk::t_qpid_address("SRVTESTING"));
-
-
-
         mtk::admin::msg::pub_central_keep_alive msg(mtk::admin::get_process_info(), mtk::dtSeconds(3), mtk::dtSeconds(5), "GS1");
 
-        mtk::send_message(adm_client_sender, msg);
-        mtk::send_message(adm_server_sender, msg);
+        mtk_send_message("admin_cli", msg);
+        mtk_send_message("admin_srv", msg);
     MTK_END_EXEC_MAX_FREC
 }
 

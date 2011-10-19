@@ -48,7 +48,6 @@
 
 
 ::COMMON_STATUS_INFO::
-    mtkqpid_sender  :   mtk::CountPtr< mtk::mtkqpid_sender >   ({  mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"))  })
     user_name       :   std::string                        ({ "" })
 
 
@@ -267,7 +266,7 @@ w_chpwd     --   srv_rs_chpwd               /                   ,  sig_chpwd_rj 
     }]
     srv_rq
     [{
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     }]
 
     sig_login_ok

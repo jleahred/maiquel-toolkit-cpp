@@ -105,9 +105,6 @@ private:
     const mtk::msg::sub_product_code                    product_code;
     mtk::prices::msg::sub_full_product_info_optionals   full_prod_info;
 
-    mtk::CountPtr< mtk::mtkqpid_sender >                  sender;
-
-
 
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> > h_best_prices;
     void on_price_update(const mtk::prices::msg::pub_best_prices& msg);

@@ -285,7 +285,7 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                     mtk::trd::msg::CF_ST_MK,
                                     cf_st_mk)
             mtk::trd::msg::RQ_ORDERS_STATUS  msg_rq_order_status(ri, grant.key.market, grant.key.account);
-            mtk::send_message(mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING")), msg_rq_order_status);
+            mtk::send_message_with_sender(mtk::admin::get_qpid_sender("client", msg_rq_order_status.get_qpid_address()), msg_rq_order_status);
 }
 
 
@@ -307,8 +307,7 @@ s_status& get_status_ref(void)
 template<typename T>
 void send_request_message(const T& rq)
 {
-    static mtk::CountPtr< mtk::mtkqpid_sender > qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender >(mtk::make_tuple(mtk::admin::get_url("client"), mtk::t_qpid_address("CLITESTING")));
-    mtk::send_message(qpid_sender, rq);
+    mtk_send_message("client", rq);
 }
 
 

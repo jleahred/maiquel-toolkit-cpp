@@ -44,7 +44,7 @@ namespace mtk {
 
         //mtk::CountPtr< mtk::qpid_session >                get_qpid_session(const std::string&  url_for, const std::string& address);
         mtk::CountPtr<mtk::mtkqpid_receiver>                get_qpid_receiver(const std::string&  url_for, const mtk::t_qpid_address& address, const std::string& filter);
-        mtk::CountPtr<mtk::mtkqpid_sender>                  get_qpid_sender  (const std::string&  url_for, const mtk::t_qpid_address& address);
+        mtk::CountPtr<mtk::mtkqpid_sender2>                 get_qpid_sender  (const std::string&  url_for, const mtk::t_qpid_address& address);
 
         mtk::msg::sub_process_info                          get_process_info            (void);
 

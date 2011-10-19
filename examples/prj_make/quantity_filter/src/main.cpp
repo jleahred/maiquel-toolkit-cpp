@@ -107,23 +107,21 @@ namespace
     #define ON_RQ_XX_XX(__MESSAGE_TYPE__) \
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
-                static mtk::CountPtr<mtk::mtkqpid_sender>  server_sender  = mtk::admin::get_qpid_sender ("server", mtk::t_qpid_address("SRVTESTING"));   \
                 static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
                 std::string description = rq.reject_description;   \
                 if(description =="")    \
                     description = check_request_quantity_filter(rq);   \
                 mtk::trd::msg::__MESSAGE_TYPE__ msg (rq, description, oms_current);   \
-                mtk::send_message(server_sender, msg);   \
+                mtk_send_message("server", msg);    \
             }
 
     #define ON_RQ_PASS(__MESSAGE_TYPE__) \
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
-                static mtk::CountPtr<mtk::mtkqpid_sender>  servers_sender  = mtk::admin::get_qpid_sender ("server", mtk::t_qpid_address("SRVTESTING"));   \
                 static std::string  oms_current = mtk::admin::get_config_property("OMS_CHAIN.current").Get();        \
                 mtk::trd::msg::__MESSAGE_TYPE__ msg (rq);   \
                 msg.from = oms_current;  \
-                mtk::send_message(servers_sender, msg);   \
+                mtk_send_message("server", msg);    \
             }
 
 

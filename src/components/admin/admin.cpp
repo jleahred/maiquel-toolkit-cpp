@@ -140,9 +140,6 @@ namespace {
             std::string                                 app_modifications;
             std::string                                 role;
 
-            mtk::CountPtr< mtk::mtkqpid_receiver>       receiver_admin;
-            mtk::CountPtr< mtk::mtkqpid_sender>         sender_admin;
-
             mtk::msg::sub_process_info                  process_info;
             //std::string                                 session_id;
             mtk::dtTimeQuantity                         ka_interval_send;
@@ -261,7 +258,7 @@ namespace {
             //  send exit message
             mtk::admin::msg::pub_exit exit_msg(admin_status_instance->get_process_info(), reason);
             //std::cout << exit_msg << std::endl;
-            mtk::send_message(admin_status_instance->sender_admin, exit_msg);
+            mtk_send_message("admin", exit_msg);
             exit_message_sent = true;
         }
     }
@@ -352,11 +349,10 @@ namespace {
                                                             mtk::crc32_as_string(MTK_SS(app_name<<get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())),
                                                             app_version));
 
-            sender_admin   = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
-                                    mtk::admin::get_url("client"),
+                                    mtk::admin::get_url("admin"),
                                     mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
@@ -366,7 +362,7 @@ namespace {
 
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
-                                    mtk::admin::get_url("client"),
+                                    mtk::admin::get_url("admin"),
                                     mtk::admin::msg::pub_central_keep_alive::get_in_subject("*"),
                                     mtk::admin::msg::pub_central_keep_alive,
                                     on_central_ka_received)
@@ -376,7 +372,6 @@ namespace {
             process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("SYS", mtk::GetMachineCode()), app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())), app_version));
 
-            sender_admin   = mtk::admin::get_qpid_sender("admin", mtk::t_qpid_address("CLITESTING"));
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
@@ -448,7 +443,7 @@ namespace {
     {
         mtk::admin::msg::pub_enter enter_msg(get_process_info(), ka_interval_send, ka_interval_check);
         //std::cout << enter_msg << std::endl;
-        mtk::send_message(sender_admin, enter_msg);
+        mtk_send_message("admin", enter_msg);
 
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.app_enter", "Entering application", mtk::alPriorDebug, mtk::alTypeUnknown));
 
@@ -467,12 +462,12 @@ namespace {
             {
                 mtk::admin::msg::pub_keep_alive_srv keep_alive_msg(get_process_info(), ka_interval_send, ka_interval_check);
                 //std::cout << keep_alive_msg << std::endl;
-                mtk::send_message(sender_admin, keep_alive_msg);
+                mtk_send_message("admin", keep_alive_msg);
             }
             else if(role=="client")
             {
                 mtk::admin::msg::pub_keep_alive_cli keep_alive_msg(mtk::admin::msg::pub_keep_alive_srv(get_process_info(), ka_interval_send, ka_interval_check), client_login_confirmation);
-                mtk::send_message(sender_admin, keep_alive_msg);
+                mtk_send_message("admin", keep_alive_msg);
             }
             else
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));
@@ -551,14 +546,14 @@ namespace {
         int16_t alarm_id = int16_t(alarm.alarmID);
         {
             mtk::admin::msg::pub_alarm alarm_msg(get_process_info(), alarm.codeSource, alarm.subject, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
-            mtk::send_message(sender_admin, alarm_msg);
+            mtk_send_message("admin", alarm_msg);
         }
         {
             std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
             while (it != alarm.stackAlarms.end())
             {
                 mtk::admin::msg::pub_alarm   alarm_msg(get_process_info(), it->codeSource, it->subject, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
-                mtk::send_message(sender_admin, alarm_msg);
+                mtk_send_message("admin", alarm_msg);
                 ++it;
             }
         }
@@ -827,7 +822,7 @@ namespace {
         //  sending multiresponses in asyncronous way
         MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::res_command,
                                         mtk::admin::msg::sub_command_rd,
-                                        sender_admin,
+                                        mtk::admin::get_url("admin"),
                                         command_msg.request_info,
                                         data_list)
     }
@@ -1063,14 +1058,6 @@ mtk::CountPtr< mtk::mtkqpid_receiver >     get_qpid_receiver(const std::string& 
         MTK_END_EXEC_MAX_FREC
     }
 
-    if(admin_status::i()->role=="client")
-    {
-        if(url_for != "client"  ||  MTK_SS(address) != "CLITESTING")
-        {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("url_for: " << url_for << "  address: " << address
-                        << "  weird for a client") , mtk::alPriorWarning, mtk::alTypeOverflow));
-        }
-    }
 
     return mtk::get_from_factory< mtk::mtkqpid_receiver >(mtk::make_tuple(get_url(url_for), address, filter));
 }
@@ -1078,7 +1065,7 @@ mtk::CountPtr< mtk::mtkqpid_receiver >     get_qpid_receiver(const std::string& 
 
 
 
-mtk::CountPtr< mtk::mtkqpid_sender >     get_qpid_sender(const std::string&  url_for, const mtk::t_qpid_address& address)
+mtk::CountPtr< mtk::mtkqpid_sender2 >     get_qpid_sender(const std::string&  url_for, const mtk::t_qpid_address& address)
 {
     static int counter;
     if(++counter > 500)
@@ -1094,16 +1081,8 @@ mtk::CountPtr< mtk::mtkqpid_sender >     get_qpid_sender(const std::string&  url
         MTK_END_EXEC_MAX_FREC
     }
 
-    if(admin_status::i()->role=="client")
-    {
-        if(url_for != "client"  ||  MTK_SS(address) != "CLITESTING")
-        {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("url_for: " << url_for << "  address: " << address
-                        << "  weird for a client") , mtk::alPriorWarning, mtk::alTypeOverflow));
-        }
-    }
 
-    return mtk::get_from_factory< mtk::mtkqpid_sender >(mtk::make_tuple(get_url(url_for), address));
+    return mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(get_url(url_for), address));
 }
 
 

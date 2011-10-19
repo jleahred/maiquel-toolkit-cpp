@@ -49,7 +49,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_add_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_add_user"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -94,7 +95,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_del_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_del_user"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -139,7 +141,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_session_id_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_session_id_conf"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -185,7 +188,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_acs2serv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_acs2serv"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -230,7 +234,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_serv2acs"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_serv2acs"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -275,7 +280,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_user_list"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -320,7 +326,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_user_list"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     

@@ -165,15 +165,6 @@ namespace   //anonymous
 
 
 
-    mtk::CountPtr<mtk::mtkqpid_sender>  get_server_mtkqpid_sender(void)
-    {
-        static mtk::CountPtr<mtk::mtkqpid_sender>  result;
-        if(result.isValid() == false)
-        {
-            result = mtk::admin::get_qpid_sender("server", mtk::t_qpid_address("SRVTESTING"));
-        }
-        return result;
-    }
 
 
 
@@ -207,7 +198,7 @@ namespace   //anonymous
     void  request_session_list(void)
     {
         mtk::acs_server::msg::req_user_list    msg_request_user_list (mtk::admin::get_request_info());
-        mtk::send_message(get_server_mtkqpid_sender(), msg_request_user_list);
+        mtk_send_message("server", msg_request_user_list);
         mtk::msg::sub_request_info  request_info = mtk::admin::get_request_info();
         MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::acs_server::msg::res_user_list,
                                         mtk::list<mtk::acs::msg::res_login::IC_session_info>,
@@ -238,7 +229,7 @@ namespace   //anonymous
         else
         {
             mtk::acs_server::msg::req_session_id_conf  msg(session_id, mtk::admin::get_process_info());
-            mtk::send_message(get_server_mtkqpid_sender(), msg);
+            mtk_send_message("server", msg);
             return  mtk::acs::msg::res_login::IC_session_info("", "", "");
         }
     }
@@ -315,7 +306,7 @@ namespace   //anonymous
                 if(partial_list_users.size()>0)
                 {
                     mtk::acs_server::msg::pub_partial_user_list_serv2acs msg(partial_list_users);
-                    mtk::send_message(get_server_mtkqpid_sender(), msg);
+                    mtk_send_message("server", msg);
                 }
 
             }

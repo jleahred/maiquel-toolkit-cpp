@@ -33,13 +33,6 @@ namespace
 void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request);
 void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_request);
 
-mtk::CountPtr< mtk::mtkqpid_sender >   get_cli_session(bool  clean=false)
-{
-    static   auto   result  = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
-    if(clean)
-        result = mtk::CountPtr< mtk::mtkqpid_sender >();
-    return result;
-}
 
 
 
@@ -72,7 +65,6 @@ int main(int argc, char ** argv)
 
 
         tree_server2::db::save();
-        get_cli_session(true);      //      to delete resource
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"
         return 0;
@@ -93,7 +85,7 @@ void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)
     //  sending multiresponses in asyncronous way
     MTK_SEND_MULTI_RESPONSE(        mtk::gen::msg::res_tree_items,
                                     mtk::gen::msg::sub_tree_item,
-                                    get_cli_session(),
+                                    mtk::admin::get_url("client"),
                                     tree_request.request_info,
                                     data_list)
     }

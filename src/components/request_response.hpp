@@ -14,10 +14,10 @@ namespace mtk
 
 
 
-#define MTK_SEND_MULTI_RESPONSE(__MSG_RESPONSE__, __SUB_MSG_DATA__, __QPID_SENDER__, __REQUEST_INFO__, __DATA_LIST__)  \
+#define MTK_SEND_MULTI_RESPONSE(__MSG_RESPONSE__, __SUB_MSG_DATA__, __URL__, __REQUEST_INFO__, __DATA_LIST__)  \
             {           \
                         new mtk::__kamikaze_r_response< __MSG_RESPONSE__, __SUB_MSG_DATA__>           \
-                                            (  __DATA_LIST__, __REQUEST_INFO__, __QPID_SENDER__);           \
+                                            (  __DATA_LIST__, __REQUEST_INFO__, __URL__);           \
             }
 
 
@@ -54,13 +54,13 @@ class __kamikaze_r_response   :   public  mtk::SignalReceptor  {
 public:
 	__kamikaze_r_response(     typename mtk::list< DATA_T >&   data,
                     const mtk::msg::sub_request_info& ri,
-                    mtk::CountPtr< mtk::mtkqpid_sender>     _sender,
+                    const mtk::t_qpid_url&     _url,
                     const mtk::dtTimeQuantity tq=mtk::dtMilliseconds(200),
                     int _msg_per_tick=3)
 
             :       list(data),
                     req_info(ri),
-                    sender(_sender),
+                    sender(mtk::create_instance_for_factory<mtkqpid_sender2>(mtk::make_tuple(_url, MSG_T::static_get_qpid_address()))),
                     time_quantity(tq),
                     msg_per_tick(_msg_per_tick), counter(-1)
             {
@@ -80,7 +80,7 @@ private:
     typename mtk::list< DATA_T >            list;
 
     const mtk::msg::sub_request_info        req_info;
-    mtk::CountPtr< mtk::mtkqpid_sender >    sender;
+    mtk::CountPtr< mtk::mtkqpid_sender2 >   sender;
     const mtk::dtTimeQuantity               time_quantity;
     int                                     msg_per_tick;
     int                                     counter;
@@ -93,7 +93,7 @@ private:
             if(list.size()==0)      break;
             DATA_T d = list.front();
             list.pop_front();
-            mtk::send_message(  sender,
+            mtk::send_message_with_sender(  sender,
                                 MSG_T(  mtk::msg::sub_r_response(req_info, int16_t(++counter), list.size()==0), d));
 
         }

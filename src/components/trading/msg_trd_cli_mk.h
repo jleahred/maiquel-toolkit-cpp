@@ -49,7 +49,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "sub_position_mk"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_position_mk"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address(""); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
 
     
     
@@ -92,7 +93,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -135,7 +137,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -179,7 +182,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_MD_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_MD_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -223,7 +227,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_CC_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_CC_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -267,7 +272,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address(""); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
 
     
     
@@ -310,7 +316,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "CF_NW_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_NW_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -354,7 +361,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "CF_MD_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_MD_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -398,7 +406,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "CF_CC_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_CC_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -442,7 +451,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_EX_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -487,7 +497,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_XX_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address(""); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
 
     
     
@@ -531,7 +542,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_NW_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_NW_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -575,7 +587,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_MD_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_MD_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -619,7 +632,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_CC_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_CC_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     
@@ -663,7 +677,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "CF_ST_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_ST_MK"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
 
     
     

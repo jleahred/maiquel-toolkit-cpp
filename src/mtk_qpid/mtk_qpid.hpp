@@ -159,6 +159,10 @@ struct mtkqpid_receiver
     {
         static std::string  control_fluct_key="";
 
+        if(message.get_qpid_address() !=  sender->address)
+            throw mtk::Alarm(MTK_HERE, "send_message_with_sender", MTK_SS("sender address and message address doesn't match. Message not sent"), mtk::alPriorCritic);
+
+
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(40))
             if(control_fluct_key == "")
                 control_fluct_key = get_control_fluct_key();
@@ -175,7 +179,7 @@ struct mtkqpid_receiver
 
     #define mtk_send_message(__URL_FOR__, __MESSAGE__)  \
     {               \
-        static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(mtk::admin::get_url(__URL_FOR__), __MESSAGE__::static_get_qpid_address())));    \
+        static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(mtk::admin::get_url(__URL_FOR__), __MESSAGE__.get_qpid_address()));    \
         send_message_with_sender(qpid_sender, __MESSAGE__);                                                                                                                     \
     }
 
@@ -236,9 +240,9 @@ inline mtk::CountPtr< mtk::mtkqpid_receiver> create_instance_for_factory (const 
 
 
 template<>
-inline mtk::CountPtr< mtk::mtkqpid_sender> create_instance_for_factory (const mtk::tuple<t_qpid_url, t_qpid_address>& key, mtk::CountPtr<mtk::mtkqpid_sender> result)
+inline mtk::CountPtr< mtk::mtkqpid_sender2> create_instance_for_factory (const mtk::tuple<t_qpid_url, t_qpid_address>& key, mtk::CountPtr<mtk::mtkqpid_sender2> result)
 {
-    result = mtk::make_cptr(new mtk::mtkqpid_sender(key._0, key._1));
+    result = mtk::make_cptr(new mtk::mtkqpid_sender2(key._0, key._1));
     return result;
 }
 

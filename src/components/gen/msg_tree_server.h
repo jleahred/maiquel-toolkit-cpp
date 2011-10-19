@@ -48,7 +48,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "sub_tree_item"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_tree_item"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address(""); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
 
     
     
@@ -100,7 +101,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_tree_items"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     
@@ -146,7 +148,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_tree_items"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
 
     
     

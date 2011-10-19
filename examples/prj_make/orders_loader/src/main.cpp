@@ -223,8 +223,6 @@ void command_find_order(const std::string& /*command*/, const std::string& param
 template<typename  CF_TYPE,  typename  STATUS_TYPE>     //  ex:  mtk::trd::msg::CF_XX_LS     STATUS_TYPE:  mtk::trd::msg::CF_ST_LS
 void send_orders_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 {
-    static auto client_qpid_sender = mtk::admin::get_qpid_sender  ("client", mtk::t_qpid_address("CLITESTING"));
-
     if(rq.reject_description != "")
     {
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "orders_loader", MTK_SS("received request status rejected (ignoring)... " << rq.reject_description << "  full message " << rq),
@@ -241,7 +239,7 @@ void send_orders_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
                 mtk::msg::sub_gen_response_location gen_response_location (rq.request_info.req_id.session_id, rq.request_info.process_info.location.client_code);
                 STATUS_TYPE   msg(it->second, gen_response_location);
                 msg.orig_control_fluct = mtk::msg::sub_control_fluct("__none__", mtk::dtNowLocal());
-                mtk::send_message(client_qpid_sender, msg);
+                mtk_send_message("client", msg);
             }
         }
     }

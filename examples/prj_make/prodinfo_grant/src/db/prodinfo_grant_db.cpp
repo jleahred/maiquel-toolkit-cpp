@@ -15,17 +15,17 @@
 
 
 
-namespace prodinfo_grant { 
+namespace prodinfo_grant {
     namespace db {
 
 
 /////////////////////////////////////////
-        
+
     std::string                     data_filename;
-    
 
 
-    mtk::CountPtr<mtk::map<prodinfo_grant::db::msg::sub_client__pattern_users::key_type, prodinfo_grant::db::msg::sub_client__pattern_users> >   
+
+    mtk::CountPtr<mtk::map<prodinfo_grant::db::msg::sub_client__pattern_users::key_type, prodinfo_grant::db::msg::sub_client__pattern_users> >
     /////////////////////////
     get_map_grants(void)
     /////////////////////////
@@ -38,10 +38,10 @@ namespace prodinfo_grant {
 
 
 
-        
 
 
-        
+
+
 void command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 void command_load(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 void command_save(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
@@ -65,7 +65,7 @@ void register_global_commands (void)
 {
     mtk::admin::register_command("__GLOBAL__",  "stats",     "")->connect(command_stats);
     mtk::admin::register_command("db",  "stats",     "")->connect(command_stats);
-    
+
     mtk::admin::register_command("db",  "client.add",       "<client_code>")->connect(command_client_add);
     mtk::admin::register_command("db",  "client.del",       "<client_code>")->connect(command_client_del);
     mtk::admin::register_command("db",  "client.fulldel",   "<client_code>  it will delete the client even if it has grants configured", true)->connect(command_client_fulldell);
@@ -90,10 +90,10 @@ void register_global_commands (void)
 
 
 void init(const std::string&   _data_filename)
-{   
+{
     register_global_commands();
     data_filename = _data_filename;
-    load(); 
+    load();
 }
 
 
@@ -133,7 +133,7 @@ void command_load(const std::string& /*command*/, const std::string& params, mtk
 {
         mtk::vector<std::string>  vparams;
         if(check_and_split_params__converting2upper(params, response_lines, 0, vparams)  == false)     return;
-        
+
         response_lines.push_back("loading...");
         load();
         command_stats("", "", response_lines);
@@ -143,7 +143,7 @@ void command_save(const std::string& /*command*/, const std::string& params, mtk
 {
         mtk::vector<std::string>  vparams;
         if(check_and_split_params__converting2upper(params, response_lines, 0, vparams)  == false)     return;
-        
+
         response_lines.push_back("saving...");
         save();
         command_stats("", "", response_lines);
@@ -154,11 +154,11 @@ void command_check(const std::string& /*command*/, const std::string& /*params*/
 {
     response_lines.push_back("pending...");
 }
-        
 
 
-        
-        
+
+
+
 void save(void)
 {
     std::ofstream file;
@@ -194,16 +194,16 @@ void load(void)
         YAML::Node doc;
         parser.GetNextDocument(doc);
         std::string config_version;
-        
+
         doc["grants"] >> *get_map_grants();
         file.close();
     }
     MTK_CATCH_CALLFUNCION(mtk::AlarmMsg, "accmgr_db", "error loading db")
 }
-    
-        
-        
-        
+
+
+
+
 
 
 void command_client_add(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
@@ -211,7 +211,7 @@ void command_client_add(const std::string& /*command*/, const std::string& param
     mtk::vector<std::string>  vparams;
     if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
     std::string  client_code(vparams[0]);
-    
+
     auto it_find = get_map_grants()->find(client_code);
     if(it_find != get_map_grants()->end())
     {
@@ -231,7 +231,7 @@ void command_client_del(const std::string& /*command*/, const std::string& param
     mtk::vector<std::string>  vparams;
     if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
     std::string  client_code(vparams[0]);
-    
+
     auto it_find = get_map_grants()->find(client_code);
     if(it_find == get_map_grants()->end())
     {
@@ -256,7 +256,7 @@ void command_client_fulldell(const std::string& /*command*/, const std::string& 
     mtk::vector<std::string>  vparams;
     if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
     std::string  client_code(vparams[0]);
-    
+
     auto it_find = get_map_grants()->find(client_code);
     if(it_find == get_map_grants()->end())
     {
@@ -275,7 +275,7 @@ void command_client_find(const std::string& /*command*/, const std::string& para
     mtk::vector<std::string>  vparams;
     if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
     mtk::RegExp  re_client_code(vparams[0]);
-    
+
 
     for(auto it = get_map_grants()->begin(); it!= get_map_grants()->end(); ++it)
     {
@@ -304,7 +304,7 @@ void command_re_user_add(const std::string& /*command*/, const std::string& para
     std::string  client_code = vparams[0];
     std::string  re_user = vparams[1];
     mtk::msg::sub_product_code  pc_pattern (vparams[2], vparams[3]);
-    
+
     auto it_find = get_map_grants()->find(client_code);
     if(it_find == get_map_grants()->end())
     {
@@ -353,7 +353,7 @@ void command_re_user_del(const std::string& /*command*/, const std::string& para
     std::string  client_code = vparams[0];
     std::string  re_user = vparams[1];
     mtk::msg::sub_product_code  pc_pattern (vparams[2], vparams[3]);
-    
+
     auto it_find = get_map_grants()->find(client_code);
     if(it_find == get_map_grants()->end())
     {
@@ -401,7 +401,7 @@ void command_re_user_full_del(const std::string& /*command*/, const std::string&
     std::string  client_code = vparams[0];
     std::string  re_user = vparams[1];
     mtk::msg::sub_product_code  pc_pattern (vparams[2], vparams[3]);
-    
+
     auto it_find = get_map_grants()->find(client_code);
     if(it_find == get_map_grants()->end())
     {
@@ -428,7 +428,7 @@ void command_re_user_full_del(const std::string& /*command*/, const std::string&
         response_lines.push_back(MTK_SS("ignoring command"));
     }
 }
-        
+
 void command_user_grants(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
 {
     //mtk::admin::register_command("db",  "client.user.grants",    "<client_code> <user>")->connect(command_user_grants);
@@ -437,7 +437,7 @@ void command_user_grants(const std::string& /*command*/, const std::string& para
     if(check_and_split_params__converting2upper(params, response_lines, 2, vparams)  == false)     return;
     std::string  client_code = vparams[0];
     std::string  user = vparams[1];
-    
+
     auto it_find = get_map_grants()->find(client_code);
     if(it_find == get_map_grants()->end())
     {
@@ -458,8 +458,8 @@ void command_user_grants(const std::string& /*command*/, const std::string& para
         response_lines.push_back(MTK_SS("end of command"));
     }
 }
-        
-        
+
+
 
 
 bool has_grants(const mtk::prices::msg::req_product_info&  pi_request)
@@ -468,9 +468,9 @@ bool has_grants(const mtk::prices::msg::req_product_info&  pi_request)
 
     std::string  user_name = sessinfo.user_name;
     std::string  client_code = sessinfo.client_code;
-    
-    
-    
+
+
+
     auto it_find = get_map_grants()->find(client_code);
     if(it_find == get_map_grants()->end())
     {
@@ -492,9 +492,9 @@ bool has_grants(const mtk::prices::msg::req_product_info&  pi_request)
                             mtk::alPriorError, mtk::alTypeNoPermisions));
     }
     return false;
-}        
-        
-        
-        
+}
+
+
+
     };  //      namespace   db {
-};      //  namespace prodinfo_grant { 
+};      //  namespace prodinfo_grant {

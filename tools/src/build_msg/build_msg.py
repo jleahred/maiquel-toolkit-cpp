@@ -140,7 +140,8 @@ $INNER_CLASSES
     virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
     static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
 
-    static  mtk::t_qpid_address   static_get_qpid_address(void)      { return mtk::t_qpid_address("${QUEUE_EXCHANGE_NAME}"); };
+    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("${QUEUE_EXCHANGE_NAME}"); };
+    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("${QUEUE_EXCHANGE_NAME}"); };
 
     
     

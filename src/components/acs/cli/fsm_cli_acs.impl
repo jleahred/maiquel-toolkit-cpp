@@ -17,7 +17,6 @@ struct  status_common_info
 {
     status_common_info ( mtk::Signal<const mtk::acs::msg::res_login::IC_session_info&   /*login_conf*/  >& _sig_confirm_login_ok, mtk::Signal<const std::string&   /*description*/  >& _sig_reject_login, mtk::Signal<const std::string&   /*description*/  >& _sig_logout_login, mtk::Signal<>& _sig_password_changed, mtk::Signal<>& _sig_password_change_rj)
         :  
-        __mtkqpid_sender(mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"))  ),
         __user_name("" ), 
         sig_confirm_login_ok (_sig_confirm_login_ok), 
         sig_reject_login (_sig_reject_login), 
@@ -28,9 +27,6 @@ struct  status_common_info
     virtual ~status_common_info(){};
 
     // PROPERTIES AND SIGNALS
-    mtk::CountPtr< mtk::mtkqpid_sender >    __mtkqpid_sender;
-    virtual const mtk::CountPtr< mtk::mtkqpid_sender >   &  mtkqpid_sender() const {  return __mtkqpid_sender; };
-    virtual void set_mtkqpid_sender(const mtk::CountPtr< mtk::mtkqpid_sender >   &  _prop) {  __mtkqpid_sender = _prop;  };
     std::string                         __user_name;
     virtual const std::string                        &  user_name() const {  return __user_name; };
     virtual void set_user_name(const std::string                        &  _prop) {  __user_name = _prop;  };
@@ -78,7 +74,6 @@ public:
 
 
     //  ACCESS
-    virtual const mtk::CountPtr< mtk::mtkqpid_sender >    &  mtkqpid_sender (void) const { return ci->mtkqpid_sender(); }; 
     virtual const std::string                         &  user_name (void) const { return ci->user_name(); }; 
 
 };
@@ -499,7 +494,7 @@ void logout::user_rq_login ( const std::string&   _user_name , const std::string
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -846,7 +841,7 @@ void w_key::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs         
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1280,7 +1275,7 @@ void login_ok::user_rq_login ( const std::string&   _user_name , const std::stri
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1314,7 +1309,7 @@ void login_ok::user_rq_logout (  )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 //  inserting macro: sig_logout
 
@@ -1355,7 +1350,7 @@ void login_ok::user_rq_changepass ( const std::string&   _old_password, const st
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1394,7 +1389,7 @@ void login_ok::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs      
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1433,7 +1428,7 @@ void login_ok::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1504,7 +1499,7 @@ void login_ok::timeout ( const int&          __            )
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1543,7 +1538,7 @@ void login_ok::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs    
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1583,7 +1578,7 @@ void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::strin
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1617,7 +1612,7 @@ void w_k_chp::user_rq_logout (  )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 //  inserting macro: sig_logout
 
@@ -1662,7 +1657,7 @@ void w_k_chp::user_rq_changepass ( const std::string&   _old_password, const std
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1704,7 +1699,7 @@ void w_k_chp::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1743,7 +1738,7 @@ void w_k_chp::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1846,7 +1841,7 @@ void w_k_chp::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1886,7 +1881,7 @@ void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::strin
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -1920,7 +1915,7 @@ void w_chpwd::user_rq_logout (  )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 //  inserting macro: sig_logout
 
@@ -1965,7 +1960,7 @@ void w_chpwd::user_rq_changepass ( const std::string&   _old_password, const std
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -2004,7 +1999,7 @@ void w_chpwd::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -2043,7 +2038,7 @@ void w_chpwd::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
     
 //  inserting macro: srv_rq
 
-        mtk::send_message(mtkqpid_sender(), req);
+        mtk_send_message("client", req);
     
 
         }
@@ -2213,10 +2208,6 @@ void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::user_rq_changepass 
     mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->user_rq_changepass(_old_password, _new_password);
 }
-const mtk::CountPtr< mtk::mtkqpid_sender >    & mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::mtkqpid_sender (void) const
-{
-    return current_status->mtkqpid_sender();
-}
 const std::string                         & mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::user_name (void) const
 {
     return current_status->user_name();
@@ -2267,10 +2258,6 @@ void mtk::acs_cli::fsm_cli_acs::user_rq_logout ()
 void mtk::acs_cli::fsm_cli_acs::user_rq_changepass (const std::string&   _old_password, const std::string&   _new_password  )
 {
     ptr->user_rq_changepass(_old_password, _new_password);
-}
-const mtk::CountPtr< mtk::mtkqpid_sender >    & mtk::acs_cli::fsm_cli_acs::mtkqpid_sender (void) const
-{
-    return  ptr->mtkqpid_sender();
 }
 const std::string                         & mtk::acs_cli::fsm_cli_acs::user_name (void) const
 {

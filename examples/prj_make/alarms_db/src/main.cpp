@@ -10,14 +10,14 @@
 
 namespace
 {
-    
+
     const char*   APP_NAME          = "ADM_ALARMS_DB";
     const char*   APP_VER           = "2011-04-07";
     const char*   APP_DESCRIPTION   = "This process save alarms on database\n"
                                       "";
-                                      
+
     const char*   APP_MODIFICATIONS = "           2011-04-07     first version\n";
-                                      
+
 }
 
 
@@ -43,10 +43,10 @@ void  on_alarm_received_cli(const mtk::admin::msg::pub_alarm&  ar)
             params.Add(ar.process_info.process_name);
             params.Add(ar.process_info.process_uuid);
             params.Add(ar.code_source);
-            
+
             //  Request asynchronous write
             fbi.Insert(params);
-    
+
 }
 
 void  on_alarm_received_srv(const mtk::admin::msg::pub_alarm&  ar)
@@ -68,10 +68,10 @@ void  on_alarm_received_srv(const mtk::admin::msg::pub_alarm&  ar)
             params.Add(ar.process_info.process_name);
             params.Add(ar.process_info.process_uuid);
             params.Add(ar.code_source);
-            
+
             //  Request asynchronous write
             fbi.Insert(params);
-    
+
 }
 
 
@@ -84,12 +84,12 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
-        
+
 
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>            > hqpid_alarms_cli;
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_alarms_cli,
-                                mtk::admin::get_url("client"),
+                                mtk::admin::get_url("client_admin"),
                                 mtk::admin::msg::pub_alarm::get_in_subject(),
                                 mtk::admin::msg::pub_alarm,
                                 on_alarm_received_cli)
@@ -104,7 +104,7 @@ int main(int argc, char ** argv)
 
 
         mtk::start_timer_wait_till_end();
-        
+
 
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"

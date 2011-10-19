@@ -31,13 +31,6 @@ namespace
 void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_request);
 
 
-mtk::CountPtr< mtk::mtkqpid_sender >   get_cli_sender(bool  clean=false)
-{
-    static   auto   result  = mtk::admin::get_qpid_sender("client", mtk::t_qpid_address("CLITESTING"));
-    if(clean)
-        result = mtk::CountPtr< mtk::mtkqpid_sender >();
-    return result;
-}
 
 
 
@@ -70,7 +63,6 @@ int main(int argc, char ** argv)
 
 
         prodinfo_grant::db::save();
-        get_cli_sender(true);      //      to delete resource
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"
         return 0;
@@ -88,8 +80,7 @@ void on_request_prodinf_received(const mtk::prices::msg::req_product_info&  pi_r
 {
     if(prodinfo_grant::db::has_grants(pi_request))      //  it will generate an alarm message if there is no grants
     {
-        static mtk::CountPtr<mtk::mtkqpid_sender>  qpid_server_sender = mtk::admin::get_qpid_sender("server", mtk::t_qpid_address("SRVTESTING"));
         mtk::prices::msg::ps_req_product_info  granted_msg (pi_request, "pigrant");
-        mtk::send_message(qpid_server_sender, granted_msg);
+        mtk_send_message("server", granted_msg);
     }
 }
