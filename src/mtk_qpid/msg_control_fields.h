@@ -46,9 +46,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fields"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fields"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address(""); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address(""); };
-
     
     
     
@@ -61,8 +58,13 @@ public:
 
 
 
+    //  ADDRESS info
+
+
+
     //  subject info
     
+
     
     
     

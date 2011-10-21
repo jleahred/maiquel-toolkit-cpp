@@ -2149,6 +2149,14 @@ mtk::t_qpid_filter  pub_enter::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.MON.ENTER"));
     }
+    /*static*/  mtk::t_qpid_address  pub_enter::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_enter::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  pub_keep_alive_srv::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.MON.KA"));
@@ -2156,6 +2164,14 @@ mtk::t_qpid_filter  pub_enter::get_in_subject ()
     mtk::t_qpid_filter  pub_keep_alive_srv::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("GS.MON.KA"));
+    }
+    /*static*/  mtk::t_qpid_address  pub_keep_alive_srv::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_keep_alive_srv::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_filter  pub_keep_alive_cli::get_in_subject ()
     {
@@ -2165,6 +2181,14 @@ mtk::t_qpid_filter  pub_enter::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.MON.KACLI"));
     }
+    /*static*/  mtk::t_qpid_address  pub_keep_alive_cli::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_keep_alive_cli::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  pub_exit::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.MON.EXIT"));
@@ -2172,6 +2196,14 @@ mtk::t_qpid_filter  pub_enter::get_in_subject ()
     mtk::t_qpid_filter  pub_exit::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("GS.MON.EXIT"));
+    }
+    /*static*/  mtk::t_qpid_address  pub_exit::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_exit::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_filter  pub_alarm::get_in_subject ()
     {
@@ -2181,6 +2213,14 @@ mtk::t_qpid_filter  pub_enter::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.MON.ALARMS"));
     }
+    /*static*/  mtk::t_qpid_address  pub_alarm::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_alarm::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  req_command::get_in_subject (const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
     {
         return mtk::t_qpid_filter(MTK_SS("CLI." << proc_info__destination_location_client_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".MON.COMMAND"));
@@ -2188,6 +2228,14 @@ mtk::t_qpid_filter  pub_enter::get_in_subject ()
     mtk::t_qpid_filter  req_command::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("CLI." << this->proc_info__destination.location.client_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".MON.COMMAND"));
+    }
+    /*static*/  mtk::t_qpid_address  req_command::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  req_command::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_filter  res_command::get_in_subject (const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_req_code)
     {
@@ -2197,6 +2245,14 @@ mtk::t_qpid_filter  pub_enter::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.MON." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.req_code << ".RSCOMM"));
     }
+    /*static*/  mtk::t_qpid_address  res_command::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  res_command::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  pub_central_keep_alive::get_in_subject (const std::string& gs_name)
     {
         return mtk::t_qpid_filter(MTK_SS("ALL." << gs_name << ".MON.LHKA"));
@@ -2204,6 +2260,14 @@ mtk::t_qpid_filter  pub_enter::get_in_subject ()
     mtk::t_qpid_filter  pub_central_keep_alive::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("ALL." << this->gs_name << ".MON.LHKA"));
+    }
+    /*static*/  mtk::t_qpid_address  pub_central_keep_alive::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_central_keep_alive::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     
 

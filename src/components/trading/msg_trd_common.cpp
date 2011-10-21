@@ -1817,6 +1817,14 @@ mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_in_subject (const std::string& account
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << this->account.client_code << "." << this->market << ".RQORDST"));
     }
+    /*static*/  mtk::t_qpid_address  RQ_ORDERS_STATUS::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  RQ_ORDERS_STATUS::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
     
 
 };   //namespace mtk {

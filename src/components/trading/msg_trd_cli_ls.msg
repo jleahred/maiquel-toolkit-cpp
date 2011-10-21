@@ -12,10 +12,6 @@ END_INIT
 
 
 
-//  QUEUES  subjects
-//  SUBJ:RQ.client.market.account.product_code
-//  SUBJ:CONF.client.market.account.session_id
-
 //  rejects has to be private for terminal who makes the request
 //  then, we have to add session_id in confirm subject
 //  remember that all subjects has to be the same in order to

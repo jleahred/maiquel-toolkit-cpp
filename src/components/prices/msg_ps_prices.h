@@ -49,9 +49,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_product_info"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -62,9 +59,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& product_code_market,const std::string& from);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -95,9 +99,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -108,9 +109,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -141,9 +149,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -155,9 +160,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -188,9 +200,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -202,9 +211,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -235,9 +251,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -250,9 +263,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& full_prod_info_product_code_market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -283,9 +303,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -295,9 +312,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -328,9 +352,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info__to_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info__to_publisher"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -340,9 +361,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -373,9 +401,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init__from_publisher"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("CLI_MK"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("CLI_MK"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -385,9 +410,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -418,9 +450,6 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info__from_publisher"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("ALL_GS"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("ALL_GS"); };
-
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -430,9 +459,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& full_prod_info_product_code_market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     

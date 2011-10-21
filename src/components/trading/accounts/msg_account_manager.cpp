@@ -1412,6 +1412,14 @@ mtk::t_qpid_filter  rq_accounts::get_in_subject (const std::string& request_info
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << this->request_info.process_info.location.client_code << ".ALL.ACCOUNT.RQGRANTS"));
     }
+    /*static*/  mtk::t_qpid_address  rq_accounts::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  rq_accounts::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
     mtk::t_qpid_filter  conf_add_accounts::get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id)
     {
         return mtk::t_qpid_filter(MTK_SS("CLI." << gen_response_location_client_code << "." << gen_response_location_session_id << ".CONF_ADD_ACOUNTS"));
@@ -1419,6 +1427,14 @@ mtk::t_qpid_filter  rq_accounts::get_in_subject (const std::string& request_info
     mtk::t_qpid_filter  conf_add_accounts::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("CLI." << this->gen_response_location.client_code << "." << this->gen_response_location.session_id << ".CONF_ADD_ACOUNTS"));
+    }
+    /*static*/  mtk::t_qpid_address  conf_add_accounts::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  conf_add_accounts::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
     }
     mtk::t_qpid_filter  pub_accmgr_init::get_in_subject ()
     {
@@ -1428,6 +1444,14 @@ mtk::t_qpid_filter  rq_accounts::get_in_subject (const std::string& request_info
     {
         return mtk::t_qpid_filter(MTK_SS("CLI.ALL.ACCMGRINIT"));
     }
+    /*static*/  mtk::t_qpid_address  pub_accmgr_init::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  pub_accmgr_init::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
     mtk::t_qpid_filter  rq_accounts_oninit::get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& request_sufix_subjetc)
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << request_info_process_info_location_client_code << ".ALL." << request_sufix_subjetc << ".ACCOUNTS.RQINIT"));
@@ -1435,6 +1459,14 @@ mtk::t_qpid_filter  rq_accounts::get_in_subject (const std::string& request_info
     mtk::t_qpid_filter  rq_accounts_oninit::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << this->request_info.process_info.location.client_code << ".ALL." << this->request_sufix_subjetc << ".ACCOUNTS.RQINIT"));
+    }
+    /*static*/  mtk::t_qpid_address  rq_accounts_oninit::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  rq_accounts_oninit::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
     }
     
 

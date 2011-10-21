@@ -106,6 +106,7 @@ def generate_class(class_name, class_info, class_properties, send_code):
     CONSTRUCTOR_PARAMS_DEBUG_DECL = ''
     INNER_CLASSES = ''
     SUBJECT_METHODS = ''
+    ADDRESS_METHODS = ''
     QUEUE_EXCHANGE_NAME = ''
     
     INHERITS_FROM = ''
@@ -140,9 +141,6 @@ $INNER_CLASSES
     virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
     static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
 
-    mtk::t_qpid_address         get_qpid_address(void)  const      { return mtk::t_qpid_address("${QUEUE_EXCHANGE_NAME}"); };
-    static mtk::t_qpid_address  static_get_qpid_address(void)      { return mtk::t_qpid_address("${QUEUE_EXCHANGE_NAME}"); };
-
     
     
     $CODE_AS_QPID_MESSAGE
@@ -152,8 +150,13 @@ $INNER_CLASSES
 $CLASS_FIELDS
 
 $KEY_CODE
+    //  ADDRESS info
+$ADDRESS_METHODS
+
+
     //  subject info
     $SUBJECT_METHODS
+
     
     
     $POINTER_TO_CONTROL_FIELDS
@@ -207,6 +210,10 @@ private:
     if class_properties.has_key('SUBJ'):
         SUBJECT_METHODS += get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties, send_code)   
         SUBJECT_METHODS += Template("""virtual mtk::t_qpid_filter  get_out_subject (void) const;\n""").substitute(class_name=class_name)
+
+    if class_properties.has_key('QE'):
+        ADDRESS_METHODS += get_qpidmsg_get_qe_address_forward(class_name, class_info, class_properties, send_code)   
+        
     if is_message_not_submessage(class_properties):
         pointer_to_control_fields = 'mtk::msg::sub_control_fields*   __internal_warning_control_fields;'
         code_as_qpid_message = 'qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;'
@@ -217,6 +224,7 @@ private:
                                                     INNER_CLASSES = INNER_CLASSES,
                                                     INHERITS_FROM = INHERITS_FROM,
                                                     SUBJECT_METHODS = SUBJECT_METHODS,
+                                                    ADDRESS_METHODS = ADDRESS_METHODS,
                                                     POINTER_TO_CONTROL_FIELDS = pointer_to_control_fields,
                                                     CODE_AS_QPID_MESSAGE = code_as_qpid_message,
                                                     KEY_CODE = KEY_CODE,
@@ -1113,6 +1121,7 @@ def get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties,
         result += Template("""static mtk::t_qpid_filter  get_in_subject ($PARAMS);\n""").substitute(class_name=class_name, PARAMS=','.join(qpidmsg_get_in_subject_params))
     return result
 
+
 def get_qpidmsg_get_in_subject(class_name, class_info, class_properties, send_code) :
     result = ''
     qpidmsg_get_in_subject_params = []
@@ -1138,6 +1147,44 @@ def get_qpidmsg_get_out_subject(class_name, class_info, class_properties, send_c
     }
     """).substitute(class_name=class_name, 
                     BUILD_STRING=class_properties["SUBJ"].replace('${','" << this->').replace('}',' << "'))
+    return result
+
+
+def get_qpidmsg_get_qe_address_forward(class_name, class_info, class_properties, send_code) :
+    result = ''
+    qpidmsg_get_address_params = []
+    if class_properties.has_key('QE'):
+        for p in re.findall('[^\$\{]*\$\{([^\}]*)', class_properties["QE"]):
+            param_name = p.replace('.', '_').replace('(','').replace(')','')
+            qpidmsg_get_address_params.append("const std::string& "+ param_name)
+        result += Template("""    static mtk::t_qpid_address  static_get_qpid_address ($PARAMS);\n""").substitute(class_name=class_name, PARAMS=','.join(qpidmsg_get_address_params))
+        result += """    mtk::t_qpid_address  get_qpid_address (void) const;\n"""
+    return result
+
+
+def get_qpidmsg_get_qe_address(class_name, class_info, class_properties, send_code) :
+    result = ''
+    qpidmsg_get_address_params = []
+    if class_properties.has_key('QE'):
+        subject = class_properties["QE"]
+        for p in re.findall('[^\$\{]*\$\{([^\}]*)', class_properties["QE"]):
+            param_name = p.replace('.', '_').replace('(','').replace(')','')
+            qpidmsg_get_address_params.append("const std::string& "+ param_name)
+            subject = subject.replace(p, p.replace('.', '_'))
+        result += Template("""/*static*/  mtk::t_qpid_address  ${class_name}::static_get_qpid_address ($PARAMS)
+    {
+        return mtk::t_qpid_address(MTK_SS("$BUILD_STRING"));
+    }
+    """).substitute(class_name=class_name, PARAMS=','.join(qpidmsg_get_address_params), BUILD_STRING=subject.replace('${','" << ').replace('}',' << "').replace('(','').replace(')',''))
+    
+    if class_properties.has_key('QE'):
+        result += Template("""mtk::t_qpid_address  ${class_name}::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("$BUILD_STRING"));
+    }
+    """).substitute(class_name=class_name, 
+                    BUILD_STRING=class_properties["QE"].replace('${','" << this->').replace('}',' << "'))
+
     return result
 
 
@@ -1723,6 +1770,7 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
         content_file_cpp += get_qpidmsg_get_in_subject(class_name, class_info, class_properties, send_code)   
         content_file_cpp += get_qpidmsg_get_out_subject(class_name, class_info, class_properties, send_code)   
+        content_file_cpp += get_qpidmsg_get_qe_address(class_name, class_info, class_properties, send_code)   
     content_file_cpp +=  END_NAMESPACE
 
 

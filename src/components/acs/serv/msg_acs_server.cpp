@@ -1559,6 +1559,14 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.AU"));
     }
+    /*static*/  mtk::t_qpid_address  pub_add_user::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_add_user::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  pub_del_user::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.DU"));
@@ -1566,6 +1574,14 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     mtk::t_qpid_filter  pub_del_user::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.DU"));
+    }
+    /*static*/  mtk::t_qpid_address  pub_del_user::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_del_user::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_filter  req_session_id_conf::get_in_subject ()
     {
@@ -1575,6 +1591,14 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.ACS.ASK_SESSID"));
     }
+    /*static*/  mtk::t_qpid_address  req_session_id_conf::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  req_session_id_conf::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  pub_partial_user_list_acs2serv::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.PUL"));
@@ -1582,6 +1606,14 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     mtk::t_qpid_filter  pub_partial_user_list_acs2serv::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.PUL"));
+    }
+    /*static*/  mtk::t_qpid_address  pub_partial_user_list_acs2serv::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_partial_user_list_acs2serv::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_filter  pub_partial_user_list_serv2acs::get_in_subject ()
     {
@@ -1591,6 +1623,14 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("SYS.ACS.ACS_SYNC.PUL"));
     }
+    /*static*/  mtk::t_qpid_address  pub_partial_user_list_serv2acs::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_partial_user_list_serv2acs::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  req_user_list::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.ACS.RQ_USER_LIST"));
@@ -1599,6 +1639,14 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.ACS.RQ_USER_LIST"));
     }
+    /*static*/  mtk::t_qpid_address  req_user_list::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  req_user_list::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  res_user_list::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
         return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSUL"));
@@ -1606,6 +1654,14 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     mtk::t_qpid_filter  res_user_list::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSUL"));
+    }
+    /*static*/  mtk::t_qpid_address  res_user_list::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  res_user_list::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     
 

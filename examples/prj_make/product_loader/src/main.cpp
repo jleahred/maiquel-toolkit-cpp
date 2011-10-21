@@ -196,9 +196,10 @@ void suscribe_publisher_updates(void)
     for(auto it=map_market_info.begin(); it!=map_market_info.end(); ++it)
     {
         hqpid_update_best_prices_list_by_market.push_back(type_cptrhandle());
-        MTK_QPID_RECEIVER_CONNECT_F(
+        MTK_QPID_RECEIVER_CONNECT_F__WITH_ADDRESS(
                                 hqpid_update_best_prices_list_by_market.back(),
                                 mtk::admin::get_url("client"),
+                                mtk::prices::msg::pub_best_prices::static_get_qpid_address(it->first),
                                 mtk::prices::msg::pub_best_prices::get_in_subject(it->first, "*"),
                                 mtk::prices::msg::pub_best_prices,
                                 on_price_update)

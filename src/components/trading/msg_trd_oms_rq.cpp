@@ -1684,6 +1684,14 @@ mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_p
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
+    /*static*/  mtk::t_qpid_address  oms_RQ_NW_LS::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  oms_RQ_NW_LS::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
     mtk::t_qpid_filter  oms_RQ_MD_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
@@ -1691,6 +1699,14 @@ mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_p
     mtk::t_qpid_filter  oms_RQ_MD_LS::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
+    }
+    /*static*/  mtk::t_qpid_address  oms_RQ_MD_LS::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  oms_RQ_MD_LS::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
     }
     mtk::t_qpid_filter  oms_RQ_CC_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
@@ -1700,6 +1716,14 @@ mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_p
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
+    /*static*/  mtk::t_qpid_address  oms_RQ_CC_LS::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  oms_RQ_CC_LS::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
     mtk::t_qpid_filter  oms_RQ_NW_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
@@ -1707,6 +1731,14 @@ mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_p
     mtk::t_qpid_filter  oms_RQ_NW_MK::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
+    }
+    /*static*/  mtk::t_qpid_address  oms_RQ_NW_MK::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  oms_RQ_NW_MK::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
     }
     mtk::t_qpid_filter  oms_RQ_MD_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
@@ -1716,6 +1748,14 @@ mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_p
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
+    /*static*/  mtk::t_qpid_address  oms_RQ_MD_MK::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  oms_RQ_MD_MK::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
     mtk::t_qpid_filter  oms_RQ_CC_MK::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));
@@ -1724,6 +1764,14 @@ mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_p
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->invariant.product_code.market << "." << this->invariant.product_code.product << "." << this->from << ".TRD"));
     }
+    /*static*/  mtk::t_qpid_address  oms_RQ_CC_MK::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  oms_RQ_CC_MK::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
     mtk::t_qpid_filter  oms_RQ_ORDERS_STATUS::get_in_subject (const std::string& market,const std::string& from)
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << market << "." << from << ".RQORDST"));
@@ -1731,6 +1779,14 @@ mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_p
     mtk::t_qpid_filter  oms_RQ_ORDERS_STATUS::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << this->market << "." << this->from << ".RQORDST"));
+    }
+    /*static*/  mtk::t_qpid_address  oms_RQ_ORDERS_STATUS::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  oms_RQ_ORDERS_STATUS::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
     }
     
 

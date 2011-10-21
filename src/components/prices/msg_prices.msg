@@ -36,7 +36,7 @@ sub_best_prices [< >]
 }
 
 
-pub_best_prices [< QE:PRICES, SUBJ:BP.${product_code.market}.${product_code.product}  >]
+pub_best_prices [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.market}.${product_code.product}  >]
 {
     product_code        (pc)    :   mtk::msg::sub_product_code
     best_prices         (bp)    :   sub_best_prices

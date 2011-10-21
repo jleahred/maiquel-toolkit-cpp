@@ -923,6 +923,14 @@ mtk::t_qpid_filter  req_tree_items::get_in_subject (const std::string& request_i
     {
         return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.client_code << ".TREE.REQ"));
     }
+    /*static*/  mtk::t_qpid_address  req_tree_items::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  req_tree_items::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
     mtk::t_qpid_filter  res_tree_items::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
         return mtk::t_qpid_filter(MTK_SS("CLI." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSTI"));
@@ -930,6 +938,14 @@ mtk::t_qpid_filter  req_tree_items::get_in_subject (const std::string& request_i
     mtk::t_qpid_filter  res_tree_items::get_out_subject (void) const
     {
         return mtk::t_qpid_filter(MTK_SS("CLI." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSTI"));
+    }
+    /*static*/  mtk::t_qpid_address  res_tree_items::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  res_tree_items::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     
 

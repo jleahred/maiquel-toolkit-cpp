@@ -41,7 +41,9 @@
 #define MTK_QPID_RECEIVER_CONNECT_F(__HANDLER__, __URL__, __FILTER__, __MSG_TYPE__, __FUNCT_RECEPTOR__)  \
     {    \
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
-                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __FILTER__));     \
+                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(     __URL__, \
+                                                                                                                                            mtk::t_qpid_address(__MSG_TYPE__::static_get_qpid_address()), \
+                                                                                                                                            __FILTER__));     \
         __internal_handler__->signalMessage->connect(__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
@@ -50,7 +52,27 @@
 #define MTK_QPID_RECEIVER_CONNECT_THIS(__HANDLER__, __URL__, __FILTER__, __MSG_TYPE__, __FUNCT_RECEPTOR__)  \
     {    \
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
-                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __FILTER__));     \
+                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(     __URL__, \
+                                                                                                                                            mtk::t_qpid_address(__MSG_TYPE__::static_get_qpid_address()), \
+                                                                                                                                            __FILTER__));     \
+        __internal_handler__->signalMessage->connect(this, &CLASS_NAME::__FUNCT_RECEPTOR__);     \
+        (__HANDLER__) = __internal_handler__;     \
+    }
+
+
+#define MTK_QPID_RECEIVER_CONNECT_F__WITH_ADDRESS(__HANDLER__, __URL__, __ADDRESS__, __FILTER__, __MSG_TYPE__, __FUNCT_RECEPTOR__)  \
+    {    \
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
+                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
+        __internal_handler__->signalMessage->connect(__FUNCT_RECEPTOR__);     \
+        (__HANDLER__) = __internal_handler__;     \
+    }
+
+
+#define MTK_QPID_RECEIVER_CONNECT_THIS__WITH_ADDRESS(__HANDLER__, __URL__, __ADDRESS__, __FILTER__, __MSG_TYPE__, __FUNCT_RECEPTOR__)  \
+    {    \
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
+                                            mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
         __internal_handler__->signalMessage->connect(this, &CLASS_NAME::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
@@ -369,7 +391,7 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
     typedef handle_qpid_exchange_receiverMT CLASS_NAME;
 
     public:
-        explicit handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_filter& filter);
+        explicit handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
         ~handle_qpid_exchange_receiverMT(void) {  ++mtk_qpid_stats::num_deleted_suscriptions();  }
 
         CountPtr< Signal<const MESSAGE_TYPE&> >       signalMessage;
@@ -384,9 +406,9 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
 
 
 template<typename MESSAGE_TYPE>
-inline handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_filter& filter)
+inline handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter)
     :     signalMessage(mtk::make_cptr(new Signal<const MESSAGE_TYPE&>()))
-        , hqpid_receiver( get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(url, t_qpid_address(MESSAGE_TYPE::static_get_qpid_address()), filter)) )
+        , hqpid_receiver( get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(url, address, filter)) )
 {
     ++mtk_qpid_stats::num_created_suscriptions();
     MTK_CONNECT_THIS(*(hqpid_receiver->signalMessage), on_message)
