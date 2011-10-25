@@ -44,44 +44,43 @@ ex_udp_socket.exec   lost:-----------------------------------
 ex_yaml.exec   lost:-----------------------------------
 ex_fb.exec   lost:-----------------------------------
 ex_qpid1.exec   lost:-----------------------------------
-2011-08-19 10:22:07 warning Connection [53196 127.0.0.1:5672] closed
+2011-10-25 14:28:06 warning Connection [127.0.0.1:59850-127.0.0.1:5672] closed
 ex_qpid2.exec   lost:-----------------------------------
-2011-08-19 10:22:15 warning Connection [53197 127.0.0.1:5672] closed
+2011-10-25 14:28:15 warning Connection [127.0.0.1:59851-127.0.0.1:5672] closed
 ex_qpid_direct_msg.exec   lost:-----------------------------------
-2011-08-19 10:22:24 warning Connection [53198 127.0.0.1:5672] closed
+2011-10-25 14:28:23 warning Connection [127.0.0.1:58182-127.0.0.1:5672] closed
 ex_qpid_msg_parsing.exec   lost:-----------------------------------
-2011-08-19 10:22:34 warning Connection [53199 127.0.0.1:5672] closed
+2011-10-25 14:28:35 warning Connection [127.0.0.1:58183-127.0.0.1:5672] closed
 ex_request_response.exec   lost:-----------------------------------
-2011-08-19 10:22:43 warning Connection [53201 127.0.0.1:5672] closed
-2011-08-19 10:22:45 warning Connection [53200 127.0.0.1:5672] closed
+2011-10-25 14:28:47 warning Connection [127.0.0.1:44109-127.0.0.1:5683] closed
 ex_admin.exec   lost:-----------------------------------
-2011-08-19 10:23:00 warning Connection [53202 127.0.0.1:5672] closed
+2011-10-25 14:29:02 warning Connection [127.0.0.1:47435-127.0.0.1:5685] closed
 test_trd_cli_ls.exec   lost:-----------------------------------
-2011-08-19 10:23:03 warning Connection [53203 127.0.0.1:5672] closed
+2011-10-25 14:29:05 warning Connection [127.0.0.1:44115-127.0.0.1:5683] closed
 ex_acs_cli.exec   lost:-----------------------------------
-2011-08-19 10:23:16 warning Connection [53204 127.0.0.1:5672] closed
+2011-10-25 14:29:18 warning Connection [127.0.0.1:47441-127.0.0.1:5685] closed
 ex_acs_serv.exec   lost:-----------------------------------
-2011-08-19 10:25:18 warning Connection [53205 127.0.0.1:5672] closed
+2011-10-25 14:31:21 warning Connection [127.0.0.1:44117-127.0.0.1:5683] closed
 ex_msg_yaml.exec   lost:-----------------------------------
 ex_fbinsert.exec   lost:-----------------------------------
-2011-08-19 10:25:32 warning Connection [56966 127.0.0.1:5672] closed
+2011-10-25 14:31:34 warning Connection [127.0.0.1:44131-127.0.0.1:5683] closed
 asocmem0.exec   lost:-----------------------------------
 QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
 QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
 Bus::open: Can not get ibus-daemon's address. 
 IBusInputContext::createInputContext: no connection to ibus-daemon 
+2011-10-25 14:34:20 warning Connection [127.0.0.1:38915-127.0.0.1:5672] closed
 WARNING: Phonon needs QCoreApplication::applicationName to be set to export audio output names through the DBUS interface 
-(19768): couldn't create slave: "Unable to create io-slave:
+(15763): couldn't create slave: "Unable to create io-slave:
 klauncher said: Unknown protocol ''.
 " 
 QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
 QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
 Bus::open: Can not get ibus-daemon's address. 
 IBusInputContext::createInputContext: no connection to ibus-daemon 
-2011-08-19 10:28:33 warning Connection [56969 127.0.0.1:5672] closed
-2011-08-19 10:29:09 warning Connection [38021 127.0.0.1:5672] closed
-2011-08-19 10:29:09 warning Connection [38022 127.0.0.1:5672] closed
+2011-10-25 14:34:31 warning Connection [127.0.0.1:48781-127.0.0.1:5685] closed
+2011-10-25 14:35:34 warning Connection [127.0.0.1:52260-127.0.0.1:5683] closed
 
-real	11m2.078s
-user	5m9.240s
-sys	0m18.260s
+real	11m31.051s
+user	5m29.060s
+sys	0m18.600s

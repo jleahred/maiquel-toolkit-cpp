@@ -46,6 +46,7 @@ allall:  libs qtlibs tools clean doc check_files
 # etiquetar la nueva versión en git
 # subir documentación al servidor
 #   dolphin doc/mtk.chunked/ fish:tfdev@192.168.7.2/home/tfdev/mtk.html/
+# generar nueva versión número impar
 
 
 

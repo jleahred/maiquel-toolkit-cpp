@@ -4,6 +4,29 @@ include::../../VERSION[]
 
 
 
+0.54  2011-10-25::
+
+Fixed errors;;
+* Removed qpid tricks
+* Performance problem solved on qpid
+* Fixed error on +prices_manager+
+
+
+New;;
+* Routes, path and comunication topology
+* Not defined macros on +fsm+ will generate +CPP+ macros
+
+
+Modif interfaz;;
+* Removed qpid_session, new +qpid_sender+ and +qpid_receiver+
+
+Other;;
+* Working wit qpid 0.13
+* Removed product_code on trading subjects
+* Refresh on terminal 10 times per second maximum
+
+
+
 0.52  2011-08-19::
 
 Fixed errors;;
