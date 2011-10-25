@@ -66,8 +66,7 @@ private:
     Ui::Monitor *ui;
 
 
-    mtk::CountPtr< mtk::qpid_session >  qpid_admin_session_cli;
-    mtk::CountPtr< mtk::qpid_session >  qpid_admin_session_srv;
+    mtk::t_qpid_url     url;
 
     void on_command_response (const mtk::list<mtk::admin::msg::res_command>& responses);
 

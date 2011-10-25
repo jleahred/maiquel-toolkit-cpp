@@ -44,7 +44,7 @@ public:
 
     
     // constructor
-    explicit pub_enter (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit pub_enter (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit pub_enter ( const qpid::messaging::Message& message );
     virtual ~pub_enter (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_enter"; };
@@ -56,6 +56,7 @@ public:
     
 
     // fields
+    std::string                               cli_srv; 
     mtk::msg::sub_process_info                process_info; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
@@ -69,7 +70,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject ();
+    static mtk::t_qpid_filter  get_in_subject (const std::string& cli_srv);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -198,7 +199,7 @@ public:
 
     
     // constructor
-    explicit pub_exit (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
+    explicit pub_exit (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
     explicit pub_exit ( const qpid::messaging::Message& message );
     virtual ~pub_exit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_exit"; };
@@ -210,6 +211,7 @@ public:
     
 
     // fields
+    std::string                               cli_srv; 
     mtk::msg::sub_process_info                process_info; 
     std::string                               reason; 
 
@@ -222,7 +224,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject ();
+    static mtk::t_qpid_filter  get_in_subject (const std::string& cli_srv);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -249,7 +251,7 @@ public:
 
     
     // constructor
-    explicit pub_alarm (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
+    explicit pub_alarm (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
     explicit pub_alarm ( const qpid::messaging::Message& message );
     virtual ~pub_alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_alarm"; };
@@ -261,6 +263,7 @@ public:
     
 
     // fields
+    std::string                               cli_srv; 
     mtk::msg::sub_process_info                process_info; 
     std::string                               code_source; 
     std::string                               subject; 
@@ -279,7 +282,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject ();
+    static mtk::t_qpid_filter  get_in_subject (const std::string& cli_srv);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 

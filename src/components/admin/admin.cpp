@@ -139,6 +139,7 @@ namespace {
             std::string                                 app_description;
             std::string                                 app_modifications;
             std::string                                 role;
+            std::string                                 mon_subject_role;
 
             mtk::msg::sub_process_info                  process_info;
             //std::string                                 session_id;
@@ -256,7 +257,7 @@ namespace {
 
 
             //  send exit message
-            mtk::admin::msg::pub_exit exit_msg(admin_status_instance->get_process_info(), reason);
+            mtk::admin::msg::pub_exit exit_msg(mon_subject_role, admin_status_instance->get_process_info(), reason);
             //std::cout << exit_msg << std::endl;
             mtk_send_message("admin", exit_msg);
             exit_message_sent = true;
@@ -343,6 +344,7 @@ namespace {
 
         if(role=="client")
         {
+            mon_subject_role = "CLI";
             process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location(get_mandatory_property("ADMIN.CLIENT.location"),
                                                             MTK_SS(get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode())),
                                                             app_name,
@@ -369,6 +371,7 @@ namespace {
         }
         else
         {
+            mon_subject_role = "SRV";
             process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("SYS", mtk::GetMachineCode()), app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())), app_version));
 
@@ -441,7 +444,7 @@ namespace {
 
     void admin_status::send_enter_and_start_keepalive(void)
     {
-        mtk::admin::msg::pub_enter enter_msg(get_process_info(), ka_interval_send, ka_interval_check);
+        mtk::admin::msg::pub_enter enter_msg(mon_subject_role, get_process_info(), ka_interval_send, ka_interval_check);
         //std::cout << enter_msg << std::endl;
         mtk_send_message("admin", enter_msg);
 
@@ -545,14 +548,14 @@ namespace {
         //    std::cout << alarm << std::endl;
         int16_t alarm_id = int16_t(alarm.alarmID);
         {
-            mtk::admin::msg::pub_alarm alarm_msg(get_process_info(), alarm.codeSource, alarm.subject, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
+            mtk::admin::msg::pub_alarm alarm_msg(mon_subject_role, get_process_info(), alarm.codeSource, alarm.subject, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
             mtk_send_message("admin", alarm_msg);
         }
         {
             std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
             while (it != alarm.stackAlarms.end())
             {
-                mtk::admin::msg::pub_alarm   alarm_msg(get_process_info(), it->codeSource, it->subject, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
+                mtk::admin::msg::pub_alarm   alarm_msg(mon_subject_role, get_process_info(), it->codeSource, it->subject, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
                 mtk_send_message("admin", alarm_msg);
                 ++it;
             }

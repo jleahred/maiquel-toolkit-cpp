@@ -90,10 +90,10 @@ void MainWindow::on_pbSendMessage_clicked()
     static int counter=0;
 
     // this is very inneficient, just to test and example
-    mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(ui->lblUrl->text().toStdString(), ui->leAddress->text().toStdString()));
+    mtk::CountPtr< mtk::mtkqpid_sender2 > sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(mtk::t_qpid_url(ui->lblUrl->text().toStdString()), mtk::t_qpid_address(ui->leAddress->text().toStdString())));
     qpid::messaging::Message msg(MTK_SS("sending message " << ++counter));
     msg.setSubject(ui->leSendingSubject->text().toStdString());
-    qpid_session->sender.send(msg);
+    sender->qpid_sender.send(msg);
 }
 
 void MainWindow::Write(const QString value)
@@ -105,7 +105,10 @@ void MainWindow::Write(const QString value)
 
 void MainWindow::on_pbConnect_clicked()
 {
-    handle_qpid_receiver = mtk::get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(ui->lblUrl->text().toStdString(), ui->leAddress->text().toStdString(), ui->leFilter->text().toStdString()));
+    mtk::CountPtr< mtk::mtkqpid_sender2 > sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(mtk::t_qpid_url(ui->lblUrl->text().toStdString()), mtk::t_qpid_address(ui->leAddress->text().toStdString())));
+    handle_qpid_receiver = mtk::get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(       mtk::t_qpid_url(ui->lblUrl->text().toStdString()),
+                                                                                                            mtk::t_qpid_address(ui->leAddress->text().toStdString()),
+                                                                                                            mtk::t_qpid_filter(ui->leFilter->text().toStdString())));
     MTK_CONNECT_THIS(*(handle_qpid_receiver->signalMessage), OnReceivedMessage)
 }
 

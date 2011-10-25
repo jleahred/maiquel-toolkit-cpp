@@ -5,8 +5,8 @@
 #include "support/alarm.h"
 
 
-const std::string g_url = "amqp:tcp:127.0.0.1:5672";
-const std::string g_address = "testing";
+const   mtk::t_qpid_url      g_url      ("amqp:tcp:127.0.0.1:5672");
+const   mtk::t_qpid_address  g_address  ("testing");
 
 
 
@@ -21,10 +21,12 @@ void on_message(const qpid::messaging::Message& message)
 void send_message(void)
 {
     static int counter=0;
-    static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(g_url, g_address));
+
     qpid::messaging::Message msg(MTK_SS(++counter));
     msg.setSubject("hola.pajarito");
-    qpid_session->sender.send(msg);
+
+    static auto sender = mtk::get_from_factory< mtk::mtkqpid_sender2 > (mtk::make_tuple(g_url, g_address));
+    sender->qpid_sender.send(msg);
 
 }
 
@@ -40,7 +42,7 @@ int main(int /*argc*/, char** /*argv*/)
 
     try
     {
-        std::string filter  = "#";
+        mtk::t_qpid_filter   filter  ("#");
 
 
         //  <1>

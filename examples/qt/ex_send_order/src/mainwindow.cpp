@@ -94,8 +94,10 @@ void MainWindow::Log(const QString value)
 
 void MainWindow::on_pbListen_clicked()
 {
-    hqpidr_in = mtk::get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(ui->leUrl->text().toStdString(), ui->leInAddress->text().toStdString(), std::string("#")));
-    MTK_CONNECT_THIS(*(hqpidr_in->signalMessage), on_message)
+    //hqpidr_in = mtk::get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(  mtk::t_qpid_url(ui->leUrl->text().toStdString()),
+    //                                                                                        mtk::t_qpid_address(ui->leInAddress->text().toStdString()),
+    //                                                                                        mtk::t_qpid_filter("#")));
+    //MTK_CONNECT_THIS(*(hqpidr_in->signalMessage), on_message)
 }
 
 void MainWindow::on_message(const qpid::messaging::Message& message)
@@ -155,30 +157,34 @@ mtk::trd::msg::RQ_XX_LS MainWindow::get_xx_request(void)
 
 void MainWindow::on_pbNewOrder_clicked()
 {
-    //  not efficient, just to test
-    mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(ui->leUrl->text().toStdString(), ui->leOutAddress->text().toStdString()));
-
     mtk::trd::msg::RQ_NW_LS rq(get_xx_request());
-    mtk::send_message(qpid_session, rq, "");
+
+    //  not efficient, just to test
+    mtk::CountPtr< mtk::mtkqpid_sender2 > sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(       mtk::t_qpid_url(ui->leUrl->text().toStdString()),
+                                                                                                                        rq.get_qpid_address()));
+    mtk::send_message_with_sender(sender, rq);
 }
 
 void MainWindow::on_pbSendModifOrder_clicked()
 {
-    //  not efficient, just to test
-    mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(ui->leUrl->text().toStdString(), ui->leOutAddress->text().toStdString()));
-
     mtk::trd::msg::RQ_MD_LS rq(get_xx_request());
-    mtk::send_message(qpid_session, rq, "");
+
+    //  not efficient, just to test
+    mtk::CountPtr< mtk::mtkqpid_sender2 > sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(       mtk::t_qpid_url(ui->leUrl->text().toStdString()),
+                                                                                                                        rq.get_qpid_address()));
+    mtk::send_message_with_sender(sender, rq);
+
 }
 
 
 void MainWindow::on_pbSendCancelOrder_clicked()
 {
-    //  not efficient, just to test
-    mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(ui->leUrl->text().toStdString(), ui->leOutAddress->text().toStdString()));
-
     mtk::trd::msg::RQ_CC_LS rq(get_xx_request());
-    mtk::send_message(qpid_session, rq, "");
+
+    //  not efficient, just to test
+    mtk::CountPtr< mtk::mtkqpid_sender2 > sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(       mtk::t_qpid_url(ui->leUrl->text().toStdString()),
+                                                                                                                        rq.get_qpid_address()));
+    mtk::send_message_with_sender(sender, rq);
 }
 
 void MainWindow::on_pbNewOrderFromOrderBook_clicked()
@@ -218,13 +224,13 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::timer_new_cancel(void)
 {
-    static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(ui->leUrl->text().toStdString(), ui->leOutAddress->text().toStdString()));
-
     MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(100))
     {
         if(list_new.size() > 0)
         {
-            mtk::send_message(qpid_session, list_new.front(), "");
+            mtk::CountPtr< mtk::mtkqpid_sender2 > sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(       mtk::t_qpid_url(ui->leUrl->text().toStdString()),
+                                                                                                                                list_new.front().get_qpid_address()));
+            mtk::send_message_with_sender(sender, list_new.front());
             list_new.pop_front();
         }
     }
@@ -234,7 +240,9 @@ void MainWindow::timer_new_cancel(void)
     {
         if(list_cc.size() > 0)
         {
-            mtk::send_message(qpid_session, list_cc.front(), "");
+            mtk::CountPtr< mtk::mtkqpid_sender2 > sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(       mtk::t_qpid_url(ui->leUrl->text().toStdString()),
+                                                                                                                                list_new.front().get_qpid_address()));
+            mtk::send_message_with_sender(sender, list_cc.front());
             list_cc.pop_front();
         }
     }

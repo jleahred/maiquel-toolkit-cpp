@@ -1,4 +1,4 @@
- 
+
 #include <iostream>
 #include "mtk_qpid/mtk_qpid.hpp"
 #include "support/timer.h"
@@ -8,8 +8,8 @@
 
 
 
-const std::string g_url = "amqp:tcp:127.0.0.1:5672";
-const std::string g_address = "testing";
+const   mtk::t_qpid_url      g_url      ("amqp:tcp:127.0.0.1:5672");
+const   mtk::t_qpid_address  g_address  ("testing");
 
 
 
@@ -17,7 +17,7 @@ void on_message(const qpid::messaging::Message& message)
 {
     qpid::types::Variant::Map  view;
     qpid::messaging::decode(message, view);
-    
+
     std::cout <<  message.getSubject() << "  " << view << std::endl;
 }
 
@@ -26,11 +26,9 @@ void on_message(const qpid::messaging::Message& message)
 
 void send_message(void)
 {
-    static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(g_url, g_address));
-    
     qpid::messaging::Message message;
     qpid::types::Variant::Map content;
-    
+
 
 
     //  <1>
@@ -47,19 +45,22 @@ void send_message(void)
     nested["n1"] = 1;
     nested["n2"] = 22;
     content["nested"] = nested;
-    
+
     //  list of sub_messages
     qpid::types::Variant::List vlist;
     vlist.push_back("hi");
     vlist.push_back("there");
-    
+
     content["list"] = vlist;
-    
-    
+
+
     qpid::messaging::encode(content, message);
-    
+
     message.setSubject("hola.pajarito");
-    qpid_session->sender.send(message);
+
+
+    static auto sender = mtk::get_from_factory< mtk::mtkqpid_sender2 > (mtk::make_tuple(g_url, g_address));
+    sender->qpid_sender.send(message);
 }
 
 void stop(const int&)
@@ -67,15 +68,15 @@ void stop(const int&)
     mtk::stop_timer();
 }
 
-int main(int /*argc*/, char** /*argv*/) 
+int main(int /*argc*/, char** /*argv*/)
 {
     try
     {
 
         //-----------------------------------------------------------------------------------------------------
         mtk::CountPtr< mtk::handle_qpid_exchange_receiver> hqpidr2;
-        hqpidr2 = mtk::get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(g_url, g_address, std::string("#")));
-        hqpidr2->signalMessage->connect(on_message);        
+        hqpidr2 = mtk::get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(g_url, g_address, mtk::t_qpid_filter("#")));
+        hqpidr2->signalMessage->connect(on_message);
         //-----------------------------------------------------------------------------------------------------
 
         MTK_TIMER_1SF(send_message)
@@ -84,16 +85,16 @@ int main(int /*argc*/, char** /*argv*/)
 
 
         mtk::start_timer_wait_till_end();
-        
+
         #include "support/release_on_exit.hpp"
         return 0;
     }
     MTK_CATCH_CALLFUNCION(std::cout << , "main", "no more")
-    
+
     #include "support/release_on_exit.hpp"
     return -1;
 }
- 
+
 
 
 

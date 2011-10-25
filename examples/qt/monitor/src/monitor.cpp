@@ -90,7 +90,8 @@ void error_connecting (const mtk::Alarm& error)
 
 Monitor::Monitor(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Monitor)
+    ui(new Ui::Monitor),
+    url(mtk::t_qpid_url(""))
 {
     ui->setupUi(this);
 
@@ -107,25 +108,24 @@ Monitor::Monitor(QWidget *parent) :
 
     try
     {
-        qpid_admin_session_srv = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(std::string("amqp:tcp:127.0.0.1:5672"), std::string("SRVTESTING")));
-        qpid_admin_session_cli = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(std::string("amqp:tcp:127.0.0.1:5672"), std::string("CLITESTING")));
+        url = mtk::t_qpid_url("amqp:tcp:127.0.0.1:5683");
     }
     MTK_CATCH_CALLFUNCION(error_connecting, "main", "")
 
 
-    ui->alarms_all_errors->init     (qpid_admin_session_cli, qpid_admin_session_srv, true);
+    ui->alarms_all_errors->init     (url, true);
     {
-        ui->alarms_client_all->init     (qpid_admin_session_cli, false);
-        ui->alarms_client_error->init   (qpid_admin_session_cli, true);
-        ui->client_command->init(ui->client_command_response, ui->clientlist, qpid_admin_session_cli);
-        ui->clientlist->init(qpid_admin_session_cli);
+        ui->alarms_client_all->init     (url, "CLI", false);
+        ui->alarms_client_error->init   (url, "CLI", true);
+        ui->client_command->init(ui->client_command_response, ui->clientlist, url, "CLI");
+        ui->clientlist->init(url, "CLI");
         ui->clientlist->signal_alarm.connect(&sig_alarm_msg);
     }
     {
-        ui->alarms_server_all->init     (qpid_admin_session_srv, false);
-        ui->alarms_server_error->init   (qpid_admin_session_srv, true);
-        ui->server_command->init(ui->server_command_response, ui->serverlist, qpid_admin_session_srv);
-        ui->serverlist->init(qpid_admin_session_srv);
+        ui->alarms_server_all->init     (url, "SRV", false);
+        ui->alarms_server_error->init   (url, "SRV", true);
+        ui->server_command->init(ui->server_command_response, ui->serverlist, url, "SRV");
+        ui->serverlist->init(url, "SRV");
         ui->serverlist->signal_alarm.connect(&sig_alarm_msg);
     }
 }

@@ -1295,13 +1295,21 @@ LimitPositionChild::LimitPositionChild (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-std::string  RQ_NW_LS::get_in_subject ()
+mtk::t_qpid_filter  RQ_NW_LS::get_in_subject ()
     {
-        return MTK_SS("hola.pajaarito");
+        return mtk::t_qpid_filter(MTK_SS("hola.pajaarito"));
     }
-    std::string  RQ_NW_LS::get_out_subject (void) const
+    mtk::t_qpid_filter  RQ_NW_LS::get_out_subject (void) const
     {
-        return MTK_SS("hola.pajaarito");
+        return mtk::t_qpid_filter(MTK_SS("hola.pajaarito"));
+    }
+    /*static*/  mtk::t_qpid_address  RQ_NW_LS::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("testing"));
+    }
+    mtk::t_qpid_address  RQ_NW_LS::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("testing"));
     }
     
 

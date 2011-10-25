@@ -14,8 +14,8 @@ class QTableAlarms : public QTableWidget, public mtk::SignalReceptor
 
 public:
     explicit QTableAlarms(QWidget *parent = 0);
-    void init(mtk::CountPtr< mtk::qpid_session > _qpid_session, bool _only_errors);
-    void init(mtk::CountPtr< mtk::qpid_session > _qpid_session1, mtk::CountPtr< mtk::qpid_session > _qpid_session2, bool _only_errors);
+    void init(const mtk::t_qpid_url& url, bool _only_errors);       //  "CLI" and "SRV"
+    void init(const mtk::t_qpid_url& url, const std::string&  cli_srv, bool _only_errors);
     void write_alarm(const mtk::Alarm& alarm);
 
 signals:
@@ -37,6 +37,8 @@ private:
 
     mtk::list< mtk::tuple<mtk::DateTime, mtk::admin::msg::pub_alarm> >       last_alarms;
     void timer_check_last_alarms_received(void);
+    void prepare();
+
 };
 
 #endif // QTABLEALARMS_H

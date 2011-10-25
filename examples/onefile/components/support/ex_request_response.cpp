@@ -39,12 +39,11 @@ void on_res_command (const mtk::list<mtk::admin::msg::res_command>& responses)  
 void init_request_response(const int&)
 {
     mtk::msg::sub_request_info request_info(mtk::admin::get_request_info());
-    /*static*/ mtk::CountPtr<mtk::qpid_session>  qpid_session = mtk::admin::get_qpid_session("client", "testing");
 
     //  subscription to multiresponse       <2>
-    MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command, 
-                                    mtk::admin::msg::sub_command_rd, 
-                                    qpid_session,
+    MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command,
+                                    mtk::admin::msg::sub_command_rd,
+                                    mtk::admin::get_url("client"),
                                     mtk::admin::msg::res_command::get_in_subject(request_info.process_info.process_uuid, request_info.req_id.req_code),
                                     on_res_command,
 				    "testing_req_resp")
@@ -58,9 +57,9 @@ void init_request_response(const int&)
         data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS("response line  "  <<  i << std::endl)));
 
     //  sending multiresponses in asyncronous way           <4>
-    MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::res_command, 
-                                    mtk::admin::msg::sub_command_rd, 
-                                    qpid_session,
+    MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::res_command,
+                                    mtk::admin::msg::sub_command_rd,
+                                    mtk::admin::get_url("client"),
                                     request_info,
                                     data_list)
 }
@@ -72,15 +71,15 @@ int main(int /*argc*/, char ** /*argv*/)
     try
     {
         mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
-    
-    
-    
+
+
+
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command>      >   hqpid_response;
 
         MTK_CALL_LATER1S_F(mtk::dtSeconds(7), 0, stop);
         MTK_CALL_LATER1S_F(mtk::dtSeconds(1), 0, init_request_response);
         mtk::start_timer_wait_till_end();
-        
+
 
         std::cout << "FIN..... " << std::endl;
         #include "support/release_on_exit.hpp"

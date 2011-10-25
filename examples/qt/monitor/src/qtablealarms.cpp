@@ -11,18 +11,28 @@ QTableAlarms::QTableAlarms(QWidget *parent) :
 {
 }
 
-void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _only_errors)
+void QTableAlarms::init(const mtk::t_qpid_url& url, const std::string& cli_srv, bool _only_errors)
 {
     only_errors = _only_errors;
 
+    prepare();
+
+
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            hqpid_alarm1,
+                            url,
+                            mtk::admin::msg::pub_alarm::get_in_subject(cli_srv),
+                            mtk::admin::msg::pub_alarm,
+                            on_client_alarm_received);
+}
+
+void QTableAlarms::prepare(void)
+{
     setRowCount(0);
     verticalHeader()->setVisible(false);
     horizontalHeader()->setVisible(true);
-    //table_marginals->setSelectionMode(QAbstractItemView::NoSelection);
-    //verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.6);
     verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     horizontalHeader()->setStretchLastSection(true);
-    //horizontalHeader()->setDefaultSectionSize(100);
 
     setColumnCount(8);
 
@@ -58,23 +68,11 @@ void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session, bool _o
     horizontalHeader()->resizeSection(counter++, 1200);
     horizontalHeader()->resizeSection(counter++, 100);
     horizontalHeader()->resizeSection(counter++, 100);
-    //horizontalHeader()->setMovable(true);
-
-
-
-    MTK_QPID_RECEIVER_CONNECT_THIS(
-                            hqpid_alarm1,
-                            qpid_session->url,
-                            qpid_session->address,
-                            mtk::admin::msg::pub_alarm::get_in_subject(),
-                            mtk::admin::msg::pub_alarm,
-                            on_client_alarm_received);
-
-
 
     MTK_TIMER_1S(timer_check_number_of_rows);
     MTK_TIMER_1S(timer_check_last_alarms_received);
 }
+
 
 void QTableAlarms::on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg)
 {
@@ -193,7 +191,7 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
 void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
 {
-    mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
+    mtk::admin::msg::pub_alarm alarm_msg("CLI", mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
                                      alarm.codeSource, "monitor", alarm.message, alarm.priority, alarm.type, mtk::dtNowLocal(), -1);
 
     write_alarm_msg(alarm_msg);
@@ -201,24 +199,32 @@ void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
     std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
     while (it != alarm.stackAlarms.end())
     {
-        mtk::admin::msg::pub_alarm alarm_msg(mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
+        mtk::admin::msg::pub_alarm alarm_msg("CLI", mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
                                          "monitor", it->codeSource, it->message, it->priority, it->type, mtk::dtNowLocal(), -1);
         write_alarm_msg(alarm_msg);
         ++it;
     }
 }
 
-void QTableAlarms::init(mtk::CountPtr< mtk::qpid_session > qpid_session1, mtk::CountPtr< mtk::qpid_session > qpid_session2, bool only_errors)
+void QTableAlarms::init(const mtk::t_qpid_url& url, bool _only_errors)
 {
-    init(qpid_session1, only_errors);
+    only_errors = _only_errors;
+
+    prepare();
+
+
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            hqpid_alarm1,
+                            url,
+                            mtk::admin::msg::pub_alarm::get_in_subject("CLI"),
+                            mtk::admin::msg::pub_alarm,
+                            on_client_alarm_received);
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm2,
-                            qpid_session2->url,
-                            qpid_session2->address,
-                            mtk::admin::msg::pub_alarm::get_in_subject(),
+                            url,
+                            mtk::admin::msg::pub_alarm::get_in_subject("SRV"),
                             mtk::admin::msg::pub_alarm,
-                            on_client_alarm_received)
-
+                            on_client_alarm_received);
 }
 
 

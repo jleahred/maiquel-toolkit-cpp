@@ -25,47 +25,45 @@ QListProcesses::QListProcesses(QWidget *parent) :
 
 }
 
-void QListProcesses::init(mtk::CountPtr<mtk::qpid_session> qpid_admin_session)
+void QListProcesses::init(const mtk::t_qpid_url& url,const std::string&  cli_srv)
 {
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_enter,
-                            qpid_admin_session->url,
-                            qpid_admin_session->address,
-                            mtk::admin::msg::pub_enter::get_in_subject(),
+                            url,
+                            mtk::admin::msg::pub_enter::get_in_subject(cli_srv),
                             mtk::admin::msg::pub_enter,
                             on_enter_received)
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_exit,
-                            qpid_admin_session->url,
-                            qpid_admin_session->address,
-                            mtk::admin::msg::pub_exit::get_in_subject(),
+                            url,
+                            mtk::admin::msg::pub_exit::get_in_subject(cli_srv),
                             mtk::admin::msg::pub_exit,
                             on_exit_received)
 
-    MTK_QPID_RECEIVER_CONNECT_THIS(
-                            hqpid_client_ka,
-                            qpid_admin_session->url,
-                            qpid_admin_session->address,
-                            mtk::admin::msg::pub_keep_alive_clients::get_in_subject(),
-                            mtk::admin::msg::pub_keep_alive_clients,
-                            on_ka_client_received)
-
-    MTK_QPID_RECEIVER_CONNECT_THIS(
-                            hqpid_server_ka,
-                            qpid_admin_session->url,
-                            qpid_admin_session->address,
-                            mtk::admin::msg::pub_keep_alive_srv::get_in_subject(),
-                            mtk::admin::msg::pub_keep_alive_srv,
-                            on_ka_server_received)
+    if(cli_srv == "CLI")
+        MTK_QPID_RECEIVER_CONNECT_THIS(
+                                hqpid_client_ka,
+                                url,
+                                mtk::admin::msg::pub_keep_alive_cli::get_in_subject(),
+                                mtk::admin::msg::pub_keep_alive_cli,
+                                on_ka_client_received)
+    else if(cli_srv == "SRV")
+        MTK_QPID_RECEIVER_CONNECT_THIS(
+                                hqpid_server_ka,
+                                url,
+                                mtk::admin::msg::pub_keep_alive_srv::get_in_subject(),
+                                mtk::admin::msg::pub_keep_alive_srv,
+                                on_ka_server_received)
+    else
+        throw  mtk::Alarm(MTK_HERE, "qlistprocesses", MTK_SS("invalid cli_srv value " << cli_srv), mtk::alPriorCritic, mtk::alTypeLogicError);
 
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm,
-                            qpid_admin_session->url,
-                            qpid_admin_session->address,
-                            mtk::admin::msg::pub_alarm::get_in_subject(),
+                            url,
+                            mtk::admin::msg::pub_alarm::get_in_subject(cli_srv),
                             mtk::admin::msg::pub_alarm,
                             on_alarm_received)
 
@@ -124,7 +122,7 @@ void QListProcesses::on_exit_received (const mtk::admin::msg::pub_exit& msg)
 }
 
 
-void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_alive_clients& msg)
+void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_alive_cli& msg)
 {
     QListWidgetItem_ka* item = find_item(msg.process_info);
     if(item==0)

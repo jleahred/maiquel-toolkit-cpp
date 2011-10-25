@@ -29,34 +29,38 @@ END_INIT
 
 
 
-pub_enter  [< QE:ALL_GS, SUBJ:GS.MON.ENTER >]
+pub_enter  [< QE:ALL_GS, SUBJ:GS.MON.${cli_srv}.ENTER >]
 {
+    cli_srv             (cs)    :   string      //  "CLI"  or "SVR"
+
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (kas)   :   time_quantity
     ka_interval_check   (kac)   :   time_quantity
 }
 
 
-
-pub_keep_alive_srv  [< QE:ALL_GS, SUBJ:GS.MON.KA >]
+pub_keep_alive_srv  [< QE:ALL_GS, SUBJ:GS.MON.SRV.KA >]
 {
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (kas)   :   time_quantity
     ka_interval_check   (kac)   :   time_quantity
 }
 
-pub_keep_alive_cli  [< QE:ALL_GS, I:pub_keep_alive_srv,  SUBJ:GS.MON.KACLI >]
+pub_keep_alive_cli  [< QE:ALL_GS, I:pub_keep_alive_srv,  SUBJ:GS.MON.CLI.KA >]
 {
     //  aditional info for ACS  (hot registration)
     login_confirmation  (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
 
-pub_exit  [< QE:ALL_GS, SUBJ:GS.MON.EXIT >]
+pub_exit  [< QE:ALL_GS, SUBJ:GS.MON.${cli_srv}.EXIT >]
 {
+    cli_srv             (cs)    :   string      //  "CLI"  or "SVR"
+
     process_info        (pi)    :   mtk::msg::sub_process_info
     reason              (r)     :   string
 }
+
 
 
 
@@ -68,8 +72,10 @@ pub_exit  [< QE:ALL_GS, SUBJ:GS.MON.EXIT >]
 //-------------------------------------------------------------------
 
 
-pub_alarm  [< QE:ALL_GS,  SUBJ:GS.MON.ALARMS >]
+pub_alarm  [< QE:ALL_GS,  SUBJ:GS.MON.${cli_srv}.ALARM >]
 {
+    cli_srv             (cs)    :   string      //  "CLI"  or "SVR"
+
     process_info        (pi)    :   mtk::msg::sub_process_info
     code_source         (cs)    :   string
     subject             (sbj)   :   string

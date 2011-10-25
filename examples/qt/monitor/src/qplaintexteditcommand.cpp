@@ -12,7 +12,7 @@
 
 
 QPlainTextEditCommand::QPlainTextEditCommand(QWidget *parent) :
-    QPlainTextEdit(parent), write_into(0)
+    QPlainTextEdit(parent), write_into(0), url(mtk::t_qpid_url(""))
 {
 }
 
@@ -169,13 +169,15 @@ void QPlainTextEditCommand::send_command(const QString& command)
         //  subscription to multiresponse
         MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::admin::msg::res_command,
                                         mtk::admin::msg::sub_command_rd,
-                                        qpid_admin_session,
+                                        url,
                                         mtk::admin::msg::res_command::get_in_subject(it->process_uuid, request_info.req_id.req_code),
                                         on_command_response,
                                         MTK_SS("cmd " << command.toStdString()))
 
         mtk::admin::msg::req_command   command_request_msg(request_info, *it,  command.toStdString());
-        mtk::send_message(qpid_admin_session, command_request_msg);
+
+        static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(url, command_request_msg.get_qpid_address()));
+        mtk::send_message_with_sender(qpid_sender, command_request_msg);
         if(write_into)
             write_into->appendPlainText(MTK_SS(std::endl << std::endl << std::endl << "SENDING COMMAND  "
                                                << command.toStdString() << "  -->  " << *it
@@ -204,9 +206,10 @@ void QPlainTextEditCommand::on_command_response (const mtk::list<mtk::admin::msg
 }
 
 
-void QPlainTextEditCommand::init(QPlainTextEdit *_write_into, QListProcesses* _list_processes, mtk::CountPtr< mtk::qpid_session > _qpid_admin_session)
+void QPlainTextEditCommand::init(QPlainTextEdit *_write_into, QListProcesses* _list_processes, const mtk::t_qpid_url& _url, const std::string&  _cli_srv)
 {
     write_into      = _write_into;
     list_processes  = _list_processes;
-    qpid_admin_session = _qpid_admin_session;
+    cli_srv = _cli_srv;
+    url = _url;
 }

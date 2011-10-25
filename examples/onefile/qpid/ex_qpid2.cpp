@@ -5,8 +5,8 @@
 #include "support/alarm.h"
 
 
-const std::string g_url = "amqp:tcp:127.0.0.1:5672";
-const std::string g_address = "testing";
+const mtk::t_qpid_url       g_url ("amqp:tcp:127.0.0.1:5672");
+const mtk::t_qpid_address   g_address ("testing");
 
 
 
@@ -19,7 +19,7 @@ public:
     ex_qpid_sender_and_receptor()
     {
         MTK_TIMER_1S(send_message)
-        hqpidr2 = mtk::get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(g_url, g_address, std::string("#")));
+        hqpidr2 = mtk::get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(g_url, g_address, mtk::t_qpid_filter("#")));
         MTK_CONNECT_THIS(*(hqpidr2->signalMessage), on_message);
     }
 
@@ -29,11 +29,12 @@ private:
     void send_message(void)
     {
         static int counter=0;
-        static mtk::CountPtr< mtk::qpid_session > qpid_session = mtk::get_from_factory< mtk::qpid_session >(mtk::make_tuple(g_url, g_address));
 
         qpid::messaging::Message msg(MTK_SS(++counter));
         msg.setSubject("hola.pajarito");
-        qpid_session->sender.send(msg);
+
+        static auto sender = mtk::get_from_factory< mtk::mtkqpid_sender2 > (mtk::make_tuple(g_url, g_address));
+        sender->qpid_sender.send(msg);
     }
 
     void on_message(const qpid::messaging::Message& message)

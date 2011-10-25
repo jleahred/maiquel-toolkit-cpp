@@ -57,8 +57,13 @@ public:
 
 
 
+    //  ADDRESS info
+
+
+
     //  subject info
     
+
     
     
     
@@ -108,8 +113,13 @@ public:
     
     
     
+        //  ADDRESS info
+    
+    
+    
         //  subject info
         
+    
         
         
         
@@ -151,8 +161,13 @@ public:
     
     
     
+        //  ADDRESS info
+    
+    
+    
         //  subject info
         
+    
         
         
         
@@ -190,9 +205,16 @@ public:
 
 
 
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
     //  subject info
-    static std::string  get_in_subject ();
-virtual std::string  get_out_subject (void) const;
+    static mtk::t_qpid_filter  get_in_subject ();
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
 
     
     
@@ -233,8 +255,13 @@ public:
 
 
 
+    //  ADDRESS info
+
+
+
     //  subject info
     
+
     
     
     
