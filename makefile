@@ -45,7 +45,8 @@ allall:  libs qtlibs tools clean doc check_files
 # commit en git
 # etiquetar la nueva versión en git
 # subir documentación al servidor
-#   dolphin doc/mtk.chunked/ fish:tfdev@192.168.7.2/home/tfdev/mtk.html/
+#   dolphin doc/mtk.chunked/  fish://smsrv01@192.168.7.10/home/smsrv01/temp
+#   cd; make sshsrv
 # generar nueva versión número impar
 
 
