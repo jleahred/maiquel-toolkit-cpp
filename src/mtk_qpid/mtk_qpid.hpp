@@ -427,6 +427,11 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
     CountPtr<handle_qpid_exchange_receiver>       local_copy_hqpid_receiver(hqpid_receiver);
 
 
+    if (message.getContentType() != "amqp/map")
+        throw mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiverMT<>",
+                                    MTK_SS("invalid message structure, spected map  "  << message.getContent()),
+                                    mtk::alPriorCritic, mtk::alTypeNoPermisions);
+
     qpid::types::Variant::Map mv;
     qpid::messaging::decode(message, mv);
     std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
