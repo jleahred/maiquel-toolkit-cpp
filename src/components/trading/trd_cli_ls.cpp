@@ -26,7 +26,7 @@
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
         (void)nerrors;   \
-        ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_LS&>(rq)));  
+        ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_LS&>(rq)));
 
 #define CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ \
         int nerrors = 0;         \
@@ -50,6 +50,9 @@
 #define CHECK_CONFIRM_AND_WRITE_LAST_CONF \
         int nerrors = 0;         \
         mtk::tuple<int, std::string> tresult;    \
+        tresult = check_confirm      (cf); \
+        nerrors += tresult._0;    \
+        ci->__serrors += tresult._1;    \
         tresult = check_confirm_request      (cf, last_request     ()); \
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
@@ -57,7 +60,7 @@
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
         (void)nerrors;    \
-        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_LS>(cf)));   
+        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_LS>(cf)));
 
 
 
@@ -66,6 +69,9 @@
 #define CHECK_REJECT_AND_WRITE_LAST_CONF \
         int nerrors = 0;         \
         mtk::tuple<int, std::string> tresult;    \
+        tresult = check_confirm      (rj); \
+        nerrors += tresult._0;    \
+        ci->__serrors += tresult._1;    \
         tresult = check_reject_request      (rj, last_request     ()); \
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
@@ -74,12 +80,12 @@
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
         (void)nerrors;    \
-        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_LS>(rj)));   
+        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_LS>(rj)));
 
 
 #define IF_LAST_CONF_ISNULL__WRITE_IT  \
         if(ci->last_confirmation().HasValue() == false)      \
-            ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_LS>(st)));   
+            ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_LS>(st)));
 
 
 
@@ -87,7 +93,7 @@
 
 
 
-    
+
 
 #define CREATE_AND_SEND_REJECT(__SIGNAL_TYPE__, __MSG_TYPE__) \
     mtk::CountPtr<mtk::trd::msg::__MSG_TYPE__> cptr_rj;    \
@@ -164,7 +170,7 @@
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "ADD_HIST", result_additem, mtk::alPriorCritic, mtk::alTypeNoPermisions));    \
         }       \
     }
-    
+
 
 #define  ADD_HIST_CFEX(__VAR_NAME__)  \
     {       \

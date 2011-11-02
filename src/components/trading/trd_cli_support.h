@@ -42,12 +42,12 @@ namespace mtk{namespace trd{
      *      It will return the reject description of last transaction (if it is a reject, in other case it will return "")
      */
     template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
-    std::string    get_lasttr_rjdescr  (const ORDER_TYPE& order)        
+    std::string    get_lasttr_rjdescr  (const ORDER_TYPE& order)
     {
         return order.history()->get_lasttr_rjdescr();
     }
 
-    
+
 
     namespace  msg
     {
@@ -56,7 +56,7 @@ namespace mtk{namespace trd{
             {
                 std::string serrors;
                 int nerrors=0;
-                
+
                 if (is_valid(rq.invariant.order_id)==false)
                 {
                     ++nerrors;
@@ -73,7 +73,7 @@ namespace mtk{namespace trd{
                     ++nerrors;
                     serrors + "  invalid quantity!!!  ";
                 }
-                    
+
                 if (nerrors >0)     //  all errors on this level are critic
                 {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request", MTK_SS(serrors << "  " << rq ), mtk::alPriorCritic, mtk::alTypeNoPermisions));
@@ -86,7 +86,7 @@ namespace mtk{namespace trd{
             {
                 std::string serrors;
                 int nerrors=0;
-                
+
                 {
                     std::string l_serrors;
                     int l_nerrors=0;
@@ -94,7 +94,7 @@ namespace mtk{namespace trd{
                     nerrors += l_nerrors;
                     serrors += l_serrors;
                 }
-                
+
 
                 if (last_request.HasValue() == true)
                 {
@@ -102,9 +102,9 @@ namespace mtk{namespace trd{
                     {
                         serrors += MTK_SS("last_request.Get().invariant != rq.invariant  "  <<  last_request.Get().invariant << "  !=  "  << rq.invariant);
                         ++nerrors; \
-                    }            
+                    }
                 }
-                
+
                 if (nerrors >0)     //  all errors on this level are critic
                 {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request_request", MTK_SS(serrors << "  " << rq << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
@@ -116,12 +116,12 @@ namespace mtk{namespace trd{
             mtk::tuple<int, std::string> check_request_last_confirm(const RQ_TYPE& rq, const mtk::nullable<CONF_TYPE>& last_conf)
             {
                 if (last_conf.HasValue() == false)     return mtk::make_tuple(0, std::string());
-                
-                
-                
+
+
+
                 std::string serrors;
                 int nerrors=0;
-                
+
                 {
                     std::string l_serrors;
                     int l_nerrors=0;
@@ -129,20 +129,20 @@ namespace mtk{namespace trd{
                     nerrors += l_nerrors;
                     serrors += l_serrors;
                 }
-                
+
 
                 if(rq.invariant  !=  last_conf.Get().invariant)
                 {
                     serrors += MTK_SS("rq.invariant  !=  last_conf.invariant  "  <<  rq.invariant << "  !=  "  << last_conf.Get().invariant);
                     ++nerrors; \
                 }
-                
+
                 if (nerrors >0)     //  all errors on this level are critic
                 {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request_last_confirm", MTK_SS(serrors << "  " << rq << " / " << last_conf.Get()), mtk::alPriorCritic, mtk::alTypeNoPermisions));
                     ++nerrors;
                 }
-                
+
 
                 //  non critic
                 if (last_conf.HasValue()  &&  mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble()) >= (mtk::Double(rq.request_pos.quantity.GetDouble())))
@@ -151,14 +151,14 @@ namespace mtk{namespace trd{
                     ++nerrors;
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request_last_confirm", MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
                 }
-                
+
                 return mtk::make_tuple(nerrors, serrors);
             }
             template<typename RQ_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS
             mtk::tuple<int, std::string> check_request_not_modifying(const RQ_TYPE& rq, const mtk::nullable<RQ_TYPE>& last_request, const mtk::nullable<CONF_TYPE>& last_conf)
             {
                 if (last_conf.HasValue() == false)     return mtk::make_tuple(0, std::string());
-                
+
                 std::string serrors;
                 int nerrors=0;
 
@@ -170,6 +170,24 @@ namespace mtk{namespace trd{
                 if (nerrors >0)
                 {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request_not_modifying", MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+                    ++nerrors;
+                }
+                return mtk::make_tuple(nerrors, serrors);
+            }
+
+            template<typename CONF_TYPE>      //  ex:   mtk::trd::msg::CF_XX_LS
+            mtk::tuple<int, std::string> check_confirm(const CONF_TYPE& cf)
+            {
+                std::string serrors;
+                int nerrors=0;
+
+                if(cf.market_pos.quantity.GetDouble() != (cf.total_execs.acc_quantity.GetDouble() + cf.total_execs.remaining_qty.GetDouble()))
+                    serrors += MTK_SS("quantity doesn't match   cf.market_pos.quantity != (cf.total_execs.acc_quantity + cf.total_execs.remaining_qty)" <<
+                            cf.market_pos.quantity << " !=  "  << "(" << cf.total_execs.acc_quantity << "+" <<cf.total_execs.remaining_qty<<")");
+
+                if (nerrors >0)
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_confirm_request", serrors, mtk::alPriorCritic, mtk::alTypeNoPermisions));
                     ++nerrors;
                 }
                 return mtk::make_tuple(nerrors, serrors);
@@ -189,7 +207,7 @@ namespace mtk{namespace trd{
                         ++nerrors;
                     }
                 }
-                
+
                 if (nerrors >0)
                 {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_confirm_request", MTK_SS(serrors << "  " << cf << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
@@ -202,10 +220,10 @@ namespace mtk{namespace trd{
             mtk::tuple<int, std::string> check_confirm__last_confirm(const CONF_TYPE& cf, const mtk::nullable<CONF_TYPE>& last_conf)
             {
                 if (last_conf.HasValue() == false)     return mtk::make_tuple(0, std::string());
-                
+
                 std::string serrors;
                 int nerrors=0;
-                
+
                 if(cf.invariant  !=  last_conf.Get().invariant)
                 {
                     serrors += MTK_SS("cf.invariant  !=  last_conf.Get().invariant  "  <<  cf.invariant  <<  "  !=  "  <<  last_conf.Get().invariant);
@@ -234,7 +252,7 @@ namespace mtk{namespace trd{
             {
                 std::string serrors;
                 int nerrors=0;
-                
+
                 if (last_request.HasValue())
                 {
                     if(last_request.Get().invariant  !=  rj.invariant)
@@ -243,7 +261,7 @@ namespace mtk{namespace trd{
                         ++nerrors;
                     }
                 }
-                
+
                 if (nerrors >0)
                 {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_reject_request", MTK_SS(serrors << "  " << rj << " / " << last_request), mtk::alPriorCritic, mtk::alTypeNoPermisions));
@@ -255,10 +273,10 @@ namespace mtk{namespace trd{
             mtk::tuple<int, std::string> check_reject__last_confirm(const CONF_TYPE& rj, const mtk::nullable<CONF_TYPE>& last_conf)
             {
                 if (last_conf.HasValue() == false)     return mtk::make_tuple(0, std::string());
-                
+
                 std::string serrors;
                 int nerrors=0;
-                
+
                 if(last_conf.Get().invariant  !=  rj.invariant)
                 {
                     serrors += MTK_SS("last_conf.Get().invariant  !=  rj.invariant  "  <<  last_conf.Get().invariant  << "  !=  " <<  rj.invariant);
@@ -290,27 +308,27 @@ namespace mtk{namespace trd{
             template<typename EXEC_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::CF_XX_LS
             mtk::tuple<int, std::string>  check_exec__last_confirm(const EXEC_TYPE& ex, const mtk::nullable<CONF_TYPE>& last_conf)
             {
-    //            if (last_conf.HasValue() == false)    
+    //            if (last_conf.HasValue() == false)
     //            {
     //                std::string serrors = MTK_SS("execution received on non confirmated order  " << ex << " / " << last_conf);
     //                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", serrors, mtk::alPriorCritic, mtk::alTypeNoPermisions));
     //                return mtk::make_tuple(1, serrors);
     //            }
-                
+
                 std::string serrors;
                 int nerrors=0;
-                
+
                 if(last_conf.Get().invariant  !=  ex.invariant)
                 {
                     serrors += MTK_SS("last_conf.Get().invariant  !=  ex.invariant " <<  last_conf.Get().invariant  << "  !=  "  <<  ex.invariant);
                     ++nerrors;
                 }
-                if (mtk::Double(ex.total_execs.acc_quantity.GetDouble()) !=  
+                if (mtk::Double(ex.total_execs.acc_quantity.GetDouble()) !=
                             mtk::Double(ex.executed_pos.quantity.GetDouble()) + mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble()))
                 {
                     ++nerrors;
                     serrors += "  total execution received doesn't match with  execution received and last confirmated execution  ";
-                    
+
                 }
                 if (mtk::Double(ex.executed_pos.quantity.GetDouble())  >  (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble()) - mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble())))
                 {
