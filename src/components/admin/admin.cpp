@@ -355,7 +355,8 @@ namespace {
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("admin"),
-                                    mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code,
+                                    mtk::admin::msg::req_command::get_in_subject("*",           //  GSx
+                                                                             temp_process_info.location.client_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
                                                                              temp_process_info.process_uuid),
@@ -379,7 +380,8 @@ namespace {
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_commands,
                                     mtk::admin::get_url("admin"),
-                                    mtk::admin::msg::req_command::get_in_subject(temp_process_info.location.client_code,
+                                    mtk::admin::msg::req_command::get_in_subject("*",       //  GSx
+                                                                             temp_process_info.location.client_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
                                                                              temp_process_info.process_uuid),

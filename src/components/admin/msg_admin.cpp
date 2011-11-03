@@ -532,8 +532,8 @@ void pub_alarm::before_send(void) const
 
 
 
-req_command::req_command (   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line)
-    :     request_info(_request_info),   proc_info__destination(_proc_info__destination),   command_line(_command_line) 
+req_command::req_command (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _gs_from,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line)
+    :     request_info(_request_info),   gs_from(_gs_from),   proc_info__destination(_proc_info__destination),   command_line(_command_line) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -819,7 +819,7 @@ std::ostream& operator<< (std::ostream& o, const req_command & c)
 {
     o << "{ "
 
-        << "request_info:"<< c.request_info<<"  "        << "proc_info__destination:"<< c.proc_info__destination<<"  "        << "command_line:"<<   c.command_line << "  "
+        << "request_info:"<< c.request_info<<"  "        << "gs_from:"<<   c.gs_from << "  "        << "proc_info__destination:"<< c.proc_info__destination<<"  "        << "command_line:"<<   c.command_line << "  "
         << " }";
     return o;
 };
@@ -830,7 +830,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_command & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "proc_info__destination"  << YAML::Value << c.proc_info__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "gs_from"  << YAML::Value <<   c.gs_from        << YAML::Key << "proc_info__destination"  << YAML::Value << c.proc_info__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
         << YAML::EndMap;
     return o;
 };
@@ -842,6 +842,7 @@ void  operator >> (const YAML::Node& node, req_command & c)
 
 
         node["request_info"]  >> c.request_info;
+        node["gs_from"]  >> c.gs_from;
         node["proc_info__destination"]  >> c.proc_info__destination;
         node["command_line"]  >> c.command_line;
 
@@ -1011,7 +1012,7 @@ bool operator!= (const pub_alarm& a, const pub_alarm& b)
 
 bool operator== (const req_command& a, const req_command& b)
 {
-    return (          a.request_info ==  b.request_info  &&          a.proc_info__destination ==  b.proc_info__destination  &&          a.command_line ==  b.command_line  &&   true  );
+    return (          a.request_info ==  b.request_info  &&          a.gs_from ==  b.gs_from  &&          a.proc_info__destination ==  b.proc_info__destination  &&          a.command_line ==  b.command_line  &&   true  );
 };
 
 bool operator!= (const req_command& a, const req_command& b)
@@ -1429,6 +1430,14 @@ void  copy (req_command& c, const qpid::types::Variant& v)
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
+//   field_type
+
+                    it = mv.find("gsf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field gs_from on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.gs_from, it->second);
+                        //c.gs_from = it->second;
 //   sub_msg_type
 
                     it = mv.find("pd");
@@ -1457,6 +1466,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a)
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
+//  field_type
+        __internal_add2map(map, a.gs_from, std::string("gsf"));
 //  sub_msg_type
         __internal_add2map(map, a.proc_info__destination, std::string("pd"));
 //  field_type
@@ -1818,6 +1829,9 @@ qpid::messaging::Message req_command::qpidmsg_codded_as_qpid_message (const std:
 //  sub_msg_type
 //        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
         __internal_add2map(content, this->request_info, std::string("rqi"));
+//  field_type
+//        content["gsf"] = this->gs_from;
+        __internal_add2map(content, this->gs_from, std::string("gsf"));
 //  sub_msg_type
 //        content["pd"] =  qpidmsg_coded_as_qpid_Map(this->proc_info__destination);
         __internal_add2map(content, this->proc_info__destination, std::string("pd"));
@@ -1971,6 +1985,8 @@ __internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
         return req_command(
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_info*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_process_info*)0),
 //   field_type
@@ -2124,6 +2140,8 @@ pub_alarm::pub_alarm (const qpid::messaging::Message& msg)
 req_command::req_command (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
+//   field_type
+   gs_from(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    proc_info__destination(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
@@ -2275,13 +2293,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  req_command::get_in_subject (const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
+    mtk::t_qpid_filter  req_command::get_in_subject (const std::string& gs_from,const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << proc_info__destination_location_client_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".MON.COMMAND"));
+        return mtk::t_qpid_filter(MTK_SS("ALL." << gs_from << ".MON." << proc_info__destination_location_client_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".COMMAND"));
     }
     mtk::t_qpid_filter  req_command::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << this->proc_info__destination.location.client_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".MON.COMMAND"));
+        return mtk::t_qpid_filter(MTK_SS("ALL." << this->gs_from << ".MON." << this->proc_info__destination.location.client_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".COMMAND"));
     }
     /*static*/  mtk::t_qpid_address  req_command::static_get_qpid_address ()
     {

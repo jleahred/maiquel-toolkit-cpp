@@ -174,7 +174,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
                                         on_command_response,
                                         MTK_SS("cmd " << command.toStdString()))
 
-        mtk::admin::msg::req_command   command_request_msg(request_info, *it,  command.toStdString());
+        mtk::admin::msg::req_command   command_request_msg(request_info, "GS1", *it,  command.toStdString());
 
         static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(url, command_request_msg.get_qpid_address()));
         mtk::send_message_with_sender(qpid_sender, command_request_msg);

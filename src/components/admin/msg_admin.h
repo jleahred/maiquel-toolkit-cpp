@@ -309,7 +309,7 @@ public:
 
     
     // constructor
-    explicit req_command (    const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line );
+    explicit req_command (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _gs_from,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line );
     explicit req_command ( const qpid::messaging::Message& message );
     virtual ~req_command (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command"; };
@@ -322,6 +322,7 @@ public:
 
     // fields
     mtk::msg::sub_request_info                request_info; 
+    std::string                               gs_from; 
     mtk::msg::sub_process_info                proc_info__destination; 
     std::string                               command_line; 
 
@@ -334,7 +335,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& gs_from,const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 

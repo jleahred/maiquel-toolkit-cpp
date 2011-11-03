@@ -96,9 +96,10 @@ pub_alarm  [< QE:ALL_GS,  SUBJ:GS.MON.${cli_srv}.ALARM >]
 //  COMMANDS
 //-------------------------------------------------------------------
 
-req_command  [< QE:ALL_GS, SUBJ:CLI.${proc_info__destination.location.client_code}.${proc_info__destination.location.machine}.${proc_info__destination.process_name}.${proc_info__destination.process_uuid}.MON.COMMAND >]
+req_command  [< QE:ALL_GS, SUBJ:ALL.${gs_from}.MON.${proc_info__destination.location.client_code}.${proc_info__destination.location.machine}.${proc_info__destination.process_name}.${proc_info__destination.process_uuid}.COMMAND >]
 {
     request_info            (rqi)   :   mtk::msg::sub_request_info
+    gs_from                 (gsf)   :   string
 
     proc_info__destination  (pd)    :   mtk::msg::sub_process_info
     command_line            (cl)    :   string                  //  command and params
