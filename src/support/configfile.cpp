@@ -60,7 +60,7 @@ std::string GetString2ParseFromFile(const std::string& fileName)
 std::string ReplaceVariable (const std::string& value, const ConfigFile& cf)
 {
 	static int recdepth=0;		//	sé que no deben utilizar variables estáticas, aún así la utilizo y asumo toda responsabilidad (raquel)
-	
+
 	++recdepth;
 	std::string result = value;
 
@@ -70,9 +70,9 @@ std::string ReplaceVariable (const std::string& value, const ConfigFile& cf)
 		{
 			throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("too depth recursion (" << recdepth <<")  " << value << " on file " << cf.GetFileName_current()), mtk::alPriorError);
 		}
-		
+
 		mtk::RegExp re ("^([^$(]*)\\$\\(([^)]+)\\)(.*)$");
-		
+
 		while (re.Match(result))
 		{
 			mtk::Nullable<std::string> replaced = cf.GetValue(re.GetString(1));
@@ -87,7 +87,7 @@ std::string ReplaceVariable (const std::string& value, const ConfigFile& cf)
 		--recdepth;
 		throw;
 	}
-	
+
 	--recdepth;
 	return result;
 }
@@ -231,7 +231,7 @@ void ConfigFile::LoadFromFile(const std::string& _filename)
         lnodes2mantein.push_back("LIST");
         lnodes2mantein.push_back("LIST_ITEM*");
         lnodes2mantein.push_back("LIST_ITEM");
-        
+
         astConfigFile->RemoveNodesManteining(lnodes2mantein);
         is_loaded = true;
     } MTK_CATCH_RETHROW("CF_LoadFromFile", MTK_SS("on file " << filename))
@@ -351,7 +351,7 @@ mtk::Nullable<std::string> ConfigFile::GetValue(const std::string& keys) const
             bool result;
             mtk::CountPtr<AST_Node_Item>  resultNode;
             FindPropertyFromKeys(astConfigFile, keys).assign(result, resultNode);
-            
+
             if (result && resultNode->down->next->name != "VALUE")
                 throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("it's not a value " << resultNode->down->next->name << "  on " << keys), mtk::alPriorError);
 
@@ -370,7 +370,7 @@ mtk::Nullable<std::string> ConfigFile::GetValue(const std::string& keys) const
             }
         }
         return mtk::Nullable<std::string>();
-    } MTK_CATCH_RETHROW("CF_GetValue", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_GetValue", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 mtk::Nullable<mtk::list<std::string> > ConfigFile::GetList (const std::string& keys) const
@@ -383,11 +383,11 @@ mtk::Nullable<mtk::list<std::string> > ConfigFile::GetList (const std::string& k
             bool result;
             mtk::CountPtr<AST_Node_Item>  resultNode;
             FindPropertyFromKeys(astConfigFile, keys).assign(result, resultNode);
-            
+
             if (result==false || (resultNode->down->next->value == ""))
                 return mtk::Nullable<mtk::list<std::string> >();
-            
-            
+
+
             if (resultNode->down->next->name != "LIST")
                 throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("it's not a value " << resultNode->down->next->name << "  on " << keys), mtk::alPriorError);
 
@@ -403,7 +403,7 @@ mtk::Nullable<mtk::list<std::string> > ConfigFile::GetList (const std::string& k
             }
         }
         return mtk::Nullable< mtk::list<std::string> >(result_list);
-    } MTK_CATCH_RETHROW("CF_GetList", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_GetList", MTK_SS("on file " << filename<< "  path:" << keys))
 }
 
 
@@ -493,7 +493,7 @@ void ConfigFile::ModifList(const std::string& keys, const mtk::list<std::string>
     //            resultNode->down->next->down->down = firstItem;
     //        }
         }
-    } MTK_CATCH_RETHROW("CF_ModifList", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_ModifList", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 
@@ -516,8 +516,8 @@ void ConfigFile::Modif(const std::string& keys, const std::string& value, const 
                 resultNode->down->next->value = NOVALUE_SYMBOL;
             else
                 resultNode->down->next->value = value;
-                
-    } MTK_CATCH_RETHROW("CF_Modif", MTK_SS("on file " << filename))
+
+    } MTK_CATCH_RETHROW("CF_Modif", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 
@@ -541,7 +541,7 @@ void ConfigFile::ModifOrCreate(const std::string& keys, const std::string& value
                 resultNode->down->next->value = NOVALUE_SYMBOL;
             else
                 resultNode->down->next->value = value;
-    } MTK_CATCH_RETHROW("CF_ModifOrCreate", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_ModifOrCreate", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 
@@ -559,7 +559,7 @@ void ConfigFile::ModifOrCreateList(const std::string& keys, const mtk::list<std:
             CreateList(keys, list);
         else
             ModifListOfNode(keys, resultNode, list);
-    } MTK_CATCH_RETHROW("CF_ModifOrCreateList", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_ModifOrCreateList", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 
@@ -579,7 +579,7 @@ void ConfigFile::Delete(const std::string& keys)
             else
                 throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Cannot delete on keys.property [" << keys << "]"), mtk::alPriorError);
         }
-    } MTK_CATCH_RETHROW("CF_Delete", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_Delete", MTK_SS("on file " << filename<< "  path:" << keys))
 }
 
 
@@ -602,8 +602,8 @@ void   ConfigFile::Create          (const std::string& keys, const std::string& 
             //  comprobamos que no tratamos de escribir en una propiedad
             if (FindSectionFromKeys(astConfigFile, vsubkeys)._0 == true)
                 throw mtk::Alarm(MTK_HERE, "configfile", MTK_SS("Cannot write a property on a node [" << keys << "] "), mtk::alPriorError, mtk::alTypeNoPermisions);
-            
-            
+
+
             //  separamos nos nodos de la propiedad buscada
             std::string               key = vsubkeys.back();
             vsubkeys.pop_back();
@@ -625,7 +625,7 @@ void   ConfigFile::Create          (const std::string& keys, const std::string& 
         }
         else
             throw mtk::Alarm(MTK_HERE, "configfile", "On existing value", mtk::alPriorError);
-    } MTK_CATCH_RETHROW("CF_Create", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_Create", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 
@@ -679,7 +679,7 @@ void   ConfigFile::CreateList   (const std::string& keys, const mtk::list<std::s
         }
         else
             throw mtk::Alarm(MTK_HERE, "configfile", "On existing value", mtk::alPriorError);
-    } MTK_CATCH_RETHROW("CF_CreateList", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_CreateList", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 
@@ -725,7 +725,7 @@ mtk::list<std::string>  ConfigFile::GetNodes      (const std::string& keys) cons
             }
         }
         return result;
-    } MTK_CATCH_RETHROW("CF_GetNodes", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_GetNodes", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 
@@ -772,7 +772,7 @@ mtk::list< mtk::tuple<std::string, ConfigFile::enPropertyType> >  ConfigFile::Ge
         }
 
         return result;
-    } MTK_CATCH_RETHROW("CF_GetProperties", MTK_SS("on file " << filename))
+    } MTK_CATCH_RETHROW("CF_GetProperties", MTK_SS("on file " << filename << "  path:" << keys))
 }
 
 
@@ -836,7 +836,7 @@ void WriteNode(std::ostream& out, mtk::CountPtr<AST_Node_Item> node, int depth)
         else if (node->down->next->name =="LIST")
         {
             mtk::CountPtr<AST_Node_Item> current_item = node->down->next->down->down;
-            
+
             out << spaces(depth) << node->down->value << ":" << std::endl;
             out << spaces(depth) << "[" << std::endl;
             while (current_item.isValid())

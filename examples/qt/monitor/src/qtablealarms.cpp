@@ -235,10 +235,7 @@ void QTableAlarms::mouseDoubleClickEvent(QMouseEvent *event)
         this->setRowCount(0);
         mtk::list< mtk::tuple<mtk::DateTime, mtk::admin::msg::pub_alarm> >::iterator it=last_alarms.begin();
         for(; it!=last_alarms.end(); ++it)
-        {
-            std::cout << it->_1 << std::endl;
             write_alarm_msg(it->_1);
-        }
     }
 }
 
