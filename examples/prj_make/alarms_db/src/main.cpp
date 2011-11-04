@@ -33,7 +33,7 @@ void  on_alarm_received_cli(const mtk::admin::msg::pub_alarm&  ar)
             params.Add(ar.__internal_warning_control_fields->sent_date_time);
             params.Add(ar.dateTime_generated);
             params.Add(ar.alarm_id);
-            params.Add(ar.process_info.location.client_code);
+            params.Add(ar.process_info.location.broker_code);
             params.Add(ar.subject);
             params.Add(ar.message);
             params.Add(ar.priority);
@@ -58,7 +58,7 @@ void  on_alarm_received_srv(const mtk::admin::msg::pub_alarm&  ar)
             params.Add(ar.__internal_warning_control_fields->sent_date_time);
             params.Add(ar.dateTime_generated);
             params.Add(ar.alarm_id);
-            params.Add(ar.process_info.location.client_code);
+            params.Add(ar.process_info.location.broker_code);
             params.Add(ar.subject);
             params.Add(ar.message);
             params.Add(ar.priority);

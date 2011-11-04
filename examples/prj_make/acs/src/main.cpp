@@ -176,7 +176,7 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_serv_req_session_id_conf,
                                 mtk::admin::get_url("server"),
-                                mtk::acs_server::msg::req_session_id_conf::get_in_subject(),
+                                mtk::acs_server::msg::req_session_id_conf::get_in_subject("*"),
                                 mtk::acs_server::msg::req_session_id_conf,
                                 on_server_req_session_id_conf)
 
@@ -185,7 +185,7 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_serv_pub_partial_user_list_serv2acs,
                                 mtk::admin::get_url("server"),
-                                mtk::acs_server::msg::pub_partial_user_list_serv2acs::get_in_subject(),
+                                mtk::acs_server::msg::pub_partial_user_list_serv2acs::get_in_subject("*"),
                                 mtk::acs_server::msg::pub_partial_user_list_serv2acs,
                                 on_server_pub_partial_user_list_serv2acs)
 
@@ -235,15 +235,15 @@ void on_request_key_received(const mtk::acs::msg::req_login_key& req_login_key)
 {
     if(rq_login_locked==true)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("System locked  " << req_login_key.user_name << "/" << req_login_key.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("System locked  " << req_login_key.user_name << "/" << req_login_key.request_info.process_info.location.broker_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
 
 
     //  check the client code
-    if(users_manager::check_user_client_code(req_login_key.user_name, req_login_key.request_info.process_info.location.client_code) == false)
+    if(users_manager::check_user_client_code(req_login_key.user_name, req_login_key.request_info.process_info.location.broker_code) == false)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("received invalid  user_name/client_code  " << req_login_key.user_name << "/" << req_login_key.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqkeyrec", MTK_SS("received invalid  user_name/client_code  " << req_login_key.user_name << "/" << req_login_key.request_info.process_info.location.broker_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
 
@@ -269,14 +269,14 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
 {
     if(rq_login_locked==true)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("System locked  " << req_login.user_name << "/" << req_login.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("System locked  " << req_login.user_name << "/" << req_login.request_info.process_info.location.broker_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
 
     //  check the client code
-    if(users_manager::check_user_client_code(req_login.user_name, req_login.request_info.process_info.location.client_code) == false)
+    if(users_manager::check_user_client_code(req_login.user_name, req_login.request_info.process_info.location.broker_code) == false)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("received invalid  user_name/client_code  " << req_login.user_name << "/" << req_login.request_info.process_info.location.client_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogrec", MTK_SS("received invalid  user_name/client_code  " << req_login.user_name << "/" << req_login.request_info.process_info.location.broker_code), mtk::alPriorError, mtk::alTypeNoPermisions));
         return;
     }
 
@@ -315,7 +315,7 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
                                                 <<counter);
 
 
-            mtk::acs::msg::res_login::IC_session_info session_info(req_login.user_name, req_login.request_info.process_info.location.client_code,  session_id);
+            mtk::acs::msg::res_login::IC_session_info session_info(req_login.user_name, req_login.request_info.process_info.location.broker_code,  session_id);
                     //  yes, we respond with request info. It was checked previusly
 
             list_sessions_login_info->push_back(
@@ -332,7 +332,7 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
 
 
 	    //	notify servers before sending the confirmation to client
-            mtk::acs_server::msg::pub_add_user  msg_add_user  (session_info);
+            mtk::acs_server::msg::pub_add_user  msg_add_user  (mtk::admin::get_process_info().location.broker_code, session_info);
             mtk_send_message("server", msg_add_user);
 
 
@@ -378,7 +378,7 @@ void on_request_logout_received(const mtk::acs::msg::req_logout& req_logout)
         {
             if(it->keep_alive_client_info.login_confirmation.session_id ==  req_logout.request_info.req_id.session_id)
             {
-                mtk::acs_server::msg::pub_del_user msg_del_user(it->keep_alive_client_info.login_confirmation);
+                mtk::acs_server::msg::pub_del_user msg_del_user(mtk::admin::get_process_info().location.broker_code, it->keep_alive_client_info.login_confirmation);
                 it = list_sessions_login_info->erase(it);
                 mtk_send_message("server", msg_del_user);
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "rqlogoutrec", MTK_SS("deleting session " << req_logout.request_info.req_id.session_id), mtk::alPriorDebug));
@@ -430,7 +430,7 @@ void clean_timeout_requests(void)
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"cleantimeout", MTK_SS("generated logout by timeout on session... " << it->keep_alive_client_info), mtk::alPriorError));
                     //  remove from sessionid list
                     //  send logout messages to other servers
-                    mtk::acs_server::msg::pub_del_user msg_del_user(it->keep_alive_client_info.login_confirmation);
+                    mtk::acs_server::msg::pub_del_user msg_del_user(mtk::admin::get_process_info().location.broker_code, it->keep_alive_client_info.login_confirmation);
                     mtk_send_message("server", msg_del_user);
                     it = list_sessions_login_info->erase(it);
                 }
@@ -486,7 +486,7 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_cli&  c
                 if(*start_application + mtk::dtMinutes(3) > mtk::dtNowLocal())
                 {
                     list_sessions_login_info->push_back(sessions_login_info(client_keep_alive));
-                    mtk::acs_server::msg::pub_add_user  msg_add_user (client_keep_alive.login_confirmation);
+                    mtk::acs_server::msg::pub_add_user  msg_add_user (mtk::admin::get_process_info().location.broker_code, client_keep_alive.login_confirmation);
                     mtk_send_message("server", msg_add_user);
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"clikeepaliverec", MTK_SS("hot register keep alive for  " << client_keep_alive), mtk::alPriorWarning));
                 }
@@ -536,7 +536,7 @@ void on_server_req_session_id_conf(const mtk::acs_server::msg::req_session_id_co
         mtk::list<mtk::acs::msg::res_login::IC_session_info>   partial_list_users;
         mtk::acs::msg::res_login::IC_session_info  login_response_info(session_info);
         partial_list_users.push_back(login_response_info);
-        mtk::acs_server::msg::pub_partial_user_list_acs2serv msg(partial_list_users);
+        mtk::acs_server::msg::pub_partial_user_list_acs2serv msg(mtk::admin::get_process_info().location.broker_code, partial_list_users);
         mtk_send_message("server", msg);
     }
 }
@@ -563,7 +563,7 @@ void on_request_change_password_received(const mtk::acs::msg::req_change_passwor
         mtk::acs::msg::res_login::IC_session_info  session_info = get_session_info__from_session_id(req_change_password.request_info.req_id.session_id);
         if(session_info.user_name !=  req_change_password.user_name  ||  req_change_password.user_name=="")
             throw mtk::Alarm(MTK_HERE, "rqchangpwd", MTK_SS("user name doesn't match  " << req_change_password  << "   "  << session_info.user_name), mtk::alPriorError, mtk::alTypeNoPermisions);
-        else if (session_info.client_code !=  req_change_password.request_info.process_info.location.client_code)
+        else if (session_info.client_code !=  req_change_password.request_info.process_info.location.broker_code)
             throw mtk::Alarm(MTK_HERE, "rqchangpwd", MTK_SS("client code name doesn't match  " << req_change_password  << "   "  << session_info.user_name), mtk::alPriorError, mtk::alTypeNoPermisions);
 
         std::string decoded_new_password = users_manager::decode_modif_password(    req_change_password.user_name,
@@ -648,7 +648,7 @@ void timer_send_partial_login_confirmation(void)
 
             if(partial_list_users.size()>0)
             {
-                mtk::acs_server::msg::pub_partial_user_list_acs2serv msg(partial_list_users);
+                mtk::acs_server::msg::pub_partial_user_list_acs2serv msg(mtk::admin::get_process_info().location.broker_code, partial_list_users);
                 mtk_send_message("server", msg);
             }
 
@@ -677,7 +677,7 @@ void on_server_pub_partial_user_list_serv2acs(const mtk::acs_server::msg::pub_pa
         }
         if(!located)
         {
-            mtk::acs_server::msg::pub_del_user msg_del_user(session_info);
+            mtk::acs_server::msg::pub_del_user msg_del_user(mtk::admin::get_process_info().location.broker_code, session_info);
             mtk_send_message("sever",  msg_del_user);
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"acs_user_list_serv2acs", MTK_SS("Not registered sessionid, could be a concurrency behaviour sending delete  "
                                                 << session_info), mtk::alPriorError, mtk::alTypeNoPermisions));
@@ -753,7 +753,7 @@ void command_logout(const std::string& /*command*/, const std::string& params, m
 
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"rqchangpwd", MTK_SS("logout command processed for " << session_id << "  user " << it->keep_alive_client_info.login_confirmation.user_name), mtk::alPriorWarning));
             response_lines.push_back(MTK_SS("logout command processed for " << session_id << "  user " << it->keep_alive_client_info.login_confirmation.user_name));
-            mtk::acs_server::msg::pub_del_user msg_del_user(it->keep_alive_client_info.login_confirmation);
+            mtk::acs_server::msg::pub_del_user msg_del_user(mtk::admin::get_process_info().location.broker_code, it->keep_alive_client_info.login_confirmation);
             list_sessions_login_info->erase(it);
             mtk_send_message("server", msg_del_user);
             return;

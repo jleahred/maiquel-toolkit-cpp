@@ -111,9 +111,11 @@ ALL_GS::
 +
 [cols="1, 1, 3" , options=""]
 |=====================
-| ALL.<gs_name>.#  |  GS->ALL | This messages will be sent to all servers (included TS) +
+| ALL.<broker_code>.#  |  GS->ALL | This messages will be sent to all servers (included TS) +
                                 <gs_name> is the +GS+ generator of message +
                                 Necessary to filter to avoid duplicated paths
+| SYS.<broker_code>.#            |  GS->SYS |  Internal messages to spread on +SYS+ level
+
 | CLI.<cli_code>.# |  GS->CLI | confirmations, responses, ...
 | GS.<cli_code>.#  |  CLI->GS | request from client (password, grants, ...) +
                                 This format is for client request +
@@ -121,7 +123,6 @@ ALL_GS::
 | GS.#             |  ALL->GS | comunication to +GS+ from other servers
 | MK.<market>.#    |  GS->MK  | Market is used to filter for specific server +
                                 ps_conf, ps_req, ...
-| SYS.#            |  GS->SYS |  Internal messages to spread on +SYS+ level
 |=====================
 
 CLI_MK::
@@ -234,7 +235,7 @@ subgraph cluster_cimd {
 
 ALL_GS::
 
-ALL.<gs_server>.#;;
+ALL.<broker_code>.#;;
 * Messages generated on +GS+ to all clients and servers
 +
 ["graphviz", "queue_topology_all_gs__all.png"]
@@ -271,6 +272,45 @@ subgraph cluster_cimd {
 
 }
 ------------
+
+
+SYS.<broker_code>#;;
+* Messages generated on +GS+ or servers to +SYS+
++
+["graphviz", "queue_topology_all_gs__sys.png"]
+-----------
+graph queue_topology_prices
+{
+	// rankdir = LR;
+	
+subgraph cluster_cimd {
+
+   subgraph cluster_system {
+           label = "system";
+           MK GS1 GS2
+
+          MK -- { GS1, GS2 }    [dir=back];
+          GS1 -- GS2   [dir=back, style=dotted];
+          GS2 -- GS1   [dir=back, style=dotted];
+   }
+      subgraph cluster_terminal_servers {
+           label = "";
+           style=filled;
+	color=lightgrey;
+
+           {GS1, GS2} -- { TS, CS } [dir=back, style=invis]
+
+      }
+
+    CS -- CTSx [dir=back, style=dotted, style=invis]
+
+    label = "cimd";
+}
+
+
+}
+------------
+
 
 
 
@@ -391,43 +431,6 @@ subgraph cluster_cimd {
 ------------
 
 
-
-SYS.#;;
-* Messages generated on +GS+ or servers to +SYS+
-+
-["graphviz", "queue_topology_all_gs__sys.png"]
------------
-graph queue_topology_prices
-{
-	// rankdir = LR;
-	
-subgraph cluster_cimd {
-
-   subgraph cluster_system {
-           label = "system";
-           MK GS1 GS2
-
-          MK -- { GS1, GS2 }    [dir=back];
-          GS1 -- GS2   [dir=back];
-          GS2 -- GS1   [dir=back];
-   }
-      subgraph cluster_terminal_servers {
-           label = "";
-           style=filled;
-	color=lightgrey;
-
-           {GS1, GS2} -- { TS, CS } [dir=back, style=invis]
-
-      }
-
-    CS -- CTSx [dir=back, style=dotted, style=invis]
-
-    label = "cimd";
-}
-
-
-}
-------------
 
 
 

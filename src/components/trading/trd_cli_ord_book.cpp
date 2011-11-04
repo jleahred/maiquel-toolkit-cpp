@@ -160,13 +160,13 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
 
 
 
-            std::string process_client_code = mtk::admin::get_process_info().location.client_code;
-            //if(client_code == "CIMD")           client_code = "*";
+            std::string process_client_code = mtk::admin::get_process_info().location.broker_code;
+            //if(broker_code == "CIMD")           broker_code = "*";
             if(process_client_code != "CIMD"  &&  process_client_code !=  grant.key.account.client_code)
                 throw mtk::Alarm(MTK_HERE, "ord_book", MTK_SS("client code is not cimd and client account is diferent to client code "
                                         << process_client_code << "  !=  "  << grant.key.account.client_code), mtk::alPriorCritic, mtk::alTypeLogicError);
 
-            std::string client_code = grant.key.account.client_code;
+            std::string broker_code = grant.key.account.client_code;
             std::string market = grant.key.market;
             std::string account_name = grant.key.account.name;
             std::string session_id = mtk::admin::get_session_id();
@@ -174,48 +174,48 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_nw_ls,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::CF_NW_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_NW_LS::get_in_subject(broker_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_NW_LS,
                                     cf_nw_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_md_ls,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::CF_MD_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_MD_LS::get_in_subject(broker_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_MD_LS,
                                     cf_md_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_cc_ls,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::CF_CC_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_CC_LS::get_in_subject(broker_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_CC_LS,
                                     cf_cc_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.rj_nw_ls,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::RJ_NW_LS::get_in_subject(client_code, market, account_name, session_id),
+                                    mtk::trd::msg::RJ_NW_LS::get_in_subject(broker_code, market, account_name, session_id),
                                     mtk::trd::msg::RJ_NW_LS,
                                     rj_nw_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.rj_md_ls,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::RJ_MD_LS::get_in_subject(client_code, market, account_name, session_id),
+                                    mtk::trd::msg::RJ_MD_LS::get_in_subject(broker_code, market, account_name, session_id),
                                     mtk::trd::msg::RJ_MD_LS,
                                     rj_md_ls)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.rj_cc_ls,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::RJ_CC_LS::get_in_subject(client_code, market, account_name, session_id),
+                                    mtk::trd::msg::RJ_CC_LS::get_in_subject(broker_code, market, account_name, session_id),
                                     mtk::trd::msg::RJ_CC_LS,
                                     rj_cc_ls)
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_ex_ls,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::CF_EX_LS::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_EX_LS::get_in_subject(broker_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_EX_LS,
                                     cf_ex_ls)
 
@@ -224,48 +224,48 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_nw_mk,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::CF_NW_MK::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_NW_MK::get_in_subject(broker_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_NW_MK,
                                     cf_nw_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_md_mk,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::CF_MD_MK::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_MD_MK::get_in_subject(broker_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_MD_MK,
                                     cf_md_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_cc_mk,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::CF_CC_MK::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_CC_MK::get_in_subject(broker_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_CC_MK,
                                     cf_cc_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.rj_nw_mk,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::RJ_NW_MK::get_in_subject(client_code, market, account_name, session_id),
+                                    mtk::trd::msg::RJ_NW_MK::get_in_subject(broker_code, market, account_name, session_id),
                                     mtk::trd::msg::RJ_NW_MK,
                                     rj_nw_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.rj_md_mk,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::RJ_MD_MK::get_in_subject(client_code, market, account_name, session_id),
+                                    mtk::trd::msg::RJ_MD_MK::get_in_subject(broker_code, market, account_name, session_id),
                                     mtk::trd::msg::RJ_MD_MK,
                                     rj_md_mk)
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.rj_cc_mk,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::RJ_CC_MK::get_in_subject(client_code, market, account_name, session_id),
+                                    mtk::trd::msg::RJ_CC_MK::get_in_subject(broker_code, market, account_name, session_id),
                                     mtk::trd::msg::RJ_CC_MK,
                                     rj_cc_mk)
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_ex_mk,
                                     mtk::admin::get_url("client"),
-                                    mtk::trd::msg::CF_EX_MK::get_in_subject(client_code, market, account_name, "*"),
+                                    mtk::trd::msg::CF_EX_MK::get_in_subject(broker_code, market, account_name, "*"),
                                     mtk::trd::msg::CF_EX_MK,
                                     cf_ex_mk)
 

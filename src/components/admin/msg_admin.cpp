@@ -532,8 +532,35 @@ void pub_alarm::before_send(void) const
 
 
 
-req_command::req_command (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _gs_from,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line)
-    :     request_info(_request_info),   gs_from(_gs_from),   proc_info__destination(_proc_info__destination),   command_line(_command_line) 
+req_command2::req_command2 (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _sender_broker_code,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line)
+    :     request_info(_request_info),   sender_broker_code(_sender_broker_code),   proc_info__destination(_proc_info__destination),   command_line(_command_line) 
+       
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string req_command2::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void req_command2::before_send(void) const
+{
+
+}
+
+
+
+
+req_command_srv::req_command_srv ( const req_command2&  parent)
+    :  req_command2(parent) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -544,14 +571,41 @@ req_command::req_command (   const mtk::msg::sub_request_info&  _request_info,  
 
 
 
-std::string req_command::check_recomended(void) const
+std::string req_command_srv::check_recomended(void) const
 {
     std::string result;
 
     return result;
 }
 
-void req_command::before_send(void) const
+void req_command_srv::before_send(void) const
+{
+
+}
+
+
+
+
+req_command_cli::req_command_cli ( const req_command2&  parent)
+    :  req_command2(parent) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string req_command_cli::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void req_command_cli::before_send(void) const
 {
 
 }
@@ -613,8 +667,8 @@ void res_command::before_send(void) const
 
 
 
-pub_central_keep_alive::pub_central_keep_alive (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check,   const std::string&  _gs_name)
-    :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check),   gs_name(_gs_name) 
+pub_central_keep_alive::pub_central_keep_alive (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+    :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -815,36 +869,100 @@ void  operator >> (const YAML::Node& node, pub_alarm & c)
 };
 
 
-std::ostream& operator<< (std::ostream& o, const req_command & c)
+std::ostream& operator<< (std::ostream& o, const req_command2 & c)
 {
     o << "{ "
 
-        << "request_info:"<< c.request_info<<"  "        << "gs_from:"<<   c.gs_from << "  "        << "proc_info__destination:"<< c.proc_info__destination<<"  "        << "command_line:"<<   c.command_line << "  "
+        << "request_info:"<< c.request_info<<"  "        << "sender_broker_code:"<<   c.sender_broker_code << "  "        << "proc_info__destination:"<< c.proc_info__destination<<"  "        << "command_line:"<<   c.command_line << "  "
         << " }";
     return o;
 };
 
 
 
-YAML::Emitter& operator << (YAML::Emitter& o, const req_command & c)
+YAML::Emitter& operator << (YAML::Emitter& o, const req_command2 & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "gs_from"  << YAML::Value <<   c.gs_from        << YAML::Key << "proc_info__destination"  << YAML::Value << c.proc_info__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "sender_broker_code"  << YAML::Value <<   c.sender_broker_code        << YAML::Key << "proc_info__destination"  << YAML::Value << c.proc_info__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
         << YAML::EndMap;
     return o;
 };
 
 
 
-void  operator >> (const YAML::Node& node, req_command & c)
+void  operator >> (const YAML::Node& node, req_command2 & c)
 {
 
 
         node["request_info"]  >> c.request_info;
-        node["gs_from"]  >> c.gs_from;
+        node["sender_broker_code"]  >> c.sender_broker_code;
         node["proc_info__destination"]  >> c.proc_info__destination;
         node["command_line"]  >> c.command_line;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const req_command_srv & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const req_command2&>(c)  << ")" 
+
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const req_command_srv & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "req_command2" <<  YAML::Value << static_cast<const req_command2&>(c)  
+
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, req_command_srv & c)
+{
+
+    node["req_command2"]   >>   static_cast<req_command2&>(c)  ;
+
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const req_command_cli & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const req_command2&>(c)  << ")" 
+
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const req_command_cli & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "req_command2" <<  YAML::Value << static_cast<const req_command2&>(c)  
+
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, req_command_cli & c)
+{
+
+    node["req_command2"]   >>   static_cast<req_command2&>(c)  ;
+
 
 
 };
@@ -919,7 +1037,7 @@ std::ostream& operator<< (std::ostream& o, const pub_central_keep_alive & c)
 {
     o << "{ "
 
-        << "process_info:"<< c.process_info<<"  "        << "ka_interval_send:"<<   c.ka_interval_send << "  "        << "ka_interval_check:"<<   c.ka_interval_check << "  "        << "gs_name:"<<   c.gs_name << "  "
+        << "process_info:"<< c.process_info<<"  "        << "ka_interval_send:"<<   c.ka_interval_send << "  "        << "ka_interval_check:"<<   c.ka_interval_check << "  "
         << " }";
     return o;
 };
@@ -930,7 +1048,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_central_keep_alive & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check        << YAML::Key << "gs_name"  << YAML::Value <<   c.gs_name
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
         << YAML::EndMap;
     return o;
 };
@@ -944,7 +1062,6 @@ void  operator >> (const YAML::Node& node, pub_central_keep_alive & c)
         node["process_info"]  >> c.process_info;
         node["ka_interval_send"]  >> c.ka_interval_send;
         node["ka_interval_check"]  >> c.ka_interval_check;
-        node["gs_name"]  >> c.gs_name;
 
 
 };
@@ -1010,12 +1127,36 @@ bool operator!= (const pub_alarm& a, const pub_alarm& b)
 
 
 
-bool operator== (const req_command& a, const req_command& b)
+bool operator== (const req_command2& a, const req_command2& b)
 {
-    return (          a.request_info ==  b.request_info  &&          a.gs_from ==  b.gs_from  &&          a.proc_info__destination ==  b.proc_info__destination  &&          a.command_line ==  b.command_line  &&   true  );
+    return (          a.request_info ==  b.request_info  &&          a.sender_broker_code ==  b.sender_broker_code  &&          a.proc_info__destination ==  b.proc_info__destination  &&          a.command_line ==  b.command_line  &&   true  );
 };
 
-bool operator!= (const req_command& a, const req_command& b)
+bool operator!= (const req_command2& a, const req_command2& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const req_command_srv& a, const req_command_srv& b)
+{
+    return ( (static_cast<const req_command2&>(a)   ==  static_cast<const req_command2&>(b))  &&    true  );
+};
+
+bool operator!= (const req_command_srv& a, const req_command_srv& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const req_command_cli& a, const req_command_cli& b)
+{
+    return ( (static_cast<const req_command2&>(a)   ==  static_cast<const req_command2&>(b))  &&    true  );
+};
+
+bool operator!= (const req_command_cli& a, const req_command_cli& b)
 {
     return !(a==b);
 };
@@ -1048,7 +1189,7 @@ bool operator!= (const res_command& a, const res_command& b)
 
 bool operator== (const pub_central_keep_alive& a, const pub_central_keep_alive& b)
 {
-    return (          a.process_info ==  b.process_info  &&          a.ka_interval_send ==  b.ka_interval_send  &&          a.ka_interval_check ==  b.ka_interval_check  &&          a.gs_name ==  b.gs_name  &&   true  );
+    return (          a.process_info ==  b.process_info  &&          a.ka_interval_send ==  b.ka_interval_send  &&          a.ka_interval_check ==  b.ka_interval_check  &&   true  );
 };
 
 bool operator!= (const pub_central_keep_alive& a, const pub_central_keep_alive& b)
@@ -1067,7 +1208,7 @@ void  copy (pub_enter& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("cs");
+                    it = mv.find("c_s");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_srv on message pub_enter::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1108,7 +1249,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a)
 
 
 //  field_type
-        __internal_add2map(map, a.cli_srv, std::string("cs"));
+        __internal_add2map(map, a.cli_srv, std::string("c_s"));
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
@@ -1242,7 +1383,7 @@ void  copy (pub_exit& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("cs");
+                    it = mv.find("c_s");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_srv on message pub_exit::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1275,7 +1416,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit& a)
 
 
 //  field_type
-        __internal_add2map(map, a.cli_srv, std::string("cs"));
+        __internal_add2map(map, a.cli_srv, std::string("c_s"));
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
@@ -1303,7 +1444,7 @@ void  copy (pub_alarm& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("cs");
+                    it = mv.find("c_s");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_srv on message pub_alarm::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1384,7 +1525,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a)
 
 
 //  field_type
-        __internal_add2map(map, a.cli_srv, std::string("cs"));
+        __internal_add2map(map, a.cli_srv, std::string("c_s"));
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
@@ -1416,8 +1557,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (req_command& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (req_command& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (req_command2& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (req_command2& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
@@ -1426,23 +1567,23 @@ void  copy (req_command& c, const qpid::types::Variant& v)
 
                     it = mv.find("rqi");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message req_command2::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("gsf");
+                    it = mv.find("sbc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field gs_from on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sender_broker_code on message req_command2::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.gs_from, it->second);
-                        //c.gs_from = it->second;
+                        copy(c.sender_broker_code, it->second);
+                        //c.sender_broker_code = it->second;
 //   sub_msg_type
 
                     it = mv.find("pd");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field proc_info__destination on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field proc_info__destination on message req_command2::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.proc_info__destination, it->second);
                         //__internal_qpid_fill(c.proc_info__destination, it->second.asMap());
@@ -1450,7 +1591,7 @@ void  copy (req_command& c, const qpid::types::Variant& v)
 
                     it = mv.find("cl");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field command_line on message req_command::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field command_line on message req_command2::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.command_line, it->second);
                         //c.command_line = it->second;
@@ -1458,7 +1599,7 @@ void  copy (req_command& c, const qpid::types::Variant& v)
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command2& a)
 {
 
     a.before_send();
@@ -1467,7 +1608,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a)
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
-        __internal_add2map(map, a.gs_from, std::string("gsf"));
+        __internal_add2map(map, a.sender_broker_code, std::string("sbc"));
 //  sub_msg_type
         __internal_add2map(map, a.proc_info__destination, std::string("pd"));
 //  field_type
@@ -1477,7 +1618,73 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a)
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command>& a, const std::string& field)
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command2>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (req_command_srv& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (req_command_srv& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<req_command2&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command_srv& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const req_command2&>(a));
+
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_srv>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (req_command_cli& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (req_command_cli& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<req_command2&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command_cli& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const req_command2&>(a));
+
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_cli>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1609,14 +1816,6 @@ void  copy (pub_central_keep_alive& c, const qpid::types::Variant& v)
                     else
                         copy(c.ka_interval_check, it->second);
                         //c.ka_interval_check = it->second;
-//   field_type
-
-                    it = mv.find("gn");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field gs_name on message pub_central_keep_alive::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.gs_name, it->second);
-                        //c.gs_name = it->second;
 
     }
 
@@ -1633,8 +1832,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_
         __internal_add2map(map, a.ka_interval_send, std::string("kas"));
 //  field_type
         __internal_add2map(map, a.ka_interval_check, std::string("kac"));
-//  field_type
-        __internal_add2map(map, a.gs_name, std::string("gn"));
 
 
 };
@@ -1657,6 +1854,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message pub_enter::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {
@@ -1665,8 +1864,8 @@ qpid::messaging::Message pub_enter::qpidmsg_codded_as_qpid_message (const std::s
 
 
 //  field_type
-//        content["cs"] = this->cli_srv;
-        __internal_add2map(content, this->cli_srv, std::string("cs"));
+//        content["c_s"] = this->cli_srv;
+        __internal_add2map(content, this->cli_srv, std::string("c_s"));
 //  sub_msg_type
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
@@ -1751,8 +1950,8 @@ qpid::messaging::Message pub_exit::qpidmsg_codded_as_qpid_message (const std::st
 
 
 //  field_type
-//        content["cs"] = this->cli_srv;
-        __internal_add2map(content, this->cli_srv, std::string("cs"));
+//        content["c_s"] = this->cli_srv;
+        __internal_add2map(content, this->cli_srv, std::string("c_s"));
 //  sub_msg_type
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
@@ -1780,8 +1979,8 @@ qpid::messaging::Message pub_alarm::qpidmsg_codded_as_qpid_message (const std::s
 
 
 //  field_type
-//        content["cs"] = this->cli_srv;
-        __internal_add2map(content, this->cli_srv, std::string("cs"));
+//        content["c_s"] = this->cli_srv;
+        __internal_add2map(content, this->cli_srv, std::string("c_s"));
 //  sub_msg_type
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
@@ -1820,24 +2019,36 @@ qpid::messaging::Message pub_alarm::qpidmsg_codded_as_qpid_message (const std::s
 
 
 
-qpid::messaging::Message req_command::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::messaging::Message req_command_srv::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {
     qpid::messaging::Message __message;
     qpid::types::Variant::Map content;
 
+//  parent
+__internal_add2map(content, static_cast<const req_command2&>(*this));
 
-//  sub_msg_type
-//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
-        __internal_add2map(content, this->request_info, std::string("rqi"));
-//  field_type
-//        content["gsf"] = this->gs_from;
-        __internal_add2map(content, this->gs_from, std::string("gsf"));
-//  sub_msg_type
-//        content["pd"] =  qpidmsg_coded_as_qpid_Map(this->proc_info__destination);
-        __internal_add2map(content, this->proc_info__destination, std::string("pd"));
-//  field_type
-//        content["cl"] = this->command_line;
-        __internal_add2map(content, this->command_line, std::string("cl"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message req_command_cli::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const req_command2&>(*this));
+
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1893,9 +2104,6 @@ qpid::messaging::Message pub_central_keep_alive::qpidmsg_codded_as_qpid_message 
 //  field_type
 //        content["kac"] = this->ka_interval_check;
         __internal_add2map(content, this->ka_interval_check, std::string("kac"));
-//  field_type
-//        content["gn"] = this->gs_name;
-        __internal_add2map(content, this->gs_name, std::string("gn"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -1980,9 +2188,9 @@ __internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
             );
     }
     
-    req_command  __internal_get_default(req_command*)
+    req_command2  __internal_get_default(req_command2*)
     {
-        return req_command(
+        return req_command2(
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_info*)0),
 //   field_type
@@ -1991,6 +2199,20 @@ __internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
    __internal_get_default((mtk::msg::sub_process_info*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
+            );
+    }
+    
+    req_command_srv  __internal_get_default(req_command_srv*)
+    {
+        return req_command_srv(
+__internal_get_default((req_command2*)0)
+            );
+    }
+    
+    req_command_cli  __internal_get_default(req_command_cli*)
+    {
+        return req_command_cli(
+__internal_get_default((req_command2*)0)
             );
     }
     
@@ -2020,9 +2242,7 @@ __internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0),
 //   field_type
-   __internal_get_default ((mtk::dtTimeQuantity*)0),
-//   field_type
-   __internal_get_default ((std::string*)0)
+   __internal_get_default ((mtk::dtTimeQuantity*)0)
             );
     }
     
@@ -2137,15 +2357,45 @@ pub_alarm::pub_alarm (const qpid::messaging::Message& msg)
 
 
 
-req_command::req_command (const qpid::messaging::Message& msg)
+req_command2::req_command2 (const qpid::messaging::Message& msg)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
-   gs_from(__internal_get_default((std::string*)0)),
+   sender_broker_code(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    proc_info__destination(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    command_line(__internal_get_default((std::string*)0)) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+req_command_srv::req_command_srv (const qpid::messaging::Message& msg)
+    :  req_command2(msg) 
+    {
+        qpid::types::Variant::Map mv;
+        qpid::messaging::decode(msg, mv);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
+        copy(*this, map);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+req_command_cli::req_command_cli (const qpid::messaging::Message& msg)
+    :  req_command2(msg) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2199,9 +2449,7 @@ pub_central_keep_alive::pub_central_keep_alive (const qpid::messaging::Message& 
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
 //   field_type
-   ka_interval_check(__internal_get_default((mtk::dtTimeQuantity*)0)),
-//   field_type
-   gs_name(__internal_get_default((std::string*)0)) 
+   ka_interval_check(__internal_get_default((mtk::dtTimeQuantity*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
@@ -2293,19 +2541,35 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  req_command::get_in_subject (const std::string& gs_from,const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
+    mtk::t_qpid_filter  req_command_srv::get_in_subject (const std::string& sender_broker_code,const std::string& proc_info__destination_location_broker_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
     {
-        return mtk::t_qpid_filter(MTK_SS("ALL." << gs_from << ".MON." << proc_info__destination_location_client_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".COMMAND"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << sender_broker_code << ".MON." << proc_info__destination_location_broker_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".COMMAND"));
     }
-    mtk::t_qpid_filter  req_command::get_out_subject (void) const
+    mtk::t_qpid_filter  req_command_srv::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("ALL." << this->gs_from << ".MON." << this->proc_info__destination.location.client_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".COMMAND"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << this->sender_broker_code << ".MON." << this->proc_info__destination.location.broker_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".COMMAND"));
     }
-    /*static*/  mtk::t_qpid_address  req_command::static_get_qpid_address ()
+    /*static*/  mtk::t_qpid_address  req_command_srv::static_get_qpid_address ()
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_address  req_command::get_qpid_address (void) const
+    mtk::t_qpid_address  req_command_srv::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_filter  req_command_cli::get_in_subject (const std::string& proc_info__destination_location_broker_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
+    {
+        return mtk::t_qpid_filter(MTK_SS("CLI." << proc_info__destination_location_broker_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".COMMAND"));
+    }
+    mtk::t_qpid_filter  req_command_cli::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->proc_info__destination.location.broker_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".COMMAND"));
+    }
+    /*static*/  mtk::t_qpid_address  req_command_cli::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  req_command_cli::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
@@ -2325,13 +2589,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_central_keep_alive::get_in_subject (const std::string& gs_name)
+    mtk::t_qpid_filter  pub_central_keep_alive::get_in_subject (const std::string& process_info_location_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("ALL." << gs_name << ".MON.LHKA"));
+        return mtk::t_qpid_filter(MTK_SS("ALL." << process_info_location_broker_code << ".MON.LHKA"));
     }
     mtk::t_qpid_filter  pub_central_keep_alive::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("ALL." << this->gs_name << ".MON.LHKA"));
+        return mtk::t_qpid_filter(MTK_SS("ALL." << this->process_info.location.broker_code << ".MON.LHKA"));
     }
     /*static*/  mtk::t_qpid_address  pub_central_keep_alive::static_get_qpid_address ()
     {

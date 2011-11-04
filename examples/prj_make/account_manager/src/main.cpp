@@ -123,7 +123,7 @@ namespace
     void suscribe_recovery_subject(void)
     {
         std::string  request_sufix_subject = mtk::admin::get_process_info().process_uuid;
-        std::string  client_code = mtk::admin::get_process_info().location.client_code;
+        std::string  client_code = mtk::admin::get_process_info().location.broker_code;
 
         //  suscription to request key
         static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::account::msg::rq_accounts_oninit> >    hqpid_rq_accounts_oninit;
@@ -172,13 +172,13 @@ namespace
     {
         mtk::msg::sub_location      location    =   rq_accounts.request_info.process_info.location;
         std::string                 session_id  =   rq_accounts.request_info.req_id.session_id;
-        std::string                 client_code =   location.client_code;
+        std::string                 client_code =   location.broker_code;
 
         mtk::acs::msg::res_login::IC_session_info  session_info =  mtk::acs_server::synchr::get_session_info_for_session_id(session_id);
         std::string                 user_name   =  mtk::s_toUpper(session_info.user_name);
-        if(rq_accounts.request_info.process_info.location.client_code != "CIMD")
+        if(rq_accounts.request_info.process_info.location.broker_code != "CIMD")
         {
-            if(rq_accounts.request_info.process_info.location.client_code !=  session_info.client_code)
+            if(rq_accounts.request_info.process_info.location.broker_code !=  session_info.client_code)
                 throw mtk::Alarm(MTK_HERE, "accmgr", MTK_SS("Received account doesn't match with session_info account " <<
                                             rq_accounts << "   " << session_info), mtk::alPriorCritic, mtk::alTypeLogicError);
         }

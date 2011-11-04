@@ -148,7 +148,8 @@ namespace {
 
             mtk::DateTime                               start_date_time;
 
-            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command>            > hqpid_commands;
+            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command_cli>            > hqpid_commands_cli;
+            mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command_srv>            > hqpid_commands_srv;
             mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_central_keep_alive> > hqpid_central_keepalive;
 
             void                                        send_enter_and_start_keepalive(void);
@@ -194,7 +195,9 @@ namespace {
             mtk::map<std::string, mtk::CountPtr<command_info> >             map_commands;
             mtk::map<std::string/*group*/, std::string/*cmds help*/ >       map_commands_groupped_help;
 
-            void on_command_received        (const mtk::admin::msg::req_command& command_msg);
+            void on_command_received2       (const mtk::admin::msg::req_command2& command_msg);
+            void on_command_received_cli    (const mtk::admin::msg::req_command_cli& command_msg);
+            void on_command_received_srv    (const mtk::admin::msg::req_command_srv& command_msg);
             void command_help               (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_version            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_version_app        (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
@@ -353,15 +356,15 @@ namespace {
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
-                                    hqpid_commands,
+                                    hqpid_commands_cli,
                                     mtk::admin::get_url("admin"),
-                                    mtk::admin::msg::req_command::get_in_subject("*",           //  GSx
-                                                                             temp_process_info.location.client_code,
+                                    mtk::admin::msg::req_command_cli::get_in_subject(
+                                                                             temp_process_info.location.broker_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
                                                                              temp_process_info.process_uuid),
-                                    mtk::admin::msg::req_command,
-                                    on_command_received)
+                                    mtk::admin::msg::req_command_cli,
+                                    on_command_received_cli)
 
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
@@ -373,20 +376,21 @@ namespace {
         else
         {
             mon_subject_role = "SRV";
-            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("SYS", mtk::GetMachineCode()), app_name,
+            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location(get_mandatory_property("ADMIN.SERVER.broker_code"),
+                                                            mtk::GetMachineCode()), app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())), app_version));
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
-                                    hqpid_commands,
+                                    hqpid_commands_srv,
                                     mtk::admin::get_url("admin"),
-                                    mtk::admin::msg::req_command::get_in_subject("*",       //  GSx
-                                                                             temp_process_info.location.client_code,
+                                    mtk::admin::msg::req_command_srv::get_in_subject("*",       //  GSx   origin_broker_code
+                                                                             temp_process_info.location.broker_code,
                                                                              temp_process_info.location.machine,
                                                                              temp_process_info.process_name,
                                                                              temp_process_info.process_uuid),
-                                    mtk::admin::msg::req_command,
-                                    on_command_received)
+                                    mtk::admin::msg::req_command_srv,
+                                    on_command_received_srv)
 
             MTK_QPID_RECEIVER_CONNECT_THIS(
                                     hqpid_central_keepalive,
@@ -396,9 +400,9 @@ namespace {
                                     on_central_ka_received)
         }
         if(role == "server")
-            mtk::set_control_fluct_key(MTK_SS(process_info.location.client_code << "." << process_info.location.machine));
+            mtk::set_control_fluct_key(MTK_SS(process_info.location.broker_code << "." << process_info.location.machine));
         else
-            mtk::set_control_fluct_key(MTK_SS("_" << process_info.location.client_code << "." << process_info.location.machine));
+            mtk::set_control_fluct_key(MTK_SS("_" << process_info.location.broker_code << "." << process_info.location.machine));
 
 
         full_initialized = true;
@@ -727,7 +731,7 @@ namespace {
         return result;
     }
 
-    void admin_status::on_command_received(const mtk::admin::msg::req_command& command_msg)
+    void admin_status::on_command_received2(const mtk::admin::msg::req_command2& command_msg)
     {
         mtk::list<std::string>  response_lines;
         std::string command;
@@ -831,6 +835,16 @@ namespace {
                                         command_msg.request_info,
                                         data_list)
     }
+
+    void admin_status::on_command_received_cli(const mtk::admin::msg::req_command_cli& command_msg)
+    {
+        on_command_received2(command_msg);
+    }
+    void admin_status::on_command_received_srv(const mtk::admin::msg::req_command_srv& command_msg)
+    {
+        on_command_received2(command_msg);
+    }
+
 
     void admin_status::command_help(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
     {
@@ -973,7 +987,7 @@ namespace {
 
     mtk::msg::sub_control_fluct     admin_status::get_control_fluct_info(void)
     {
-        return mtk::msg::sub_control_fluct(MTK_SS(process_info.location.client_code << "." << process_info.location.machine), mtk::dtNowLocal());
+        return mtk::msg::sub_control_fluct(MTK_SS(process_info.location.broker_code << "." << process_info.location.machine), mtk::dtNowLocal());
     }
     void  admin_status::check_control_fluct(const mtk::msg::sub_control_fluct&  cf)
     {

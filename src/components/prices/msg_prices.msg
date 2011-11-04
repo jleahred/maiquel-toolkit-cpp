@@ -76,7 +76,7 @@ sub_full_product_info_optionals [< >]
 //    REQUEST/RESPONSE
 //---------------------------------------------------------------------
 
-req_product_info [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.${product_code.market}.REQPI >]
+req_product_info [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.broker_code}.${product_code.market}.REQPI >]
 {
     request_info        (rqi)       :   mtk::msg::sub_request_info
 
@@ -85,7 +85,7 @@ req_product_info [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.clie
 
 
 
-res_product_info   [< QE:CLI_MK, SUBJ:CLI.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.PRC.RESPI >]
+res_product_info   [< QE:CLI_MK, SUBJ:CLI.${response_info.request_info.process_info.location.broker_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.PRC.RESPI >]
 {
     response_info   (rsi)       :   mtk::msg::sub_r_response
 

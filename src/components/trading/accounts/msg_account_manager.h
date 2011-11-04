@@ -168,7 +168,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -219,7 +219,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& gen_response_location_broker_code,const std::string& gen_response_location_session_id);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -321,7 +321,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_client_code,const std::string& request_sufix_subjetc);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code,const std::string& request_sufix_subjetc);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 

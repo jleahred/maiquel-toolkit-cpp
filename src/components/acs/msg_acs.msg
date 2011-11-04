@@ -29,21 +29,21 @@ END_INIT
 
 
 
-req_login_key [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.ACS.RQK >]
+req_login_key [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.broker_code}.ACS.RQK >]
 {
     request_info    (rqi)        :   mtk::msg::sub_request_info
 
     user_name       (un)         :   string
 }
 
-res_login_key [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RSK >]
+res_login_key [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.broker_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RSK >]
 {
     response_info   (rsi)   :   mtk::msg::sub_r_response
     key             (k)     :   string
 }
 
 
-req_login [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.ACS.RQL >]
+req_login [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.broker_code}.ACS.RQL >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
 
@@ -54,7 +54,7 @@ req_login [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code
 
 
 
-res_login   [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RESLOGIN >]
+res_login   [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.broker_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RESLOGIN >]
 {
     response_info   (rsi)       :   mtk::msg::sub_r_response
 
@@ -69,7 +69,7 @@ res_login   [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.loc
 
 
 
-conf_logout [< QE:ALL_GS, SUBJ:CLI.${location.client_code}.${location.machine}.${session_id}.CONFLOGOUT >]
+conf_logout [< QE:ALL_GS, SUBJ:CLI.${location.broker_code}.${location.machine}.${session_id}.CONFLOGOUT >]
 {
     location        (lc)    :   mtk::msg::sub_location
     session_id      (sid)   :   string
@@ -78,7 +78,7 @@ conf_logout [< QE:ALL_GS, SUBJ:CLI.${location.client_code}.${location.machine}.$
 }
 
 
-req_logout [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.ACS.RQLO >]
+req_logout [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.broker_code}.ACS.RQLO >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
 }
@@ -91,7 +91,7 @@ req_logout [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_cod
 //---------------------------------------------
 
 
-req_change_password [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.ACS.RQCP >]
+req_change_password [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.broker_code}.ACS.RQCP >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
 
@@ -104,7 +104,7 @@ req_change_password [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.c
 
 
 
-res_change_password    [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RESLCP >]
+res_change_password    [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.broker_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RESLCP >]
 {
     response_info   (rsi)       :   mtk::msg::sub_r_response
 

@@ -167,13 +167,13 @@ namespace {
         mtk::msg::sub_request_info  ri (mtk::admin::get_request_info());
 
         static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::account::msg::conf_add_accounts> >    hqpid_add_accounts;
-        std::string  client_code = ri.process_info.location.client_code;
+        std::string  broker_code = ri.process_info.location.broker_code;
         std::string  session_id = ri.req_id.session_id;
 
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_add_accounts,
                                 mtk::admin::get_url("client"),
-                                mtk::trd::account::msg::conf_add_accounts::get_in_subject(client_code, session_id),
+                                mtk::trd::account::msg::conf_add_accounts::get_in_subject(broker_code, session_id),
                                 mtk::trd::account::msg::conf_add_accounts,
                                 on_add_accounts)
 

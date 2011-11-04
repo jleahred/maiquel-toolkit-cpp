@@ -43,7 +43,7 @@ public:
 
     
     // constructor
-    explicit pub_add_user (    const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
+    explicit pub_add_user (    const std::string&  _sender_broker_code,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
     explicit pub_add_user ( const qpid::messaging::Message& message );
     virtual ~pub_add_user (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_add_user"; };
@@ -55,6 +55,7 @@ public:
     
 
     // fields
+    std::string                               sender_broker_code; 
     mtk::acs::msg::res_login::IC_session_info  login_confirmation; 
 
 
@@ -66,7 +67,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject ();
+    static mtk::t_qpid_filter  get_in_subject (const std::string& sender_broker_code);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -93,7 +94,7 @@ public:
 
     
     // constructor
-    explicit pub_del_user (    const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
+    explicit pub_del_user (    const std::string&  _sender_broker_code,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
     explicit pub_del_user ( const qpid::messaging::Message& message );
     virtual ~pub_del_user (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_del_user"; };
@@ -105,6 +106,7 @@ public:
     
 
     // fields
+    std::string                               sender_broker_code; 
     mtk::acs::msg::res_login::IC_session_info  login_confirmation; 
 
 
@@ -116,7 +118,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject ();
+    static mtk::t_qpid_filter  get_in_subject (const std::string& sender_broker_code);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -143,7 +145,7 @@ public:
 
     
     // constructor
-    explicit req_session_id_conf (    const std::string&  _session_id,   const mtk::msg::sub_process_info&  _from );
+    explicit req_session_id_conf (    const std::string&  _sender_broker_code,   const std::string&  _session_id,   const mtk::msg::sub_process_info&  _from );
     explicit req_session_id_conf ( const qpid::messaging::Message& message );
     virtual ~req_session_id_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_session_id_conf"; };
@@ -155,6 +157,7 @@ public:
     
 
     // fields
+    std::string                               sender_broker_code; 
     std::string                               session_id; 
     mtk::msg::sub_process_info                from; 
 
@@ -167,7 +170,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject ();
+    static mtk::t_qpid_filter  get_in_subject (const std::string& sender_broker_code);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -194,7 +197,7 @@ public:
 
     
     // constructor
-    explicit pub_partial_user_list_acs2serv (    const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
+    explicit pub_partial_user_list_acs2serv (    const std::string&  _sender_broker_code,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
     explicit pub_partial_user_list_acs2serv ( const qpid::messaging::Message& message );
     virtual ~pub_partial_user_list_acs2serv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_acs2serv"; };
@@ -206,6 +209,7 @@ public:
     
 
     // fields
+    std::string                               sender_broker_code; 
     mtk::list<mtk::acs::msg::res_login::IC_session_info >  list_login_confirmation; 
 
 
@@ -217,7 +221,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject ();
+    static mtk::t_qpid_filter  get_in_subject (const std::string& sender_broker_code);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -244,7 +248,7 @@ public:
 
     
     // constructor
-    explicit pub_partial_user_list_serv2acs (    const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
+    explicit pub_partial_user_list_serv2acs (    const std::string&  _sender_broker_code,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
     explicit pub_partial_user_list_serv2acs ( const qpid::messaging::Message& message );
     virtual ~pub_partial_user_list_serv2acs (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_serv2acs"; };
@@ -256,6 +260,7 @@ public:
     
 
     // fields
+    std::string                               sender_broker_code; 
     mtk::list<mtk::acs::msg::res_login::IC_session_info >  list_login_confirmation; 
 
 
@@ -267,7 +272,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject ();
+    static mtk::t_qpid_filter  get_in_subject (const std::string& sender_broker_code);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -368,7 +373,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 

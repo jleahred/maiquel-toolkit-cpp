@@ -41,7 +41,7 @@ public:
 
     
     // constructor
-    explicit sub_location (    const std::string&  _client_code,   const std::string&  _machine );
+    explicit sub_location (    const std::string&  _broker_code,   const std::string&  _machine );
     explicit sub_location ( const qpid::messaging::Message& message );
     virtual ~sub_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_location"; };
@@ -53,7 +53,7 @@ public:
     
 
     // fields
-    std::string                               client_code; 
+    std::string                               broker_code; 
     std::string                               machine; 
 
 
@@ -326,7 +326,7 @@ public:
 
     
     // constructor
-    explicit sub_gen_response_location (    const std::string&  _session_id,   const std::string&  _client_code );
+    explicit sub_gen_response_location (    const std::string&  _session_id,   const std::string&  _broker_code );
     explicit sub_gen_response_location ( const qpid::messaging::Message& message );
     virtual ~sub_gen_response_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_gen_response_location"; };
@@ -339,7 +339,7 @@ public:
 
     // fields
     std::string                               session_id; 
-    std::string                               client_code; 
+    std::string                               broker_code; 
 
 
 

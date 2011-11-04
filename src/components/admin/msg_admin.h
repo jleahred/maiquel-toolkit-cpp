@@ -300,20 +300,69 @@ private:
 
 
 //-------------------------------
-//      req_command
+//      req_command2
 //-------------------------------    
-class req_command     
+class req_command2     
 {
 public:
     //  inner classes
 
     
     // constructor
-    explicit req_command (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _gs_from,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line );
-    explicit req_command ( const qpid::messaging::Message& message );
-    virtual ~req_command (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "req_command"; };
-    static  std::string static_get_message_type_as_string(void)        { return "req_command"; };
+    explicit req_command2 (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _sender_broker_code,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line );
+    explicit req_command2 ( const qpid::messaging::Message& message );
+    virtual ~req_command2 (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "req_command2"; };
+    static  std::string static_get_message_type_as_string(void)        { return "req_command2"; };
+
+    
+    
+    
+    
+
+    // fields
+    mtk::msg::sub_request_info                request_info; 
+    std::string                               sender_broker_code; 
+    mtk::msg::sub_process_info                proc_info__destination; 
+    std::string                               command_line; 
+
+
+
+    //  ADDRESS info
+
+
+
+    //  subject info
+    
+
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      req_command_srv
+//-------------------------------    
+class req_command_srv        :  public  req_command2
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit req_command_srv (  const req_command2&  parent );
+    explicit req_command_srv ( const qpid::messaging::Message& message );
+    virtual ~req_command_srv (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "req_command_srv"; };
+    static  std::string static_get_message_type_as_string(void)        { return "req_command_srv"; };
 
     
     
@@ -321,10 +370,6 @@ public:
     
 
     // fields
-    mtk::msg::sub_request_info                request_info; 
-    std::string                               gs_from; 
-    mtk::msg::sub_process_info                proc_info__destination; 
-    std::string                               command_line; 
 
 
 
@@ -335,7 +380,56 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& gs_from,const std::string& proc_info__destination_location_client_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& sender_broker_code,const std::string& proc_info__destination_location_broker_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      req_command_cli
+//-------------------------------    
+class req_command_cli        :  public  req_command2
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit req_command_cli (  const req_command2&  parent );
+    explicit req_command_cli ( const qpid::messaging::Message& message );
+    virtual ~req_command_cli (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "req_command_cli"; };
+    static  std::string static_get_message_type_as_string(void)        { return "req_command_cli"; };
+
+    
+    
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
+
+    // fields
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& proc_info__destination_location_broker_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -459,7 +553,7 @@ public:
 
     
     // constructor
-    explicit pub_central_keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check,   const std::string&  _gs_name );
+    explicit pub_central_keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit pub_central_keep_alive ( const qpid::messaging::Message& message );
     virtual ~pub_central_keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_central_keep_alive"; };
@@ -474,7 +568,6 @@ public:
     mtk::msg::sub_process_info                process_info; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
-    std::string                               gs_name; 
 
 
 
@@ -485,7 +578,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& gs_name);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -540,12 +633,26 @@ bool operator!= (const pub_exit& a, const pub_exit& b);
 bool operator== (const pub_alarm& a, const pub_alarm& b);
 bool operator!= (const pub_alarm& a, const pub_alarm& b);
 
-    std::ostream& operator<< (std::ostream& o, const req_command & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const req_command & c);
-   void           operator >> (const YAML::Node& n,       req_command & c);
+    std::ostream& operator<< (std::ostream& o, const req_command2 & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const req_command2 & c);
+   void           operator >> (const YAML::Node& n,       req_command2 & c);
 
-bool operator== (const req_command& a, const req_command& b);
-bool operator!= (const req_command& a, const req_command& b);
+bool operator== (const req_command2& a, const req_command2& b);
+bool operator!= (const req_command2& a, const req_command2& b);
+
+    std::ostream& operator<< (std::ostream& o, const req_command_srv & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const req_command_srv & c);
+   void           operator >> (const YAML::Node& n,       req_command_srv & c);
+
+bool operator== (const req_command_srv& a, const req_command_srv& b);
+bool operator!= (const req_command_srv& a, const req_command_srv& b);
+
+    std::ostream& operator<< (std::ostream& o, const req_command_cli & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const req_command_cli & c);
+   void           operator >> (const YAML::Node& n,       req_command_cli & c);
+
+bool operator== (const req_command_cli& a, const req_command_cli& b);
+bool operator!= (const req_command_cli& a, const req_command_cli& b);
 
     std::ostream& operator<< (std::ostream& o, const sub_command_rd & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_command_rd & c);
@@ -588,10 +695,18 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_alarm& a
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_alarm>& a, const std::string& field);
 void copy (pub_alarm& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_command& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const req_command& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command>& a, const std::string& field);
-void copy (req_command& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_command2& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command2& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command2>& a, const std::string& field);
+void copy (req_command2& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_command_srv& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command_srv& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_srv>& a, const std::string& field);
+void copy (req_command_srv& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_command_cli& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command_cli& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_cli>& a, const std::string& field);
+void copy (req_command_cli& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_command_rd& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_command_rd>& a, const std::string& field);
@@ -615,7 +730,11 @@ void copy (pub_central_keep_alive& a, const qpid::types::Variant& map);
     
     pub_alarm  __internal_get_default(pub_alarm *);
     
-    req_command  __internal_get_default(req_command *);
+    req_command2  __internal_get_default(req_command2 *);
+    
+    req_command_srv  __internal_get_default(req_command_srv *);
+    
+    req_command_cli  __internal_get_default(req_command_cli *);
     
     sub_command_rd  __internal_get_default(sub_command_rd *);
     
@@ -642,7 +761,8 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_keep_alive_s
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_keep_alive_cli)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_exit)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_alarm)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::req_command)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::req_command_srv)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::req_command_cli)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::res_command)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::admin::msg::pub_central_keep_alive)
 

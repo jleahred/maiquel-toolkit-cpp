@@ -21,7 +21,7 @@ sub_tree_item [< KEY:branch >]
 
 
 
-req_tree_items [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client_code}.TREE.REQ >]
+req_tree_items [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.broker_code}.TREE.REQ >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
     branch          (br)        :   string      //  separated by dots, the full path branch (not included the current item name)
@@ -29,7 +29,7 @@ req_tree_items [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.client
 
 
 
-res_tree_items [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.client_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RSTI >]
+res_tree_items [< QE:ALL_GS, SUBJ:CLI.${response_info.request_info.process_info.location.broker_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RSTI >]
 {
     response_info   (rsi)   :   mtk::msg::sub_r_response
     item            (it)    :   sub_tree_item

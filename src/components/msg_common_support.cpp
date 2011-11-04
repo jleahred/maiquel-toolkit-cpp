@@ -2,15 +2,15 @@
 #include "msg_common.h"
 
 #include "support/alarm.h"
- 
+
 namespace mtk {
       namespace msg {
 
-          
-          
+
+
 bool is_valid (const sub_request_info& req_info)
 {
-    if (req_info.req_id.session_id ==""  ||  req_info.req_id.req_code==""  ||  req_info.process_info.location.client_code =="")
+    if (req_info.req_id.session_id ==""  ||  req_info.req_id.req_code==""  ||  req_info.process_info.location.broker_code =="")
         return false;
     return true;
 }

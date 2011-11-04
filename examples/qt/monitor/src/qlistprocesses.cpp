@@ -10,7 +10,7 @@ namespace {
 
     QString get_composed_name(const mtk::msg::sub_process_info& l)
     {
-        return MTK_SS(l.location.client_code << "." << l.location.machine << "." << l.process_name).c_str();
+        return MTK_SS(l.location.broker_code << "." << l.location.machine << "." << l.process_name).c_str();
     }
 
 };

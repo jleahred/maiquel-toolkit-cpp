@@ -174,10 +174,25 @@ void QPlainTextEditCommand::send_command(const QString& command)
                                         on_command_response,
                                         MTK_SS("cmd " << command.toStdString()))
 
-        mtk::admin::msg::req_command   command_request_msg(request_info, "GS1", *it,  command.toStdString());
 
-        static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(url, command_request_msg.get_qpid_address()));
-        mtk::send_message_with_sender(qpid_sender, command_request_msg);
+        mtk::admin::msg::req_command2   c2(request_info, "GS1", *it, command.toStdString());
+        if(cli_srv == "SRV")
+        {
+            mtk::admin::msg::req_command_srv   command_request_msg( c2 );
+
+            static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(url, command_request_msg.get_qpid_address()));
+            mtk::send_message_with_sender(qpid_sender, command_request_msg);
+        }
+        else if(cli_srv == "CLI")
+        {
+            mtk::admin::msg::req_command_cli   command_request_msg( c2 );
+
+            static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(url, command_request_msg.get_qpid_address()));
+            mtk::send_message_with_sender(qpid_sender, command_request_msg);
+        }
+        else
+            throw mtk::Alarm(MTK_HERE, "monitor","not defined cli_srv", mtk::alPriorError);
+
         if(write_into)
             write_into->appendPlainText(MTK_SS(std::endl << std::endl << std::endl << "SENDING COMMAND  "
                                                << command.toStdString() << "  -->  " << *it

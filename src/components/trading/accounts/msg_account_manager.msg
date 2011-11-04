@@ -31,13 +31,13 @@ sub_grant  [<KEY:key>]
 
 
 
-rq_accounts  [<  QE:CLI_MK, SUBJ:MK.${request_info.process_info.location.client_code}.ALL.ACCOUNT.RQGRANTS  >]
+rq_accounts  [<  QE:CLI_MK, SUBJ:MK.${request_info.process_info.location.broker_code}.ALL.ACCOUNT.RQGRANTS  >]
 {
     request_info    (rqi)       :   mtk::msg::sub_request_info
 }
 
 
-conf_add_accounts [<  QE:CLI_MK, SUBJ:CLI.${gen_response_location.client_code}.${gen_response_location.session_id}.CONF_ADD_ACOUNTS  >]
+conf_add_accounts [<  QE:CLI_MK, SUBJ:CLI.${gen_response_location.broker_code}.${gen_response_location.session_id}.CONF_ADD_ACOUNTS  >]
     //  this "generic" subject let us send accounts with no request from user
     //  it's possible receive account several times
 {
@@ -64,7 +64,7 @@ pub_accmgr_init [<  QE:CLI_MK, SUBJ:CLI.ALL.ACCMGRINIT   >]
 }
 
 
-rq_accounts_oninit  [<  QE:CLI_MK, SUBJ:MK.${request_info.process_info.location.client_code}.ALL.${request_sufix_subjetc}.ACCOUNTS.RQINIT   >]  // mising market on subject
+rq_accounts_oninit  [<  QE:CLI_MK, SUBJ:MK.${request_info.process_info.location.broker_code}.ALL.${request_sufix_subjetc}.ACCOUNTS.RQINIT   >]  // mising market on subject
 {
     request_info                (rqi)       :   mtk::msg::sub_request_info
     request_sufix_subjetc       (rss)       :   string

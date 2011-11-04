@@ -2215,13 +2215,13 @@ res_change_password::IC_change_password_info::IC_change_password_info (const qpi
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_info_process_info_location_client_code)
+mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_client_code << ".ACS.RQK"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_broker_code << ".ACS.RQK"));
     }
     mtk::t_qpid_filter  req_login_key::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.client_code << ".ACS.RQK"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.broker_code << ".ACS.RQK"));
     }
     /*static*/  mtk::t_qpid_address  req_login_key::static_get_qpid_address ()
     {
@@ -2231,13 +2231,13 @@ mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_in
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  res_login_key::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
+    mtk::t_qpid_filter  res_login_key::get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSK"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << response_info_request_info_process_info_location_broker_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSK"));
     }
     mtk::t_qpid_filter  res_login_key::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSK"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->response_info.request_info.process_info.location.broker_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSK"));
     }
     /*static*/  mtk::t_qpid_address  res_login_key::static_get_qpid_address ()
     {
@@ -2247,13 +2247,13 @@ mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_in
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  req_login::get_in_subject (const std::string& request_info_process_info_location_client_code)
+    mtk::t_qpid_filter  req_login::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_client_code << ".ACS.RQL"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_broker_code << ".ACS.RQL"));
     }
     mtk::t_qpid_filter  req_login::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.client_code << ".ACS.RQL"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.broker_code << ".ACS.RQL"));
     }
     /*static*/  mtk::t_qpid_address  req_login::static_get_qpid_address ()
     {
@@ -2263,13 +2263,13 @@ mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_in
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  res_login::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
+    mtk::t_qpid_filter  res_login::get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RESLOGIN"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << response_info_request_info_process_info_location_broker_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RESLOGIN"));
     }
     mtk::t_qpid_filter  res_login::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RESLOGIN"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->response_info.request_info.process_info.location.broker_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RESLOGIN"));
     }
     /*static*/  mtk::t_qpid_address  res_login::static_get_qpid_address ()
     {
@@ -2279,13 +2279,13 @@ mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_in
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  conf_logout::get_in_subject (const std::string& location_client_code,const std::string& location_machine,const std::string& session_id)
+    mtk::t_qpid_filter  conf_logout::get_in_subject (const std::string& location_broker_code,const std::string& location_machine,const std::string& session_id)
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << location_client_code << "." << location_machine << "." << session_id << ".CONFLOGOUT"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << location_broker_code << "." << location_machine << "." << session_id << ".CONFLOGOUT"));
     }
     mtk::t_qpid_filter  conf_logout::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << this->location.client_code << "." << this->location.machine << "." << this->session_id << ".CONFLOGOUT"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->location.broker_code << "." << this->location.machine << "." << this->session_id << ".CONFLOGOUT"));
     }
     /*static*/  mtk::t_qpid_address  conf_logout::static_get_qpid_address ()
     {
@@ -2295,13 +2295,13 @@ mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_in
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  req_logout::get_in_subject (const std::string& request_info_process_info_location_client_code)
+    mtk::t_qpid_filter  req_logout::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_client_code << ".ACS.RQLO"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_broker_code << ".ACS.RQLO"));
     }
     mtk::t_qpid_filter  req_logout::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.client_code << ".ACS.RQLO"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.broker_code << ".ACS.RQLO"));
     }
     /*static*/  mtk::t_qpid_address  req_logout::static_get_qpid_address ()
     {
@@ -2311,13 +2311,13 @@ mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_in
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  req_change_password::get_in_subject (const std::string& request_info_process_info_location_client_code)
+    mtk::t_qpid_filter  req_change_password::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_client_code << ".ACS.RQCP"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_broker_code << ".ACS.RQCP"));
     }
     mtk::t_qpid_filter  req_change_password::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.client_code << ".ACS.RQCP"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->request_info.process_info.location.broker_code << ".ACS.RQCP"));
     }
     /*static*/  mtk::t_qpid_address  req_change_password::static_get_qpid_address ()
     {
@@ -2327,13 +2327,13 @@ mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_in
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  res_change_password::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
+    mtk::t_qpid_filter  res_change_password::get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RESLCP"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << response_info_request_info_process_info_location_broker_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RESLCP"));
     }
     mtk::t_qpid_filter  res_change_password::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RESLCP"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->response_info.request_info.process_info.location.broker_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RESLCP"));
     }
     /*static*/  mtk::t_qpid_address  res_change_password::static_get_qpid_address ()
     {

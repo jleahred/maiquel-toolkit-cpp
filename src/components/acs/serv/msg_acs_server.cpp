@@ -397,8 +397,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-pub_add_user::pub_add_user (   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation)
-    :     login_confirmation(_login_confirmation) 
+pub_add_user::pub_add_user (   const std::string&  _sender_broker_code,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation)
+    :     sender_broker_code(_sender_broker_code),   login_confirmation(_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -424,8 +424,8 @@ void pub_add_user::before_send(void) const
 
 
 
-pub_del_user::pub_del_user (   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation)
-    :     login_confirmation(_login_confirmation) 
+pub_del_user::pub_del_user (   const std::string&  _sender_broker_code,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation)
+    :     sender_broker_code(_sender_broker_code),   login_confirmation(_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -451,8 +451,8 @@ void pub_del_user::before_send(void) const
 
 
 
-req_session_id_conf::req_session_id_conf (   const std::string&  _session_id,   const mtk::msg::sub_process_info&  _from)
-    :     session_id(_session_id),   from(_from) 
+req_session_id_conf::req_session_id_conf (   const std::string&  _sender_broker_code,   const std::string&  _session_id,   const mtk::msg::sub_process_info&  _from)
+    :     sender_broker_code(_sender_broker_code),   session_id(_session_id),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -478,8 +478,8 @@ void req_session_id_conf::before_send(void) const
 
 
 
-pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation)
-    :     list_login_confirmation(_list_login_confirmation) 
+pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (   const std::string&  _sender_broker_code,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation)
+    :     sender_broker_code(_sender_broker_code),   list_login_confirmation(_list_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -505,8 +505,8 @@ void pub_partial_user_list_acs2serv::before_send(void) const
 
 
 
-pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation)
-    :     list_login_confirmation(_list_login_confirmation) 
+pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (   const std::string&  _sender_broker_code,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation)
+    :     sender_broker_code(_sender_broker_code),   list_login_confirmation(_list_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -589,7 +589,7 @@ std::ostream& operator<< (std::ostream& o, const pub_add_user & c)
 {
     o << "{ "
 
-        << "login_confirmation:"<< c.login_confirmation<<"  "
+        << "sender_broker_code:"<<   c.sender_broker_code << "  "        << "login_confirmation:"<< c.login_confirmation<<"  "
         << " }";
     return o;
 };
@@ -600,7 +600,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_add_user & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "login_confirmation"  << YAML::Value << c.login_confirmation
+        << YAML::Key << "sender_broker_code"  << YAML::Value <<   c.sender_broker_code        << YAML::Key << "login_confirmation"  << YAML::Value << c.login_confirmation
         << YAML::EndMap;
     return o;
 };
@@ -611,6 +611,7 @@ void  operator >> (const YAML::Node& node, pub_add_user & c)
 {
 
 
+        node["sender_broker_code"]  >> c.sender_broker_code;
         node["login_confirmation"]  >> c.login_confirmation;
 
 
@@ -621,7 +622,7 @@ std::ostream& operator<< (std::ostream& o, const pub_del_user & c)
 {
     o << "{ "
 
-        << "login_confirmation:"<< c.login_confirmation<<"  "
+        << "sender_broker_code:"<<   c.sender_broker_code << "  "        << "login_confirmation:"<< c.login_confirmation<<"  "
         << " }";
     return o;
 };
@@ -632,7 +633,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_del_user & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "login_confirmation"  << YAML::Value << c.login_confirmation
+        << YAML::Key << "sender_broker_code"  << YAML::Value <<   c.sender_broker_code        << YAML::Key << "login_confirmation"  << YAML::Value << c.login_confirmation
         << YAML::EndMap;
     return o;
 };
@@ -643,6 +644,7 @@ void  operator >> (const YAML::Node& node, pub_del_user & c)
 {
 
 
+        node["sender_broker_code"]  >> c.sender_broker_code;
         node["login_confirmation"]  >> c.login_confirmation;
 
 
@@ -653,7 +655,7 @@ std::ostream& operator<< (std::ostream& o, const req_session_id_conf & c)
 {
     o << "{ "
 
-        << "session_id:"<<   c.session_id << "  "        << "from:"<< c.from<<"  "
+        << "sender_broker_code:"<<   c.sender_broker_code << "  "        << "session_id:"<<   c.session_id << "  "        << "from:"<< c.from<<"  "
         << " }";
     return o;
 };
@@ -664,7 +666,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_session_id_conf & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "from"  << YAML::Value << c.from
+        << YAML::Key << "sender_broker_code"  << YAML::Value <<   c.sender_broker_code        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "from"  << YAML::Value << c.from
         << YAML::EndMap;
     return o;
 };
@@ -675,6 +677,7 @@ void  operator >> (const YAML::Node& node, req_session_id_conf & c)
 {
 
 
+        node["sender_broker_code"]  >> c.sender_broker_code;
         node["session_id"]  >> c.session_id;
         node["from"]  >> c.from;
 
@@ -686,7 +689,7 @@ std::ostream& operator<< (std::ostream& o, const pub_partial_user_list_acs2serv 
 {
     o << "{ "
 
-        << "list_login_confirmation:"<< c.list_login_confirmation<<"  "
+        << "sender_broker_code:"<<   c.sender_broker_code << "  "        << "list_login_confirmation:"<< c.list_login_confirmation<<"  "
         << " }";
     return o;
 };
@@ -697,7 +700,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_partial_user_list_acs2se
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "list_login_confirmation"  << YAML::Value << c.list_login_confirmation
+        << YAML::Key << "sender_broker_code"  << YAML::Value <<   c.sender_broker_code        << YAML::Key << "list_login_confirmation"  << YAML::Value << c.list_login_confirmation
         << YAML::EndMap;
     return o;
 };
@@ -708,6 +711,7 @@ void  operator >> (const YAML::Node& node, pub_partial_user_list_acs2serv & c)
 {
 
 
+        node["sender_broker_code"]  >> c.sender_broker_code;
         node["list_login_confirmation"]  >> c.list_login_confirmation;
 
 
@@ -718,7 +722,7 @@ std::ostream& operator<< (std::ostream& o, const pub_partial_user_list_serv2acs 
 {
     o << "{ "
 
-        << "list_login_confirmation:"<< c.list_login_confirmation<<"  "
+        << "sender_broker_code:"<<   c.sender_broker_code << "  "        << "list_login_confirmation:"<< c.list_login_confirmation<<"  "
         << " }";
     return o;
 };
@@ -729,7 +733,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_partial_user_list_serv2a
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "list_login_confirmation"  << YAML::Value << c.list_login_confirmation
+        << YAML::Key << "sender_broker_code"  << YAML::Value <<   c.sender_broker_code        << YAML::Key << "list_login_confirmation"  << YAML::Value << c.list_login_confirmation
         << YAML::EndMap;
     return o;
 };
@@ -740,6 +744,7 @@ void  operator >> (const YAML::Node& node, pub_partial_user_list_serv2acs & c)
 {
 
 
+        node["sender_broker_code"]  >> c.sender_broker_code;
         node["list_login_confirmation"]  >> c.list_login_confirmation;
 
 
@@ -813,7 +818,7 @@ void  operator >> (const YAML::Node& node, res_user_list & c)
 
 bool operator== (const pub_add_user& a, const pub_add_user& b)
 {
-    return (          a.login_confirmation ==  b.login_confirmation  &&   true  );
+    return (          a.sender_broker_code ==  b.sender_broker_code  &&          a.login_confirmation ==  b.login_confirmation  &&   true  );
 };
 
 bool operator!= (const pub_add_user& a, const pub_add_user& b)
@@ -825,7 +830,7 @@ bool operator!= (const pub_add_user& a, const pub_add_user& b)
 
 bool operator== (const pub_del_user& a, const pub_del_user& b)
 {
-    return (          a.login_confirmation ==  b.login_confirmation  &&   true  );
+    return (          a.sender_broker_code ==  b.sender_broker_code  &&          a.login_confirmation ==  b.login_confirmation  &&   true  );
 };
 
 bool operator!= (const pub_del_user& a, const pub_del_user& b)
@@ -837,7 +842,7 @@ bool operator!= (const pub_del_user& a, const pub_del_user& b)
 
 bool operator== (const req_session_id_conf& a, const req_session_id_conf& b)
 {
-    return (          a.session_id ==  b.session_id  &&          a.from ==  b.from  &&   true  );
+    return (          a.sender_broker_code ==  b.sender_broker_code  &&          a.session_id ==  b.session_id  &&          a.from ==  b.from  &&   true  );
 };
 
 bool operator!= (const req_session_id_conf& a, const req_session_id_conf& b)
@@ -849,7 +854,7 @@ bool operator!= (const req_session_id_conf& a, const req_session_id_conf& b)
 
 bool operator== (const pub_partial_user_list_acs2serv& a, const pub_partial_user_list_acs2serv& b)
 {
-    return (          a.list_login_confirmation ==  b.list_login_confirmation  &&   true  );
+    return (          a.sender_broker_code ==  b.sender_broker_code  &&          a.list_login_confirmation ==  b.list_login_confirmation  &&   true  );
 };
 
 bool operator!= (const pub_partial_user_list_acs2serv& a, const pub_partial_user_list_acs2serv& b)
@@ -861,7 +866,7 @@ bool operator!= (const pub_partial_user_list_acs2serv& a, const pub_partial_user
 
 bool operator== (const pub_partial_user_list_serv2acs& a, const pub_partial_user_list_serv2acs& b)
 {
-    return (          a.list_login_confirmation ==  b.list_login_confirmation  &&   true  );
+    return (          a.sender_broker_code ==  b.sender_broker_code  &&          a.list_login_confirmation ==  b.list_login_confirmation  &&   true  );
 };
 
 bool operator!= (const pub_partial_user_list_serv2acs& a, const pub_partial_user_list_serv2acs& b)
@@ -902,6 +907,14 @@ void  copy (pub_add_user& c, const qpid::types::Variant& v)
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("sbc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sender_broker_code on message pub_add_user::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.sender_broker_code, it->second);
+                        //c.sender_broker_code = it->second;
 //   sub_msg_type
 
                     it = mv.find("lgc");
@@ -920,6 +933,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_add_user& a)
     a.before_send();
 
 
+//  field_type
+        __internal_add2map(map, a.sender_broker_code, std::string("sbc"));
 //  sub_msg_type
         __internal_add2map(map, a.login_confirmation, std::string("lgc"));
 
@@ -943,6 +958,14 @@ void  copy (pub_del_user& c, const qpid::types::Variant& v)
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("sbc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sender_broker_code on message pub_del_user::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.sender_broker_code, it->second);
+                        //c.sender_broker_code = it->second;
 //   sub_msg_type
 
                     it = mv.find("lgc");
@@ -961,6 +984,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_del_user& a)
     a.before_send();
 
 
+//  field_type
+        __internal_add2map(map, a.sender_broker_code, std::string("sbc"));
 //  sub_msg_type
         __internal_add2map(map, a.login_confirmation, std::string("lgc"));
 
@@ -984,6 +1009,14 @@ void  copy (req_session_id_conf& c, const qpid::types::Variant& v)
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("sbc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sender_broker_code on message req_session_id_conf::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.sender_broker_code, it->second);
+                        //c.sender_broker_code = it->second;
 //   field_type
 
                     it = mv.find("sid");
@@ -1011,6 +1044,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_session_id_co
 
 
 //  field_type
+        __internal_add2map(map, a.sender_broker_code, std::string("sbc"));
+//  field_type
         __internal_add2map(map, a.session_id, std::string("sid"));
 //  sub_msg_type
         __internal_add2map(map, a.from, std::string("from"));
@@ -1035,6 +1070,14 @@ void  copy (pub_partial_user_list_acs2serv& c, const qpid::types::Variant& v)
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("sbc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sender_broker_code on message pub_partial_user_list_acs2serv::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.sender_broker_code, it->second);
+                        //c.sender_broker_code = it->second;
 //   sub_msg_type
 
                     it = mv.find("slc");
@@ -1053,6 +1096,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_partial_user_
     a.before_send();
 
 
+//  field_type
+        __internal_add2map(map, a.sender_broker_code, std::string("sbc"));
 //  sub_msg_type
         __internal_add2map(map, a.list_login_confirmation, std::string("slc"));
 
@@ -1076,6 +1121,14 @@ void  copy (pub_partial_user_list_serv2acs& c, const qpid::types::Variant& v)
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("sbc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sender_broker_code on message pub_partial_user_list_serv2acs::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.sender_broker_code, it->second);
+                        //c.sender_broker_code = it->second;
 //   sub_msg_type
 
                     it = mv.find("slc");
@@ -1094,6 +1147,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_partial_user_
     a.before_send();
 
 
+//  field_type
+        __internal_add2map(map, a.sender_broker_code, std::string("sbc"));
 //  sub_msg_type
         __internal_add2map(map, a.list_login_confirmation, std::string("slc"));
 
@@ -1215,6 +1270,9 @@ qpid::messaging::Message pub_add_user::qpidmsg_codded_as_qpid_message (const std
     qpid::types::Variant::Map content;
 
 
+//  field_type
+//        content["sbc"] = this->sender_broker_code;
+        __internal_add2map(content, this->sender_broker_code, std::string("sbc"));
 //  sub_msg_type
 //        content["lgc"] =  qpidmsg_coded_as_qpid_Map(this->login_confirmation);
         __internal_add2map(content, this->login_confirmation, std::string("lgc"));
@@ -1238,6 +1296,9 @@ qpid::messaging::Message pub_del_user::qpidmsg_codded_as_qpid_message (const std
     qpid::types::Variant::Map content;
 
 
+//  field_type
+//        content["sbc"] = this->sender_broker_code;
+        __internal_add2map(content, this->sender_broker_code, std::string("sbc"));
 //  sub_msg_type
 //        content["lgc"] =  qpidmsg_coded_as_qpid_Map(this->login_confirmation);
         __internal_add2map(content, this->login_confirmation, std::string("lgc"));
@@ -1261,6 +1322,9 @@ qpid::messaging::Message req_session_id_conf::qpidmsg_codded_as_qpid_message (co
     qpid::types::Variant::Map content;
 
 
+//  field_type
+//        content["sbc"] = this->sender_broker_code;
+        __internal_add2map(content, this->sender_broker_code, std::string("sbc"));
 //  field_type
 //        content["sid"] = this->session_id;
         __internal_add2map(content, this->session_id, std::string("sid"));
@@ -1287,6 +1351,9 @@ qpid::messaging::Message pub_partial_user_list_acs2serv::qpidmsg_codded_as_qpid_
     qpid::types::Variant::Map content;
 
 
+//  field_type
+//        content["sbc"] = this->sender_broker_code;
+        __internal_add2map(content, this->sender_broker_code, std::string("sbc"));
 //  sub_msg_type
 //        content["slc"] =  qpidmsg_coded_as_qpid_Map(this->list_login_confirmation);
         __internal_add2map(content, this->list_login_confirmation, std::string("slc"));
@@ -1310,6 +1377,9 @@ qpid::messaging::Message pub_partial_user_list_serv2acs::qpidmsg_codded_as_qpid_
     qpid::types::Variant::Map content;
 
 
+//  field_type
+//        content["sbc"] = this->sender_broker_code;
+        __internal_add2map(content, this->sender_broker_code, std::string("sbc"));
 //  sub_msg_type
 //        content["slc"] =  qpidmsg_coded_as_qpid_Map(this->list_login_confirmation);
         __internal_add2map(content, this->list_login_confirmation, std::string("slc"));
@@ -1379,6 +1449,8 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     pub_add_user  __internal_get_default(pub_add_user*)
     {
         return pub_add_user(
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)
             );
@@ -1387,6 +1459,8 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     pub_del_user  __internal_get_default(pub_del_user*)
     {
         return pub_del_user(
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)
             );
@@ -1397,6 +1471,8 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
         return req_session_id_conf(
 //   field_type
    __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_process_info*)0)
             );
@@ -1405,6 +1481,8 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     pub_partial_user_list_acs2serv  __internal_get_default(pub_partial_user_list_acs2serv*)
     {
         return pub_partial_user_list_acs2serv(
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)
             );
@@ -1413,6 +1491,8 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     pub_partial_user_list_serv2acs  __internal_get_default(pub_partial_user_list_serv2acs*)
     {
         return pub_partial_user_list_serv2acs(
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)
             );
@@ -1438,7 +1518,9 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     
 
 pub_add_user::pub_add_user (const qpid::messaging::Message& msg)
-    :  //   sub_msg_type
+    :  //   field_type
+   sender_broker_code(__internal_get_default((std::string*)0)),
+//   sub_msg_type
    login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
         qpid::types::Variant::Map mv;
@@ -1454,7 +1536,9 @@ pub_add_user::pub_add_user (const qpid::messaging::Message& msg)
 
 
 pub_del_user::pub_del_user (const qpid::messaging::Message& msg)
-    :  //   sub_msg_type
+    :  //   field_type
+   sender_broker_code(__internal_get_default((std::string*)0)),
+//   sub_msg_type
    login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
         qpid::types::Variant::Map mv;
@@ -1471,6 +1555,8 @@ pub_del_user::pub_del_user (const qpid::messaging::Message& msg)
 
 req_session_id_conf::req_session_id_conf (const qpid::messaging::Message& msg)
     :  //   field_type
+   sender_broker_code(__internal_get_default((std::string*)0)),
+//   field_type
    session_id(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    from(__internal_get_default((mtk::msg::sub_process_info*)0)) 
@@ -1488,7 +1574,9 @@ req_session_id_conf::req_session_id_conf (const qpid::messaging::Message& msg)
 
 
 pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::messaging::Message& msg)
-    :  //   sub_msg_type
+    :  //   field_type
+   sender_broker_code(__internal_get_default((std::string*)0)),
+//   sub_msg_type
    list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
         qpid::types::Variant::Map mv;
@@ -1504,7 +1592,9 @@ pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::mess
 
 
 pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (const qpid::messaging::Message& msg)
-    :  //   sub_msg_type
+    :  //   field_type
+   sender_broker_code(__internal_get_default((std::string*)0)),
+//   sub_msg_type
    list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
         qpid::types::Variant::Map mv;
@@ -1551,13 +1641,13 @@ res_user_list::res_user_list (const qpid::messaging::Message& msg)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-mtk::t_qpid_filter  pub_add_user::get_in_subject ()
+mtk::t_qpid_filter  pub_add_user::get_in_subject (const std::string& sender_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.AU"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << sender_broker_code << ".SRV.ACS_SYNC.AU"));
     }
     mtk::t_qpid_filter  pub_add_user::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.AU"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << this->sender_broker_code << ".SRV.ACS_SYNC.AU"));
     }
     /*static*/  mtk::t_qpid_address  pub_add_user::static_get_qpid_address ()
     {
@@ -1567,13 +1657,13 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_del_user::get_in_subject ()
+    mtk::t_qpid_filter  pub_del_user::get_in_subject (const std::string& sender_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.DU"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << sender_broker_code << ".SRV.ACS_SYNC.DU"));
     }
     mtk::t_qpid_filter  pub_del_user::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.DU"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << this->sender_broker_code << ".SRV.ACS_SYNC.DU"));
     }
     /*static*/  mtk::t_qpid_address  pub_del_user::static_get_qpid_address ()
     {
@@ -1583,13 +1673,13 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  req_session_id_conf::get_in_subject ()
+    mtk::t_qpid_filter  req_session_id_conf::get_in_subject (const std::string& sender_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.ACS.ASK_SESSID"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << sender_broker_code << ".ACS.ASK_SESSID"));
     }
     mtk::t_qpid_filter  req_session_id_conf::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.ACS.ASK_SESSID"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->sender_broker_code << ".ACS.ASK_SESSID"));
     }
     /*static*/  mtk::t_qpid_address  req_session_id_conf::static_get_qpid_address ()
     {
@@ -1599,13 +1689,13 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_partial_user_list_acs2serv::get_in_subject ()
+    mtk::t_qpid_filter  pub_partial_user_list_acs2serv::get_in_subject (const std::string& sender_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.PUL"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << sender_broker_code << ".SRV.ACS_SYNC.PUL"));
     }
     mtk::t_qpid_filter  pub_partial_user_list_acs2serv::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS_SYNC.PUL"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << this->sender_broker_code << ".SRV.ACS_SYNC.PUL"));
     }
     /*static*/  mtk::t_qpid_address  pub_partial_user_list_acs2serv::static_get_qpid_address ()
     {
@@ -1615,13 +1705,13 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_partial_user_list_serv2acs::get_in_subject ()
+    mtk::t_qpid_filter  pub_partial_user_list_serv2acs::get_in_subject (const std::string& sender_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.ACS.ACS_SYNC.PUL"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << sender_broker_code << ".ACS.ACS_SYNC.PUL"));
     }
     mtk::t_qpid_filter  pub_partial_user_list_serv2acs::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.ACS.ACS_SYNC.PUL"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << this->sender_broker_code << ".ACS.ACS_SYNC.PUL"));
     }
     /*static*/  mtk::t_qpid_address  pub_partial_user_list_serv2acs::static_get_qpid_address ()
     {
@@ -1647,13 +1737,13 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject ()
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  res_user_list::get_in_subject (const std::string& response_info_request_info_process_info_location_client_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
+    mtk::t_qpid_filter  res_user_list::get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS." << response_info_request_info_process_info_location_client_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSUL"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << response_info_request_info_process_info_location_broker_code << ".SRV.ACS." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSUL"));
     }
     mtk::t_qpid_filter  res_user_list::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS.SRV.ACS." << this->response_info.request_info.process_info.location.client_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSUL"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << this->response_info.request_info.process_info.location.broker_code << ".SRV.ACS." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSUL"));
     }
     /*static*/  mtk::t_qpid_address  res_user_list::static_get_qpid_address ()
     {

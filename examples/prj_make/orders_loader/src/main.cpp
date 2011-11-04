@@ -236,7 +236,7 @@ void send_orders_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
         {
             if(rq.market  == it->second.invariant.product_code.market &&  rq.account == it->second.invariant.account)
             {
-                mtk::msg::sub_gen_response_location gen_response_location (rq.request_info.req_id.session_id, rq.request_info.process_info.location.client_code);
+                mtk::msg::sub_gen_response_location gen_response_location (rq.request_info.req_id.session_id, rq.request_info.process_info.location.broker_code);
                 STATUS_TYPE   msg(it->second, gen_response_location);
                 msg.orig_control_fluct = mtk::msg::sub_control_fluct("__none__", mtk::dtNowLocal());
                 mtk_send_message("client", msg);

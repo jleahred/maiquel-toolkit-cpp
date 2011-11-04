@@ -122,7 +122,7 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
     {
         QTableWidgetItem* new_item = new QTableWidgetItem();
-        new_item->setText(MTK_SS(alarm_msg.process_info.location.client_code << "."
+        new_item->setText(MTK_SS(alarm_msg.process_info.location.broker_code << "."
                                     << alarm_msg.process_info.location.machine << "."
                                     << alarm_msg.process_info.process_name << "."
                                     << alarm_msg.process_info.process_uuid << "."

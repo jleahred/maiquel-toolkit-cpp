@@ -2806,13 +2806,13 @@ CF_ST_MK::CF_ST_MK (const qpid::messaging::Message& msg)
     {
         return mtk::t_qpid_address(MTK_SS("CLI_MK"));
     }
-    mtk::t_qpid_filter  CF_ST_MK::get_in_subject (const std::string& gen_response_location_client_code,const std::string& gen_response_location_session_id)
+    mtk::t_qpid_filter  CF_ST_MK::get_in_subject (const std::string& gen_response_location_broker_code,const std::string& gen_response_location_session_id)
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << gen_response_location_client_code << "." << gen_response_location_session_id << ".STATUS_CF"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << gen_response_location_broker_code << "." << gen_response_location_session_id << ".STATUS_CF"));
     }
     mtk::t_qpid_filter  CF_ST_MK::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("CLI." << this->gen_response_location.client_code << "." << this->gen_response_location.session_id << ".STATUS_CF"));
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->gen_response_location.broker_code << "." << this->gen_response_location.session_id << ".STATUS_CF"));
     }
     /*static*/  mtk::t_qpid_address  CF_ST_MK::static_get_qpid_address ()
     {

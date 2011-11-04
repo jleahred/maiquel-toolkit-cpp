@@ -14,7 +14,7 @@ END_INIT
 
 sub_location  [< >]
 {
-    client_code     (cc)  : string
+    broker_code     (bc)  : string          //  on clients, it will be the client code (used in broker filters)
     machine         (mc)  : string
 }
 
@@ -88,11 +88,10 @@ sub_r_response [< >]
 
 //  it will be used in generic responses subject
 //  letting to send "responses" or confirmations not requested
-//  ex:  CF_ST_LS  [< I:CF_XX_LS,  SUBJ:CONF.${gen_response_location.client_code}.STATUS_CF.${gen_response_location.session_id}  >]
 sub_gen_response_location [< >]
 {
     session_id      (sid) :     string
-    client_code     (cc)  :     string
+    broker_code     (bc)  :     string      //  on clients, it will be the client code used on filter
 }
 
 

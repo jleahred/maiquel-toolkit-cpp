@@ -203,7 +203,8 @@ namespace   //anonymous
         MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::acs_server::msg::res_user_list,
                                         mtk::list<mtk::acs::msg::res_login::IC_session_info>,
                                         mtk::admin::get_url("server"),
-                                        mtk::acs_server::msg::res_user_list::get_in_subject(request_info.process_info.location.client_code,
+                                        mtk::acs_server::msg::res_user_list::get_in_subject(
+                                                request_info.process_info.location.broker_code,
                                                 msg_request_user_list.request_info.process_info.location.machine,
                                                 msg_request_user_list.request_info.process_info.process_uuid,
                                                 msg_request_user_list.request_info.req_id.session_id,
@@ -228,7 +229,8 @@ namespace   //anonymous
         }
         else
         {
-            mtk::acs_server::msg::req_session_id_conf  msg(session_id, mtk::admin::get_process_info());
+            mtk::msg::sub_process_info  pi = mtk::admin::get_process_info();
+            mtk::acs_server::msg::req_session_id_conf  msg(pi.location.broker_code, session_id, pi);
             mtk_send_message("server", msg);
             return  mtk::acs::msg::res_login::IC_session_info("", "", "");
         }
@@ -263,14 +265,14 @@ namespace   //anonymous
         MTK_QPID_RECEIVER_CONNECT_F(
                                 handle_pub_add_user,
                                 mtk::admin::get_url("server"),
-                                mtk::acs_server::msg::pub_add_user::get_in_subject(),
+                                mtk::acs_server::msg::pub_add_user::get_in_subject("*"),
                                 mtk::acs_server::msg::pub_add_user,
                                 __received_add_session)
         static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::acs_server::msg::pub_del_user> > handle_pub_del_user;
         MTK_QPID_RECEIVER_CONNECT_F(
                                 handle_pub_del_user,
                                 mtk::admin::get_url("server"),
-                                mtk::acs_server::msg::pub_del_user::get_in_subject(),
+                                mtk::acs_server::msg::pub_del_user::get_in_subject("*"),
                                 mtk::acs_server::msg::pub_del_user,
                                 __received_del_session)
     }
@@ -305,7 +307,7 @@ namespace   //anonymous
 
                 if(partial_list_users.size()>0)
                 {
-                    mtk::acs_server::msg::pub_partial_user_list_serv2acs msg(partial_list_users);
+                    mtk::acs_server::msg::pub_partial_user_list_serv2acs msg(mtk::admin::get_process_info().location.broker_code, partial_list_users);
                     mtk_send_message("server", msg);
                 }
 
@@ -327,7 +329,7 @@ namespace   //anonymous
         MTK_QPID_RECEIVER_CONNECT_F(
                                 handle_pub_partial_user_list_acs2serv,
                                 mtk::admin::get_url("server"),
-                                mtk::acs_server::msg::pub_partial_user_list_acs2serv::get_in_subject(),
+                                mtk::acs_server::msg::pub_partial_user_list_acs2serv::get_in_subject("*"),
                                 mtk::acs_server::msg::pub_partial_user_list_acs2serv,
                                 __received_partial_session_list)
     }

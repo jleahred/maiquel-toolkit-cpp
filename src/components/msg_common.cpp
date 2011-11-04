@@ -396,8 +396,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_location::sub_location (   const std::string&  _client_code,   const std::string&  _machine)
-    :     client_code(_client_code),   machine(_machine) 
+sub_location::sub_location (   const std::string&  _broker_code,   const std::string&  _machine)
+    :     broker_code(_broker_code),   machine(_machine) 
        
     {  
         std::string cr = check_recomended ();  
@@ -558,8 +558,8 @@ void sub_r_response::before_send(void) const
 
 
 
-sub_gen_response_location::sub_gen_response_location (   const std::string&  _session_id,   const std::string&  _client_code)
-    :     session_id(_session_id),   client_code(_client_code) 
+sub_gen_response_location::sub_gen_response_location (   const std::string&  _session_id,   const std::string&  _broker_code)
+    :     session_id(_session_id),   broker_code(_broker_code) 
        
     {  
         std::string cr = check_recomended ();  
@@ -615,7 +615,7 @@ std::ostream& operator<< (std::ostream& o, const sub_location & c)
 {
     o << "{ "
 
-        << "client_code:"<<   c.client_code << "  "        << "machine:"<<   c.machine << "  "
+        << "broker_code:"<<   c.broker_code << "  "        << "machine:"<<   c.machine << "  "
         << " }";
     return o;
 };
@@ -626,7 +626,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_location & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code        << YAML::Key << "machine"  << YAML::Value <<   c.machine
+        << YAML::Key << "broker_code"  << YAML::Value <<   c.broker_code        << YAML::Key << "machine"  << YAML::Value <<   c.machine
         << YAML::EndMap;
     return o;
 };
@@ -637,7 +637,7 @@ void  operator >> (const YAML::Node& node, sub_location & c)
 {
 
 
-        node["client_code"]  >> c.client_code;
+        node["broker_code"]  >> c.broker_code;
         node["machine"]  >> c.machine;
 
 
@@ -816,7 +816,7 @@ std::ostream& operator<< (std::ostream& o, const sub_gen_response_location & c)
 {
     o << "{ "
 
-        << "session_id:"<<   c.session_id << "  "        << "client_code:"<<   c.client_code << "  "
+        << "session_id:"<<   c.session_id << "  "        << "broker_code:"<<   c.broker_code << "  "
         << " }";
     return o;
 };
@@ -827,7 +827,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_gen_response_location & 
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "client_code"  << YAML::Value <<   c.client_code
+        << YAML::Key << "session_id"  << YAML::Value <<   c.session_id        << YAML::Key << "broker_code"  << YAML::Value <<   c.broker_code
         << YAML::EndMap;
     return o;
 };
@@ -839,7 +839,7 @@ void  operator >> (const YAML::Node& node, sub_gen_response_location & c)
 
 
         node["session_id"]  >> c.session_id;
-        node["client_code"]  >> c.client_code;
+        node["broker_code"]  >> c.broker_code;
 
 
 };
@@ -880,7 +880,7 @@ void  operator >> (const YAML::Node& node, sub_product_code & c)
 
 bool operator== (const sub_location& a, const sub_location& b)
 {
-    return (          a.client_code ==  b.client_code  &&          a.machine ==  b.machine  &&   true  );
+    return (          a.broker_code ==  b.broker_code  &&          a.machine ==  b.machine  &&   true  );
 };
 
 bool operator!= (const sub_location& a, const sub_location& b)
@@ -952,7 +952,7 @@ bool operator!= (const sub_r_response& a, const sub_r_response& b)
 
 bool operator== (const sub_gen_response_location& a, const sub_gen_response_location& b)
 {
-    return (          a.session_id ==  b.session_id  &&          a.client_code ==  b.client_code  &&   true  );
+    return (          a.session_id ==  b.session_id  &&          a.broker_code ==  b.broker_code  &&   true  );
 };
 
 bool operator!= (const sub_gen_response_location& a, const sub_gen_response_location& b)
@@ -983,12 +983,12 @@ void  copy (sub_location& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("cc");
+                    it = mv.find("bc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field client_code on message sub_location::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field broker_code on message sub_location::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.client_code, it->second);
-                        //c.client_code = it->second;
+                        copy(c.broker_code, it->second);
+                        //c.broker_code = it->second;
 //   field_type
 
                     it = mv.find("mc");
@@ -1008,7 +1008,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_location& a)
 
 
 //  field_type
-        __internal_add2map(map, a.client_code, std::string("cc"));
+        __internal_add2map(map, a.broker_code, std::string("bc"));
 //  field_type
         __internal_add2map(map, a.machine, std::string("mc"));
 
@@ -1327,12 +1327,12 @@ void  copy (sub_gen_response_location& c, const qpid::types::Variant& v)
                         //c.session_id = it->second;
 //   field_type
 
-                    it = mv.find("cc");
+                    it = mv.find("bc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field client_code on message sub_gen_response_location::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field broker_code on message sub_gen_response_location::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.client_code, it->second);
-                        //c.client_code = it->second;
+                        copy(c.broker_code, it->second);
+                        //c.broker_code = it->second;
 
     }
 
@@ -1346,7 +1346,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_gen_response_
 //  field_type
         __internal_add2map(map, a.session_id, std::string("sid"));
 //  field_type
-        __internal_add2map(map, a.client_code, std::string("cc"));
+        __internal_add2map(map, a.broker_code, std::string("bc"));
 
 
 };
@@ -1509,7 +1509,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 sub_location::sub_location (const qpid::messaging::Message& msg)
     :  //   field_type
-   client_code(__internal_get_default((std::string*)0)),
+   broker_code(__internal_get_default((std::string*)0)),
 //   field_type
    machine(__internal_get_default((std::string*)0)) 
     {
@@ -1625,7 +1625,7 @@ sub_gen_response_location::sub_gen_response_location (const qpid::messaging::Mes
     :  //   field_type
    session_id(__internal_get_default((std::string*)0)),
 //   field_type
-   client_code(__internal_get_default((std::string*)0)) 
+   broker_code(__internal_get_default((std::string*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
