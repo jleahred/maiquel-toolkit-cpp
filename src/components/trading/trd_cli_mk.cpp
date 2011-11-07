@@ -89,7 +89,19 @@
 
 
 
-#define CHECK_EXEC     //nerrors += check_confirm__last_confirm(ex, last_confirmation());
+#define CHECK_EXEC     \
+        {   \
+            std::string s_errors;   \
+            int   n_errors;   \
+            tresult = check_exec__last_confirm      (ex, last_confirmation());   \
+            tresult.assign(n_errors, s_errors);   \
+            ci->__serrors += tresult._1;    \
+            if (nerrors >0)   \
+            {   \
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_exec__last_confirm", s_errors, mtk::alPriorCritic, mtk::alTypeNoPermisions));   \
+                ci->__serrors += s_errors;   \
+            }   \
+        }    \
 
 
 

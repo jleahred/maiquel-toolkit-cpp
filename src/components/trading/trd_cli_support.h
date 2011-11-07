@@ -235,11 +235,14 @@ namespace mtk{namespace trd{
                     serrors += "  modified  market order id";
                 }
 
-                if (mtk::Double(cf.total_execs.acc_quantity.GetDouble()) > (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble())))
+
+                if (mtk::Double(cf.total_execs.acc_quantity.GetDouble())  >  (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble())))
                 {
                     ++nerrors;
-                    serrors += "  over execution!!!  ";
+                    serrors += MTK_SS("  received confirmation with total_exed_qty > last_conf.market_pos.quantty  "  <<  cf.total_execs.acc_quantity  <<
+                                        "   "  <<  last_conf.Get().market_pos.quantity.GetDouble());
                 }
+
                 if (nerrors >0)
                 {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_confirm__last_confirm", MTK_SS(serrors << "  " << cf << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
@@ -298,6 +301,12 @@ namespace mtk{namespace trd{
                     ++nerrors;
                 }
 
+                if (mtk::Double(rj.total_execs.acc_quantity.GetDouble())  >  (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble())))
+                {
+                    ++nerrors;
+                    serrors += MTK_SS("  received confirmation with total_exed_qty > last_conf.market_pos.quantty  "  <<  rj.total_execs.acc_quantity  <<
+                                        "   "  <<  last_conf.Get().market_pos.quantity.GetDouble());
+                }
                 if (nerrors >0)
                 {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_reject__last_confirm", MTK_SS(serrors << "  " << rj << " / " << last_conf), mtk::alPriorCritic, mtk::alTypeNoPermisions));
@@ -305,15 +314,11 @@ namespace mtk{namespace trd{
                 }
                 return mtk::make_tuple(nerrors, serrors);
             }
+
             template<typename EXEC_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::CF_XX_LS
             mtk::tuple<int, std::string>  check_exec__last_confirm(const EXEC_TYPE& ex, const mtk::nullable<CONF_TYPE>& last_conf)
             {
-    //            if (last_conf.HasValue() == false)
-    //            {
-    //                std::string serrors = MTK_SS("execution received on non confirmated order  " << ex << " / " << last_conf);
-    //                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.cpp", serrors, mtk::alPriorCritic, mtk::alTypeNoPermisions));
-    //                return mtk::make_tuple(1, serrors);
-    //            }
+                if (last_conf.HasValue() == false)     return mtk::make_tuple(0, std::string());
 
                 std::string serrors;
                 int nerrors=0;

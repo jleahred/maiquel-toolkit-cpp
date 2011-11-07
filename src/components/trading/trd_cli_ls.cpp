@@ -89,7 +89,33 @@
 
 
 
-#define CHECK_EXEC     //nerrors += check_confirm__last_confirm(ex, last_confirmation());
+#define CHECK_EXEC     \
+        {   \
+            std::string s_errors;   \
+            int   n_errors;   \
+            tresult = check_exec__last_confirm      (ex, last_confirmation());   \
+            tresult.assign(n_errors, s_errors);   \
+            ci->__serrors += tresult._1;    \
+            if(last_confirmation().HasValue())    \
+            {    \
+                mtk::Double  side_adjustemt (1.);    \
+                if(last_confirmation().Get().invariant.side == mtk::trd::msg::sell)    \
+                    side_adjustemt = -1.;    \
+                if(mtk::Double(ex.executed_pos.price.GetDouble()) *side_adjustemt  >  mtk::Double(last_confirmation().Get().market_pos.price.GetDouble())*side_adjustemt)    \
+                {    \
+                    ++nerrors;    \
+                    s_errors += MTK_SS   ("  received execution incoherent  price "    \
+                                        "  received_price:"  << ex.executed_pos.price  <<    \
+                                        "  last_confirmation_price:" <<  last_confirmation().Get().market_pos.price);    \
+                }    \
+            }    \
+            if (nerrors >0)   \
+            {   \
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_exec__last_confirm", s_errors, mtk::alPriorCritic, mtk::alTypeNoPermisions));   \
+                ci->__serrors += s_errors;   \
+            }   \
+        }    \
+
 
 
 
