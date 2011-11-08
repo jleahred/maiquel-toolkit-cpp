@@ -12,12 +12,6 @@ END_INIT
 
 
 
-//  rejects has to be private for terminal who makes the request
-//  then, we have to add session_id in confirm subject
-//  remember that all subjects has to be the same in order to
-//  guarranty the order
-//  confirmation suscriptions has to suscribe to all session_id
-//  and reject suscriptions only for their session_id
 
 
 
@@ -67,13 +61,13 @@ CF_XX_LS  [< I:CF_XX >]
 }
 
 
-CF_NW_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}.TRD   >]   {}
+CF_NW_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
-CF_MD_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}.TRD   >]   {}
+CF_MD_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
-CF_CC_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}.TRD   >]   {}
+CF_CC_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
 
@@ -81,7 +75,7 @@ CF_CC_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.$
 //---------------------------------------------------------------------
 //	executions  LS
 
-CF_EX_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}.TRD   >]
+CF_EX_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
 {
     executed_pos  (exp)   :  sub_exec_conf
 }
@@ -102,17 +96,17 @@ RJ_XX_LS  [< I:CF_XX_LS >]
 
 
 
-RJ_NW_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}.TRD  >]
+RJ_NW_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 
 
-RJ_MD_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}.TRD  >]
+RJ_MD_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 
 
-RJ_CC_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${req_id.session_id}.TRD  >]
+RJ_CC_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 

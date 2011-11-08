@@ -352,7 +352,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -401,7 +401,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -450,7 +450,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -500,7 +500,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -596,7 +596,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -645,7 +645,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -694,7 +694,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& req_id_session_id);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name);
 virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
