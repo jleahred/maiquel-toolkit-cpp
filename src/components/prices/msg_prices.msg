@@ -86,7 +86,7 @@ sub_full_product_info [< >]
     product_code        (pc)        :       mtk::msg::sub_product_code
 
     best_prices         (bp)        :       sub_best_prices
-    aditional_info      (ai)        :       sub_aditional_info
+    aditional_info      (ainf)      :       sub_aditional_info
     //  ...
 }
 
@@ -97,7 +97,7 @@ sub_full_product_info_optionals [< >]
     product_code        (pc)        :       mtk::msg::sub_product_code
 
     best_prices         (bp)        :       sub_best_prices                 [optional]
-    aditional_info      (ai)        :       sub_aditional_info              [optional]
+    aditional_info      (ainf)      :       sub_aditional_info              [optional]
     //  ...
 }
 

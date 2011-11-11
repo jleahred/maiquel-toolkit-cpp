@@ -77,7 +77,7 @@ void request_command(const std::string& command)
 				    "ex_admin_req_res")
 
     //  sending hello command
-    mtk::admin::msg::req_command   command_request_msg  (request_info, mtk::admin::get_process_info(), command);
+	mtk::admin::msg::req_command_srv   command_request_msg  (mtk::admin::msg::req_command2(request_info, "broker_code", mtk::admin::get_process_info(), command));
     mtk_send_message("client", command_request_msg);
 
 }
@@ -98,7 +98,7 @@ int main(int /*argc*/, char ** /*argv*/)
         mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
 
 
-        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command>      >   hqpid_response;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command_srv>      >   hqpid_response;
 
         MTK_CALL_LATER1S_F(mtk::dtSeconds(10), 0, stop);
         MTK_CALL_LATER1S_F(mtk::dtSeconds(1),  std::string("help"),  request_command);

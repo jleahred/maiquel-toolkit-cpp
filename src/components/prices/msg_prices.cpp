@@ -1596,7 +1596,7 @@ void  copy (sub_full_product_info& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.best_prices, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("ai");
+                    it = mv.find("ainf");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field aditional_info on message sub_full_product_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1617,7 +1617,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_
 //  sub_msg_type
         __internal_add2map(map, a.best_prices, std::string("bp"));
 //  sub_msg_type
-        __internal_add2map(map, a.aditional_info, std::string("ai"));
+        __internal_add2map(map, a.aditional_info, std::string("ainf"));
 
 
 };
@@ -1663,7 +1663,7 @@ void  copy (sub_full_product_info_optionals& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.best_prices, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("ai");
+                    it = mv.find("ainf");
                     if (it!= mv.end())
                         copy(c.aditional_info, it->second);
                         //__internal_qpid_fill(c.aditional_info, it->second.asMap());
@@ -1686,7 +1686,7 @@ if (a.best_prices.HasValue())
         __internal_add2map(map, a.best_prices, std::string("bp"));
 if (a.aditional_info.HasValue())
 //  sub_msg_type
-        __internal_add2map(map, a.aditional_info, std::string("ai"));
+        __internal_add2map(map, a.aditional_info, std::string("ainf"));
 
 
 };

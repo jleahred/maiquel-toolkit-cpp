@@ -4,6 +4,35 @@ include::../../VERSION[]
 
 
 
+0.56  2011-11-11::
+
+Fixed errors;;
+* Path on request commands
+* ALL_GS/SYS.# messages    added broker_code to avoid receiving message duplicated
+** Incorrect path generating duplicated messages
+** Checked names on messages
+** broker_code instead of client_code in location
+** Broker code is used to fix path on ALL_GS/SYS
+** On servers, broker code is read from config file
+* removed sessionid from subject on TRD,  CONF and  RJ
+** The subject has to be the same in order to guaranty the order on messages
+
+
+New;;
+* Aditional info on prices publishing
+** At the moment, this info is only load info
+
+
+Modif interfaz;;
+* ConfigFile now informs path in case of error reading
+
+
+Other;;
+* Checking if the qpid message is a map on receiving a message with auto parsing
+* Check quantities on terminal on receiving confirmations
+* CHECK_EXEC filled
+
+
 0.54  2011-10-25::
 
 Fixed errors;;

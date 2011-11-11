@@ -74,7 +74,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
 
 
-        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command>      >   hqpid_response;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command_srv>      >   hqpid_response;
 
         MTK_CALL_LATER1S_F(mtk::dtSeconds(7), 0, stop);
         MTK_CALL_LATER1S_F(mtk::dtSeconds(1), 0, init_request_response);
