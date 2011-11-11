@@ -36,6 +36,10 @@ sub_best_prices [< >]
 }
 
 
+//---------------------------------------------------------------------
+//    pub_best_prices
+//---------------------------------------------------------------------
+
 pub_best_prices [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.market}.${product_code.product}  >]
 {
     product_code        (pc)    :   mtk::msg::sub_product_code
@@ -51,11 +55,38 @@ pub_new_products [< QE:CLI_MK, SUBJ:CLI.ALL.${market}.NP  >]
 
 
 
+
+
+//---------------------------------------------------------------------
+//    sub_aditional_info
+//---------------------------------------------------------------------
+
+sub_aditional_info [< >]
+{
+    group               (gr)        :       string
+    maturity            (mat)       :       date_time       [optional]
+    value_date          (vd)        :       date_time       [optional]
+    unit_cost           (uc)        :       double
+    last_trading_dt     (ltdt)      :       date_time       [optional]
+
+
+    yaml_misc           (ym)        :       string
+}
+
+
+
+
+
+
+//---------------------------------------------------------------------
+//    sub_full_product_info
+//---------------------------------------------------------------------
 sub_full_product_info [< >]
 {
     product_code        (pc)        :       mtk::msg::sub_product_code
 
     best_prices         (bp)        :       sub_best_prices
+    aditional_info      (ai)        :       sub_aditional_info
     //  ...
 }
 
@@ -66,6 +97,7 @@ sub_full_product_info_optionals [< >]
     product_code        (pc)        :       mtk::msg::sub_product_code
 
     best_prices         (bp)        :       sub_best_prices                 [optional]
+    aditional_info      (ai)        :       sub_aditional_info              [optional]
     //  ...
 }
 

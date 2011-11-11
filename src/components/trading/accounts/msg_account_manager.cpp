@@ -340,12 +340,6 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     }
 
 
-    template<typename T>
-    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
-    {
-        if (n.HasValue())
-            __internal_add2map(map, n.Get(), key);
-    }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::DateTime& a, const std::string& key)
     {
@@ -379,6 +373,13 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
         map[key] = bool(a);
     }
 
+
+    template<typename T>
+    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
+    {
+        if (n.HasValue())
+            __internal_add2map(map, n.Get(), key);
+    }
 
     //  for composed types
     template<typename T>

@@ -279,6 +279,57 @@ private:
 
 
 //-------------------------------
+//      sub_aditional_info
+//-------------------------------    
+class sub_aditional_info     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_aditional_info (    const std::string&  _group,   const mtk::nullable<mtk::DateTime>&  _maturity,   const mtk::nullable<mtk::DateTime>&  _value_date,   const mtk::Double&  _unit_cost,   const mtk::nullable<mtk::DateTime>&  _last_trading_dt,   const std::string&  _yaml_misc );
+    explicit sub_aditional_info ( const qpid::messaging::Message& message );
+    virtual ~sub_aditional_info (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_aditional_info"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_aditional_info"; };
+
+    
+    
+    
+    
+
+    // fields
+    std::string                               group; 
+    mtk::nullable<mtk::DateTime>              maturity; 
+    mtk::nullable<mtk::DateTime>              value_date; 
+    mtk::Double                               unit_cost; 
+    mtk::nullable<mtk::DateTime>              last_trading_dt; 
+    std::string                               yaml_misc; 
+
+
+
+    //  ADDRESS info
+
+
+
+    //  subject info
+    
+
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+private:
+    std::string check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
 //      sub_full_product_info
 //-------------------------------    
 class sub_full_product_info     
@@ -288,7 +339,7 @@ public:
 
     
     // constructor
-    explicit sub_full_product_info (    const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices );
+    explicit sub_full_product_info (    const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const sub_aditional_info&  _aditional_info );
     explicit sub_full_product_info ( const qpid::messaging::Message& message );
     virtual ~sub_full_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info"; };
@@ -302,6 +353,7 @@ public:
     // fields
     mtk::msg::sub_product_code                product_code; 
     sub_best_prices                           best_prices; 
+    sub_aditional_info                        aditional_info; 
 
 
 
@@ -335,7 +387,7 @@ public:
 
     
     // constructor
-    explicit sub_full_product_info_optionals (    const bool&  _initialized,   const mtk::msg::sub_product_code&  _product_code,   const mtk::nullable<sub_best_prices>&  _best_prices );
+    explicit sub_full_product_info_optionals (    const bool&  _initialized,   const mtk::msg::sub_product_code&  _product_code,   const mtk::nullable<sub_best_prices>&  _best_prices,   const mtk::nullable<sub_aditional_info>&  _aditional_info );
     explicit sub_full_product_info_optionals ( const qpid::messaging::Message& message );
     virtual ~sub_full_product_info_optionals (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info_optionals"; };
@@ -350,6 +402,7 @@ public:
     bool                                      initialized; 
     mtk::msg::sub_product_code                product_code; 
     mtk::nullable<sub_best_prices>            best_prices; 
+    mtk::nullable<sub_aditional_info>         aditional_info; 
 
 
 
@@ -559,6 +612,13 @@ bool operator!= (const pub_best_prices& a, const pub_best_prices& b);
 bool operator== (const pub_new_products& a, const pub_new_products& b);
 bool operator!= (const pub_new_products& a, const pub_new_products& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_aditional_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_aditional_info & c);
+   void           operator >> (const YAML::Node& n,       sub_aditional_info & c);
+
+bool operator== (const sub_aditional_info& a, const sub_aditional_info& b);
+bool operator!= (const sub_aditional_info& a, const sub_aditional_info& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_full_product_info & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_full_product_info & c);
    void           operator >> (const YAML::Node& n,       sub_full_product_info & c);
@@ -618,6 +678,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_new_prod
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_new_products& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_new_products>& a, const std::string& field);
 void copy (pub_new_products& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_aditional_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_aditional_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_aditional_info>& a, const std::string& field);
+void copy (sub_aditional_info& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_full_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_full_product_info>& a, const std::string& field);
@@ -648,6 +712,8 @@ void copy (res_product_info::IC_response& a, const qpid::types::Variant& map);
     pub_best_prices  __internal_get_default(pub_best_prices *);
     
     pub_new_products  __internal_get_default(pub_new_products *);
+    
+    sub_aditional_info  __internal_get_default(sub_aditional_info *);
     
     sub_full_product_info  __internal_get_default(sub_full_product_info *);
     
