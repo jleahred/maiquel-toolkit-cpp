@@ -43,6 +43,8 @@ void      merge_full_product_info_optionals__with_full_product_info
 {
     if(pio.best_prices.HasValue() == false)
         pio.best_prices = pi.best_prices;
+    if(pio.aditional_info.HasValue() == false)
+        pio.aditional_info = pi.aditional_info;
 }
 
 
