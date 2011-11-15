@@ -625,7 +625,7 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
                 ps_conf_full_product_info_init(mtk::prices::msg::ps_conf_full_product_info_init("MARKET", mtk::admin::get_process_info()));
     mtk_send_message("server", ps_conf_full_product_info_init);
 
-    mtk::prices::msg::sub_aditional_info aditional_info ("GROUP", mtk::nullable<mtk::DateTime>(), mtk::nullable<mtk::DateTime>(), 0, mtk::nullable<mtk::DateTime>(), "");
+    mtk::prices::msg::sub_additional_info additional_info ("GROUP", mtk::nullable<mtk::DateTime>(), mtk::nullable<mtk::DateTime>(), 0, mtk::nullable<mtk::DateTime>(), "");
     int counter = 0;
     for(auto it_queue_by_product = queue_by_product.begin(); it_queue_by_product != queue_by_product.end(); ++it_queue_by_product)
     {
@@ -633,7 +633,7 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
         //        mtk::list<mtk::CountPtr<ord_ls> >  ask_queue;
         mtk::prices::msg::sub_full_product_info   sub_full_product_info(  it_queue_by_product->first,
                                                             get_empty_sub_best_prices(get_ext_price_quantity_for_product(it_queue_by_product->first.product)),
-                                                            aditional_info
+                                                            additional_info
                                                             );
         fill_side(it_queue_by_product->second.bid_queue, sub_full_product_info.best_prices.bids);
         fill_side(it_queue_by_product->second.ask_queue, sub_full_product_info.best_prices.asks);

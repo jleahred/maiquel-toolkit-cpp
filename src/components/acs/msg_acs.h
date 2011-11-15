@@ -42,7 +42,7 @@ public:
     
     // constructor
     explicit req_login_key (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name );
-    explicit req_login_key ( const qpid::messaging::Message& message );
+    explicit req_login_key ( const qpid::types::Variant::Map&  mv );
     virtual ~req_login_key (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login_key"; };
@@ -93,7 +93,7 @@ public:
     
     // constructor
     explicit res_login_key (    const mtk::msg::sub_r_response&  _response_info,   const std::string&  _key );
-    explicit res_login_key ( const qpid::messaging::Message& message );
+    explicit res_login_key ( const qpid::types::Variant::Map&  mv );
     virtual ~res_login_key (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login_key"; };
@@ -144,7 +144,7 @@ public:
     
     // constructor
     explicit req_login (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _coded_pass );
-    explicit req_login ( const qpid::messaging::Message& message );
+    explicit req_login ( const qpid::types::Variant::Map&  mv );
     virtual ~req_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login"; };
@@ -206,7 +206,7 @@ public:
         
         // constructor
         explicit IC_session_info (    const std::string&  _user_name,   const std::string&  _client_code,   const std::string&  _session_id );
-        explicit IC_session_info ( const qpid::messaging::Message& message );
+        explicit IC_session_info ( const qpid::types::Variant::Map&  mv );
         virtual ~IC_session_info (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_session_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_session_info"; };
@@ -245,7 +245,7 @@ public:
     
     // constructor
     explicit res_login (    const mtk::msg::sub_r_response&  _response_info,   const IC_session_info&  _session_info );
-    explicit res_login ( const qpid::messaging::Message& message );
+    explicit res_login ( const qpid::types::Variant::Map&  mv );
     virtual ~res_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login"; };
@@ -296,7 +296,7 @@ public:
     
     // constructor
     explicit conf_logout (    const mtk::msg::sub_location&  _location,   const std::string&  _session_id,   const std::string&  _description );
-    explicit conf_logout ( const qpid::messaging::Message& message );
+    explicit conf_logout ( const qpid::types::Variant::Map&  mv );
     virtual ~conf_logout (){};
     virtual std::string get_message_type_as_string       (void) const  { return "conf_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_logout"; };
@@ -348,7 +348,7 @@ public:
     
     // constructor
     explicit req_logout (    const mtk::msg::sub_request_info&  _request_info );
-    explicit req_logout ( const qpid::messaging::Message& message );
+    explicit req_logout ( const qpid::types::Variant::Map&  mv );
     virtual ~req_logout (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_logout"; };
@@ -398,7 +398,7 @@ public:
     
     // constructor
     explicit req_change_password (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _old_password,   const mtk::list<int32_t >&  _new_password );
-    explicit req_change_password ( const qpid::messaging::Message& message );
+    explicit req_change_password ( const qpid::types::Variant::Map&  mv );
     virtual ~req_change_password (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_change_password"; };
@@ -461,7 +461,7 @@ public:
         
         // constructor
         explicit IC_change_password_info (    const bool&  _accepted );
-        explicit IC_change_password_info ( const qpid::messaging::Message& message );
+        explicit IC_change_password_info ( const qpid::types::Variant::Map&  mv );
         virtual ~IC_change_password_info (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_change_password_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_change_password_info"; };
@@ -498,7 +498,7 @@ public:
     
     // constructor
     explicit res_change_password (    const mtk::msg::sub_r_response&  _response_info,   const IC_change_password_info&  _change_password_info );
-    explicit res_change_password ( const qpid::messaging::Message& message );
+    explicit res_change_password ( const qpid::types::Variant::Map&  mv );
     virtual ~res_change_password (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_change_password"; };

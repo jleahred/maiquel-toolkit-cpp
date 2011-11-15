@@ -2089,16 +2089,13 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
     }
     
 
-sub_price_level::sub_price_level (const qpid::messaging::Message& msg)
+sub_price_level::sub_price_level (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    price(__internal_get_default((mtk::FixedNumber*)0)),
 //   field_type
    quantity(__internal_get_default((mtk::FixedNumber*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2107,7 +2104,7 @@ sub_price_level::sub_price_level (const qpid::messaging::Message& msg)
 
 
 
-sub_price_deph5::sub_price_deph5 (const qpid::messaging::Message& msg)
+sub_price_deph5::sub_price_deph5 (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    level0(__internal_get_default((sub_price_level*)0)),
 //   sub_msg_type
@@ -2119,10 +2116,7 @@ sub_price_deph5::sub_price_deph5 (const qpid::messaging::Message& msg)
 //   sub_msg_type
    level4(__internal_get_default((sub_price_level*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2131,16 +2125,13 @@ sub_price_deph5::sub_price_deph5 (const qpid::messaging::Message& msg)
 
 
 
-sub_best_prices::sub_best_prices (const qpid::messaging::Message& msg)
+sub_best_prices::sub_best_prices (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    bids(__internal_get_default((sub_price_deph5*)0)),
 //   sub_msg_type
    asks(__internal_get_default((sub_price_deph5*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2149,7 +2140,7 @@ sub_best_prices::sub_best_prices (const qpid::messaging::Message& msg)
 
 
 
-pub_best_prices::pub_best_prices (const qpid::messaging::Message& msg)
+pub_best_prices::pub_best_prices (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
 //   sub_msg_type
@@ -2157,10 +2148,7 @@ pub_best_prices::pub_best_prices (const qpid::messaging::Message& msg)
 //   sub_msg_type
    orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2169,14 +2157,11 @@ pub_best_prices::pub_best_prices (const qpid::messaging::Message& msg)
 
 
 
-pub_new_products::pub_new_products (const qpid::messaging::Message& msg)
+pub_new_products::pub_new_products (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2185,7 +2170,7 @@ pub_new_products::pub_new_products (const qpid::messaging::Message& msg)
 
 
 
-sub_additional_info::sub_additional_info (const qpid::messaging::Message& msg)
+sub_additional_info::sub_additional_info (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    group(__internal_get_default((std::string*)0)),
 //   field_type
@@ -2193,10 +2178,7 @@ sub_additional_info::sub_additional_info (const qpid::messaging::Message& msg)
 //   field_type
    yaml_misc(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2205,7 +2187,7 @@ sub_additional_info::sub_additional_info (const qpid::messaging::Message& msg)
 
 
 
-sub_full_product_info::sub_full_product_info (const qpid::messaging::Message& msg)
+sub_full_product_info::sub_full_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
 //   sub_msg_type
@@ -2213,10 +2195,7 @@ sub_full_product_info::sub_full_product_info (const qpid::messaging::Message& ms
 //   sub_msg_type
    additional_info(__internal_get_default((sub_additional_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2225,16 +2204,13 @@ sub_full_product_info::sub_full_product_info (const qpid::messaging::Message& ms
 
 
 
-sub_full_product_info_optionals::sub_full_product_info_optionals (const qpid::messaging::Message& msg)
+sub_full_product_info_optionals::sub_full_product_info_optionals (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    initialized(__internal_get_default((bool*)0)),
 //   sub_msg_type
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2243,16 +2219,13 @@ sub_full_product_info_optionals::sub_full_product_info_optionals (const qpid::me
 
 
 
-req_product_info::req_product_info (const qpid::messaging::Message& msg)
+req_product_info::req_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   sub_msg_type
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2261,16 +2234,13 @@ req_product_info::req_product_info (const qpid::messaging::Message& msg)
 
 
 
-res_product_info::res_product_info (const qpid::messaging::Message& msg)
+res_product_info::res_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   IN_SUB_MSG
    response(__internal_get_default((res_product_info::IC_response*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2279,14 +2249,11 @@ res_product_info::res_product_info (const qpid::messaging::Message& msg)
 
 
 
-res_product_info::IC_response::IC_response (const qpid::messaging::Message& msg)
+res_product_info::IC_response::IC_response (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    full_product_info(__internal_get_default((sub_full_product_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

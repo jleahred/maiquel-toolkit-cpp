@@ -42,7 +42,7 @@ public:
     
     // constructor
     explicit sub_location (    const std::string&  _broker_code,   const std::string&  _machine );
-    explicit sub_location ( const qpid::messaging::Message& message );
+    explicit sub_location ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_location"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_location"; };
@@ -89,7 +89,7 @@ public:
     
     // constructor
     explicit sub_process_info (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version );
-    explicit sub_process_info ( const qpid::messaging::Message& message );
+    explicit sub_process_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_process_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_process_info"; };
@@ -138,7 +138,7 @@ public:
     
     // constructor
     explicit sub_control_fluct (    const std::string&  _key,   const mtk::DateTime&  _datetime );
-    explicit sub_control_fluct ( const qpid::messaging::Message& message );
+    explicit sub_control_fluct ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_control_fluct (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fluct"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fluct"; };
@@ -185,7 +185,7 @@ public:
     
     // constructor
     explicit sub_request_id (    const std::string&  _session_id,   const std::string&  _req_code );
-    explicit sub_request_id ( const qpid::messaging::Message& message );
+    explicit sub_request_id ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_request_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_id"; };
@@ -232,7 +232,7 @@ public:
     
     // constructor
     explicit sub_request_info (    const sub_request_id&  _req_id,   const sub_process_info&  _process_info );
-    explicit sub_request_info ( const qpid::messaging::Message& message );
+    explicit sub_request_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_request_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_info"; };
@@ -279,7 +279,7 @@ public:
     
     // constructor
     explicit sub_r_response (    const sub_request_info&  _request_info,   const int16_t&  _seq_number,   const bool&  _is_last_response );
-    explicit sub_r_response ( const qpid::messaging::Message& message );
+    explicit sub_r_response ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_r_response (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_r_response"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_r_response"; };
@@ -327,7 +327,7 @@ public:
     
     // constructor
     explicit sub_gen_response_location (    const std::string&  _session_id,   const std::string&  _broker_code );
-    explicit sub_gen_response_location ( const qpid::messaging::Message& message );
+    explicit sub_gen_response_location ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_gen_response_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_gen_response_location"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_gen_response_location"; };
@@ -374,7 +374,7 @@ public:
     
     // constructor
     explicit sub_product_code (    const std::string&  _market,   const std::string&  _product );
-    explicit sub_product_code ( const qpid::messaging::Message& message );
+    explicit sub_product_code ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_product_code"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_product_code"; };

@@ -1723,14 +1723,11 @@ __internal_get_default((ps_conf_full_product_info*)0)
     }
     
 
-ps_req_product_info::ps_req_product_info (const qpid::messaging::Message& msg)
-    :  req_product_info(msg), //   field_type
+ps_req_product_info::ps_req_product_info (const qpid::types::Variant::Map&  mv)
+    :  req_product_info(mv), //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1739,14 +1736,11 @@ ps_req_product_info::ps_req_product_info (const qpid::messaging::Message& msg)
 
 
 
-ps_pub_prod_info_mtk_ready::ps_pub_prod_info_mtk_ready (const qpid::messaging::Message& msg)
+ps_pub_prod_info_mtk_ready::ps_pub_prod_info_mtk_ready (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1755,16 +1749,13 @@ ps_pub_prod_info_mtk_ready::ps_pub_prod_info_mtk_ready (const qpid::messaging::M
 
 
 
-ps_req_init_prod_info::ps_req_init_prod_info (const qpid::messaging::Message& msg)
+ps_req_init_prod_info::ps_req_init_prod_info (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1773,16 +1764,13 @@ ps_req_init_prod_info::ps_req_init_prod_info (const qpid::messaging::Message& ms
 
 
 
-ps_conf_full_product_info_init::ps_conf_full_product_info_init (const qpid::messaging::Message& msg)
+ps_conf_full_product_info_init::ps_conf_full_product_info_init (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    to_process_info(__internal_get_default((mtk::msg::sub_process_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1791,7 +1779,7 @@ ps_conf_full_product_info_init::ps_conf_full_product_info_init (const qpid::mess
 
 
 
-ps_conf_full_product_info::ps_conf_full_product_info (const qpid::messaging::Message& msg)
+ps_conf_full_product_info::ps_conf_full_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    full_prod_info(__internal_get_default((sub_full_product_info*)0)),
 //   sub_msg_type
@@ -1799,10 +1787,7 @@ ps_conf_full_product_info::ps_conf_full_product_info (const qpid::messaging::Mes
 //   sub_msg_type
    seq_number(__internal_get_default((int*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1811,13 +1796,10 @@ ps_conf_full_product_info::ps_conf_full_product_info (const qpid::messaging::Mes
 
 
 
-ps_pub_prod_info_mtk_ready__from_publisher::ps_pub_prod_info_mtk_ready__from_publisher (const qpid::messaging::Message& msg)
-    :  ps_pub_prod_info_mtk_ready(msg) 
+ps_pub_prod_info_mtk_ready__from_publisher::ps_pub_prod_info_mtk_ready__from_publisher (const qpid::types::Variant::Map&  mv)
+    :  ps_pub_prod_info_mtk_ready(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1826,13 +1808,10 @@ ps_pub_prod_info_mtk_ready__from_publisher::ps_pub_prod_info_mtk_ready__from_pub
 
 
 
-ps_req_init_prod_info__to_publisher::ps_req_init_prod_info__to_publisher (const qpid::messaging::Message& msg)
-    :  ps_req_init_prod_info(msg) 
+ps_req_init_prod_info__to_publisher::ps_req_init_prod_info__to_publisher (const qpid::types::Variant::Map&  mv)
+    :  ps_req_init_prod_info(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1841,13 +1820,10 @@ ps_req_init_prod_info__to_publisher::ps_req_init_prod_info__to_publisher (const 
 
 
 
-ps_conf_full_product_info_init__from_publisher::ps_conf_full_product_info_init__from_publisher (const qpid::messaging::Message& msg)
-    :  ps_conf_full_product_info_init(msg) 
+ps_conf_full_product_info_init__from_publisher::ps_conf_full_product_info_init__from_publisher (const qpid::types::Variant::Map&  mv)
+    :  ps_conf_full_product_info_init(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1856,13 +1832,10 @@ ps_conf_full_product_info_init__from_publisher::ps_conf_full_product_info_init__
 
 
 
-ps_conf_full_product_info__from_publisher::ps_conf_full_product_info__from_publisher (const qpid::messaging::Message& msg)
-    :  ps_conf_full_product_info(msg) 
+ps_conf_full_product_info__from_publisher::ps_conf_full_product_info__from_publisher (const qpid::types::Variant::Map&  mv)
+    :  ps_conf_full_product_info(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

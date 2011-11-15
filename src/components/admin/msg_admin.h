@@ -45,7 +45,7 @@ public:
     
     // constructor
     explicit pub_enter (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
-    explicit pub_enter ( const qpid::messaging::Message& message );
+    explicit pub_enter ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_enter (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_enter"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_enter"; };
@@ -98,7 +98,7 @@ public:
     
     // constructor
     explicit pub_keep_alive_srv (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
-    explicit pub_keep_alive_srv ( const qpid::messaging::Message& message );
+    explicit pub_keep_alive_srv ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_keep_alive_srv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_srv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_srv"; };
@@ -150,7 +150,7 @@ public:
     
     // constructor
     explicit pub_keep_alive_cli (  const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
-    explicit pub_keep_alive_cli ( const qpid::messaging::Message& message );
+    explicit pub_keep_alive_cli ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_keep_alive_cli (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_cli"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_cli"; };
@@ -200,7 +200,7 @@ public:
     
     // constructor
     explicit pub_exit (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
-    explicit pub_exit ( const qpid::messaging::Message& message );
+    explicit pub_exit ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_exit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_exit"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_exit"; };
@@ -252,7 +252,7 @@ public:
     
     // constructor
     explicit pub_alarm (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
-    explicit pub_alarm ( const qpid::messaging::Message& message );
+    explicit pub_alarm ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_alarm"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_alarm"; };
@@ -310,7 +310,7 @@ public:
     
     // constructor
     explicit req_command2 (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _sender_broker_code,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line );
-    explicit req_command2 ( const qpid::messaging::Message& message );
+    explicit req_command2 ( const qpid::types::Variant::Map&  mv );
     virtual ~req_command2 (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command2"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command2"; };
@@ -359,7 +359,7 @@ public:
     
     // constructor
     explicit req_command_srv (  const req_command2&  parent );
-    explicit req_command_srv ( const qpid::messaging::Message& message );
+    explicit req_command_srv ( const qpid::types::Variant::Map&  mv );
     virtual ~req_command_srv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command_srv"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command_srv"; };
@@ -408,7 +408,7 @@ public:
     
     // constructor
     explicit req_command_cli (  const req_command2&  parent );
-    explicit req_command_cli ( const qpid::messaging::Message& message );
+    explicit req_command_cli ( const qpid::types::Variant::Map&  mv );
     virtual ~req_command_cli (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command_cli"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command_cli"; };
@@ -457,7 +457,7 @@ public:
     
     // constructor
     explicit sub_command_rd (    const std::string&  _text );
-    explicit sub_command_rd ( const qpid::messaging::Message& message );
+    explicit sub_command_rd ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_command_rd (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_command_rd"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_command_rd"; };
@@ -503,7 +503,7 @@ public:
     
     // constructor
     explicit res_command (    const mtk::msg::sub_r_response&  _response_info,   const sub_command_rd&  _response_data );
-    explicit res_command ( const qpid::messaging::Message& message );
+    explicit res_command ( const qpid::types::Variant::Map&  mv );
     virtual ~res_command (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_command"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_command"; };
@@ -554,7 +554,7 @@ public:
     
     // constructor
     explicit pub_central_keep_alive (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
-    explicit pub_central_keep_alive ( const qpid::messaging::Message& message );
+    explicit pub_central_keep_alive ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_central_keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_central_keep_alive"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_central_keep_alive"; };

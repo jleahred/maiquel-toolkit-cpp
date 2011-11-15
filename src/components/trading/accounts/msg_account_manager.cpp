@@ -1301,16 +1301,13 @@ qpid::messaging::Message rq_accounts_oninit::qpidmsg_codded_as_qpid_message (con
     }
     
 
-sub_grant::sub_grant (const qpid::messaging::Message& msg)
+sub_grant::sub_grant (const qpid::types::Variant::Map&  mv)
     :  //   IN_MSG
    key(__internal_get_default((sub_grant::IC_key*)0)),
 //   field_type
    type(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1319,16 +1316,13 @@ sub_grant::sub_grant (const qpid::messaging::Message& msg)
 
 
 
-sub_grant::IC_key::IC_key (const qpid::messaging::Message& msg)
+sub_grant::IC_key::IC_key (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    account(__internal_get_default((mtk::trd::msg::sub_account_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1337,14 +1331,11 @@ sub_grant::IC_key::IC_key (const qpid::messaging::Message& msg)
 
 
 
-rq_accounts::rq_accounts (const qpid::messaging::Message& msg)
+rq_accounts::rq_accounts (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1353,16 +1344,13 @@ rq_accounts::rq_accounts (const qpid::messaging::Message& msg)
 
 
 
-conf_add_accounts::conf_add_accounts (const qpid::messaging::Message& msg)
+conf_add_accounts::conf_add_accounts (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    gen_response_location(__internal_get_default((mtk::msg::sub_gen_response_location*)0)),
 //   sub_msg_type
    grant_list(__internal_get_default((mtk::list<sub_grant >*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1371,16 +1359,13 @@ conf_add_accounts::conf_add_accounts (const qpid::messaging::Message& msg)
 
 
 
-pub_accmgr_init::pub_accmgr_init (const qpid::messaging::Message& msg)
+pub_accmgr_init::pub_accmgr_init (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    request_sufix_subjetc(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1389,16 +1374,13 @@ pub_accmgr_init::pub_accmgr_init (const qpid::messaging::Message& msg)
 
 
 
-rq_accounts_oninit::rq_accounts_oninit (const qpid::messaging::Message& msg)
+rq_accounts_oninit::rq_accounts_oninit (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
    request_sufix_subjetc(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

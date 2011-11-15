@@ -44,7 +44,7 @@ public:
     
     // constructor
     explicit sub_order_id (  const mtk::msg::sub_request_id&  parent );
-    explicit sub_order_id ( const qpid::messaging::Message& message );
+    explicit sub_order_id ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_order_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_order_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_order_id"; };
@@ -89,7 +89,7 @@ public:
     
     // constructor
     explicit sub_exec_conf (    const std::string&  _exec_id,   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const enBuySell&  _side );
-    explicit sub_exec_conf ( const qpid::messaging::Message& message );
+    explicit sub_exec_conf ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_exec_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_exec_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_exec_conf"; };
@@ -138,7 +138,7 @@ public:
     
     // constructor
     explicit sub_total_executions (    const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _acc_quantity,   const mtk::FixedNumber&  _remaining_qty );
-    explicit sub_total_executions ( const qpid::messaging::Message& message );
+    explicit sub_total_executions ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_total_executions (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_total_executions"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_total_executions"; };
@@ -186,7 +186,7 @@ public:
     
     // constructor
     explicit sub_account_info (    const std::string&  _name,   const std::string&  _client_code );
-    explicit sub_account_info ( const qpid::messaging::Message& message );
+    explicit sub_account_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_account_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_account_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_account_info"; };
@@ -240,7 +240,7 @@ public:
     
     // constructor
     explicit sub_invariant_order_info (    const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account );
-    explicit sub_invariant_order_info ( const qpid::messaging::Message& message );
+    explicit sub_invariant_order_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_invariant_order_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_invariant_order_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_invariant_order_info"; };
@@ -289,7 +289,7 @@ public:
     
     // constructor
     explicit RQ_XX (    const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _cli_ref,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
-    explicit RQ_XX ( const qpid::messaging::Message& message );
+    explicit RQ_XX ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX"; };
@@ -338,7 +338,7 @@ public:
     
     // constructor
     explicit CF_XX (    const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const std::string&  _cli_ref,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
-    explicit CF_XX ( const qpid::messaging::Message& message );
+    explicit CF_XX ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX"; };
@@ -389,7 +389,7 @@ public:
     
     // constructor
     explicit RQ_ORDERS_STATUS (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _market,   const sub_account_info&  _account );
-    explicit RQ_ORDERS_STATUS ( const qpid::messaging::Message& message );
+    explicit RQ_ORDERS_STATUS ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_ORDERS_STATUS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_ORDERS_STATUS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_ORDERS_STATUS"; };

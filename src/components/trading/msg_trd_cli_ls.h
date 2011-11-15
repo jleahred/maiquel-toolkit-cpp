@@ -44,7 +44,7 @@ public:
     
     // constructor
     explicit sub_position_ls (    const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity );
-    explicit sub_position_ls ( const qpid::messaging::Message& message );
+    explicit sub_position_ls ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_position_ls (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_position_ls"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_position_ls"; };
@@ -91,7 +91,7 @@ public:
     
     // constructor
     explicit RQ_XX_LS (  const RQ_XX&  parent,   const sub_position_ls&  _request_pos );
-    explicit RQ_XX_LS ( const qpid::messaging::Message& message );
+    explicit RQ_XX_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX_LS"; };
@@ -137,7 +137,7 @@ public:
     
     // constructor
     explicit RQ_NW_LS (  const RQ_XX_LS&  parent );
-    explicit RQ_NW_LS ( const qpid::messaging::Message& message );
+    explicit RQ_NW_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
@@ -186,7 +186,7 @@ public:
     
     // constructor
     explicit RQ_MD_LS (  const RQ_XX_LS&  parent );
-    explicit RQ_MD_LS ( const qpid::messaging::Message& message );
+    explicit RQ_MD_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_MD_LS"; };
@@ -235,7 +235,7 @@ public:
     
     // constructor
     explicit RQ_CC_LS (  const RQ_XX_LS&  parent );
-    explicit RQ_CC_LS ( const qpid::messaging::Message& message );
+    explicit RQ_CC_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_CC_LS"; };
@@ -284,7 +284,7 @@ public:
     
     // constructor
     explicit CF_XX_LS (  const CF_XX&  parent,   const sub_position_ls&  _market_pos );
-    explicit CF_XX_LS ( const qpid::messaging::Message& message );
+    explicit CF_XX_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX_LS"; };
@@ -330,7 +330,7 @@ public:
     
     // constructor
     explicit CF_NW_LS (  const CF_XX_LS&  parent );
-    explicit CF_NW_LS ( const qpid::messaging::Message& message );
+    explicit CF_NW_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_NW_LS"; };
@@ -379,7 +379,7 @@ public:
     
     // constructor
     explicit CF_MD_LS (  const CF_XX_LS&  parent );
-    explicit CF_MD_LS ( const qpid::messaging::Message& message );
+    explicit CF_MD_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_MD_LS"; };
@@ -428,7 +428,7 @@ public:
     
     // constructor
     explicit CF_CC_LS (  const CF_XX_LS&  parent );
-    explicit CF_CC_LS ( const qpid::messaging::Message& message );
+    explicit CF_CC_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_CC_LS"; };
@@ -477,7 +477,7 @@ public:
     
     // constructor
     explicit CF_EX_LS (  const CF_XX_LS&  parent,   const sub_exec_conf&  _executed_pos );
-    explicit CF_EX_LS ( const qpid::messaging::Message& message );
+    explicit CF_EX_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_EX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_EX_LS"; };
@@ -527,7 +527,7 @@ public:
     
     // constructor
     explicit RJ_XX_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description,   const sub_position_ls&  _request_pos );
-    explicit RJ_XX_LS ( const qpid::messaging::Message& message );
+    explicit RJ_XX_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RJ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_XX_LS"; };
@@ -574,7 +574,7 @@ public:
     
     // constructor
     explicit RJ_NW_LS (  const RJ_XX_LS&  parent );
-    explicit RJ_NW_LS ( const qpid::messaging::Message& message );
+    explicit RJ_NW_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RJ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_NW_LS"; };
@@ -623,7 +623,7 @@ public:
     
     // constructor
     explicit RJ_MD_LS (  const RJ_XX_LS&  parent );
-    explicit RJ_MD_LS ( const qpid::messaging::Message& message );
+    explicit RJ_MD_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RJ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_MD_LS"; };
@@ -672,7 +672,7 @@ public:
     
     // constructor
     explicit RJ_CC_LS (  const RJ_XX_LS&  parent );
-    explicit RJ_CC_LS ( const qpid::messaging::Message& message );
+    explicit RJ_CC_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RJ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_CC_LS"; };
@@ -721,7 +721,7 @@ public:
     
     // constructor
     explicit CF_ST_LS (  const CF_XX_LS&  parent,   const mtk::msg::sub_gen_response_location&  _gen_response_location );
-    explicit CF_ST_LS ( const qpid::messaging::Message& message );
+    explicit CF_ST_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_ST_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_ST_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_ST_LS"; };

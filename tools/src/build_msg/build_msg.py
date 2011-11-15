@@ -136,7 +136,7 @@ $INNER_CLASSES
     
     // constructor
     explicit ${CLASS_NAME} ( $CONSTRUCTOR_PARAMS_DEBUG_DECL );
-    explicit ${CLASS_NAME} ( const qpid::messaging::Message& message );
+    explicit ${CLASS_NAME} ( const qpid::types::Variant::Map&  mv );
     virtual ~${CLASS_NAME} (){};
     virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
     static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
@@ -450,13 +450,10 @@ def ctor_conversion_from_qpid_msg(class_name, class_info, class_properties, send
     CLASS_NAME_NOT_NESTED = class_name.split('::')[-1]
     IMPL_TEMPLATE = """
 
-${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} (const qpid::messaging::Message& msg)
+${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} (const qpid::types::Variant::Map&  mv)
     :  $CONSTRUCTOR_PARAMS_DEBUG_INIT 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -466,7 +463,7 @@ ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} (const qpid::messaging::Message& msg)
 """
 
     if class_properties.has_key('I'):
-        CONSTRUCTOR_PARAMS_DEBUG_INIT += class_properties['I']+'(msg), '
+        CONSTRUCTOR_PARAMS_DEBUG_INIT += class_properties['I']+'(mv), '
 
 
     #CONSTRUCTOR_PARAMS_DEBUG_INIT

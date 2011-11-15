@@ -44,7 +44,7 @@ public:
     
     // constructor
     explicit pub_add_user (    const std::string&  _sender_broker_code,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
-    explicit pub_add_user ( const qpid::messaging::Message& message );
+    explicit pub_add_user ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_add_user (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_add_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_add_user"; };
@@ -95,7 +95,7 @@ public:
     
     // constructor
     explicit pub_del_user (    const std::string&  _sender_broker_code,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation );
-    explicit pub_del_user ( const qpid::messaging::Message& message );
+    explicit pub_del_user ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_del_user (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_del_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_del_user"; };
@@ -146,7 +146,7 @@ public:
     
     // constructor
     explicit req_session_id_conf (    const std::string&  _sender_broker_code,   const std::string&  _session_id,   const mtk::msg::sub_process_info&  _from );
-    explicit req_session_id_conf ( const qpid::messaging::Message& message );
+    explicit req_session_id_conf ( const qpid::types::Variant::Map&  mv );
     virtual ~req_session_id_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_session_id_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_session_id_conf"; };
@@ -198,7 +198,7 @@ public:
     
     // constructor
     explicit pub_partial_user_list_acs2serv (    const std::string&  _sender_broker_code,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
-    explicit pub_partial_user_list_acs2serv ( const qpid::messaging::Message& message );
+    explicit pub_partial_user_list_acs2serv ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_partial_user_list_acs2serv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_acs2serv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_acs2serv"; };
@@ -249,7 +249,7 @@ public:
     
     // constructor
     explicit pub_partial_user_list_serv2acs (    const std::string&  _sender_broker_code,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
-    explicit pub_partial_user_list_serv2acs ( const qpid::messaging::Message& message );
+    explicit pub_partial_user_list_serv2acs ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_partial_user_list_serv2acs (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_serv2acs"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_serv2acs"; };
@@ -300,7 +300,7 @@ public:
     
     // constructor
     explicit req_user_list (    const mtk::msg::sub_request_info&  _request_info );
-    explicit req_user_list ( const qpid::messaging::Message& message );
+    explicit req_user_list ( const qpid::types::Variant::Map&  mv );
     virtual ~req_user_list (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_user_list"; };
@@ -350,7 +350,7 @@ public:
     
     // constructor
     explicit res_user_list (    const mtk::msg::sub_r_response&  _response_info,   const mtk::list<mtk::acs::msg::res_login::IC_session_info >&  _list_login_confirmation );
-    explicit res_user_list ( const qpid::messaging::Message& message );
+    explicit res_user_list ( const qpid::types::Variant::Map&  mv );
     virtual ~res_user_list (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_user_list"; };

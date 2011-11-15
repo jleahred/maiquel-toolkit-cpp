@@ -43,7 +43,7 @@ public:
     
     // constructor
     explicit sub_price_level (    const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity );
-    explicit sub_price_level ( const qpid::messaging::Message& message );
+    explicit sub_price_level ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_price_level (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_level"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_level"; };
@@ -90,7 +90,7 @@ public:
     
     // constructor
     explicit sub_price_deph5 (    const sub_price_level&  _level0,   const sub_price_level&  _level1,   const sub_price_level&  _level2,   const sub_price_level&  _level3,   const sub_price_level&  _level4 );
-    explicit sub_price_deph5 ( const qpid::messaging::Message& message );
+    explicit sub_price_deph5 ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_price_deph5 (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_deph5"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_deph5"; };
@@ -140,7 +140,7 @@ public:
     
     // constructor
     explicit sub_best_prices (    const sub_price_deph5&  _bids,   const sub_price_deph5&  _asks );
-    explicit sub_best_prices ( const qpid::messaging::Message& message );
+    explicit sub_best_prices ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_best_prices (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_best_prices"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_best_prices"; };
@@ -187,7 +187,7 @@ public:
     
     // constructor
     explicit pub_best_prices (    const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
-    explicit pub_best_prices ( const qpid::messaging::Message& message );
+    explicit pub_best_prices ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_best_prices (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_best_prices"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_best_prices"; };
@@ -239,7 +239,7 @@ public:
     
     // constructor
     explicit pub_new_products (    const std::string&  _market );
-    explicit pub_new_products ( const qpid::messaging::Message& message );
+    explicit pub_new_products ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_new_products (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_new_products"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_new_products"; };
@@ -289,7 +289,7 @@ public:
     
     // constructor
     explicit sub_additional_info (    const std::string&  _group,   const mtk::nullable<mtk::DateTime>&  _maturity,   const mtk::nullable<mtk::DateTime>&  _value_date,   const mtk::Double&  _unit_cost,   const mtk::nullable<mtk::DateTime>&  _last_trading_dt,   const std::string&  _yaml_misc );
-    explicit sub_additional_info ( const qpid::messaging::Message& message );
+    explicit sub_additional_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_additional_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_additional_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_additional_info"; };
@@ -340,7 +340,7 @@ public:
     
     // constructor
     explicit sub_full_product_info (    const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const sub_additional_info&  _additional_info );
-    explicit sub_full_product_info ( const qpid::messaging::Message& message );
+    explicit sub_full_product_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_full_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_full_product_info"; };
@@ -388,7 +388,7 @@ public:
     
     // constructor
     explicit sub_full_product_info_optionals (    const bool&  _initialized,   const mtk::msg::sub_product_code&  _product_code,   const mtk::nullable<sub_best_prices>&  _best_prices,   const mtk::nullable<sub_additional_info>&  _additional_info );
-    explicit sub_full_product_info_optionals ( const qpid::messaging::Message& message );
+    explicit sub_full_product_info_optionals ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_full_product_info_optionals (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info_optionals"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_full_product_info_optionals"; };
@@ -437,7 +437,7 @@ public:
     
     // constructor
     explicit req_product_info (    const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_product_code&  _product_code );
-    explicit req_product_info ( const qpid::messaging::Message& message );
+    explicit req_product_info ( const qpid::types::Variant::Map&  mv );
     virtual ~req_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_product_info"; };
@@ -497,7 +497,7 @@ public:
         
         // constructor
         explicit IC_response (    const sub_full_product_info&  _full_product_info );
-        explicit IC_response ( const qpid::messaging::Message& message );
+        explicit IC_response ( const qpid::types::Variant::Map&  mv );
         virtual ~IC_response (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_response"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_response"; };
@@ -534,7 +534,7 @@ public:
     
     // constructor
     explicit res_product_info (    const mtk::msg::sub_r_response&  _response_info,   const IC_response&  _response );
-    explicit res_product_info ( const qpid::messaging::Message& message );
+    explicit res_product_info ( const qpid::types::Variant::Map&  mv );
     virtual ~res_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_product_info"; };

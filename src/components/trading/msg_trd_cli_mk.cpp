@@ -2408,14 +2408,11 @@ __internal_get_default((CF_XX_MK*)0), //   sub_msg_type
     }
     
 
-sub_position_mk::sub_position_mk (const qpid::messaging::Message& msg)
+sub_position_mk::sub_position_mk (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    quantity(__internal_get_default((mtk::FixedNumber*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2424,14 +2421,11 @@ sub_position_mk::sub_position_mk (const qpid::messaging::Message& msg)
 
 
 
-RQ_XX_MK::RQ_XX_MK (const qpid::messaging::Message& msg)
-    :  RQ_XX(msg), //   sub_msg_type
+RQ_XX_MK::RQ_XX_MK (const qpid::types::Variant::Map&  mv)
+    :  RQ_XX(mv), //   sub_msg_type
    request_pos(__internal_get_default((sub_position_mk*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2440,13 +2434,10 @@ RQ_XX_MK::RQ_XX_MK (const qpid::messaging::Message& msg)
 
 
 
-RQ_NW_MK::RQ_NW_MK (const qpid::messaging::Message& msg)
-    :  RQ_XX_MK(msg) 
+RQ_NW_MK::RQ_NW_MK (const qpid::types::Variant::Map&  mv)
+    :  RQ_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2455,13 +2446,10 @@ RQ_NW_MK::RQ_NW_MK (const qpid::messaging::Message& msg)
 
 
 
-RQ_MD_MK::RQ_MD_MK (const qpid::messaging::Message& msg)
-    :  RQ_XX_MK(msg) 
+RQ_MD_MK::RQ_MD_MK (const qpid::types::Variant::Map&  mv)
+    :  RQ_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2470,13 +2458,10 @@ RQ_MD_MK::RQ_MD_MK (const qpid::messaging::Message& msg)
 
 
 
-RQ_CC_MK::RQ_CC_MK (const qpid::messaging::Message& msg)
-    :  RQ_XX_MK(msg) 
+RQ_CC_MK::RQ_CC_MK (const qpid::types::Variant::Map&  mv)
+    :  RQ_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2485,14 +2470,11 @@ RQ_CC_MK::RQ_CC_MK (const qpid::messaging::Message& msg)
 
 
 
-CF_XX_MK::CF_XX_MK (const qpid::messaging::Message& msg)
-    :  CF_XX(msg), //   sub_msg_type
+CF_XX_MK::CF_XX_MK (const qpid::types::Variant::Map&  mv)
+    :  CF_XX(mv), //   sub_msg_type
    market_pos(__internal_get_default((sub_position_mk*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2501,13 +2483,10 @@ CF_XX_MK::CF_XX_MK (const qpid::messaging::Message& msg)
 
 
 
-CF_NW_MK::CF_NW_MK (const qpid::messaging::Message& msg)
-    :  CF_XX_MK(msg) 
+CF_NW_MK::CF_NW_MK (const qpid::types::Variant::Map&  mv)
+    :  CF_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2516,13 +2495,10 @@ CF_NW_MK::CF_NW_MK (const qpid::messaging::Message& msg)
 
 
 
-CF_MD_MK::CF_MD_MK (const qpid::messaging::Message& msg)
-    :  CF_XX_MK(msg) 
+CF_MD_MK::CF_MD_MK (const qpid::types::Variant::Map&  mv)
+    :  CF_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2531,13 +2507,10 @@ CF_MD_MK::CF_MD_MK (const qpid::messaging::Message& msg)
 
 
 
-CF_CC_MK::CF_CC_MK (const qpid::messaging::Message& msg)
-    :  CF_XX_MK(msg) 
+CF_CC_MK::CF_CC_MK (const qpid::types::Variant::Map&  mv)
+    :  CF_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2546,14 +2519,11 @@ CF_CC_MK::CF_CC_MK (const qpid::messaging::Message& msg)
 
 
 
-CF_EX_MK::CF_EX_MK (const qpid::messaging::Message& msg)
-    :  CF_XX_MK(msg), //   sub_msg_type
+CF_EX_MK::CF_EX_MK (const qpid::types::Variant::Map&  mv)
+    :  CF_XX_MK(mv), //   sub_msg_type
    executed_pos(__internal_get_default((sub_exec_conf*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2562,16 +2532,13 @@ CF_EX_MK::CF_EX_MK (const qpid::messaging::Message& msg)
 
 
 
-RJ_XX_MK::RJ_XX_MK (const qpid::messaging::Message& msg)
-    :  CF_XX_MK(msg), //   field_type
+RJ_XX_MK::RJ_XX_MK (const qpid::types::Variant::Map&  mv)
+    :  CF_XX_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    request_pos(__internal_get_default((sub_position_mk*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2580,13 +2547,10 @@ RJ_XX_MK::RJ_XX_MK (const qpid::messaging::Message& msg)
 
 
 
-RJ_NW_MK::RJ_NW_MK (const qpid::messaging::Message& msg)
-    :  RJ_XX_MK(msg) 
+RJ_NW_MK::RJ_NW_MK (const qpid::types::Variant::Map&  mv)
+    :  RJ_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2595,13 +2559,10 @@ RJ_NW_MK::RJ_NW_MK (const qpid::messaging::Message& msg)
 
 
 
-RJ_MD_MK::RJ_MD_MK (const qpid::messaging::Message& msg)
-    :  RJ_XX_MK(msg) 
+RJ_MD_MK::RJ_MD_MK (const qpid::types::Variant::Map&  mv)
+    :  RJ_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2610,13 +2571,10 @@ RJ_MD_MK::RJ_MD_MK (const qpid::messaging::Message& msg)
 
 
 
-RJ_CC_MK::RJ_CC_MK (const qpid::messaging::Message& msg)
-    :  RJ_XX_MK(msg) 
+RJ_CC_MK::RJ_CC_MK (const qpid::types::Variant::Map&  mv)
+    :  RJ_XX_MK(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2625,14 +2583,11 @@ RJ_CC_MK::RJ_CC_MK (const qpid::messaging::Message& msg)
 
 
 
-CF_ST_MK::CF_ST_MK (const qpid::messaging::Message& msg)
-    :  CF_XX_MK(msg), //   sub_msg_type
+CF_ST_MK::CF_ST_MK (const qpid::types::Variant::Map&  mv)
+    :  CF_XX_MK(mv), //   sub_msg_type
    gen_response_location(__internal_get_default((mtk::msg::sub_gen_response_location*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

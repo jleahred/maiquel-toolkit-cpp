@@ -44,7 +44,7 @@ public:
     
     // constructor
     explicit ps_req_product_info (  const req_product_info&  parent,   const std::string&  _from );
-    explicit ps_req_product_info ( const qpid::messaging::Message& message );
+    explicit ps_req_product_info ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_req_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_product_info"; };
@@ -94,7 +94,7 @@ public:
     
     // constructor
     explicit ps_pub_prod_info_mtk_ready (    const std::string&  _market );
-    explicit ps_pub_prod_info_mtk_ready ( const qpid::messaging::Message& message );
+    explicit ps_pub_prod_info_mtk_ready ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_pub_prod_info_mtk_ready (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready"; };
@@ -144,7 +144,7 @@ public:
     
     // constructor
     explicit ps_req_init_prod_info (    const std::string&  _market,   const mtk::msg::sub_process_info&  _process_info );
-    explicit ps_req_init_prod_info ( const qpid::messaging::Message& message );
+    explicit ps_req_init_prod_info ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_req_init_prod_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info"; };
@@ -195,7 +195,7 @@ public:
     
     // constructor
     explicit ps_conf_full_product_info_init (    const std::string&  _market,   const mtk::msg::sub_process_info&  _to_process_info );
-    explicit ps_conf_full_product_info_init ( const qpid::messaging::Message& message );
+    explicit ps_conf_full_product_info_init ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_conf_full_product_info_init (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init"; };
@@ -246,7 +246,7 @@ public:
     
     // constructor
     explicit ps_conf_full_product_info (    const sub_full_product_info&  _full_prod_info,   const mtk::msg::sub_process_info&  _to_process_info,   const int&  _seq_number );
-    explicit ps_conf_full_product_info ( const qpid::messaging::Message& message );
+    explicit ps_conf_full_product_info ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_conf_full_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info"; };
@@ -298,7 +298,7 @@ public:
     
     // constructor
     explicit ps_pub_prod_info_mtk_ready__from_publisher (  const ps_pub_prod_info_mtk_ready&  parent );
-    explicit ps_pub_prod_info_mtk_ready__from_publisher ( const qpid::messaging::Message& message );
+    explicit ps_pub_prod_info_mtk_ready__from_publisher ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_pub_prod_info_mtk_ready__from_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
@@ -347,7 +347,7 @@ public:
     
     // constructor
     explicit ps_req_init_prod_info__to_publisher (  const ps_req_init_prod_info&  parent );
-    explicit ps_req_init_prod_info__to_publisher ( const qpid::messaging::Message& message );
+    explicit ps_req_init_prod_info__to_publisher ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_req_init_prod_info__to_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info__to_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info__to_publisher"; };
@@ -396,7 +396,7 @@ public:
     
     // constructor
     explicit ps_conf_full_product_info_init__from_publisher (  const ps_conf_full_product_info_init&  parent );
-    explicit ps_conf_full_product_info_init__from_publisher ( const qpid::messaging::Message& message );
+    explicit ps_conf_full_product_info_init__from_publisher ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_conf_full_product_info_init__from_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init__from_publisher"; };
@@ -445,7 +445,7 @@ public:
     
     // constructor
     explicit ps_conf_full_product_info__from_publisher (  const ps_conf_full_product_info&  parent );
-    explicit ps_conf_full_product_info__from_publisher ( const qpid::messaging::Message& message );
+    explicit ps_conf_full_product_info__from_publisher ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_conf_full_product_info__from_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info__from_publisher"; };

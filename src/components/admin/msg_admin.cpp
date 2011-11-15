@@ -2248,7 +2248,7 @@ __internal_get_default((req_command2*)0)
     }
     
 
-pub_enter::pub_enter (const qpid::messaging::Message& msg)
+pub_enter::pub_enter (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    cli_srv(__internal_get_default((std::string*)0)),
 //   sub_msg_type
@@ -2258,10 +2258,7 @@ pub_enter::pub_enter (const qpid::messaging::Message& msg)
 //   field_type
    ka_interval_check(__internal_get_default((mtk::dtTimeQuantity*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2270,7 +2267,7 @@ pub_enter::pub_enter (const qpid::messaging::Message& msg)
 
 
 
-pub_keep_alive_srv::pub_keep_alive_srv (const qpid::messaging::Message& msg)
+pub_keep_alive_srv::pub_keep_alive_srv (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
@@ -2278,10 +2275,7 @@ pub_keep_alive_srv::pub_keep_alive_srv (const qpid::messaging::Message& msg)
 //   field_type
    ka_interval_check(__internal_get_default((mtk::dtTimeQuantity*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2290,14 +2284,11 @@ pub_keep_alive_srv::pub_keep_alive_srv (const qpid::messaging::Message& msg)
 
 
 
-pub_keep_alive_cli::pub_keep_alive_cli (const qpid::messaging::Message& msg)
-    :  pub_keep_alive_srv(msg), //   sub_msg_type
+pub_keep_alive_cli::pub_keep_alive_cli (const qpid::types::Variant::Map&  mv)
+    :  pub_keep_alive_srv(mv), //   sub_msg_type
    login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2306,7 +2297,7 @@ pub_keep_alive_cli::pub_keep_alive_cli (const qpid::messaging::Message& msg)
 
 
 
-pub_exit::pub_exit (const qpid::messaging::Message& msg)
+pub_exit::pub_exit (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    cli_srv(__internal_get_default((std::string*)0)),
 //   sub_msg_type
@@ -2314,10 +2305,7 @@ pub_exit::pub_exit (const qpid::messaging::Message& msg)
 //   field_type
    reason(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2326,7 +2314,7 @@ pub_exit::pub_exit (const qpid::messaging::Message& msg)
 
 
 
-pub_alarm::pub_alarm (const qpid::messaging::Message& msg)
+pub_alarm::pub_alarm (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    cli_srv(__internal_get_default((std::string*)0)),
 //   sub_msg_type
@@ -2346,10 +2334,7 @@ pub_alarm::pub_alarm (const qpid::messaging::Message& msg)
 //   field_type
    alarm_id(__internal_get_default((int16_t*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2358,7 +2343,7 @@ pub_alarm::pub_alarm (const qpid::messaging::Message& msg)
 
 
 
-req_command2::req_command2 (const qpid::messaging::Message& msg)
+req_command2::req_command2 (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
@@ -2368,10 +2353,7 @@ req_command2::req_command2 (const qpid::messaging::Message& msg)
 //   field_type
    command_line(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2380,13 +2362,10 @@ req_command2::req_command2 (const qpid::messaging::Message& msg)
 
 
 
-req_command_srv::req_command_srv (const qpid::messaging::Message& msg)
-    :  req_command2(msg) 
+req_command_srv::req_command_srv (const qpid::types::Variant::Map&  mv)
+    :  req_command2(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2395,13 +2374,10 @@ req_command_srv::req_command_srv (const qpid::messaging::Message& msg)
 
 
 
-req_command_cli::req_command_cli (const qpid::messaging::Message& msg)
-    :  req_command2(msg) 
+req_command_cli::req_command_cli (const qpid::types::Variant::Map&  mv)
+    :  req_command2(mv) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2410,14 +2386,11 @@ req_command_cli::req_command_cli (const qpid::messaging::Message& msg)
 
 
 
-sub_command_rd::sub_command_rd (const qpid::messaging::Message& msg)
+sub_command_rd::sub_command_rd (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    text(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2426,16 +2399,13 @@ sub_command_rd::sub_command_rd (const qpid::messaging::Message& msg)
 
 
 
-res_command::res_command (const qpid::messaging::Message& msg)
+res_command::res_command (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   sub_msg_type
    response_data(__internal_get_default((sub_command_rd*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -2444,7 +2414,7 @@ res_command::res_command (const qpid::messaging::Message& msg)
 
 
 
-pub_central_keep_alive::pub_central_keep_alive (const qpid::messaging::Message& msg)
+pub_central_keep_alive::pub_central_keep_alive (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
@@ -2452,10 +2422,7 @@ pub_central_keep_alive::pub_central_keep_alive (const qpid::messaging::Message& 
 //   field_type
    ka_interval_check(__internal_get_default((mtk::dtTimeQuantity*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

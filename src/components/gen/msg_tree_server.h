@@ -43,7 +43,7 @@ public:
     
     // constructor
     explicit sub_tree_item (    const std::string&  _branch,   const std::string&  _description,   const mtk::nullable<mtk::msg::sub_product_code>&  _product_code );
-    explicit sub_tree_item ( const qpid::messaging::Message& message );
+    explicit sub_tree_item ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_tree_item (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_tree_item"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_tree_item"; };
@@ -98,7 +98,7 @@ public:
     
     // constructor
     explicit req_tree_items (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _branch );
-    explicit req_tree_items ( const qpid::messaging::Message& message );
+    explicit req_tree_items ( const qpid::types::Variant::Map&  mv );
     virtual ~req_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_tree_items"; };
@@ -149,7 +149,7 @@ public:
     
     // constructor
     explicit res_tree_items (    const mtk::msg::sub_r_response&  _response_info,   const sub_tree_item&  _item );
-    explicit res_tree_items ( const qpid::messaging::Message& message );
+    explicit res_tree_items ( const qpid::types::Variant::Map&  mv );
     virtual ~res_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_tree_items"; };

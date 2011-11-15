@@ -444,7 +444,7 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
         msg::copy(cf, mv["_cf_"].asMap());
         if (cf.message_type == MESSAGE_TYPE::static_get_message_type_as_string())
         {
-            MESSAGE_TYPE mt(message);
+            MESSAGE_TYPE mt(mv);
             mt.__internal_warning_control_fields = &cf;
             signalMessage->emit(mt);
             MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))

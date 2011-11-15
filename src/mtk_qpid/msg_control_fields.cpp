@@ -544,7 +544,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
     }
     
 
-sub_control_fields::sub_control_fields (const qpid::messaging::Message& msg)
+sub_control_fields::sub_control_fields (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    message_type(__internal_get_default((std::string*)0)),
 //   field_type
@@ -552,10 +552,7 @@ sub_control_fields::sub_control_fields (const qpid::messaging::Message& msg)
 //   field_type
    sent_date_time(__internal_get_default((mtk::DateTime*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

@@ -45,7 +45,7 @@ public:
     
     // constructor
     explicit oms_RQ_NW_LS (  const RQ_NW_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from );
-    explicit oms_RQ_NW_LS ( const qpid::messaging::Message& message );
+    explicit oms_RQ_NW_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~oms_RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_LS"; };
@@ -96,7 +96,7 @@ public:
     
     // constructor
     explicit oms_RQ_MD_LS (  const RQ_MD_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from );
-    explicit oms_RQ_MD_LS ( const qpid::messaging::Message& message );
+    explicit oms_RQ_MD_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~oms_RQ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_LS"; };
@@ -147,7 +147,7 @@ public:
     
     // constructor
     explicit oms_RQ_CC_LS (  const RQ_CC_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from );
-    explicit oms_RQ_CC_LS ( const qpid::messaging::Message& message );
+    explicit oms_RQ_CC_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~oms_RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_LS"; };
@@ -198,7 +198,7 @@ public:
     
     // constructor
     explicit oms_RQ_NW_MK (  const RQ_NW_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from );
-    explicit oms_RQ_NW_MK ( const qpid::messaging::Message& message );
+    explicit oms_RQ_NW_MK ( const qpid::types::Variant::Map&  mv );
     virtual ~oms_RQ_NW_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_MK"; };
@@ -249,7 +249,7 @@ public:
     
     // constructor
     explicit oms_RQ_MD_MK (  const RQ_MD_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from );
-    explicit oms_RQ_MD_MK ( const qpid::messaging::Message& message );
+    explicit oms_RQ_MD_MK ( const qpid::types::Variant::Map&  mv );
     virtual ~oms_RQ_MD_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_MK"; };
@@ -300,7 +300,7 @@ public:
     
     // constructor
     explicit oms_RQ_CC_MK (  const RQ_CC_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from );
-    explicit oms_RQ_CC_MK ( const qpid::messaging::Message& message );
+    explicit oms_RQ_CC_MK ( const qpid::types::Variant::Map&  mv );
     virtual ~oms_RQ_CC_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_MK"; };
@@ -351,7 +351,7 @@ public:
     
     // constructor
     explicit oms_RQ_ORDERS_STATUS (  const RQ_ORDERS_STATUS&  parent,   const std::string&  _reject_description,   const std::string&  _from );
-    explicit oms_RQ_ORDERS_STATUS ( const qpid::messaging::Message& message );
+    explicit oms_RQ_ORDERS_STATUS ( const qpid::types::Variant::Map&  mv );
     virtual ~oms_RQ_ORDERS_STATUS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_ORDERS_STATUS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_ORDERS_STATUS"; };

@@ -54,7 +54,7 @@ public:
         
         // constructor
         explicit IC_key (    const std::string&  _market,   const mtk::trd::msg::sub_account_info&  _account );
-        explicit IC_key ( const qpid::messaging::Message& message );
+        explicit IC_key ( const qpid::types::Variant::Map&  mv );
         virtual ~IC_key (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_key"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_key"; };
@@ -92,7 +92,7 @@ public:
     
     // constructor
     explicit sub_grant (    const IC_key&  _key,   const std::string&  _type );
-    explicit sub_grant ( const qpid::messaging::Message& message );
+    explicit sub_grant ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_grant (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_grant"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_grant"; };
@@ -146,7 +146,7 @@ public:
     
     // constructor
     explicit rq_accounts (    const mtk::msg::sub_request_info&  _request_info );
-    explicit rq_accounts ( const qpid::messaging::Message& message );
+    explicit rq_accounts ( const qpid::types::Variant::Map&  mv );
     virtual ~rq_accounts (){};
     virtual std::string get_message_type_as_string       (void) const  { return "rq_accounts"; };
     static  std::string static_get_message_type_as_string(void)        { return "rq_accounts"; };
@@ -196,7 +196,7 @@ public:
     
     // constructor
     explicit conf_add_accounts (    const mtk::msg::sub_gen_response_location&  _gen_response_location,   const mtk::list<sub_grant >&  _grant_list );
-    explicit conf_add_accounts ( const qpid::messaging::Message& message );
+    explicit conf_add_accounts ( const qpid::types::Variant::Map&  mv );
     virtual ~conf_add_accounts (){};
     virtual std::string get_message_type_as_string       (void) const  { return "conf_add_accounts"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_add_accounts"; };
@@ -247,7 +247,7 @@ public:
     
     // constructor
     explicit pub_accmgr_init (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _request_sufix_subjetc );
-    explicit pub_accmgr_init ( const qpid::messaging::Message& message );
+    explicit pub_accmgr_init ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_accmgr_init (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_accmgr_init"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_accmgr_init"; };
@@ -298,7 +298,7 @@ public:
     
     // constructor
     explicit rq_accounts_oninit (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _request_sufix_subjetc );
-    explicit rq_accounts_oninit ( const qpid::messaging::Message& message );
+    explicit rq_accounts_oninit ( const qpid::types::Variant::Map&  mv );
     virtual ~rq_accounts_oninit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "rq_accounts_oninit"; };
     static  std::string static_get_message_type_as_string(void)        { return "rq_accounts_oninit"; };

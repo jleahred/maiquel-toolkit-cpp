@@ -1518,16 +1518,13 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
     }
     
 
-pub_add_user::pub_add_user (const qpid::messaging::Message& msg)
+pub_add_user::pub_add_user (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    sender_broker_code(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1536,16 +1533,13 @@ pub_add_user::pub_add_user (const qpid::messaging::Message& msg)
 
 
 
-pub_del_user::pub_del_user (const qpid::messaging::Message& msg)
+pub_del_user::pub_del_user (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    sender_broker_code(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1554,7 +1548,7 @@ pub_del_user::pub_del_user (const qpid::messaging::Message& msg)
 
 
 
-req_session_id_conf::req_session_id_conf (const qpid::messaging::Message& msg)
+req_session_id_conf::req_session_id_conf (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    sender_broker_code(__internal_get_default((std::string*)0)),
 //   field_type
@@ -1562,10 +1556,7 @@ req_session_id_conf::req_session_id_conf (const qpid::messaging::Message& msg)
 //   sub_msg_type
    from(__internal_get_default((mtk::msg::sub_process_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1574,16 +1565,13 @@ req_session_id_conf::req_session_id_conf (const qpid::messaging::Message& msg)
 
 
 
-pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::messaging::Message& msg)
+pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    sender_broker_code(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1592,16 +1580,13 @@ pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::mess
 
 
 
-pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (const qpid::messaging::Message& msg)
+pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    sender_broker_code(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1610,14 +1595,11 @@ pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (const qpid::mess
 
 
 
-req_user_list::req_user_list (const qpid::messaging::Message& msg)
+req_user_list::req_user_list (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1626,16 +1608,13 @@ req_user_list::req_user_list (const qpid::messaging::Message& msg)
 
 
 
-res_user_list::res_user_list (const qpid::messaging::Message& msg)
+res_user_list::res_user_list (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   sub_msg_type
    list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

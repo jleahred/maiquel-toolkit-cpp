@@ -1553,16 +1553,13 @@ __internal_get_default((RQ_ORDERS_STATUS*)0), //   field_type
     }
     
 
-oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::messaging::Message& msg)
-    :  RQ_NW_LS(msg), //   field_type
+oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::types::Variant::Map&  mv)
+    :  RQ_NW_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1571,16 +1568,13 @@ oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::messaging::Message& msg)
 
 
 
-oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::messaging::Message& msg)
-    :  RQ_MD_LS(msg), //   field_type
+oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::types::Variant::Map&  mv)
+    :  RQ_MD_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1589,16 +1583,13 @@ oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::messaging::Message& msg)
 
 
 
-oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::messaging::Message& msg)
-    :  RQ_CC_LS(msg), //   field_type
+oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::types::Variant::Map&  mv)
+    :  RQ_CC_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1607,16 +1598,13 @@ oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::messaging::Message& msg)
 
 
 
-oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::messaging::Message& msg)
-    :  RQ_NW_MK(msg), //   field_type
+oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::types::Variant::Map&  mv)
+    :  RQ_NW_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1625,16 +1613,13 @@ oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::messaging::Message& msg)
 
 
 
-oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::messaging::Message& msg)
-    :  RQ_MD_MK(msg), //   field_type
+oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::types::Variant::Map&  mv)
+    :  RQ_MD_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1643,16 +1628,13 @@ oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::messaging::Message& msg)
 
 
 
-oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::messaging::Message& msg)
-    :  RQ_CC_MK(msg), //   field_type
+oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::types::Variant::Map&  mv)
+    :  RQ_CC_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1661,16 +1643,13 @@ oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::messaging::Message& msg)
 
 
 
-oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::messaging::Message& msg)
-    :  RQ_ORDERS_STATUS(msg), //   field_type
+oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::types::Variant::Map&  mv)
+    :  RQ_ORDERS_STATUS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
