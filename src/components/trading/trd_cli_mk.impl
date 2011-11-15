@@ -558,9 +558,9 @@ public:
         { 
             try
             {
-                  
-            ci->__serrors += std::string(", ") + description();   
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", description(), mtk::alPriorCritic, mtk::alTypeNoPermisions));  
+                
+            ci->__serrors += std::string(", ") + description();
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", description(), mtk::alPriorCritic, mtk::alTypeNoPermisions));
       
             }
             MTK_CATCH_RETHROW("error_ctor", "rethrowed") };
@@ -604,7 +604,7 @@ void init::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "init::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -645,7 +645,7 @@ void init::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "init::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -674,7 +674,7 @@ void init::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "init::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -703,7 +703,7 @@ void init::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "init::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -732,7 +732,7 @@ void init::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "init::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -761,7 +761,7 @@ void init::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "init::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -790,7 +790,7 @@ void init::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "init::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -817,7 +817,7 @@ void init::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "init::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -844,7 +844,7 @@ void init::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "init::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -871,10 +871,11 @@ void init::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "init::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -974,7 +975,7 @@ void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfnw::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -996,7 +997,7 @@ void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1005,7 +1006,7 @@ void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1026,7 +1027,7 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfnw::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1051,7 +1052,7 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1060,7 +1061,7 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1090,7 +1091,7 @@ void w_cfnw::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfnw::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1110,7 +1111,7 @@ void w_cfnw::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1119,7 +1120,7 @@ void w_cfnw::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1140,7 +1141,7 @@ void w_cfnw::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "w_cfnw::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1165,7 +1166,7 @@ void w_cfnw::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1174,7 +1175,7 @@ void w_cfnw::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1204,7 +1205,7 @@ void w_cfnw::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "w_cfnw::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1226,7 +1227,7 @@ void w_cfnw::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1235,7 +1236,7 @@ void w_cfnw::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1256,7 +1257,7 @@ void w_cfnw::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "w_cfnw::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1285,7 +1286,7 @@ void w_cfnw::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "w_cfnw::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1314,7 +1315,7 @@ void w_cfnw::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "w_cfnw::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1336,7 +1337,7 @@ void w_cfnw::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1345,7 +1346,7 @@ void w_cfnw::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1366,7 +1367,7 @@ void w_cfnw::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "w_cfnw::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1388,7 +1389,7 @@ void w_cfnw::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1397,7 +1398,7 @@ void w_cfnw::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1418,10 +1419,11 @@ void w_cfnw::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "w_cfnw::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -1444,7 +1446,7 @@ void w_cfnw::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1453,7 +1455,7 @@ void w_cfnw::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1501,7 +1503,7 @@ void market::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "market::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1523,7 +1525,7 @@ void market::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1532,7 +1534,7 @@ void market::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1553,7 +1555,7 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "market::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1578,7 +1580,7 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1587,7 +1589,7 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1617,7 +1619,7 @@ void market::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "market::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1637,7 +1639,7 @@ void market::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1646,7 +1648,7 @@ void market::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1667,7 +1669,7 @@ void market::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "market::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1689,7 +1691,7 @@ void market::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1698,7 +1700,7 @@ void market::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1719,7 +1721,7 @@ void market::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "market::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1748,7 +1750,7 @@ void market::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "market::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1773,7 +1775,7 @@ void market::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1782,7 +1784,7 @@ void market::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1812,7 +1814,7 @@ void market::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "market::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1834,7 +1836,7 @@ void market::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1843,7 +1845,7 @@ void market::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1864,7 +1866,7 @@ void market::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "market::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1886,7 +1888,7 @@ void market::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1895,7 +1897,7 @@ void market::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1916,7 +1918,7 @@ void market::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "market::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1938,7 +1940,7 @@ void market::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -1947,7 +1949,7 @@ void market::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -1968,10 +1970,11 @@ void market::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "market::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -2042,7 +2045,7 @@ void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfmd::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2064,7 +2067,7 @@ void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2073,7 +2076,7 @@ void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2094,7 +2097,7 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfmd::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2119,7 +2122,7 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2128,7 +2131,7 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2158,7 +2161,7 @@ void w_cfmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfmd::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2178,7 +2181,7 @@ void w_cfmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2187,7 +2190,7 @@ void w_cfmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2208,7 +2211,7 @@ void w_cfmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "w_cfmd::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2230,7 +2233,7 @@ void w_cfmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2239,7 +2242,7 @@ void w_cfmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2260,7 +2263,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "w_cfmd::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2285,7 +2288,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2294,7 +2297,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2342,7 +2345,7 @@ void w_cfmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "w_cfmd::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2367,7 +2370,7 @@ void w_cfmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2376,7 +2379,7 @@ void w_cfmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2406,7 +2409,7 @@ void w_cfmd::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "w_cfmd::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2428,7 +2431,7 @@ void w_cfmd::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2437,7 +2440,7 @@ void w_cfmd::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2458,7 +2461,7 @@ void w_cfmd::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "w_cfmd::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2487,7 +2490,7 @@ void w_cfmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "w_cfmd::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2509,7 +2512,7 @@ void w_cfmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2518,7 +2521,7 @@ void w_cfmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2539,10 +2542,11 @@ void w_cfmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "w_cfmd::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -2613,7 +2617,7 @@ void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfcc::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2635,7 +2639,7 @@ void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2644,7 +2648,7 @@ void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2665,7 +2669,7 @@ void w_cfcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfcc::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2694,7 +2698,7 @@ void w_cfcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfcc::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2714,7 +2718,7 @@ void w_cfcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2723,7 +2727,7 @@ void w_cfcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2744,7 +2748,7 @@ void w_cfcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "w_cfcc::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2766,7 +2770,7 @@ void w_cfcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2775,7 +2779,7 @@ void w_cfcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2796,7 +2800,7 @@ void w_cfcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "w_cfcc::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2825,7 +2829,7 @@ void w_cfcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "w_cfcc::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2850,7 +2854,7 @@ void w_cfcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2859,7 +2863,7 @@ void w_cfcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2889,7 +2893,7 @@ void w_cfcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "w_cfcc::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2911,7 +2915,7 @@ void w_cfcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2920,7 +2924,7 @@ void w_cfcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2941,7 +2945,7 @@ void w_cfcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "w_cfcc::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2963,7 +2967,7 @@ void w_cfcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -2972,7 +2976,7 @@ void w_cfcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -2993,7 +2997,7 @@ void w_cfcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "w_cfcc::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3022,10 +3026,11 @@ void w_cfcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "w_cfcc::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -3096,7 +3101,7 @@ void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfmdcc::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3118,7 +3123,7 @@ void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3127,7 +3132,7 @@ void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3148,7 +3153,7 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfmdcc::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3182,7 +3187,7 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3191,7 +3196,7 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3212,7 +3217,7 @@ void w_cfmdcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfmdcc::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3232,7 +3237,7 @@ void w_cfmdcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3241,7 +3246,7 @@ void w_cfmdcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3262,7 +3267,7 @@ void w_cfmdcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "w_cfmdcc::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3284,7 +3289,7 @@ void w_cfmdcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3293,7 +3298,7 @@ void w_cfmdcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3314,7 +3319,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "w_cfmdcc::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3339,7 +3344,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3348,7 +3353,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3396,7 +3401,7 @@ void w_cfmdcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "w_cfmdcc::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3421,7 +3426,7 @@ void w_cfmdcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3430,7 +3435,7 @@ void w_cfmdcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3460,7 +3465,7 @@ void w_cfmdcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "w_cfmdcc::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3482,7 +3487,7 @@ void w_cfmdcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3491,7 +3496,7 @@ void w_cfmdcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3512,7 +3517,7 @@ void w_cfmdcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "w_cfmdcc::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3541,7 +3546,7 @@ void w_cfmdcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "w_cfmdcc::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3570,10 +3575,11 @@ void w_cfmdcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "w_cfmdcc::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -3644,7 +3650,7 @@ void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfnwmd::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3666,7 +3672,7 @@ void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3675,7 +3681,7 @@ void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3696,7 +3702,7 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfnwmd::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3721,7 +3727,7 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3730,7 +3736,7 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3760,7 +3766,7 @@ void w_cfnwmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfnwmd::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3780,7 +3786,7 @@ void w_cfnwmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3789,7 +3795,7 @@ void w_cfnwmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3810,7 +3816,7 @@ void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "w_cfnwmd::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3835,7 +3841,7 @@ void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3844,7 +3850,7 @@ void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3874,7 +3880,7 @@ void w_cfnwmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "w_cfnwmd::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3896,7 +3902,7 @@ void w_cfnwmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3905,7 +3911,7 @@ void w_cfnwmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3926,7 +3932,7 @@ void w_cfnwmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "w_cfnwmd::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3948,7 +3954,7 @@ void w_cfnwmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -3957,7 +3963,7 @@ void w_cfnwmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -3978,7 +3984,7 @@ void w_cfnwmd::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "w_cfnwmd::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4007,7 +4013,7 @@ void w_cfnwmd::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "w_cfnwmd::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4029,7 +4035,7 @@ void w_cfnwmd::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4038,7 +4044,7 @@ void w_cfnwmd::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4059,7 +4065,7 @@ void w_cfnwmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "w_cfnwmd::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4081,7 +4087,7 @@ void w_cfnwmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4090,7 +4096,7 @@ void w_cfnwmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4111,10 +4117,11 @@ void w_cfnwmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "w_cfnwmd::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -4137,7 +4144,7 @@ void w_cfnwmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4146,7 +4153,7 @@ void w_cfnwmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4194,7 +4201,7 @@ void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfnwcc::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4216,7 +4223,7 @@ void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4225,7 +4232,7 @@ void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4246,7 +4253,7 @@ void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfnwcc::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4268,7 +4275,7 @@ void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4277,7 +4284,7 @@ void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4298,7 +4305,7 @@ void w_cfnwcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfnwcc::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4318,7 +4325,7 @@ void w_cfnwcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4327,7 +4334,7 @@ void w_cfnwcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4348,7 +4355,7 @@ void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "w_cfnwcc::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4373,7 +4380,7 @@ void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4382,7 +4389,7 @@ void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4412,7 +4419,7 @@ void w_cfnwcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "w_cfnwcc::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4434,7 +4441,7 @@ void w_cfnwcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4443,7 +4450,7 @@ void w_cfnwcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4464,7 +4471,7 @@ void w_cfnwcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "w_cfnwcc::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4486,7 +4493,7 @@ void w_cfnwcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4495,7 +4502,7 @@ void w_cfnwcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4516,7 +4523,7 @@ void w_cfnwcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "w_cfnwcc::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4545,7 +4552,7 @@ void w_cfnwcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "w_cfnwcc::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4567,7 +4574,7 @@ void w_cfnwcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4576,7 +4583,7 @@ void w_cfnwcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4597,7 +4604,7 @@ void w_cfnwcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "w_cfnwcc::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4619,7 +4626,7 @@ void w_cfnwcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4628,7 +4635,7 @@ void w_cfnwcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4649,10 +4656,11 @@ void w_cfnwcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "w_cfnwcc::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -4675,7 +4683,7 @@ void w_cfnwcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4684,7 +4692,7 @@ void w_cfnwcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4732,7 +4740,7 @@ void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "canceled::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4754,7 +4762,7 @@ void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4763,7 +4771,7 @@ void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4784,7 +4792,7 @@ void canceled::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "canceled::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4813,7 +4821,7 @@ void canceled::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "canceled::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4842,7 +4850,7 @@ void canceled::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "canceled::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4864,7 +4872,7 @@ void canceled::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4873,7 +4881,7 @@ void canceled::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4894,7 +4902,7 @@ void canceled::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "canceled::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4916,7 +4924,7 @@ void canceled::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4925,7 +4933,7 @@ void canceled::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4946,7 +4954,7 @@ void canceled::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "canceled::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4968,7 +4976,7 @@ void canceled::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -4977,7 +4985,7 @@ void canceled::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -4998,7 +5006,7 @@ void canceled::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "canceled::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5020,7 +5028,7 @@ void canceled::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5029,7 +5037,7 @@ void canceled::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5050,7 +5058,7 @@ void canceled::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "canceled::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5072,7 +5080,7 @@ void canceled::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5081,7 +5089,7 @@ void canceled::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5102,7 +5110,7 @@ void canceled::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "canceled::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5131,10 +5139,11 @@ void canceled::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "canceled::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -5157,7 +5166,7 @@ void canceled::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5166,7 +5175,7 @@ void canceled::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5214,7 +5223,7 @@ void executed::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "executed::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5236,7 +5245,7 @@ void executed::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5245,7 +5254,7 @@ void executed::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5266,7 +5275,7 @@ void executed::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "executed::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5295,7 +5304,7 @@ void executed::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "executed::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5324,7 +5333,7 @@ void executed::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "executed::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5346,7 +5355,7 @@ void executed::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5355,7 +5364,7 @@ void executed::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5376,7 +5385,7 @@ void executed::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "executed::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5398,7 +5407,7 @@ void executed::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5407,7 +5416,7 @@ void executed::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5428,7 +5437,7 @@ void executed::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "executed::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5450,7 +5459,7 @@ void executed::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5459,7 +5468,7 @@ void executed::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5480,7 +5489,7 @@ void executed::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "executed::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5502,7 +5511,7 @@ void executed::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5511,7 +5520,7 @@ void executed::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5532,7 +5541,7 @@ void executed::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "executed::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5554,7 +5563,7 @@ void executed::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5563,7 +5572,7 @@ void executed::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5584,7 +5593,7 @@ void executed::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "executed::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5606,7 +5615,7 @@ void executed::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5615,7 +5624,7 @@ void executed::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5636,10 +5645,11 @@ void executed::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "executed::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -5662,7 +5672,7 @@ void executed::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5671,7 +5681,7 @@ void executed::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5719,7 +5729,7 @@ void error::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "error::rq_nw";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5741,7 +5751,7 @@ void error::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5750,7 +5760,7 @@ void error::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5771,7 +5781,7 @@ void error::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "error::rq_md";
 
-      CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5800,7 +5810,7 @@ void error::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "error::rq_cc";
 
-      CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5820,7 +5830,7 @@ void error::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5829,7 +5839,7 @@ void error::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5850,7 +5860,7 @@ void error::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
     
 	static const char* method_name = "error::cf_nw";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5872,7 +5882,7 @@ void error::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5881,7 +5891,7 @@ void error::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5902,7 +5912,7 @@ void error::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
     
 	static const char* method_name = "error::cf_md";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5924,7 +5934,7 @@ void error::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5933,7 +5943,7 @@ void error::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -5954,7 +5964,7 @@ void error::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
     
 	static const char* method_name = "error::cf_cc";
 
-      CHECK_CONFIRM_AND_WRITE_LAST_CONF       
+      int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5976,7 +5986,7 @@ void error::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -5985,7 +5995,7 @@ void error::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -6006,7 +6016,7 @@ void error::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
     
 	static const char* method_name = "error::rj_nw";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -6028,7 +6038,7 @@ void error::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -6037,7 +6047,7 @@ void error::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -6058,7 +6068,7 @@ void error::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
     
 	static const char* method_name = "error::rj_md";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -6080,7 +6090,7 @@ void error::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -6089,7 +6099,7 @@ void error::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -6110,7 +6120,7 @@ void error::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
     
 	static const char* method_name = "error::rj_cc";
 
-      CHECK_REJECT_AND_WRITE_LAST_CONF        
+      int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -6139,10 +6149,11 @@ void error::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
     
 	static const char* method_name = "error::cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+    
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -6165,7 +6176,7 @@ void error::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -6174,7 +6185,7 @@ void error::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);

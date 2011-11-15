@@ -4,30 +4,31 @@
 ::INIT::
         NAMESPACES=['mtk','trd']
         GENERATE_ON='.'
-        INCLUDES = [    '#include "components/trading/msg_trd_cli_mk.h"', 
-                        '#include "components/trading/trd_cli_support.h"', 
+        INCLUDES = [    '#include "components/trading/msg_trd_cli_mk.h"',
+                        '#include "components/trading/trd_cli_support.h"',
                         '#include "components/admin/admin.h"',
                         '#include "components/trading/trd_cli_historic.h"']
 
 
 ::INPUTS::
-    rq_nw           (rq   :  mtk::trd::msg::RQ_NW_MK)   [{  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
-    rq_md           (rq   :  mtk::trd::msg::RQ_MD_MK)   [{  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   }]
-	rq_cc           (rq   :  mtk::trd::msg::RQ_CC_MK)   [{  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
+    rq_nw           (rq   :  mtk::trd::msg::RQ_NW_MK)   [{  int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
+    rq_md           (rq   :  mtk::trd::msg::RQ_MD_MK)   [{  int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   }]
+	rq_cc           (rq   :  mtk::trd::msg::RQ_CC_MK)   [{  int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
 
-	cf_nw           (cf   :  mtk::trd::msg::CF_NW_MK)   [{  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
-	cf_md           (cf   :  mtk::trd::msg::CF_MD_MK)   [{  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
-	cf_cc           (cf   :  mtk::trd::msg::CF_CC_MK)   [{  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
+	cf_nw           (cf   :  mtk::trd::msg::CF_NW_MK)   [{  int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
+	cf_md           (cf   :  mtk::trd::msg::CF_MD_MK)   [{  int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
+	cf_cc           (cf   :  mtk::trd::msg::CF_CC_MK)   [{  int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
 
-	rj_nw           (rj   :  mtk::trd::msg::RJ_NW_MK)   [{  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
-	rj_md           (rj   :  mtk::trd::msg::RJ_MD_MK)   [{  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
-	rj_cc           (rj   :  mtk::trd::msg::RJ_CC_MK)   [{  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
+	rj_nw           (rj   :  mtk::trd::msg::RJ_NW_MK)   [{  int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
+	rj_md           (rj   :  mtk::trd::msg::RJ_MD_MK)   [{  int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
+	rj_cc           (rj   :  mtk::trd::msg::RJ_CC_MK)   [{  int nerrors=0;  CHECK_REJECT_AND_WRITE_LAST_CONF        }]
 
-	cf_ex           (ex   :  mtk::trd::msg::CF_EX_MK)   
-                        [{      
-                                const mtk::trd::msg::CF_XX_MK& cf(ex); 
-                                CHECK_CONFIRM_AND_WRITE_LAST_CONF  
-                                CHECK_EXEC  
+	cf_ex           (ex   :  mtk::trd::msg::CF_EX_MK)
+                        [{
+                                int nerrors=0;
+                                CHECK_EXEC
+                                const mtk::trd::msg::CF_XX_MK& cf(ex);
+                                CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         }]
 
 	cf_st           (st   :  mtk::trd::msg::CF_ST_MK)   [{  IF_LAST_CONF_ISNULL__WRITE_IT         }]
@@ -44,12 +45,12 @@
 	sig_rj_nw        (rj   :  mtk::trd::msg::RJ_NW_MK)
 	sig_rj_md        (rj   :  mtk::trd::msg::RJ_MD_MK)
 	sig_rj_cc        (rj   :  mtk::trd::msg::RJ_CC_MK)
-	
+
 	sig_cf_nw        (cf   :  mtk::trd::msg::CF_NW_MK)
 	sig_cf_md        (cf   :  mtk::trd::msg::CF_MD_MK)
 	sig_cf_cc        (cf   :  mtk::trd::msg::CF_CC_MK)
-	
-	
+
+
 	sig_cf_ex        (ex   :  mtk::trd::msg::CF_EX_MK)
 
     sig_cf_st        (st   :  mtk::trd::msg::CF_ST_MK)
@@ -96,17 +97,17 @@
       has_pending_rq          :  bool                                        ({true})
 
 ::STATUS::canceled
-      is_canceled             :  bool                                        ({true})                                           
+      is_canceled             :  bool                                        ({true})
 
 ::STATUS::executed
       is_full_executed        :  bool                                        ({true})
 
 
 ::STATUS::error
-      description        :  std::string                                      ({_})  
-      [{  
-            ci->__serrors += std::string(", ") + description();   
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", description(), mtk::alPriorCritic, mtk::alTypeNoPermisions));  
+      description        :  std::string                                      ({_})
+      [{
+            ci->__serrors += std::string(", ") + description();
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", description(), mtk::alPriorCritic, mtk::alTypeNoPermisions));
       }]
 
 
@@ -160,7 +161,7 @@ market  --   rq_cc                           /   , rq_cc               -->   w_c
 market  --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error      (method_name)
 market  --   cf_md                           /   , cf_cfmd_nr          ''>   market
 market  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc  ''>   error	    ("invalid cfcc")   //	perhaps we receive a confirm cancelation on diferent order
-market  --   cf_cc                           /   , cf_cfcc_nr          -->   canceled   
+market  --   cf_cc                           /   , cf_cfcc_nr          -->   canceled
 market  --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error      (method_name)
 market  --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error      (method_name)
 market  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
@@ -200,7 +201,7 @@ w_cfcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   erro
 w_cfcc  --   rj_cc                           /   , cf_rjcc            ''>   market
 w_cfcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
 w_cfcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfcc
-w_cfcc  --   cf_st                                                    ''>   w_cfcc  
+w_cfcc  --   cf_st                                                    ''>   w_cfcc
 
 
 
@@ -219,7 +220,7 @@ w_cfmdcc  --   rj_md                           /   , cf_rjmd            ''>   w_
 w_cfmdcc  --   rj_cc                           /   , cf_rjcc            ''>   w_cfmd
 w_cfmdcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
 w_cfmdcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfmdcc
-w_cfmdcc  --   cf_st                                                    ''>   w_cfmdcc  
+w_cfmdcc  --   cf_st                                                    ''>   w_cfmdcc
 
 
 
@@ -235,7 +236,7 @@ w_cfnwmd  --   rj_nw                           /   , cf_rjnw            ''>   ca
 w_cfnwmd  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
-w_cfnwmd  --   cf_st                                                    ''>   w_cfnwmd  
+w_cfnwmd  --   cf_st                                                    ''>   w_cfnwmd
 
 
 w_cfnwcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
@@ -249,13 +250,13 @@ w_cfnwcc  --   rj_nw                           /   , cf_rjnw            ''>   ca
 w_cfnwcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
-w_cfnwcc  --   cf_st                                                    ''>   w_cfnwcc  
+w_cfnwcc  --   cf_st                                                    ''>   w_cfnwcc
 
 
 
 canceled --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
-canceled --   rq_md                           /   , rj_rqmd             ''>   canceled 
-canceled --   rq_cc                           /   , rj_rqcc             ''>   canceled 
+canceled --   rq_md                           /   , rj_rqmd             ''>   canceled
+canceled --   rq_cc                           /   , rj_rqcc             ''>   canceled
 canceled --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error     (method_name)
 canceled --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error     (method_name)
 canceled --   cf_cc                           /   , cf_cfcc & rq_cc     ''>   error     (method_name)
@@ -263,12 +264,12 @@ canceled --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   er
 canceled --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error     (method_name)
 canceled --   rj_cc                           /   , cf_rjcc             ''>   error     (method_name)
 canceled --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
-canceled --   cf_st                                                     ''>   canceled 
+canceled --   cf_st                                                     ''>   canceled
 
 
 executed --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
-executed --   rq_md                           /   , rj_rqmd             ''>   executed 
-executed --   rq_cc                           /   , rj_rqcc             ''>   executed 
+executed --   rq_md                           /   , rj_rqmd             ''>   executed
+executed --   rq_cc                           /   , rj_rqcc             ''>   executed
 executed --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error     (method_name)
 executed --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error     (method_name)
 executed --   cf_cc                           /   , cf_cfcc & rq_cc     ''>   error     (method_name)
@@ -276,7 +277,7 @@ executed --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   er
 executed --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error     (method_name)
 executed --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error     (method_name)
 executed --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
-executed --   cf_st                                                     ''>   executed 
+executed --   cf_st                                                     ''>   executed
 
 
 
@@ -306,7 +307,7 @@ error    --   cf_st                                                     ''>   er
             /*********  cancelations will be allways generated not progressed
             rq_rq_cc
                 [{
-                    ci->sig_rq_cc(p);   ci->sig_changed();      
+                    ci->sig_rq_cc(p);   ci->sig_changed();
                 }]
             **************/
 
@@ -319,7 +320,7 @@ error    --   cf_st                                                     ''>   er
 
             cf_cfcc         [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
             cf_cfcc_nr      [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
-            
+
             cf_cfst         [{                          ci->sig_cf_st(st);  ci->sig_changed();  }]
 
         //  CONFIRM EXECUTIONS..........................................
@@ -351,7 +352,7 @@ error    --   cf_st                                                     ''>   er
                         mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else if (last_request().HasValue())
                     {
@@ -360,7 +361,7 @@ error    --   cf_st                                                     ''>   er
                         mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
                         ADD_HIST_RQ(rqccmk, cc)
                         ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();      
+                        ci->sig_changed();
                     }
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
@@ -382,7 +383,7 @@ error    --   cf_st                                                     ''>   er
                 [{
                     nerrors > 0
                 }]
-                
+
             is_conf_last_rqmd
                 [{
                     ({  bool result = false;

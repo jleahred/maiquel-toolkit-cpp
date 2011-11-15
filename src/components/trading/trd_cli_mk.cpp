@@ -17,7 +17,7 @@
 
 
 #define CHECK_REQUEST_AND_WRITE_LAST_REQ \
-        int nerrors = 0;         \
+    {   \
         mtk::tuple<int, std::string> tresult;    \
         tresult = mtk::trd::msg::check_request_request<mtk::trd::msg::RQ_XX_MK>   (rq, last_request     ()   ); \
         nerrors += tresult._0;    \
@@ -26,10 +26,11 @@
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
         (void)nerrors;   \
-        ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_MK&>(rq)));
+        ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_MK&>(rq))); \
+    }
 
 #define CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ \
-        int nerrors = 0;         \
+    {   \
         mtk::tuple<int, std::string> tresult;    \
         tresult = mtk::trd::msg::check_request_request<mtk::trd::msg::RQ_XX_MK>(rq, last_request     ()   ); \
         nerrors += tresult._0;    \
@@ -41,14 +42,14 @@
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
         (void)nerrors;   \
-        ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_MK&>(rq)));
-
+        ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_MK&>(rq)));     \
+    }
 
 
 
 
 #define CHECK_CONFIRM_AND_WRITE_LAST_CONF \
-        int nerrors = 0;         \
+    {   \
         mtk::tuple<int, std::string> tresult;    \
         tresult = check_confirm      (cf); \
         nerrors += tresult._0;    \
@@ -60,14 +61,15 @@
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
         (void)nerrors;    \
-        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_MK>(cf)));
+        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_MK>(cf)));    \
+    }
 
 
 
 
 
 #define CHECK_REJECT_AND_WRITE_LAST_CONF \
-        int nerrors = 0;         \
+    {   \
         mtk::tuple<int, std::string> tresult;    \
         tresult = check_confirm      (rj); \
         nerrors += tresult._0;    \
@@ -80,7 +82,8 @@
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
         (void)nerrors;    \
-        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_MK>(rj)));
+        ci->set_last_confirmation(mtk::make_nullable(static_cast<mtk::trd::msg::CF_XX_MK>(rj)));    \
+    }
 
 
 #define IF_LAST_CONF_ISNULL__WRITE_IT  \
@@ -91,6 +94,7 @@
 
 #define CHECK_EXEC     \
         {   \
+            mtk::tuple<int, std::string> tresult;    \
             std::string s_errors;   \
             int   n_errors;   \
             tresult = check_exec__last_confirm      (ex, last_confirmation());   \
