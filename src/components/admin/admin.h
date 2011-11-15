@@ -89,6 +89,9 @@ namespace mtk {
 
         mtk::msg::sub_control_fluct     get_control_fluct_info(void);
         void  check_control_fluct(const mtk::msg::sub_control_fluct&  cf);
+        void  check_control_fluct__info_on_times(const mtk::msg::sub_control_fluct&  cf,    const mtk::dtTimeQuantity&  critic_on,
+                                                                                            const mtk::dtTimeQuantity&  error_on,
+                                                                                            const mtk::dtTimeQuantity&  warning_on);
       };     //namespace admin {
 
 

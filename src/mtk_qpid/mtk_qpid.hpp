@@ -87,7 +87,7 @@ namespace mtk{
 
 
     //  to be defined externally  (when not using admin)
-    void check_control_flields_flucts    (const std::string&  key, const mtk::DateTime&  dt);
+    void check_control_fields_flucts    (const std::string&  key, const mtk::DateTime&  dt);
 
 
 
@@ -448,7 +448,7 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
             mt.__internal_warning_control_fields = &cf;
             signalMessage->emit(mt);
             MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
-                check_control_flields_flucts(cf.control_fluct_key, cf.sent_date_time);
+                check_control_fields_flucts(cf.control_fluct_key, cf.sent_date_time);
             MTK_END_EXEC_MAX_FREC
         }
 //        nullable<msg::sub_control_fields> cf;

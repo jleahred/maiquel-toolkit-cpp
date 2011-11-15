@@ -533,7 +533,7 @@ void pub_new_products::before_send(void) const
 
 
 
-sub_aditional_info::sub_aditional_info (   const std::string&  _group,   const mtk::nullable<mtk::DateTime>&  _maturity,   const mtk::nullable<mtk::DateTime>&  _value_date,   const mtk::Double&  _unit_cost,   const mtk::nullable<mtk::DateTime>&  _last_trading_dt,   const std::string&  _yaml_misc)
+sub_additional_info::sub_additional_info (   const std::string&  _group,   const mtk::nullable<mtk::DateTime>&  _maturity,   const mtk::nullable<mtk::DateTime>&  _value_date,   const mtk::Double&  _unit_cost,   const mtk::nullable<mtk::DateTime>&  _last_trading_dt,   const std::string&  _yaml_misc)
     :     group(_group),   maturity(_maturity),   value_date(_value_date),   unit_cost(_unit_cost),   last_trading_dt(_last_trading_dt),   yaml_misc(_yaml_misc) 
        
     {  
@@ -545,14 +545,14 @@ sub_aditional_info::sub_aditional_info (   const std::string&  _group,   const m
 
 
 
-std::string sub_aditional_info::check_recomended(void) const
+std::string sub_additional_info::check_recomended(void) const
 {
     std::string result;
 
     return result;
 }
 
-void sub_aditional_info::before_send(void) const
+void sub_additional_info::before_send(void) const
 {
 
 }
@@ -560,8 +560,8 @@ void sub_aditional_info::before_send(void) const
 
 
 
-sub_full_product_info::sub_full_product_info (   const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const sub_aditional_info&  _aditional_info)
-    :     product_code(_product_code),   best_prices(_best_prices),   aditional_info(_aditional_info) 
+sub_full_product_info::sub_full_product_info (   const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const sub_additional_info&  _additional_info)
+    :     product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info) 
        
     {  
         std::string cr = check_recomended ();  
@@ -587,8 +587,8 @@ void sub_full_product_info::before_send(void) const
 
 
 
-sub_full_product_info_optionals::sub_full_product_info_optionals (   const bool&  _initialized,   const mtk::msg::sub_product_code&  _product_code,   const mtk::nullable<sub_best_prices>&  _best_prices,   const mtk::nullable<sub_aditional_info>&  _aditional_info)
-    :     initialized(_initialized),   product_code(_product_code),   best_prices(_best_prices),   aditional_info(_aditional_info) 
+sub_full_product_info_optionals::sub_full_product_info_optionals (   const bool&  _initialized,   const mtk::msg::sub_product_code&  _product_code,   const mtk::nullable<sub_best_prices>&  _best_prices,   const mtk::nullable<sub_additional_info>&  _additional_info)
+    :     initialized(_initialized),   product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info) 
        
     {  
         std::string cr = check_recomended ();  
@@ -862,7 +862,7 @@ void  operator >> (const YAML::Node& node, pub_new_products & c)
 };
 
 
-std::ostream& operator<< (std::ostream& o, const sub_aditional_info & c)
+std::ostream& operator<< (std::ostream& o, const sub_additional_info & c)
 {
     o << "{ "
 
@@ -873,7 +873,7 @@ std::ostream& operator<< (std::ostream& o, const sub_aditional_info & c)
 
 
 
-YAML::Emitter& operator << (YAML::Emitter& o, const sub_aditional_info & c)
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_additional_info & c)
 {
     o << YAML::BeginMap
 
@@ -884,7 +884,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_aditional_info & c)
 
 
 
-void  operator >> (const YAML::Node& node, sub_aditional_info & c)
+void  operator >> (const YAML::Node& node, sub_additional_info & c)
 {
 
 
@@ -903,7 +903,7 @@ std::ostream& operator<< (std::ostream& o, const sub_full_product_info & c)
 {
     o << "{ "
 
-        << "product_code:"<< c.product_code<<"  "        << "best_prices:"<< c.best_prices<<"  "        << "aditional_info:"<< c.aditional_info<<"  "
+        << "product_code:"<< c.product_code<<"  "        << "best_prices:"<< c.best_prices<<"  "        << "additional_info:"<< c.additional_info<<"  "
         << " }";
     return o;
 };
@@ -914,7 +914,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_full_product_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices        << YAML::Key << "aditional_info"  << YAML::Value << c.aditional_info
+        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices        << YAML::Key << "additional_info"  << YAML::Value << c.additional_info
         << YAML::EndMap;
     return o;
 };
@@ -927,7 +927,7 @@ void  operator >> (const YAML::Node& node, sub_full_product_info & c)
 
         node["product_code"]  >> c.product_code;
         node["best_prices"]  >> c.best_prices;
-        node["aditional_info"]  >> c.aditional_info;
+        node["additional_info"]  >> c.additional_info;
 
 
 };
@@ -937,7 +937,7 @@ std::ostream& operator<< (std::ostream& o, const sub_full_product_info_optionals
 {
     o << "{ "
 
-        << "initialized:"<< c.initialized<<"  "        << "product_code:"<< c.product_code<<"  "        << "best_prices:"<< c.best_prices<<"  "        << "aditional_info:"<< c.aditional_info<<"  "
+        << "initialized:"<< c.initialized<<"  "        << "product_code:"<< c.product_code<<"  "        << "best_prices:"<< c.best_prices<<"  "        << "additional_info:"<< c.additional_info<<"  "
         << " }";
     return o;
 };
@@ -948,7 +948,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_full_product_info_option
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "initialized"  << YAML::Value << c.initialized        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices        << YAML::Key << "aditional_info"  << YAML::Value << c.aditional_info
+        << YAML::Key << "initialized"  << YAML::Value << c.initialized        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices        << YAML::Key << "additional_info"  << YAML::Value << c.additional_info
         << YAML::EndMap;
     return o;
 };
@@ -962,7 +962,7 @@ void  operator >> (const YAML::Node& node, sub_full_product_info_optionals & c)
         node["initialized"]  >> c.initialized;
         node["product_code"]  >> c.product_code;
         node["best_prices"]  >> c.best_prices;
-        node["aditional_info"]  >> c.aditional_info;
+        node["additional_info"]  >> c.additional_info;
 
 
 };
@@ -1126,12 +1126,12 @@ bool operator!= (const pub_new_products& a, const pub_new_products& b)
 
 
 
-bool operator== (const sub_aditional_info& a, const sub_aditional_info& b)
+bool operator== (const sub_additional_info& a, const sub_additional_info& b)
 {
     return (          a.group ==  b.group  &&          a.maturity ==  b.maturity  &&          a.value_date ==  b.value_date  &&          a.unit_cost ==  b.unit_cost  &&          a.last_trading_dt ==  b.last_trading_dt  &&          a.yaml_misc ==  b.yaml_misc  &&   true  );
 };
 
-bool operator!= (const sub_aditional_info& a, const sub_aditional_info& b)
+bool operator!= (const sub_additional_info& a, const sub_additional_info& b)
 {
     return !(a==b);
 };
@@ -1140,7 +1140,7 @@ bool operator!= (const sub_aditional_info& a, const sub_aditional_info& b)
 
 bool operator== (const sub_full_product_info& a, const sub_full_product_info& b)
 {
-    return (          a.product_code ==  b.product_code  &&          a.best_prices ==  b.best_prices  &&          a.aditional_info ==  b.aditional_info  &&   true  );
+    return (          a.product_code ==  b.product_code  &&          a.best_prices ==  b.best_prices  &&          a.additional_info ==  b.additional_info  &&   true  );
 };
 
 bool operator!= (const sub_full_product_info& a, const sub_full_product_info& b)
@@ -1152,7 +1152,7 @@ bool operator!= (const sub_full_product_info& a, const sub_full_product_info& b)
 
 bool operator== (const sub_full_product_info_optionals& a, const sub_full_product_info_optionals& b)
 {
-    return (          a.initialized ==  b.initialized  &&          a.product_code ==  b.product_code  &&          a.best_prices ==  b.best_prices  &&          a.aditional_info ==  b.aditional_info  &&   true  );
+    return (          a.initialized ==  b.initialized  &&          a.product_code ==  b.product_code  &&          a.best_prices ==  b.best_prices  &&          a.additional_info ==  b.additional_info  &&   true  );
 };
 
 bool operator!= (const sub_full_product_info_optionals& a, const sub_full_product_info_optionals& b)
@@ -1484,8 +1484,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (sub_aditional_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
-void  copy (sub_aditional_info& c, const qpid::types::Variant& v)
+//void  __internal_qpid_fill (sub_additional_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_additional_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
@@ -1494,7 +1494,7 @@ void  copy (sub_aditional_info& c, const qpid::types::Variant& v)
 
                     it = mv.find("gr");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field group on message sub_aditional_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field group on message sub_additional_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.group, it->second);
                         //c.group = it->second;
@@ -1514,7 +1514,7 @@ void  copy (sub_aditional_info& c, const qpid::types::Variant& v)
 
                     it = mv.find("uc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field unit_cost on message sub_aditional_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field unit_cost on message sub_additional_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.unit_cost, it->second);
                         //c.unit_cost = it->second;
@@ -1528,7 +1528,7 @@ void  copy (sub_aditional_info& c, const qpid::types::Variant& v)
 
                     it = mv.find("ym");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field yaml_misc on message sub_aditional_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field yaml_misc on message sub_additional_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
                         copy(c.yaml_misc, it->second);
                         //c.yaml_misc = it->second;
@@ -1536,7 +1536,7 @@ void  copy (sub_aditional_info& c, const qpid::types::Variant& v)
     }
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const sub_aditional_info& a)
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_additional_info& a)
 {
 
     a.before_send();
@@ -1562,7 +1562,7 @@ if (a.last_trading_dt.HasValue())
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_aditional_info>& a, const std::string& field)
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_additional_info>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1598,10 +1598,10 @@ void  copy (sub_full_product_info& c, const qpid::types::Variant& v)
 
                     it = mv.find("ainf");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field aditional_info on message sub_full_product_info::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field additional_info on message sub_full_product_info::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.aditional_info, it->second);
-                        //__internal_qpid_fill(c.aditional_info, it->second.asMap());
+                        copy(c.additional_info, it->second);
+                        //__internal_qpid_fill(c.additional_info, it->second.asMap());
 
     }
 
@@ -1617,7 +1617,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_
 //  sub_msg_type
         __internal_add2map(map, a.best_prices, std::string("bp"));
 //  sub_msg_type
-        __internal_add2map(map, a.aditional_info, std::string("ainf"));
+        __internal_add2map(map, a.additional_info, std::string("ainf"));
 
 
 };
@@ -1665,8 +1665,8 @@ void  copy (sub_full_product_info_optionals& c, const qpid::types::Variant& v)
 
                     it = mv.find("ainf");
                     if (it!= mv.end())
-                        copy(c.aditional_info, it->second);
-                        //__internal_qpid_fill(c.aditional_info, it->second.asMap());
+                        copy(c.additional_info, it->second);
+                        //__internal_qpid_fill(c.additional_info, it->second.asMap());
 
     }
 
@@ -1684,9 +1684,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_
 if (a.best_prices.HasValue())
 //  sub_msg_type
         __internal_add2map(map, a.best_prices, std::string("bp"));
-if (a.aditional_info.HasValue())
+if (a.additional_info.HasValue())
 //  sub_msg_type
-        __internal_add2map(map, a.aditional_info, std::string("ainf"));
+        __internal_add2map(map, a.additional_info, std::string("ainf"));
 
 
 };
@@ -2016,9 +2016,9 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
             );
     }
     
-    sub_aditional_info  __internal_get_default(sub_aditional_info*)
+    sub_additional_info  __internal_get_default(sub_additional_info*)
     {
-        return sub_aditional_info(
+        return sub_additional_info(
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
@@ -2042,7 +2042,7 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
 //   sub_msg_type
    __internal_get_default((sub_best_prices*)0),
 //   sub_msg_type
-   __internal_get_default((sub_aditional_info*)0)
+   __internal_get_default((sub_additional_info*)0)
             );
     }
     
@@ -2056,7 +2056,7 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
 //   sub_msg_type
    mtk::nullable<sub_best_prices>(),
 //   sub_msg_type
-   mtk::nullable<sub_aditional_info>()
+   mtk::nullable<sub_additional_info>()
             );
     }
     
@@ -2185,7 +2185,7 @@ pub_new_products::pub_new_products (const qpid::messaging::Message& msg)
 
 
 
-sub_aditional_info::sub_aditional_info (const qpid::messaging::Message& msg)
+sub_additional_info::sub_additional_info (const qpid::messaging::Message& msg)
     :  //   field_type
    group(__internal_get_default((std::string*)0)),
 //   field_type
@@ -2211,7 +2211,7 @@ sub_full_product_info::sub_full_product_info (const qpid::messaging::Message& ms
 //   sub_msg_type
    best_prices(__internal_get_default((sub_best_prices*)0)),
 //   sub_msg_type
-   aditional_info(__internal_get_default((sub_aditional_info*)0)) 
+   additional_info(__internal_get_default((sub_additional_info*)0)) 
     {
         qpid::types::Variant::Map mv;
         qpid::messaging::decode(msg, mv);
