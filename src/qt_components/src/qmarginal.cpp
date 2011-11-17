@@ -606,6 +606,21 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
     enable_actions();
 }
 
+void QTableMarginal::keyPressEvent ( QKeyEvent * event )
+{
+    //QAbstractItemView::
+    if(event->key() == Qt::Key_Up)
+    {
+        if(this->currentRow() > 0)
+            this->setCurrentCell(this->currentRow()-1, 0);
+    }
+    else if(event->key() == Qt::Key_Down)
+    {
+        if(this->currentRow() < this->rowCount()-1)
+            this->setCurrentCell(this->currentRow()+1, 0);
+    }
+    event->setAccepted(true);
+}
 
 
 mtk::CountPtr<mtk::prices::price_manager>     locate_price_manager (const mtk::list< mtk::CountPtr<marginal_in_table> >& marginals, int id)

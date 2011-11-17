@@ -24,11 +24,10 @@ void mtk::AlarmMsg (const Alarm& alarm)
         sig_alarm_msg.emit(alarm);
 }
 
-void mtk::check_control_flields_flucts(const std::string & /*key*/, const mtk::DateTime & /*dt*/)
+void mtk::check_control_fields_flucts(const std::string & /*key*/, const mtk::DateTime & /*dt*/)
 {
 
 }
-
 
 
 MTK_Qt_timer_and_AlarmMsg::MTK_Qt_timer_and_AlarmMsg (QWidget *parent) : QObject(parent)

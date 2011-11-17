@@ -95,6 +95,7 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *);
     void contextMenuEvent ( QContextMenuEvent * event );
+    void keyPressEvent ( QKeyEvent * event );
 
 private slots:
     void request_buy (void);
