@@ -84,7 +84,6 @@ private:
 
     QString       style_sheet_normal;
     QString       style_sheet_null;
-    QString       style_sheet_focus;
 
     bool          pending_screen_update;
     mtk::CountPtr<mtk::prices::price_manager>       price_manager;

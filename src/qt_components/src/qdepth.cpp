@@ -160,8 +160,6 @@ QDepth::QDepth(QWidget *parent) :
                                         QString::number(qtmisc::mtk_color_null.blue()) +  QLatin1String(");");
         style_sheet_null = QString::fromUtf8("background-color: ") + snullcolor  + QString::fromUtf8("\n" "color: rgb(0, 220, 0); font-weight: 1000;");
         style_sheet_normal = QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0); font-weight: 1000;");
-        //style_sheet_focus = QString::fromUtf8("background-color: rgb(0, 0, 70);\n" "color: rgb(0, 220, 0); font-weight: 1000;");
-        style_sheet_focus = QString::fromUtf8("background-color: rgb(0, 0, 70);\n" "color: rgb(0, 220, 0); font-weight: 1000;");
     }
 
     {
@@ -686,12 +684,10 @@ void QDepth::paint_focus(void)
     //title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(191,219,255, 230); font-weight: 1000;"));
     title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(255,255,255, 255); font-weight: 1000;"));
 
-    if(price_manager.isValid()   &&   price_manager->get_best_prices().HasValue()==true)
-        table_widget->setStyleSheet(style_sheet_focus);
-    else if(price_manager.isValid()==false)
-        table_widget->setStyleSheet(style_sheet_normal);
-    else
+    if(price_manager.isValid()==false)
         table_widget->setStyleSheet(style_sheet_null);
+    else
+        table_widget->setStyleSheet(style_sheet_normal);
 }
 
 void QDepth::remove_focus(void)
