@@ -19,12 +19,12 @@
 namespace {
     const int col_market_product= 0;
     const int col_side          = 1;
-    const int col_exec_price    = 2;
-    const int col_exec_quantity = 3;
+    const int col_exec_quantity = 2;
+    const int col_exec_price    = 3;
     /*const char* col_captions[] = {    "product",            defined later for translations
                                         "side",
-                                        "price",
                                         "qty",
+                                        "price",
                                         0          };*/
 };
 
@@ -149,8 +149,8 @@ QExecsTable::QExecsTable(QWidget *parent) :
     {
         static const char* const col_captions[] = {     QT_TR_NOOP("product"),
                                                         QT_TR_NOOP("side"),
-                                                        QT_TR_NOOP("price"),
                                                         QT_TR_NOOP("qty"),
+                                                        QT_TR_NOOP("price"),
                                                         0          };
 
 
