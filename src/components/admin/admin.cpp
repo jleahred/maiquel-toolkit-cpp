@@ -124,6 +124,7 @@ namespace {
 
             mtk::ConfigFile                             config_file;
             mtk::Nullable<std::string>                  get_config_property(const std::string& path);
+            std::string                                 get_config_mandatory_property (const std::string& path);
             void                                        set_config_property(const std::string& path, const std::string&  property_value);
 
             mtk::list<std::string>                      get_config_nodes    (const std::string& path);
@@ -156,7 +157,6 @@ namespace {
             mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_central_keep_alive> > hqpid_central_keepalive;
 
             void                                        send_enter_and_start_keepalive(void);
-            std::string                                 get_mandatory_property(const std::string& path_and_property);
             mtk::msg::sub_process_info                  get_process_info(void) const { return process_info; }
 
             void                                        send_keep_alive(void);
@@ -306,8 +306,8 @@ namespace {
             process_priority = ppNormal;
         else
         {
-            app_name = get_mandatory_property("ADMIN.server_name");
-            std::string priority = get_mandatory_property("ADMIN.priority");
+            app_name = get_config_mandatory_property("ADMIN.server_name");
+            std::string priority = get_config_mandatory_property("ADMIN.priority");
             if(priority=="very_low")
                 process_priority = ppVeryLow;
             else if(priority=="low")
@@ -355,10 +355,10 @@ namespace {
         if(role=="client")
         {
             mon_subject_role = "CLI";
-            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location(get_mandatory_property("ADMIN.CLIENT.location"),
-                                                            MTK_SS(get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode())),
+            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location(get_config_mandatory_property("ADMIN.CLIENT.location"),
+                                                            MTK_SS(get_config_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode())),
                                                             app_name,
-                                                            mtk::crc32_as_string(MTK_SS(app_name<<get_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())),
+                                                            mtk::crc32_as_string(MTK_SS(app_name<<get_config_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())),
                                                             app_version));
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
@@ -383,7 +383,7 @@ namespace {
         else
         {
             mon_subject_role = "SRV";
-            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location(get_mandatory_property("ADMIN.SERVER.broker_code"),
+            process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location(get_config_mandatory_property("ADMIN.SERVER.broker_code"),
                                                             mtk::GetMachineCode()), app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())), app_version));
 
@@ -446,14 +446,6 @@ namespace {
         MTK_CONNECT_THIS(*register_command("ADMIN",         "set_machine_code",        "write a machine code on config file"),  command_set_machine_code)
     }
 
-    std::string admin_status::get_mandatory_property(const std::string& path_and_property)
-    {
-        mtk::Nullable<std::string>  value = config_file.GetValue(path_and_property);
-        if(value.HasValue() == false)
-            throw mtk::Alarm(MTK_HERE, "admin", MTK_SS("mising mandatory property " << path_and_property), mtk::alPriorError, mtk::alTypeNoPermisions);
-        else
-            return value.Get();
-    }
 
     void admin_status::send_enter_and_start_keepalive(void)
     {
@@ -909,7 +901,7 @@ namespace {
     void admin_status::command_set_machine_code(const std::string& /*command*/, const std::string& param, mtk::list<std::string>&  response_lines)
     {
         this->set_config_property("ADMIN.CLIENT.machine_code", mtk::s_trim(param, " \t"));
-        response_lines.push_back(MTK_SS("writed machine code... " << this->get_mandatory_property("ADMIN.CLIENT.machine_code")));
+        response_lines.push_back(MTK_SS("writed machine code... " << this->get_config_mandatory_property("ADMIN.CLIENT.machine_code")));
         response_lines.push_back(MTK_SS("It will be ready on next execution"));
     }
 
@@ -936,6 +928,15 @@ namespace {
     mtk::Nullable<std::string>   admin_status::get_config_property(const std::string& path)
     {
         return config_file.GetValue(path);
+    }
+
+    std::string   admin_status::get_config_mandatory_property(const std::string& path_and_property)
+    {
+        mtk::Nullable<std::string>  value = config_file.GetValue(path_and_property);
+        if(value.HasValue() == false)
+            throw mtk::Alarm(MTK_HERE, "admin", MTK_SS("mising mandatory property " << path_and_property), mtk::alPriorError, mtk::alTypeNoPermisions);
+        else
+            return value.Get();
     }
 
     mtk::list<std::string>   admin_status::get_config_nodes    (const std::string& path)
@@ -1144,6 +1145,11 @@ mtk::CountPtr<mtk::Signal<> >                           get_signal_receiving_mes
 mtk::Nullable<std::string>   get_config_property(const std::string& path)
 {
     return admin_status::i()->get_config_property(path);
+}
+
+std::string   get_config_mandatory_property(const std::string& path)
+{
+    return admin_status::i()->get_config_mandatory_property(path);
 }
 
 mtk::list<std::string>     get_config_nodes    (const std::string& path)
