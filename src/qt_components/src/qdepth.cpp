@@ -106,7 +106,12 @@ class QTableDeph : public QTableWidget, public mtk::SignalReceptor
 
 
 public:
-    QTableDeph(QDepth* _depth) : QTableWidget(_depth), background_color(qtmisc::mtk_color_header), depth(_depth), last_blinking(mtk::dtNowLocal()-mtk::dtDays(300))
+    QTableDeph(QDepth* _depth)
+            :   QTableWidget(_depth),
+                background_color(qtmisc::mtk_color_header),
+                depth(_depth),
+                last_blinking(mtk::dtNowLocal()-mtk::dtDays(300)),
+                prev_painted_prices(mtk::prices::msg::__internal_get_default((mtk::prices::msg::sub_best_prices*)0))
     {
         mtk::DateTime  now = mtk::dtNowLocal();
         for(int i=0; i<3*10; ++i)
@@ -130,9 +135,8 @@ public:
     void mouseReleaseEvent(QMouseEvent *event) { depth->mouseReleaseEvent(event);  QTableWidget::mouseReleaseEvent(event); }
     void mouseMoveEvent(QMouseEvent *event)    { depth->mouseMoveEvent(event);     QTableWidget::mouseMoveEvent(event);    }
 
-    void add_blinking(int row, int col, const mtk::DateTime&  till);
-    void check_blinking(void);
     QColor                      background_color;
+    void generate_blinking(const mtk::prices::msg::sub_best_prices&  prices);
 
 protected:
 
@@ -142,6 +146,10 @@ private:
 
     std::vector<mtk::DateTime>  v_blinking;
     mtk::DateTime               last_blinking;
+
+    void add_blinking(int row, int col, const mtk::DateTime&  till);
+    void check_blinking(void);
+    mtk::prices::msg::sub_best_prices  prev_painted_prices;     //  for blinking
 };
 
 
@@ -156,7 +164,7 @@ void QTableDeph::add_blinking(int row, int col, const mtk::DateTime&  till)
 
 void QTableDeph::check_blinking(void)
 {
-    MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
+    //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
         static  mtk::DateTime    one_year_before = mtk::dtNowLocal() - mtk::dtDays(300);
         mtk::DateTime  one_hour_before = mtk::dtNowLocal() - mtk::dtHours(1);
         mtk::DateTime  now = mtk::dtNowLocal();
@@ -182,9 +190,138 @@ void QTableDeph::check_blinking(void)
             if(pending_blinkings == 0)
                 last_blinking = one_year_before;
         }
-    MTK_END_EXEC_MAX_FREC
+    //MTK_END_EXEC_MAX_FREC
 }
 
+
+void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  prices)
+{
+    mtk::DateTime  now = mtk::dtNowLocal();
+    //  marginals
+    if(prices.bids.level0.price != prev_painted_prices.bids.level0.price)
+    {
+        int row=5;  int col=0;
+        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
+        add_blinking(row, col, now + mtk::dtMilliseconds(200));
+        item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);
+        add_blinking(row, 1, now + mtk::dtMilliseconds(200));
+    }
+    else
+    {
+        if(prices.bids.level0.quantity != prev_painted_prices.bids.level0.quantity)
+        {
+            int row=5;  int col=1;
+            item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
+            add_blinking(row, col, now + mtk::dtMilliseconds(200));
+        }
+    }
+    if(prices.asks.level0.price != prev_painted_prices.asks.level0.price)
+    {
+        int row=4;  int col=2;
+        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
+        add_blinking(row, col, now + mtk::dtMilliseconds(200));
+        item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);
+        add_blinking(row, 1, now + mtk::dtMilliseconds(200));
+    }
+    else if(prices.asks.level0.quantity != prev_painted_prices.asks.level0.quantity)
+    {
+        int row=4;  int col=1;
+        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
+        add_blinking(row, col, now + mtk::dtMilliseconds(200));
+    }
+
+
+    #define BLINKING_NO_MARGINALS(__level__, __prev_level__, __next_level__)       \
+        if(prices.bids.level##__level__.quantity.GetIntCode() != 0)     \
+        {                \
+            if(     prices.bids.level##__level__.price != prev_painted_prices.bids.level##__level__.price       \
+                    &&  prices.bids.level##__level__.price != prev_painted_prices.bids.level##__prev_level__.price       \
+                    &&  prices.bids.level##__level__.price != prev_painted_prices.bids.level##__next_level__.price)       \
+            {       \
+                int row=5 + __level__;  int col=0;       \
+                item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
+                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+            }       \
+            else if(    prices.bids.level##__level__.price    ==  prev_painted_prices.bids.level##__level__.price  &&      \
+                   prices.bids.level##__level__.quantity !=  prev_painted_prices.bids.level##__level__.quantity  )       \
+            {       \
+                    int row=5 + __level__;        \
+                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+            }       \
+            else if(    prices.bids.level##__level__.price    ==  prev_painted_prices.bids.level##__prev_level__.price  &&      \
+                   prices.bids.level##__level__.quantity !=  prev_painted_prices.bids.level##__prev_level__.quantity  )       \
+            {       \
+                int row=5 + __level__;         \
+                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+            }       \
+            else if(__level__!=4  &&    prices.bids.level##__level__.price    ==  prev_painted_prices.bids.level##__next_level__.price  &&      \
+                   prices.bids.level##__level__.quantity !=  prev_painted_prices.bids.level##__next_level__.quantity  )       \
+            {       \
+                int row=5 + __level__;         \
+                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+            }       \
+        }          \
+        if(prices.asks.level##__level__.quantity.GetIntCode() != 0)     \
+        {                \
+            if(     prices.asks.level##__level__.price != prev_painted_prices.asks.level##__level__.price       \
+                    &&  prices.asks.level##__level__.price != prev_painted_prices.asks.level##__prev_level__.price       \
+                    &&  prices.asks.level##__level__.price != prev_painted_prices.asks.level##__next_level__.price)       \
+            {       \
+                int row=4-__level__;  int col=2;       \
+                item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
+                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+            }           \
+            else if(    prices.asks.level##__level__.price    ==  prev_painted_prices.asks.level##__level__.price  &&      \
+                   prices.asks.level##__level__.quantity !=  prev_painted_prices.asks.level##__level__.quantity  )       \
+            {       \
+                    int row=4-  __level__;        \
+                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+            }       \
+            else if(    prices.asks.level##__level__.price    ==  prev_painted_prices.asks.level##__prev_level__.price  &&      \
+                   prices.asks.level##__level__.quantity !=  prev_painted_prices.asks.level##__prev_level__.quantity  )       \
+            {       \
+                int row=4- __level__;         \
+                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+            }       \
+            else if(__level__!=4  &&    prices.asks.level##__level__.price    ==  prev_painted_prices.asks.level##__next_level__.price  &&      \
+                   prices.asks.level##__level__.quantity !=  prev_painted_prices.asks.level##__next_level__.quantity  )       \
+            {       \
+                int row=4- __level__;         \
+                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+            }       \
+    }
+
+
+    //  not marginals
+    BLINKING_NO_MARGINALS(1, 0, 2);
+    BLINKING_NO_MARGINALS(2, 1, 3);
+    BLINKING_NO_MARGINALS(3, 2, 4);
+    BLINKING_NO_MARGINALS(4, 3, 4);
+
+    /*
+    if(     prices.bids.level1.price != prev_painted_prices.bids.level1.price
+        &&  prices.bids.level1.price != prev_painted_prices.bids.level0.price
+        &&  prices.bids.level1.price != prev_painted_prices.bids.level2.price)
+    {
+        int row=6;  int col=0;
+        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
+        add_blinking(row, 1, now + mtk::dtSeconds(1));
+    }
+    */
+
+
+    prev_painted_prices = prices;
+}
 
 
 
@@ -374,72 +511,23 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
     mtk::dtDateTime  now  = mtk::dtNowLocal();
     if (level.quantity.GetIntCode() != 0)
     {
-        bool updated_price=false;
-
         QTableWidgetItem*  item_price = table_widget->item(row, price_col);
         QTableWidgetItem*  item_quantity = table_widget->item(row, 1);
-        {
-            QString  new_price = qtmisc::fn_as_QString(level.price);
-            if(item_price->text() != new_price)
-            {
-                item_price->setBackgroundColor(qtmisc::mtk_color_blinking);
-                item_price->setText(new_price);
-                table_widget->add_blinking(row, price_col, now + mtk::dtSeconds(1));
-                item_quantity->setBackgroundColor(qtmisc::mtk_color_blinking);
-                table_widget->add_blinking(row, 1, now + mtk::dtSeconds(1));
-                updated_price = true;
-            }
-        }
+        QString  new_price = qtmisc::fn_as_QString(level.price);
+        QString  new_quantity = qtmisc::fn_as_QString(level.quantity);
 
-        {
-            QString new_quantity = qtmisc::fn_as_QString(level.quantity);
-            if(item_quantity->text() != new_quantity)
-            {
-                item_quantity->setText(new_quantity);
-                if(!updated_price)
-                {
-                    item_quantity->setBackgroundColor(qtmisc::mtk_color_blinking);
-                    table_widget->add_blinking(row, 1, now + mtk::dtSeconds(1));
-                }
-            }
-        }
+        item_price->setText(new_price);
+        item_quantity->setText(new_quantity);
     }
     else if(level.quantity.GetIntCode() == 0  &&   level.price.GetIntCode()!=0)
     {
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", MTK_SS("received quantity 0 with price not 0 on "  << product_code
-                                                                        << "  " << level), mtk::alPriorCritic, mtk::alTypeNoPermisions));
+                                                                << "  " << level), mtk::alPriorCritic, mtk::alTypeNoPermisions));
     }
     else
     {
-        bool updated_price=false;
-
-        QTableWidgetItem*  item_price = table_widget->item(row, price_col);
-        QTableWidgetItem*  item_quantity = table_widget->item(row, 1);
-        {
-            QString  new_price = QLatin1String("");
-            if(item_price->text() != new_price)
-            {
-                item_price->setBackgroundColor(qtmisc::mtk_color_blinking);
-                item_price->setText(new_price);
-                table_widget->add_blinking(row, price_col, now + mtk::dtSeconds(1));
-                item_quantity->setBackgroundColor(qtmisc::mtk_color_blinking);
-                table_widget->add_blinking(row, 1, now + mtk::dtSeconds(1));
-                updated_price = true;
-            }
-        }
-
-        {
-            QString new_quantity = QLatin1String("");
-            if(item_quantity->text() != new_quantity)
-            {
-                item_quantity->setText(new_quantity);
-                if(!updated_price)
-                {
-                    item_quantity->setBackgroundColor(qtmisc::mtk_color_blinking);
-                    table_widget->add_blinking(row, 1, now + mtk::dtSeconds(1));
-                }
-            }
-        }
+        table_widget->item(row, price_col)->setText(QLatin1String(""));
+        table_widget->item(row, 1)->setText(QLatin1String(""));
     }
 }
 
@@ -461,16 +549,20 @@ void QDepth::check_for_pending_screen_update(void)
 }
 
 
+
+
 void QDepth::update_prices(const mtk::prices::msg::sub_best_prices&   best_prices)
 {
     this->setUpdatesEnabled(false);
     try
     {
-        write_in_cell(5, 0, best_prices.bids.level0, table_widget, price_manager->get_product_code());
-        write_in_cell(6, 0, best_prices.bids.level1, table_widget, price_manager->get_product_code());
-        write_in_cell(7, 0, best_prices.bids.level2, table_widget, price_manager->get_product_code());
-        write_in_cell(8, 0, best_prices.bids.level3, table_widget, price_manager->get_product_code());
+        table_widget->generate_blinking(best_prices);
+
         write_in_cell(9, 0, best_prices.bids.level4, table_widget, price_manager->get_product_code());
+        write_in_cell(8, 0, best_prices.bids.level3, table_widget, price_manager->get_product_code());
+        write_in_cell(7, 0, best_prices.bids.level2, table_widget, price_manager->get_product_code());
+        write_in_cell(6, 0, best_prices.bids.level1, table_widget, price_manager->get_product_code());
+        write_in_cell(5, 0, best_prices.bids.level0, table_widget, price_manager->get_product_code());
 
         write_in_cell(4, 2, best_prices.asks.level0, table_widget, price_manager->get_product_code());
         write_in_cell(3, 2, best_prices.asks.level1, table_widget, price_manager->get_product_code());

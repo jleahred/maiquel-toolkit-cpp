@@ -113,6 +113,7 @@ private:
     bool keep_paint_focus;
     void paint_focus(void);
     void remove_focus(void);
+
 };
 
 
