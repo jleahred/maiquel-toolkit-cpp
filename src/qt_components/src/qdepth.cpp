@@ -108,14 +108,13 @@ class QTableDeph : public QTableWidget, public mtk::SignalReceptor
 public:
     QTableDeph(QDepth* _depth)
             :   QTableWidget(_depth),
-                background_color(qtmisc::mtk_color_header),
                 depth(_depth),
                 last_blinking(mtk::dtNowLocal()-mtk::dtDays(300)),
                 prev_painted_prices(mtk::prices::msg::__internal_get_default((mtk::prices::msg::sub_best_prices*)0))
     {
         mtk::DateTime  now = mtk::dtNowLocal();
         for(int i=0; i<3*10; ++i)
-            v_blinking.push_back(now);
+            v_blinking.push_back(now - mtk::dtDays(30));
 
         this->setItemDelegate(new QDepthDelegate(this));
         MTK_TIMER_1D(check_blinking);
@@ -135,7 +134,6 @@ public:
     void mouseReleaseEvent(QMouseEvent *event) { depth->mouseReleaseEvent(event);  QTableWidget::mouseReleaseEvent(event); }
     void mouseMoveEvent(QMouseEvent *event)    { depth->mouseMoveEvent(event);     QTableWidget::mouseMoveEvent(event);    }
 
-    QColor                      background_color;
     void generate_blinking(const mtk::prices::msg::sub_best_prices&  prices);
 
 protected:
@@ -181,7 +179,7 @@ void QTableDeph::check_blinking(void)
                         v_blinking[i] = one_year_before;
                         int row = i/3;
                         int col = i%3;
-                        this->item(row, col)->setBackgroundColor(background_color);
+                        this->item(row, col)->setBackground(QBrush());
                     }
                     else
                         ++pending_blinkings;
@@ -468,7 +466,6 @@ QDepth::QDepth(QWidget *parent) :
     this->addAction(action_sell_market);
 
     this->disable_actions();
-    table_widget->background_color = table_widget->item(0,0)->backgroundColor();
 
 
     MTK_TIMER_1D(check_for_pending_screen_update);
@@ -570,7 +567,7 @@ void QDepth::update_prices(const mtk::prices::msg::sub_best_prices&   best_price
         write_in_cell(1, 2, best_prices.asks.level3, table_widget, price_manager->get_product_code());
         write_in_cell(0, 2, best_prices.asks.level4, table_widget, price_manager->get_product_code());
 
-        if(table_widget->styleSheet() != style_sheet_normal)
+        if(table_widget->styleSheet() == style_sheet_null)
             table_widget->setStyleSheet(style_sheet_normal);
     }
     catch(...)
@@ -911,9 +908,9 @@ void QDepth::remove_focus(void)
         if(price_manager.isValid()   &&   price_manager->get_best_prices().HasValue()==true)
             table_widget->setStyleSheet(style_sheet_normal);
         else if(price_manager.isValid()==false)
-            table_widget->setStyleSheet(style_sheet_normal);
-        else
             table_widget->setStyleSheet(style_sheet_null);
+        else
+            table_widget->setStyleSheet(style_sheet_normal);
     }
 }
 
