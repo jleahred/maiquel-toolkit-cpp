@@ -439,8 +439,7 @@ template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typena
 mtk::CountPtr<ORDER_TYPE>   rq_nw_xx    (               const mtk::msg::sub_product_code&   pc,
                                                         const mtk::trd::msg::enBuySell      buy_sell,
                                                         const POS_TYPE& rq_pos,
-                                                        const mtk::trd::msg::sub_account_info& account,
-                                                        const std::string& cli_ref)
+                                                        const mtk::trd::msg::sub_account_info& account)
 {
     mtk::msg::sub_request_info  rq_info = mtk::admin::get_request_info();
 
@@ -450,7 +449,7 @@ mtk::CountPtr<ORDER_TYPE>   rq_nw_xx    (               const mtk::msg::sub_prod
 
 
     mtk::trd::msg::sub_invariant_order_info  invariant  (ord_id, pc, buy_sell, account);
-    mtk::trd::msg::RQ_XX                     rqxx       (invariant, rq_info, cli_ref, mtk::admin::get_control_fluct_info());
+    mtk::trd::msg::RQ_XX                     rqxx       (invariant, rq_info, mtk::admin::get_control_fluct_info());
     REQUEST_TYPE                             rqxxxx     (rqxx, rq_pos);
 
     REQUEST_TYPE_ORDER_TYPE                  rq         (rqxxxx);
@@ -465,7 +464,6 @@ template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typena
 mtk::CountPtr<ORDER_TYPE>   rq_nw_xx_manual    (        const mtk::msg::sub_product_code&   pc,
                                                         const mtk::trd::msg::enBuySell      buy_sell,
                                                         const POS_TYPE& rq_pos,
-                                                        const std::string& cli_ref,
                                                         bool agressive,
                                                         mtk::Signal< REQUEST_TYPE&, bool& /*canceled*/, bool  /*aggre*/   >& signal_hook
                                                         )
@@ -475,7 +473,7 @@ mtk::CountPtr<ORDER_TYPE>   rq_nw_xx_manual    (        const mtk::msg::sub_prod
 
     mtk::trd::msg::sub_account_info          account    ("", "");
     mtk::trd::msg::sub_invariant_order_info  invariant  (ord_id, pc, buy_sell, account);
-    mtk::trd::msg::RQ_XX                     rqxx       (invariant, rq_info, cli_ref, mtk::admin::get_control_fluct_info());
+    mtk::trd::msg::RQ_XX                     rqxx       (invariant, rq_info, mtk::admin::get_control_fluct_info());
     REQUEST_TYPE                             rqxxls     (rqxx, rq_pos);
 
     REQUEST_TYPE_ORDER_TYPE                  rq         (rqxxls);
@@ -523,7 +521,7 @@ REQUEST_TYPE     get_new_request_from_last_request_or_build_from_confirmation (m
     {
         CONF_TYPE                   lc (order->last_confirmation().Get());
 
-        mtk::trd::msg::RQ_XX        rqxx       (lc.invariant, mtk::admin::get_request_info(), lc.cli_ref, mtk::admin::get_control_fluct_info());
+        mtk::trd::msg::RQ_XX        rqxx       (lc.invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
         REQUEST_TYPE                rqxxls     (rqxx, lc.market_pos);
 
         return rqxxls;
@@ -534,12 +532,11 @@ REQUEST_TYPE     get_new_request_from_last_request_or_build_from_confirmation (m
 
 
 template<typename ORDER_TYPE, typename  POS_TYPE,  typename REQUEST_TYPE, typename REQUEST_TYPE_ORDER_TYPE, typename  CONF_TYPE>
-mtk::CountPtr<ORDER_TYPE>   rq_md_xx    ( const msg::sub_order_id& ord_id, const POS_TYPE& rq_pos, const std::string& cli_ref)
+mtk::CountPtr<ORDER_TYPE>   rq_md_xx    ( const msg::sub_order_id& ord_id, const POS_TYPE& rq_pos)
 {
     mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
     REQUEST_TYPE rq = get_new_request_from_last_request_or_build_from_confirmation<ORDER_TYPE, REQUEST_TYPE, CONF_TYPE>(order);
     rq.request_pos = rq_pos;
-    rq.cli_ref = cli_ref;
     order->rq_md(REQUEST_TYPE_ORDER_TYPE (rq));
 
     return order;
@@ -667,36 +664,36 @@ void cf_st_xx(const CONF_TYPE& cf)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_nw_ls        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref)
+mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_nw_ls        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const mtk::trd::msg::sub_account_info& account)
 {
-    return rq_nw_xx<trd_cli_ls_dangerous_signals_not_warped, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_NW_LS>(pc, buy_sell, rq_pos, account, cli_ref);
+    return rq_nw_xx<trd_cli_ls_dangerous_signals_not_warped, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_NW_LS>(pc, buy_sell, rq_pos, account);
 }
 
-mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_nw_mk        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const mtk::trd::msg::sub_account_info& account, const std::string& cli_ref)
+mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_nw_mk        (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const mtk::trd::msg::sub_account_info& account)
 {
-    return rq_nw_xx<trd_cli_mk_dangerous_signals_not_warped, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_NW_MK>(pc, buy_sell, rq_pos, account, cli_ref);
+    return rq_nw_xx<trd_cli_mk_dangerous_signals_not_warped, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_NW_MK>(pc, buy_sell, rq_pos, account);
 }
 
-mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_nw_ls_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, const std::string& cli_ref, bool agressive)
+mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_nw_ls_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_ls& rq_pos, bool agressive)
 {
-    return rq_nw_xx_manual<trd_cli_ls_dangerous_signals_not_warped, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_NW_LS>(pc, buy_sell, rq_pos, cli_ref, agressive, get_status_ref().sig_request_hook_ls);
+    return rq_nw_xx_manual<trd_cli_ls_dangerous_signals_not_warped, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_NW_LS>(pc, buy_sell, rq_pos, agressive, get_status_ref().sig_request_hook_ls);
 }
 
-mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_nw_mk_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, const std::string& cli_ref, bool agressive)
+mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_nw_mk_manual    (const mtk::msg::sub_product_code&   pc, mtk::trd::msg::enBuySell  buy_sell, const msg::sub_position_mk& rq_pos, bool agressive)
 {
-    return rq_nw_xx_manual<trd_cli_mk_dangerous_signals_not_warped, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_NW_MK>(pc, buy_sell, rq_pos, cli_ref, agressive, get_status_ref().sig_request_hook_mk);
+    return rq_nw_xx_manual<trd_cli_mk_dangerous_signals_not_warped, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_NW_MK>(pc, buy_sell, rq_pos, agressive, get_status_ref().sig_request_hook_mk);
 }
 
 
 
-mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_md_ls    ( const msg::sub_order_id& ord_id, const msg::sub_position_ls& rq_pos, const std::string& cli_ref)
+mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>   rq_md_ls    ( const msg::sub_order_id& ord_id, const msg::sub_position_ls& rq_pos)
 {
-    return rq_md_xx<trd_cli_ls_dangerous_signals_not_warped, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_MD_LS, mtk::trd::msg::CF_XX_LS>(ord_id, rq_pos, cli_ref);
+    return rq_md_xx<trd_cli_ls_dangerous_signals_not_warped, msg::sub_position_ls, mtk::trd::msg::RQ_XX_LS, mtk::trd::msg::RQ_MD_LS, mtk::trd::msg::CF_XX_LS>(ord_id, rq_pos);
 }
 
-mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_md_mk    ( const msg::sub_order_id& ord_id, const msg::sub_position_mk& rq_pos, const std::string& cli_ref)
+mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_md_mk    ( const msg::sub_order_id& ord_id, const msg::sub_position_mk& rq_pos)
 {
-    return rq_md_xx<trd_cli_mk_dangerous_signals_not_warped, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_MD_MK, mtk::trd::msg::CF_XX_MK>(ord_id, rq_pos, cli_ref);
+    return rq_md_xx<trd_cli_mk_dangerous_signals_not_warped, msg::sub_position_mk, mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::RQ_MD_MK, mtk::trd::msg::CF_XX_MK>(ord_id, rq_pos);
 }
 
 

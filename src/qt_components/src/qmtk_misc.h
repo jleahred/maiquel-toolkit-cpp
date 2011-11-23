@@ -78,9 +78,9 @@ std::string       get_order_remarks (ORDER_TYPE& order)
 {
     std::string result;
     if (order.last_confirmation().HasValue())
-        result += order.last_confirmation().Get().cli_ref;
+        result += order.last_confirmation().Get().market_pos.cli_ref;
     else if (order.last_request().HasValue())
-        result += order.last_request().Get().cli_ref;
+        result += order.last_request().Get().request_pos.cli_ref;
     else
         throw mtk::Alarm(MTK_HERE, "qmtk_misc", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
     return result + order.serrors();

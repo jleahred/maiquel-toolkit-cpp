@@ -660,8 +660,8 @@ void QTableMarginal::request_side(mtk::trd::msg::enBuySell bs)
                 quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
             }
             quantity.SetIntCode(0);
-            mtk::trd::msg::sub_position_ls     pos(price, quantity);
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, "" /*cli ref*/);
+            mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos);
         }
 
     }
@@ -710,8 +710,8 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
             if(quantity.GetIntCode() != 0)
             {
                 quantity.SetIntCode(0);
-                mtk::trd::msg::sub_position_ls     pos(price, quantity);
-                mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, "" /*cli ref*/, true);
+                mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
+                mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, true);
             }
             else
             {
@@ -769,8 +769,8 @@ void QTableMarginal::request_side_market(mtk::trd::msg::enBuySell bs)
             if(bs == mtk::trd::msg::sell)
                 quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
             quantity.SetIntCode(0);
-            mtk::trd::msg::sub_position_mk     pos(quantity);
-            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, bs, pos, "" /*cli ref*/);
+            mtk::trd::msg::sub_position_mk     pos(quantity, "" /*cli ref*/);
+            mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, bs, pos);
         }
     }
 }

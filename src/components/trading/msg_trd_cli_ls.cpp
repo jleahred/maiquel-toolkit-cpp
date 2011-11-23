@@ -398,8 +398,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_position_ls::sub_position_ls (   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity)
-    :     price(_price),   quantity(_quantity) 
+sub_position_ls::sub_position_ls (   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const std::string&  _cli_ref)
+    :     price(_price),   quantity(_quantity),   cli_ref(_cli_ref) 
        
     {  
         std::string cr = check_recomended ();  
@@ -806,7 +806,7 @@ std::ostream& operator<< (std::ostream& o, const sub_position_ls & c)
 {
     o << "{ "
 
-        << "price:"<<   c.price << "  "        << "quantity:"<<   c.quantity << "  "
+        << "price:"<<   c.price << "  "        << "quantity:"<<   c.quantity << "  "        << "cli_ref:"<<   c.cli_ref << "  "
         << " }";
     return o;
 };
@@ -817,7 +817,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_position_ls & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "price"  << YAML::Value <<   c.price        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity
+        << YAML::Key << "price"  << YAML::Value <<   c.price        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity        << YAML::Key << "cli_ref"  << YAML::Value <<   c.cli_ref
         << YAML::EndMap;
     return o;
 };
@@ -830,6 +830,7 @@ void  operator >> (const YAML::Node& node, sub_position_ls & c)
 
         node["price"]  >> c.price;
         node["quantity"]  >> c.quantity;
+        node["cli_ref"]  >> c.cli_ref;
 
 
 };
@@ -1291,7 +1292,7 @@ void  operator >> (const YAML::Node& node, CF_ST_LS & c)
 
 bool operator== (const sub_position_ls& a, const sub_position_ls& b)
 {
-    return (          a.price ==  b.price  &&          a.quantity ==  b.quantity  &&   true  );
+    return (          a.price ==  b.price  &&          a.quantity ==  b.quantity  &&          a.cli_ref ==  b.cli_ref  &&   true  );
 };
 
 bool operator!= (const sub_position_ls& a, const sub_position_ls& b)
@@ -1492,6 +1493,14 @@ void  copy (sub_position_ls& c, const qpid::types::Variant& v)
                     else
                         copy(c.quantity, it->second);
                         //c.quantity = it->second;
+//   field_type
+
+                    it = mv.find("clr");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_ref on message sub_position_ls::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.cli_ref, it->second);
+                        //c.cli_ref = it->second;
 
     }
 
@@ -1506,6 +1515,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_ls& 
         __internal_add2map(map, a.price, std::string("pri"));
 //  field_type
         __internal_add2map(map, a.quantity, std::string("qt"));
+//  field_type
+        __internal_add2map(map, a.cli_ref, std::string("clr"));
 
 
 };
@@ -2311,7 +2322,9 @@ __internal_add2map(content, static_cast<const CF_XX_LS&>(*this));
 //   field_type
    __internal_get_default ((mtk::FixedNumber*)0),
 //   field_type
-   __internal_get_default ((mtk::FixedNumber*)0)
+   __internal_get_default ((mtk::FixedNumber*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
             );
     }
     
@@ -2425,7 +2438,9 @@ sub_position_ls::sub_position_ls (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    price(__internal_get_default((mtk::FixedNumber*)0)),
 //   field_type
-   quantity(__internal_get_default((mtk::FixedNumber*)0)) 
+   quantity(__internal_get_default((mtk::FixedNumber*)0)),
+//   field_type
+   cli_ref(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         std::string cr = check_recomended ();  

@@ -6,8 +6,8 @@
 namespace  mtk {
 namespace  trd {
 namespace  hist {
-    
-    
+
+
 
 
 
@@ -39,13 +39,13 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
             result_errors += MTK_SS("confirmation on confirmation transaction. ");
         if(prev_item.type == tt_rj)
                 result_errors += MTK_SS("confirmation on reject transaction. ");
-            
+
         new_item.confirmation_delay = prev_item.date_time - new_item.date_time;
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
             if(new_item.confirmation_delay > mtk::dtMilliseconds(800))
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "historic_msf30s", "delay on response bigger than 800ms", mtk::alPriorError, mtk::alTypeRealTime));
         MTK_END_EXEC_MAX_FREC
-        
+
         if(prev_item.type == tt_rq_pending)
         {
             if(new_item.type == tt_cf)
@@ -65,7 +65,7 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
                 result_errors += MTK_SS("diferent quantity " << prev_item.quantity << "  !=  " << new_item.quantity);
         if(prev_item.cli_ref  != new_item.cli_ref)
                 result_errors += MTK_SS("diferent client_code " << prev_item.cli_ref << "  !=  " << new_item.cli_ref);
-                
+
         if(result_errors=="")
         {
             return "";
@@ -81,7 +81,7 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
 
 
 
-std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new_or_modif_item(  order_historic_item                    item,  
+std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new_or_modif_item(  order_historic_item                    item,
                                                                                         mtk::list<order_historic_item>&                 list_historic_item,
                                                                                         mtk::Signal<const order_historic_item&>&        signal_new_item_added,
                                                                                         mtk::Signal<int, const order_historic_item&>&   signal_modified_item)
@@ -89,14 +89,14 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
     std::string  result_error;
     if((item.type  == tt_cf   ||  item.type  == tt_rj)  &&   list_historic_item.size()!=0)
     {
-        
+
         //  generally if it is a confirmation, it will confirm the previus transaction
         //      we will modify previus transaction and we will send a modif signal
         //  if not, we have to add a new item and look for previus request. It could not exist if request has been done for a diferente process
         //      if we locate the previus request, we will modify it configuring it as not pending and we will send a modification signal
         //      previus pending modifications request will be modified to  not pending modification request
-        
-        
+
+
         //  confirmation of previus item
         if(list_historic_item.front().request_id  ==  item.request_id    &&  item.type  != tt_rj)
         {
@@ -138,7 +138,7 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
                     }
                     //  pending change status to previus request pendings
                 }
-                
+
                 if(++item_pos > 10)        break;
             }
             list_historic_item.push_front(item);
@@ -157,15 +157,15 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
 
 std::string  order_historic_dangerous_not_signal_warped::add_item(const order_historic_item& item)
 {
-    return  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new_or_modif_item(item, 
+    return  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new_or_modif_item(item,
                                                                                             *list_historic_item,
                                                                                             signal_new_item_added,
                                                                                             signal_modified_item);
 }
 
 
-std::string   order_historic_dangerous_not_signal_warped::get_lasttr_rjdescr (void)  const    
-{   
+std::string   order_historic_dangerous_not_signal_warped::get_lasttr_rjdescr (void)  const
+{
     if(list_historic_item->size()>0  &&  list_historic_item->front().type  ==  tt_rj)
         return list_historic_item->front().remarks;
     else

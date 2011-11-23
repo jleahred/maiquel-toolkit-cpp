@@ -62,7 +62,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
         ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     else
         ui->quantity->setValue(1.);//ui->quantity->clear();
-    ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
+    ui->cliref->setText(QLatin1String(rq.request_pos.cli_ref.c_str()));
 
 
     QString  configure_default_field;
@@ -152,7 +152,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
         ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     else
         ui->quantity->setValue(1.);//ui->quantity->clear();
-    ui->cliref->setText(QLatin1String(rq.cli_ref.c_str()));
+    ui->cliref->setText(QLatin1String(rq.request_pos.cli_ref.c_str()));
 
 
     QString  configure_default_field;
@@ -269,7 +269,7 @@ mtk::trd::msg::RQ_XX_LS   QEditOrder::get_request_ls(void)
     result.invariant.product_code.product = ui->product->text().toStdString();
     result.request_pos.price.SetDouble(ui->price->value());
     result.request_pos.quantity.SetDouble(ui->quantity->value());
-    result.cli_ref = ui->cliref->text().toStdString();
+    result.request_pos.cli_ref = ui->cliref->text().toStdString();
 
     mtk::list<mtk::trd::msg::sub_account_info>::iterator it_account=account_list.begin();
     for(int i=0; i<ui->account->currentIndex(); ++i)
@@ -285,7 +285,7 @@ mtk::trd::msg::RQ_XX_MK   QEditOrder::get_request_mk(void)
     result.invariant.product_code.market = ui->market->text().toStdString();
     result.invariant.product_code.product = ui->product->text().toStdString();
     result.request_pos.quantity.SetDouble(ui->quantity->value());
-    result.cli_ref = ui->cliref->text().toStdString();
+    result.request_pos.cli_ref = ui->cliref->text().toStdString();
 
     mtk::list<mtk::trd::msg::sub_account_info>::iterator it_account=account_list.begin();
     for(int i=0; i<ui->account->currentIndex(); ++i)

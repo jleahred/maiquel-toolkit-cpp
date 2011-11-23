@@ -24,6 +24,7 @@ sub_position_ls   [< >]
 {
     price    (pri)  :   fix_num
     quantity (qt)   :   fix_num
+    cli_ref  (clr)  :   string
 }
 
 

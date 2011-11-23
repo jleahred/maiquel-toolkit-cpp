@@ -254,7 +254,7 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                  ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -274,12 +274,11 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     {
                         mtk::trd::msg::CF_XX_LS lc = last_confirmation().Get();
                         lc.req_id  =   rq.request_info.req_id;
-                        lc.cli_ref = rq.cli_ref;
                         lc.market_pos = rq.request_pos;
                         lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.acc_quantity.GetDouble());
                         if (lc.total_execs.remaining_qty.GetIntCode() <= 0)
-                            throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity " 
-                                                                    << method_name << "  received:  "  << "  " << rq  
+                            throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity "
+                                                                    << method_name << "  received:  "  << "  " << rq
                                                                     <<  "  last request: " << last_request()
                                                                     <<  "  last confirmed: " << last_confirmation()),
                                                                     mtk::alPriorError);
@@ -293,7 +292,7 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, rq.cli_ref, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
@@ -303,8 +302,8 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_add_order.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -317,8 +316,8 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_nw.emit(mtk::trd::msg::CF_NW_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm new. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm new. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -328,8 +327,8 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_check_execs.emit(mtk::trd::msg::CF_NW_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -339,8 +338,8 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_update_prices.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -371,7 +370,7 @@ void init::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -407,7 +406,7 @@ void init::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -433,11 +432,11 @@ void init::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     
 	static const char* method_name = "init::mkt_cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_LS& p(ex);  (void)p; 
-                                const mtk::trd::msg::CF_XX_LS& cf(ex); 
-                                CHECK_CONFIRM  
-                                CHECK_EXEC  
+    
+                                const mtk::trd::msg::CF_XX_LS& p(ex);  (void)p;
+                                const mtk::trd::msg::CF_XX_LS& cf(ex);
+                                CHECK_CONFIRM
+                                CHECK_EXEC
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -448,7 +447,7 @@ void init::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -482,7 +481,7 @@ void market::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -492,8 +491,8 @@ void market::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_del_order.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -508,8 +507,8 @@ void market::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_cc.emit(mtk::trd::msg::CF_CC_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -556,12 +555,11 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                     {
                         mtk::trd::msg::CF_XX_LS lc = last_confirmation().Get();
                         lc.req_id  =   rq.request_info.req_id;
-                        lc.cli_ref = rq.cli_ref;
                         lc.market_pos = rq.request_pos;
                         lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.acc_quantity.GetDouble());
                         if (lc.total_execs.remaining_qty.GetIntCode() <= 0)
-                            throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity " 
-                                                                    << method_name << "  received:  "  << "  " << rq  
+                            throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity "
+                                                                    << method_name << "  received:  "  << "  " << rq
                                                                     <<  "  last request: " << last_request()
                                                                     <<  "  last confirmed: " << last_confirmation()),
                                                                     mtk::alPriorError);
@@ -575,7 +573,7 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, rq.cli_ref, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
@@ -585,8 +583,8 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_modif_order.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -599,8 +597,8 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_md.emit(mtk::trd::msg::CF_MD_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm modification. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm modification. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -610,8 +608,8 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_check_execs.emit(mtk::trd::msg::CF_NW_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -621,8 +619,8 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_update_prices.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -669,12 +667,11 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
                     {
                         mtk::trd::msg::CF_XX_LS lc = last_confirmation().Get();
                         lc.req_id  =   rq.request_info.req_id;
-                        lc.cli_ref = rq.cli_ref;
                         lc.market_pos = rq.request_pos;
                         lc.total_execs.remaining_qty.SetDouble(rq.request_pos.quantity.GetDouble() - lc.total_execs.acc_quantity.GetDouble());
                         if (lc.total_execs.remaining_qty.GetIntCode() <= 0)
-                            throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity " 
-                                                                    << method_name << "  received:  "  << "  " << rq  
+                            throw mtk::Alarm(MTK_HERE, method_name, MTK_SS("pending quantity lower than executed quantity "
+                                                                    << method_name << "  received:  "  << "  " << rq
                                                                     <<  "  last request: " << last_request()
                                                                     <<  "  last confirmed: " << last_confirmation()),
                                                                     mtk::alPriorError);
@@ -688,7 +685,7 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, rq.cli_ref, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
@@ -698,8 +695,8 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_del_order.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to add queue. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -712,8 +709,8 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_cc.emit(mtk::trd::msg::CF_CC_LS(last_confirmation().Get()));
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -723,8 +720,8 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
                     if (last_confirmation().HasValue())
                         ci->sig_ob_update_prices.emit(last_confirmation().Get());
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << rq  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to check executions. Errors on "
+                                                                << method_name << "  received:  "  << "  " << rq
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -745,11 +742,11 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     
 	static const char* method_name = "market::mkt_cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_LS& p(ex);  (void)p; 
-                                const mtk::trd::msg::CF_XX_LS& cf(ex); 
-                                CHECK_CONFIRM  
-                                CHECK_EXEC  
+    
+                                const mtk::trd::msg::CF_XX_LS& p(ex);  (void)p;
+                                const mtk::trd::msg::CF_XX_LS& cf(ex);
+                                CHECK_CONFIRM
+                                CHECK_EXEC
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -760,7 +757,7 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (//  inserting macro: full_exec
 
                     last_confirmation().HasValue() == true
-                    &&  last_confirmation().Get().total_execs.acc_quantity  
+                    &&  last_confirmation().Get().total_execs.acc_quantity
                         == last_confirmation().Get().market_pos.quantity
                     /*last_confirmation().HasValue() == true  && last_confirmation().Get().total_execs.remaining_qty.GetIntCode() == 0*/
                  ) {
@@ -776,8 +773,8 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_ex.emit(ex);
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << ex  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on "
+                                                                << method_name << "  received:  "  << "  " << ex
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -798,8 +795,8 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                     if (last_confirmation().HasValue())
                         ci->sig_cli_cf_ex.emit(ex);
                     else
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on " 
-                                                                << method_name << "  received:  "  << "  " << ex  
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on "
+                                                                << method_name << "  received:  "  << "  " << ex
                                                                 <<  "  last request: " << last_request()
                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                 mtk::alPriorError));
@@ -830,7 +827,7 @@ void canceled::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -866,7 +863,7 @@ void canceled::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -902,7 +899,7 @@ void canceled::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -928,11 +925,11 @@ void canceled::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     
 	static const char* method_name = "canceled::mkt_cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_LS& p(ex);  (void)p; 
-                                const mtk::trd::msg::CF_XX_LS& cf(ex); 
-                                CHECK_CONFIRM  
-                                CHECK_EXEC  
+    
+                                const mtk::trd::msg::CF_XX_LS& p(ex);  (void)p;
+                                const mtk::trd::msg::CF_XX_LS& cf(ex);
+                                CHECK_CONFIRM
+                                CHECK_EXEC
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -943,7 +940,7 @@ void canceled::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -977,7 +974,7 @@ void executed::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -1013,7 +1010,7 @@ void executed::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -1049,7 +1046,7 @@ void executed::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));
@@ -1075,11 +1072,11 @@ void executed::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     
 	static const char* method_name = "executed::mkt_cf_ex";
 
-          
-                                const mtk::trd::msg::CF_XX_LS& p(ex);  (void)p; 
-                                const mtk::trd::msg::CF_XX_LS& cf(ex); 
-                                CHECK_CONFIRM  
-                                CHECK_EXEC  
+    
+                                const mtk::trd::msg::CF_XX_LS& p(ex);  (void)p;
+                                const mtk::trd::msg::CF_XX_LS& cf(ex);
+                                CHECK_CONFIRM
+                                CHECK_EXEC
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -1090,7 +1087,7 @@ void executed::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
         if (true ) {
 //  inserting macro: LE
 
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p  
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("ERROR: " << serrors  << "Errors on " << method_name << "  from status: " << GetStatusName() << "  received:  "  << "  " << p
                                                                                 <<  "  last request: " << last_request()
                                                                                 <<  "  last confirmed: " << last_confirmation()),
                                                                                 mtk::alPriorError));

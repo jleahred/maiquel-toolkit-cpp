@@ -478,9 +478,9 @@ public:
         QString ref_cli;
         QString remarks;
         if(inner_order->has_pending_rq())
-            ref_cli = QLatin1String(inner_order->last_request().Get().cli_ref.c_str());
+            ref_cli = QLatin1String(inner_order->last_request().Get().request_pos.cli_ref.c_str());
         else
-            ref_cli = QLatin1String(inner_order->last_confirmation().Get().cli_ref.c_str());
+            ref_cli = QLatin1String(inner_order->last_confirmation().Get().market_pos.cli_ref.c_str());
         if(ref_cli.size() != 0)
             remarks = ref_cli;
         remarks += QLatin1String(inner_order->serrors().c_str());

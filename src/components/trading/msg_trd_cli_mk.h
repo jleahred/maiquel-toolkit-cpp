@@ -43,7 +43,7 @@ public:
 
     
     // constructor
-    explicit sub_position_mk (    const mtk::FixedNumber&  _quantity );
+    explicit sub_position_mk (    const mtk::FixedNumber&  _quantity,   const std::string&  _cli_ref );
     explicit sub_position_mk ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_position_mk (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_position_mk"; };
@@ -56,6 +56,7 @@ public:
 
     // fields
     mtk::FixedNumber                          quantity; 
+    std::string                               cli_ref; 
 
 
 

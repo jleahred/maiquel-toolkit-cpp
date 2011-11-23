@@ -129,7 +129,7 @@
     mtk::CountPtr<mtk::trd::msg::__MSG_TYPE__> cptr_rj;    \
     if (last_confirmation().HasValue())    \
     {               \
-        mtk::trd::msg::CF_XX cfxx(rq.invariant, last_confirmation().Get().market_order_id, rq.request_info.req_id, rq.cli_ref, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
+        mtk::trd::msg::CF_XX cfxx(rq.invariant, last_confirmation().Get().market_order_id, rq.request_info.req_id, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
         mtk::trd::msg::CF_XX_LS  rjxx(cfxx, last_confirmation().Get().market_pos);      \
         cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rjxx, MTK_SS(ci->__serrors << " in " << method_name), last_request().Get().request_pos))); \
         ci->__SIGNAL_TYPE__(*cptr_rj);  \
@@ -143,7 +143,7 @@
             mtk::trd::msg::sub_total_executions total_execs(0.,     \
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)),    \
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)) );    \
-            mtk::trd::msg::CF_XX cfxx(rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, rq.cli_ref, total_execs, mtk::admin::get_control_fluct_info());  \
+            mtk::trd::msg::CF_XX cfxx(rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, mtk::admin::get_control_fluct_info());  \
             mtk::trd::msg::CF_XX_LS  rjxx(cfxx, last_request().Get().request_pos);      \
             cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_LS(rjxx, ci->__serrors, last_request().Get().request_pos))); \
             ci->__SIGNAL_TYPE__(*cptr_rj);  \
@@ -163,7 +163,7 @@
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_rq_pending, tt2_##__nw_md_cc__,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.request_info.req_id,        \
                         mtk::make_nullable(__VAR_NAME__.request_pos.price), __VAR_NAME__.request_pos.quantity,        \
-                        __VAR_NAME__.cli_ref, "", ""}));       \
+                        __VAR_NAME__.request_pos.cli_ref, "", ""}));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
@@ -179,7 +179,7 @@
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_cf, tt2_##__nw_md_cc__,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::make_nullable(__VAR_NAME__.market_pos.price), __VAR_NAME__.market_pos.quantity,        \
-                        __VAR_NAME__.cli_ref, "", ""}));       \
+                        __VAR_NAME__.market_pos.cli_ref, "", ""}));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
@@ -193,7 +193,7 @@
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_rj, tt2_##__nw_md_cc__,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::make_nullable(__VAR_NAME__.request_pos.price), __VAR_NAME__.request_pos.quantity,        \
-                        __VAR_NAME__.cli_ref, "", __VAR_NAME__.reject_description }));       \
+                        __VAR_NAME__.request_pos.cli_ref, "", __VAR_NAME__.reject_description }));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
@@ -208,7 +208,7 @@
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_cf, tt2_ex,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::make_nullable(ex.executed_pos.price), ex.executed_pos.quantity,        \
-                        __VAR_NAME__.cli_ref, "", ""}));       \
+                        ex.market_pos.cli_ref, "", ""}));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \

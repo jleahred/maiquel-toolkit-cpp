@@ -75,7 +75,6 @@ RQ_XX  [<  >]
     invariant           (inv)  :   sub_invariant_order_info
 
     request_info        (rqi)  :   mtk::msg::sub_request_info
-    cli_ref             (clr)  :   string
 
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }
@@ -92,7 +91,6 @@ CF_XX  [< >]
     market_order_id     (moi)  :   string
 
     req_id              (rqid) :   mtk::msg::sub_request_id
-    cli_ref             (clr)  :   string
     total_execs         (ext)  :   sub_total_executions
 
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct

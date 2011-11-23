@@ -201,7 +201,6 @@ void  fill_rq_xx(record_info& full_record, const mtk::trd::msg::RQ_XX & rq)
 {
     fill_invariant  (full_record, rq.invariant);
     fill_req_info   (full_record, rq.request_info);
-    full_record.CLI_REF =  rq.cli_ref;
     fill_control_fluct (full_record,  rq.orig_control_fluct);
 }
 
@@ -211,7 +210,6 @@ void  fill_cf_xx(record_info& full_record, const mtk::trd::msg::CF_XX & cf)
     full_record.MARKET_ORDER_ID = cf.market_order_id;
     full_record.RID_RQ_CODE = cf.req_id.req_code;
     full_record.RID_SESSION_ID = cf.req_id.session_id;
-    full_record.CLI_REF =  cf.cli_ref;
     fill_control_fluct (full_record,  cf.orig_control_fluct);
 
     fill_total_executions(full_record, cf.total_execs);
@@ -222,7 +220,7 @@ void  fill_ex_xx(record_info& full_record, const mtk::trd::msg::sub_exec_conf& e
 {
     full_record.EXCF_EXEC_ID = executed_pos.exec_id;
     FILL_FIXED_NUMBER(full_record.EXCF_EXEC_PRICE,        executed_pos.price);
-    FILL_FIXED_NUMBER(full_record.EXCF_EXEC_QUANTITY,        executed_pos.quantity);
+    FILL_FIXED_NUMBER(full_record.EXCF_EXEC_QUANTITY,     executed_pos.quantity);
 }
 
 
@@ -238,6 +236,7 @@ void on_rq_xx_ls(const T&  rq)
     //  RQ_XX_LS   position
     FILL_FIXED_NUMBER(full_record.RQ_POS_PRICE,        rq.request_pos.price);
     FILL_FIXED_NUMBER(full_record.RQ_POS_QUANTITY,     rq.request_pos.quantity);
+    full_record.CLI_REF  =   rq.request_pos.cli_ref;
 
     fill_rq_xx(full_record, rq);
     full_record.SENT_TIME  =  rq.__internal_warning_control_fields->sent_date_time;
@@ -251,6 +250,7 @@ void  fill_cf_xx_ls(record_info& full_record, const mtk::trd::msg::CF_XX_LS & cf
 {
     FILL_FIXED_NUMBER(full_record.CF_POS_PRICE,        cf.market_pos.price);
     FILL_FIXED_NUMBER(full_record.CF_POS_QUANTITY,     cf.market_pos.quantity);
+    full_record.CLI_REF  =   cf.market_pos.cli_ref;
 
     fill_cf_xx(full_record, cf);
 }
@@ -305,6 +305,7 @@ void on_rq_xx_mk(const T&  rq)
 
     //  RQ_XX_LS   position
     FILL_FIXED_NUMBER(full_record.RQ_POS_QUANTITY,     rq.request_pos.quantity);
+    full_record.CLI_REF  =   rq.request_pos.cli_ref;
 
     fill_rq_xx(full_record, rq);
     full_record.SENT_TIME  =  rq.__internal_warning_control_fields->sent_date_time;
@@ -316,6 +317,7 @@ void on_rq_xx_mk(const T&  rq)
 void  fill_cf_xx_mk(record_info& full_record, const mtk::trd::msg::CF_XX_MK & cf)
 {
     FILL_FIXED_NUMBER(full_record.CF_POS_QUANTITY,     cf.market_pos.quantity);
+    full_record.CLI_REF  =   cf.market_pos.cli_ref;
 
     fill_cf_xx(full_record, cf);
 }

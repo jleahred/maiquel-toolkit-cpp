@@ -22,6 +22,7 @@ END_INIT
 sub_position_mk   [< >]
 {
     quantity (qt)   :   fix_num
+    cli_ref  (clr)  :   string
 }
 
 

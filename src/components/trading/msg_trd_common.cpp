@@ -533,8 +533,8 @@ void sub_invariant_order_info::before_send(void) const
 
 
 
-RQ_XX::RQ_XX (   const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _cli_ref,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
-    :     invariant(_invariant),   request_info(_request_info),   cli_ref(_cli_ref),   orig_control_fluct(_orig_control_fluct) 
+RQ_XX::RQ_XX (   const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     invariant(_invariant),   request_info(_request_info),   orig_control_fluct(_orig_control_fluct) 
        
     {  
         std::string cr = check_recomended ();  
@@ -560,8 +560,8 @@ void RQ_XX::before_send(void) const
 
 
 
-CF_XX::CF_XX (   const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const std::string&  _cli_ref,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
-    :     invariant(_invariant),   market_order_id(_market_order_id),   req_id(_req_id),   cli_ref(_cli_ref),   total_execs(_total_execs),   orig_control_fluct(_orig_control_fluct) 
+CF_XX::CF_XX (   const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     invariant(_invariant),   market_order_id(_market_order_id),   req_id(_req_id),   total_execs(_total_execs),   orig_control_fluct(_orig_control_fluct) 
        
     {  
         std::string cr = check_recomended ();  
@@ -786,7 +786,7 @@ std::ostream& operator<< (std::ostream& o, const RQ_XX & c)
 {
     o << "{ "
 
-        << "invariant:"<< c.invariant<<"  "        << "request_info:"<< c.request_info<<"  "        << "cli_ref:"<<   c.cli_ref << "  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
+        << "invariant:"<< c.invariant<<"  "        << "request_info:"<< c.request_info<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
         << " }";
     return o;
 };
@@ -797,7 +797,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RQ_XX & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "invariant"  << YAML::Value << c.invariant        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "cli_ref"  << YAML::Value <<   c.cli_ref        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
+        << YAML::Key << "invariant"  << YAML::Value << c.invariant        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
         << YAML::EndMap;
     return o;
 };
@@ -810,7 +810,6 @@ void  operator >> (const YAML::Node& node, RQ_XX & c)
 
         node["invariant"]  >> c.invariant;
         node["request_info"]  >> c.request_info;
-        node["cli_ref"]  >> c.cli_ref;
         node["orig_control_fluct"]  >> c.orig_control_fluct;
 
 
@@ -821,7 +820,7 @@ std::ostream& operator<< (std::ostream& o, const CF_XX & c)
 {
     o << "{ "
 
-        << "invariant:"<< c.invariant<<"  "        << "market_order_id:"<<   c.market_order_id << "  "        << "req_id:"<< c.req_id<<"  "        << "cli_ref:"<<   c.cli_ref << "  "        << "total_execs:"<< c.total_execs<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
+        << "invariant:"<< c.invariant<<"  "        << "market_order_id:"<<   c.market_order_id << "  "        << "req_id:"<< c.req_id<<"  "        << "total_execs:"<< c.total_execs<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
         << " }";
     return o;
 };
@@ -832,7 +831,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_XX & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "invariant"  << YAML::Value << c.invariant        << YAML::Key << "market_order_id"  << YAML::Value <<   c.market_order_id        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "cli_ref"  << YAML::Value <<   c.cli_ref        << YAML::Key << "total_execs"  << YAML::Value << c.total_execs        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
+        << YAML::Key << "invariant"  << YAML::Value << c.invariant        << YAML::Key << "market_order_id"  << YAML::Value <<   c.market_order_id        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "total_execs"  << YAML::Value << c.total_execs        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
         << YAML::EndMap;
     return o;
 };
@@ -846,7 +845,6 @@ void  operator >> (const YAML::Node& node, CF_XX & c)
         node["invariant"]  >> c.invariant;
         node["market_order_id"]  >> c.market_order_id;
         node["req_id"]  >> c.req_id;
-        node["cli_ref"]  >> c.cli_ref;
         node["total_execs"]  >> c.total_execs;
         node["orig_control_fluct"]  >> c.orig_control_fluct;
 
@@ -964,7 +962,7 @@ bool operator!= (const sub_invariant_order_info& a, const sub_invariant_order_in
 
 bool operator== (const RQ_XX& a, const RQ_XX& b)
 {
-    return (          a.invariant ==  b.invariant  &&          a.request_info ==  b.request_info  &&          a.cli_ref ==  b.cli_ref  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
+    return (          a.invariant ==  b.invariant  &&          a.request_info ==  b.request_info  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
 };
 
 bool operator!= (const RQ_XX& a, const RQ_XX& b)
@@ -976,7 +974,7 @@ bool operator!= (const RQ_XX& a, const RQ_XX& b)
 
 bool operator== (const CF_XX& a, const CF_XX& b)
 {
-    return (          a.invariant ==  b.invariant  &&          a.market_order_id ==  b.market_order_id  &&          a.req_id ==  b.req_id  &&          a.cli_ref ==  b.cli_ref  &&          a.total_execs ==  b.total_execs  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
+    return (          a.invariant ==  b.invariant  &&          a.market_order_id ==  b.market_order_id  &&          a.req_id ==  b.req_id  &&          a.total_execs ==  b.total_execs  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
 };
 
 bool operator!= (const CF_XX& a, const CF_XX& b)
@@ -1308,14 +1306,6 @@ void  copy (RQ_XX& c, const qpid::types::Variant& v)
                     else
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
-//   field_type
-
-                    it = mv.find("clr");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_ref on message RQ_XX::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.cli_ref, it->second);
-                        //c.cli_ref = it->second;
 //   sub_msg_type
 
                     it = mv.find("ocf");
@@ -1338,8 +1328,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX& a)
         __internal_add2map(map, a.invariant, std::string("inv"));
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
-//  field_type
-        __internal_add2map(map, a.cli_ref, std::string("clr"));
 //  sub_msg_type
         __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
 
@@ -1387,14 +1375,6 @@ void  copy (CF_XX& c, const qpid::types::Variant& v)
                     else
                         copy(c.req_id, it->second);
                         //__internal_qpid_fill(c.req_id, it->second.asMap());
-//   field_type
-
-                    it = mv.find("clr");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_ref on message CF_XX::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.cli_ref, it->second);
-                        //c.cli_ref = it->second;
 //   sub_msg_type
 
                     it = mv.find("ext");
@@ -1427,8 +1407,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX& a)
         __internal_add2map(map, a.market_order_id, std::string("moi"));
 //  sub_msg_type
         __internal_add2map(map, a.req_id, std::string("rqid"));
-//  field_type
-        __internal_add2map(map, a.cli_ref, std::string("clr"));
 //  sub_msg_type
         __internal_add2map(map, a.total_execs, std::string("ext"));
 //  sub_msg_type
@@ -1609,8 +1587,6 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
    __internal_get_default((sub_invariant_order_info*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_info*)0),
-//   field_type
-   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_control_fluct*)0)
             );
@@ -1625,8 +1601,6 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
    __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_request_id*)0),
-//   field_type
-   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((sub_total_executions*)0),
 //   sub_msg_type
@@ -1734,8 +1708,6 @@ RQ_XX::RQ_XX (const qpid::types::Variant::Map&  mv)
    invariant(__internal_get_default((sub_invariant_order_info*)0)),
 //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
-//   field_type
-   cli_ref(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {
@@ -1755,8 +1727,6 @@ CF_XX::CF_XX (const qpid::types::Variant::Map&  mv)
    market_order_id(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    req_id(__internal_get_default((mtk::msg::sub_request_id*)0)),
-//   field_type
-   cli_ref(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    total_execs(__internal_get_default((sub_total_executions*)0)),
 //   sub_msg_type

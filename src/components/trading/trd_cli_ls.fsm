@@ -348,7 +348,7 @@ error    --   cf_st                                                     ''>   er
                 [{
                     if (last_confirmation().HasValue())
                     {
-                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), last_confirmation().Get().cli_ref, mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
                         mtk::trd::msg::RQ_XX_LS  rqxxls(rqxx, last_confirmation().Get().market_pos);
                         mtk::trd::msg::RQ_CC_LS  rqccls(rqxxls);
                         ADD_HIST_RQ(rqccls, cc)
@@ -357,7 +357,7 @@ error    --   cf_st                                                     ''>   er
                     }
                     else if (last_request().HasValue())
                     {
-                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), last_request().Get().cli_ref, mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
                         mtk::trd::msg::RQ_XX_LS rqxxls(rqxx, last_request().Get().request_pos);
                         mtk::trd::msg::RQ_CC_LS rqccls(rqxxls);
                         ADD_HIST_RQ(rqccls, cc)

@@ -398,8 +398,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_position_mk::sub_position_mk (   const mtk::FixedNumber&  _quantity)
-    :     quantity(_quantity) 
+sub_position_mk::sub_position_mk (   const mtk::FixedNumber&  _quantity,   const std::string&  _cli_ref)
+    :     quantity(_quantity),   cli_ref(_cli_ref) 
        
     {  
         std::string cr = check_recomended ();  
@@ -806,7 +806,7 @@ std::ostream& operator<< (std::ostream& o, const sub_position_mk & c)
 {
     o << "{ "
 
-        << "quantity:"<<   c.quantity << "  "
+        << "quantity:"<<   c.quantity << "  "        << "cli_ref:"<<   c.cli_ref << "  "
         << " }";
     return o;
 };
@@ -817,7 +817,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_position_mk & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity
+        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity        << YAML::Key << "cli_ref"  << YAML::Value <<   c.cli_ref
         << YAML::EndMap;
     return o;
 };
@@ -829,6 +829,7 @@ void  operator >> (const YAML::Node& node, sub_position_mk & c)
 
 
         node["quantity"]  >> c.quantity;
+        node["cli_ref"]  >> c.cli_ref;
 
 
 };
@@ -1290,7 +1291,7 @@ void  operator >> (const YAML::Node& node, CF_ST_MK & c)
 
 bool operator== (const sub_position_mk& a, const sub_position_mk& b)
 {
-    return (          a.quantity ==  b.quantity  &&   true  );
+    return (          a.quantity ==  b.quantity  &&          a.cli_ref ==  b.cli_ref  &&   true  );
 };
 
 bool operator!= (const sub_position_mk& a, const sub_position_mk& b)
@@ -1483,6 +1484,14 @@ void  copy (sub_position_mk& c, const qpid::types::Variant& v)
                     else
                         copy(c.quantity, it->second);
                         //c.quantity = it->second;
+//   field_type
+
+                    it = mv.find("clr");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_ref on message sub_position_mk::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.cli_ref, it->second);
+                        //c.cli_ref = it->second;
 
     }
 
@@ -1495,6 +1504,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_mk& 
 
 //  field_type
         __internal_add2map(map, a.quantity, std::string("qt"));
+//  field_type
+        __internal_add2map(map, a.cli_ref, std::string("clr"));
 
 
 };
@@ -2298,7 +2309,9 @@ __internal_add2map(content, static_cast<const CF_XX_MK&>(*this));
     {
         return sub_position_mk(
 //   field_type
-   __internal_get_default ((mtk::FixedNumber*)0)
+   __internal_get_default ((mtk::FixedNumber*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
             );
     }
     
@@ -2410,7 +2423,9 @@ __internal_get_default((CF_XX_MK*)0), //   sub_msg_type
 
 sub_position_mk::sub_position_mk (const qpid::types::Variant::Map&  mv)
     :  //   field_type
-   quantity(__internal_get_default((mtk::FixedNumber*)0)) 
+   quantity(__internal_get_default((mtk::FixedNumber*)0)),
+//   field_type
+   cli_ref(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         std::string cr = check_recomended ();  
