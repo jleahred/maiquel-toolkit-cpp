@@ -106,6 +106,7 @@ void QHistoricTable::update_sizes()
 void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_historic_item&  item)
 {
     QColor color = Qt::white;
+    //QColor foreground_color = Qt::black;
     QString trans_text;
 
     if (item.type == mtk::trd::hist::tt_rq_pending)
@@ -122,7 +123,8 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
     else if (item.type == mtk::trd::hist::tt_rj)
     {
         trans_text = tr("rej");
-        color = qtmisc::mtk_color_problem;
+        color = qtmisc::mtk_color_rejected;
+        //foreground_color = Qt::white;
     }
 
     if (item.type2 == mtk::trd::hist::tt2_nw)
@@ -157,7 +159,10 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
     this->item(row, col_remarks)->setText(QLatin1String(MTK_SS(item.confirmation_delay << "  " << item.remarks).c_str()));
 
     for (int column=0; column<count_items; ++column)
+    {
         this->item(row, column)->setBackgroundColor(color);
+        //this->item(row, column)->setForeground(foreground_color);
+    }
     this->setCurrentCell(row, 0);
 }
 

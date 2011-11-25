@@ -306,7 +306,7 @@ public:
         if      (inner_order->serrors() != "")
             return qtmisc::mtk_color_problem;
         else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market()==false)
-            return qtmisc::mtk_color_problem;
+            return qtmisc::mtk_color_rejected;
         else if (inner_order->in_market())
             return Qt::white;
         else if (inner_order->is_canceled())
@@ -326,8 +326,8 @@ public:
     {
         if      (inner_order->serrors() != "")
             return Qt::white;
-        else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market()==false)
-            return Qt::white;
+        //else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market()==false)
+        //    return Qt::white;
         else
             return Qt::black;
     }
@@ -352,8 +352,8 @@ public:
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (get_lasttr_rjdescr(*inner_order)!="")
         {
-            item->setBackgroundColor(qtmisc::mtk_color_problem);
-            item->setForeground(Qt::white);
+            item->setBackgroundColor(qtmisc::mtk_color_rejected);
+            //item->setForeground(Qt::white);
         }
         else
         {
@@ -373,8 +373,8 @@ public:
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (get_lasttr_rjdescr(*inner_order)!="")
         {
-            item->setBackgroundColor(qtmisc::mtk_color_problem);
-            item->setForeground(Qt::white);
+            item->setBackgroundColor(qtmisc::mtk_color_rejected);
+            //item->setForeground(Qt::white);
         }
         else
         {
