@@ -30,13 +30,16 @@ public:
 
 
 signals:
+    void  signal_status_tip(const QString& status_tip);
 
 public slots:
 
+private slots:
 
 
 private:
     mtk::dtDateTime   started_application;
+    QString           cli_srv;
 
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_enter>      >          hqpid_enter;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_keep_alive_srv> >      hqpid_server_ka;
@@ -57,6 +60,9 @@ private:
     void  on_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);
 
     void mouseDoubleClickEvent(QMouseEvent *event);
+
+    void set_status_tool_tip(void);
+
 };
 
 #endif // QLISTPROCESSES_H

@@ -3,6 +3,8 @@
 
 
 #include <QMessageBox>
+#include <QLabel>
+
 
 #include "../../../../tools/qt/logview/src/highlighter.h"
 #include "support/mtk_string.h"
@@ -90,6 +92,7 @@ void error_connecting (const mtk::Alarm& error)
 Monitor::Monitor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Monitor),
+    production(false),
     url(mtk::t_qpid_url(""))
 {
     ui->setupUi(this);
@@ -107,7 +110,27 @@ Monitor::Monitor(QWidget *parent) :
 
     try
     {
-        url = mtk::t_qpid_url("amqp:tcp:127.0.0.1:5683");
+        //QString  qurl = "amqp:tcp:127.0.0.1:5683";
+        //QString  qurl = "amqp:tcp:192.168.7.1:5683";
+        QString  qurl = "amqp:tcp:192.168.7.21:6684";           //  production
+        //QString  qurl = "amqp:tcp:192.168.7.2:5683";             //    simulación
+
+        url = mtk::t_qpid_url(qurl.toStdString());
+
+        if(qurl.split(":")[3][0] == '6')
+            production = true;
+
+        if(production == false)
+            this->setStyleSheet(
+                        "QWidget"
+                        "{"
+                        "        background-color: rgb(255, 220, 168);"
+                        "}"
+
+                        "QAbstractScrollArea, QLineEdit"
+                        "{"
+                        "        background-color: rgb(255, 255, 255);"
+                        "}");
     }
     MTK_CATCH_CALLFUNCION(error_connecting, "main", "")
 
@@ -127,6 +150,90 @@ Monitor::Monitor(QWidget *parent) :
         ui->serverlist->init(url, "SRV");
         ui->serverlist->signal_alarm.connect(&sig_alarm_msg);
     }
+
+
+
+    QLabel * version = new QLabel();
+    //version->setFrameShape(QFrame::Panel);
+    //version->setFrameShadow(QFrame::Sunken);
+    version->setText("0.2");
+    statusBar()->addWidget(version);
+
+
+    status_client_processes = new QLabel();
+    status_client_processes->setFrameShape(QFrame::Panel);
+    status_client_processes->setFrameShadow(QFrame::Sunken);
+    statusBar()->addWidget(status_client_processes);
+    connect(ui->clientlist, SIGNAL(signal_status_tip(QString)), status_client_processes, SLOT(setText(QString)));
+
+    status_server_processes = new QLabel();
+    status_server_processes->setFrameShape(QFrame::Panel);
+    status_server_processes->setFrameShadow(QFrame::Sunken);
+    statusBar()->addWidget(status_server_processes);
+    connect(ui->serverlist, SIGNAL(signal_status_tip(QString)), status_server_processes, SLOT(setText(QString)));
+
+    status_all_alarm = new QLabel();
+    status_all_alarm->setFrameShape(QFrame::Panel);
+    status_all_alarm->setFrameShadow(QFrame::Sunken);
+    statusBar()->addWidget(status_all_alarm);
+    connect(ui->alarms_all_errors, SIGNAL(signal_status_tip(QString)), status_all_alarm,  SLOT(setText(QString)));
+
+    status_cli_error_alarm = new QLabel();
+    status_cli_error_alarm->setFrameShape(QFrame::Panel);
+    status_cli_error_alarm->setFrameShadow(QFrame::Sunken);
+    statusBar()->addWidget(status_cli_error_alarm);
+    connect(ui->alarms_client_error, SIGNAL(signal_status_tip(QString)), status_cli_error_alarm,  SLOT(setText(QString)));
+
+
+    status_cli_all_alarm = new QLabel();
+    status_cli_all_alarm->setFrameShape(QFrame::Panel);
+    status_cli_all_alarm->setFrameShadow(QFrame::Sunken);
+    statusBar()->addWidget(status_cli_all_alarm);
+    connect(ui->alarms_client_all, SIGNAL(signal_status_tip(QString)), status_cli_all_alarm,  SLOT(setText(QString)));
+
+    status_srv_error_alarm = new QLabel();
+    status_srv_error_alarm->setFrameShape(QFrame::Panel);
+    status_srv_error_alarm->setFrameShadow(QFrame::Sunken);
+    statusBar()->addWidget(status_srv_error_alarm);
+    connect(ui->alarms_server_error, SIGNAL(signal_status_tip(QString)), status_srv_error_alarm,  SLOT(setText(QString)));
+
+    status_srv_all_alarm = new QLabel();
+    status_srv_all_alarm->setFrameShape(QFrame::Panel);
+    status_srv_all_alarm->setFrameShadow(QFrame::Sunken);
+    statusBar()->addWidget(status_srv_all_alarm);
+    connect(ui->alarms_server_all, SIGNAL(signal_status_tip(QString)), status_srv_all_alarm,  SLOT(setText(QString)));
+
+    connect(ui->alarms_client_all,   SIGNAL(signal_show_full_message(QString)), ui->cli_alarm_msg_all,          SLOT(setPlainText(QString)));
+    connect(ui->alarms_client_error, SIGNAL(signal_show_full_message(QString)), ui->cli_alarm_msg_errors,       SLOT(setPlainText(QString)));
+    connect(ui->alarms_server_all,   SIGNAL(signal_show_full_message(QString)), ui->server_alarm_msg_all,       SLOT(setPlainText(QString)));
+    connect(ui->alarms_server_error, SIGNAL(signal_show_full_message(QString)), ui->server_alarm_msg_errors,    SLOT(setPlainText(QString)));
+
+    connect(ui->filter_client_all, SIGNAL(textEdited(QString)), ui->alarms_client_all, SLOT(slot_set_filter(QString)));
+    connect(ui->filter_server_all, SIGNAL(textEdited(QString)), ui->alarms_server_all, SLOT(slot_set_filter(QString)));
+
+    connect(ui->alarms_all_errors, SIGNAL(signal_alarm(mtk::admin::msg::pub_alarm)), this, SLOT(slot_alarm(mtk::admin::msg::pub_alarm)));
+
+
+
+
+
+
+
+    minimizeAction = new QAction(tr("Hide"), this);
+    connect(minimizeAction, SIGNAL(triggered()), this, SLOT(hide()));
+
+    /*
+    maximizeAction = new QAction(tr("Ma&ximize"), this);
+    connect(maximizeAction, SIGNAL(triggered()), this, SLOT(showMaximized()));
+    */
+
+    restoreAction = new QAction(tr("&Restore"), this);
+    connect(restoreAction, SIGNAL(triggered()), this, SLOT(slot_show_window()));
+
+    quitAction = new QAction(tr("&Quit"), this);
+    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+
+    createTrayIcon();
 }
 
 Monitor::~Monitor()
@@ -137,5 +244,92 @@ Monitor::~Monitor()
 
 void Monitor::OnAlarm(const mtk::Alarm& alarm)
 {
-    ui->alarms_all_errors->write_alarm(alarm);
+    ui->alarms_all_errors->write_alarm(mtk::dtNowLocal(), alarm);
+    if(production)
+    {
+        trayIcon->showMessage("New alarm", "Generated internally from monitor", QSystemTrayIcon::Critical, 300000);
+        trayIcon->setIcon(QIcon(":/images/images/bug_red.svg"));
+    }
+    else
+        trayIcon->setIcon(QIcon(":/images/images/warning4.svg"));
+}
+
+
+void Monitor::createTrayIcon()
+{
+    trayIconMenu = new QMenu(this);
+    trayIconMenu->addAction(minimizeAction);
+    //trayIconMenu->addAction(maximizeAction);
+    trayIconMenu->addAction(restoreAction);
+    trayIconMenu->addSeparator();
+    trayIconMenu->addAction(quitAction);
+
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setContextMenu(trayIconMenu);
+    if(production)
+    {
+        trayIcon->setIcon(QIcon(":/images/images/bug_green.svg"));
+        setWindowIcon(QIcon(":/images/images/bug_red.svg"));
+    }
+    else
+    {
+        trayIcon->setIcon(QIcon(":/images/images/Off_bulb_icon.svg"));
+        setWindowIcon(QIcon(":/images/images/Light_bulb_icon.svg"));
+    }
+    trayIcon->setToolTip("monitor");
+    trayIcon->show();
+    connect(trayIcon, SIGNAL(messageClicked()), this, SLOT(slot_show_window()));
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slot_iconActivated(QSystemTrayIcon::ActivationReason)));
+}
+
+void Monitor::slot_show_window()
+{
+    hide();
+    //showNormal();
+    showMaximized();
+
+    trayIcon->showMessage("", "", QSystemTrayIcon::NoIcon, 0);
+    if(production)
+        trayIcon->setIcon(QIcon(":/images/images/bug_green.svg"));
+    else
+        trayIcon->setIcon(QIcon(":/images/images/Off_bulb_icon.svg"));
+}
+
+void Monitor::closeEvent(QCloseEvent *event)
+{
+    /*
+    if (trayIcon->isVisible()) {
+        QMessageBox::information(this, tr("Monitor"),
+                                 tr("The program will keep running in the "
+                                    "system tray. To terminate the program, "
+                                    "choose <b>Quit</b> in the context menu "
+                                    "of the system tray entry."));
+    }*/
+    hide();
+    event->ignore();
+}
+
+void Monitor::slot_iconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason) {
+    case QSystemTrayIcon::Trigger:
+    case QSystemTrayIcon::DoubleClick:
+        slot_show_window();
+        break;
+    case QSystemTrayIcon::MiddleClick:
+        break;
+    default:
+        ;
+    }
+}
+
+void  Monitor::slot_alarm(const mtk::admin::msg::pub_alarm& alarm_msg)
+{
+    if(production)
+    {
+        trayIcon->showMessage("New alarm", MTK_SS(alarm_msg.process_info).c_str(), QSystemTrayIcon::Critical, 300000);
+        trayIcon->setIcon(QIcon(":/images/images/bug_red.svg"));
+    }
+    else
+        trayIcon->setIcon(QIcon(":/images/images/Light_bulb_icon.svg"));
 }

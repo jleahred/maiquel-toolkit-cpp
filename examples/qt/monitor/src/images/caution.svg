@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="520" height="520">
+<style type="text/css"><![CDATA[
+text{font-size:362px;font-weight:bold;font-family:Times New Roman}
+#P0 {fill:#d4a000;stroke:#000;stroke-width:9}
+#P1 {fill:url(#tl)}
+#P2 {fill:url(#bl)}
+#P3 {fill:url(#br)}
+#P4 {fill:url(#tr)}
+]]></style>
+<defs>
+  <linearGradient id="dk">
+    <stop offset="0"/>
+    <stop stop-opacity="0" offset="1"/>
+  </linearGradient>
+  <linearGradient id="lt">
+    <stop stop-color="#ffe681" offset="0"/>
+    <stop stop-color="#ffe681" stop-opacity="0" offset="1"/>
+  </linearGradient>
+  <linearGradient x1="136.4" y1="136.4" x2="167.5" y2="167.5" id="tl" xlink:href="#lt" gradientUnits="userSpaceOnUse"/>
+  <linearGradient x1="136.4" y1="383.6" x2="167.5" y2="352.5" id="bl" xlink:href="#lt" gradientUnits="userSpaceOnUse"/>
+  <linearGradient x1="383.6" y1="383.6" x2="352.5" y2="352.5" id="br" xlink:href="#dk" gradientUnits="userSpaceOnUse"/>
+  <linearGradient x1="383.6" y1="136.4" x2="352.5" y2="167.5" id="tr" xlink:href="#dk" gradientUnits="userSpaceOnUse"/>
+</defs>
+<path id="P0" d="M260,6.3L 6.3,260L 260,513.7L 513.7,260L 260,6.3z"/>
+<text x="200" y="380">!</text>
+<path id="P1" d="M260,12.7L 260,75L 75,260L 12.7,260L 260,12.7z"/>
+<path id="P2" d="M260,507.3L 260,445L 75,260L 12.7,260L 260,507.3z"/>
+<path id="P3" d="M260,507.3L 260,445L 445,260L 507.3,260L 260,507.3z"/>
+<path id="P4" d="M260,12.7L 260,75L 445,260L 507.3,260L 260,12.7z"/>
+</svg>

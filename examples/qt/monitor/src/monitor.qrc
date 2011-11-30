@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/caution.svg</file>
+        <file>images/caution2.svg</file>
+        <file>images/warning1.svg</file>
+        <file>images/warning2.svg</file>
+        <file>images/warning3.svg</file>
+        <file>images/warning4.svg</file>
+        <file>images/warning5.svg</file>
+        <file>images/warning6.svg</file>
+        <file>images/warning7.svg</file>
+        <file>images/warning8.svg</file>
+        <file>images/bug_green.svg</file>
+        <file>images/bug_red.svg</file>
+        <file>images/Light_bulb_icon.svg</file>
+        <file>images/Off_bulb_icon.svg</file>
+    </qresource>
+</RCC>

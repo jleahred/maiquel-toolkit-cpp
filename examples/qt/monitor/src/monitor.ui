@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>959</width>
-    <height>676</height>
+    <width>1039</width>
+    <height>697</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,8 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
-    <string notr="true">font: 9pt &quot;Monospace&quot;;</string>
+    <string notr="true">font: 11pt &quot;Courier&quot;;
+</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -68,7 +69,23 @@
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_2">
                <item>
-                <widget class="QTableAlarms" name="alarms_client_error"/>
+                <widget class="QSplitter" name="splitter">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <widget class="QTableAlarms" name="alarms_client_error">
+                  <property name="selectionMode">
+                   <enum>QAbstractItemView::SingleSelection</enum>
+                  </property>
+                  <property name="selectionBehavior">
+                   <enum>QAbstractItemView::SelectRows</enum>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                 <widget class="QPlainTextEdit" name="cli_alarm_msg_errors"/>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -76,9 +93,34 @@
               <attribute name="title">
                <string>all</string>
               </attribute>
-              <layout class="QVBoxLayout" name="verticalLayout_5">
+              <layout class="QVBoxLayout" name="verticalLayout_8">
                <item>
-                <widget class="QTableAlarms" name="alarms_client_all"/>
+                <widget class="QSplitter" name="splitter_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <widget class="QWidget" name="">
+                  <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <item>
+                    <widget class="QLineEdit" name="filter_client_all"/>
+                   </item>
+                   <item>
+                    <widget class="QTableAlarms" name="alarms_client_all">
+                     <property name="selectionMode">
+                      <enum>QAbstractItemView::SingleSelection</enum>
+                     </property>
+                     <property name="selectionBehavior">
+                      <enum>QAbstractItemView::SelectRows</enum>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QPlainTextEdit" name="cli_alarm_msg_all"/>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -157,9 +199,25 @@
               <attribute name="title">
                <string>ERRORS</string>
               </attribute>
-              <layout class="QVBoxLayout" name="verticalLayout_9">
+              <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
-                <widget class="QTableAlarms" name="alarms_server_error"/>
+                <widget class="QSplitter" name="splitter_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <widget class="QTableAlarms" name="alarms_server_error">
+                  <property name="selectionMode">
+                   <enum>QAbstractItemView::SingleSelection</enum>
+                  </property>
+                  <property name="selectionBehavior">
+                   <enum>QAbstractItemView::SelectRows</enum>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                 <widget class="QPlainTextEdit" name="server_alarm_msg_errors"/>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -167,9 +225,34 @@
               <attribute name="title">
                <string>all</string>
               </attribute>
-              <layout class="QVBoxLayout" name="verticalLayout_10">
+              <layout class="QVBoxLayout" name="verticalLayout_9">
                <item>
-                <widget class="QTableAlarms" name="alarms_server_all"/>
+                <widget class="QSplitter" name="splitter_4">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <widget class="QWidget" name="">
+                  <layout class="QVBoxLayout" name="verticalLayout_7">
+                   <item>
+                    <widget class="QLineEdit" name="filter_server_all"/>
+                   </item>
+                   <item>
+                    <widget class="QTableAlarms" name="alarms_server_all">
+                     <property name="selectionMode">
+                      <enum>QAbstractItemView::SingleSelection</enum>
+                     </property>
+                     <property name="selectionBehavior">
+                      <enum>QAbstractItemView::SelectRows</enum>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QPlainTextEdit" name="server_alarm_msg_all"/>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -213,7 +296,14 @@
         </layout>
        </widget>
       </widget>
-      <widget class="QTableAlarms" name="alarms_all_errors"/>
+      <widget class="QTableAlarms" name="alarms_all_errors">
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -223,7 +313,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>959</width>
+     <width>1039</width>
      <height>21</height>
     </rect>
    </property>

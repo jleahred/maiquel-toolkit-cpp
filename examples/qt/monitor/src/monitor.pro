@@ -37,3 +37,6 @@ FORMS    += monitor.ui
 INCLUDEPATH = .   ../../../../src/
 
 LIBS =  -L../../../../lib/  -lmtk_qpid -lmtksupport -lyaml -lqpidclient -lqpidmessaging -lqpidtypes
+
+RESOURCES += \
+    monitor.qrc

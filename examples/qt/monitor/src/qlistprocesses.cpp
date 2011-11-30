@@ -1,6 +1,7 @@
 #include "qlistprocesses.h"
 
 #include <QMouseEvent>
+#include <QStatusBar>
 
 
 namespace {
@@ -22,23 +23,24 @@ QListProcesses::QListProcesses(QWidget *parent) :
     QListWidget(parent),
     started_application(mtk::dtNowLocal())
 {
-
 }
 
-void QListProcesses::init(const mtk::t_qpid_url& url,const std::string&  cli_srv)
+void QListProcesses::init(const mtk::t_qpid_url& url,const std::string&  _cli_srv)
 {
+
+    cli_srv = _cli_srv.c_str();
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_enter,
                             url,
-                            mtk::admin::msg::pub_enter::get_in_subject(cli_srv),
+                            mtk::admin::msg::pub_enter::get_in_subject(_cli_srv),
                             mtk::admin::msg::pub_enter,
                             on_enter_received)
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_exit,
                             url,
-                            mtk::admin::msg::pub_exit::get_in_subject(cli_srv),
+                            mtk::admin::msg::pub_exit::get_in_subject(_cli_srv),
                             mtk::admin::msg::pub_exit,
                             on_exit_received)
 
@@ -57,19 +59,20 @@ void QListProcesses::init(const mtk::t_qpid_url& url,const std::string&  cli_srv
                                 mtk::admin::msg::pub_keep_alive_srv,
                                 on_ka_server_received)
     else
-        throw  mtk::Alarm(MTK_HERE, "qlistprocesses", MTK_SS("invalid cli_srv value " << cli_srv), mtk::alPriorCritic, mtk::alTypeLogicError);
+        throw  mtk::Alarm(MTK_HERE, "qlistprocesses", MTK_SS("invalid cli_srv value " << _cli_srv), mtk::alPriorCritic, mtk::alTypeLogicError);
 
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm,
                             url,
-                            mtk::admin::msg::pub_alarm::get_in_subject(cli_srv),
+                            mtk::admin::msg::pub_alarm::get_in_subject(_cli_srv),
                             mtk::admin::msg::pub_alarm,
                             on_alarm_received)
 
 
 
     MTK_TIMER_1S(check_ka)
+    set_status_tool_tip();
 }
 
 
@@ -109,6 +112,7 @@ void QListProcesses::on_enter_received(const mtk::admin::msg::pub_enter& msg)
         new_item->setCheckState(Qt::Unchecked);
         addItem(new_item);
     }
+    set_status_tool_tip();
 }
 
 
@@ -119,6 +123,7 @@ void QListProcesses::on_exit_received (const mtk::admin::msg::pub_exit& msg)
         signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor","received exit on a non registered client", mtk::alPriorError, mtk::alTypeNoPermisions));
     else
         delete item;
+    set_status_tool_tip();
 }
 
 
@@ -142,6 +147,7 @@ void QListProcesses::on_ka_client_received   (const mtk::admin::msg::pub_keep_al
         }
         item->next_ka = mtk::dtNowLocal() + msg.ka_interval_check;
     }
+    set_status_tool_tip();
 }
 
 void QListProcesses::on_ka_server_received   (const mtk::admin::msg::pub_keep_alive_srv& msg)
@@ -164,6 +170,7 @@ void QListProcesses::on_ka_server_received   (const mtk::admin::msg::pub_keep_al
         }
         item->next_ka = mtk::dtNowLocal() + msg.ka_interval_check;
     }
+    set_status_tool_tip();
 }
 
 void QListProcesses::check_ka(void)
@@ -189,6 +196,7 @@ void QListProcesses::check_ka(void)
             }
         }
     }
+    set_status_tool_tip();
 }
 
 
@@ -209,7 +217,8 @@ void  QListProcesses::check_alarm_received(const mtk::msg::sub_process_info& pi)
         QListWidgetItem_ka* item = this->find_item(pi);
         if(item==0  &&  (mtk::dtNowLocal() - started_application) > starting_time)
             signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor",MTK_SS("Receiving alarms with no keep alive  " << pi), mtk::alPriorError, mtk::alTypeNoPermisions));
-    MTK_END_EXEC_MAX_FREC
+        set_status_tool_tip();
+        MTK_END_EXEC_MAX_FREC
 }
 
 
@@ -246,5 +255,19 @@ void QListProcesses::mouseDoubleClickEvent(QMouseEvent *event)
                     delete itka;
             }
         }
+    }
+    set_status_tool_tip();
+}
+
+
+void  QListProcesses::set_status_tool_tip(void)
+{
+    static QString  last_notified;
+    QString current_status_tip = QString("p: ") + cli_srv + "  " + QString::number(this->count());
+
+    if (last_notified  !=  current_status_tip)
+    {
+        last_notified  =  current_status_tip;
+        Q_EMIT(signal_status_tip(last_notified));
     }
 }

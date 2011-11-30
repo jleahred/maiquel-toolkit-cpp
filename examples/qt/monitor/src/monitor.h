@@ -2,9 +2,16 @@
 #define MONITOR_H
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 
 
 #include "components/admin/msg_admin.h"
+
+
+
+
+
+class QLabel;
 
 
 
@@ -62,16 +69,41 @@ public:
     void OnAlarm(const mtk::Alarm& alarm);
 
 
+private slots:
+    void  slot_show_window();
+    void  slot_iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void  slot_alarm(const mtk::admin::msg::pub_alarm& alarm_msg);
+
+
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private:
     Ui::Monitor *ui;
+    bool                production;
 
 
     mtk::t_qpid_url     url;
 
     void on_command_response (const mtk::list<mtk::admin::msg::res_command>& responses);
 
+    QLabel*  status_client_processes;
+    QLabel*  status_server_processes;
+    QLabel*  status_all_alarm;
+    QLabel*  status_cli_error_alarm;
+    QLabel*  status_cli_all_alarm;
+    QLabel*  status_srv_error_alarm;
+    QLabel*  status_srv_all_alarm;
 
-private slots:
+
+
+    QSystemTrayIcon *trayIcon;
+    QMenu *trayIconMenu;
+    void createTrayIcon();
+    QAction *minimizeAction;
+    //QAction *maximizeAction;
+    QAction *restoreAction;
+    QAction *quitAction;
 
 };
 

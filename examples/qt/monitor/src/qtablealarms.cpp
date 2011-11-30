@@ -5,15 +5,20 @@
 #include <QScrollBar>
 
 
+#include "yaml/mtkemitter.h"
+
+
 
 QTableAlarms::QTableAlarms(QWidget *parent) :
     QTableWidget(parent)
 {
+    connect(this, SIGNAL(currentCellChanged(int,int,int,int)), this, SLOT(slot_currentCellChanged(int,int,int,int)));
 }
 
-void QTableAlarms::init(const mtk::t_qpid_url& url, const std::string& cli_srv, bool _only_errors)
+void QTableAlarms::init(const mtk::t_qpid_url& url, const std::string& _cli_srv, bool _only_errors)
 {
     only_errors = _only_errors;
+    cli_srv = QString(_cli_srv.c_str());
 
     prepare();
 
@@ -21,7 +26,7 @@ void QTableAlarms::init(const mtk::t_qpid_url& url, const std::string& cli_srv, 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm1,
                             url,
-                            mtk::admin::msg::pub_alarm::get_in_subject(cli_srv),
+                            mtk::admin::msg::pub_alarm::get_in_subject(_cli_srv),
                             mtk::admin::msg::pub_alarm,
                             on_client_alarm_received);
 }
@@ -34,7 +39,7 @@ void QTableAlarms::prepare(void)
     verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     horizontalHeader()->setStretchLastSection(true);
 
-    setColumnCount(8);
+    setColumnCount(7);
 
     #define QTABLE_ALARMS_INIT_HEADER_ITEM(__COLUMN__, __TEXT__) \
     {   \
@@ -52,7 +57,7 @@ void QTableAlarms::prepare(void)
         int counter=0;
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "time (rec)")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "from")
-        QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "priority")
+        //QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "priority")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "id")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "subject")
         QTABLE_ALARMS_INIT_HEADER_ITEM(counter++, "message")
@@ -62,15 +67,16 @@ void QTableAlarms::prepare(void)
     int counter=0;
     horizontalHeader()->resizeSection(counter++, 105);
     horizontalHeader()->resizeSection(counter++, 100);
-    horizontalHeader()->resizeSection(counter++, 100);
+    //horizontalHeader()->resizeSection(counter++, 100);
     horizontalHeader()->resizeSection(counter++, 30);
     horizontalHeader()->resizeSection(counter++, 100);
-    horizontalHeader()->resizeSection(counter++, 1200);
+    horizontalHeader()->resizeSection(counter++, 900);
     horizontalHeader()->resizeSection(counter++, 100);
     horizontalHeader()->resizeSection(counter++, 100);
 
     MTK_TIMER_1S(timer_check_number_of_rows);
     MTK_TIMER_1S(timer_check_last_alarms_received);
+    MTK_TIMER_1D(timer_unqueue_alarms);
 }
 
 
@@ -80,12 +86,64 @@ void QTableAlarms::on_client_alarm_received(const mtk::admin::msg::pub_alarm& al
         return;
     else
     {
-        last_alarms.push_back(mtk::make_tuple(mtk::dtNowLocal(), alarm_msg));
-        write_alarm_msg(alarm_msg);
+        mtk::DateTime  now = mtk::dtNowLocal();
+        last_alarms.push_back(mtk::make_tuple(now, alarm_msg));
+        queue_alarm_msg(now, alarm_msg);
     }
 }
-void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& alarm_msg)
+
+
+void QTableAlarms::queue_alarm_msg         (const mtk::DateTime&  received,  const mtk::admin::msg::pub_alarm& alarm_msg)
 {
+    queued_alarms.push_back(mtk::make_tuple(received, alarm_msg));
+}
+
+void QTableAlarms::timer_unqueue_alarms(void)
+{
+    if(queued_alarms.size()==0)
+    {
+        signal_status_tip(QString(cli_srv) + QString::number(only_errors) + ":" + QString("  rc") + QString::number(this->rowCount())  + QString("  qa") + QString::number(queued_alarms.size()));
+        return;
+    }
+
+
+    MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
+        this->setUpdatesEnabled(false);
+        for(int i=0; i<3; ++i)
+        {
+            if(queued_alarms.size() == 0)       break;
+            auto tuple_rec_alarmmsg = queued_alarms.front();
+            queued_alarms.pop_front();
+            write_alarm_msg2(tuple_rec_alarmmsg._0, tuple_rec_alarmmsg._1);
+        }
+        this->setUpdatesEnabled(true);
+        signal_status_tip(QString(cli_srv) + QString::number(only_errors) + ":" + QString("  rc") + QString::number(this->rowCount())  + QString("  qa") + QString::number(queued_alarms.size()));
+    MTK_END_EXEC_MAX_FREC
+}
+
+
+class  QTableWidgetItem_full_alarm_msg  : public   QTableWidgetItem
+{
+public:
+
+    const QString    full_message;
+
+    QTableWidgetItem_full_alarm_msg(const QString&  _full_text_message)
+        : QTableWidgetItem(), full_message(_full_text_message)
+    {
+    }
+};
+
+
+void QTableAlarms::write_alarm_msg2         (const mtk::DateTime&  received, const mtk::admin::msg::pub_alarm& alarm_msg)
+{
+    signal_alarm(alarm_msg);
+    QString  full_text_message = QString(YAML::string_from_yaml(alarm_msg).c_str());
+
+    if(cli_srv != ""  &&  pass_filter(full_text_message)  == false)
+        return;
+
+
     bool go_to_bottom=false;
     if(this->visualItemRect(this->item(this->rowCount()-1, 0)).top() < this->height()-this->horizontalHeader()->height()-this->horizontalScrollBar()->height())
         go_to_bottom = true;
@@ -113,13 +171,32 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
     int column=-1;
     {
-        QTableWidgetItem* new_item = new QTableWidgetItem();
-        new_item->setText(MTK_SS(mtk::dtNowLocal()).substr(11).c_str());
+        QTableWidgetItem_full_alarm_msg* new_item = new QTableWidgetItem_full_alarm_msg(full_text_message);
+        new_item->setText(MTK_SS(received).substr(11).c_str());
         new_item->setBackgroundColor(back_color);
         new_item->setForeground(QBrush(foregroud_color));
         this->setItem(last_row, ++column, new_item);
     }
 
+    if(cli_srv == "CLI")
+    {
+        QTableWidgetItem* new_item = new QTableWidgetItem();
+        new_item->setText(MTK_SS(alarm_msg.process_info.location.broker_code << "."
+                                    << alarm_msg.process_info.location.machine << "."
+                                    << alarm_msg.process_info.process_name).c_str());
+        new_item->setBackgroundColor(back_color);
+        new_item->setForeground(QBrush(foregroud_color));
+        this->setItem(last_row, ++column, new_item);
+    }
+    else if (cli_srv == "SRV")
+    {
+        QTableWidgetItem* new_item = new QTableWidgetItem();
+        new_item->setText(MTK_SS(alarm_msg.process_info.process_name).c_str());
+        new_item->setBackgroundColor(back_color);
+        new_item->setForeground(QBrush(foregroud_color));
+        this->setItem(last_row, ++column, new_item);
+    }
+    else
     {
         QTableWidgetItem* new_item = new QTableWidgetItem();
         new_item->setText(MTK_SS(alarm_msg.process_info.location.broker_code << "."
@@ -132,6 +209,7 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
         this->setItem(last_row, ++column, new_item);
     }
 
+    /*
     {
         QTableWidgetItem* new_item = new QTableWidgetItem();
         new_item->setText(MTK_SS(alarm_msg.priority).c_str());
@@ -139,6 +217,7 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
         new_item->setForeground(QBrush(foregroud_color));
         this->setItem(last_row, ++column, new_item);
     }
+    */
 
     {
         QTableWidgetItem* new_item = new QTableWidgetItem();
@@ -160,7 +239,10 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
     {
         QTableWidgetItem* new_item = new QTableWidgetItem();
-        new_item->setText(MTK_SS(alarm_msg.message).c_str());
+        if(alarm_msg.message.size() > 80)
+            new_item->setText(MTK_SS(alarm_msg.message.substr(0, 80) <<  " ...").c_str());
+        else
+            new_item->setText(alarm_msg.message.c_str());
         new_item->setBackgroundColor(back_color);
         new_item->setForeground(QBrush(foregroud_color));
         this->setItem(last_row, ++column, new_item);
@@ -189,19 +271,19 @@ void QTableAlarms::write_alarm_msg         (const mtk::admin::msg::pub_alarm& al
 
 
 
-void QTableAlarms::write_alarm(const mtk::Alarm& alarm)
+void QTableAlarms::write_alarm(const mtk::DateTime&  received,  const mtk::Alarm& alarm)
 {
     mtk::admin::msg::pub_alarm alarm_msg("CLI", mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
-                                     alarm.codeSource, "monitor", alarm.message, alarm.priority, alarm.type, mtk::dtNowLocal(), -1);
+                                     alarm.codeSource, "monitor", alarm.message, alarm.priority, alarm.type, received, -1);
 
-    write_alarm_msg(alarm_msg);
+    queue_alarm_msg(received, alarm_msg);
 
     std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
     while (it != alarm.stackAlarms.end())
     {
         mtk::admin::msg::pub_alarm alarm_msg("CLI", mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
-                                         "monitor", it->codeSource, it->message, it->priority, it->type, mtk::dtNowLocal(), -1);
-        write_alarm_msg(alarm_msg);
+                                         "monitor", it->codeSource, it->message, it->priority, it->type, received, -1);
+        queue_alarm_msg(received, alarm_msg);
         ++it;
     }
 }
@@ -235,23 +317,49 @@ void QTableAlarms::mouseDoubleClickEvent(QMouseEvent *event)
         this->setRowCount(0);
         mtk::list< mtk::tuple<mtk::DateTime, mtk::admin::msg::pub_alarm> >::iterator it=last_alarms.begin();
         for(; it!=last_alarms.end(); ++it)
-            write_alarm_msg(it->_1);
+        {
+            if((it->_0 + mtk::dtSeconds(8)) > mtk::dtNowLocal())
+                queue_alarm_msg(it->_0, it->_1);
+        }
     }
 }
 
 
 void QTableAlarms::timer_check_number_of_rows(void)
 {
-    MTK_EXEC_MAX_FREC(mtk::dtSeconds(45))
+    MTK_EXEC_MAX_FREC(mtk::dtSeconds(30))
         if(this->rowCount() > 1000)
-            this->setRowCount(500);
+        {
+            this->setUpdatesEnabled(false);
+            while(this->rowCount() > 500)
+                this->removeRow(0);
+            this->setUpdatesEnabled(true);
+        }
     MTK_END_EXEC_MAX_FREC
 }
 
 void QTableAlarms::timer_check_last_alarms_received(void)
 {
     MTK_EXEC_MAX_FREC(mtk::dtSeconds(45))
-        while(last_alarms.size()>0   &&  last_alarms.front()._0 + mtk::dtSeconds(15) < mtk::dtNowLocal())
+        while(last_alarms.size()>0   &&  last_alarms.front()._0 + mtk::dtSeconds(8) < mtk::dtNowLocal())
                 last_alarms.pop_front();
     MTK_END_EXEC_MAX_FREC
+}
+
+
+void  QTableAlarms::slot_currentCellChanged(int current_row,int ,int,int)
+{
+    QTableWidgetItem_full_alarm_msg*  it_msg =  dynamic_cast<QTableWidgetItem_full_alarm_msg*>(this->item(current_row, 0));
+    if(it_msg==0)
+        signal_show_full_message("nope");
+    else
+        signal_show_full_message( it_msg->full_message);
+}
+
+bool QTableAlarms::pass_filter(const QString& full_text_message)
+{
+    if (re_filter.Match(full_text_message.toStdString()))
+        return true;
+    else
+        return false;
 }

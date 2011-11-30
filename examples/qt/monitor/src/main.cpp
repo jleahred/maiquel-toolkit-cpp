@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
     Monitor w;
     a.signalOnAlarm.connect(&w, &Monitor::OnAlarm);
-    w.show();
+    //w.show();
 
     return a.exec();
 }
