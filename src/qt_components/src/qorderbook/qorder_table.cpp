@@ -236,10 +236,9 @@ public:
             items[column]->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
             items[column]->setBackgroundColor(Qt::white);
             table_widget->setItem(row, column, items[column]);
-            if (column == col_price  ||  column == col_quantity  ||  column == col_exec_quantity
-                || column == col_exec_price  ||  column == col_rem_quantity)
-                items[column]->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-            else if(column == col_order_type)
+            if(column == col_remarks)
+                items[column]->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+            else
                 items[column]->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
         }
 
@@ -420,7 +419,6 @@ public:
            item->setBackgroundColor(qtmisc::mtk_color_problem);
            item->setForeground(Qt::white);
        }
-        item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }
 
     void update_item_exec_quantity (void)

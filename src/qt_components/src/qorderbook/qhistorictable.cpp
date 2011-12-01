@@ -177,9 +177,9 @@ void        QHistoricTable::add_item(const  mtk::trd::hist::order_historic_item&
         new_item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         new_item->setBackgroundColor(Qt::white);
         setItem(new_row, column, new_item);
-        if (column == col_price  ||  column == col_quantity)
-            new_item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-        else if(column == col_aditional_code  ||  column == col_request_id)
+        if (column == col_remarks)
+            new_item->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+        else
             new_item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }
     update_item(new_row, item);
