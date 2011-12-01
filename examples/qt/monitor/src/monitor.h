@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
+#include <Phonon/MediaObject>
 
 
 #include "components/admin/msg_admin.h"
@@ -70,7 +71,7 @@ public:
 
 
 private slots:
-    void  slot_show_window();
+    void  slot_show_window(bool lets_hide_if_visible=false);
     void  slot_iconActivated(QSystemTrayIcon::ActivationReason reason);
     void  slot_alarm(const mtk::admin::msg::pub_alarm& alarm_msg);
 
@@ -105,6 +106,7 @@ private:
     QAction *restoreAction;
     QAction *quitAction;
 
+    Phonon::MediaObject *mediaObject;
 };
 
 #endif // MONITOR_H

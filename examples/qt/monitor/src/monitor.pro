@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui  phonon
 
 #QMAKE_CXXFLAGS += -std=c++0x
 QMAKE_CXXFLAGS += -std=gnu++0x
@@ -36,7 +36,7 @@ FORMS    += monitor.ui
 
 INCLUDEPATH = .   ../../../../src/
 
-LIBS =  -L../../../../lib/  -lmtk_qpid -lmtksupport -lyaml -lqpidclient -lqpidmessaging -lqpidtypes
+LIBS =  -L../../../../lib/  -lmtk_qpid -lmtksupport -lyaml -lqpidclient -lqpidmessaging -lqpidtypes  -lphonon
 
 RESOURCES += \
     monitor.qrc

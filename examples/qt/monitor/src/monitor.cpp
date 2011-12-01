@@ -93,7 +93,8 @@ Monitor::Monitor(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Monitor),
     production(false),
-    url(mtk::t_qpid_url(""))
+    url(mtk::t_qpid_url("")),
+    mediaObject (Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("alarm.wav"))))
 {
     ui->setupUi(this);
 
@@ -156,7 +157,7 @@ Monitor::Monitor(QWidget *parent) :
     QLabel * version = new QLabel();
     //version->setFrameShape(QFrame::Panel);
     //version->setFrameShadow(QFrame::Sunken);
-    version->setText("0.2");
+    version->setText("0.4");
     statusBar()->addWidget(version);
 
 
@@ -249,6 +250,11 @@ void Monitor::OnAlarm(const mtk::Alarm& alarm)
     {
         trayIcon->showMessage("New alarm", "Generated internally from monitor", QSystemTrayIcon::Critical, 300000);
         trayIcon->setIcon(QIcon(":/images/images/bug_red.svg"));
+        MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
+                mediaObject->setCurrentSource(Phonon::MediaSource("alarm.wav"));
+                mediaObject->play();
+        MTK_END_EXEC_MAX_FREC
+
     }
     else
         trayIcon->setIcon(QIcon(":/images/images/warning4.svg"));
@@ -282,15 +288,32 @@ void Monitor::createTrayIcon()
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slot_iconActivated(QSystemTrayIcon::ActivationReason)));
 }
 
-void Monitor::slot_show_window()
+void Monitor::slot_show_window(bool lets_hide_if_visible)
 {
-    hide();
-    //showNormal();
-    showMaximized();
+    if(lets_hide_if_visible)
+    {
+        if(this->isVisible())
+            hide();
+        else
+        {
+            hide();
+            showMaximized();
+        }
+    }
+    else
+    {
+        hide();
+        //showNormal();
+        showMaximized();
+    }
 
     trayIcon->showMessage("", "", QSystemTrayIcon::NoIcon, 0);
     if(production)
+    {
         trayIcon->setIcon(QIcon(":/images/images/bug_green.svg"));
+        if(mediaObject->state() == Phonon::PlayingState)
+            mediaObject->stop();
+    }
     else
         trayIcon->setIcon(QIcon(":/images/images/Off_bulb_icon.svg"));
 }
@@ -314,9 +337,14 @@ void Monitor::slot_iconActivated(QSystemTrayIcon::ActivationReason reason)
     switch (reason) {
     case QSystemTrayIcon::Trigger:
     case QSystemTrayIcon::DoubleClick:
-        slot_show_window();
+        slot_show_window(true);
         break;
     case QSystemTrayIcon::MiddleClick:
+        if((QApplication::keyboardModifiers() &  Qt::ControlModifier)  != 0)
+        {
+            mediaObject->setCurrentSource(Phonon::MediaSource("alarm.wav"));
+            mediaObject->play();
+        }
         break;
     default:
         ;
@@ -329,6 +357,10 @@ void  Monitor::slot_alarm(const mtk::admin::msg::pub_alarm& alarm_msg)
     {
         trayIcon->showMessage("New alarm", MTK_SS(alarm_msg.process_info).c_str(), QSystemTrayIcon::Critical, 300000);
         trayIcon->setIcon(QIcon(":/images/images/bug_red.svg"));
+        MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
+                mediaObject->setCurrentSource(Phonon::MediaSource("alarm.wav"));
+                mediaObject->play();
+        MTK_END_EXEC_MAX_FREC
     }
     else
         trayIcon->setIcon(QIcon(":/images/images/Light_bulb_icon.svg"));
