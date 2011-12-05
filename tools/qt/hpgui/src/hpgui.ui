@@ -41,7 +41,7 @@
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -473,11 +473,10 @@ endl            ::=  __endl__
     # pueden leerse de global (comunes)
     Production:No
     Market:~
-    TibcoDaemon:128.2.254.100:7500
-    TibcoNetwork:~
+    Network:~
 
 
-    TibcoServices
+    Services
     {
         Client:03
         Server:02
@@ -490,7 +489,7 @@ endl            ::=  __endl__
 DBPR
 {
     SERVER: 128.2.8.44
-    NAME: MABE
+    NAME: MONITOR
     USER: SYSDBA
 }
 

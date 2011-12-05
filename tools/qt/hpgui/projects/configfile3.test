@@ -7,17 +7,15 @@ ADMIN
   # pueden leerse de global (comunes)
                                                            Production:false
   Market:~
-  TibcoDaemon:128.2.254.100:7500
-  TibcoNetwork:~
-  MarketConVariable: soy el mercado $(ADMIN.PR1.varmercado)
+  Server:128.2.254.100:7500
+  Network:~
+  MarketWithVariable: soy el mercado $(ADMIN.PR1.varmercado)
   
   
 
-TibcoServices
+Services
   {
     Client : 03
-    Server : 02
-    Service: 01
     Other  : 07
     Pepe   : 09
                              }

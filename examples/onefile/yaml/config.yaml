@@ -3,9 +3,9 @@ ADMIN:
   ProcessName: HOLA_PRUEBA
   Production: false  # A partir de aquí, pueden leerse de global (comunes) o quizá deben
   Market: ~
-  TibcoDaemon: 128.2.254.100:7500
-  TibcoNetwork: ~
-  TibcoServices:
+  Daemon: 128.2.254.100:7500
+  Network: ~
+  Services:
     Client: 03
     Server: 02
     Service: 01

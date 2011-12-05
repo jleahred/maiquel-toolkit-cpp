@@ -13,16 +13,14 @@ ADMIN
     # pueden leerse de global (comunes)
     Production:No
     Market:~
-    TibcoDaemon:128.2.254.100:7500
-    TibcoNetwork:~
+    Server:128.2.254.100:7500
+    Network:~
 
 
-    TibcoServices
+    Services
     {
         Client:03
         Server:02
-        Service:01
-        Other:07
         Pepe:09
     }
 }

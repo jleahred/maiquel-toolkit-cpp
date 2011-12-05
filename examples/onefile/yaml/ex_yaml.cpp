@@ -15,10 +15,10 @@ int main()
                 << YAML::Key << "Production"       << YAML::Value      << false
                 << YAML::Comment("A partir de aquí, pueden leerse de global (comunes) o quizá deben")
                 << YAML::Key << "Market"           << YAML::Value      << YAML::Null
-                << YAML::Key << "TibcoDaemon"      << YAML::Value      << "128.2.254.100:7500"
-                << YAML::Key << "TibcoNetwork"     << YAML::Value      << YAML::Null
+                << YAML::Key << "Daemon"      << YAML::Value      << "128.2.254.100:7500"
+                << YAML::Key << "Network"     << YAML::Value      << YAML::Null
 
-                << YAML::Key << "TibcoServices"    << YAML::Value
+                << YAML::Key << "Services"    << YAML::Value
                     << YAML::BeginMap
                         << YAML::Key << "Client"       << YAML::Value      << "03"
                         << YAML::Key << "Server"       << YAML::Value      << "02"
@@ -50,14 +50,14 @@ int main()
     YAML::Node doc;
     parser.GetNextDocument(doc);
 
-    std::string idReloj, processName, tibcoServicePepe;
+    std::string idReloj, processName, servicePepe;
     doc["ADMIN"]["IdReloj"] >> idReloj;
     doc["ADMIN"]["ProcessName"] >> processName;
-    doc["ADMIN"]["TibcoServices"]["Pepe"] >> tibcoServicePepe;
+    doc["ADMIN"]["Services"]["Pepe"] >> servicePepe;
 
     std::cout << idReloj << std::endl;
     std::cout << processName << std::endl;
-    std::cout << tibcoServicePepe << std::endl;
+    std::cout << servicePepe << std::endl;
 
     #include "support/release_on_exit.hpp"
 

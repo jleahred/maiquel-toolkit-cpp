@@ -59,7 +59,7 @@ std::string GetString2ParseFromFile(const std::string& fileName)
 
 std::string ReplaceVariable (const std::string& value, const ConfigFile& cf)
 {
-	static int recdepth=0;		//	sé que no deben utilizar variables estáticas, aún así la utilizo y asumo toda responsabilidad (raquel)
+	static int recdepth=0;		//	sé que no deben utilizar variables estáticas, aún así la utilizo y asumo toda responsabilidad
 
 	++recdepth;
 	std::string result = value;

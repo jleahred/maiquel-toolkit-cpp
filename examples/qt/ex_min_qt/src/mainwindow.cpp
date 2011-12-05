@@ -20,7 +20,6 @@ void mtk::AlarmMsg (const Alarm& alarm)
 
 MTK_Qt_timer_and_AlarmMsg::MTK_Qt_timer_and_AlarmMsg (QWidget *parent) : QObject(parent)
 {
-    //  incializamos tibco, como siempre
     try
     {
         QTimer *timer = new QTimer(this);                                       // <1>

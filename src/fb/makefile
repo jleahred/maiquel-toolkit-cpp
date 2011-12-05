@@ -4,7 +4,7 @@ DIR_SRC_CXX = .
 
 
 # library paths
-#LIBS = -L../../mtk/external/lib/tibco/libLinux   -ltibrvcpp64 -ltibrv64
+#LIBS = 
 
 
 # include directories

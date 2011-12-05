@@ -225,12 +225,12 @@ int main(void)
             return -1;
         }
 
-        valorConfig = config.GetValue("ADMIN.TibcoServices.Client");
+        valorConfig = config.GetValue("ADMIN.Services.Client");
         if (valorConfig.HasValue() )
-            std::cout << "[ADMIN.TibcoServices.Client] = " << valorConfig.Get() << std::endl;
+            std::cout << "[ADMIN.Services.Client] = " << valorConfig.Get() << std::endl;
         else
         {
-            std::cout << "REVISAR!!! El funcionamiento no es el esperado [ADMIN.TibcoServices.Client] No tiene valor" << std::endl;
+            std::cout << "REVISAR!!! El funcionamiento no es el esperado [ADMIN.Services.Client] No tiene valor" << std::endl;
             return -2;
         }
 
@@ -256,8 +256,8 @@ int main(void)
 
 
         std::cout << "************************************************************************************" << std::endl;
-        std::cout << "Obtenemos la lista de propiedades de [ADMIN.TibcoServices]"  << std::endl;
-        const mtk::list<mtk::tuple<std::string, mtk::ConfigFile::enPropertyType> > lproperties = config.GetProperties("ADMIN.TibcoServices");
+        std::cout << "Obtenemos la lista de propiedades de [ADMIN.Services]"  << std::endl;
+        const mtk::list<mtk::tuple<std::string, mtk::ConfigFile::enPropertyType> > lproperties = config.GetProperties("ADMIN.Services");
         for(auto itProperty = lproperties.begin(); itProperty != lproperties.end(); ++itProperty)
         {
             std::cout <<  itProperty->_0 << std::endl;
@@ -281,20 +281,20 @@ int main(void)
         //  escribir valor anidado
         std::cout << "************************************************************************************" << std::endl;
         std::cout << "Escribimos un valor en una propiedad de un nodo anidado" << std::endl;
-        config.ModifOrCreate("ADMIN.TibcoServices.Client", "555");
+        config.ModifOrCreate("ADMIN.Services.Client", "555");
         config.SaveToFile("config_saved.cfg");
         configAux.LoadFromFile("config_saved.cfg");
 
 
-        valorConfig = config.GetValue("ADMIN.TibcoServices.Client");
-        mtk::Nullable <std::string> valorConfig2 = configAux.GetValue("ADMIN.TibcoServices.Client");
+        valorConfig = config.GetValue("ADMIN.Services.Client");
+        mtk::Nullable <std::string> valorConfig2 = configAux.GetValue("ADMIN.Services.Client");
         if (valorConfig.HasValue() && valorConfig2.HasValue() )
         {
             if (valorConfig.Get()  == valorConfig.Get() )
-                std::cout << "Los ficheros son consistentes [ADMIN.TibcoServices.Client] " << valorConfig.Get() << " == " << valorConfig2.Get() << std::endl;
+                std::cout << "Los ficheros son consistentes [ADMIN.Services.Client] " << valorConfig.Get() << " == " << valorConfig2.Get() << std::endl;
             else
             {
-                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.TibcoServices.Client] " << valorConfig.Get() << " != " << valorConfig2.Get() << std::endl;
+                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.Services.Client] " << valorConfig.Get() << " != " << valorConfig2.Get() << std::endl;
                 return -5;
             }
         }
@@ -302,12 +302,12 @@ int main(void)
         {
              if (valorConfig.HasValue() != valorConfig2.HasValue())
              {
-                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.TibcoServices.Client] " << valorConfig.HasValue() << " distinto HasValue() " << valorConfig2.HasValue() << std::endl;
+                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.Services.Client] " << valorConfig.HasValue() << " distinto HasValue() " << valorConfig2.HasValue() << std::endl;
                 return -6;
              }
              else
              {
-                std::cout << "REVISAR!!! El funcionamiento no es el esperado [ADMIN.TibcoServices.Client] no tiene valor" << std::endl;
+                std::cout << "REVISAR!!! El funcionamiento no es el esperado [ADMIN.Services.Client] no tiene valor" << std::endl;
                 return -7;
              }
         }
@@ -317,19 +317,19 @@ int main(void)
         //  añadir valores y nodos
         std::cout << "************************************************************************************" << std::endl;
         std::cout << "Añadimos una propiedad a un nodo existente" << std::endl;
-        config.ModifOrCreate("ADMIN.TibcoServices.Nuevo", "666");
+        config.ModifOrCreate("ADMIN.Services.Nuevo", "666");
         config.SaveToFile("config_saved.cfg");
         configAux.LoadFromFile("config_saved.cfg");
 
-        valorConfig = config.GetValue("ADMIN.TibcoServices.Nuevo");
-        valorConfig2 = configAux.GetValue("ADMIN.TibcoServices.Nuevo");
+        valorConfig = config.GetValue("ADMIN.Services.Nuevo");
+        valorConfig2 = configAux.GetValue("ADMIN.Services.Nuevo");
         if (valorConfig.HasValue() && valorConfig2.HasValue() )
         {
             if (valorConfig.Get()  == valorConfig.Get() )
-                std::cout << "Los ficheros son consistentes [ADMIN.TibcoServices.Nuevo] " << valorConfig.Get() << " == " << valorConfig2.Get() << std::endl;
+                std::cout << "Los ficheros son consistentes [ADMIN.Services.Nuevo] " << valorConfig.Get() << " == " << valorConfig2.Get() << std::endl;
             else
             {
-                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.TibcoServices.Nuevo] " << valorConfig.Get() << " != " << valorConfig2.Get() << std::endl;
+                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.Services.Nuevo] " << valorConfig.Get() << " != " << valorConfig2.Get() << std::endl;
                 return -8;
             }
         }
@@ -337,30 +337,30 @@ int main(void)
         {
              if (valorConfig.HasValue() != valorConfig2.HasValue() )
              {
-                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.TibcoServices.Nuevo] " << valorConfig.HasValue() << " distinto HasValue() " << valorConfig2.HasValue() << std::endl;
+                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.Services.Nuevo] " << valorConfig.HasValue() << " distinto HasValue() " << valorConfig2.HasValue() << std::endl;
                 return -9;
              }
              else
              {
-                 std::cout << "REVISAR!!! El funcionamiento no es el esperado [ADMIN.TibcoServices.Nuevo] no tiene valor" << std::endl;
+                 std::cout << "REVISAR!!! El funcionamiento no es el esperado [ADMIN.Services.Nuevo] no tiene valor" << std::endl;
                  return -10;
              }
         }
 
         std::cout << "Añadimos una propiedad a un nodo existente" << std::endl;
-        config.ModifOrCreate("ADMIN.TibcoServices.Nuevo2", "777");
+        config.ModifOrCreate("ADMIN.Services.Nuevo2", "777");
         config.SaveToFile("config_saved.cfg");
         configAux.LoadFromFile("config_saved.cfg");
 
-        valorConfig = config.GetValue("ADMIN.TibcoServices.Nuevo2");
-        valorConfig2 = configAux.GetValue("ADMIN.TibcoServices.Nuevo2");
+        valorConfig = config.GetValue("ADMIN.Services.Nuevo2");
+        valorConfig2 = configAux.GetValue("ADMIN.Services.Nuevo2");
         if (valorConfig.HasValue() && valorConfig2.HasValue() )
         {
             if (valorConfig.Get()  == valorConfig.Get() )
-                std::cout << "Los ficheros son consistentes [ADMIN.TibcoServices.Nuevo2] " << valorConfig.Get() << " == " << valorConfig2.Get() << std::endl;
+                std::cout << "Los ficheros son consistentes [ADMIN.Services.Nuevo2] " << valorConfig.Get() << " == " << valorConfig2.Get() << std::endl;
             else
             {
-                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.TibcoServices.Nuevo2] " << valorConfig.Get() << " != " << valorConfig2.Get() << std::endl;
+                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.Services.Nuevo2] " << valorConfig.Get() << " != " << valorConfig2.Get() << std::endl;
                 return -11;
             }
         }
@@ -368,12 +368,12 @@ int main(void)
         {
              if (valorConfig.HasValue() != valorConfig2.HasValue() )
              {
-                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.TibcoServices.Nuevo2] " << valorConfig.HasValue() << " distinto HasValue() " << valorConfig2.HasValue() << std::endl;
+                std::cout << "REVISAR!!! Los ficheros no son consistentes [ADMIN.Services.Nuevo2] " << valorConfig.HasValue() << " distinto HasValue() " << valorConfig2.HasValue() << std::endl;
                 return -12;
              }
              else
              {
-                 std::cout << "REVISAR!!! El funcionamiento no es el esperado [ADMIN.TibcoServices.Nuevo2] no tiene valor" << std::endl;
+                 std::cout << "REVISAR!!! El funcionamiento no es el esperado [ADMIN.Services.Nuevo2] no tiene valor" << std::endl;
                  return -13;
              }
         }
@@ -421,7 +421,6 @@ int main(void)
         try
         {
             //  añadir valores y nodos
-                    //Raquel:
                     //Actualmente no se pueden crear nodos pero opino que sería interesante poder hacerlo
                     //Ahora no se pueden crear y lanza una excepción al intertar hacerlo
             std::cout << "************************************************************************************" << std::endl;
@@ -489,7 +488,6 @@ int main(void)
         }
 
         //  borrar un valor
-                //Raquel:
                 //Actualmente no se pueden borrar nodos, pero creo que puede llegar a ser interesante.
                     //Es más, cuando a un nodo se le borran todas las propiedades sería conveniente que ese nodo desapareciera automáticamente.
                     //Haciendo eso los ficheros de configuración no se quedan con basura.
@@ -526,7 +524,6 @@ int main(void)
 
 
         //Borrar nodos
-                //Raquel:
                 //Actualmente no deja borrar modos pero tampoco avisa cuando los quieres borrar
                 //Es mas, creo que se debería poder consultar si un nodo existe de alguna manera...
                 //Como dije antes creo que es interesante que deje borrar los nodos, pero si no deja debería lanzar una excepción
@@ -536,7 +533,6 @@ int main(void)
             std::cout << "Vamos a borrar un nodo" << std::endl;
             config.Delete("ADMIN");
             config.SaveToFile("config_saved.cfg");
-            //Raquel:
             //Comprobamos si se ha borrado cogiendo una propiedad de ADMIN que estaba, ya que no sé como consultar si existe un nodo
             valorConfig = config.GetValue("ADMIN.ProcessPriority");
             valorConfig2 = configAux.GetValue("ADMIN.ProcessPriority");

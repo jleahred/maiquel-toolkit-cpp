@@ -41,13 +41,13 @@ int main(int argc, char* argv[])
 //    mtk::HumbleParser  hParser;
 //    bool result;
 //    std::string result_string;
-//        hParser.LoadRulesFromFile("/home/maiquel/tmp/idTibco/src/doc.muse/idTibco/rules/cpp_dep.dhp").assign(result, result_string);
+//        hParser.LoadRulesFromFile("/home/maiquel/tmp/cpp_dep.dhp").assign(result, result_string);
 //    if (result==false){
 //      std::cout << std::endl << result_string << std::endl;
 //      return -1;
 //    }
 
-//        std::string string2Parse = GetString2ParseFromFile("/home/maiquel/tmp/idTibco/src/support/alarm.h");
+//        std::string string2Parse = GetString2ParseFromFile("/home/maiquel/tmp/mtk/src/support/alarm.h");
 
 //        //bool result;
 //        std::string resultTest;
