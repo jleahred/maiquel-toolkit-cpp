@@ -2794,11 +2794,11 @@ mtk::t_qpid_filter  RQ_NW_LS::get_in_subject (const std::string& invariant_accou
     }
     /*static*/  mtk::t_qpid_address  CF_ST_LS::static_get_qpid_address ()
     {
-        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_address  CF_ST_LS::get_qpid_address (void) const
     {
-        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     
 
