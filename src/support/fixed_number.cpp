@@ -199,7 +199,7 @@ FixedNumber& FixedNumber::SetIntCode(int value, const fnEnRound round)
                     if (positivValue%(2*inc) < inc)
                         ajusteEquidistante = -1 * signo;
                 }
-                intValue = (value*2 +ajusteEquidistante +  inc)/(2*inc) * inc;
+                intValue = (value*2 +ajusteEquidistante +  inc*signo)/(2*inc) * inc;            //  FIX IT
                 break;
         }
 
@@ -257,8 +257,12 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
     //  verificación desbordamiento de dígitos significativos
     //if (value!=0.) {         //  esta optimización parece que no aporta mucho
         double positivValue = value;
+        int sign = 1;
         if (positivValue<0.)
+        {
             positivValue *= -1;
+            sign = -1;
+        }
 
         if (log10(positivValue) >=0   &&  int(log10(positivValue) +0.5) + ext.GetDec() >=9)
                 throw fnErrorFixedNumber (Alarm (
@@ -281,7 +285,7 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
        )
     {
         //  redondeamos y...
-        int redondeado = int((valuePow10*10+4.99999)/10.);
+        int redondeado = int((valuePow10*10+ (4.99999)*sign )/10.);         //  FIX IT
 
         SetIntCode(redondeado, round);
         return *this;
@@ -538,9 +542,9 @@ YAML::Emitter& operator<< (YAML::Emitter& os, const fnExt& fnExt)
 void           operator>> (const YAML::Node   & i ,       FixedNumber& fn)
 {
     int int_code=0;
-    
+
     i[0] >> int_code;
-    
+
     fnExt ext(fnDec(0), fnInc(1));     //  temporary value
     i[1] >> ext;
     fn = FixedNumber(fnIntCode(int_code), ext);
@@ -549,10 +553,10 @@ void           operator>> (const YAML::Node   & i ,       fnExt& d)
 {
     int decimals=0;
     int increment=0;
-    
+
     i[0] >> decimals;
     i[1] >> increment;
-    
+
     d = fnExt(fnDec(decimals), fnInc(increment));
 }
 
