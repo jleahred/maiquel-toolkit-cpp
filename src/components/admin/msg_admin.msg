@@ -141,5 +141,6 @@ pub_central_keep_alive  [< QE:ALL_GS, SUBJ:ALL.${process_info.location.broker_co
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (kas)   :   time_quantity
     ka_interval_check   (kac)   :   time_quantity
+    is_production       (prd)   :   bool
 }
 

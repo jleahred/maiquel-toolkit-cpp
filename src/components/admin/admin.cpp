@@ -18,8 +18,6 @@
 
 #include <stdlib.h>     //  exit
 
-#define  ADMIN_PENDING_IMPLEMENTATION  throw mtk::Alarm(MTK_HERE, "PENDING IMPLEMENTATION", mtk::alPriorError, mtk::alTypeNoPermisions);
-#define  ADMIN_PROVISIONAL_IMPLEMENTATION   mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "PENDING IMPLEMENTATION", mtk::alPriorError, mtk::alTypeNoPermisions));
 
 
 
@@ -509,6 +507,16 @@ namespace {
     {
         next_central_keep_alive_to_receive = mtk::dtNowLocal() + ka_msg.ka_interval_check;
         check_fluct("central.ka",  ka_msg.__internal_warning_control_fields->sent_date_time);
+
+        if(ka_msg.is_production !=  mtk::admin::is_production())
+        {
+            MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(1))
+                if(mtk::admin::is_production())
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("local configuration PRODUCTION, received on ka  not production "), mtk::alPriorError, mtk::alTypeLogicError));
+                else
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("local configuration NOT production, received on ka  production "), mtk::alPriorError, mtk::alTypeLogicError));
+            MTK_END_EXEC_MAX_FREC
+        }
     }
     void  admin_status::check_central_keep_alive(void)
     {
@@ -1217,7 +1225,17 @@ void  check_control_fluct__info_on_times(const mtk::msg::sub_control_fluct&  cf,
 
 bool   is_production(void)
 {
-    return false;
+    std::string   config__is_production  =  get_config_mandatory_property("ADMIN.production");
+    if (config__is_production == "true")
+        return true;
+    else if (config__is_production == "false")
+        return false;
+    else
+    {
+        AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("invalid value on config  ADMIN.production   "  << config__is_production  << " expected true or false"),
+                                                    mtk::alPriorCritic, mtk::alTypeLogicError));
+        return false;
+    }
 }
 
 

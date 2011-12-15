@@ -668,8 +668,8 @@ void res_command::before_send(void) const
 
 
 
-pub_central_keep_alive::pub_central_keep_alive (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
-    :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
+pub_central_keep_alive::pub_central_keep_alive (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check,   const bool&  _is_production)
+    :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check),   is_production(_is_production) 
        , __internal_warning_control_fields(0)
     {  
         std::string cr = check_recomended ();  
@@ -1038,7 +1038,7 @@ std::ostream& operator<< (std::ostream& o, const pub_central_keep_alive & c)
 {
     o << "{ "
 
-        << "process_info:"<< c.process_info<<"  "        << "ka_interval_send:"<<   c.ka_interval_send << "  "        << "ka_interval_check:"<<   c.ka_interval_check << "  "
+        << "process_info:"<< c.process_info<<"  "        << "ka_interval_send:"<<   c.ka_interval_send << "  "        << "ka_interval_check:"<<   c.ka_interval_check << "  "        << "is_production:"<< c.is_production<<"  "
         << " }";
     return o;
 };
@@ -1049,7 +1049,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_central_keep_alive & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check        << YAML::Key << "is_production"  << YAML::Value << c.is_production
         << YAML::EndMap;
     return o;
 };
@@ -1063,6 +1063,7 @@ void  operator >> (const YAML::Node& node, pub_central_keep_alive & c)
         node["process_info"]  >> c.process_info;
         node["ka_interval_send"]  >> c.ka_interval_send;
         node["ka_interval_check"]  >> c.ka_interval_check;
+        node["is_production"]  >> c.is_production;
 
 
 };
@@ -1190,7 +1191,7 @@ bool operator!= (const res_command& a, const res_command& b)
 
 bool operator== (const pub_central_keep_alive& a, const pub_central_keep_alive& b)
 {
-    return (          a.process_info ==  b.process_info  &&          a.ka_interval_send ==  b.ka_interval_send  &&          a.ka_interval_check ==  b.ka_interval_check  &&   true  );
+    return (          a.process_info ==  b.process_info  &&          a.ka_interval_send ==  b.ka_interval_send  &&          a.ka_interval_check ==  b.ka_interval_check  &&          a.is_production ==  b.is_production  &&   true  );
 };
 
 bool operator!= (const pub_central_keep_alive& a, const pub_central_keep_alive& b)
@@ -1817,6 +1818,14 @@ void  copy (pub_central_keep_alive& c, const qpid::types::Variant& v)
                     else
                         copy(c.ka_interval_check, it->second);
                         //c.ka_interval_check = it->second;
+//   sub_msg_type
+
+                    it = mv.find("prd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field is_production on message pub_central_keep_alive::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.is_production, it->second);
+                        //__internal_qpid_fill(c.is_production, it->second.asMap());
 
     }
 
@@ -1833,6 +1842,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_
         __internal_add2map(map, a.ka_interval_send, std::string("kas"));
 //  field_type
         __internal_add2map(map, a.ka_interval_check, std::string("kac"));
+//  sub_msg_type
+        __internal_add2map(map, a.is_production, std::string("prd"));
 
 
 };
@@ -2105,6 +2116,9 @@ qpid::messaging::Message pub_central_keep_alive::qpidmsg_codded_as_qpid_message 
 //  field_type
 //        content["kac"] = this->ka_interval_check;
         __internal_add2map(content, this->ka_interval_check, std::string("kac"));
+//  sub_msg_type
+//        content["prd"] =  qpidmsg_coded_as_qpid_Map(this->is_production);
+        __internal_add2map(content, this->is_production, std::string("prd"));
 
 
     mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
@@ -2243,7 +2257,9 @@ __internal_get_default((req_command2*)0)
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0),
 //   field_type
-   __internal_get_default ((mtk::dtTimeQuantity*)0)
+   __internal_get_default ((mtk::dtTimeQuantity*)0),
+//   sub_msg_type
+   __internal_get_default((bool*)0)
             );
     }
     
@@ -2420,7 +2436,9 @@ pub_central_keep_alive::pub_central_keep_alive (const qpid::types::Variant::Map&
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
 //   field_type
-   ka_interval_check(__internal_get_default((mtk::dtTimeQuantity*)0)) 
+   ka_interval_check(__internal_get_default((mtk::dtTimeQuantity*)0)),
+//   sub_msg_type
+   is_production(__internal_get_default((bool*)0)) 
     {
         copy(*this, mv);
         std::string cr = check_recomended ();  

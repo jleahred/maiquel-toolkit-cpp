@@ -15,16 +15,17 @@ namespace
     const char*   APP_DESCRIPTION   = "This process will send the keep alive to servers and clients\n"
                                       "It will be checked by admin component";
 
-    const char*   APP_MODIFICATIONS = "           2011-03-16     first version\n";
+    const char*   APP_MODIFICATIONS =   "           2011-03-16     first version\n"
+                                        "           2011-12-15     flag indicating production\n";
 
 }
 
 
 void send_central_keep_alive(void)
 {
-
+    static bool is_production = mtk::admin::is_production();
     MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(3))
-        mtk::admin::msg::pub_central_keep_alive msg(mtk::admin::get_process_info(), mtk::dtSeconds(3), mtk::dtSeconds(5));
+        mtk::admin::msg::pub_central_keep_alive msg(mtk::admin::get_process_info(), mtk::dtSeconds(3), mtk::dtSeconds(5), is_production);
 
         mtk_send_message("admin_cli", msg);
         mtk_send_message("admin_srv", msg);
@@ -42,6 +43,9 @@ int main(int argc, char ** argv)
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
 
 
+        //  just to check property exist before enter messages loop
+        //  if property is not defined, it will write a message on cout and abort process
+        mtk::admin::is_production();
 
         MTK_TIMER_1SF(send_central_keep_alive);
 

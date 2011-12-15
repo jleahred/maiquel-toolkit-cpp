@@ -16,6 +16,11 @@ namespace mtk_qpid_stats {
 //  stats info
 long& num_messages_received                  (void);
 long& num_messages_sent                      (void);
+
+long& num_messages_received_today            (void);
+long& num_messages_sent_today                (void);
+
+
 long& num_created_suscriptions               (void);
 long& num_deleted_suscriptions               (void);
 

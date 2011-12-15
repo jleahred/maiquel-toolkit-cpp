@@ -107,7 +107,7 @@ struct mtkqpid_session
             qpid_session = connection.createSession();
             ++mtk_qpid_stats::num_created_sessions();
     }
-    ~mtkqpid_session() {qpid_session.close();   --mtk_qpid_stats::num_deleted_sessions();  }
+    ~mtkqpid_session() {qpid_session.close();   ++mtk_qpid_stats::num_deleted_sessions();  }
 };
 
 
@@ -130,7 +130,7 @@ struct mtkqpid_sender2
             qpid_sender.setCapacity(100);
             ++mtk_qpid_stats::num_created_senders();
     }
-    ~mtkqpid_sender2() { qpid_sender.close();      --mtk_qpid_stats::num_deleted_senders();  }
+    ~mtkqpid_sender2() { qpid_sender.close();      ++mtk_qpid_stats::num_deleted_senders();  }
 };
 
 
@@ -160,7 +160,7 @@ struct mtkqpid_receiver
     }
     ~mtkqpid_receiver() {       qpid_receiver.close();      //  http://apache-qpid-users.2158936.n2.nabble.com/receptor-out-of-scope-with-no-calling-receptor-close-td6858408.html
                                                 //  this not is a fully solution  http://192.168.7.10/wiki/index.php?n=Main.QPIDProblems
-                                --mtk_qpid_stats::num_deleted_receivers();  }
+                                ++mtk_qpid_stats::num_deleted_receivers();  }
 };
 
 
@@ -307,6 +307,10 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
 
             ++mtk_qpid_stats::num_messages_received();
             mtk_qpid_stats::last_received_message() = mtk::dtNowLocal();
+
+            if(mtk_qpid_stats::last_received_message() >  (mtk::dtToday_0Time() + mtk::dtHours(23) + mtk::dtMinutes(50)))
+                mtk_qpid_stats::num_messages_received_today() = 0;
+            ++mtk_qpid_stats::num_messages_received_today();
 
             try
             {
