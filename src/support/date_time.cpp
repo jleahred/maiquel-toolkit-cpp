@@ -555,16 +555,16 @@ void dtTimeQuantity::DecodeTime (void)  const
 
     hours     = dtHours        ( millisecsDay.WarningDontDoThisGetInternal()/(60*60*1000) );
 
-    mins      = dtMinutes      ( millisecsDay.WarningDontDoThisGetInternal()/(   60*1000) 
+    mins      = dtMinutes      ( millisecsDay.WarningDontDoThisGetInternal()/(   60*1000)
 				 - hours.WarningDontDoThisGetInternal()              *60);
 
-    secs      = dtSeconds      ( millisecsDay.WarningDontDoThisGetInternal()/(      1000) 
-				 - hours.WarningDontDoThisGetInternal()           *60*60      
+    secs      = dtSeconds      ( millisecsDay.WarningDontDoThisGetInternal()/(      1000)
+				 - hours.WarningDontDoThisGetInternal()           *60*60
 				 - mins.WarningDontDoThisGetInternal()               *60);
 
-    millisecs = dtMilliseconds ( millisecsDay.WarningDontDoThisGetInternal()              
-				 - hours.WarningDontDoThisGetInternal()      *60*60*1000 
-				 - mins.WarningDontDoThisGetInternal()          *60*1000 
+    millisecs = dtMilliseconds ( millisecsDay.WarningDontDoThisGetInternal()
+				 - hours.WarningDontDoThisGetInternal()      *60*60*1000
+				 - mins.WarningDontDoThisGetInternal()          *60*1000
 				 - secs.WarningDontDoThisGetInternal()             *1000);
 
 
@@ -614,8 +614,11 @@ std::ostream& operator<< (std::ostream& o, const dtTimeQuantity& tq)
 
 YAML::Emitter& operator<< (YAML::Emitter& os, const dtTimeQuantity& tq)
 {
-    os << MTK_SS(tq);
-    
+    if(tq == mtk::dtSeconds(0))
+        os << "0s";
+    else
+        os << MTK_SS(tq);
+
     return os;
 }
 
@@ -625,7 +628,7 @@ void    operator>> (const YAML::Node   & i , dtTimeQuantity& tq)
     i >> stq;
     bool    completed_ok;
     mtk::s_TRY_stotq(stq, mtk::dtSeconds(0)).assign(tq, completed_ok);
-    
+
     if(completed_ok == false)
         throw mtk::Alarm(MTK_HERE, "date_time", "Error parsing time quantity", mtk::alPriorError, mtk::alTypeNoPermisions);
 }
@@ -1091,7 +1094,7 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
                 dtHours       (0                       ),
                 dtMinutes     (0                       ),
                 dtSeconds     (0                       ),
-                dtMilliseconds(0                       ) 
+                dtMilliseconds(0                       )
             );
     }
 
@@ -1166,7 +1169,7 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
                 dtHours       (0                       ),
                 dtMinutes     (0                       ),
                 dtSeconds     (0                       ),
-                dtMilliseconds(0                       ) 
+                dtMilliseconds(0                       )
             );
     }
 
@@ -1253,7 +1256,7 @@ void   operator>> (const YAML::Node   & i , DateTime& d)
     i >> sd;
     bool    completed_ok;
     mtk::s_TRY_stodt(sd, mtk::dtNowLocal()).assign(d, completed_ok);
-    
+
     if(completed_ok == false)
         throw mtk::Alarm(MTK_HERE, "date_time", "Error parsing datetime", mtk::alPriorError, mtk::alTypeNoPermisions);
 }

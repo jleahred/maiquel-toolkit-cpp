@@ -99,7 +99,7 @@
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
-                 <widget class="QWidget" name="">
+                 <widget class="QWidget" name="layoutWidget">
                   <layout class="QVBoxLayout" name="verticalLayout_5">
                    <item>
                     <widget class="QLineEdit" name="filter_client_all"/>
@@ -231,7 +231,7 @@
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
-                 <widget class="QWidget" name="">
+                 <widget class="QWidget" name="layoutWidget">
                   <layout class="QVBoxLayout" name="verticalLayout_7">
                    <item>
                     <widget class="QLineEdit" name="filter_server_all"/>
@@ -292,6 +292,54 @@
             </widget>
            </widget>
           </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_6">
+        <attribute name="title">
+         <string>config</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_10">
+         <item>
+          <widget class="QPlainTextEdit" name="config_text">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="lineWrapMode">
+            <enum>QPlainTextEdit::NoWrap</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="mem_save_refresh">
+             <property name="text">
+              <string>memory save and refresh</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pb_save">
+             <property name="text">
+              <string>save</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>

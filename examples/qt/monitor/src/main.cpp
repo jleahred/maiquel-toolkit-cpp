@@ -1,6 +1,6 @@
 #include <QtGui/QApplication>
 #include "monitor.h"
-
+#include <QMessageBox>
 
 
 
@@ -49,7 +49,12 @@ int main(int argc, char *argv[])
     //QApplication a(argc, argv);
     MTK_Qt_ExceptionCatcher a(argc, argv);
 
-    Monitor w;
+    if(argc != 2)
+    {
+        QMessageBox(QMessageBox::Critical, "Error", "Expected one param with configuration file").exec();
+        return -1;
+    }
+    Monitor w(argv[1]);
     a.signalOnAlarm.connect(&w, &Monitor::OnAlarm);
     //w.show();
 

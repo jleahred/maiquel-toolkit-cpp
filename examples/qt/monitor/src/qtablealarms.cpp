@@ -28,7 +28,7 @@ void QTableAlarms::init(const mtk::t_qpid_url& url, const std::string& _cli_srv,
                             url,
                             mtk::admin::msg::pub_alarm::get_in_subject(_cli_srv),
                             mtk::admin::msg::pub_alarm,
-                            on_client_alarm_received);
+                            on_alarm_received);
 }
 
 void QTableAlarms::prepare(void)
@@ -80,7 +80,7 @@ void QTableAlarms::prepare(void)
 }
 
 
-void QTableAlarms::on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg)
+void QTableAlarms::on_alarm_received(const mtk::admin::msg::pub_alarm&  alarm_msg)
 {
     if(only_errors  &&  !(alarm_msg.priority==mtk::alPriorCritic  ||  alarm_msg.priority==mtk::alPriorError))
         return;
@@ -137,8 +137,14 @@ public:
 
 void QTableAlarms::write_alarm_msg2         (const mtk::DateTime&  received, const mtk::admin::msg::pub_alarm& alarm_msg)
 {
-    signal_alarm(alarm_msg);
     QString  full_text_message = QString(YAML::string_from_yaml(alarm_msg).c_str());
+
+    mtk::alEnPriority  priority = filter_alarm_priority(alarm_msg.priority, full_text_message);
+    //if(cli_srv == ""  &&  only_errors &&  (priority!=mtk::alPriorCritic  &&  priority!=mtk::alPriorError))
+    if(only_errors &&  (priority!=mtk::alPriorCritic  &&  priority!=mtk::alPriorError))
+        return;
+
+    signal_alarm(alarm_msg);
 
     if(cli_srv != ""  &&  pass_filter(full_text_message)  == false)
         return;
@@ -158,12 +164,13 @@ void QTableAlarms::write_alarm_msg2         (const mtk::DateTime&  received, con
     QColor foregroud_color = Qt::black;
 
 
-    if(alarm_msg.priority == mtk::alPriorCritic)
+
+    if(priority == mtk::alPriorCritic)
     {
         back_color = Qt::red;
         foregroud_color = Qt::white;
     }
-    else if(alarm_msg.priority == mtk::alPriorError)
+    else if(priority == mtk::alPriorError)
     {
         back_color = Qt::white;
         foregroud_color = Qt::red;
@@ -191,7 +198,7 @@ void QTableAlarms::write_alarm_msg2         (const mtk::DateTime&  received, con
     else if (cli_srv == "SRV")
     {
         QTableWidgetItem* new_item = new QTableWidgetItem();
-        new_item->setText(MTK_SS(alarm_msg.process_info.process_name).c_str());
+        new_item->setText(MTK_SS(alarm_msg.process_info.location.broker_code << "." << alarm_msg.process_info.process_name).c_str());
         new_item->setBackgroundColor(back_color);
         new_item->setForeground(QBrush(foregroud_color));
         this->setItem(last_row, ++column, new_item);
@@ -300,13 +307,13 @@ void QTableAlarms::init(const mtk::t_qpid_url& url, bool _only_errors)
                             url,
                             mtk::admin::msg::pub_alarm::get_in_subject("CLI"),
                             mtk::admin::msg::pub_alarm,
-                            on_client_alarm_received);
+                            on_alarm_received);
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm2,
                             url,
                             mtk::admin::msg::pub_alarm::get_in_subject("SRV"),
                             mtk::admin::msg::pub_alarm,
-                            on_client_alarm_received);
+                            on_alarm_received);
 }
 
 

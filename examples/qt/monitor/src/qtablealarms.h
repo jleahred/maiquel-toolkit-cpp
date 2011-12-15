@@ -7,6 +7,8 @@
 #include "components/admin/msg_admin.h"
 
 
+extern   mtk::alEnPriority  filter_alarm_priority(mtk::alEnPriority  orig_priority, const QString&  alarm_message);
+
 
 class QTableAlarms : public QTableWidget, public mtk::SignalReceptor
 {
@@ -36,7 +38,7 @@ private:
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>       >     hqpid_alarm1;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>       >     hqpid_alarm2;
 
-    void on_client_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);
+    void on_alarm_received(const mtk::admin::msg::pub_alarm& alarm_msg);
     void queue_alarm_msg         (const mtk::DateTime&  received,  const mtk::admin::msg::pub_alarm& alarm_msg);
     void write_alarm_msg2        (const mtk::DateTime&  received,  const mtk::admin::msg::pub_alarm& alarm_msg);
 

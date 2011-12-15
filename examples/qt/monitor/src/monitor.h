@@ -7,6 +7,7 @@
 
 
 #include "components/admin/msg_admin.h"
+#include "msg_structs.h"
 
 
 
@@ -54,6 +55,25 @@ class MTK_Qt_timer_and_AlarmMsg : public QObject, public mtk::SignalReceptor    
 
 
 
+struct   Config
+{
+    Config(const std::string&   _file_name)  :      file_name(_file_name) {}
+    std::string                         file_name;
+
+
+    //  properties
+    mtk::list<mon::msg::sub_rule>       rules__error2warning;
+    std::string                         amqp_url;
+
+
+    void            save(const std::string&  text);
+    void            load(void);
+    void            mem_save_refresh(void);
+
+    mtk::Signal<const std::string&>     signal_text_changed;
+
+};
+
 
 
 
@@ -64,13 +84,16 @@ class Monitor : public QMainWindow,   public  mtk::SignalReceptor
     typedef Monitor  CLASS_NAME;
 
 public:
-    explicit Monitor(QWidget *parent = 0);
+    explicit Monitor(const std::string&  _config_file_name, QWidget *parent = 0);
     ~Monitor();
 
     void OnAlarm(const mtk::Alarm& alarm);
 
 
 private slots:
+    void on_mem_save_refresh_clicked();
+    void on_config_text_modificationChanged(bool );
+    void on_pb_save_clicked();
     void  slot_show_window(bool lets_hide_if_visible=false);
     void  slot_iconActivated(QSystemTrayIcon::ActivationReason reason);
     void  slot_alarm(const mtk::admin::msg::pub_alarm& alarm_msg);
@@ -107,6 +130,9 @@ private:
     QAction *quitAction;
 
     Phonon::MediaObject *mediaObject;
+
+    Config        config_info;
+    void update_config_text(const std::string& new_text);
 };
 
 #endif // MONITOR_H
