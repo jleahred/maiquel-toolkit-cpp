@@ -35,7 +35,11 @@ namespace {
 
 
 
-
+    bool  auto_close_canceled=false;
+    void  timer_check_auto_close(void);
+    void command_autoclose_show         (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+    void command_autoclose_cancel       (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+    void command_autoclose_reactivate   (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
 
 
     mtk::Signal<>*           signal_admin_ready  = 0;
@@ -270,6 +274,12 @@ namespace {
             mtk_send_message("admin", exit_msg);
             exit_message_sent = true;
         }
+        if(role=="server")
+            mtk::stop_timer();
+        else if(role=="client")
+            exit(-1);
+        else
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));
     }
 
 
@@ -442,6 +452,12 @@ namespace {
         MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_realtime)
 
         MTK_CONNECT_THIS(*register_command("ADMIN",         "set_machine_code",        "write a machine code on config file"),  command_set_machine_code)
+
+        register_command("ADMIN",         "autoclose.show",        "Shows autoclose configured time" )->connect(&command_autoclose_show);
+        register_command("ADMIN",         "autoclose.cancel",      "cancel autoclose",      true     )->connect(&command_autoclose_cancel);
+        register_command("ADMIN",         "autoclose.reactivate",  "reactivate autoclose",  true     )->connect(&command_autoclose_reactivate);
+
+        MTK_TIMER_1SF(timer_check_auto_close);
     }
 
 
@@ -891,13 +907,6 @@ namespace {
     {
         response_lines.push_back("closing as you demand...");
         close_application("requested by interactive admin command");
-
-        if(role=="server")
-            mtk::stop_timer();
-        else if(role=="client")
-            exit(-1);
-        else
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));
     }
 
     void admin_status::command_date_time(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
@@ -1225,15 +1234,17 @@ void  check_control_fluct__info_on_times(const mtk::msg::sub_control_fluct&  cf,
 
 bool   is_production(void)
 {
-    std::string   config__is_production  =  get_config_mandatory_property("ADMIN.production");
+    static std::string   config__is_production = get_config_mandatory_property("ADMIN.production");
     if (config__is_production == "true")
         return true;
     else if (config__is_production == "false")
         return false;
     else
     {
-        AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("invalid value on config  ADMIN.production   "  << config__is_production  << " expected true or false"),
-                                                    mtk::alPriorCritic, mtk::alTypeLogicError));
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
+            AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("invalid value on config  ADMIN.production   "  << config__is_production  << " expected true or false"),
+                                                        mtk::alPriorCritic, mtk::alTypeLogicError));
+        MTK_END_EXEC_MAX_FREC
         return false;
     }
 }
@@ -1267,6 +1278,7 @@ void AlarmMsg (const Alarm& alarm)
 
 
 
+
 void  __internal_admin_nevercall_me____release_on_exit(void)
 {
     admin_status::release();
@@ -1278,3 +1290,93 @@ void  __internal_admin_nevercall_me____release_on_exit(void)
 
 };  //namespace mtk {
 
+namespace {
+    void  timer_check_auto_close(void)
+    {
+        if(auto_close_canceled)
+        {
+            MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
+                AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("autoclose:   CANCELED BY COMMAND    "),
+                                                            mtk::alPriorWarning, mtk::alTypeUnknown));
+                return;
+            MTK_END_EXEC_MAX_FREC
+        }
+
+        MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(1))
+            static  std::string  config_auto_close_time  =  mtk::admin::get_config_mandatory_property("ADMIN.autoclose_time");
+            if(config_auto_close_time == "never")
+            {
+                MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(30), A)
+                    AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("autoclose:   configured never    "),
+                                                                mtk::alPriorWarning, mtk::alTypeUnknown));
+                MTK_END_EXEC_MAX_FREC
+                return;
+            }
+
+            static  mtk::DateTime auto_close_on  = mtk::dtToday_0Time() + mtk::s_TRY_stotq(config_auto_close_time, mtk::dtSeconds(0))._0;
+
+
+            MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(30), A)
+                AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("autoclose:  process will be closed at    "  << auto_close_on   <<  "   in "  << (auto_close_on - mtk::dtNowLocal())),
+                                                            mtk::alPriorWarning, mtk::alTypeUnknown));
+            MTK_END_EXEC_MAX_FREC
+
+
+            mtk::dtDateTime  now = mtk::dtNowLocal();
+            if(now > auto_close_on)
+                admin_status::i()->close_application(MTK_SS("autoclose   configured to close at   "  << auto_close_on   <<  "   in "  << (auto_close_on - mtk::dtNowLocal())));
+            else if(now > (auto_close_on - mtk::dtMinutes(30)))
+            {
+                MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(5), A)
+                        AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("autoclose:  process will be closed at    "  << auto_close_on
+                                                        <<  "   in "  << (auto_close_on - mtk::dtNowLocal())  << "   you can cancel close with admin.autclose.cancel command"),
+                                                                    mtk::alPriorError, mtk::alTypeUnknown));
+                MTK_END_EXEC_MAX_FREC
+            }
+        MTK_END_EXEC_MAX_FREC
+    }
+
+    void command_autoclose_show         (const std::string& /*command*/, const std::string& param,  mtk::list<std::string>&  response_lines)
+    {
+        if(param.size() != 0)
+        {
+            response_lines.push_back("no param requeried");
+            response_lines.push_back("command ingnored");
+            return;
+        }
+        response_lines.push_back(mtk::admin::get_config_mandatory_property("ADMIN.autoclose_time"));
+        if(auto_close_canceled)
+            response_lines.push_back("autoclose has been DEACTIVATED, to reactivate use auto_close_reactivate command");
+    }
+
+    void command_autoclose_cancel       (const std::string& /*command*/, const std::string& param,  mtk::list<std::string>&  response_lines)
+    {
+        if(param.size() != 0)
+        {
+            response_lines.push_back("no param requeried");
+            response_lines.push_back("command ingnored");
+            return;
+        }
+        auto_close_canceled = true;
+        if(auto_close_canceled)
+            response_lines.push_back("autoclose has been DEACTIVATED, to reactivate use auto_close_reactivate command");
+        else
+            response_lines.push_back("autoclose is ACTIVE, to reactivate use auto_close_reactivate command");
+    }
+
+    void command_autoclose_reactivate   (const std::string& /*command*/, const std::string& param,  mtk::list<std::string>&  response_lines)
+    {
+        if(param.size() != 0)
+        {
+            response_lines.push_back("no param requeried");
+            response_lines.push_back("command ingnored");
+            return;
+        }
+        auto_close_canceled = false;
+        if(auto_close_canceled)
+            response_lines.push_back("autoclose has been DEACTIVATED, to reactivate use auto_close_reactivate command");
+        else
+            response_lines.push_back("autoclose is ACTIVE, to reactivate use auto_close_reactivate command");
+    }
+
+};
