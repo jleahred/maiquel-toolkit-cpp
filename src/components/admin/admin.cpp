@@ -467,7 +467,7 @@ namespace {
         //std::cout << enter_msg << std::endl;
         mtk_send_message("admin", enter_msg);
 
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.app_enter", "Entering application", mtk::alPriorDebug, mtk::alTypeUnknown));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.app_enter", MTK_SS("Entering application  mtk_ver: " << mtk::MTK_VERSION), mtk::alPriorDebug, mtk::alTypeUnknown));
 
         MTK_TIMER_1S(send_keep_alive)
         MTK_TIMER_1S(check_last_received_message)
@@ -831,6 +831,8 @@ namespace {
             }
         }
 
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.command", MTK_SS("from  " << command_msg.request_info.process_info << std::endl <<  "command " << command << std::endl
+                                                            << "response first line " << data_list.front().text), mtk::alPriorDebug));
         //  sending multiresponses in asyncronous way
         MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::res_command,
                                         mtk::admin::msg::sub_command_rd,

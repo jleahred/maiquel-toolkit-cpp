@@ -191,6 +191,10 @@ struct mtkqpid_receiver
         MTK_END_EXEC_MAX_FREC
 
         ++mtk_qpid_stats::num_messages_sent();
+        if(mtk_qpid_stats::last_received_message() >  (mtk::dtToday_0Time() + mtk::dtHours(23) + mtk::dtMinutes(50)))
+            mtk_qpid_stats::num_messages_sent_today() = 0;
+        ++mtk_qpid_stats::num_messages_sent_today();
+
         if (subject.WarningDontDoThisGetInternal() == "")
             subject = message.get_out_subject();
         //qpid::messaging::Sender sender = qpid_session->createSender(subject);
