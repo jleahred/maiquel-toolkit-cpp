@@ -710,8 +710,17 @@ namespace {
         return result;
     }
 
+
+
+    std::string  fake_process_name(std::string  process_name)
+    {
+        size_t pos = mtk::rand() %  (process_name.size()-2)+1;
+        process_name[pos] = char(process_name[pos] + char(mtk::rand()%4+1));
+        return process_name;
+    }
     void admin_status::on_command_received2(const mtk::admin::msg::req_command2& command_msg)
     {
+
         mtk::list<std::string>  response_lines;
         std::string command;
         std::string params;
@@ -754,8 +763,23 @@ namespace {
                                                 << current_dt.GetDay().WarningDontDoThisGetInternal()
                                                 << current_dt.GetHours().WarningDontDoThisGetInternal()
                                                 << current_dt.GetMinutes().WarningDontDoThisGetInternal()));
+
                 if(current_confirmation_code != confirmation_code)
-                    response_lines.push_back(MTK_SS(command_msg.command_line << "  incorrect confirmation code, expected... "  << current_confirmation_code));
+                {
+                    response_lines.push_back(MTK_SS(command_msg.command_line << "  incorrect confirmation code, expected... "));
+                    int options=4;
+                    if(mtk::admin::is_production()==false)
+                        options=1;
+                    int no_fake = mtk::rand()%options;
+                    for(int ii=0; ii<options; ++ii)
+                    {
+                        if(no_fake == ii)
+                            response_lines.push_back(current_confirmation_code  +  "   "  + this->process_info.location.broker_code + "." + (this->process_info.process_name));
+                        else
+                            response_lines.push_back(std::string("__cf") + mtk::crc32_as_string(MTK_SS(mtk::rand()<<mtk::dtNowLocal()))  +  "   "
+                                                            + this->process_info.location.broker_code + "." + fake_process_name(this->process_info.process_name));
+                    }
+                }
                 //  else, process command
                 else if(it->second->signal_command_received->emit(command, params, response_lines) == 0)
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
