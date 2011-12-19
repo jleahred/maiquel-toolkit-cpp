@@ -60,7 +60,7 @@ public:
 
 
     void AddNull(void                             ) { lParams.push_back(__internal_fbInsertData()); }
-    
+
     void Add (bool                          _value) { lParams.push_back(_value); }
     void Add (int                           _value) { lParams.push_back(_value); }
     void Add (double                        _value) { lParams.push_back(_value); }
@@ -85,7 +85,7 @@ class fbInsert  :  public mtk::SignalReceptor
 {
     typedef fbInsert CLASS_NAME;
     mtk::non_copyable nc;
-    
+
 public:
 
 	fbInsert(const std::string& _fbi_config, const std::string& _prepare);
@@ -112,7 +112,6 @@ public:
 
 
 
-
 private:
     IBPP::Database              db;
     std::string                 prepare;
@@ -120,6 +119,7 @@ private:
     int                         savedRecords;
     int                         receivedRecords;
 	bool						dbConnectionErrorSent;
+    mtk::dtTimeQuantity         reconnect_time;
     std::string                 fbi_config;
 
     IBPP::Transaction TryStartTransaction(void);

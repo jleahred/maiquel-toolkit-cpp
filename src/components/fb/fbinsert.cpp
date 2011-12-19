@@ -15,11 +15,13 @@ namespace mtk {
 namespace
 {
 
-    const char*   VER           = "2011-04-05";
-    const char*   MODIFICATIONS = "           2011-04-05     first version\n";
-    
-    
-    
+    const char*   VER           = "2011-12-19";
+    const char*   MODIFICATIONS =   "           2011-04-05      first version\n"
+                                    "           2011-12-19      added reconnect param\n"
+                                    ;
+
+
+
     void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
     {
         response_lines.push_back(MTK_SS(__FILE__ << ":  " << VER));
@@ -33,7 +35,7 @@ namespace
     }
 
 
-    
+
     void register_global_commands (void)
     {
         mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
@@ -41,8 +43,8 @@ namespace
         mtk::admin::register_command("fbinsert",  "ver",   "")->connect(command_version);
         mtk::admin::register_command("fbinsert",  "modifs",   "")->connect(command_modifications);
     }
-    
-    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)    
+
+    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
 }
 
 
@@ -59,147 +61,127 @@ namespace
 
 
 //  limit control for params
-const int                   MIN_NUMBER_OF_RECORDS2SAVE      = 2;      
+const int                   MIN_NUMBER_OF_RECORDS2SAVE      = 2;
 const int                   MAX_NUMBER_OF_RECORDS2SAVE      = 1000;
 
-const mtk::dtTimeQuantity   MIN_FRECUENCY2SAVE              = mtk::dtMilliseconds(500);       
+const mtk::dtTimeQuantity   MIN_FRECUENCY2SAVE              = mtk::dtMilliseconds(500);
 const mtk::dtTimeQuantity   MAX_FRECUENCY2SAVE              = mtk::dtMinutes(20);
 
-const int                   MIN_WARNING_ON_QUEUE_SIZE       = 200;        
+const int                   MIN_WARNING_ON_QUEUE_SIZE       = 200;
 const int                   MAX_WARNING_ON_QUEUE_SIZE       = 10000;
 
-const int                   MIN_ERROR_ON_QUEUE_SIZE         = 700;       
+const int                   MIN_ERROR_ON_QUEUE_SIZE         = 700;
 const int                   MAX_ERROR_ON_QUEUE_SIZE         = 8000;
 
-const mtk::dtTimeQuantity   MIN_MAXTIME2SAVE_RECORDS        = mtk::dtMilliseconds(500);       
+const mtk::dtTimeQuantity   MIN_MAXTIME2SAVE_RECORDS        = mtk::dtMilliseconds(500);
 const mtk::dtTimeQuantity   MAX_MAXTIME2SAVE_RECORDS        = mtk::dtSeconds(20);
 
 
+//----------------------------------------------------------------------------------------------------------------
 
 
 
 //----------------------------------------------------------------------------------------------------------------
+template<typename T>
+T convert_to_T_from_string(const std::string&  s);
 
-mtk::dtTimeQuantity s_fbFrecuencyFromConfig (const std::string& configPath)
+template<>
+mtk::dtTimeQuantity  convert_to_T_from_string<mtk::dtTimeQuantity>(const std::string&  s)
 {
-    mtk::dtTimeQuantity result = mtk::dtSeconds(0);
-    std::string path = configPath;
-    mtk::Nullable<std::string> frecuencyFBI = mtk::admin::get_config_property(MTK_SS(path << ".frecuency"));
+    mtk::dtTimeQuantity  result=mtk::dtSeconds(0);
     bool converted=false;
-    if (frecuencyFBI.HasValue())
+    mtk::s_TRY_stotq(s, result).assign(result, converted);
+    if (converted == false)
+        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("error converting " <<  s  << "  to dtTimeQuantity"), mtk::alPriorError);
+    else
+        return result;
+}
+
+template<>
+int  convert_to_T_from_string<int>(const std::string&  s)
+{
+    int  result=0;
+    bool converted=false;
+    mtk::s_TRY_stoi(s, result).assign(result, converted);
+    if (converted == false)
+        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("error converting " <<  s << "  to integer"), mtk::alPriorError);
+    else
+        return result;
+}
+
+
+
+template<typename T>
+T  read_config (const std::string& config_full_path)
+{
+    mtk::Nullable<std::string> property_value = mtk::admin::get_config_property(config_full_path);
+    if (property_value.HasValue())
     {
-        mtk::s_TRY_stotq(frecuencyFBI.Get(), result).assign(result, converted);
-        if (converted == false)
-            throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("frecuency converting to timequantity error " << frecuencyFBI.Get()), mtk::alPriorError);
+        try
+        {
+            return convert_to_T_from_string<T>(property_value.Get());
+        }
+        MTK_CATCH_RETHROW("fbinsert.readconfig", MTK_SS("reading property from " << config_full_path))
     }
     else
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("frecuency mising  "  << configPath), mtk::alPriorError);
-
-    if (result < MIN_FRECUENCY2SAVE)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("frecuency too low value  " << result), mtk::alPriorError);
-    if (result > MAX_FRECUENCY2SAVE)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("frecuency too hight value  " << result), mtk::alPriorError);
-    return result;
+        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("mising  " << config_full_path), mtk::alPriorError);
 }
 
 //----------------------------------------------------------------------------------------------------------------
 
-int s_fbWarningOnQueueSizeFromConfig (const std::string& configPath)
-{
-    int result = 0;
-    std::string path = configPath;
-    mtk::Nullable<std::string> warningOnQueueSizeFBI = mtk::admin::get_config_property(MTK_SS(path << ".warningonqueuesize"));
-    bool converted=false;
-    if (warningOnQueueSizeFBI.HasValue())
-    {
-        mtk::s_TRY_stoi(warningOnQueueSizeFBI.Get(), result).assign(result, converted);
-        if (converted == false)
-            throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("warningOnQueueSize converting to integer error " << warningOnQueueSizeFBI.Get()), mtk::alPriorError);
-    }
-    else
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("warningOnQueueSize mising  " << configPath), mtk::alPriorError);
+//template<typename T>
+//T check_bounds(const T& value, const T& min, const T& max, const std::string&  context_info);
 
-    if (result < MIN_WARNING_ON_QUEUE_SIZE)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("warningOnQueueSize too low value  " << result), mtk::alPriorError);
-    if (result > MAX_WARNING_ON_QUEUE_SIZE)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("warningOnQueueSize too hight value  " << result), mtk::alPriorError);
-    return result;
+/*
+template<>
+mtk::dtTimeQuantity check_bounds<mtk::dtTimeQuantity>(const mtk::dtTimeQuantity& value, const mtk::dtTimeQuantity& min, const mtk::dtTimeQuantity& max, const std::string&  context_info)
+{
+    if (value < MIN_MAXTIME2SAVE_RECORDS)
+        throw  mtk::Alarm(MTK_HERE, "fbinsert.check_bounds", MTK_SS(context_info << " too low value  " << value  << "  minimum value "  << min), mtk::alPriorError);
+    if (value > MAX_MAXTIME2SAVE_RECORDS)
+        throw  mtk::Alarm(MTK_HERE, "fbinsert.check_bounds", MTK_SS(context_info << " too hight value  " << value  << "  maximum value "  << max), mtk::alPriorError);
+    return value;
+
+}
+ */
+template<typename T>
+T check_bounds(const T& value, const T& min, const T& max, const std::string&  context_info)
+{
+    if (value < min)
+        throw  mtk::Alarm(MTK_HERE, "fbinsert.check_bounds", MTK_SS(context_info << " too low value  " << value  << "  minimum value "  << min), mtk::alPriorError);
+    if (value > max)
+        throw  mtk::Alarm(MTK_HERE, "fbinsert.check_bounds", MTK_SS(context_info << " too hight value  " << value  << "  maximum value "  << max), mtk::alPriorError);
+    return value;
 
 }
 
 
-//----------------------------------------------------------------------------------------------------------------
-
-int s_fbErrorOnQueueSizeFromConfig (const std::string& configPath)
+mtk::dtTimeQuantity   check_bounds_maxtime2saverecords (const mtk::dtTimeQuantity&  check)
 {
-    int result = 0;
-    std::string path = configPath;
-    mtk::Nullable<std::string> errorOnQueueSizeFBI = mtk::admin::get_config_property(MTK_SS(path << ".erroronqueuesize"));
-    bool converted=false;
-    if (errorOnQueueSizeFBI.HasValue())
-    {
-        mtk::s_TRY_stoi(errorOnQueueSizeFBI.Get(), result).assign(result, converted);
-        if (converted == false)
-            throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("errorOnQueueSize converting to integer error " << errorOnQueueSizeFBI.Get()), mtk::alPriorError);
-    }
-    else
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("errorOnQueueSize mising  " << configPath), mtk::alPriorError);
-
-    if (result < MIN_ERROR_ON_QUEUE_SIZE)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("errorOnQueueSize too low value  " << result), mtk::alPriorError);
-    if (result > MAX_ERROR_ON_QUEUE_SIZE)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("errorOnQueueSize too hight value  " << result), mtk::alPriorError);
-    return result;
+    return  check_bounds(check, MIN_MAXTIME2SAVE_RECORDS, MAX_MAXTIME2SAVE_RECORDS, "maxtime2saverecords");
 }
 
 
-//----------------------------------------------------------------------------------------------------------------
-
-
-int s_fbNumberOfRecords2SaveFromConfig (const std::string& configPath)
+int   check_bounds_number_of_records2save (int  check)
 {
-    int result = 0;
-    std::string path = configPath;
-    mtk::Nullable<std::string> numberOfRecords2Save = mtk::admin::get_config_property(MTK_SS(path << ".numberofrecords2save"));
-    bool converted=false;
-    if (numberOfRecords2Save.HasValue())
-    {
-        mtk::s_TRY_stoi(numberOfRecords2Save.Get(), result).assign(result, converted);
-        if (converted == false)
-            throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("numberOfRecords2Save converting to integer error " << numberOfRecords2Save.Get()), mtk::alPriorError);
-    }
-    else
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("numberOfRecords2Save mising  " << configPath), mtk::alPriorError);
-
-    if (result < MIN_NUMBER_OF_RECORDS2SAVE)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("numberOfRecords2Save too low value  " << result), mtk::alPriorError);
-    if (result > MAX_NUMBER_OF_RECORDS2SAVE)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("numberOfRecords2Save too hight value  " << result), mtk::alPriorError);
-    return result;
+    return  check_bounds(check, MIN_NUMBER_OF_RECORDS2SAVE, MAX_NUMBER_OF_RECORDS2SAVE, "number_of_records2save");
 }
 
-//----------------------------------------------------------------------------------------------------------------
 
-mtk::dtTimeQuantity s_fbMaxTime2saveRecodsFromConfig (const std::string& configPath)
+int check_bounds_erroronqueuesize (int check)
 {
-    mtk::dtTimeQuantity result = mtk::dtSeconds(0);
-    std::string path = configPath;
-    mtk::Nullable<std::string> maxTime2SaveRecords = mtk::admin::get_config_property(MTK_SS(path << ".maxtime2saverecords"));
-    bool converted=false;
-    if (maxTime2SaveRecords.HasValue())
-    {
-        mtk::s_TRY_stotq(maxTime2SaveRecords.Get(), result).assign(result, converted);
-        if (converted == false)
-            throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("maxTime2SaveRecords converting to timequantity error " << maxTime2SaveRecords.Get()), mtk::alPriorError);
-    }
-    else
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("maxTime2SaveRecords mising  " << configPath), mtk::alPriorError);
+    return  check_bounds(check, MIN_ERROR_ON_QUEUE_SIZE, MAX_ERROR_ON_QUEUE_SIZE, "erroronqueuesize");
+}
 
-    if (result < MIN_MAXTIME2SAVE_RECORDS)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("maxTime2SaveRecords too low value  " << result), mtk::alPriorError);
-    if (result > MAX_MAXTIME2SAVE_RECORDS)
-        throw mtk::Alarm(MTK_HERE, "fbinsert.readconfig", MTK_SS("maxTime2SaveRecords too hight value  " << result), mtk::alPriorError);
-    return result;
+int check_bounds_warningonqueuesize (int check)
+{
+    return  check_bounds(check, MIN_WARNING_ON_QUEUE_SIZE, MAX_WARNING_ON_QUEUE_SIZE, "warningonqueuesize");
+
+}
+
+mtk::dtTimeQuantity check_bounds_frecuency (const mtk::dtTimeQuantity&  check)
+{
+    return  check_bounds(check, MIN_FRECUENCY2SAVE, MAX_FRECUENCY2SAVE, "frecuency");
 }
 
 
@@ -238,8 +220,8 @@ void fbInsert::command_stats (const std::string& /*command*/, const std::string&
 void fbInsert::command_status (const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
 {
     response_lines.push_back(MTK_SS("fbi." << mtk::s_toLower(fbi_config) << ".status:  ----------------------"));
-    
-    
+
+
 		if (db->Connected()	)
             response_lines.push_back(MTK_SS(s_AlignLeft("Connected:"			   , 22)  << "  true" ) );
 		else
@@ -347,16 +329,18 @@ void fbInsert::command_set_number_of_records2save(const std::string& /*command*/
 
 
 fbInsert::fbInsert(const std::string& _fbi_config, const std::string& _prepare)
-    :     numberOfRecords2Save                      (mtk::s_fbNumberOfRecords2SaveFromConfig(MTK_SS(_fbi_config << ".CONTROL")))
-        , frecuency                                 (mtk::s_fbFrecuencyFromConfig           (MTK_SS(_fbi_config << ".CONTROL")))
-        , warningOnQueueSize                        (mtk::s_fbWarningOnQueueSizeFromConfig  (MTK_SS(_fbi_config << ".CONTROL")))
-        , errorOnQueueSize                          (mtk::s_fbErrorOnQueueSizeFromConfig    (MTK_SS(_fbi_config << ".CONTROL")))
-        , maxTime2saveRecods                        (mtk::s_fbMaxTime2saveRecodsFromConfig  (MTK_SS(_fbi_config << ".CONTROL")))
-        , db                                        (mtk::fbDatabaseFromConfig              (_fbi_config                      ))
+    :
+          numberOfRecords2Save                      (check_bounds_number_of_records2save(read_config<int>                   (MTK_SS(_fbi_config << ".CONTROL.numberofrecords2save"))))
+        , frecuency                                 (check_bounds_frecuency             (read_config<mtk::dtTimeQuantity>   (MTK_SS(_fbi_config << ".CONTROL.frecuency"))))
+        , warningOnQueueSize                        (check_bounds_warningonqueuesize    (read_config<int>                   (MTK_SS(_fbi_config << ".CONTROL.warningonqueuesize"))))
+        , errorOnQueueSize                          (check_bounds_erroronqueuesize      (read_config<int>                   (MTK_SS(_fbi_config << ".CONTROL.erroronqueuesize"))))
+        , maxTime2saveRecods                        (check_bounds_maxtime2saverecords   (read_config<mtk::dtTimeQuantity>   (MTK_SS(_fbi_config << ".CONTROL.maxtime2saverecords"))))
+        , db                                        (fbDatabaseFromConfig              (_fbi_config                      ))
         , prepare                                   (_prepare)
         , savedRecords                              (0)
         , receivedRecords                           (0)
 		, dbConnectionErrorSent						(false)
+        , reconnect_time                            (read_config<mtk::dtTimeQuantity>   (MTK_SS(_fbi_config << ".CONTROL.reconnect_time")))
         , fbi_config                                (_fbi_config)
 {
 	db->Connect();
@@ -367,14 +351,14 @@ fbInsert::fbInsert(const std::string& _fbi_config, const std::string& _prepare)
     MTK_CONNECT_THIS(*mtk::admin::register_command(instance_uuid, "config", ""),                            command_config);
     MTK_CONNECT_THIS(*mtk::admin::register_command("__GLOBAL__",  "stats", ""),                             command_stats);
     MTK_CONNECT_THIS(*mtk::admin::register_command(instance_uuid, "stats", ""),                             command_stats);
-    
+
     MTK_CONNECT_THIS(*mtk::admin::register_command(instance_uuid, "status", ""),                            command_status);
     MTK_CONNECT_THIS(*mtk::admin::register_command(instance_uuid, "set_frecuency", "",              true),  command_set_frecuency);
     MTK_CONNECT_THIS(*mtk::admin::register_command(instance_uuid, "set_error_on_queue_size", "",    true),  command_set_error_on_queue_size);
     MTK_CONNECT_THIS(*mtk::admin::register_command(instance_uuid, "set_wargning_on_queue_size", "", true),  command_set_warning_queue_size);
     MTK_CONNECT_THIS(*mtk::admin::register_command(instance_uuid, "set_max_time2save_records", "",  true),  command_set_max_time2save_records);
     MTK_CONNECT_THIS(*mtk::admin::register_command(instance_uuid, "set_num_records2save", "",       true),  command_set_number_of_records2save);
-    
+
 
     MTK_TIMER_1D(OnTimer);
 }
@@ -468,8 +452,22 @@ IBPP::Transaction fbInsert::TryStartTransaction(void)
 
 void fbInsert::OnTimer(void)
 {
+    static  mtk::dtDateTime  next_reconnection = mtk::dtToday_0Time() + reconnect_time;
+    if(next_reconnection <  mtk::dtNowLocal())
+    {
+		db->Disconnect();
+		db->Connect();
+        mtk::AlarmMsg(mtk::Alarm (
+                            MTK_HERE, "fbInsert.reconection",
+                            MTK_SS("RECONNECTING.  Configured to " <<  next_reconnection << "   next reconnection will be..."  << mtk::dtToday_0Time() + reconnect_time + mtk::dtDays(1)),
+                            mtk::alPriorWarning
+                        )
+        );
+        next_reconnection = mtk::dtToday_0Time() + reconnect_time + mtk::dtDays(1);
+    }
+
     if (queue.size() == 0)      return;
-    
+
 	MTK_EXEC_MAX_FREC(frecuency)
 
 		IBPP::Transaction tr = TryStartTransaction();

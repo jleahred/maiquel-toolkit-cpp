@@ -24,11 +24,9 @@ namespace
 
 
 
+mtk::CountPtr<mtk::fbInsert> fbi_cli;
 void  on_alarm_received_cli(const mtk::admin::msg::pub_alarm&  ar)
 {
-        static mtk::fbInsert fbi("DB_ALARMS", "INSERT INTO CLI_ALARMS (REC_TIME, SENT_TIME, AL_ID, CLI_CODE, SUBJECT, DESCRIPTION, PRIORITY, AL_TYPE, MACHINE, PROCESS_VERSION, PROCESS_NAME, PROCESS_UUID, SOURCE)"
-                    "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
-
         mtk::fbInsertParams params;
             params.Add(ar.__internal_warning_control_fields->sent_date_time);
             params.Add(ar.dateTime_generated);
@@ -45,15 +43,13 @@ void  on_alarm_received_cli(const mtk::admin::msg::pub_alarm&  ar)
             params.Add(ar.code_source);
 
             //  Request asynchronous write
-            fbi.Insert(params);
+            fbi_cli->Insert(params);
 
 }
 
+mtk::CountPtr<mtk::fbInsert> fbi_srv;
 void  on_alarm_received_srv(const mtk::admin::msg::pub_alarm&  ar)
 {
-        static mtk::fbInsert fbi("DB_ALARMS", "INSERT INTO SRV_ALARMS (REC_TIME, SENT_TIME, AL_ID, CLI_CODE, SUBJECT, DESCRIPTION, PRIORITY, AL_TYPE, MACHINE, PROCESS_VERSION, PROCESS_NAME, PROCESS_UUID, SOURCE)"
-                    "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
-
         mtk::fbInsertParams params;
             params.Add(ar.__internal_warning_control_fields->sent_date_time);
             params.Add(ar.dateTime_generated);
@@ -70,7 +66,7 @@ void  on_alarm_received_srv(const mtk::admin::msg::pub_alarm&  ar)
             params.Add(ar.code_source);
 
             //  Request asynchronous write
-            fbi.Insert(params);
+            fbi_srv->Insert(params);
 
 }
 
@@ -84,6 +80,13 @@ int main(int argc, char ** argv)
             mtk::admin::init("./config.cfg", APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
+
+
+        fbi_cli = mtk::make_cptr(new mtk::fbInsert("DB_ALARMS", "INSERT INTO CLI_ALARMS (REC_TIME, SENT_TIME, AL_ID, BROKER_CODE, SUBJECT, DESCRIPTION, PRIORITY, AL_TYPE, MACHINE, PROCESS_VERSION, PROCESS_NAME, PROCESS_UUID, SOURCE)"
+                    "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"));
+
+        fbi_srv = mtk::make_cptr(new mtk::fbInsert("DB_ALARMS", "INSERT INTO SRV_ALARMS (REC_TIME, SENT_TIME, AL_ID, BROKER_CODE, SUBJECT, DESCRIPTION, PRIORITY, AL_TYPE, MACHINE, PROCESS_VERSION, PROCESS_NAME, PROCESS_UUID, SOURCE)"
+                    "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"));
 
 
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::pub_alarm>            > hqpid_alarms_cli;
