@@ -3,12 +3,404 @@
 // coded last modification:        $CODED_LAST_MODIF  desactivated, lots of false notifications
 // pythonscript last modification: $SCRIPT_LAST_MODIF
 
+#include "support/mtk_string.h"
+
+
 
 
 namespace fsmgen_trd_cli_mk {
 
 
 class abstract_status;
+
+
+// -----------------------------------------------------------------------
+//      c o v e r a g e
+struct   scoverage
+{
+    scoverage(void) :
+
+          init__rq_nw (0)
+        , init__rq_md (0)
+        , init__rq_cc (0)
+        , init__cf_nw (0)
+        , init__cf_md (0)
+        , init__cf_cc (0)
+        , init__rj_nw (0)
+        , init__rj_md (0)
+        , init__rj_cc (0)
+        , init__cf_ex (0)
+        , init__cf_st (0)
+        , w_cfnw__rq_nw (0)
+        , w_cfnw__rq_md (0)
+        , w_cfnw__rq_cc (0)
+        , w_cfnw__cf_nw (0)
+        , w_cfnw__cf_md (0)
+        , w_cfnw__cf_cc (0)
+        , w_cfnw__rj_nw (0)
+        , w_cfnw__rj_md (0)
+        , w_cfnw__rj_cc (0)
+        , w_cfnw__cf_ex (0)
+        , w_cfnw__cf_st (0)
+        , market__rq_nw (0)
+        , market__rq_md (0)
+        , market__rq_cc (0)
+        , market__cf_nw (0)
+        , market__cf_md (0)
+        , market__cf_cc (0)
+        , market__rj_nw (0)
+        , market__rj_md (0)
+        , market__rj_cc (0)
+        , market__cf_ex (0)
+        , market__cf_st (0)
+        , w_cfmd__rq_nw (0)
+        , w_cfmd__rq_md (0)
+        , w_cfmd__rq_cc (0)
+        , w_cfmd__cf_nw (0)
+        , w_cfmd__cf_md (0)
+        , w_cfmd__cf_cc (0)
+        , w_cfmd__rj_nw (0)
+        , w_cfmd__rj_md (0)
+        , w_cfmd__rj_cc (0)
+        , w_cfmd__cf_ex (0)
+        , w_cfmd__cf_st (0)
+        , w_cfcc__rq_nw (0)
+        , w_cfcc__rq_md (0)
+        , w_cfcc__rq_cc (0)
+        , w_cfcc__cf_nw (0)
+        , w_cfcc__cf_md (0)
+        , w_cfcc__cf_cc (0)
+        , w_cfcc__rj_nw (0)
+        , w_cfcc__rj_md (0)
+        , w_cfcc__rj_cc (0)
+        , w_cfcc__cf_ex (0)
+        , w_cfcc__cf_st (0)
+        , w_cfmdcc__rq_nw (0)
+        , w_cfmdcc__rq_md (0)
+        , w_cfmdcc__rq_cc (0)
+        , w_cfmdcc__cf_nw (0)
+        , w_cfmdcc__cf_md (0)
+        , w_cfmdcc__cf_cc (0)
+        , w_cfmdcc__rj_nw (0)
+        , w_cfmdcc__rj_md (0)
+        , w_cfmdcc__rj_cc (0)
+        , w_cfmdcc__cf_ex (0)
+        , w_cfmdcc__cf_st (0)
+        , w_cfnwmd__rq_nw (0)
+        , w_cfnwmd__rq_md (0)
+        , w_cfnwmd__rq_cc (0)
+        , w_cfnwmd__cf_nw (0)
+        , w_cfnwmd__cf_md (0)
+        , w_cfnwmd__cf_cc (0)
+        , w_cfnwmd__rj_nw (0)
+        , w_cfnwmd__rj_md (0)
+        , w_cfnwmd__rj_cc (0)
+        , w_cfnwmd__cf_ex (0)
+        , w_cfnwmd__cf_st (0)
+        , w_cfnwcc__rq_nw (0)
+        , w_cfnwcc__rq_md (0)
+        , w_cfnwcc__rq_cc (0)
+        , w_cfnwcc__cf_nw (0)
+        , w_cfnwcc__cf_md (0)
+        , w_cfnwcc__cf_cc (0)
+        , w_cfnwcc__rj_nw (0)
+        , w_cfnwcc__rj_md (0)
+        , w_cfnwcc__rj_cc (0)
+        , w_cfnwcc__cf_ex (0)
+        , w_cfnwcc__cf_st (0)
+        , canceled__rq_nw (0)
+        , canceled__rq_md (0)
+        , canceled__rq_cc (0)
+        , canceled__cf_nw (0)
+        , canceled__cf_md (0)
+        , canceled__cf_cc (0)
+        , canceled__rj_nw (0)
+        , canceled__rj_md (0)
+        , canceled__rj_cc (0)
+        , canceled__cf_ex (0)
+        , canceled__cf_st (0)
+        , executed__rq_nw (0)
+        , executed__rq_md (0)
+        , executed__rq_cc (0)
+        , executed__cf_nw (0)
+        , executed__cf_md (0)
+        , executed__cf_cc (0)
+        , executed__rj_nw (0)
+        , executed__rj_md (0)
+        , executed__rj_cc (0)
+        , executed__cf_ex (0)
+        , executed__cf_st (0)
+        , error__rq_nw (0)
+        , error__rq_md (0)
+        , error__rq_cc (0)
+        , error__cf_nw (0)
+        , error__cf_md (0)
+        , error__cf_cc (0)
+        , error__rj_nw (0)
+        , error__rj_md (0)
+        , error__rj_cc (0)
+        , error__cf_ex (0)
+        , error__cf_st (0)
+    {}
+
+    int   init__rq_nw;
+    int   init__rq_md;
+    int   init__rq_cc;
+    int   init__cf_nw;
+    int   init__cf_md;
+    int   init__cf_cc;
+    int   init__rj_nw;
+    int   init__rj_md;
+    int   init__rj_cc;
+    int   init__cf_ex;
+    int   init__cf_st;
+    int   w_cfnw__rq_nw;
+    int   w_cfnw__rq_md;
+    int   w_cfnw__rq_cc;
+    int   w_cfnw__cf_nw;
+    int   w_cfnw__cf_md;
+    int   w_cfnw__cf_cc;
+    int   w_cfnw__rj_nw;
+    int   w_cfnw__rj_md;
+    int   w_cfnw__rj_cc;
+    int   w_cfnw__cf_ex;
+    int   w_cfnw__cf_st;
+    int   market__rq_nw;
+    int   market__rq_md;
+    int   market__rq_cc;
+    int   market__cf_nw;
+    int   market__cf_md;
+    int   market__cf_cc;
+    int   market__rj_nw;
+    int   market__rj_md;
+    int   market__rj_cc;
+    int   market__cf_ex;
+    int   market__cf_st;
+    int   w_cfmd__rq_nw;
+    int   w_cfmd__rq_md;
+    int   w_cfmd__rq_cc;
+    int   w_cfmd__cf_nw;
+    int   w_cfmd__cf_md;
+    int   w_cfmd__cf_cc;
+    int   w_cfmd__rj_nw;
+    int   w_cfmd__rj_md;
+    int   w_cfmd__rj_cc;
+    int   w_cfmd__cf_ex;
+    int   w_cfmd__cf_st;
+    int   w_cfcc__rq_nw;
+    int   w_cfcc__rq_md;
+    int   w_cfcc__rq_cc;
+    int   w_cfcc__cf_nw;
+    int   w_cfcc__cf_md;
+    int   w_cfcc__cf_cc;
+    int   w_cfcc__rj_nw;
+    int   w_cfcc__rj_md;
+    int   w_cfcc__rj_cc;
+    int   w_cfcc__cf_ex;
+    int   w_cfcc__cf_st;
+    int   w_cfmdcc__rq_nw;
+    int   w_cfmdcc__rq_md;
+    int   w_cfmdcc__rq_cc;
+    int   w_cfmdcc__cf_nw;
+    int   w_cfmdcc__cf_md;
+    int   w_cfmdcc__cf_cc;
+    int   w_cfmdcc__rj_nw;
+    int   w_cfmdcc__rj_md;
+    int   w_cfmdcc__rj_cc;
+    int   w_cfmdcc__cf_ex;
+    int   w_cfmdcc__cf_st;
+    int   w_cfnwmd__rq_nw;
+    int   w_cfnwmd__rq_md;
+    int   w_cfnwmd__rq_cc;
+    int   w_cfnwmd__cf_nw;
+    int   w_cfnwmd__cf_md;
+    int   w_cfnwmd__cf_cc;
+    int   w_cfnwmd__rj_nw;
+    int   w_cfnwmd__rj_md;
+    int   w_cfnwmd__rj_cc;
+    int   w_cfnwmd__cf_ex;
+    int   w_cfnwmd__cf_st;
+    int   w_cfnwcc__rq_nw;
+    int   w_cfnwcc__rq_md;
+    int   w_cfnwcc__rq_cc;
+    int   w_cfnwcc__cf_nw;
+    int   w_cfnwcc__cf_md;
+    int   w_cfnwcc__cf_cc;
+    int   w_cfnwcc__rj_nw;
+    int   w_cfnwcc__rj_md;
+    int   w_cfnwcc__rj_cc;
+    int   w_cfnwcc__cf_ex;
+    int   w_cfnwcc__cf_st;
+    int   canceled__rq_nw;
+    int   canceled__rq_md;
+    int   canceled__rq_cc;
+    int   canceled__cf_nw;
+    int   canceled__cf_md;
+    int   canceled__cf_cc;
+    int   canceled__rj_nw;
+    int   canceled__rj_md;
+    int   canceled__rj_cc;
+    int   canceled__cf_ex;
+    int   canceled__cf_st;
+    int   executed__rq_nw;
+    int   executed__rq_md;
+    int   executed__rq_cc;
+    int   executed__cf_nw;
+    int   executed__cf_md;
+    int   executed__cf_cc;
+    int   executed__rj_nw;
+    int   executed__rj_md;
+    int   executed__rj_cc;
+    int   executed__cf_ex;
+    int   executed__cf_st;
+    int   error__rq_nw;
+    int   error__rq_md;
+    int   error__rq_cc;
+    int   error__cf_nw;
+    int   error__cf_md;
+    int   error__cf_cc;
+    int   error__rj_nw;
+    int   error__rj_md;
+    int   error__rj_cc;
+    int   error__cf_ex;
+    int   error__cf_st;
+
+    std::string  get_string(void)
+    {
+
+        static mtk::dtDateTime  last_result_date_time = mtk::dtNowLocal() - mtk::dtDays(1);
+        static std::string last_result = "";
+        int num_touched=0;
+        if(last_result_date_time + mtk::dtSeconds(30) > mtk::dtNowLocal())
+            last_result = "";
+              if(init__rq_nw)   {++num_touched; last_result += MTK_SS("init__rq_nw:" << init__rq_nw << std::endl);}
+              if(init__rq_md)   {++num_touched; last_result += MTK_SS("init__rq_md:" << init__rq_md << std::endl);}
+              if(init__rq_cc)   {++num_touched; last_result += MTK_SS("init__rq_cc:" << init__rq_cc << std::endl);}
+              if(init__cf_nw)   {++num_touched; last_result += MTK_SS("init__cf_nw:" << init__cf_nw << std::endl);}
+              if(init__cf_md)   {++num_touched; last_result += MTK_SS("init__cf_md:" << init__cf_md << std::endl);}
+              if(init__cf_cc)   {++num_touched; last_result += MTK_SS("init__cf_cc:" << init__cf_cc << std::endl);}
+              if(init__rj_nw)   {++num_touched; last_result += MTK_SS("init__rj_nw:" << init__rj_nw << std::endl);}
+              if(init__rj_md)   {++num_touched; last_result += MTK_SS("init__rj_md:" << init__rj_md << std::endl);}
+              if(init__rj_cc)   {++num_touched; last_result += MTK_SS("init__rj_cc:" << init__rj_cc << std::endl);}
+              if(init__cf_ex)   {++num_touched; last_result += MTK_SS("init__cf_ex:" << init__cf_ex << std::endl);}
+              if(init__cf_st)   {++num_touched; last_result += MTK_SS("init__cf_st:" << init__cf_st << std::endl);}
+              if(w_cfnw__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnw__rq_nw:" << w_cfnw__rq_nw << std::endl);}
+              if(w_cfnw__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnw__rq_md:" << w_cfnw__rq_md << std::endl);}
+              if(w_cfnw__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfnw__rq_cc:" << w_cfnw__rq_cc << std::endl);}
+              if(w_cfnw__cf_nw)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_nw:" << w_cfnw__cf_nw << std::endl);}
+              if(w_cfnw__cf_md)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_md:" << w_cfnw__cf_md << std::endl);}
+              if(w_cfnw__cf_cc)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_cc:" << w_cfnw__cf_cc << std::endl);}
+              if(w_cfnw__rj_nw)   {++num_touched; last_result += MTK_SS("w_cfnw__rj_nw:" << w_cfnw__rj_nw << std::endl);}
+              if(w_cfnw__rj_md)   {++num_touched; last_result += MTK_SS("w_cfnw__rj_md:" << w_cfnw__rj_md << std::endl);}
+              if(w_cfnw__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfnw__rj_cc:" << w_cfnw__rj_cc << std::endl);}
+              if(w_cfnw__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_ex:" << w_cfnw__cf_ex << std::endl);}
+              if(w_cfnw__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_st:" << w_cfnw__cf_st << std::endl);}
+              if(market__rq_nw)   {++num_touched; last_result += MTK_SS("market__rq_nw:" << market__rq_nw << std::endl);}
+              if(market__rq_md)   {++num_touched; last_result += MTK_SS("market__rq_md:" << market__rq_md << std::endl);}
+              if(market__rq_cc)   {++num_touched; last_result += MTK_SS("market__rq_cc:" << market__rq_cc << std::endl);}
+              if(market__cf_nw)   {++num_touched; last_result += MTK_SS("market__cf_nw:" << market__cf_nw << std::endl);}
+              if(market__cf_md)   {++num_touched; last_result += MTK_SS("market__cf_md:" << market__cf_md << std::endl);}
+              if(market__cf_cc)   {++num_touched; last_result += MTK_SS("market__cf_cc:" << market__cf_cc << std::endl);}
+              if(market__rj_nw)   {++num_touched; last_result += MTK_SS("market__rj_nw:" << market__rj_nw << std::endl);}
+              if(market__rj_md)   {++num_touched; last_result += MTK_SS("market__rj_md:" << market__rj_md << std::endl);}
+              if(market__rj_cc)   {++num_touched; last_result += MTK_SS("market__rj_cc:" << market__rj_cc << std::endl);}
+              if(market__cf_ex)   {++num_touched; last_result += MTK_SS("market__cf_ex:" << market__cf_ex << std::endl);}
+              if(market__cf_st)   {++num_touched; last_result += MTK_SS("market__cf_st:" << market__cf_st << std::endl);}
+              if(w_cfmd__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfmd__rq_nw:" << w_cfmd__rq_nw << std::endl);}
+              if(w_cfmd__rq_md)   {++num_touched; last_result += MTK_SS("w_cfmd__rq_md:" << w_cfmd__rq_md << std::endl);}
+              if(w_cfmd__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfmd__rq_cc:" << w_cfmd__rq_cc << std::endl);}
+              if(w_cfmd__cf_nw)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_nw:" << w_cfmd__cf_nw << std::endl);}
+              if(w_cfmd__cf_md)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_md:" << w_cfmd__cf_md << std::endl);}
+              if(w_cfmd__cf_cc)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_cc:" << w_cfmd__cf_cc << std::endl);}
+              if(w_cfmd__rj_nw)   {++num_touched; last_result += MTK_SS("w_cfmd__rj_nw:" << w_cfmd__rj_nw << std::endl);}
+              if(w_cfmd__rj_md)   {++num_touched; last_result += MTK_SS("w_cfmd__rj_md:" << w_cfmd__rj_md << std::endl);}
+              if(w_cfmd__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfmd__rj_cc:" << w_cfmd__rj_cc << std::endl);}
+              if(w_cfmd__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_ex:" << w_cfmd__cf_ex << std::endl);}
+              if(w_cfmd__cf_st)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_st:" << w_cfmd__cf_st << std::endl);}
+              if(w_cfcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfcc__rq_nw:" << w_cfcc__rq_nw << std::endl);}
+              if(w_cfcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfcc__rq_md:" << w_cfcc__rq_md << std::endl);}
+              if(w_cfcc__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfcc__rq_cc:" << w_cfcc__rq_cc << std::endl);}
+              if(w_cfcc__cf_nw)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_nw:" << w_cfcc__cf_nw << std::endl);}
+              if(w_cfcc__cf_md)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_md:" << w_cfcc__cf_md << std::endl);}
+              if(w_cfcc__cf_cc)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_cc:" << w_cfcc__cf_cc << std::endl);}
+              if(w_cfcc__rj_nw)   {++num_touched; last_result += MTK_SS("w_cfcc__rj_nw:" << w_cfcc__rj_nw << std::endl);}
+              if(w_cfcc__rj_md)   {++num_touched; last_result += MTK_SS("w_cfcc__rj_md:" << w_cfcc__rj_md << std::endl);}
+              if(w_cfcc__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfcc__rj_cc:" << w_cfcc__rj_cc << std::endl);}
+              if(w_cfcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_ex:" << w_cfcc__cf_ex << std::endl);}
+              if(w_cfcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_st:" << w_cfcc__cf_st << std::endl);}
+              if(w_cfmdcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rq_nw:" << w_cfmdcc__rq_nw << std::endl);}
+              if(w_cfmdcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rq_md:" << w_cfmdcc__rq_md << std::endl);}
+              if(w_cfmdcc__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rq_cc:" << w_cfmdcc__rq_cc << std::endl);}
+              if(w_cfmdcc__cf_nw)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_nw:" << w_cfmdcc__cf_nw << std::endl);}
+              if(w_cfmdcc__cf_md)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_md:" << w_cfmdcc__cf_md << std::endl);}
+              if(w_cfmdcc__cf_cc)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_cc:" << w_cfmdcc__cf_cc << std::endl);}
+              if(w_cfmdcc__rj_nw)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rj_nw:" << w_cfmdcc__rj_nw << std::endl);}
+              if(w_cfmdcc__rj_md)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rj_md:" << w_cfmdcc__rj_md << std::endl);}
+              if(w_cfmdcc__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rj_cc:" << w_cfmdcc__rj_cc << std::endl);}
+              if(w_cfmdcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_ex:" << w_cfmdcc__cf_ex << std::endl);}
+              if(w_cfmdcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_st:" << w_cfmdcc__cf_st << std::endl);}
+              if(w_cfnwmd__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rq_nw:" << w_cfnwmd__rq_nw << std::endl);}
+              if(w_cfnwmd__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rq_md:" << w_cfnwmd__rq_md << std::endl);}
+              if(w_cfnwmd__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rq_cc:" << w_cfnwmd__rq_cc << std::endl);}
+              if(w_cfnwmd__cf_nw)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_nw:" << w_cfnwmd__cf_nw << std::endl);}
+              if(w_cfnwmd__cf_md)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_md:" << w_cfnwmd__cf_md << std::endl);}
+              if(w_cfnwmd__cf_cc)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_cc:" << w_cfnwmd__cf_cc << std::endl);}
+              if(w_cfnwmd__rj_nw)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rj_nw:" << w_cfnwmd__rj_nw << std::endl);}
+              if(w_cfnwmd__rj_md)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rj_md:" << w_cfnwmd__rj_md << std::endl);}
+              if(w_cfnwmd__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rj_cc:" << w_cfnwmd__rj_cc << std::endl);}
+              if(w_cfnwmd__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_ex:" << w_cfnwmd__cf_ex << std::endl);}
+              if(w_cfnwmd__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_st:" << w_cfnwmd__cf_st << std::endl);}
+              if(w_cfnwcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rq_nw:" << w_cfnwcc__rq_nw << std::endl);}
+              if(w_cfnwcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rq_md:" << w_cfnwcc__rq_md << std::endl);}
+              if(w_cfnwcc__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rq_cc:" << w_cfnwcc__rq_cc << std::endl);}
+              if(w_cfnwcc__cf_nw)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_nw:" << w_cfnwcc__cf_nw << std::endl);}
+              if(w_cfnwcc__cf_md)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_md:" << w_cfnwcc__cf_md << std::endl);}
+              if(w_cfnwcc__cf_cc)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_cc:" << w_cfnwcc__cf_cc << std::endl);}
+              if(w_cfnwcc__rj_nw)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rj_nw:" << w_cfnwcc__rj_nw << std::endl);}
+              if(w_cfnwcc__rj_md)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rj_md:" << w_cfnwcc__rj_md << std::endl);}
+              if(w_cfnwcc__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rj_cc:" << w_cfnwcc__rj_cc << std::endl);}
+              if(w_cfnwcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_ex:" << w_cfnwcc__cf_ex << std::endl);}
+              if(w_cfnwcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_st:" << w_cfnwcc__cf_st << std::endl);}
+              if(canceled__rq_nw)   {++num_touched; last_result += MTK_SS("canceled__rq_nw:" << canceled__rq_nw << std::endl);}
+              if(canceled__rq_md)   {++num_touched; last_result += MTK_SS("canceled__rq_md:" << canceled__rq_md << std::endl);}
+              if(canceled__rq_cc)   {++num_touched; last_result += MTK_SS("canceled__rq_cc:" << canceled__rq_cc << std::endl);}
+              if(canceled__cf_nw)   {++num_touched; last_result += MTK_SS("canceled__cf_nw:" << canceled__cf_nw << std::endl);}
+              if(canceled__cf_md)   {++num_touched; last_result += MTK_SS("canceled__cf_md:" << canceled__cf_md << std::endl);}
+              if(canceled__cf_cc)   {++num_touched; last_result += MTK_SS("canceled__cf_cc:" << canceled__cf_cc << std::endl);}
+              if(canceled__rj_nw)   {++num_touched; last_result += MTK_SS("canceled__rj_nw:" << canceled__rj_nw << std::endl);}
+              if(canceled__rj_md)   {++num_touched; last_result += MTK_SS("canceled__rj_md:" << canceled__rj_md << std::endl);}
+              if(canceled__rj_cc)   {++num_touched; last_result += MTK_SS("canceled__rj_cc:" << canceled__rj_cc << std::endl);}
+              if(canceled__cf_ex)   {++num_touched; last_result += MTK_SS("canceled__cf_ex:" << canceled__cf_ex << std::endl);}
+              if(canceled__cf_st)   {++num_touched; last_result += MTK_SS("canceled__cf_st:" << canceled__cf_st << std::endl);}
+              if(executed__rq_nw)   {++num_touched; last_result += MTK_SS("executed__rq_nw:" << executed__rq_nw << std::endl);}
+              if(executed__rq_md)   {++num_touched; last_result += MTK_SS("executed__rq_md:" << executed__rq_md << std::endl);}
+              if(executed__rq_cc)   {++num_touched; last_result += MTK_SS("executed__rq_cc:" << executed__rq_cc << std::endl);}
+              if(executed__cf_nw)   {++num_touched; last_result += MTK_SS("executed__cf_nw:" << executed__cf_nw << std::endl);}
+              if(executed__cf_md)   {++num_touched; last_result += MTK_SS("executed__cf_md:" << executed__cf_md << std::endl);}
+              if(executed__cf_cc)   {++num_touched; last_result += MTK_SS("executed__cf_cc:" << executed__cf_cc << std::endl);}
+              if(executed__rj_nw)   {++num_touched; last_result += MTK_SS("executed__rj_nw:" << executed__rj_nw << std::endl);}
+              if(executed__rj_md)   {++num_touched; last_result += MTK_SS("executed__rj_md:" << executed__rj_md << std::endl);}
+              if(executed__rj_cc)   {++num_touched; last_result += MTK_SS("executed__rj_cc:" << executed__rj_cc << std::endl);}
+              if(executed__cf_ex)   {++num_touched; last_result += MTK_SS("executed__cf_ex:" << executed__cf_ex << std::endl);}
+              if(executed__cf_st)   {++num_touched; last_result += MTK_SS("executed__cf_st:" << executed__cf_st << std::endl);}
+              if(error__rq_nw)   {++num_touched; last_result += MTK_SS("error__rq_nw:" << error__rq_nw << std::endl);}
+              if(error__rq_md)   {++num_touched; last_result += MTK_SS("error__rq_md:" << error__rq_md << std::endl);}
+              if(error__rq_cc)   {++num_touched; last_result += MTK_SS("error__rq_cc:" << error__rq_cc << std::endl);}
+              if(error__cf_nw)   {++num_touched; last_result += MTK_SS("error__cf_nw:" << error__cf_nw << std::endl);}
+              if(error__cf_md)   {++num_touched; last_result += MTK_SS("error__cf_md:" << error__cf_md << std::endl);}
+              if(error__cf_cc)   {++num_touched; last_result += MTK_SS("error__cf_cc:" << error__cf_cc << std::endl);}
+              if(error__rj_nw)   {++num_touched; last_result += MTK_SS("error__rj_nw:" << error__rj_nw << std::endl);}
+              if(error__rj_md)   {++num_touched; last_result += MTK_SS("error__rj_md:" << error__rj_md << std::endl);}
+              if(error__rj_cc)   {++num_touched; last_result += MTK_SS("error__rj_cc:" << error__rj_cc << std::endl);}
+              if(error__cf_ex)   {++num_touched; last_result += MTK_SS("error__cf_ex:" << error__cf_ex << std::endl);}
+              if(error__cf_st)   {++num_touched; last_result += MTK_SS("error__cf_st:" << error__cf_st << std::endl);}
+
+        last_result += MTK_SS("__num_touched__:"  <<  num_touched);
+        return last_result;
+
+    }
+};
+
 
 // -----------------------------------------------------------------------
 //      s t a t u s _ c o m m o n _ i n f o
@@ -75,6 +467,9 @@ struct  status_common_info
     mtk::Signal<> signal_keep_temp_status;
     mtk::Signal<> signal_remove_temp_status;
 
+
+    //  STATS AND COVERAGE
+    scoverage     coverage;
 };
 
 
@@ -120,6 +515,9 @@ public:
     virtual const bool                                             &  has_pending_rq (void) const { return ci->has_pending_rq(); }; 
     virtual const std::string                                      &  serrors (void) const { return ci->serrors(); }; 
 
+
+    //  COVERAGE
+    std::string  get_coverage_string(void)  { return ci->coverage.get_string(); };
 };
 
 
@@ -598,6 +996,9 @@ public:
 
 void init::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.init__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -639,6 +1040,9 @@ void init::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void init::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.init__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -668,6 +1072,9 @@ void init::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void init::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.init__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -697,6 +1104,9 @@ void init::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void init::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.init__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -726,6 +1136,9 @@ void init::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void init::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.init__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -755,6 +1168,9 @@ void init::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void init::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.init__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -784,6 +1200,9 @@ void init::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void init::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.init__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -811,6 +1230,9 @@ void init::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void init::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.init__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -838,6 +1260,9 @@ void init::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void init::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.init__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -865,6 +1290,9 @@ void init::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void init::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.init__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -913,6 +1341,9 @@ void init::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void init::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.init__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -969,6 +1400,9 @@ void init::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -1021,6 +1455,9 @@ void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -1085,6 +1522,9 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void w_cfnw::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -1135,6 +1575,9 @@ void w_cfnw::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void w_cfnw::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -1199,6 +1642,9 @@ void w_cfnw::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void w_cfnw::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -1251,6 +1697,9 @@ void w_cfnw::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void w_cfnw::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -1280,6 +1729,9 @@ void w_cfnw::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void w_cfnw::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -1309,6 +1761,9 @@ void w_cfnw::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void w_cfnw::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -1361,6 +1816,9 @@ void w_cfnw::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void w_cfnw::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -1413,6 +1871,9 @@ void w_cfnw::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void w_cfnw::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -1470,6 +1931,9 @@ void w_cfnw::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void w_cfnw::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnw__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -1497,6 +1961,9 @@ void w_cfnw::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void market::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.market__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -1549,6 +2016,9 @@ void market::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void market::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.market__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -1613,6 +2083,9 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void market::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.market__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -1663,6 +2136,9 @@ void market::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void market::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.market__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -1715,6 +2191,9 @@ void market::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void market::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.market__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -1744,6 +2223,9 @@ void market::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void market::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.market__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -1808,6 +2290,9 @@ void market::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void market::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.market__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -1860,6 +2345,9 @@ void market::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void market::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.market__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -1912,6 +2400,9 @@ void market::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void market::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.market__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -1964,6 +2455,9 @@ void market::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void market::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.market__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -2012,6 +2506,9 @@ void market::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void market::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.market__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -2039,6 +2536,9 @@ void market::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -2091,6 +2591,9 @@ void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -2155,6 +2658,9 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void w_cfmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -2205,6 +2711,9 @@ void w_cfmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void w_cfmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -2257,6 +2766,9 @@ void w_cfmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -2339,6 +2851,9 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void w_cfmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -2403,6 +2918,9 @@ void w_cfmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void w_cfmd::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -2455,6 +2973,9 @@ void w_cfmd::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void w_cfmd::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -2484,6 +3005,9 @@ void w_cfmd::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void w_cfmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -2536,6 +3060,9 @@ void w_cfmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void w_cfmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -2584,6 +3111,9 @@ void w_cfmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void w_cfmd::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmd__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -2611,6 +3141,9 @@ void w_cfmd::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -2663,6 +3196,9 @@ void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void w_cfcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -2692,6 +3228,9 @@ void w_cfcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void w_cfcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -2742,6 +3281,9 @@ void w_cfcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void w_cfcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -2794,6 +3336,9 @@ void w_cfcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void w_cfcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -2823,6 +3368,9 @@ void w_cfcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void w_cfcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -2887,6 +3435,9 @@ void w_cfcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void w_cfcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -2939,6 +3490,9 @@ void w_cfcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void w_cfcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -2991,6 +3545,9 @@ void w_cfcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void w_cfcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -3020,6 +3577,9 @@ void w_cfcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void w_cfcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -3068,6 +3628,9 @@ void w_cfcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void w_cfcc::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.w_cfcc__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -3095,6 +3658,9 @@ void w_cfcc::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -3147,6 +3713,9 @@ void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -3211,6 +3780,9 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void w_cfmdcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -3261,6 +3833,9 @@ void w_cfmdcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void w_cfmdcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -3313,6 +3888,9 @@ void w_cfmdcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -3395,6 +3973,9 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void w_cfmdcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -3459,6 +4040,9 @@ void w_cfmdcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void w_cfmdcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -3511,6 +4095,9 @@ void w_cfmdcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void w_cfmdcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -3540,6 +4127,9 @@ void w_cfmdcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void w_cfmdcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -3569,6 +4159,9 @@ void w_cfmdcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void w_cfmdcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -3617,6 +4210,9 @@ void w_cfmdcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void w_cfmdcc::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.w_cfmdcc__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -3644,6 +4240,9 @@ void w_cfmdcc::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -3696,6 +4295,9 @@ void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -3760,6 +4362,9 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void w_cfnwmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -3810,6 +4415,9 @@ void w_cfnwmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -3874,6 +4482,9 @@ void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void w_cfnwmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -3926,6 +4537,9 @@ void w_cfnwmd::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void w_cfnwmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -3978,6 +4592,9 @@ void w_cfnwmd::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void w_cfnwmd::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -4007,6 +4624,9 @@ void w_cfnwmd::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void w_cfnwmd::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -4059,6 +4679,9 @@ void w_cfnwmd::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void w_cfnwmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -4111,6 +4734,9 @@ void w_cfnwmd::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void w_cfnwmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -4168,6 +4794,9 @@ void w_cfnwmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void w_cfnwmd::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwmd__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -4195,6 +4824,9 @@ void w_cfnwmd::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -4247,6 +4879,9 @@ void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -4299,6 +4934,9 @@ void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void w_cfnwcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -4349,6 +4987,9 @@ void w_cfnwcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -4413,6 +5054,9 @@ void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void w_cfnwcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -4465,6 +5109,9 @@ void w_cfnwcc::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void w_cfnwcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -4517,6 +5164,9 @@ void w_cfnwcc::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void w_cfnwcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -4546,6 +5196,9 @@ void w_cfnwcc::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void w_cfnwcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -4598,6 +5251,9 @@ void w_cfnwcc::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void w_cfnwcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -4650,6 +5306,9 @@ void w_cfnwcc::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void w_cfnwcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -4707,6 +5366,9 @@ void w_cfnwcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void w_cfnwcc::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.w_cfnwcc__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -4734,6 +5396,9 @@ void w_cfnwcc::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.canceled__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -4786,6 +5451,9 @@ void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void canceled::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.canceled__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -4815,6 +5483,9 @@ void canceled::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void canceled::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.canceled__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -4844,6 +5515,9 @@ void canceled::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void canceled::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.canceled__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -4896,6 +5570,9 @@ void canceled::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void canceled::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.canceled__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -4948,6 +5625,9 @@ void canceled::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void canceled::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.canceled__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -5000,6 +5680,9 @@ void canceled::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void canceled::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.canceled__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -5052,6 +5735,9 @@ void canceled::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void canceled::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.canceled__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -5104,6 +5790,9 @@ void canceled::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void canceled::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.canceled__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -5133,6 +5822,9 @@ void canceled::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void canceled::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.canceled__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -5190,6 +5882,9 @@ void canceled::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void canceled::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.canceled__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -5217,6 +5912,9 @@ void canceled::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void executed::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.executed__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -5269,6 +5967,9 @@ void executed::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void executed::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.executed__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -5298,6 +5999,9 @@ void executed::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void executed::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.executed__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -5327,6 +6031,9 @@ void executed::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void executed::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.executed__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -5379,6 +6086,9 @@ void executed::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void executed::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.executed__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -5431,6 +6141,9 @@ void executed::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void executed::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.executed__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -5483,6 +6196,9 @@ void executed::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void executed::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.executed__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -5535,6 +6251,9 @@ void executed::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void executed::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.executed__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -5587,6 +6306,9 @@ void executed::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void executed::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.executed__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -5639,6 +6361,9 @@ void executed::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void executed::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.executed__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -5696,6 +6421,9 @@ void executed::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void executed::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.executed__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -5723,6 +6451,9 @@ void executed::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 
 void error::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.error__rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -5775,6 +6506,9 @@ void error::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
 
 void error::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.error__rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -5804,6 +6538,9 @@ void error::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
 
 void error::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 {
+    //  coverage
+    ++ci->coverage.error__rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -5854,6 +6591,9 @@ void error::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
 
 void error::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.error__cf_nw;
+
     //  remove unused warning
     (void) cf;
 
@@ -5906,6 +6646,9 @@ void error::cf_nw ( const mtk::trd::msg::CF_NW_MK&   cf            )
 
 void error::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.error__cf_md;
+
     //  remove unused warning
     (void) cf;
 
@@ -5958,6 +6701,9 @@ void error::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
 
 void error::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 {
+    //  coverage
+    ++ci->coverage.error__cf_cc;
+
     //  remove unused warning
     (void) cf;
 
@@ -6010,6 +6756,9 @@ void error::cf_cc ( const mtk::trd::msg::CF_CC_MK&   cf            )
 
 void error::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.error__rj_nw;
+
     //  remove unused warning
     (void) rj;
 
@@ -6062,6 +6811,9 @@ void error::rj_nw ( const mtk::trd::msg::RJ_NW_MK&   rj            )
 
 void error::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.error__rj_md;
+
     //  remove unused warning
     (void) rj;
 
@@ -6114,6 +6866,9 @@ void error::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
 
 void error::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 {
+    //  coverage
+    ++ci->coverage.error__rj_cc;
+
     //  remove unused warning
     (void) rj;
 
@@ -6143,6 +6898,9 @@ void error::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
 
 void error::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 {
+    //  coverage
+    ++ci->coverage.error__cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -6200,6 +6958,9 @@ void error::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
 
 void error::cf_st ( const mtk::trd::msg::CF_ST_MK&   st            )
 {
+    //  coverage
+    ++ci->coverage.error__cf_st;
+
     //  remove unused warning
     (void) st;
 
@@ -6258,6 +7019,11 @@ void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::on_remove_temp_status (v
     queue_temp_status.pop_front();
 }
 
+
+std::string  mtk::trd::trd_cli_mk_dangerous_signals_not_warped::get_coverage_string(void)
+{
+    return current_status->get_coverage_string();
+}
 
 void mtk::trd::trd_cli_mk_dangerous_signals_not_warped::rq_nw (const mtk::trd::msg::RQ_NW_MK&   rq           )
 {
@@ -6477,4 +7243,8 @@ const bool                                             & mtk::trd::trd_cli_mk::h
 const std::string                                      & mtk::trd::trd_cli_mk::serrors (void) const
 {
     return  ptr->serrors();
+}
+std::string  mtk::trd::trd_cli_mk::get_coverage_string (void)
+{
+    return ptr->get_coverage_string();
 }

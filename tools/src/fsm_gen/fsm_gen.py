@@ -204,6 +204,12 @@ ${OUTPUT_SIGNALS}
 ${ACCESS_METHODS}
 
 
+
+    //  STATS AND COVERAGE
+    std::string  get_coverage_string(void);
+    
+    
+
     void  set   (const mtk::CountPtr<${CLASSNAME}_dangerous_signals_not_warped>&  _ptr);
 
 
@@ -236,6 +242,10 @@ ${OUTPUT_SIGNALS}
 
     //  ACCESS
 ${ACCESS_METHODS}
+
+
+    //  STATS AND COVERAGE
+    std::string  get_coverage_string(void);
 
 
 private:
@@ -476,6 +486,23 @@ def generate_impl_status_common_info_class():
     template = """
 class abstract_status;
 
+
+// -----------------------------------------------------------------------
+//      c o v e r a g e
+struct   scoverage
+{
+    scoverage(void) :
+$COVERAGE_CONSTR_INITALIZER
+    {}
+
+$CLASS_METHOD_STATS_AND_COVERAGE
+    std::string  get_string(void)
+    {
+$GET_COVERAGE_STRING_IMPLEMENTATION
+    }
+};
+
+
 // -----------------------------------------------------------------------
 //      s t a t u s _ c o m m o n _ i n f o
 
@@ -494,6 +521,9 @@ $PROPERTIES
     mtk::Signal<> signal_keep_temp_status;
     mtk::Signal<> signal_remove_temp_status;
 
+
+    //  STATS AND COVERAGE
+    scoverage     coverage;
 };
 
 """
@@ -502,6 +532,9 @@ $PROPERTIES
     PROPERTIES = 'PROPERTIES ERROR_NOT DEFINED'
     SCI_CONSTR = 'SCI_CONSTR ERROR_NOT DEFINED'
     SCI_CONSTR_INITALIZER = 'SCI_CONSTR_INITALIZER ERROR_NOT DEFINED'
+    CLASS_METHOD_STATS_AND_COVERAGE = 'CLASS_METHOD_STATS_AND_COVERAGE  ERROR_NOT  DEFINED'
+    GET_COVERAGE_STRING_IMPLEMENTATION = 'GET_COVERAGE_STRING_IMPLEMENTATION  ERROR_NOT  DEFINED'
+    
     
     SCI_CONSTR_PARAMS = get_params_from_properties(COMMON_STATUS_INFO)
 
@@ -535,11 +568,40 @@ $PROPERTIES
             PROPERTIES += Template("""    mtk::Signal<${type}>& ${name};\n""").substitute(name=output['name'], type=get_params_string(output['params'], True))
     #PROPERTIES = SCI_CONSTR_INITALIZER[:-2]
 
+
+    # CLASS_METHOD_STATS_AND_COVERAGE
+    CLASS_METHOD_STATS_AND_COVERAGE = ''
+    GET_COVERAGE_STRING_IMPLEMENTATION = """
+        static mtk::dtDateTime  last_result_date_time = mtk::dtNowLocal() - mtk::dtDays(1);
+        static std::string last_result = "";
+        int num_touched=0;
+        if(last_result_date_time + mtk::dtSeconds(30) > mtk::dtNowLocal())
+            last_result = "";
+"""
+    COVERAGE_CONSTR_INITALIZER = ''
+    for c in STATUS:
+        for input in INPUTS_LIST:
+            if len(input)> 0:
+                coverage_counter_name = Template("""${status_name}__${name}""").substitute(name=input["name"], status_name=c['name'])
+                if(COVERAGE_CONSTR_INITALIZER==""):
+                    COVERAGE_CONSTR_INITALIZER += Template("""\n          ${coverage_counter_name} (0)""").substitute(coverage_counter_name=coverage_counter_name)
+                else:
+                    COVERAGE_CONSTR_INITALIZER += Template("""\n        , ${coverage_counter_name} (0)""").substitute(coverage_counter_name=coverage_counter_name)
+                CLASS_METHOD_STATS_AND_COVERAGE +=  (Template("""    int   $coverage_counter_name;\n""").substitute(coverage_counter_name=coverage_counter_name))
+                GET_COVERAGE_STRING_IMPLEMENTATION += Template("""              if(${coverage_counter_name})   {++num_touched; last_result += MTK_SS("${coverage_counter_name}:" << ${coverage_counter_name} << std::endl);}\n""").substitute(coverage_counter_name=coverage_counter_name)
+    GET_COVERAGE_STRING_IMPLEMENTATION += """
+        last_result += MTK_SS("__num_touched__:"  <<  num_touched);
+        return last_result;
+"""
+
     
     return Template(template).substitute(
                 PROPERTIES = PROPERTIES,
                 SCI_CONSTR_PARAMS = SCI_CONSTR_PARAMS,
-                SCI_CONSTR_INITALIZER = SCI_CONSTR_INITALIZER
+                SCI_CONSTR_INITALIZER = SCI_CONSTR_INITALIZER,
+                CLASS_METHOD_STATS_AND_COVERAGE = CLASS_METHOD_STATS_AND_COVERAGE,
+                COVERAGE_CONSTR_INITALIZER = COVERAGE_CONSTR_INITALIZER,
+                GET_COVERAGE_STRING_IMPLEMENTATION = GET_COVERAGE_STRING_IMPLEMENTATION
                 )
 
 
@@ -565,6 +627,9 @@ $INPUT_METHODS
 
     //  ACCESS
 $ACCESS_METHODS
+
+    //  COVERAGE
+    std::string  get_coverage_string(void)  { return ci->coverage.get_string(); };
 };
 
 
@@ -662,6 +727,9 @@ $POST_ACTION
     method_template = """
 void $STATUS_NAME::$METHOD_NAME ( $PARAMS )
 {
+    //  coverage
+    ++ci->coverage.${STATUS_NAME}__${METHOD_NAME};
+
     //  remove unused warning
     $REMOVE_UNUSED_WARNINGS
     
@@ -984,6 +1052,11 @@ void ${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::on_remove_te
 }
 
 
+std::string  ${NESTED_NAMESPACES}${CLASSNAME}_dangerous_signals_not_warped::get_coverage_string(void)
+{
+    return current_status->get_coverage_string();
+}
+
 """).substitute(CLASSNAME = CLASSNAME,
                 PARAMS = get_params_from_properties(COMMON_STATUS_INFO)[:-1],
                 CSI_CALL_PARAMS = CSI_CALL_PARAMS,
@@ -1053,6 +1126,15 @@ def get_warper_class_implementation_access():
                                     ACCESS_NAME = csi["name"],
                                     NESTED_NAMESPACES  = NESTED_NAMESPACES,
                                     TYPE = csi["type"]
+                                )
+
+    result += Template("""std::string  ${NESTED_NAMESPACES}${CLASSNAME}::get_coverage_string (void)
+{
+    return ptr->get_coverage_string();
+}
+""").substitute(
+                                    CLASSNAME  = CLASSNAME,
+                                    NESTED_NAMESPACES  = NESTED_NAMESPACES
                                 )
     
     return result
@@ -1225,6 +1307,9 @@ for file in sys.argv[1:] :
 // generated automatically
 // coded last modification:        $CODED_LAST_MODIF  desactivated, lots of false notifications
 // pythonscript last modification: $SCRIPT_LAST_MODIF
+
+#include "support/mtk_string.h"
+
 """)##.substitute(CODED_LAST_MODIF=str(time.ctime(os.path.getmtime(ORIG_FILE))), SCRIPT_LAST_MODIF=str(time.ctime(os.path.getmtime(sys.argv[0]))))
 
     PRE_ACTIONS_INFO = get_actions_or_guards_info(TRANSITIONS, 'pre_action')

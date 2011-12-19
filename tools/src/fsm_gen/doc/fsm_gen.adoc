@@ -30,6 +30,8 @@
 |====================================================================
 | Date | Desciption
 
+| 2011-12-19 |Generate coverage stats per method_input
+
 | 2011-09-12 |If a macro is not defined on fsm, it will insert this macro directly con c++ code +
 Added carry-returns on status tag
 
@@ -51,6 +53,10 @@ Added carry-returns on status tag
 ** You have to create a symbolic link to +mtk/tools/bin/+ on current folder called +tools+
 ** After that, you can call it with +tools/fsm_gen.py <files to compile>+
 ** Or... ++find . -name \'*.fsm\'  |  xargs python tools/fsm_gen.py++
+* It can generate a small coverage report calling to +get_coverage_string+
+** The report will be generated with a maximum frecuency of 30 secs (if you call more often, it will return the same value as previus call)
+** See it on +door7+ example
+
 
 
 == TODO

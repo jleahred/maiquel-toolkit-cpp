@@ -185,6 +185,9 @@ int  main(int /*argc*/, const char* /*argv*/[])
             
             MTK_CALL_LATER1S_F(mtk::dtSeconds(4), 0, stop)
             mtk::start_timer_wait_till_end();
+
+            std::cout << std::endl << std::endl << "coverage ---------------" << std::endl;
+            std::cout << dor.get_coverage_string() << std::endl;
         }
         
     

@@ -3,12 +3,185 @@
 // coded last modification:        $CODED_LAST_MODIF  desactivated, lots of false notifications
 // pythonscript last modification: $SCRIPT_LAST_MODIF
 
+#include "support/mtk_string.h"
+
+
 
 
 namespace fsmgen_fsm_cli_acs {
 
 
 class abstract_status;
+
+
+// -----------------------------------------------------------------------
+//      c o v e r a g e
+struct   scoverage
+{
+    scoverage(void) :
+
+          logout__user_rq_login (0)
+        , logout__user_rq_logout (0)
+        , logout__user_rq_changepass (0)
+        , logout__srv_rs_login_key (0)
+        , logout__srv_rs_login (0)
+        , logout__srv_cf_logout (0)
+        , logout__timeout (0)
+        , logout__srv_rs_chpwd (0)
+        , w_key__user_rq_login (0)
+        , w_key__user_rq_logout (0)
+        , w_key__user_rq_changepass (0)
+        , w_key__srv_rs_login_key (0)
+        , w_key__srv_rs_login (0)
+        , w_key__srv_cf_logout (0)
+        , w_key__timeout (0)
+        , w_key__srv_rs_chpwd (0)
+        , w_login__user_rq_login (0)
+        , w_login__user_rq_logout (0)
+        , w_login__user_rq_changepass (0)
+        , w_login__srv_rs_login_key (0)
+        , w_login__srv_rs_login (0)
+        , w_login__srv_cf_logout (0)
+        , w_login__timeout (0)
+        , w_login__srv_rs_chpwd (0)
+        , login_ok__user_rq_login (0)
+        , login_ok__user_rq_logout (0)
+        , login_ok__user_rq_changepass (0)
+        , login_ok__srv_rs_login_key (0)
+        , login_ok__srv_rs_login (0)
+        , login_ok__srv_cf_logout (0)
+        , login_ok__timeout (0)
+        , login_ok__srv_rs_chpwd (0)
+        , w_k_chp__user_rq_login (0)
+        , w_k_chp__user_rq_logout (0)
+        , w_k_chp__user_rq_changepass (0)
+        , w_k_chp__srv_rs_login_key (0)
+        , w_k_chp__srv_rs_login (0)
+        , w_k_chp__srv_cf_logout (0)
+        , w_k_chp__timeout (0)
+        , w_k_chp__srv_rs_chpwd (0)
+        , w_chpwd__user_rq_login (0)
+        , w_chpwd__user_rq_logout (0)
+        , w_chpwd__user_rq_changepass (0)
+        , w_chpwd__srv_rs_login_key (0)
+        , w_chpwd__srv_rs_login (0)
+        , w_chpwd__srv_cf_logout (0)
+        , w_chpwd__timeout (0)
+        , w_chpwd__srv_rs_chpwd (0)
+    {}
+
+    int   logout__user_rq_login;
+    int   logout__user_rq_logout;
+    int   logout__user_rq_changepass;
+    int   logout__srv_rs_login_key;
+    int   logout__srv_rs_login;
+    int   logout__srv_cf_logout;
+    int   logout__timeout;
+    int   logout__srv_rs_chpwd;
+    int   w_key__user_rq_login;
+    int   w_key__user_rq_logout;
+    int   w_key__user_rq_changepass;
+    int   w_key__srv_rs_login_key;
+    int   w_key__srv_rs_login;
+    int   w_key__srv_cf_logout;
+    int   w_key__timeout;
+    int   w_key__srv_rs_chpwd;
+    int   w_login__user_rq_login;
+    int   w_login__user_rq_logout;
+    int   w_login__user_rq_changepass;
+    int   w_login__srv_rs_login_key;
+    int   w_login__srv_rs_login;
+    int   w_login__srv_cf_logout;
+    int   w_login__timeout;
+    int   w_login__srv_rs_chpwd;
+    int   login_ok__user_rq_login;
+    int   login_ok__user_rq_logout;
+    int   login_ok__user_rq_changepass;
+    int   login_ok__srv_rs_login_key;
+    int   login_ok__srv_rs_login;
+    int   login_ok__srv_cf_logout;
+    int   login_ok__timeout;
+    int   login_ok__srv_rs_chpwd;
+    int   w_k_chp__user_rq_login;
+    int   w_k_chp__user_rq_logout;
+    int   w_k_chp__user_rq_changepass;
+    int   w_k_chp__srv_rs_login_key;
+    int   w_k_chp__srv_rs_login;
+    int   w_k_chp__srv_cf_logout;
+    int   w_k_chp__timeout;
+    int   w_k_chp__srv_rs_chpwd;
+    int   w_chpwd__user_rq_login;
+    int   w_chpwd__user_rq_logout;
+    int   w_chpwd__user_rq_changepass;
+    int   w_chpwd__srv_rs_login_key;
+    int   w_chpwd__srv_rs_login;
+    int   w_chpwd__srv_cf_logout;
+    int   w_chpwd__timeout;
+    int   w_chpwd__srv_rs_chpwd;
+
+    std::string  get_string(void)
+    {
+
+        static mtk::dtDateTime  last_result_date_time = mtk::dtNowLocal() - mtk::dtDays(1);
+        static std::string last_result = "";
+        int num_touched=0;
+        if(last_result_date_time + mtk::dtSeconds(30) > mtk::dtNowLocal())
+            last_result = "";
+              if(logout__user_rq_login)   {++num_touched; last_result += MTK_SS("logout__user_rq_login:" << logout__user_rq_login << std::endl);}
+              if(logout__user_rq_logout)   {++num_touched; last_result += MTK_SS("logout__user_rq_logout:" << logout__user_rq_logout << std::endl);}
+              if(logout__user_rq_changepass)   {++num_touched; last_result += MTK_SS("logout__user_rq_changepass:" << logout__user_rq_changepass << std::endl);}
+              if(logout__srv_rs_login_key)   {++num_touched; last_result += MTK_SS("logout__srv_rs_login_key:" << logout__srv_rs_login_key << std::endl);}
+              if(logout__srv_rs_login)   {++num_touched; last_result += MTK_SS("logout__srv_rs_login:" << logout__srv_rs_login << std::endl);}
+              if(logout__srv_cf_logout)   {++num_touched; last_result += MTK_SS("logout__srv_cf_logout:" << logout__srv_cf_logout << std::endl);}
+              if(logout__timeout)   {++num_touched; last_result += MTK_SS("logout__timeout:" << logout__timeout << std::endl);}
+              if(logout__srv_rs_chpwd)   {++num_touched; last_result += MTK_SS("logout__srv_rs_chpwd:" << logout__srv_rs_chpwd << std::endl);}
+              if(w_key__user_rq_login)   {++num_touched; last_result += MTK_SS("w_key__user_rq_login:" << w_key__user_rq_login << std::endl);}
+              if(w_key__user_rq_logout)   {++num_touched; last_result += MTK_SS("w_key__user_rq_logout:" << w_key__user_rq_logout << std::endl);}
+              if(w_key__user_rq_changepass)   {++num_touched; last_result += MTK_SS("w_key__user_rq_changepass:" << w_key__user_rq_changepass << std::endl);}
+              if(w_key__srv_rs_login_key)   {++num_touched; last_result += MTK_SS("w_key__srv_rs_login_key:" << w_key__srv_rs_login_key << std::endl);}
+              if(w_key__srv_rs_login)   {++num_touched; last_result += MTK_SS("w_key__srv_rs_login:" << w_key__srv_rs_login << std::endl);}
+              if(w_key__srv_cf_logout)   {++num_touched; last_result += MTK_SS("w_key__srv_cf_logout:" << w_key__srv_cf_logout << std::endl);}
+              if(w_key__timeout)   {++num_touched; last_result += MTK_SS("w_key__timeout:" << w_key__timeout << std::endl);}
+              if(w_key__srv_rs_chpwd)   {++num_touched; last_result += MTK_SS("w_key__srv_rs_chpwd:" << w_key__srv_rs_chpwd << std::endl);}
+              if(w_login__user_rq_login)   {++num_touched; last_result += MTK_SS("w_login__user_rq_login:" << w_login__user_rq_login << std::endl);}
+              if(w_login__user_rq_logout)   {++num_touched; last_result += MTK_SS("w_login__user_rq_logout:" << w_login__user_rq_logout << std::endl);}
+              if(w_login__user_rq_changepass)   {++num_touched; last_result += MTK_SS("w_login__user_rq_changepass:" << w_login__user_rq_changepass << std::endl);}
+              if(w_login__srv_rs_login_key)   {++num_touched; last_result += MTK_SS("w_login__srv_rs_login_key:" << w_login__srv_rs_login_key << std::endl);}
+              if(w_login__srv_rs_login)   {++num_touched; last_result += MTK_SS("w_login__srv_rs_login:" << w_login__srv_rs_login << std::endl);}
+              if(w_login__srv_cf_logout)   {++num_touched; last_result += MTK_SS("w_login__srv_cf_logout:" << w_login__srv_cf_logout << std::endl);}
+              if(w_login__timeout)   {++num_touched; last_result += MTK_SS("w_login__timeout:" << w_login__timeout << std::endl);}
+              if(w_login__srv_rs_chpwd)   {++num_touched; last_result += MTK_SS("w_login__srv_rs_chpwd:" << w_login__srv_rs_chpwd << std::endl);}
+              if(login_ok__user_rq_login)   {++num_touched; last_result += MTK_SS("login_ok__user_rq_login:" << login_ok__user_rq_login << std::endl);}
+              if(login_ok__user_rq_logout)   {++num_touched; last_result += MTK_SS("login_ok__user_rq_logout:" << login_ok__user_rq_logout << std::endl);}
+              if(login_ok__user_rq_changepass)   {++num_touched; last_result += MTK_SS("login_ok__user_rq_changepass:" << login_ok__user_rq_changepass << std::endl);}
+              if(login_ok__srv_rs_login_key)   {++num_touched; last_result += MTK_SS("login_ok__srv_rs_login_key:" << login_ok__srv_rs_login_key << std::endl);}
+              if(login_ok__srv_rs_login)   {++num_touched; last_result += MTK_SS("login_ok__srv_rs_login:" << login_ok__srv_rs_login << std::endl);}
+              if(login_ok__srv_cf_logout)   {++num_touched; last_result += MTK_SS("login_ok__srv_cf_logout:" << login_ok__srv_cf_logout << std::endl);}
+              if(login_ok__timeout)   {++num_touched; last_result += MTK_SS("login_ok__timeout:" << login_ok__timeout << std::endl);}
+              if(login_ok__srv_rs_chpwd)   {++num_touched; last_result += MTK_SS("login_ok__srv_rs_chpwd:" << login_ok__srv_rs_chpwd << std::endl);}
+              if(w_k_chp__user_rq_login)   {++num_touched; last_result += MTK_SS("w_k_chp__user_rq_login:" << w_k_chp__user_rq_login << std::endl);}
+              if(w_k_chp__user_rq_logout)   {++num_touched; last_result += MTK_SS("w_k_chp__user_rq_logout:" << w_k_chp__user_rq_logout << std::endl);}
+              if(w_k_chp__user_rq_changepass)   {++num_touched; last_result += MTK_SS("w_k_chp__user_rq_changepass:" << w_k_chp__user_rq_changepass << std::endl);}
+              if(w_k_chp__srv_rs_login_key)   {++num_touched; last_result += MTK_SS("w_k_chp__srv_rs_login_key:" << w_k_chp__srv_rs_login_key << std::endl);}
+              if(w_k_chp__srv_rs_login)   {++num_touched; last_result += MTK_SS("w_k_chp__srv_rs_login:" << w_k_chp__srv_rs_login << std::endl);}
+              if(w_k_chp__srv_cf_logout)   {++num_touched; last_result += MTK_SS("w_k_chp__srv_cf_logout:" << w_k_chp__srv_cf_logout << std::endl);}
+              if(w_k_chp__timeout)   {++num_touched; last_result += MTK_SS("w_k_chp__timeout:" << w_k_chp__timeout << std::endl);}
+              if(w_k_chp__srv_rs_chpwd)   {++num_touched; last_result += MTK_SS("w_k_chp__srv_rs_chpwd:" << w_k_chp__srv_rs_chpwd << std::endl);}
+              if(w_chpwd__user_rq_login)   {++num_touched; last_result += MTK_SS("w_chpwd__user_rq_login:" << w_chpwd__user_rq_login << std::endl);}
+              if(w_chpwd__user_rq_logout)   {++num_touched; last_result += MTK_SS("w_chpwd__user_rq_logout:" << w_chpwd__user_rq_logout << std::endl);}
+              if(w_chpwd__user_rq_changepass)   {++num_touched; last_result += MTK_SS("w_chpwd__user_rq_changepass:" << w_chpwd__user_rq_changepass << std::endl);}
+              if(w_chpwd__srv_rs_login_key)   {++num_touched; last_result += MTK_SS("w_chpwd__srv_rs_login_key:" << w_chpwd__srv_rs_login_key << std::endl);}
+              if(w_chpwd__srv_rs_login)   {++num_touched; last_result += MTK_SS("w_chpwd__srv_rs_login:" << w_chpwd__srv_rs_login << std::endl);}
+              if(w_chpwd__srv_cf_logout)   {++num_touched; last_result += MTK_SS("w_chpwd__srv_cf_logout:" << w_chpwd__srv_cf_logout << std::endl);}
+              if(w_chpwd__timeout)   {++num_touched; last_result += MTK_SS("w_chpwd__timeout:" << w_chpwd__timeout << std::endl);}
+              if(w_chpwd__srv_rs_chpwd)   {++num_touched; last_result += MTK_SS("w_chpwd__srv_rs_chpwd:" << w_chpwd__srv_rs_chpwd << std::endl);}
+
+        last_result += MTK_SS("__num_touched__:"  <<  num_touched);
+        return last_result;
+
+    }
+};
+
 
 // -----------------------------------------------------------------------
 //      s t a t u s _ c o m m o n _ i n f o
@@ -41,6 +214,9 @@ struct  status_common_info
     mtk::Signal<> signal_keep_temp_status;
     mtk::Signal<> signal_remove_temp_status;
 
+
+    //  STATS AND COVERAGE
+    scoverage     coverage;
 };
 
 
@@ -76,6 +252,9 @@ public:
     //  ACCESS
     virtual const std::string                         &  user_name (void) const { return ci->user_name(); }; 
 
+
+    //  COVERAGE
+    std::string  get_coverage_string(void)  { return ci->coverage.get_string(); };
 };
 
 
@@ -470,6 +649,9 @@ protected:
 
 void logout::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
+    //  coverage
+    ++ci->coverage.logout__user_rq_login;
+
     //  remove unused warning
     (void) _user_name;
 (void) _password;
@@ -506,6 +688,9 @@ void logout::user_rq_login ( const std::string&   _user_name , const std::string
 
 void logout::user_rq_logout (  )
 {
+    //  coverage
+    ++ci->coverage.logout__user_rq_logout;
+
     //  remove unused warning
     
     
@@ -536,6 +721,9 @@ void logout::user_rq_logout (  )
 
 void logout::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
+    //  coverage
+    ++ci->coverage.logout__user_rq_changepass;
+
     //  remove unused warning
     (void) _old_password;
 (void) _new_password;
@@ -568,6 +756,9 @@ void logout::user_rq_changepass ( const std::string&   _old_password, const std:
 
 void logout::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
+    //  coverage
+    ++ci->coverage.logout__srv_rs_login_key;
+
     //  remove unused warning
     (void) rs;
 
@@ -599,6 +790,9 @@ void logout::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs        
 
 void logout::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
+    //  coverage
+    ++ci->coverage.logout__srv_rs_login;
+
     //  remove unused warning
     (void) rs;
 
@@ -630,6 +824,9 @@ void logout::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 
 void logout::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
+    //  coverage
+    ++ci->coverage.logout__srv_cf_logout;
+
     //  remove unused warning
     (void) cf;
 
@@ -661,6 +858,9 @@ void logout::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 
 void logout::timeout ( const int&          __            )
 {
+    //  coverage
+    ++ci->coverage.logout__timeout;
+
     //  remove unused warning
     (void) __;
 
@@ -692,6 +892,9 @@ void logout::timeout ( const int&          __            )
 
 void logout::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
+    //  coverage
+    ++ci->coverage.logout__srv_rs_chpwd;
+
     //  remove unused warning
     (void) rs;
 
@@ -723,6 +926,9 @@ void logout::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs      
 
 void w_key::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
+    //  coverage
+    ++ci->coverage.w_key__user_rq_login;
+
     //  remove unused warning
     (void) _user_name;
 (void) _password;
@@ -755,6 +961,9 @@ void w_key::user_rq_login ( const std::string&   _user_name , const std::string&
 
 void w_key::user_rq_logout (  )
 {
+    //  coverage
+    ++ci->coverage.w_key__user_rq_logout;
+
     //  remove unused warning
     
     
@@ -785,6 +994,9 @@ void w_key::user_rq_logout (  )
 
 void w_key::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
+    //  coverage
+    ++ci->coverage.w_key__user_rq_changepass;
+
     //  remove unused warning
     (void) _old_password;
 (void) _new_password;
@@ -817,6 +1029,9 @@ void w_key::user_rq_changepass ( const std::string&   _old_password, const std::
 
 void w_key::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_key__srv_rs_login_key;
+
     //  remove unused warning
     (void) rs;
 
@@ -853,6 +1068,9 @@ void w_key::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs         
 
 void w_key::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_key__srv_rs_login;
+
     //  remove unused warning
     (void) rs;
 
@@ -884,6 +1102,9 @@ void w_key::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 
 void w_key::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_key__srv_cf_logout;
+
     //  remove unused warning
     (void) cf;
 
@@ -915,6 +1136,9 @@ void w_key::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 
 void w_key::timeout ( const int&          __            )
 {
+    //  coverage
+    ++ci->coverage.w_key__timeout;
+
     //  remove unused warning
     (void) __;
 
@@ -948,6 +1172,9 @@ void w_key::timeout ( const int&          __            )
 
 void w_key::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_key__srv_rs_chpwd;
+
     //  remove unused warning
     (void) rs;
 
@@ -979,6 +1206,9 @@ void w_key::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs       
 
 void w_login::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
+    //  coverage
+    ++ci->coverage.w_login__user_rq_login;
+
     //  remove unused warning
     (void) _user_name;
 (void) _password;
@@ -1011,6 +1241,9 @@ void w_login::user_rq_login ( const std::string&   _user_name , const std::strin
 
 void w_login::user_rq_logout (  )
 {
+    //  coverage
+    ++ci->coverage.w_login__user_rq_logout;
+
     //  remove unused warning
     
     
@@ -1041,6 +1274,9 @@ void w_login::user_rq_logout (  )
 
 void w_login::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
+    //  coverage
+    ++ci->coverage.w_login__user_rq_changepass;
+
     //  remove unused warning
     (void) _old_password;
 (void) _new_password;
@@ -1073,6 +1309,9 @@ void w_login::user_rq_changepass ( const std::string&   _old_password, const std
 
 void w_login::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_login__srv_rs_login_key;
+
     //  remove unused warning
     (void) rs;
 
@@ -1104,6 +1343,9 @@ void w_login::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
 
 void w_login::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_login__srv_rs_login;
+
     //  remove unused warning
     (void) rs;
 
@@ -1152,6 +1394,9 @@ void w_login::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 
 void w_login::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_login__srv_cf_logout;
+
     //  remove unused warning
     (void) cf;
 
@@ -1183,6 +1428,9 @@ void w_login::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
 
 void w_login::timeout ( const int&          __            )
 {
+    //  coverage
+    ++ci->coverage.w_login__timeout;
+
     //  remove unused warning
     (void) __;
 
@@ -1216,6 +1464,9 @@ void w_login::timeout ( const int&          __            )
 
 void w_login::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_login__srv_rs_chpwd;
+
     //  remove unused warning
     (void) rs;
 
@@ -1247,6 +1498,9 @@ void w_login::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
 
 void login_ok::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
+    //  coverage
+    ++ci->coverage.login_ok__user_rq_login;
+
     //  remove unused warning
     (void) _user_name;
 (void) _password;
@@ -1287,6 +1541,9 @@ void login_ok::user_rq_login ( const std::string&   _user_name , const std::stri
 
 void login_ok::user_rq_logout (  )
 {
+    //  coverage
+    ++ci->coverage.login_ok__user_rq_logout;
+
     //  remove unused warning
     
     
@@ -1326,6 +1583,9 @@ void login_ok::user_rq_logout (  )
 
 void login_ok::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
+    //  coverage
+    ++ci->coverage.login_ok__user_rq_changepass;
+
     //  remove unused warning
     (void) _old_password;
 (void) _new_password;
@@ -1362,6 +1622,9 @@ void login_ok::user_rq_changepass ( const std::string&   _old_password, const st
 
 void login_ok::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
+    //  coverage
+    ++ci->coverage.login_ok__srv_rs_login_key;
+
     //  remove unused warning
     (void) rs;
 
@@ -1401,6 +1664,9 @@ void login_ok::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs      
 
 void login_ok::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
+    //  coverage
+    ++ci->coverage.login_ok__srv_rs_login;
+
     //  remove unused warning
     (void) rs;
 
@@ -1440,6 +1706,9 @@ void login_ok::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 
 void login_ok::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
+    //  coverage
+    ++ci->coverage.login_ok__srv_cf_logout;
+
     //  remove unused warning
     (void) cf;
 
@@ -1472,6 +1741,9 @@ void login_ok::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf           
 
 void login_ok::timeout ( const int&          __            )
 {
+    //  coverage
+    ++ci->coverage.login_ok__timeout;
+
     //  remove unused warning
     (void) __;
 
@@ -1511,6 +1783,9 @@ void login_ok::timeout ( const int&          __            )
 
 void login_ok::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
+    //  coverage
+    ++ci->coverage.login_ok__srv_rs_chpwd;
+
     //  remove unused warning
     (void) rs;
 
@@ -1550,6 +1825,9 @@ void login_ok::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs    
 
 void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
+    //  coverage
+    ++ci->coverage.w_k_chp__user_rq_login;
+
     //  remove unused warning
     (void) _user_name;
 (void) _password;
@@ -1590,6 +1868,9 @@ void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::strin
 
 void w_k_chp::user_rq_logout (  )
 {
+    //  coverage
+    ++ci->coverage.w_k_chp__user_rq_logout;
+
     //  remove unused warning
     
     
@@ -1629,6 +1910,9 @@ void w_k_chp::user_rq_logout (  )
 
 void w_k_chp::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
+    //  coverage
+    ++ci->coverage.w_k_chp__user_rq_changepass;
+
     //  remove unused warning
     (void) _old_password;
 (void) _new_password;
@@ -1669,6 +1953,9 @@ void w_k_chp::user_rq_changepass ( const std::string&   _old_password, const std
 
 void w_k_chp::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_k_chp__srv_rs_login_key;
+
     //  remove unused warning
     (void) rs;
 
@@ -1711,6 +1998,9 @@ void w_k_chp::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
 
 void w_k_chp::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_k_chp__srv_rs_login;
+
     //  remove unused warning
     (void) rs;
 
@@ -1750,6 +2040,9 @@ void w_k_chp::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 
 void w_k_chp::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_k_chp__srv_cf_logout;
+
     //  remove unused warning
     (void) cf;
 
@@ -1782,6 +2075,9 @@ void w_k_chp::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
 
 void w_k_chp::timeout ( const int&          __            )
 {
+    //  coverage
+    ++ci->coverage.w_k_chp__timeout;
+
     //  remove unused warning
     (void) __;
 
@@ -1814,6 +2110,9 @@ void w_k_chp::timeout ( const int&          __            )
 
 void w_k_chp::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_k_chp__srv_rs_chpwd;
+
     //  remove unused warning
     (void) rs;
 
@@ -1853,6 +2152,9 @@ void w_k_chp::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
 
 void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
+    //  coverage
+    ++ci->coverage.w_chpwd__user_rq_login;
+
     //  remove unused warning
     (void) _user_name;
 (void) _password;
@@ -1893,6 +2195,9 @@ void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::strin
 
 void w_chpwd::user_rq_logout (  )
 {
+    //  coverage
+    ++ci->coverage.w_chpwd__user_rq_logout;
+
     //  remove unused warning
     
     
@@ -1932,6 +2237,9 @@ void w_chpwd::user_rq_logout (  )
 
 void w_chpwd::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
+    //  coverage
+    ++ci->coverage.w_chpwd__user_rq_changepass;
+
     //  remove unused warning
     (void) _old_password;
 (void) _new_password;
@@ -1972,6 +2280,9 @@ void w_chpwd::user_rq_changepass ( const std::string&   _old_password, const std
 
 void w_chpwd::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_chpwd__srv_rs_login_key;
+
     //  remove unused warning
     (void) rs;
 
@@ -2011,6 +2322,9 @@ void w_chpwd::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
 
 void w_chpwd::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_chpwd__srv_rs_login;
+
     //  remove unused warning
     (void) rs;
 
@@ -2050,6 +2364,9 @@ void w_chpwd::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 
 void w_chpwd::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
+    //  coverage
+    ++ci->coverage.w_chpwd__srv_cf_logout;
+
     //  remove unused warning
     (void) cf;
 
@@ -2082,6 +2399,9 @@ void w_chpwd::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
 
 void w_chpwd::timeout ( const int&          __            )
 {
+    //  coverage
+    ++ci->coverage.w_chpwd__timeout;
+
     //  remove unused warning
     (void) __;
 
@@ -2114,6 +2434,9 @@ void w_chpwd::timeout ( const int&          __            )
 
 void w_chpwd::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
+    //  coverage
+    ++ci->coverage.w_chpwd__srv_rs_chpwd;
+
     //  remove unused warning
     (void) rs;
 
@@ -2193,6 +2516,11 @@ void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::on_remove_temp_stat
 }
 
 
+std::string  mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::get_coverage_string(void)
+{
+    return current_status->get_coverage_string();
+}
+
 void mtk::acs_cli::fsm_cli_acs_dangerous_signals_not_warped::user_rq_login (const std::string&   _user_name , const std::string&   _password    )
 {
     mtk::CountPtr<fsmgen_fsm_cli_acs::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
@@ -2262,4 +2590,8 @@ void mtk::acs_cli::fsm_cli_acs::user_rq_changepass (const std::string&   _old_pa
 const std::string                         & mtk::acs_cli::fsm_cli_acs::user_name (void) const
 {
     return  ptr->user_name();
+}
+std::string  mtk::acs_cli::fsm_cli_acs::get_coverage_string (void)
+{
+    return ptr->get_coverage_string();
 }
