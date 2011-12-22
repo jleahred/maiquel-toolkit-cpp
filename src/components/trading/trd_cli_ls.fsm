@@ -262,8 +262,8 @@ canceled --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   er
 canceled --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error     (method_name)
 canceled --   cf_cc                           /   , cf_cfcc & rq_cc     ''>   error     (method_name)
 canceled --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error     (method_name)
-canceled --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error     (method_name)
-canceled --   rj_cc                           /   , cf_rjcc             ''>   error     (method_name)
+canceled --   rj_md                           /   , cf_rjmd             ''>   canceled
+canceled --   rj_cc                           /   , cf_rjcc             ''>   canceled
 canceled --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 canceled --   cf_st                                                     ''>   canceled
 
@@ -275,8 +275,8 @@ executed --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   er
 executed --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error     (method_name)
 executed --   cf_cc                           /   , cf_cfcc & rq_cc     ''>   error     (method_name)
 executed --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error     (method_name)
-executed --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error     (method_name)
-executed --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error     (method_name)
+executed --   rj_md                           /   , cf_rjmd             ''>   executed
+executed --   rj_cc                           /   , cf_rjcc             ''>   executed
 executed --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 executed --   cf_st                                                     ''>   executed
 

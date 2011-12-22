@@ -5753,33 +5753,10 @@ void canceled::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
   ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
-//  inserting macro: rq_cc
-
-                    if (last_confirmation().HasValue())
-                    {
-                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
-                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
-                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
-                        ADD_HIST_RQ(rqccmk, cc)
-                        ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();
-                    }
-                    else if (last_request().HasValue())
-                    {
-                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
-                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
-                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
-                        ADD_HIST_RQ(rqccmk, cc)
-                        ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();
-                    }
-                    else
-                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-                
 
         }
     
@@ -5808,7 +5785,7 @@ void canceled::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
   ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
@@ -6269,33 +6246,10 @@ void executed::rj_md ( const mtk::trd::msg::RJ_MD_MK&   rj            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
   ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
-//  inserting macro: rq_cc
-
-                    if (last_confirmation().HasValue())
-                    {
-                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
-                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
-                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
-                        ADD_HIST_RQ(rqccmk, cc)
-                        ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();
-                    }
-                    else if (last_request().HasValue())
-                    {
-                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
-                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
-                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
-                        ADD_HIST_RQ(rqccmk, cc)
-                        ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();
-                    }
-                    else
-                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-                
 
         }
     
@@ -6324,33 +6278,10 @@ void executed::rj_cc ( const mtk::trd::msg::RJ_CC_MK&   rj            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
   ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
-//  inserting macro: rq_cc
-
-                    if (last_confirmation().HasValue())
-                    {
-                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
-                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
-                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
-                        ADD_HIST_RQ(rqccmk, cc)
-                        ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();
-                    }
-                    else if (last_request().HasValue())
-                    {
-                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
-                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
-                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
-                        ADD_HIST_RQ(rqccmk, cc)
-                        ci->sig_rq_cc(rqccmk);
-                        ci->sig_changed();
-                    }
-                    else
-                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-                
 
         }
     
