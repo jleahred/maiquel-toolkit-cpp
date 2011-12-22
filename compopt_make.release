@@ -1,6 +1,6 @@
 
 # compiler flags (-g -O2 -Wall)
-CXXFLAGS = -std=gnu++0x -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion 
+CXXFLAGS = -std=gnu++0x -g -O2 -Werror -Wall -W -Wundef -Wpointer-arith  -Wfloat-equal -fexceptions -Winit-self -Wconversion 
 
 CXXFLAGS += -Wclobbered  -Wempty-body  -Wignored-qualifiers -Wmissing-field-initializers -Wsign-compare -Wtype-limits -Wuninitialized -Wno-unused-result 
 
