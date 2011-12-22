@@ -18,7 +18,7 @@ order_historic_dangerous_not_signal_warped::order_historic_dangerous_not_signal_
 
 
 
-std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(order_historic_item&   prev_item,   order_historic_item&   new_item)
+std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(order_historic_item&   prev_item,   order_historic_item&   new_item, bool is_previus = false)
 {
     if(new_item.type  != tt_cf   &&  new_item.type  != tt_rj)
     {
@@ -48,12 +48,24 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
 
         if(prev_item.type == tt_rq_pending)
         {
-            if(new_item.type == tt_cf)
-                prev_item.type = tt_rq_confirmated;
-            else if (new_item.type == tt_rj)        //  rejects will be added as new item
-                prev_item.type = tt_rq_not_pending;
+            if(is_previus==true)
+            {
+                if(new_item.type == tt_cf)
+                    prev_item.type = tt_rq_confirmated;
+                else if (new_item.type == tt_rj)        //  rejects will be added as new item
+                    prev_item.type = tt_rq_not_pending;
+                else
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "historic", "expected ttcf or ttrj", mtk::alPriorCritic, mtk::alTypeLogicError));
+            }
             else
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "historic", "expected ttcf or ttrj", mtk::alPriorCritic, mtk::alTypeLogicError));
+            {
+                if(new_item.type == tt_cf)
+                    prev_item.type = tt_rq_not_pending;
+                else if (new_item.type == tt_rj)        //  rejects will be added as new item
+                    prev_item.type = tt_rq_not_pending;
+                else
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "historic", "expected ttcf or ttrj", mtk::alPriorCritic, mtk::alTypeLogicError));
+            }
         }
 
         if(prev_item.price.HasValue()  &&  new_item.price.HasValue())
@@ -61,9 +73,9 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
             if(prev_item.price.Get() != new_item.price.Get())
                 result_errors += MTK_SS("diferent price " << prev_item.price.Get() << "  !=  " << new_item.price.Get());
         }
-        if(prev_item.quantity  != new_item.quantity)
+        if(prev_item.quantity  != new_item.quantity  &&  new_item.type2 != tt2_cc)
                 result_errors += MTK_SS("diferent quantity " << prev_item.quantity << "  !=  " << new_item.quantity);
-        if(prev_item.cli_ref  != new_item.cli_ref)
+        if(prev_item.cli_ref  != new_item.cli_ref  &&  new_item.type2 != tt2_cc)
                 result_errors += MTK_SS("diferent client_code " << prev_item.cli_ref << "  !=  " << new_item.cli_ref);
 
         if(result_errors=="")
@@ -101,7 +113,7 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
         if(list_historic_item.front().request_id  ==  item.request_id    &&  item.type  != tt_rj)
         {
             order_historic_item&        last_inserted_item = list_historic_item.front();
-            result_error = check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(last_inserted_item, item);
+            result_error = check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(last_inserted_item, item, true);
             last_inserted_item.confirmation_delay = item.confirmation_delay;
             if(result_error == "")
                 signal_modified_item.emit(0, last_inserted_item);
@@ -115,7 +127,7 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
         {
             int item_pos = 0;
             bool   just_change_rqpending_by_rqconfirmed = false;    //  items older than current confirmed are already confirmed
-                                                                    //  this also let order confirmation checking
+                                                                    //  this also lets order confirmation checking
             for(auto it=list_historic_item.begin(); it!=list_historic_item.end(); ++it)
             {
                 if(just_change_rqpending_by_rqconfirmed)
@@ -123,7 +135,7 @@ std::string  add_item_check_for_previus_request__fill_delay_if_so_and_signal_new
                     if(it->type == tt_rq_pending)
                     {
                         it->type = tt_rq_not_pending;
-                        signal_modified_item.emit(item_pos, item);
+                        signal_modified_item.emit(item_pos, *it);
                     }
                     else
                         break;
