@@ -70,7 +70,7 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
 
         if(prev_item.price.HasValue()  &&  new_item.price.HasValue())
         {
-            if(prev_item.price.Get() != new_item.price.Get())
+            if(prev_item.price.Get() != new_item.price.Get()  &&  new_item.type2 != tt2_cc)
                 result_errors += MTK_SS("diferent price " << prev_item.price.Get() << "  !=  " << new_item.price.Get());
         }
         if(prev_item.quantity  != new_item.quantity  &&  new_item.type2 != tt2_cc)
