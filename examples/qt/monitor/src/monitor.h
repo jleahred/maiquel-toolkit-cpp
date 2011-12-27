@@ -64,6 +64,7 @@ struct   Config
     //  properties
     mtk::list<mon::msg::sub_rule>       rules__error2warning;
     std::string                         amqp_url;
+    std::string                         gs_code;
 
 
     void            save(const std::string&  text);

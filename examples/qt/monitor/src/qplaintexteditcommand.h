@@ -20,6 +20,8 @@ public:
 
 
     void on_command_response (const mtk::list<mtk::admin::msg::res_command>& responses);
+    std::string  gs_code;
+
 
 private:
     QPlainTextEdit*                         write_into;

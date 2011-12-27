@@ -165,7 +165,7 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     QLabel * version = new QLabel();
     //version->setFrameShape(QFrame::Panel);
     //version->setFrameShadow(QFrame::Sunken);
-    version->setText("0.5");
+    version->setText("0.6");
     statusBar()->addWidget(version);
 
 
@@ -221,7 +221,6 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     connect(ui->filter_server_all, SIGNAL(textEdited(QString)), ui->alarms_server_all, SLOT(slot_set_filter(QString)));
 
     connect(ui->alarms_all_errors, SIGNAL(signal_alarm(mtk::admin::msg::pub_alarm)), this, SLOT(slot_alarm(mtk::admin::msg::pub_alarm)));
-
 
 
 
@@ -383,6 +382,8 @@ void Monitor::on_pb_save_clicked()
 void Monitor::update_config_text(const std::string& new_text)
 {
     ui->config_text->setPlainText(new_text.c_str());
+    ui->client_command->gs_code = config_info.gs_code;
+    ui->server_command->gs_code = config_info.gs_code;
 }
 
 
@@ -426,6 +427,7 @@ void  Config::load(void)
         doc["version"] >> config_version;
         rules__error2warning.clear();
         doc["amqp_url"]  >>  amqp_url;
+        doc["gs_code"]  >>  gs_code;
         doc["rules__error2warning"]  >>  rules__error2warning;
         config_file.close();
 
@@ -529,6 +531,8 @@ void        Config::mem_save_refresh(void)
         out  << YAML::Key << "version"   <<  YAML::Value << 1;
 
         out  << YAML::Key << "amqp_url"   <<  YAML::Value   <<  amqp_url;
+
+        out  << YAML::Key << "gs_code"   <<  YAML::Value   <<  gs_code;
 
         if(rules__error2warning.size() == 0)
             rules__error2warning.push_back(mon::msg::sub_rule("__just__example__", mtk::dtSeconds(5), 0, "description", mtk::dtSeconds(0), mtk::dtDays(1),  mtk::dtNowLocal()));

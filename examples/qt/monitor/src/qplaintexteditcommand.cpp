@@ -175,7 +175,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
                                         MTK_SS("cmd " << command.toStdString()))
 
 
-        mtk::admin::msg::req_command2   c2(request_info, "_GS1", *it, command.toStdString());
+        mtk::admin::msg::req_command2   c2(request_info, gs_code, *it, command.toStdString());
         if(cli_srv == "SRV")
         {
             mtk::admin::msg::req_command_srv   command_request_msg( c2 );
