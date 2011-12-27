@@ -13,16 +13,16 @@ END_INIT
 //---------------------------------------------------------------------
 
 
-pub_add_user  [<  QE:ALL_GS, SUBJ:SYS.${sender_broker_code}.SRV.ACS_SYNC.AU  >]
+pub_add_user  [<  QE:ALL_GS, SUBJ:SYS.${broker_code}.SRV.ACS_SYNC.AU  >]
 {
-    sender_broker_code      (sbc)    :   string
+    broker_code             (bc)     :   string
     login_confirmation      (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
 
-pub_del_user [<  QE:ALL_GS, SUBJ:SYS.${sender_broker_code}.SRV.ACS_SYNC.DU  >]
+pub_del_user [<  QE:ALL_GS, SUBJ:SYS.${broker_code}.SRV.ACS_SYNC.DU  >]
 {
-    sender_broker_code      (sbc)    :   string
+    broker_code             (bc)     :   string
     login_confirmation      (lgc)    :   mtk::acs::msg::res_login::IC_session_info
 }
 
@@ -31,22 +31,22 @@ pub_del_user [<  QE:ALL_GS, SUBJ:SYS.${sender_broker_code}.SRV.ACS_SYNC.DU  >]
 //  partial user list sent  to synchornize   servers  <-->  acs
 
 
-req_session_id_conf  [<  QE:ALL_GS, SUBJ:GS.${sender_broker_code}.ACS.ASK_SESSID  >]
+req_session_id_conf  [<  QE:ALL_GS, SUBJ:SYS.${broker_code}.ACS.ASK_SESSID  >]
 {
-    sender_broker_code          (sbc)   :   string
+    broker_code                 (bc)    :   string
     session_id                  (sid)   :   string
 
     from                        (from)  :   mtk::msg::sub_process_info
 }
 
-pub_partial_user_list_acs2serv  [<  QE:ALL_GS, SUBJ:SYS.${sender_broker_code}.SRV.ACS_SYNC.PUL  >]
+pub_partial_user_list_acs2serv  [<  QE:ALL_GS, SUBJ:SYS.${broker_code}.SRV.ACS_SYNC.PUL  >]
 {
-    sender_broker_code          (sbc)  :   string
+    broker_code                 (bc)   :   string
     [list_login_confirmation]   (slc)  :   mtk::acs::msg::res_login::IC_session_info
 }
-pub_partial_user_list_serv2acs  [<  QE:ALL_GS, SUBJ:SYS.${sender_broker_code}.ACS.ACS_SYNC.PUL  >]
+pub_partial_user_list_serv2acs  [<  QE:ALL_GS, SUBJ:SYS.${broker_code}.ACS.ACS_SYNC.PUL  >]
 {
-    sender_broker_code          (sbc)  :   string
+    broker_code                 (bc)   :   string
     [list_login_confirmation]   (slc)  :   mtk::acs::msg::res_login::IC_session_info
 }
 
@@ -58,7 +58,7 @@ pub_partial_user_list_serv2acs  [<  QE:ALL_GS, SUBJ:SYS.${sender_broker_code}.AC
 //      REQUEST LIST
 //---------------------------------------------------------------------
 
-req_user_list [<  QE:ALL_GS, SUBJ:GS.ACS.RQ_USER_LIST  >]
+req_user_list [<  QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.broker_code}.ACS.RQ_USER_LIST  >]
 {
     request_info    (rqi)    :   mtk::msg::sub_request_info
 }

@@ -167,7 +167,7 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_clients_keep_alive,
                                 mtk::admin::get_url("client"),
-                                mtk::admin::msg::pub_keep_alive_cli::get_in_subject(),
+                                mtk::admin::msg::pub_keep_alive_cli::get_in_subject("*"),
                                 mtk::admin::msg::pub_keep_alive_cli,
                                 on_client_keep_alive_received)
 
@@ -194,7 +194,7 @@ int main(int argc, char ** argv)
         MTK_QPID_RECEIVER_CONNECT_F(
                                 hqpid_serv_req_user_list,
                                 mtk::admin::get_url("server"),
-                                mtk::acs_server::msg::req_user_list::get_in_subject(),
+                                mtk::acs_server::msg::req_user_list::get_in_subject("*"),
                                 mtk::acs_server::msg::req_user_list,
                                 on_server_req_user_list)
 

@@ -26,7 +26,7 @@ void QTableAlarms::init(const mtk::t_qpid_url& url, const std::string& _cli_srv,
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm1,
                             url,
-                            mtk::admin::msg::pub_alarm::get_in_subject(_cli_srv),
+                            mtk::admin::msg::pub_alarm::get_in_subject("*", _cli_srv),
                             mtk::admin::msg::pub_alarm,
                             on_alarm_received);
 }
@@ -305,13 +305,13 @@ void QTableAlarms::init(const mtk::t_qpid_url& url, bool _only_errors)
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm1,
                             url,
-                            mtk::admin::msg::pub_alarm::get_in_subject("CLI"),
+                            mtk::admin::msg::pub_alarm::get_in_subject("*", "CLI"),
                             mtk::admin::msg::pub_alarm,
                             on_alarm_received);
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm2,
                             url,
-                            mtk::admin::msg::pub_alarm::get_in_subject("SRV"),
+                            mtk::admin::msg::pub_alarm::get_in_subject("*", "SRV"),
                             mtk::admin::msg::pub_alarm,
                             on_alarm_received);
 }

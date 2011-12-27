@@ -33,14 +33,14 @@ void QListProcesses::init(const mtk::t_qpid_url& url,const std::string&  _cli_sr
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_enter,
                             url,
-                            mtk::admin::msg::pub_enter::get_in_subject(_cli_srv),
+                            mtk::admin::msg::pub_enter::get_in_subject("*", _cli_srv),
                             mtk::admin::msg::pub_enter,
                             on_enter_received)
 
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_exit,
                             url,
-                            mtk::admin::msg::pub_exit::get_in_subject(_cli_srv),
+                            mtk::admin::msg::pub_exit::get_in_subject("*", _cli_srv),
                             mtk::admin::msg::pub_exit,
                             on_exit_received)
 
@@ -48,14 +48,14 @@ void QListProcesses::init(const mtk::t_qpid_url& url,const std::string&  _cli_sr
         MTK_QPID_RECEIVER_CONNECT_THIS(
                                 hqpid_client_ka,
                                 url,
-                                mtk::admin::msg::pub_keep_alive_cli::get_in_subject(),
+                                mtk::admin::msg::pub_keep_alive_cli::get_in_subject("*"),
                                 mtk::admin::msg::pub_keep_alive_cli,
                                 on_ka_client_received)
     else if(cli_srv == "SRV")
         MTK_QPID_RECEIVER_CONNECT_THIS(
                                 hqpid_server_ka,
                                 url,
-                                mtk::admin::msg::pub_keep_alive_srv::get_in_subject(),
+                                mtk::admin::msg::pub_keep_alive_srv::get_in_subject("*"),
                                 mtk::admin::msg::pub_keep_alive_srv,
                                 on_ka_server_received)
     else
@@ -65,7 +65,7 @@ void QListProcesses::init(const mtk::t_qpid_url& url,const std::string&  _cli_sr
     MTK_QPID_RECEIVER_CONNECT_THIS(
                             hqpid_alarm,
                             url,
-                            mtk::admin::msg::pub_alarm::get_in_subject(_cli_srv),
+                            mtk::admin::msg::pub_alarm::get_in_subject("*", _cli_srv),
                             mtk::admin::msg::pub_alarm,
                             on_alarm_received)
 

@@ -355,7 +355,7 @@ subgraph cluster_cimd {
 
 
 GS.#;;
-* Messages generated on clients or servers to +GS+
+* Messages generated on clients, servers or gs processes to +GS+
 +
 ["graphviz", "queue_topology_all_gs__gs.png"]
 -----------
@@ -370,6 +370,8 @@ subgraph cluster_cimd {
            MK GS1 GS2
 
           MK -- { GS1, GS2 }    [dir=forward];
+          GS1 -- GS2   [dir=back, style=dotted];
+          GS2 -- GS1   [dir=back, style=dotted];
 
    }
       subgraph cluster_terminal_servers {

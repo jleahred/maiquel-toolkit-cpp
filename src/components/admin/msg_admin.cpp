@@ -533,8 +533,8 @@ void pub_alarm::before_send(void) const
 
 
 
-req_command2::req_command2 (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _sender_broker_code,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line)
-    :     request_info(_request_info),   sender_broker_code(_sender_broker_code),   proc_info__destination(_proc_info__destination),   command_line(_command_line) 
+req_command2::req_command2 (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _broker_code,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line)
+    :     request_info(_request_info),   broker_code(_broker_code),   proc_info__destination(_proc_info__destination),   command_line(_command_line) 
        
     {  
         std::string cr = check_recomended ();  
@@ -874,7 +874,7 @@ std::ostream& operator<< (std::ostream& o, const req_command2 & c)
 {
     o << "{ "
 
-        << "request_info:"<< c.request_info<<"  "        << "sender_broker_code:"<<   c.sender_broker_code << "  "        << "proc_info__destination:"<< c.proc_info__destination<<"  "        << "command_line:"<<   c.command_line << "  "
+        << "request_info:"<< c.request_info<<"  "        << "broker_code:"<<   c.broker_code << "  "        << "proc_info__destination:"<< c.proc_info__destination<<"  "        << "command_line:"<<   c.command_line << "  "
         << " }";
     return o;
 };
@@ -885,7 +885,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const req_command2 & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "sender_broker_code"  << YAML::Value <<   c.sender_broker_code        << YAML::Key << "proc_info__destination"  << YAML::Value << c.proc_info__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "broker_code"  << YAML::Value <<   c.broker_code        << YAML::Key << "proc_info__destination"  << YAML::Value << c.proc_info__destination        << YAML::Key << "command_line"  << YAML::Value <<   c.command_line
         << YAML::EndMap;
     return o;
 };
@@ -897,7 +897,7 @@ void  operator >> (const YAML::Node& node, req_command2 & c)
 
 
         node["request_info"]  >> c.request_info;
-        node["sender_broker_code"]  >> c.sender_broker_code;
+        node["broker_code"]  >> c.broker_code;
         node["proc_info__destination"]  >> c.proc_info__destination;
         node["command_line"]  >> c.command_line;
 
@@ -1131,7 +1131,7 @@ bool operator!= (const pub_alarm& a, const pub_alarm& b)
 
 bool operator== (const req_command2& a, const req_command2& b)
 {
-    return (          a.request_info ==  b.request_info  &&          a.sender_broker_code ==  b.sender_broker_code  &&          a.proc_info__destination ==  b.proc_info__destination  &&          a.command_line ==  b.command_line  &&   true  );
+    return (          a.request_info ==  b.request_info  &&          a.broker_code ==  b.broker_code  &&          a.proc_info__destination ==  b.proc_info__destination  &&          a.command_line ==  b.command_line  &&   true  );
 };
 
 bool operator!= (const req_command2& a, const req_command2& b)
@@ -1575,12 +1575,12 @@ void  copy (req_command2& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 //   field_type
 
-                    it = mv.find("sbc");
+                    it = mv.find("bc");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field sender_broker_code on message req_command2::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field broker_code on message req_command2::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.sender_broker_code, it->second);
-                        //c.sender_broker_code = it->second;
+                        copy(c.broker_code, it->second);
+                        //c.broker_code = it->second;
 //   sub_msg_type
 
                     it = mv.find("pd");
@@ -1610,7 +1610,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_command2& a)
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
-        __internal_add2map(map, a.sender_broker_code, std::string("sbc"));
+        __internal_add2map(map, a.broker_code, std::string("bc"));
 //  sub_msg_type
         __internal_add2map(map, a.proc_info__destination, std::string("pd"));
 //  field_type
@@ -2363,7 +2363,7 @@ req_command2::req_command2 (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
-   sender_broker_code(__internal_get_default((std::string*)0)),
+   broker_code(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    proc_info__destination(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
@@ -2447,13 +2447,13 @@ pub_central_keep_alive::pub_central_keep_alive (const qpid::types::Variant::Map&
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
-mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
+mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON." << cli_srv << ".ENTER"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << cli_srv << ".ENTER"));
     }
     mtk::t_qpid_filter  pub_enter::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON." << this->cli_srv << ".ENTER"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->cli_srv << ".ENTER"));
     }
     /*static*/  mtk::t_qpid_address  pub_enter::static_get_qpid_address ()
     {
@@ -2463,13 +2463,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_keep_alive_srv::get_in_subject ()
+    mtk::t_qpid_filter  pub_keep_alive_srv::get_in_subject (const std::string& process_info_location_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON.SRV.KA"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON.SRV.KA"));
     }
     mtk::t_qpid_filter  pub_keep_alive_srv::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON.SRV.KA"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON.SRV.KA"));
     }
     /*static*/  mtk::t_qpid_address  pub_keep_alive_srv::static_get_qpid_address ()
     {
@@ -2479,13 +2479,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_keep_alive_cli::get_in_subject ()
+    mtk::t_qpid_filter  pub_keep_alive_cli::get_in_subject (const std::string& process_info_location_broker_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON.CLI.KA"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON.CLI.KA"));
     }
     mtk::t_qpid_filter  pub_keep_alive_cli::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON.CLI.KA"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON.CLI.KA"));
     }
     /*static*/  mtk::t_qpid_address  pub_keep_alive_cli::static_get_qpid_address ()
     {
@@ -2495,13 +2495,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_exit::get_in_subject (const std::string& cli_srv)
+    mtk::t_qpid_filter  pub_exit::get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON." << cli_srv << ".EXIT"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << cli_srv << ".EXIT"));
     }
     mtk::t_qpid_filter  pub_exit::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON." << this->cli_srv << ".EXIT"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->cli_srv << ".EXIT"));
     }
     /*static*/  mtk::t_qpid_address  pub_exit::static_get_qpid_address ()
     {
@@ -2511,13 +2511,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_alarm::get_in_subject (const std::string& cli_srv)
+    mtk::t_qpid_filter  pub_alarm::get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON." << cli_srv << ".ALARM"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << cli_srv << ".ALARM"));
     }
     mtk::t_qpid_filter  pub_alarm::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON." << this->cli_srv << ".ALARM"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->cli_srv << ".ALARM"));
     }
     /*static*/  mtk::t_qpid_address  pub_alarm::static_get_qpid_address ()
     {
@@ -2527,13 +2527,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  req_command_srv::get_in_subject (const std::string& sender_broker_code,const std::string& proc_info__destination_location_broker_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
+    mtk::t_qpid_filter  req_command_srv::get_in_subject (const std::string& broker_code,const std::string& proc_info__destination_location_broker_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid)
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS." << sender_broker_code << ".MON." << proc_info__destination_location_broker_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".COMMAND"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << broker_code << ".MON." << proc_info__destination_location_broker_code << "." << proc_info__destination_location_machine << "." << proc_info__destination_process_name << "." << proc_info__destination_process_uuid << ".COMMAND"));
     }
     mtk::t_qpid_filter  req_command_srv::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS." << this->sender_broker_code << ".MON." << this->proc_info__destination.location.broker_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".COMMAND"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << this->broker_code << ".MON." << this->proc_info__destination.location.broker_code << "." << this->proc_info__destination.location.machine << "." << this->proc_info__destination.process_name << "." << this->proc_info__destination.process_uuid << ".COMMAND"));
     }
     /*static*/  mtk::t_qpid_address  req_command_srv::static_get_qpid_address ()
     {
@@ -2559,13 +2559,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& cli_srv)
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  res_command::get_in_subject (const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_req_code)
+    mtk::t_qpid_filter  res_command::get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_req_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_req_code << ".RSCOMM"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << response_info_request_info_process_info_location_broker_code << ".MON." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_req_code << ".RSCOMM"));
     }
     mtk::t_qpid_filter  res_command::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS.MON." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.req_code << ".RSCOMM"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->response_info.request_info.process_info.location.broker_code << ".MON." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.req_code << ".RSCOMM"));
     }
     /*static*/  mtk::t_qpid_address  res_command::static_get_qpid_address ()
     {

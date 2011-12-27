@@ -170,7 +170,7 @@ void QPlainTextEditCommand::send_command(const QString& command)
         MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::admin::msg::res_command,
                                         mtk::admin::msg::sub_command_rd,
                                         url,
-                                        mtk::admin::msg::res_command::get_in_subject(it->process_uuid, request_info.req_id.req_code),
+                                        mtk::admin::msg::res_command::get_in_subject("*", it->process_uuid, request_info.req_id.req_code),
                                         on_command_response,
                                         MTK_SS("cmd " << command.toStdString()))
 
