@@ -108,6 +108,8 @@ Same as production ended with TESTING
 === Addresses/routing-keys
 
 ALL_GS::
+Messages between +GS+ and +ALL+  in any direction. +
+In some cases, in order to avoid creation of an aditional addresses, a +MK+ or +SYS+ can send a message to itself with this address
 +
 [cols="1, 1, 3" , options=""]
 |=====================
@@ -120,9 +122,10 @@ ALL_GS::
 | GS.<cli_code>.#  |  CLI->GS | request from client (password, grants, ...) +
                                 This format is for client request +
                                 The <cli_code> is used to filter on +CS+
-| GS.#             |  ALL->GS | comunication to +GS+ from other servers
-| MK.<market>.#    |  GS->MK  | Market is used to filter for specific server +
-                                ps_conf, ps_req, ...
+| GS.#             |  ALL->GS  |  comunication to +GS+ from other servers
+
+| MK.<market>.#    |  GS->MK | Market is used to filter for specific server +
+                                ps_conf, ps_req, ... +
 |=====================
 
 CLI_MK::
