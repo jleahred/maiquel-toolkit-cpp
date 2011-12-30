@@ -98,7 +98,8 @@ private slots:
     void  slot_show_window(bool lets_hide_if_visible=false);
     void  slot_iconActivated(QSystemTrayIcon::ActivationReason reason);
     void  slot_alarm(const mtk::admin::msg::pub_alarm& alarm_msg);
-
+    void  slot_ruletext_modificated(void);
+    void  slot_compute_re_rule(void);
 
 protected:
     void closeEvent(QCloseEvent *event);

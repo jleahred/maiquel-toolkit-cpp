@@ -1,5 +1,6 @@
 version: 1
-amqp_url: amqp:tcp:192.168.7.21:6684
+amqp_url: amqp:tcp:192.168.8.21:6684
+gs_code: _GS1
 rules__error2warning:
   - re_rule: received update with no changes  { market:M3  product
     frequency: "2h "

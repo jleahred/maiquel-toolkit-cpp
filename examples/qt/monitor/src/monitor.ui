@@ -29,7 +29,7 @@
       </property>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -343,6 +343,67 @@
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="tab_7">
+        <attribute name="title">
+         <string>rule re test</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_12">
+         <item>
+          <widget class="QPlainTextEdit" name="re_rule_message2test">
+           <property name="plainText">
+            <string>cli_srv: SRV
+process_info:
+  location:
+    broker_code: M3
+    machine: TFMEFF01
+  process_name: MK_PRICES
+  process_uuid: 7863045F
+  version: 2011-12-22
+code_source: void Application::test_things_todo()(src/Application.cpp:243)
+subject: void Application::test_things_todo()
+message: market same data=30986  conten.savings=163687  conten.savings redundant=2333
+priority: debug
+type: unknown
+dateTime_generated: 2011-12-30 14:40:25.036
+alarm_id: 685</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="re_rule_result">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>_</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="re_rule_button_testnow">
+             <property name="text">
+              <string>test</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="re_rule2test"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
       </widget>
       <widget class="QTableAlarms" name="alarms_all_errors">
        <property name="selectionBehavior">
@@ -387,5 +448,74 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>re_rule_message2test</sender>
+   <signal>textChanged()</signal>
+   <receiver>Monitor</receiver>
+   <slot>slot_ruletext_modificated()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>179</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1039</x>
+     <y>268</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>re_rule2test</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>Monitor</receiver>
+   <slot>slot_ruletext_modificated()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>145</x>
+     <y>457</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1038</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>re_rule2test</sender>
+   <signal>editingFinished()</signal>
+   <receiver>Monitor</receiver>
+   <slot>slot_compute_re_rule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>898</x>
+     <y>457</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1037</x>
+     <y>420</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>re_rule_button_testnow</sender>
+   <signal>clicked()</signal>
+   <receiver>Monitor</receiver>
+   <slot>slot_compute_re_rule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>977</x>
+     <y>456</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1039</x>
+     <y>456</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_ruletext_modificated()</slot>
+  <slot>slot_compute_re_rule()</slot>
+ </slots>
 </ui>

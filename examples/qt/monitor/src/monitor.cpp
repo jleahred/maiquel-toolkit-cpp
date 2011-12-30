@@ -165,7 +165,7 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     QLabel * version = new QLabel();
     //version->setFrameShape(QFrame::Panel);
     //version->setFrameShadow(QFrame::Sunken);
-    version->setText("0.6");
+    version->setText("0.7");
     statusBar()->addWidget(version);
 
 
@@ -556,5 +556,27 @@ void        Config::mem_save_refresh(void)
     catch(...)
     {
         QMessageBox(QMessageBox::Critical, "Error", "Error saving configuration").exec();
+    }
+}
+
+
+void  Monitor::slot_ruletext_modificated(void)
+{
+    ui->re_rule_result->setText("_");
+}
+
+void Monitor::slot_compute_re_rule(void)
+{
+    mtk::RegExp  re_filter;
+    //re_filter.SetOptions(mtk::RegExp::MULTILINE);
+
+    re_filter.SetPattern(ui->re_rule2test->text().toStdString());  re_filter.Compile(true);
+    if (re_filter.Match(ui->re_rule_message2test->toPlainText().toStdString()))
+    {
+        ui->re_rule_result->setText("matches");
+    }
+    else
+    {
+        ui->re_rule_result->setText("DOESN'T MATCH");
     }
 }
