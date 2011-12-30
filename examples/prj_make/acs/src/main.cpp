@@ -1,4 +1,6 @@
 #include <iostream>
+#include <iomanip>
+
 
 #include "components/admin/admin.h"
 #include "components/admin/msg_admin.h"
@@ -304,15 +306,33 @@ void on_request_login_received(const mtk::acs::msg::req_login& req_login)
                                  */
         if(users_manager::check_user_password(req_login.user_name, req_login.key, req_login.coded_pass))
         {
-            static int counter=1;
+            static int counter=0;
+            ++counter;
+            counter %= 100;
+            static int duplicated_session_id_prefix=0;
             mtk::DateTime  dt_now(mtk::dtNowLocal());
-            std::string  session_id = MTK_SS(   dt_now.GetYear().WarningDontDoThisGetInternal()
+            static std::string prev_session_id_prefix;
+            std::string  session_id_prefix = MTK_SS(   dt_now.GetYear().WarningDontDoThisGetInternal()
+                                                << std::setw(2)  << std::setfill('0')
                                                 <<dt_now.GetMonth().WarningDontDoThisGetInternal()
+                                                << std::setw(2)  << std::setfill('0')
                                                 <<dt_now.GetDay().WarningDontDoThisGetInternal()
+                                                << std::setw(2)  << std::setfill('0')
                                                 <<dt_now.GetHours().WarningDontDoThisGetInternal()
+                                                << std::setw(2)  << std::setfill('0')
                                                 <<dt_now.GetMinutes().WarningDontDoThisGetInternal()
-                                                <<dt_now.GetSeconds().WarningDontDoThisGetInternal()
-                                                <<counter);
+                                                << std::setw(2)  << std::setfill('0')
+                                                <<dt_now.GetSeconds().WarningDontDoThisGetInternal());
+            if(prev_session_id_prefix  ==  session_id_prefix)
+            {
+                ++duplicated_session_id_prefix;
+                duplicated_session_id_prefix %=100;
+            }
+            std::string  session_id = MTK_SS(   session_id_prefix
+                                            << std::setw(2)  << std::setfill('0')
+                                            <<  counter
+                                            << std::setw(2)  << std::setfill('0')
+                                            << duplicated_session_id_prefix  );
 
 
             mtk::acs::msg::res_login::IC_session_info session_info(req_login.user_name, req_login.request_info.process_info.location.broker_code,  session_id);

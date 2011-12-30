@@ -122,7 +122,7 @@ In some cases, in order to avoid creation of an aditional addresses, a +MK+ or +
 | GS.<cli_code>.#  |  CLI->GS | request from client (password, grants, ...) +
                                 This format is for client request +
                                 The <cli_code> is used to filter on +CS+
-| GS.#             |  ALL->GS  |  comunication to +GS+ from other servers
+| GS.<broler_code>.#             |  ALL->GS  |  comunication to +GS+ from other servers
 
 | MK.<market>.#    |  GS->MK | Market is used to filter for specific server +
                                 ps_conf, ps_req, ... +
