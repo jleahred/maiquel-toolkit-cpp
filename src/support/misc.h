@@ -27,6 +27,12 @@ namespace mtk {
 
 
 
+    ///////////////////////////////
+    std::string  convert_to_base_35  (int num);
+    int          convert_from_base_35(const std::string& num);
+
+
+
 
 
 
@@ -42,8 +48,8 @@ namespace mtk {
             throw std::runtime_error("SIGNAL FPE  probably int div0");	\
         }								\
         else								\
-        {								
-    
+        {
+
 /*
     #define MTK_HANDLE_DIV0_INIT						\
         {									\
@@ -59,7 +65,7 @@ namespace mtk {
             throw std::runtime_error("SIGNAL FPE  probably int div0");	\
         }								\
         else								\
-        {								
+        {
 */
     #define MTK_HANDLE_DIV0_INIT_A(__A__)						\
         {									\
@@ -75,8 +81,8 @@ namespace mtk {
             throw std::runtime_error("SIGNAL FPE  probably int div0");	\
         }								\
         else								\
-        {								
-            
+        {
+
     #elif MTK_PLATFORM == MTK_LINUX_PLATFORM
     #define MTK_HANDLE_DIV0_INIT						\
         {									\
@@ -86,7 +92,7 @@ namespace mtk {
             throw std::runtime_error("SIGNAL FPE  probably int div0");	\
         }								\
         else								\
-        {								
+        {
 /*
 	#define MTK_HANDLE_DIV0_INIT						\
         {									\
@@ -102,7 +108,7 @@ namespace mtk {
             throw std::runtime_error("SIGNAL FPE  probably int div0");	\
         }								\
         else								\
-        {								
+        {
 */
 
         #define MTK_HANDLE_DIV0_INIT_A(__A__)						\
@@ -119,7 +125,7 @@ namespace mtk {
             throw std::runtime_error("SIGNAL FPE  probably int div0");	\
         }								\
         else								\
-        {								
+        {
 
 #else
     #error  "Unknown platfom..."
@@ -129,7 +135,7 @@ namespace mtk {
 #define MTK_HANDLE_DIV0_END						\
     }									\
     }
-	
+
 /*
 #define MTK_HANDLE_DIV0_END						\
     }									\

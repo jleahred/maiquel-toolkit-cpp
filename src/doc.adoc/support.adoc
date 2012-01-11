@@ -48,6 +48,18 @@ include::../../src/support/misc.h[]
 ----
 
 
+=== base35
+  support/misc.h  support/misc.cpp
+
+* A couple of functions for base 35 conversion
+* It will use digits from 0 to 9 and letters uppercase from A to Z except the letter O
++
+.test_base35.cpp
+[source,{cpp}]
+----
+include::../../examples/onefile/support/test_base35.cpp[]
+----
+
 === Int Div0 control
   support/misc.h  support/misc.cpp
 

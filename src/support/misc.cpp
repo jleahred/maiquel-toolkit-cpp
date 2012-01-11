@@ -1,17 +1,18 @@
 #include <stdexcept>
 #include <stdlib.h>
 #include <time.h>
-#include <iostream>   
+#include <iostream>
 
 
 #include "misc.h"
 #include "date_time.h"
+#include "support/mtk_string.h"
 
 
 
 
 #if (MTK_PLATFORM == MTK_WIN_PLATFORM)
-   #include <float.h>   
+   #include <float.h>
 #endif
 
 
@@ -29,6 +30,65 @@ namespace mtk {
             initialized = true;
         }
         return ::rand();
+    }
+
+
+
+    std::string  convert_to_base_skip_O(int num, int base)
+    {
+        std::string result;
+
+        while(num>0)
+        {
+            int temp = num%base;
+            if(temp >= 10)
+            {
+                char  c = char(temp-10+'A');
+                if (c>='O')
+                    ++c;
+                result = MTK_SS(c) + result;
+            }
+            else
+                result = MTK_SS(temp) + result;
+            num /= base;
+        }
+
+        return result;
+    }
+
+
+    int  convert_from_base_skip_O(const std::string&  num, int base)
+    {
+        int result=0;
+
+        int base_i = 1;
+        for(int i=int(num.size())-1; i>=0; --i)
+        {
+            char c = num[i];
+            int val =0;
+            if (c > 'O')
+                --c;
+            if(c>='0'  &&  c<='9')
+                val = c-'0';
+            else
+                val = c-'A'+10;
+
+            result += base_i * val;
+            base_i *= base;
+        }
+
+        return result;
+    }
+
+
+    std::string  convert_to_base_35(int num)
+    {
+        return convert_to_base_skip_O(num, 35);
+    }
+
+    int   convert_from_base_35(const std::string& num)
+    {
+        return convert_from_base_skip_O(num, 35);
     }
 
 
