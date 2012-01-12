@@ -41,6 +41,7 @@ mtk::prices::msg::sub_full_product_info_optionals   get_full_product_info_option
 void      merge_full_product_info_optionals__with_full_product_info
                                     (mtk::prices::msg::sub_full_product_info_optionals&  pio, const mtk::prices::msg::sub_full_product_info&  pi)
 {
+    pio.initialized = true;
     if(pio.best_prices.HasValue() == false)
         pio.best_prices = pi.best_prices;
     if(pio.additional_info.HasValue() == false)
