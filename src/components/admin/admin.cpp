@@ -624,20 +624,17 @@ namespace {
         {
             max_prev_fluct = mtk::abs(flucts._0);
 
-            if(process_priority == ppCritical)
+            if(max_prev_fluct > tqcritic)
             {
-                if(max_prev_fluct > tqcritic)
-                {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorCritic, mtk::alTypeRealTime));
-                }
-                else if(max_prev_fluct > tqerror)
-                {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorError, mtk::alTypeRealTime));
-                }
-                if(max_prev_fluct > tqwarning)
-                {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorWarning, mtk::alTypeRealTime));
-                }
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorCritic, mtk::alTypeRealTime));
+            }
+            else if(max_prev_fluct > tqerror)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorError, mtk::alTypeRealTime));
+            }
+            if(max_prev_fluct > tqwarning)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorWarning, mtk::alTypeRealTime));
             }
         }
 
@@ -645,20 +642,17 @@ namespace {
         {
             max_5min_fluct = mtk::abs(flucts._1);
 
-            if(process_priority == ppCritical)
+            if(max_5min_fluct > tqcritic)
             {
-                if(max_5min_fluct > tqcritic)
-                {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorCritic, mtk::alTypeRealTime));
-                }
-                else if(max_5min_fluct > tqerror)
-                {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorError, mtk::alTypeRealTime));
-                }
-                if(max_5min_fluct > tqwarning)
-                {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorWarning, mtk::alTypeRealTime));
-                }
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorCritic, mtk::alTypeRealTime));
+            }
+            else if(max_5min_fluct > tqerror)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorError, mtk::alTypeRealTime));
+            }
+            if(max_5min_fluct > tqwarning)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorWarning, mtk::alTypeRealTime));
             }
         }
 
