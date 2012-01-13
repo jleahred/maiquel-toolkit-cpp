@@ -218,7 +218,9 @@ namespace {
             void command_rqclose            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
 
             std::string  get_stats_simulating_command(void);
+            std::string  get_vers_simulating_command(void);
             void         send_stats_periodically(void);
+            void         send_vers_periodically(void);
 
             mtk::ControlFluctuacionesMulti<std::string>     control_flucts;
             void                                            check_fluct(const std::string&  id,  const mtk::DateTime&  dt);
@@ -473,6 +475,7 @@ namespace {
         MTK_TIMER_1S(check_last_received_message)
         MTK_TIMER_1S(check_central_keep_alive)
         MTK_TIMER_1S(send_stats_periodically)
+        MTK_TIMER_1S(send_vers_periodically)
 
         MTK_TIMER_1S(check_local_fluct)
     }
@@ -600,6 +603,14 @@ namespace {
         MTK_END_EXEC_MAX_FREC
     }
 
+    void admin_status::send_vers_periodically(void)
+    {
+        static mtk::dtTimeQuantity   frequency =  mtk::dtMinutes(mtk::rand()%30+45);     //  random frecuency from  45  min to 1h 15min
+        MTK_EXEC_MAX_FREC_NO_FIRST(frequency)
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.vers", get_vers_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
+        MTK_END_EXEC_MAX_FREC
+    }
+
 
     void admin_status::check_fluct(const std::string&  ref,  const mtk::DateTime&  dt)
     {
@@ -632,7 +643,7 @@ namespace {
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorError, mtk::alTypeRealTime));
             }
-            if(max_prev_fluct > tqwarning)
+            else if(max_prev_fluct > tqwarning)
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("prev: " << flucts._0), mtk::alPriorWarning, mtk::alTypeRealTime));
             }
@@ -692,6 +703,26 @@ namespace {
         mtk::map<std::string, mtk::CountPtr<command_info> >::iterator it = map_commands.find(command);
         if(it == map_commands.end())
             throw mtk::Alarm(MTK_HERE, "admin", "not defined command stats???", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        else if( it->second->signal_command_received->emit(command, "", response_lines) == 0)
+            throw  mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError);
+
+        mtk::list<std::string>::iterator  it_response_lines = response_lines.begin();
+        while (it_response_lines !=  response_lines.end())
+        {
+            result += *it_response_lines + "\n";
+            ++it_response_lines;
+        }
+        return result;
+    }
+
+    std::string  admin_status::get_vers_simulating_command(void)
+    {
+        std::string  result;
+        mtk::list<std::string>  response_lines;
+        std::string command = "ver";
+        mtk::map<std::string, mtk::CountPtr<command_info> >::iterator it = map_commands.find(command);
+        if(it == map_commands.end())
+            throw mtk::Alarm(MTK_HERE, "admin", "not defined command ver???", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         else if( it->second->signal_command_received->emit(command, "", response_lines) == 0)
             throw  mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError);
 
