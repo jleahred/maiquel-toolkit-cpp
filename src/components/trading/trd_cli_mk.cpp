@@ -22,10 +22,13 @@
         tresult = mtk::trd::msg::check_request_request<mtk::trd::msg::RQ_XX_MK>   (rq, last_request     ()   ); \
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
-        tresult = check_request_last_confirm(rq, last_confirmation()   ); \
-        nerrors += tresult._0;    \
-        ci->__serrors += tresult._1;    \
+        mtk::tuple<int, std::string, bool> tresult2;    \
+        tresult2 = check_request_last_confirm(rq, last_confirmation()   ); \
+        nerrors += tresult2._0;    \
+        ci->__serrors += tresult2._1;    \
+        qty_lower_exec = tresult2._2;    \
         (void)nerrors;   \
+        (void)qty_lower_exec;   \
         ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_MK&>(rq))); \
     }
 
@@ -35,15 +38,17 @@
         tresult = mtk::trd::msg::check_request_request<mtk::trd::msg::RQ_XX_MK>(rq, last_request     ()   ); \
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
-        tresult = mtk::trd::msg::check_request_last_confirm<mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::CF_XX_MK>(rq, last_confirmation()   ); \
-        nerrors += tresult._0;    \
-        ci->__serrors += tresult._1;    \
+        mtk::tuple<int, std::string, bool> tresult2;    \
+        tresult2 = mtk::trd::msg::check_request_last_confirm<mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::CF_XX_MK>(rq, last_confirmation()   ); \
+        nerrors += tresult2._0;    \
+        ci->__serrors += tresult2._1;    \
         tresult = mtk::trd::msg::check_request_not_modifying<mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::CF_XX_MK>(rq, last_request(), last_confirmation() ); \
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
         (void)nerrors;   \
-        ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_MK&>(rq)));     \
+        ci->set_last_request(mtk::make_nullable( static_cast<const mtk::trd::msg::RQ_XX_MK&>(rq))); \
     }
+
 
 
 
@@ -111,13 +116,14 @@
 
 
 
-#define CREATE_AND_SEND_REJECT(__SIGNAL_TYPE__, __MSG_TYPE__) \
+
+#define CREATE_AND_SEND_REJECT(__SIGNAL_TYPE__, __MSG_TYPE__, __DESCRIPTION__) \
     mtk::CountPtr<mtk::trd::msg::__MSG_TYPE__> cptr_rj;    \
     if (last_confirmation().HasValue())    \
     {               \
         mtk::trd::msg::CF_XX cfxx(rq.invariant, last_confirmation().Get().market_order_id, rq.request_info.req_id, last_confirmation().Get().total_execs, mtk::admin::get_control_fluct_info());  \
         mtk::trd::msg::CF_XX_MK  rjxx(cfxx, last_confirmation().Get().market_pos);      \
-        cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_MK(rjxx, MTK_SS(ci->__serrors << " in " << method_name), last_request().Get().request_pos))); \
+        cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_MK(rjxx, __DESCRIPTION__, last_request().Get().request_pos))); \
         ci->__SIGNAL_TYPE__(*cptr_rj);  \
     }     \
     else      \

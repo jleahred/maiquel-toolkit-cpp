@@ -11,9 +11,9 @@
 
 
 ::INPUTS::
-    rq_nw           (rq   :  mtk::trd::msg::RQ_NW_MK)   [{  int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
-    rq_md           (rq   :  mtk::trd::msg::RQ_MD_MK)   [{  int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   }]
-	rq_cc           (rq   :  mtk::trd::msg::RQ_CC_MK)   [{  int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
+    rq_nw           (rq   :  mtk::trd::msg::RQ_NW_MK)   [{  int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
+    rq_md           (rq   :  mtk::trd::msg::RQ_MD_MK)   [{  int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   }]
+	rq_cc           (rq   :  mtk::trd::msg::RQ_CC_MK)   [{  int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       }]
 
 	cf_nw           (cf   :  mtk::trd::msg::CF_NW_MK)   [{  int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
 	cf_md           (cf   :  mtk::trd::msg::CF_MD_MK)   [{  int nerrors=0;  CHECK_CONFIRM_AND_WRITE_LAST_CONF       }]
@@ -141,6 +141,7 @@ init    --   cf_st                           /   , cf_cfst             -->   mar
 
 w_cfnw  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
 w_cfnw  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   w_cfnwcc
+w_cfnw  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfnwcc
 w_cfnw  --   rq_md                           /   , rq_rqmd             -->   w_cfnwmd
 w_cfnw  --   rq_cc                           /   , rq_cc               -->   w_cfnwcc
 w_cfnw  --   cf_nw  &&   invalid_cf          /   , cf_cfnw & rq_cc     ''>   error      ("invalid cfnw ")       //  errors details provided by guardian
@@ -156,6 +157,7 @@ w_cfnw  --   cf_st                                                     ''>   w_c
 
 market  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
 market  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   w_cfcc
+market  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfcc
 market  --   rq_md                           /   , rq_rqmd             -->   w_cfmd
 market  --   rq_cc                           /   , rq_cc               -->   w_cfcc
 market  --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error      (method_name)
@@ -172,6 +174,7 @@ market  --   cf_st                                                     ''>   mar
 
 w_cfmd  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
 w_cfmd  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   error      ("invalid rqmd")
+w_cfmd  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfmdcc
 w_cfmd  --   rq_md                           /   , rq_rqmd             ''>   w_cfmd
 w_cfmd  --   rq_cc                           /   , rq_cc               -->   w_cfmdcc
 w_cfmd  --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error      (method_name)
@@ -207,6 +210,7 @@ w_cfcc  --   cf_st                                                    ''>   w_cf
 
 w_cfmdcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
 w_cfmdcc  --   rq_md  &&   invalid_rq          /   , rj_rqmd            ''>   w_cfmdcc
+w_cfmdcc  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc    ''>   w_cfmdcc
 w_cfmdcc  --   rq_md                           /   , rj_rqmd & rq_cc    ''>   w_cfmdcc
 w_cfmdcc  --   rq_cc                           /   , rq_cc              ''>   w_cfmdcc
 w_cfmdcc  --   cf_nw                           /   , cf_cfnw & rq_cc    ''>   error     (method_name)
@@ -226,6 +230,7 @@ w_cfmdcc  --   cf_st                                                    ''>   w_
 
 w_cfnwmd  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc    ''>   w_cfnwcc
+w_cfnwmd  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc    ''>   w_cfnwcc
 w_cfnwmd  --   rq_md                           /   , rq_rqmd            ''>   w_cfnwmd
 w_cfnwmd  --   rq_cc                           /   , rq_cc              -->   w_cfnwcc
 w_cfnwmd  --   cf_nw  &&   invalid_cf          /   , cf_cfnw & rq_cc    ''>   error     ("invalid cfnw")
@@ -302,7 +307,7 @@ error    --   cf_st                                                     ''>   er
         //  progressing  request.................................................
             rq_rqnw     [{  ADD_HIST_RQ(rq, nw)     ci->sig_rq_nw(rq);  ci->sig_changed();  }]
 
-            rq_rqmd     [{  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();      }]
+            rq_rqmd     [{  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  }]
 
             /*********  cancelations will be allways generated not progressed
             rq_rq_cc
@@ -315,7 +320,7 @@ error    --   cf_st                                                     ''>   er
             cf_cfnw         [{  ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  }]
 
             cf_cfmd         [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
-            cf_cfmd_nr      [{  ADD_HIST_CF(cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
+            cf_cfmd_nr      [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
             cf_cfmd_pend    [{  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  }]
 
             cf_cfcc         [{  ADD_HIST_CF(cf, cc)     ci->sig_cf_cc(cf);  ci->sig_changed();  }]
@@ -324,7 +329,7 @@ error    --   cf_st                                                     ''>   er
             cf_cfst         [{                          ci->sig_cf_st(st);  ci->sig_changed();  }]
 
         //  CONFIRM EXECUTIONS..........................................
-            cf_cfex         [{  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      }]
+            cf_cfex         [{  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  }]
 
 
         //  progressing  rejects.................................................
@@ -337,9 +342,12 @@ error    --   cf_st                                                     ''>   er
 
 
         //  rejecting request.................................................
-            rj_rqnw [{ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  }]
-            rj_rqmd [{ CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  }]
-            rj_rqcc [{ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK)      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  }]
+            rj_rqnw [{ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  }]
+            rj_rqcc [{ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  }]
+            rj_rqmd [{ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  }]
 
 
         //  requesting not requested..........................................
@@ -377,6 +385,11 @@ error    --   cf_st                                                     ''>   er
             invalid_rq
                 [{
                     nerrors > 0
+                }]
+
+            quantity_lower_ex
+                [{
+                    qty_lower_exec
                 }]
 
             invalid_cf

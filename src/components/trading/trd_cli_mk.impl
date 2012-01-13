@@ -1005,7 +1005,7 @@ void init::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "init::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1020,7 +1020,7 @@ void init::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, ("invalid rqnw ")       ));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 
         }
     else 
@@ -1049,7 +1049,7 @@ void init::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "init::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1061,7 +1061,10 @@ void init::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -1081,7 +1084,7 @@ void init::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "init::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1093,7 +1096,7 @@ void init::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
- CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK)      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
 
         }
     
@@ -1321,7 +1324,7 @@ void init::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     else 
@@ -1330,7 +1333,7 @@ void init::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     
@@ -1409,7 +1412,7 @@ void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfnw::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1421,7 +1424,7 @@ void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1464,7 +1467,7 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfnw::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1479,7 +1482,48 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfnwcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+//  inserting macro: rq_cc
+
+                    if (last_confirmation().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
+                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else if (last_request().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
+                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else
+                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                
+
+        }
+    else 
+        if (//  inserting macro: quantity_lower_ex
+
+                    qty_lower_exec
+                 ) {
+
+            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: rj_rqmd
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1511,7 +1555,7 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfnwmd (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
-  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();      
+  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
 
         }
     
@@ -1531,7 +1575,7 @@ void w_cfnw::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfnw::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1897,7 +1941,7 @@ void w_cfnw::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -1970,7 +2014,7 @@ void market::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "market::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1982,7 +2026,7 @@ void market::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2025,7 +2069,7 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "market::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2040,7 +2084,48 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+//  inserting macro: rq_cc
+
+                    if (last_confirmation().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
+                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else if (last_request().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
+                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else
+                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                
+
+        }
+    else 
+        if (//  inserting macro: quantity_lower_ex
+
+                    qty_lower_exec
+                 ) {
+
+            new_status = mtk::make_cptr(new w_cfcc (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: rj_rqmd
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2072,7 +2157,7 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfmd (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
-  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();      
+  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
 
         }
     
@@ -2092,7 +2177,7 @@ void market::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "market::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2212,7 +2297,7 @@ void market::cf_md ( const mtk::trd::msg::CF_MD_MK&   cf            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd_nr
-  ADD_HIST_CF(cf,md)     ci->sig_cf_md(cf);  ci->sig_changed();  
+  ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
 
         }
     
@@ -2486,7 +2571,7 @@ void market::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     else 
@@ -2495,7 +2580,7 @@ void market::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new market (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     
@@ -2545,7 +2630,7 @@ void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfmd::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2557,7 +2642,7 @@ void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2600,7 +2685,7 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfmd::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2615,7 +2700,48 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, ("invalid rqmd")));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+//  inserting macro: rq_cc
+
+                    if (last_confirmation().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
+                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else if (last_request().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
+                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else
+                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                
+
+        }
+    else 
+        if (//  inserting macro: quantity_lower_ex
+
+                    qty_lower_exec
+                 ) {
+
+            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: rj_rqmd
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -2647,7 +2773,7 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfmd (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
-  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();      
+  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
 
         }
     
@@ -2667,7 +2793,7 @@ void w_cfmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfmd::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3091,7 +3217,7 @@ void w_cfmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     else 
@@ -3100,7 +3226,7 @@ void w_cfmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new w_cfmd (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     
@@ -3150,7 +3276,7 @@ void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfcc::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3162,7 +3288,7 @@ void w_cfcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3205,7 +3331,7 @@ void w_cfcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfcc::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3217,7 +3343,10 @@ void w_cfcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -3237,7 +3366,7 @@ void w_cfcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfcc::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3608,7 +3737,7 @@ void w_cfcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     else 
@@ -3617,7 +3746,7 @@ void w_cfcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new w_cfcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     
@@ -3667,7 +3796,7 @@ void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfmdcc::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3679,7 +3808,7 @@ void w_cfmdcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3722,7 +3851,7 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfmdcc::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3737,7 +3866,48 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfmdcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+
+        }
+    else 
+        if (//  inserting macro: quantity_lower_ex
+
+                    qty_lower_exec
+                 ) {
+
+            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: rj_rqmd
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+//  inserting macro: rq_cc
+
+                    if (last_confirmation().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
+                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else if (last_request().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
+                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else
+                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                
 
         }
     else 
@@ -3746,7 +3916,10 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfmdcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -3789,7 +3962,7 @@ void w_cfmdcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfmdcc::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4190,7 +4363,7 @@ void w_cfmdcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     else 
@@ -4199,7 +4372,7 @@ void w_cfmdcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new w_cfmdcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 
         }
     
@@ -4249,7 +4422,7 @@ void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfnwmd::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4261,7 +4434,7 @@ void w_cfnwmd::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4304,7 +4477,7 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfnwmd::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4319,7 +4492,48 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfnwcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+//  inserting macro: rq_cc
+
+                    if (last_confirmation().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX     rqxx(last_confirmation().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK  rqxxmk(rqxx, last_confirmation().Get().market_pos);
+                        mtk::trd::msg::RQ_CC_MK  rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else if (last_request().HasValue())
+                    {
+                        mtk::trd::msg::RQ_XX    rqxx(last_request().Get().invariant, mtk::admin::get_request_info(), mtk::admin::get_control_fluct_info());
+                        mtk::trd::msg::RQ_XX_MK rqxxmk(rqxx, last_request().Get().request_pos);
+                        mtk::trd::msg::RQ_CC_MK rqccmk(rqxxmk);
+                        ADD_HIST_RQ(rqccmk, cc)
+                        ci->sig_rq_cc(rqccmk);
+                        ci->sig_changed();
+                    }
+                    else
+                        throw mtk::Alarm(MTK_HERE, "trd_cli_mk.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                
+
+        }
+    else 
+        if (//  inserting macro: quantity_lower_ex
+
+                    qty_lower_exec
+                 ) {
+
+            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: rj_rqmd
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4351,7 +4565,7 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfnwmd (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
-  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();      
+  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
 
         }
     
@@ -4371,7 +4585,7 @@ void w_cfnwmd::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfnwmd::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4760,7 +4974,7 @@ void w_cfnwmd::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4833,7 +5047,7 @@ void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "w_cfnwcc::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4845,7 +5059,7 @@ void w_cfnwcc::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4888,7 +5102,7 @@ void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "w_cfnwcc::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4900,7 +5114,7 @@ void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new w_cfnwcc (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
-  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();      
+  ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -4943,7 +5157,7 @@ void w_cfnwcc::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "w_cfnwcc::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5332,7 +5546,7 @@ void w_cfnwcc::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5405,7 +5619,7 @@ void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "canceled::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5417,7 +5631,7 @@ void canceled::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5460,7 +5674,7 @@ void canceled::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "canceled::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5472,7 +5686,10 @@ void canceled::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -5492,7 +5709,7 @@ void canceled::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "canceled::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5504,7 +5721,7 @@ void canceled::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
             new_status = mtk::make_cptr(new canceled (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
- CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK)      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
 
         }
     
@@ -5825,7 +6042,7 @@ void canceled::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5898,7 +6115,7 @@ void executed::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "executed::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5910,7 +6127,7 @@ void executed::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -5953,7 +6170,7 @@ void executed::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "executed::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5965,7 +6182,10 @@ void executed::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -5985,7 +6205,7 @@ void executed::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "executed::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5997,7 +6217,7 @@ void executed::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
             new_status = mtk::make_cptr(new executed (ci));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqcc
- CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK)      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  
 
         }
     
@@ -6318,7 +6538,7 @@ void executed::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -6391,7 +6611,7 @@ void error::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
     
 	static const char* method_name = "error::rq_nw";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -6403,7 +6623,7 @@ void error::rq_nw ( const mtk::trd::msg::RQ_NW_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqnw
- CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK)      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
+ CREATE_AND_SEND_REJECT(sig_rj_nw, RJ_NW_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, nw)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())
@@ -6446,7 +6666,7 @@ void error::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
     
 	static const char* method_name = "error::rq_md";
 
-      int nerrors=0;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_MOD_AND_WRITE_LAST_REQ   
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -6458,7 +6678,10 @@ void error::rq_md ( const mtk::trd::msg::RQ_MD_MK&   rq            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
- CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK)      ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
+ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
+                       if(qty_lower_exec)
+                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                        CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
     
@@ -6478,7 +6701,7 @@ void error::rq_cc ( const mtk::trd::msg::RQ_CC_MK&   rq            )
     
 	static const char* method_name = "error::rq_cc";
 
-      int nerrors=0;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
+      int nerrors=0;  bool qty_lower_exec=false;(void)qty_lower_exec;  CHECK_REQUEST_AND_WRITE_LAST_REQ       
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -6855,7 +7078,7 @@ void error::cf_ex ( const mtk::trd::msg::CF_EX_MK&   ex            )
             new_status = mtk::make_cptr(new error (ci, (method_name)));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
-  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();      
+  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
 //  inserting macro: rq_cc
 
                     if (last_confirmation().HasValue())

@@ -113,14 +113,15 @@ namespace mtk{namespace trd{
                 return mtk::make_tuple(nerrors, serrors);
             }
             template<typename RQ_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS
-            mtk::tuple<int, std::string> check_request_last_confirm(const RQ_TYPE& rq, const mtk::nullable<CONF_TYPE>& last_conf)
-            {
-                if (last_conf.HasValue() == false)     return mtk::make_tuple(0, std::string());
+            mtk::tuple<int, std::string, bool> check_request_last_confirm(const RQ_TYPE& rq, const mtk::nullable<CONF_TYPE>& last_conf)
+            {       //  mtk::tuple<int, std::string, bool>   num errors, errors description,  quantity lower than executed
+                if (last_conf.HasValue() == false)     return mtk::make_tuple(0, std::string(), false);
 
 
 
                 std::string serrors;
                 int nerrors=0;
+                bool quantity_lower_than_executed = false;
 
                 {
                     std::string l_serrors;
@@ -147,12 +148,11 @@ namespace mtk{namespace trd{
                 //  non critic
                 if (last_conf.HasValue()  &&  mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble()) >= (mtk::Double(rq.request_pos.quantity.GetDouble())))
                 {
-                    serrors += "  requested quantity lower or equal than executed quantity!!!  ";
-                    ++nerrors;
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request_last_confirm", MTK_SS(serrors << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
+                    quantity_lower_than_executed = true;
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request_last_confirm", MTK_SS("requested qty lower than exec qty  "  << "  " << rq << " / " << last_conf), mtk::alPriorWarning, mtk::alTypeNoPermisions));
                 }
 
-                return mtk::make_tuple(nerrors, serrors);
+                return mtk::make_tuple(nerrors, serrors, quantity_lower_than_executed);
             }
             template<typename RQ_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS
             mtk::tuple<int, std::string> check_request_not_modifying(const RQ_TYPE& rq, const mtk::nullable<RQ_TYPE>& last_request, const mtk::nullable<CONF_TYPE>& last_conf)
