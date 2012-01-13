@@ -20,6 +20,7 @@ namespace
 
     const char*   APP_MODIFICATIONS =   "           2011-04-12     first version\n"
                                         "           2011-08-01     filling product publishing protocol (update)\n"
+                                        "           2012-01-13     delete on init from publisher and modifs on check activity\n"
                                         ;
 
 }
@@ -54,12 +55,14 @@ namespace
     class market_info
     {
         public:
-            market_info(const std::string& _name, const mtk::dtTimeQuantity& tq)
-                :  name(_name), check_interval(tq), last_update_received(mtk::dtNowLocal())  {}
+            market_info(const std::string& _name, const mtk::dtTimeQuantity& tq, const mtk::dtDateTime&  _starts, const mtk::dtDateTime&  _ends)
+                :  name(_name), check_interval(tq), last_update_received(mtk::dtNowLocal()) , starts(_starts), ends(_ends) {}
 
             std::string             name;
             mtk::dtTimeQuantity     check_interval;
             mtk::DateTime           last_update_received;
+            mtk::DateTime           starts;
+            mtk::DateTime           ends;
     };
     mtk::map<std::string, market_info >    map_market_info;
 
@@ -122,7 +125,7 @@ int main(int argc, char ** argv)
         send_req_init_prod_info_to_markets__to_publisher();
 
 
-        MTK_TIMER_1SF(check_inactivity)
+        MTK_TIMER_1CF(check_inactivity)
 
         mtk::start_timer_wait_till_end();
 
@@ -223,6 +226,7 @@ void suscribe_cli_request_product(void)
 
 void on_ps_pub_prod_info_mtk_ready__from_publisher(const mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher&    ps_pub_prod_info_mtk_ready__from_publisher)
 {
+    map_products->clear();
     mtk::prices::msg::ps_req_init_prod_info__to_publisher    ps_req_init_prod_info__to_publisher(
             mtk::prices::msg::ps_req_init_prod_info(ps_pub_prod_info_mtk_ready__from_publisher.market, mtk::admin::get_process_info()));
     mtk_send_message("server", ps_req_init_prod_info__to_publisher);
@@ -364,25 +368,55 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
     if(itlu==map_market_info.end())
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << msg_update_price.product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
     else
-        itlu->second.last_update_received  = mtk::dtNowLocal();
+    {
+        mtk::dtDateTime  now = mtk::dtNowLocal();
+        itlu->second.last_update_received  = now;
+        if(itlu->second.last_update_received - now > itlu->second.check_interval)
+        {
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("recovered activity  " << it->first  << "  checking interval " << itlu->second.check_interval), mtk::alPriorError, mtk::alTypeOverflow));
+        }
+    }
 }
 
 
 //  check inactivity
 void check_inactivity(void)
 {
-    MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(20))
+    MTK_EXEC_MAX_FREC_S(mtk::dtMilliseconds(500))
         //mtk::map<mtk::msg::sub_product_code>, mtk::DateTime >    map_last_update;
         mtk::map<std::string, market_info >::iterator  it = map_market_info.begin();
         for( ; it!= map_market_info.end(); ++it)
         {
             if(it->second.check_interval > mtk::dtSeconds(1))
             {
-                if(it->second.last_update_received + it->second.check_interval < mtk::dtNowLocal())
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too many time with no activity " << it->first), mtk::alPriorError, mtk::alTypeOverflow));
+                if(it->second.ends  -  it->second.starts   < mtk::dtHours(2))
+                {
+                    MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(30), A)
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too low time to check " << it->first  << it->second.ends  -  it->second.starts), mtk::alPriorError, mtk::alTypeOverflow));
+                    MTK_END_EXEC_MAX_FREC
+                }
+
+                mtk::dtDateTime  now = mtk::dtNowLocal();
+                if(it->second.starts < now  &&   it->second.ends > now)
+                {
+                    if(it->second.last_update_received + it->second.check_interval < mtk::dtNowLocal())
+                    {
+                        MTK_EXEC_MAX_FREC_S_A(mtk::dtSeconds(30), A)
+                            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too many time with no activity " << it->first  << "  checking interval " << it->second.check_interval), mtk::alPriorError, mtk::alTypeOverflow));
+                        MTK_END_EXEC_MAX_FREC
+                    }
+                }
+            }
+            else
+            {
+                if(it->second.check_interval > mtk::dtMilliseconds(10))
+                {
+                    MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(15), A)
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("check activity time configuration too low " << it->second.check_interval), mtk::alPriorError, mtk::alTypeOverflow));
+                    MTK_END_EXEC_MAX_FREC
+                }
             }
         }
-
     MTK_END_EXEC_MAX_FREC
 }
 
@@ -396,11 +430,35 @@ void init_map_market_info()
     mtk::list<std::string>  nodes = mtk::admin::get_config_nodes("MARKETS");
     for(mtk::list<std::string>::iterator it = nodes.begin(); it!= nodes.end(); ++it)
     {
-        mtk::dtTimeQuantity tq = mtk::dtSeconds(20);
+        mtk::dtTimeQuantity interval = mtk::dtSeconds(20);
         bool ok = false;
-        mtk::s_TRY_stotq (mtk::admin::get_config_property(MTK_SS("MARKETS." << *it <<".check_activity")).Get(), mtk::dtSeconds(20)).assign(tq, ok);
+        mtk::dtTimeQuantity starts = mtk::dtSeconds(0);
+        mtk::dtTimeQuantity ends = mtk::dtSeconds(0);
+
+        ok = false;
+        mtk::s_TRY_stotq (mtk::admin::get_config_mandatory_property(MTK_SS("MARKETS." << *it <<".check_activity")), interval).assign(interval, ok);
         if(ok==false)
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("error reading configuration for market " << *it), mtk::alPriorError));
-        map_market_info.insert(std::make_pair(*it, market_info(*it, tq)));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("error reading configuration for market " << *it  <<  "  prop. check_activity"), mtk::alPriorError));
+
+        ok = false;
+        mtk::s_TRY_stotq (mtk::admin::get_config_mandatory_property(MTK_SS("MARKETS." << *it <<".start_time")), starts).assign(starts, ok);
+        if(ok==false)
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("error reading configuration for market " << *it  <<  " prop. start_time"), mtk::alPriorError));
+
+        ok = false;
+        mtk::s_TRY_stotq (mtk::admin::get_config_mandatory_property(MTK_SS("MARKETS." << *it <<".end_time")), ends).assign(ends, ok);
+        if(ok==false)
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("error reading configuration for market " << *it  <<  " prop.  end_time"), mtk::alPriorError));
+
+        mtk::dtDateTime  starts_today = mtk::dtToday_0Time() + starts;
+        mtk::dtDateTime  ends_today = mtk::dtToday_0Time() + ends;
+
+        if(ends_today - starts_today  < mtk::dtHours(2))
+            std::cout << "too low time to check " << ends_today - starts_today;
+
+        if(interval  < mtk::dtSeconds(1)  &&   interval  > mtk::dtMilliseconds(10))
+            std::cout << "interval too low  " << interval;
+
+        map_market_info.insert(std::make_pair(*it, market_info(*it, interval, starts_today, ends_today)));
     }
 }
