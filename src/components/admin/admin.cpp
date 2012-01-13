@@ -1364,7 +1364,13 @@ namespace {
                 return;
             }
 
-            static  mtk::DateTime auto_close_on  = mtk::dtToday_0Time() + mtk::s_TRY_stotq(config_auto_close_time, mtk::dtSeconds(0))._0;
+            auto  autoclose_converted = mtk::s_TRY_stotq(config_auto_close_time, mtk::dtSeconds(0));
+            if(autoclose_converted._1 == false)
+            {
+                AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("autoclose:   wrong format string   " << config_auto_close_time),
+                                                            mtk::alPriorWarning, mtk::alTypeUnknown));
+            }
+            static  mtk::DateTime auto_close_on  = mtk::dtToday_0Time() + autoclose_converted._0;
 
 
             MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(30), A)
