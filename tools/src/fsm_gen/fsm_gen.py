@@ -523,8 +523,10 @@ $PROPERTIES
 
 
     //  STATS AND COVERAGE
-    scoverage     coverage;
+    static  scoverage     coverage;
 };
+
+scoverage status_common_info::coverage;
 
 """
 
@@ -728,7 +730,7 @@ $POST_ACTION
 void $STATUS_NAME::$METHOD_NAME ( $PARAMS )
 {
     //  coverage
-    ++ci->coverage.${STATUS_NAME}__${METHOD_NAME};
+    ++status_common_info::coverage.${STATUS_NAME}__${METHOD_NAME};
 
     //  remove unused warning
     $REMOVE_UNUSED_WARNINGS

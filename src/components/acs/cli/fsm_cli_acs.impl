@@ -216,8 +216,10 @@ struct  status_common_info
 
 
     //  STATS AND COVERAGE
-    scoverage     coverage;
+    static  scoverage     coverage;
 };
+
+scoverage status_common_info::coverage;
 
 
 
@@ -650,7 +652,7 @@ protected:
 void logout::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
     //  coverage
-    ++ci->coverage.logout__user_rq_login;
+    ++status_common_info::coverage.logout__user_rq_login;
 
     //  remove unused warning
     (void) _user_name;
@@ -689,7 +691,7 @@ void logout::user_rq_login ( const std::string&   _user_name , const std::string
 void logout::user_rq_logout (  )
 {
     //  coverage
-    ++ci->coverage.logout__user_rq_logout;
+    ++status_common_info::coverage.logout__user_rq_logout;
 
     //  remove unused warning
     
@@ -722,7 +724,7 @@ void logout::user_rq_logout (  )
 void logout::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
     //  coverage
-    ++ci->coverage.logout__user_rq_changepass;
+    ++status_common_info::coverage.logout__user_rq_changepass;
 
     //  remove unused warning
     (void) _old_password;
@@ -757,7 +759,7 @@ void logout::user_rq_changepass ( const std::string&   _old_password, const std:
 void logout::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
     //  coverage
-    ++ci->coverage.logout__srv_rs_login_key;
+    ++status_common_info::coverage.logout__srv_rs_login_key;
 
     //  remove unused warning
     (void) rs;
@@ -791,7 +793,7 @@ void logout::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs        
 void logout::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
     //  coverage
-    ++ci->coverage.logout__srv_rs_login;
+    ++status_common_info::coverage.logout__srv_rs_login;
 
     //  remove unused warning
     (void) rs;
@@ -825,7 +827,7 @@ void logout::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 void logout::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
     //  coverage
-    ++ci->coverage.logout__srv_cf_logout;
+    ++status_common_info::coverage.logout__srv_cf_logout;
 
     //  remove unused warning
     (void) cf;
@@ -859,7 +861,7 @@ void logout::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 void logout::timeout ( const int&          __            )
 {
     //  coverage
-    ++ci->coverage.logout__timeout;
+    ++status_common_info::coverage.logout__timeout;
 
     //  remove unused warning
     (void) __;
@@ -893,7 +895,7 @@ void logout::timeout ( const int&          __            )
 void logout::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  coverage
-    ++ci->coverage.logout__srv_rs_chpwd;
+    ++status_common_info::coverage.logout__srv_rs_chpwd;
 
     //  remove unused warning
     (void) rs;
@@ -927,7 +929,7 @@ void logout::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs      
 void w_key::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
     //  coverage
-    ++ci->coverage.w_key__user_rq_login;
+    ++status_common_info::coverage.w_key__user_rq_login;
 
     //  remove unused warning
     (void) _user_name;
@@ -962,7 +964,7 @@ void w_key::user_rq_login ( const std::string&   _user_name , const std::string&
 void w_key::user_rq_logout (  )
 {
     //  coverage
-    ++ci->coverage.w_key__user_rq_logout;
+    ++status_common_info::coverage.w_key__user_rq_logout;
 
     //  remove unused warning
     
@@ -995,7 +997,7 @@ void w_key::user_rq_logout (  )
 void w_key::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
     //  coverage
-    ++ci->coverage.w_key__user_rq_changepass;
+    ++status_common_info::coverage.w_key__user_rq_changepass;
 
     //  remove unused warning
     (void) _old_password;
@@ -1030,7 +1032,7 @@ void w_key::user_rq_changepass ( const std::string&   _old_password, const std::
 void w_key::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_key__srv_rs_login_key;
+    ++status_common_info::coverage.w_key__srv_rs_login_key;
 
     //  remove unused warning
     (void) rs;
@@ -1069,7 +1071,7 @@ void w_key::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs         
 void w_key::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_key__srv_rs_login;
+    ++status_common_info::coverage.w_key__srv_rs_login;
 
     //  remove unused warning
     (void) rs;
@@ -1103,7 +1105,7 @@ void w_key::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 void w_key::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
     //  coverage
-    ++ci->coverage.w_key__srv_cf_logout;
+    ++status_common_info::coverage.w_key__srv_cf_logout;
 
     //  remove unused warning
     (void) cf;
@@ -1137,7 +1139,7 @@ void w_key::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 void w_key::timeout ( const int&          __            )
 {
     //  coverage
-    ++ci->coverage.w_key__timeout;
+    ++status_common_info::coverage.w_key__timeout;
 
     //  remove unused warning
     (void) __;
@@ -1173,7 +1175,7 @@ void w_key::timeout ( const int&          __            )
 void w_key::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_key__srv_rs_chpwd;
+    ++status_common_info::coverage.w_key__srv_rs_chpwd;
 
     //  remove unused warning
     (void) rs;
@@ -1207,7 +1209,7 @@ void w_key::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs       
 void w_login::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
     //  coverage
-    ++ci->coverage.w_login__user_rq_login;
+    ++status_common_info::coverage.w_login__user_rq_login;
 
     //  remove unused warning
     (void) _user_name;
@@ -1242,7 +1244,7 @@ void w_login::user_rq_login ( const std::string&   _user_name , const std::strin
 void w_login::user_rq_logout (  )
 {
     //  coverage
-    ++ci->coverage.w_login__user_rq_logout;
+    ++status_common_info::coverage.w_login__user_rq_logout;
 
     //  remove unused warning
     
@@ -1275,7 +1277,7 @@ void w_login::user_rq_logout (  )
 void w_login::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
     //  coverage
-    ++ci->coverage.w_login__user_rq_changepass;
+    ++status_common_info::coverage.w_login__user_rq_changepass;
 
     //  remove unused warning
     (void) _old_password;
@@ -1310,7 +1312,7 @@ void w_login::user_rq_changepass ( const std::string&   _old_password, const std
 void w_login::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_login__srv_rs_login_key;
+    ++status_common_info::coverage.w_login__srv_rs_login_key;
 
     //  remove unused warning
     (void) rs;
@@ -1344,7 +1346,7 @@ void w_login::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
 void w_login::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_login__srv_rs_login;
+    ++status_common_info::coverage.w_login__srv_rs_login;
 
     //  remove unused warning
     (void) rs;
@@ -1395,7 +1397,7 @@ void w_login::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 void w_login::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
     //  coverage
-    ++ci->coverage.w_login__srv_cf_logout;
+    ++status_common_info::coverage.w_login__srv_cf_logout;
 
     //  remove unused warning
     (void) cf;
@@ -1429,7 +1431,7 @@ void w_login::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
 void w_login::timeout ( const int&          __            )
 {
     //  coverage
-    ++ci->coverage.w_login__timeout;
+    ++status_common_info::coverage.w_login__timeout;
 
     //  remove unused warning
     (void) __;
@@ -1465,7 +1467,7 @@ void w_login::timeout ( const int&          __            )
 void w_login::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_login__srv_rs_chpwd;
+    ++status_common_info::coverage.w_login__srv_rs_chpwd;
 
     //  remove unused warning
     (void) rs;
@@ -1499,7 +1501,7 @@ void w_login::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
 void login_ok::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
     //  coverage
-    ++ci->coverage.login_ok__user_rq_login;
+    ++status_common_info::coverage.login_ok__user_rq_login;
 
     //  remove unused warning
     (void) _user_name;
@@ -1542,7 +1544,7 @@ void login_ok::user_rq_login ( const std::string&   _user_name , const std::stri
 void login_ok::user_rq_logout (  )
 {
     //  coverage
-    ++ci->coverage.login_ok__user_rq_logout;
+    ++status_common_info::coverage.login_ok__user_rq_logout;
 
     //  remove unused warning
     
@@ -1584,7 +1586,7 @@ void login_ok::user_rq_logout (  )
 void login_ok::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
     //  coverage
-    ++ci->coverage.login_ok__user_rq_changepass;
+    ++status_common_info::coverage.login_ok__user_rq_changepass;
 
     //  remove unused warning
     (void) _old_password;
@@ -1623,7 +1625,7 @@ void login_ok::user_rq_changepass ( const std::string&   _old_password, const st
 void login_ok::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
     //  coverage
-    ++ci->coverage.login_ok__srv_rs_login_key;
+    ++status_common_info::coverage.login_ok__srv_rs_login_key;
 
     //  remove unused warning
     (void) rs;
@@ -1665,7 +1667,7 @@ void login_ok::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs      
 void login_ok::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
     //  coverage
-    ++ci->coverage.login_ok__srv_rs_login;
+    ++status_common_info::coverage.login_ok__srv_rs_login;
 
     //  remove unused warning
     (void) rs;
@@ -1707,7 +1709,7 @@ void login_ok::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 void login_ok::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
     //  coverage
-    ++ci->coverage.login_ok__srv_cf_logout;
+    ++status_common_info::coverage.login_ok__srv_cf_logout;
 
     //  remove unused warning
     (void) cf;
@@ -1742,7 +1744,7 @@ void login_ok::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf           
 void login_ok::timeout ( const int&          __            )
 {
     //  coverage
-    ++ci->coverage.login_ok__timeout;
+    ++status_common_info::coverage.login_ok__timeout;
 
     //  remove unused warning
     (void) __;
@@ -1784,7 +1786,7 @@ void login_ok::timeout ( const int&          __            )
 void login_ok::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  coverage
-    ++ci->coverage.login_ok__srv_rs_chpwd;
+    ++status_common_info::coverage.login_ok__srv_rs_chpwd;
 
     //  remove unused warning
     (void) rs;
@@ -1826,7 +1828,7 @@ void login_ok::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs    
 void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
     //  coverage
-    ++ci->coverage.w_k_chp__user_rq_login;
+    ++status_common_info::coverage.w_k_chp__user_rq_login;
 
     //  remove unused warning
     (void) _user_name;
@@ -1869,7 +1871,7 @@ void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::strin
 void w_k_chp::user_rq_logout (  )
 {
     //  coverage
-    ++ci->coverage.w_k_chp__user_rq_logout;
+    ++status_common_info::coverage.w_k_chp__user_rq_logout;
 
     //  remove unused warning
     
@@ -1911,7 +1913,7 @@ void w_k_chp::user_rq_logout (  )
 void w_k_chp::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
     //  coverage
-    ++ci->coverage.w_k_chp__user_rq_changepass;
+    ++status_common_info::coverage.w_k_chp__user_rq_changepass;
 
     //  remove unused warning
     (void) _old_password;
@@ -1954,7 +1956,7 @@ void w_k_chp::user_rq_changepass ( const std::string&   _old_password, const std
 void w_k_chp::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_k_chp__srv_rs_login_key;
+    ++status_common_info::coverage.w_k_chp__srv_rs_login_key;
 
     //  remove unused warning
     (void) rs;
@@ -1999,7 +2001,7 @@ void w_k_chp::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
 void w_k_chp::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_k_chp__srv_rs_login;
+    ++status_common_info::coverage.w_k_chp__srv_rs_login;
 
     //  remove unused warning
     (void) rs;
@@ -2041,7 +2043,7 @@ void w_k_chp::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 void w_k_chp::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
     //  coverage
-    ++ci->coverage.w_k_chp__srv_cf_logout;
+    ++status_common_info::coverage.w_k_chp__srv_cf_logout;
 
     //  remove unused warning
     (void) cf;
@@ -2076,7 +2078,7 @@ void w_k_chp::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
 void w_k_chp::timeout ( const int&          __            )
 {
     //  coverage
-    ++ci->coverage.w_k_chp__timeout;
+    ++status_common_info::coverage.w_k_chp__timeout;
 
     //  remove unused warning
     (void) __;
@@ -2111,7 +2113,7 @@ void w_k_chp::timeout ( const int&          __            )
 void w_k_chp::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_k_chp__srv_rs_chpwd;
+    ++status_common_info::coverage.w_k_chp__srv_rs_chpwd;
 
     //  remove unused warning
     (void) rs;
@@ -2153,7 +2155,7 @@ void w_k_chp::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs     
 void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::string&   _password     )
 {
     //  coverage
-    ++ci->coverage.w_chpwd__user_rq_login;
+    ++status_common_info::coverage.w_chpwd__user_rq_login;
 
     //  remove unused warning
     (void) _user_name;
@@ -2196,7 +2198,7 @@ void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::strin
 void w_chpwd::user_rq_logout (  )
 {
     //  coverage
-    ++ci->coverage.w_chpwd__user_rq_logout;
+    ++status_common_info::coverage.w_chpwd__user_rq_logout;
 
     //  remove unused warning
     
@@ -2238,7 +2240,7 @@ void w_chpwd::user_rq_logout (  )
 void w_chpwd::user_rq_changepass ( const std::string&   _old_password, const std::string&   _new_password   )
 {
     //  coverage
-    ++ci->coverage.w_chpwd__user_rq_changepass;
+    ++status_common_info::coverage.w_chpwd__user_rq_changepass;
 
     //  remove unused warning
     (void) _old_password;
@@ -2281,7 +2283,7 @@ void w_chpwd::user_rq_changepass ( const std::string&   _old_password, const std
 void w_chpwd::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_chpwd__srv_rs_login_key;
+    ++status_common_info::coverage.w_chpwd__srv_rs_login_key;
 
     //  remove unused warning
     (void) rs;
@@ -2323,7 +2325,7 @@ void w_chpwd::srv_rs_login_key ( const mtk::acs::msg::res_login_key&   rs       
 void w_chpwd::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_chpwd__srv_rs_login;
+    ++status_common_info::coverage.w_chpwd__srv_rs_login;
 
     //  remove unused warning
     (void) rs;
@@ -2365,7 +2367,7 @@ void w_chpwd::srv_rs_login ( const mtk::acs::msg::res_login&   rs            )
 void w_chpwd::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            )
 {
     //  coverage
-    ++ci->coverage.w_chpwd__srv_cf_logout;
+    ++status_common_info::coverage.w_chpwd__srv_cf_logout;
 
     //  remove unused warning
     (void) cf;
@@ -2400,7 +2402,7 @@ void w_chpwd::srv_cf_logout ( const mtk::acs::msg::conf_logout&   cf            
 void w_chpwd::timeout ( const int&          __            )
 {
     //  coverage
-    ++ci->coverage.w_chpwd__timeout;
+    ++status_common_info::coverage.w_chpwd__timeout;
 
     //  remove unused warning
     (void) __;
@@ -2435,7 +2437,7 @@ void w_chpwd::timeout ( const int&          __            )
 void w_chpwd::srv_rs_chpwd ( const mtk::acs::msg::res_change_password&   rs            )
 {
     //  coverage
-    ++ci->coverage.w_chpwd__srv_rs_chpwd;
+    ++status_common_info::coverage.w_chpwd__srv_rs_chpwd;
 
     //  remove unused warning
     (void) rs;
