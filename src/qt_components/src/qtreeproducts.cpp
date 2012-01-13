@@ -257,6 +257,7 @@ void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::res_
 {
     mtk::list<mtk::gen::msg::res_tree_items>::const_iterator it = list_items.begin();
     QTreeWidgetItem* insert_into_item=0;
+    bool first_item_on_request = true;
     while(it != list_items.end())
     {
         mtk::gen::msg::sub_tree_item   item = it->item;
@@ -269,6 +270,12 @@ void qTreeProducts::on_response_request_tree(const mtk::list<mtk::gen::msg::res_
         if(start_item==0)
             throw mtk::Alarm(MTK_HERE, "qtreepreducts", "invalid start item", mtk::alPriorError, mtk::alTypeNoPermisions);
         insert_into_item = get_item_from_branck(next_branch_name, full_path_branch, start_item);
+        if (first_item_on_request  &&  insert_into_item->childCount() != 0)
+        {
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qtreepreducts", MTK_SS(item.branch << "  already populated, posible consecutive requests"), mtk::alPriorError, mtk::alTypeNoPermisions));
+            return;
+        }
+        first_item_on_request = false;
         if(insert_into_item==0)
             throw mtk::Alarm(MTK_HERE, "qtreepreducts", MTK_SS(item.branch << "  item not found"), mtk::alPriorError, mtk::alTypeNoPermisions);
         else
