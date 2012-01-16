@@ -496,7 +496,7 @@ std::ostream& operator<< (std::ostream& o, const FixedNumber& fn)
         absIntCode =  intCode;
 
 
-    int pow10 = int(::pow(10, fn.GetExt().GetDec()));
+    int pow10 = int(::pow(10, fn.GetExt().GetDec())+0.00001);
     int entera  = int(absIntCode / pow10);
     int decimal = absIntCode - entera*pow10;
 
