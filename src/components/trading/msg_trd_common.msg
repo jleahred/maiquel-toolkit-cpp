@@ -33,7 +33,7 @@ sub_total_executions [< >]
 {
     sum_price_by_qty    (spq)   :  double
     acc_quantity        (aqt)   :  fix_num
-    remaining_qty       (rmq)   :  fix_num
+    remaining_qty       (rmq)   :  fix_num      //  on confirm cancelation and reject new, it's 0
 }
 
 
@@ -53,6 +53,8 @@ sub_invariant_order_info  [< >]
     product_code        (pc)   :   mtk::msg::sub_product_code
     side                (sd)   :   enBuySell
     account             (acc)  :   sub_account_info
+    time_in_force       (tf)   :   string       //      DAY  at the moment.   GTC, OPG, IOC, FOK, GTD, ... for future versions
+    automatic           (au)   :   bool
 }
 
 
@@ -92,6 +94,8 @@ CF_XX  [< >]
 
     req_id              (rqid) :   mtk::msg::sub_request_id
     total_execs         (ext)  :   sub_total_executions
+
+    description         (desc) :   string       //      on rejects, it will be the reject reason
 
     orig_control_fluct  (ocf)  :   mtk::msg::sub_control_fluct
 }

@@ -70,8 +70,10 @@ struct  record_info
         mtk::nullable<int>              TEX_REM_QTY;
         mtk::nullable<int>              TEX_REM_QTY_DEC;
         mtk::nullable<int>              TEX_REM_QTY_INC;
-        mtk::nullable<std::string>      REJECT_DESCRIPTION;
+        mtk::nullable<std::string>      DESCRIPTION;
         mtk::nullable<std::string>      REMARKS;
+        mtk::nullable<std::string>      AUTOMATIC;
+        mtk::nullable<std::string>      TIME_IN_FORCE;
 };
 
 
@@ -84,8 +86,8 @@ void insert_record (const record_info&  record)
                                             "CF_POS_PRICE_INC, CF_POS_QUANTITY, CF_POS_QUANTITY_DEC, CF_POS_QUANTITY_INC, EXCF_EXEC_ID, "
                                             "EXCF_POS_PRICE, EXCF_POS_PRICE_DEC, EXCF_POS_PRICE_INC, EXCF_POS_QUANTITY, EXCF_POS_QUANTITY_DEC, "
                                             "EXCF_POS_QUANTITY_INC, TEX_SUM_PRICE_QTY, TEX_ACC_QTY, TEX_ACC_QTY_DEC, TEX_ACC_QTY_INC, TEX_REM_QTY, "
-                                            "TEX_REM_QTY_DEC, TEX_REM_QTY_INC, REJECT_DESCRIPTION, REMARKS)"
-                                " VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                                            "TEX_REM_QTY_DEC, TEX_REM_QTY_INC, DESCRIPTION, REMARKS, AUTOMATIC, TIME_IN_FORCE)"
+                                " VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
     mtk::fbInsertParams params;
 
@@ -137,8 +139,10 @@ void insert_record (const record_info&  record)
         ADD_OPTIONAL_FIELD(TEX_REM_QTY);
         ADD_OPTIONAL_FIELD(TEX_REM_QTY_DEC);
         ADD_OPTIONAL_FIELD(TEX_REM_QTY_INC);
-        ADD_OPTIONAL_FIELD(REJECT_DESCRIPTION);
+        ADD_OPTIONAL_FIELD(DESCRIPTION);
         ADD_OPTIONAL_FIELD(REMARKS);
+        params.Add(record.AUTOMATIC.Get());
+        params.Add(record.TIME_IN_FORCE.Get());
 
         //  Request asynchronous write
         fbi.Insert(params);
@@ -163,6 +167,14 @@ void  fill_invariant  (record_info& full_record, const mtk::trd::msg::sub_invari
 
     full_record.PC_MARKET = invariant.product_code.market;
     full_record.PC_PRODUCT_CODE = invariant.product_code.product;
+
+    full_record.TIME_IN_FORCE = invariant.time_in_force;
+
+    if(invariant.automatic)
+        full_record.AUTOMATIC = "Y";
+    else
+        full_record.AUTOMATIC = "N";
+
 
     if(invariant.side == mtk::trd::msg::buy)
         full_record.SIDE = "buy";
@@ -204,12 +216,13 @@ void  fill_rq_xx(record_info& full_record, const mtk::trd::msg::RQ_XX & rq)
     fill_control_fluct (full_record,  rq.orig_control_fluct);
 }
 
-void  fill_cf_xx(record_info& full_record, const mtk::trd::msg::CF_XX & cf)
+void  fill_cf_xx(record_info& full_record, const mtk::trd::msg::CF_XX & cf)     //  cf or rj
 {
     fill_invariant  (full_record, cf.invariant);
     full_record.MARKET_ORDER_ID = cf.market_order_id;
-    full_record.RID_RQ_CODE = cf.req_id.req_code;
-    full_record.RID_SESSION_ID = cf.req_id.session_id;
+    full_record.RID_RQ_CODE     = cf.req_id.req_code;
+    full_record.RID_SESSION_ID  = cf.req_id.session_id;
+    full_record.DESCRIPTION     = cf.description;
     fill_control_fluct (full_record,  cf.orig_control_fluct);
 
     fill_total_executions(full_record, cf.total_execs);
@@ -255,7 +268,7 @@ void  fill_cf_xx_ls(record_info& full_record, const mtk::trd::msg::CF_XX_LS & cf
     fill_cf_xx(full_record, cf);
 }
 
-template<typename T>        //  ie:  mtk::trd::msg::CF_NW_LS
+template<typename T>        //  ie:  mtk::trd::msg::CF_NW_LS  also rejects
 void on_cf_xx_ls(const T&  cf)
 {
     record_info  full_record;
@@ -267,7 +280,7 @@ void on_cf_xx_ls(const T&  cf)
     insert_record(full_record);
 }
 
-template<typename T>        //  ie:  mtk::trd::msg::CF_NW_LS
+template<typename T>        //  ie:  mtk::trd::msg::CF_EX_LS
 void on_cf_ex_ls(const T&  ex)
 {
     record_info  full_record;
@@ -280,18 +293,6 @@ void on_cf_ex_ls(const T&  ex)
     insert_record(full_record);
 }
 
-template<typename T>        //  ie:  mtk::trd::msg::RJ_NW_LS
-void on_rj_xx_ls(const T&  rj)
-{
-    record_info  full_record;
-
-    fill_cf_xx_ls(full_record, rj);
-    full_record.REJECT_DESCRIPTION = rj.reject_description;
-    full_record.SENT_TIME  =  rj.__internal_warning_control_fields->sent_date_time;
-    full_record.ORDER_TYPE =  rj.__internal_warning_control_fields->message_type;
-    full_record.REC_TIME   =  mtk::dtNowLocal();
-    insert_record(full_record);
-}
 
 
 
@@ -334,7 +335,7 @@ void on_cf_xx_mk(const T&  cf)
     insert_record(full_record);
 }
 
-template<typename T>        //  ie:  mtk::trd::msg::CF_NW_LS
+template<typename T>        //  ie:  mtk::trd::msg::CF_EX_LS
 void on_cf_ex_mk(const T&  ex)
 {
     record_info  full_record;
@@ -347,18 +348,6 @@ void on_cf_ex_mk(const T&  ex)
     insert_record(full_record);
 }
 
-template<typename T>        //  ie:  mtk::trd::msg::RJ_NW_MK
-void on_rj_xx_mk(const T&  rj)
-{
-    record_info  full_record;
-
-    fill_cf_xx_mk(full_record, rj);
-    full_record.REJECT_DESCRIPTION = rj.reject_description;
-    full_record.SENT_TIME  =  rj.__internal_warning_control_fields->sent_date_time;
-    full_record.ORDER_TYPE =  rj.__internal_warning_control_fields->message_type;
-    full_record.REC_TIME   =  mtk::dtNowLocal();
-    insert_record(full_record);
-}
 
 
 
@@ -404,9 +393,9 @@ int main(int argc, char ** argv)
         MAKE_TRADING_SUSCRIPTION_CF   (CF_MD_LS, on_cf_xx_ls);
         MAKE_TRADING_SUSCRIPTION_CF   (CF_CC_LS, on_cf_xx_ls);
 
-        MAKE_TRADING_SUSCRIPTION_CF   (RJ_NW_LS, on_rj_xx_ls);
-        MAKE_TRADING_SUSCRIPTION_CF   (RJ_MD_LS, on_rj_xx_ls);
-        MAKE_TRADING_SUSCRIPTION_CF   (RJ_CC_LS, on_rj_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_NW_LS, on_cf_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_MD_LS, on_cf_xx_ls);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_CC_LS, on_cf_xx_ls);
 
         MAKE_TRADING_SUSCRIPTION_CF   (CF_EX_LS, on_cf_ex_ls);
 
@@ -422,9 +411,9 @@ int main(int argc, char ** argv)
         MAKE_TRADING_SUSCRIPTION_CF   (CF_MD_MK, on_cf_xx_mk);
         MAKE_TRADING_SUSCRIPTION_CF   (CF_CC_MK, on_cf_xx_mk);
 
-        MAKE_TRADING_SUSCRIPTION_CF   (RJ_NW_MK, on_rj_xx_mk);
-        MAKE_TRADING_SUSCRIPTION_CF   (RJ_MD_MK, on_rj_xx_mk);
-        MAKE_TRADING_SUSCRIPTION_CF   (RJ_CC_MK, on_rj_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_NW_MK, on_cf_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_MD_MK, on_cf_xx_mk);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_CC_MK, on_cf_xx_mk);
 
         MAKE_TRADING_SUSCRIPTION_CF   (CF_EX_MK, on_cf_ex_mk);
 

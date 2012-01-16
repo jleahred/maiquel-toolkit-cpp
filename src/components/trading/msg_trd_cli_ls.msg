@@ -90,7 +90,6 @@ CF_EX_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.$
 
 RJ_XX_LS  [< I:CF_XX_LS >]
 {
-    reject_description  (rjd)    :   string
     request_pos         (rqp)    :   sub_position_ls
 }
 

@@ -239,7 +239,7 @@ public:
 
     
     // constructor
-    explicit sub_invariant_order_info (    const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account );
+    explicit sub_invariant_order_info (    const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account,   const std::string&  _time_in_force,   const bool&  _automatic );
     explicit sub_invariant_order_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_invariant_order_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_invariant_order_info"; };
@@ -255,6 +255,8 @@ public:
     mtk::msg::sub_product_code                product_code; 
     enBuySell                                 side; 
     sub_account_info                          account; 
+    std::string                               time_in_force; 
+    bool                                      automatic; 
 
 
 
@@ -336,7 +338,7 @@ public:
 
     
     // constructor
-    explicit CF_XX (    const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+    explicit CF_XX (    const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const sub_total_executions&  _total_execs,   const std::string&  _description,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit CF_XX ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; };
@@ -352,6 +354,7 @@ public:
     std::string                               market_order_id; 
     mtk::msg::sub_request_id                  req_id; 
     sub_total_executions                      total_execs; 
+    std::string                               description; 
     mtk::msg::sub_control_fluct               orig_control_fluct; 
 
 

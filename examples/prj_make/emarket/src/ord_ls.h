@@ -7,6 +7,9 @@
 // coded last modification:        $CODED_LAST_MODIF  desactivated, lots of false notifications
 // pythonscript last modification: $SCRIPT_LAST_MODIF
 
+#include "support/mtk_string.h"
+
+
 
 #include "support/alarm.h"
 #include "support/signalslot.hpp"
@@ -72,6 +75,12 @@ public:
 
 
 
+
+    //  STATS AND COVERAGE
+    std::string  get_coverage_string(void);
+    
+    
+
     void  set   (const mtk::CountPtr<ord_ls_dangerous_signals_not_warped>&  _ptr);
 
 
@@ -123,6 +132,10 @@ public:
     const mtk::nullable<mtk::trd::msg::RQ_XX_LS>       &  last_request () const;
     const int                                          &  sequence () const;
 
+
+
+    //  STATS AND COVERAGE
+    std::string  get_coverage_string(void);
 
 
 private:

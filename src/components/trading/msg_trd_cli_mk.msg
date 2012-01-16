@@ -85,7 +85,6 @@ CF_EX_MK  [< I:CF_XX_MK,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.$
 //	rejects  MK
 RJ_XX_MK  [< I:CF_XX_MK  >]
 {
-    reject_description  (rjd)    :   string
     request_pos         (rqp)    :   sub_position_mk
 }
 

@@ -506,8 +506,8 @@ void sub_account_info::before_send(void) const
 
 
 
-sub_invariant_order_info::sub_invariant_order_info (   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account)
-    :     order_id(_order_id),   product_code(_product_code),   side(_side),   account(_account) 
+sub_invariant_order_info::sub_invariant_order_info (   const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account,   const std::string&  _time_in_force,   const bool&  _automatic)
+    :     order_id(_order_id),   product_code(_product_code),   side(_side),   account(_account),   time_in_force(_time_in_force),   automatic(_automatic) 
        
     {  
         std::string cr = check_recomended ();  
@@ -560,8 +560,8 @@ void RQ_XX::before_send(void) const
 
 
 
-CF_XX::CF_XX (   const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const sub_total_executions&  _total_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
-    :     invariant(_invariant),   market_order_id(_market_order_id),   req_id(_req_id),   total_execs(_total_execs),   orig_control_fluct(_orig_control_fluct) 
+CF_XX::CF_XX (   const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const sub_total_executions&  _total_execs,   const std::string&  _description,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     invariant(_invariant),   market_order_id(_market_order_id),   req_id(_req_id),   total_execs(_total_execs),   description(_description),   orig_control_fluct(_orig_control_fluct) 
        
     {  
         std::string cr = check_recomended ();  
@@ -751,7 +751,7 @@ std::ostream& operator<< (std::ostream& o, const sub_invariant_order_info & c)
 {
     o << "{ "
 
-        << "order_id:"<< c.order_id<<"  "        << "product_code:"<< c.product_code<<"  "        << "side:"<< c.side<<"  "        << "account:"<< c.account<<"  "
+        << "order_id:"<< c.order_id<<"  "        << "product_code:"<< c.product_code<<"  "        << "side:"<< c.side<<"  "        << "account:"<< c.account<<"  "        << "time_in_force:"<<   c.time_in_force << "  "        << "automatic:"<< c.automatic<<"  "
         << " }";
     return o;
 };
@@ -762,7 +762,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_invariant_order_info & c
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "order_id"  << YAML::Value << c.order_id        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "side"  << YAML::Value << c.side        << YAML::Key << "account"  << YAML::Value << c.account
+        << YAML::Key << "order_id"  << YAML::Value << c.order_id        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "side"  << YAML::Value << c.side        << YAML::Key << "account"  << YAML::Value << c.account        << YAML::Key << "time_in_force"  << YAML::Value <<   c.time_in_force        << YAML::Key << "automatic"  << YAML::Value << c.automatic
         << YAML::EndMap;
     return o;
 };
@@ -777,6 +777,8 @@ void  operator >> (const YAML::Node& node, sub_invariant_order_info & c)
         node["product_code"]  >> c.product_code;
         node["side"]  >> c.side;
         node["account"]  >> c.account;
+        node["time_in_force"]  >> c.time_in_force;
+        node["automatic"]  >> c.automatic;
 
 
 };
@@ -820,7 +822,7 @@ std::ostream& operator<< (std::ostream& o, const CF_XX & c)
 {
     o << "{ "
 
-        << "invariant:"<< c.invariant<<"  "        << "market_order_id:"<<   c.market_order_id << "  "        << "req_id:"<< c.req_id<<"  "        << "total_execs:"<< c.total_execs<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
+        << "invariant:"<< c.invariant<<"  "        << "market_order_id:"<<   c.market_order_id << "  "        << "req_id:"<< c.req_id<<"  "        << "total_execs:"<< c.total_execs<<"  "        << "description:"<<   c.description << "  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
         << " }";
     return o;
 };
@@ -831,7 +833,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_XX & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "invariant"  << YAML::Value << c.invariant        << YAML::Key << "market_order_id"  << YAML::Value <<   c.market_order_id        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "total_execs"  << YAML::Value << c.total_execs        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
+        << YAML::Key << "invariant"  << YAML::Value << c.invariant        << YAML::Key << "market_order_id"  << YAML::Value <<   c.market_order_id        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "total_execs"  << YAML::Value << c.total_execs        << YAML::Key << "description"  << YAML::Value <<   c.description        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
         << YAML::EndMap;
     return o;
 };
@@ -846,6 +848,7 @@ void  operator >> (const YAML::Node& node, CF_XX & c)
         node["market_order_id"]  >> c.market_order_id;
         node["req_id"]  >> c.req_id;
         node["total_execs"]  >> c.total_execs;
+        node["description"]  >> c.description;
         node["orig_control_fluct"]  >> c.orig_control_fluct;
 
 
@@ -950,7 +953,7 @@ bool operator!= (const sub_account_info& a, const sub_account_info& b)
 
 bool operator== (const sub_invariant_order_info& a, const sub_invariant_order_info& b)
 {
-    return (          a.order_id ==  b.order_id  &&          a.product_code ==  b.product_code  &&          a.side ==  b.side  &&          a.account ==  b.account  &&   true  );
+    return (          a.order_id ==  b.order_id  &&          a.product_code ==  b.product_code  &&          a.side ==  b.side  &&          a.account ==  b.account  &&          a.time_in_force ==  b.time_in_force  &&          a.automatic ==  b.automatic  &&   true  );
 };
 
 bool operator!= (const sub_invariant_order_info& a, const sub_invariant_order_info& b)
@@ -974,7 +977,7 @@ bool operator!= (const RQ_XX& a, const RQ_XX& b)
 
 bool operator== (const CF_XX& a, const CF_XX& b)
 {
-    return (          a.invariant ==  b.invariant  &&          a.market_order_id ==  b.market_order_id  &&          a.req_id ==  b.req_id  &&          a.total_execs ==  b.total_execs  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
+    return (          a.invariant ==  b.invariant  &&          a.market_order_id ==  b.market_order_id  &&          a.req_id ==  b.req_id  &&          a.total_execs ==  b.total_execs  &&          a.description ==  b.description  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
 };
 
 bool operator!= (const CF_XX& a, const CF_XX& b)
@@ -1251,6 +1254,22 @@ void  copy (sub_invariant_order_info& c, const qpid::types::Variant& v)
                     else
                         copy(c.account, it->second);
                         //__internal_qpid_fill(c.account, it->second.asMap());
+//   field_type
+
+                    it = mv.find("tf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field time_in_force on message sub_invariant_order_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.time_in_force, it->second);
+                        //c.time_in_force = it->second;
+//   sub_msg_type
+
+                    it = mv.find("au");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field automatic on message sub_invariant_order_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.automatic, it->second);
+                        //__internal_qpid_fill(c.automatic, it->second.asMap());
 
     }
 
@@ -1269,6 +1288,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_invariant_ord
         __internal_add2map(map, a.side, std::string("sd"));
 //  sub_msg_type
         __internal_add2map(map, a.account, std::string("acc"));
+//  field_type
+        __internal_add2map(map, a.time_in_force, std::string("tf"));
+//  sub_msg_type
+        __internal_add2map(map, a.automatic, std::string("au"));
 
 
 };
@@ -1383,6 +1406,14 @@ void  copy (CF_XX& c, const qpid::types::Variant& v)
                     else
                         copy(c.total_execs, it->second);
                         //__internal_qpid_fill(c.total_execs, it->second.asMap());
+//   field_type
+
+                    it = mv.find("desc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field description on message CF_XX::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.description, it->second);
+                        //c.description = it->second;
 //   sub_msg_type
 
                     it = mv.find("ocf");
@@ -1409,6 +1440,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX& a)
         __internal_add2map(map, a.req_id, std::string("rqid"));
 //  sub_msg_type
         __internal_add2map(map, a.total_execs, std::string("ext"));
+//  field_type
+        __internal_add2map(map, a.description, std::string("desc"));
 //  sub_msg_type
         __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
 
@@ -1576,7 +1609,11 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
 //   sub_msg_type
    __internal_get_default((enBuySell*)0),
 //   sub_msg_type
-   __internal_get_default((sub_account_info*)0)
+   __internal_get_default((sub_account_info*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   sub_msg_type
+   __internal_get_default((bool*)0)
             );
     }
     
@@ -1603,6 +1640,8 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
    __internal_get_default((mtk::msg::sub_request_id*)0),
 //   sub_msg_type
    __internal_get_default((sub_total_executions*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_control_fluct*)0)
             );
@@ -1692,7 +1731,11 @@ sub_invariant_order_info::sub_invariant_order_info (const qpid::types::Variant::
 //   sub_msg_type
    side(__internal_get_default((enBuySell*)0)),
 //   sub_msg_type
-   account(__internal_get_default((sub_account_info*)0)) 
+   account(__internal_get_default((sub_account_info*)0)),
+//   field_type
+   time_in_force(__internal_get_default((std::string*)0)),
+//   sub_msg_type
+   automatic(__internal_get_default((bool*)0)) 
     {
         copy(*this, mv);
         std::string cr = check_recomended ();  
@@ -1729,6 +1772,8 @@ CF_XX::CF_XX (const qpid::types::Variant::Map&  mv)
    req_id(__internal_get_default((mtk::msg::sub_request_id*)0)),
 //   sub_msg_type
    total_execs(__internal_get_default((sub_total_executions*)0)),
+//   field_type
+   description(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {

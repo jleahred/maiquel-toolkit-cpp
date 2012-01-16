@@ -448,7 +448,7 @@ mtk::CountPtr<ORDER_TYPE>   rq_nw_xx    (               const mtk::msg::sub_prod
     mtk::CountPtr<ORDER_TYPE> order = get_order<ORDER_TYPE>(ord_id);
 
 
-    mtk::trd::msg::sub_invariant_order_info  invariant  (ord_id, pc, buy_sell, account);
+    mtk::trd::msg::sub_invariant_order_info  invariant  (ord_id, pc, buy_sell, account, "DAY", false);
     mtk::trd::msg::RQ_XX                     rqxx       (invariant, rq_info, mtk::admin::get_control_fluct_info());
     REQUEST_TYPE                             rqxxxx     (rqxx, rq_pos);
 
@@ -472,7 +472,7 @@ mtk::CountPtr<ORDER_TYPE>   rq_nw_xx_manual    (        const mtk::msg::sub_prod
     mtk::trd::msg::sub_order_id ord_id (rq_info.req_id);
 
     mtk::trd::msg::sub_account_info          account    ("", "");
-    mtk::trd::msg::sub_invariant_order_info  invariant  (ord_id, pc, buy_sell, account);
+    mtk::trd::msg::sub_invariant_order_info  invariant  (ord_id, pc, buy_sell, account, "DAY", false);
     mtk::trd::msg::RQ_XX                     rqxx       (invariant, rq_info, mtk::admin::get_control_fluct_info());
     REQUEST_TYPE                             rqxxls     (rqxx, rq_pos);
 

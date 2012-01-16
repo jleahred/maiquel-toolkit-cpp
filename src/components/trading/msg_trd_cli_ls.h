@@ -527,7 +527,7 @@ public:
 
     
     // constructor
-    explicit RJ_XX_LS (  const CF_XX_LS&  parent,   const std::string&  _reject_description,   const sub_position_ls&  _request_pos );
+    explicit RJ_XX_LS (  const CF_XX_LS&  parent,   const sub_position_ls&  _request_pos );
     explicit RJ_XX_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RJ_XX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_XX_LS"; };
@@ -539,7 +539,6 @@ public:
     
 
     // fields
-    std::string                               reject_description; 
     sub_position_ls                           request_pos; 
 
 

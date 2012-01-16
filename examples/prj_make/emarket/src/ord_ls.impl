@@ -3,12 +3,89 @@
 // coded last modification:        $CODED_LAST_MODIF  desactivated, lots of false notifications
 // pythonscript last modification: $SCRIPT_LAST_MODIF
 
+#include "support/mtk_string.h"
+
+
 
 
 namespace fsmgen_ord_ls {
 
 
 class abstract_status;
+
+
+// -----------------------------------------------------------------------
+//      c o v e r a g e
+struct   scoverage
+{
+    scoverage(void) :
+
+          init__cli_rq_nw (0)
+        , init__cli_rq_md (0)
+        , init__cli_rq_cc (0)
+        , init__mkt_cf_ex (0)
+        , market__cli_rq_nw (0)
+        , market__cli_rq_md (0)
+        , market__cli_rq_cc (0)
+        , market__mkt_cf_ex (0)
+        , canceled__cli_rq_nw (0)
+        , canceled__cli_rq_md (0)
+        , canceled__cli_rq_cc (0)
+        , canceled__mkt_cf_ex (0)
+        , executed__cli_rq_nw (0)
+        , executed__cli_rq_md (0)
+        , executed__cli_rq_cc (0)
+        , executed__mkt_cf_ex (0)
+    {}
+
+    int   init__cli_rq_nw;
+    int   init__cli_rq_md;
+    int   init__cli_rq_cc;
+    int   init__mkt_cf_ex;
+    int   market__cli_rq_nw;
+    int   market__cli_rq_md;
+    int   market__cli_rq_cc;
+    int   market__mkt_cf_ex;
+    int   canceled__cli_rq_nw;
+    int   canceled__cli_rq_md;
+    int   canceled__cli_rq_cc;
+    int   canceled__mkt_cf_ex;
+    int   executed__cli_rq_nw;
+    int   executed__cli_rq_md;
+    int   executed__cli_rq_cc;
+    int   executed__mkt_cf_ex;
+
+    std::string  get_string(void)
+    {
+
+        static mtk::dtDateTime  last_result_date_time = mtk::dtNowLocal() - mtk::dtDays(1);
+        static std::string last_result = "";
+        int num_touched=0;
+        if(last_result_date_time + mtk::dtSeconds(30) > mtk::dtNowLocal())
+            last_result = "";
+              if(init__cli_rq_nw)   {++num_touched; last_result += MTK_SS("init__cli_rq_nw:" << init__cli_rq_nw << std::endl);}
+              if(init__cli_rq_md)   {++num_touched; last_result += MTK_SS("init__cli_rq_md:" << init__cli_rq_md << std::endl);}
+              if(init__cli_rq_cc)   {++num_touched; last_result += MTK_SS("init__cli_rq_cc:" << init__cli_rq_cc << std::endl);}
+              if(init__mkt_cf_ex)   {++num_touched; last_result += MTK_SS("init__mkt_cf_ex:" << init__mkt_cf_ex << std::endl);}
+              if(market__cli_rq_nw)   {++num_touched; last_result += MTK_SS("market__cli_rq_nw:" << market__cli_rq_nw << std::endl);}
+              if(market__cli_rq_md)   {++num_touched; last_result += MTK_SS("market__cli_rq_md:" << market__cli_rq_md << std::endl);}
+              if(market__cli_rq_cc)   {++num_touched; last_result += MTK_SS("market__cli_rq_cc:" << market__cli_rq_cc << std::endl);}
+              if(market__mkt_cf_ex)   {++num_touched; last_result += MTK_SS("market__mkt_cf_ex:" << market__mkt_cf_ex << std::endl);}
+              if(canceled__cli_rq_nw)   {++num_touched; last_result += MTK_SS("canceled__cli_rq_nw:" << canceled__cli_rq_nw << std::endl);}
+              if(canceled__cli_rq_md)   {++num_touched; last_result += MTK_SS("canceled__cli_rq_md:" << canceled__cli_rq_md << std::endl);}
+              if(canceled__cli_rq_cc)   {++num_touched; last_result += MTK_SS("canceled__cli_rq_cc:" << canceled__cli_rq_cc << std::endl);}
+              if(canceled__mkt_cf_ex)   {++num_touched; last_result += MTK_SS("canceled__mkt_cf_ex:" << canceled__mkt_cf_ex << std::endl);}
+              if(executed__cli_rq_nw)   {++num_touched; last_result += MTK_SS("executed__cli_rq_nw:" << executed__cli_rq_nw << std::endl);}
+              if(executed__cli_rq_md)   {++num_touched; last_result += MTK_SS("executed__cli_rq_md:" << executed__cli_rq_md << std::endl);}
+              if(executed__cli_rq_cc)   {++num_touched; last_result += MTK_SS("executed__cli_rq_cc:" << executed__cli_rq_cc << std::endl);}
+              if(executed__mkt_cf_ex)   {++num_touched; last_result += MTK_SS("executed__mkt_cf_ex:" << executed__mkt_cf_ex << std::endl);}
+
+        last_result += MTK_SS("__num_touched__:"  <<  num_touched);
+        return last_result;
+
+    }
+};
+
 
 // -----------------------------------------------------------------------
 //      s t a t u s _ c o m m o n _ i n f o
@@ -63,7 +140,12 @@ struct  status_common_info
     mtk::Signal<> signal_keep_temp_status;
     mtk::Signal<> signal_remove_temp_status;
 
+
+    //  STATS AND COVERAGE
+    static  scoverage     coverage;
 };
+
+scoverage status_common_info::coverage;
 
 
 
@@ -96,6 +178,9 @@ public:
     virtual const mtk::nullable<mtk::trd::msg::RQ_XX_LS>       &  last_request (void) const { return ci->last_request(); }; 
     virtual const int                                          &  sequence (void) const { return ci->sequence(); }; 
 
+
+    //  COVERAGE
+    std::string  get_coverage_string(void)  { return ci->coverage.get_string(); };
 };
 
 
@@ -235,6 +320,9 @@ public:
 
 void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.init__cli_rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -292,7 +380,7 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
@@ -354,6 +442,9 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
 
 void init::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.init__cli_rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -390,6 +481,9 @@ void init::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
 
 void init::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.init__cli_rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -426,6 +520,9 @@ void init::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
 
 void init::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 {
+    //  coverage
+    ++status_common_info::coverage.init__mkt_cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -465,6 +562,9 @@ void init::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 
 void market::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.market__cli_rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -523,6 +623,9 @@ void market::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
 
 void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.market__cli_rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -573,7 +676,7 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
@@ -635,6 +738,9 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
 
 void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.market__cli_rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -685,7 +791,7 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
@@ -736,6 +842,9 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
 
 void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 {
+    //  coverage
+    ++status_common_info::coverage.market__mkt_cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -811,6 +920,9 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 
 void canceled::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.canceled__cli_rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -847,6 +959,9 @@ void canceled::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
 
 void canceled::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.canceled__cli_rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -883,6 +998,9 @@ void canceled::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
 
 void canceled::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.canceled__cli_rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -919,6 +1037,9 @@ void canceled::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
 
 void canceled::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 {
+    //  coverage
+    ++status_common_info::coverage.canceled__mkt_cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -958,6 +1079,9 @@ void canceled::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 
 void executed::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.executed__cli_rq_nw;
+
     //  remove unused warning
     (void) rq;
 
@@ -994,6 +1118,9 @@ void executed::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
 
 void executed::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.executed__cli_rq_md;
+
     //  remove unused warning
     (void) rq;
 
@@ -1030,6 +1157,9 @@ void executed::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
 
 void executed::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
 {
+    //  coverage
+    ++status_common_info::coverage.executed__cli_rq_cc;
+
     //  remove unused warning
     (void) rq;
 
@@ -1066,6 +1196,9 @@ void executed::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
 
 void executed::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 {
+    //  coverage
+    ++status_common_info::coverage.executed__mkt_cf_ex;
+
     //  remove unused warning
     (void) ex;
 
@@ -1136,6 +1269,11 @@ void ord_ls_dangerous_signals_not_warped::on_remove_temp_status (void)
     queue_temp_status.pop_front();
 }
 
+
+std::string  ord_ls_dangerous_signals_not_warped::get_coverage_string(void)
+{
+    return current_status->get_coverage_string();
+}
 
 void ord_ls_dangerous_signals_not_warped::cli_rq_nw (const mtk::trd::msg::oms_RQ_NW_LS&   rq           )
 {
@@ -1252,4 +1390,8 @@ const mtk::nullable<mtk::trd::msg::RQ_XX_LS>       & ord_ls::last_request (void)
 const int                                          & ord_ls::sequence (void) const
 {
     return  ptr->sequence();
+}
+std::string  ord_ls::get_coverage_string (void)
+{
+    return ptr->get_coverage_string();
 }

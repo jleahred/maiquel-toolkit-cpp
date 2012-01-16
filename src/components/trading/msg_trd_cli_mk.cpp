@@ -668,8 +668,8 @@ void CF_EX_MK::before_send(void) const
 
 
 
-RJ_XX_MK::RJ_XX_MK ( const CF_XX_MK&  parent,   const std::string&  _reject_description,   const sub_position_mk&  _request_pos)
-    :  CF_XX_MK(parent),   reject_description(_reject_description),   request_pos(_request_pos) 
+RJ_XX_MK::RJ_XX_MK ( const CF_XX_MK&  parent,   const sub_position_mk&  _request_pos)
+    :  CF_XX_MK(parent),   request_pos(_request_pos) 
        
     {  
         std::string cr = check_recomended ();  
@@ -1130,7 +1130,7 @@ std::ostream& operator<< (std::ostream& o, const RJ_XX_MK & c)
 {
     o << "{ "
     << "("  <<  static_cast<const CF_XX_MK&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "request_pos:"<< c.request_pos<<"  "
+        << "request_pos:"<< c.request_pos<<"  "
         << " }";
     return o;
 };
@@ -1141,7 +1141,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const RJ_XX_MK & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "CF_XX_MK" <<  YAML::Value << static_cast<const CF_XX_MK&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "request_pos"  << YAML::Value << c.request_pos
+        << YAML::Key << "request_pos"  << YAML::Value << c.request_pos
         << YAML::EndMap;
     return o;
 };
@@ -1153,7 +1153,6 @@ void  operator >> (const YAML::Node& node, RJ_XX_MK & c)
 
     node["CF_XX_MK"]   >>   static_cast<CF_XX_MK&>(c)  ;
 
-        node["reject_description"]  >> c.reject_description;
         node["request_pos"]  >> c.request_pos;
 
 
@@ -1411,7 +1410,7 @@ bool operator!= (const CF_EX_MK& a, const CF_EX_MK& b)
 
 bool operator== (const RJ_XX_MK& a, const RJ_XX_MK& b)
 {
-    return ( (static_cast<const CF_XX_MK&>(a)   ==  static_cast<const CF_XX_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.request_pos ==  b.request_pos  &&   true  );
+    return ( (static_cast<const CF_XX_MK&>(a)   ==  static_cast<const CF_XX_MK&>(b))  &&           a.request_pos ==  b.request_pos  &&   true  );
 };
 
 bool operator!= (const RJ_XX_MK& a, const RJ_XX_MK& b)
@@ -1854,14 +1853,6 @@ void  copy (RJ_XX_MK& c, const qpid::types::Variant& v)
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<CF_XX_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("rjd");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field reject_description on message RJ_XX_MK::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.reject_description, it->second);
-                        //c.reject_description = it->second;
 //   sub_msg_type
 
                     it = mv.find("rqp");
@@ -1882,8 +1873,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_MK& a)
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_MK&>(a));
 
-//  field_type
-        __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  sub_msg_type
         __internal_add2map(map, a.request_pos, std::string("rqp"));
 
@@ -2384,9 +2373,7 @@ __internal_get_default((CF_XX_MK*)0), //   sub_msg_type
     RJ_XX_MK  __internal_get_default(RJ_XX_MK*)
     {
         return RJ_XX_MK(
-__internal_get_default((CF_XX_MK*)0), //   field_type
-   __internal_get_default ((std::string*)0),
-//   sub_msg_type
+__internal_get_default((CF_XX_MK*)0), //   sub_msg_type
    __internal_get_default((sub_position_mk*)0)
             );
     }
@@ -2548,9 +2535,7 @@ CF_EX_MK::CF_EX_MK (const qpid::types::Variant::Map&  mv)
 
 
 RJ_XX_MK::RJ_XX_MK (const qpid::types::Variant::Map&  mv)
-    :  CF_XX_MK(mv), //   field_type
-   reject_description(__internal_get_default((std::string*)0)),
-//   sub_msg_type
+    :  CF_XX_MK(mv), //   sub_msg_type
    request_pos(__internal_get_default((sub_position_mk*)0)) 
     {
         copy(*this, mv);
