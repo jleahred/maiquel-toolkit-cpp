@@ -516,7 +516,7 @@ std::ostream& operator<< (std::ostream& os, const fnExt& fnExt)
 {
     std::streamsize old_precision = os.precision();
     os.precision(fnExt.GetDec());
-    os << "#" << std::setiosflags(std::ios::fixed) << 1. /::pow(10, fnExt.GetDec())  * fnExt.GetInc() << std::endl;
+    os << "#" << std::setiosflags(std::ios::fixed) << 1. /::pow(10, fnExt.GetDec())  * fnExt.GetInc();
     os.precision(old_precision);
     return os;
 }
