@@ -23,7 +23,7 @@ namespace {
     const int col_quantity              = 2;
     const int col_price                 = 3;
     const int col_cli_ref               = 4;
-    const int col_aditional_code        = 5;
+    const int col_market_code           = 5;
     const int col_request_id            = 6;
     const int col_remarks               = 7;
 
@@ -56,7 +56,7 @@ QHistoricTable::QHistoricTable(QWidget *parent) :
                                                         QT_TR_NOOP("quantity"),
                                                         QT_TR_NOOP("price"),
                                                         QT_TR_NOOP("cli_ref"),
-                                                        QT_TR_NOOP("adit.code."),
+                                                        QT_TR_NOOP("mk.code."),
                                                         QT_TR_NOOP("req.id."),
                                                         QT_TR_NOOP("remarks"),
                                                         0          };
@@ -153,7 +153,7 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
         this->item(row, col_price)->setText(QLatin1String("") );
     this->item(row, col_quantity)->setText(qtmisc::fn_as_QString(item.quantity));
     this->item(row, col_cli_ref)->setText(QLatin1String(MTK_SS(item.cli_ref).c_str()));
-    this->item(row, col_aditional_code)->setText(QLatin1String(MTK_SS(item.aditional_code).c_str()));
+    this->item(row, col_market_code)->setText(QLatin1String(MTK_SS(item.market_code).c_str()));
     this->item(row, col_request_id)->setText(QLatin1String(MTK_SS(item.request_id).c_str()));
 
     this->item(row, col_remarks)->setText(QLatin1String(MTK_SS(item.confirmation_delay << "  " << item.remarks).c_str()));

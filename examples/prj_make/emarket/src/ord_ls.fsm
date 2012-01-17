@@ -253,12 +253,11 @@ executed --   mkt_cf_ex                    /   LE                             ''
                     else
                     {
                         static  int  market_order_id=0;
-                        ++market_order_id;
                         mtk::trd::msg::sub_total_executions  total_execs (
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS("moid::" << ++market_order_id), rq.request_info.req_id, total_execs, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }

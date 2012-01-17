@@ -51,7 +51,10 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
             if(is_previus==true)
             {
                 if(new_item.type == tt_cf)
+                {
                     prev_item.type = tt_rq_confirmated;
+                    prev_item.market_code = new_item.market_code;
+                }
                 else if (new_item.type == tt_rj)        //  rejects will be added as new item
                     prev_item.type = tt_rq_not_pending;
                 else

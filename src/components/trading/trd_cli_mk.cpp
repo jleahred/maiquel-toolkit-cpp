@@ -42,6 +42,7 @@
         tresult2 = mtk::trd::msg::check_request_last_confirm<mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::CF_XX_MK>(rq, last_confirmation()   ); \
         nerrors += tresult2._0;    \
         ci->__serrors += tresult2._1;    \
+        qty_lower_exec = tresult2._2;    \
         tresult = mtk::trd::msg::check_request_not_modifying<mtk::trd::msg::RQ_XX_MK, mtk::trd::msg::CF_XX_MK>(rq, last_request(), last_confirmation() ); \
         nerrors += tresult._0;    \
         ci->__serrors += tresult._1;    \
@@ -135,7 +136,7 @@
             mtk::trd::msg::sub_total_executions total_execs(0.,     \
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)),    \
                                                 mtk::FixedNumber(mtk::fnDouble(0.),  mtk::fnDec(0),  mtk::fnInc(1)) );    \
-            mtk::trd::msg::CF_XX cfxx(rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, ci->__serrors + __DESCRIPTION__ , mtk::admin::get_control_fluct_info());  \
+            mtk::trd::msg::CF_XX cfxx(rq.invariant, MTK_SS(market_order_id), rq.request_info.req_id, total_execs, ci->__serrors + __DESCRIPTION__, mtk::admin::get_control_fluct_info());  \
             mtk::trd::msg::CF_XX_MK  rjxx(cfxx, last_request().Get().request_pos);      \
             cptr_rj = mtk::make_cptr(new mtk::trd::msg::__MSG_TYPE__(mtk::trd::msg::RJ_XX_MK(rjxx, last_request().Get().request_pos))); \
             ci->__SIGNAL_TYPE__(*cptr_rj);  \
@@ -171,7 +172,7 @@
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_cf, tt2_##__nw_md_cc__,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::nullable<mtk::FixedNumber>(), __VAR_NAME__.market_pos.quantity,        \
-                        __VAR_NAME__.market_pos.cli_ref, "", ""}));       \
+                        __VAR_NAME__.market_pos.cli_ref, __VAR_NAME__.market_order_id, __VAR_NAME__.description}));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
@@ -185,7 +186,7 @@
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_rj, tt2_##__nw_md_cc__,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::nullable<mtk::FixedNumber>(), __VAR_NAME__.request_pos.quantity,        \
-                        __VAR_NAME__.request_pos.cli_ref, "", __VAR_NAME__.description }));       \
+                        __VAR_NAME__.request_pos.cli_ref, __VAR_NAME__.market_order_id, __VAR_NAME__.description }));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
@@ -199,8 +200,8 @@
         using namespace mtk::trd::hist;       \
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_cf, tt2_ex,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
-                        mtk::nullable<mtk::FixedNumber>(), ex.executed_pos.quantity,        \
-                        __VAR_NAME__.market_pos.cli_ref, "", ""}));       \
+                        mtk::nullable<mtk::FixedNumber>(), __VAR_NAME__.executed_pos.quantity,        \
+                        __VAR_NAME__.market_pos.cli_ref, __VAR_NAME__.executed_pos.exec_id, __VAR_NAME__.description}));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \

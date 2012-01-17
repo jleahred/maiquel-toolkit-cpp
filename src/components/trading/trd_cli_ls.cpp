@@ -184,7 +184,7 @@
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_cf, tt2_##__nw_md_cc__,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::make_nullable(__VAR_NAME__.market_pos.price), __VAR_NAME__.market_pos.quantity,        \
-                        __VAR_NAME__.market_pos.cli_ref, "", ""}));       \
+                        __VAR_NAME__.market_pos.cli_ref, __VAR_NAME__.market_order_id, __VAR_NAME__.description}));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
@@ -198,7 +198,7 @@
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_rj, tt2_##__nw_md_cc__,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::make_nullable(__VAR_NAME__.request_pos.price), __VAR_NAME__.request_pos.quantity,        \
-                        __VAR_NAME__.request_pos.cli_ref, "", __VAR_NAME__.description }));       \
+                        __VAR_NAME__.request_pos.cli_ref, __VAR_NAME__.market_order_id, __VAR_NAME__.description }));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
@@ -212,8 +212,8 @@
         using namespace mtk::trd::hist;       \
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_cf, tt2_ex,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
-                        mtk::make_nullable(ex.executed_pos.price), ex.executed_pos.quantity,        \
-                        ex.market_pos.cli_ref, "", ""}));       \
+                        mtk::make_nullable(__VAR_NAME__.executed_pos.price), __VAR_NAME__.executed_pos.quantity,        \
+                        __VAR_NAME__.market_pos.cli_ref, __VAR_NAME__.executed_pos.exec_id, __VAR_NAME__.description}));       \
         if(result_additem != "")        \
         {       \
             ci->__serrors += result_additem;        \
