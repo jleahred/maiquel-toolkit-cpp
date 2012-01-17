@@ -11,16 +11,21 @@
 #include "qmtk_misc.h"
 #include "qt_components/src/qcommontabledelegate.h"
 #include "components/trading/trd_cli_support.h"
+#include "components/trading/trd_cli_historic.h"
 
 
 
 
 
 namespace {
-    const int col_market_product= 0;
-    const int col_side          = 1;
-    const int col_exec_quantity = 2;
-    const int col_exec_price    = 3;
+    const int col_count = 6;
+
+    const int col_market_product    = 0;
+    const int col_side              = 1;
+    const int col_exec_quantity     = 2;
+    const int col_exec_price        = 3;
+    const int col_exec_time         = 4;
+    const int col_exec_description  = 5;
     /*const char* col_captions[] = {    "product",            defined later for translations
                                         "side",
                                         "qty",
@@ -45,25 +50,24 @@ class Exec_in_table  : public mtk::SignalReceptor
 public:
 
     QTableWidgetItem**                  items;
-    mtk::msg::sub_product_code          product_code;
-    mtk::trd::msg::sub_exec_conf        exec;
+    mtk::trd::hist::order_exec_item     exec_item;
 
-    Exec_in_table(QTableWidget *table_widget, const mtk::msg::sub_product_code& _product_code, const mtk::trd::msg::sub_exec_conf& _exec)
-        : items (new QTableWidgetItem*[4]),
-            product_code(_product_code),  exec (_exec)
+    Exec_in_table(QTableWidget *table_widget, const mtk::trd::hist::order_exec_item&     _exec_item)
+        : items (new QTableWidgetItem*[col_count]),
+          exec_item(_exec_item)
 
     {
         int row = table_widget->rowCount();
         table_widget->insertRow(row);
 
-        for (int column=0; column<4; ++column)
+        for (int column=0; column<col_count; ++column)
         {
             items[column] = new QTableWidgetItem;
             items[column]->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-            items[column]->setBackgroundColor(Qt::white);
+            //items[column]->setBackgroundColor(Qt::white);
             table_widget->setItem(row, column, items[column]);
-            if (column == col_exec_price  ||  column == col_exec_quantity)
-                items[column]->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+            //if (column == col_exec_price  ||  column == col_exec_quantity)
+            //    items[column]->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         }
 
         update();
@@ -77,6 +81,8 @@ public:
         update_item_exec_quantity       ();
         update_item_exec_price          ();
         update_item_side                ();
+        update_item_time                ();
+        update_item_description         ();
     }
 
     void update_on_cf(const mtk::trd::msg::CF_NW_LS&)  {    update();   }
@@ -92,7 +98,7 @@ public:
     void update_item_market_product(void)
     {
         QTableWidgetItem* item = items[col_market_product];
-        item->setText(QLatin1String(MTK_SS(product_code.market << "." <<product_code.product).c_str()));
+        item->setText(QLatin1String(MTK_SS(exec_item.confirm_info.invariant.product_code.market << "." << exec_item.confirm_info.invariant.product_code.product).c_str()));
         item->setBackgroundColor(get_default_color());
     }
 
@@ -100,7 +106,7 @@ public:
     void update_item_side(void)
     {
         QTableWidgetItem* item = items[col_side];
-        if (exec.side == mtk::trd::msg::buy)
+        if (exec_item.exec_info.side == mtk::trd::msg::buy)
         {
             item->setText(QObject::tr("buy"));
             item->setBackgroundColor(qtmisc::mtk_color_buy_cell);
@@ -116,13 +122,25 @@ public:
     void update_item_exec_quantity (void)
     {
         QTableWidgetItem* item = items[col_exec_quantity];
-        item->setText(qtmisc::fn_as_QString(exec.quantity));
+        item->setText(qtmisc::fn_as_QString(exec_item.exec_info.quantity));
         item->setBackgroundColor(get_default_color());
     }
     void update_item_exec_price (void)
     {
         QTableWidgetItem* item = items[col_exec_price];
-        item->setText(qtmisc::fn_as_QString(exec.price));
+        item->setText(qtmisc::fn_as_QString(exec_item.exec_info.price));
+        item->setBackgroundColor(get_default_color());
+    }
+    void update_item_time (void)
+    {
+        QTableWidgetItem* item = items[col_exec_time];
+        item->setText(QLatin1String(MTK_SS(exec_item.confirm_info.orig_control_fluct.datetime).substr(11, 8).c_str()));
+        item->setBackgroundColor(get_default_color());
+    }
+    void update_item_description (void)
+    {
+        QTableWidgetItem* item = items[col_exec_description];
+        item->setText(QLatin1String(exec_item.confirm_info.description.c_str()));
         item->setBackgroundColor(get_default_color());
     }
 
@@ -151,6 +169,8 @@ QExecsTable::QExecsTable(QWidget *parent) :
                                                         QT_TR_NOOP("side"),
                                                         QT_TR_NOOP("qty"),
                                                         QT_TR_NOOP("price"),
+                                                        QT_TR_NOOP("time"),
+                                                        QT_TR_NOOP("remarks"),
                                                         0          };
 
 
@@ -180,6 +200,8 @@ QExecsTable::QExecsTable(QWidget *parent) :
     table_widget->setColumnWidth(col_side, 30);
     table_widget->setColumnWidth(col_exec_price, 60);
     table_widget->setColumnWidth(col_exec_quantity, 60);
+    table_widget->setColumnWidth(col_exec_time, 60);
+    table_widget->setColumnWidth(col_exec_description, 60);
 
     //  setting up actions
     /*
@@ -215,15 +237,16 @@ QExecsTable::QExecsTable(QWidget *parent) :
 }
 
 
-void QExecsTable::__direct_add_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_exec_conf& exec)
+void QExecsTable::__direct_add_new_execution(const mtk::trd::hist::order_exec_item& exec)
 {
-    exec_in_table->push_back(new Exec_in_table(table_widget, pc, exec));
+    exec_in_table->push_back(new Exec_in_table(table_widget, exec));
 }
 
-void QExecsTable::on_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_exec_conf& exec)
+void QExecsTable::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_info, const mtk::trd::msg::sub_exec_conf& exec)
 {
-    execs2add_online.push_back(mtk::make_tuple(pc, exec));
-    execs_all.push_back(mtk::make_tuple(pc, exec));
+    mtk::trd::hist::order_exec_item  oei { confirm_info, exec};
+    execs2add_online.push_back(oei);
+    execs_all.push_back(oei);
     MTK_EXEC_MAX_FREC(mtk::dtSeconds(1))
         mediaObject->play();
     MTK_END_EXEC_MAX_FREC
@@ -243,18 +266,18 @@ void   QExecsTable::timer_get_execs2add(void)
     int counter=0;
     while(execs2add_loading.size()>0)
     {
-        mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> exec = execs2add_loading.front();
+        auto exec = execs2add_loading.front();
         execs2add_loading.pop_front();
-        __direct_add_new_execution(exec._0, exec._1);
+        __direct_add_new_execution(exec);
         ++counter;
         if(counter%5==0)
             return;
     }
     while(execs2add_online.size()>0)
     {
-        mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> exec = execs2add_online.front();
+        auto  exec = execs2add_online.front();
         execs2add_online.pop_front();
-        __direct_add_new_execution(exec._0, exec._1);
+        __direct_add_new_execution(exec);
         ++counter;
         if(counter%5==0)
             return;
@@ -278,7 +301,7 @@ void  QExecsTable::slot_show_all_execs(void)
     if(execs2add_loading.size()!=0)
         execs2add_loading.clear();
 
-    for(mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> >::iterator it = execs_all.begin();  it != execs_all.end(); ++it)
+    for(auto it = execs_all.begin();  it != execs_all.end(); ++it)
         execs2add_loading.push_back(*it);
 }
 

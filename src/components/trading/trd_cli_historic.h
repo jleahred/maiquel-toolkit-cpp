@@ -5,6 +5,7 @@
 
 
 #include "components/msg_common.h"
+#include "components/trading/msg_trd_common.h"
 #include "support/fixed_number.h"
 #include "support/date_time.h"
 #include "support/basic_types.hpp"
@@ -33,6 +34,13 @@ struct  order_historic_item
     const std::string                         cli_ref;
           std::string                         market_code;      //  order code or execid
           std::string                         remarks;
+};
+
+
+struct  order_exec_item
+{
+    const mtk::trd::msg::CF_XX              confirm_info;
+    const mtk::trd::msg::sub_exec_conf      exec_info;
 };
 
 

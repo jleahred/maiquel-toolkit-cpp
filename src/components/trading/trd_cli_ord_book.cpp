@@ -87,7 +87,7 @@ struct handles_qpid
 
 struct s_status
 {
-    mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_exec_conf&>  sig_execution;
+    mtk::Signal< const mtk::trd::msg::CF_XX&, const mtk::trd::msg::sub_exec_conf&>  sig_execution;
 
 
     //  ls
@@ -323,7 +323,7 @@ mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_mk_danger
 }
 
 
-mtk::Signal< const mtk::msg::sub_product_code&, const mtk::trd::msg::sub_exec_conf& >& get_sig_execution       (void)
+mtk::Signal< const mtk::trd::msg::CF_XX&, const mtk::trd::msg::sub_exec_conf& >& get_sig_execution       (void)
 {
     return get_status_ref().sig_execution;
 }
@@ -648,7 +648,7 @@ void cf_ex_xx(const EXEC_TYPE& ex)
     mtk::CountPtr<ORDER_TYPE>  order = get_order<ORDER_TYPE>(ex.invariant.order_id);
     order->cf_ex(ex);
 
-    get_status_ref().sig_execution.emit(ex.invariant.product_code, ex.executed_pos);
+    get_status_ref().sig_execution.emit(ex, ex.executed_pos);
 }
 
 template<typename ORDER_TYPE, typename  CONF_TYPE>

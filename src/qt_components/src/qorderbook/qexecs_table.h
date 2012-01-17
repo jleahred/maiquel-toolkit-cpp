@@ -7,6 +7,7 @@
 #include "support/signalslot.hpp"
 #include "components/trading/trd_cli_ls.h"
 #include "components/trading/trd_cli_ord_book.h"
+
 #include "qorderbook/filter_form.h"
 #include <Phonon/MediaObject>
 
@@ -15,6 +16,8 @@ class QTableWidget;
 class QTableWidgetItem;
 class Exec_in_table;
 
+
+namespace mtk { namespace trd { namespace hist { class  order_exec_item; }}};
 
 
 class QExecsTable : public QWidget , public mtk::SignalReceptor
@@ -38,13 +41,13 @@ private slots:
 
 private:
     QTableWidget*        table_widget;
-    void __direct_add_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_exec_conf& exec);
-    void on_new_execution(const mtk::msg::sub_product_code& pc, const mtk::trd::msg::sub_exec_conf& exec);
+    void __direct_add_new_execution(const mtk::trd::hist::order_exec_item& exec);
+    void on_new_execution(const mtk::trd::msg::CF_XX&  order_info, const mtk::trd::msg::sub_exec_conf& exec);
 
-    mtk::list<Exec_in_table*>*                                                          exec_in_table;
-    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> >    execs2add_loading;
-    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> >    execs2add_online;
-    mtk::list<mtk::tuple<mtk::msg::sub_product_code, mtk::trd::msg::sub_exec_conf> >    execs_all;
+    mtk::list<Exec_in_table*>*                             exec_in_table;
+    mtk::list<mtk::trd::hist::order_exec_item>             execs2add_loading;
+    mtk::list<mtk::trd::hist::order_exec_item>             execs2add_online;
+    mtk::list<mtk::trd::hist::order_exec_item>             execs_all;
 
     void            timer_get_execs2add(void);
 
