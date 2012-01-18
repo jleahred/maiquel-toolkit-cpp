@@ -165,7 +165,7 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     QLabel * version = new QLabel();
     //version->setFrameShape(QFrame::Panel);
     //version->setFrameShadow(QFrame::Sunken);
-    version->setText("0.7");
+    version->setText("0.8");
     statusBar()->addWidget(version);
 
 
@@ -253,6 +253,7 @@ Monitor::~Monitor()
 void Monitor::OnAlarm(const mtk::Alarm& alarm)
 {
     ui->alarms_all_errors->write_alarm(mtk::dtNowLocal(), alarm);
+    /*
     if(production)
     {
         trayIcon->showMessage("New alarm", "Generated internally from monitor", QSystemTrayIcon::Critical, 300000);
@@ -265,6 +266,7 @@ void Monitor::OnAlarm(const mtk::Alarm& alarm)
     }
     else
         trayIcon->setIcon(QIcon(":/images/images/warning4.svg"));
+    */
 }
 
 
