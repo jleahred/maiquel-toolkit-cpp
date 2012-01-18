@@ -179,12 +179,35 @@ std::string  order_historic_dangerous_not_signal_warped::add_item(const order_hi
 }
 
 
-std::string   order_historic_dangerous_not_signal_warped::get_lasttr_rjdescr (void)  const
+bool     order_historic_dangerous_not_signal_warped::is_last_tr_rj    (void)  const
+{
+    if(list_historic_item->size()>0  &&  list_historic_item->front().type  ==  tt_rj)
+        return true;
+    else
+        return false;
+}
+
+
+std::string   order_historic_dangerous_not_signal_warped::get_lasttr_descr (void)  const
 {
     if(list_historic_item->size()>0  &&  list_historic_item->front().type  ==  tt_rj)
         return list_historic_item->front().remarks;
     else
         return "";
+}
+
+
+
+
+order_EXECS_historic_dangerous_not_signal_warped::order_EXECS_historic_dangerous_not_signal_warped(void)
+{
+    list_execs_item = mtk::make_cptr(new mtk::list<order_exec_item>);
+}
+
+void   order_EXECS_historic_dangerous_not_signal_warped::add_item(const order_exec_item& item)
+{
+    list_execs_item->push_back(item);
+    signal_new_item_added.emit(item);
 }
 
 

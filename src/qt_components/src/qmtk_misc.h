@@ -84,9 +84,9 @@ std::string       get_order_remarks (ORDER_TYPE& order)
     if (order.last_confirmation().HasValue())
     {
         result += order.last_confirmation().Get().market_pos.cli_ref;
-        std::string  rejected_reason = order.history()->get_lasttr_rjdescr();
-        if(rejected_reason != "")
-            result +=  "  /    <b>" + QString(QObject::tr("rejected: ")).toStdString() + QString(QLatin1String("</b>")).toStdString() + rejected_reason;
+        std::string  last_tr_descr = order.history()->get_lasttr_descr();
+        if(last_tr_descr != "")
+            result +=  "  /   " + last_tr_descr;
     }
     else if (order.last_request().HasValue())
         result += order.last_request().Get().request_pos.cli_ref;

@@ -411,7 +411,8 @@ struct  status_common_info
         :  
         __last_confirmation(mtk::nullable<mtk::trd::msg::CF_XX_LS>() ),
         __last_request(mtk::nullable<mtk::trd::msg::RQ_XX_LS>() ),
-        __history(mtk::make_cptr(new mtk::trd::hist::order_historic_dangerous_not_signal_warped) ),
+        __history(mtk::make_cptr(new mtk::trd::hist::order_historic_dangerous_not_signal_warped)       ),
+        __executions(mtk::make_cptr(new mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped) ),
         __serrors(""), 
         sig_rq_nw (_sig_rq_nw), 
         sig_rq_md (_sig_rq_md), 
@@ -435,9 +436,12 @@ struct  status_common_info
     mtk::nullable<mtk::trd::msg::RQ_XX_LS>           __last_request;
     virtual const mtk::nullable<mtk::trd::msg::RQ_XX_LS>          &  last_request() const {  return __last_request; };
     virtual void set_last_request(const mtk::nullable<mtk::trd::msg::RQ_XX_LS>          &  _prop) {  __last_request = _prop;  };
-    mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>   __history;
-    virtual const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>  &  history() const {  return __history; };
-    virtual void set_history(const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>  &  _prop) {  __history = _prop;  };
+    mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   __history;
+    virtual const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >  &  history() const {  return __history; };
+    virtual void set_history(const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >  &  _prop) {  __history = _prop;  };
+    mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>   __executions;
+    virtual const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>  &  executions() const {  return __executions; };
+    virtual void set_executions(const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>  &  _prop) {  __executions = _prop;  };
     virtual const bool                                             &  in_market() const {  static bool                                             result(false);   return result; };
     virtual void set_in_market(const bool                                            & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
     virtual const bool                                             &  is_canceled() const {  static bool                                             result(false);   return result; };
@@ -510,7 +514,8 @@ public:
     //  ACCESS
     virtual const mtk::nullable<mtk::trd::msg::CF_XX_LS>           &  last_confirmation (void) const { return ci->last_confirmation(); }; 
     virtual const mtk::nullable<mtk::trd::msg::RQ_XX_LS>           &  last_request (void) const { return ci->last_request(); }; 
-    virtual const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>   &  history (void) const { return ci->history(); }; 
+    virtual const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   &  history (void) const { return ci->history(); }; 
+    virtual const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>   &  executions (void) const { return ci->executions(); }; 
     virtual const bool                                             &  in_market (void) const { return ci->in_market(); }; 
     virtual const bool                                             &  is_canceled (void) const { return ci->is_canceled(); }; 
     virtual const bool                                             &  is_full_executed (void) const { return ci->is_full_executed(); }; 
@@ -7244,9 +7249,13 @@ const mtk::nullable<mtk::trd::msg::RQ_XX_LS>           & mtk::trd::trd_cli_ls_da
 {
     return current_status->last_request();
 }
-const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>   & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::history (void) const
+const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::history (void) const
 {
     return current_status->history();
+}
+const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>   & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::executions (void) const
+{
+    return current_status->executions();
 }
 const bool                                             & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::in_market (void) const
 {
@@ -7376,9 +7385,13 @@ const mtk::nullable<mtk::trd::msg::RQ_XX_LS>           & mtk::trd::trd_cli_ls::l
 {
     return  ptr->last_request();
 }
-const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>   & mtk::trd::trd_cli_ls::history (void) const
+const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   & mtk::trd::trd_cli_ls::history (void) const
 {
     return  ptr->history();
+}
+const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>   & mtk::trd::trd_cli_ls::executions (void) const
+{
+    return  ptr->executions();
 }
 const bool                                             & mtk::trd::trd_cli_ls::in_market (void) const
 {

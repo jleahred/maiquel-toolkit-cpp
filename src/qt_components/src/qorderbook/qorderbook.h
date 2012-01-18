@@ -8,7 +8,7 @@
 
 
 
-class  QExecsTable;
+class  QExecsTable_ALL_execs;
 class  QPushButton;
 class  qorder_table;
 class  whistoric_order;
@@ -50,8 +50,8 @@ private slots:
     void slot_hide_historic(void);
 
 private:
-    QTabWidget      *tab_widget;
-    QExecsTable     *table_executions;
+    QTabWidget              *tab_widget;
+    QExecsTable_ALL_execs   *table_executions;
 
 
     QPushButton* new_button;
@@ -63,7 +63,7 @@ private:
     void            delete_current_tab(bool ask=true);
 
     whistoric_order*        historic_order_window;
-    void update_historic();
+    void init_historic();
 };
 
 #endif // QORDERBOOK_H

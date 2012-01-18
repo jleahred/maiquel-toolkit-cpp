@@ -39,6 +39,9 @@ private:
 
     void update_on_change(void);
 
+
+private slots:
+    void on_radioButton_toggled(bool checked);
 };
 
 #endif // WHISTORIC_ORDER_H

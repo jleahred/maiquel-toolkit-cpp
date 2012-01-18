@@ -20,6 +20,10 @@ class Exec_in_table;
 namespace mtk { namespace trd { namespace hist { class  order_exec_item; }}};
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+//      QExecsTable
+
 class QExecsTable : public QWidget , public mtk::SignalReceptor
 {
     Q_OBJECT
@@ -35,11 +39,9 @@ public:
 signals:
 
 private slots:
-    void  slot_clean_execs(void);
-    void  slot_show_all_execs(void);
 
 
-private:
+protected:
     QTableWidget*        table_widget;
     void __direct_add_new_execution(const mtk::trd::hist::order_exec_item& exec);
     void on_new_execution(const mtk::trd::msg::CF_XX&  order_info, const mtk::trd::msg::sub_exec_conf& exec);
@@ -50,10 +52,67 @@ private:
     mtk::list<mtk::trd::hist::order_exec_item>             execs_all;
 
     void            timer_get_execs2add(void);
+};
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//      QExecsTable_ALL_execs
+
+class QExecsTable_ALL_execs : public QExecsTable //, public mtk::SignalReceptor     father has it
+{
+    Q_OBJECT
+    typedef  QExecsTable_ALL_execs  CLASS_NAME;
+
+public:
+    explicit QExecsTable_ALL_execs(QWidget *parent = 0);
+
+
+signals:
+
+private slots:
+    void  slot_clean_execs(void);
+    void  slot_show_all_execs(void);
+
+
+private:
+
+    void on_new_execution(const mtk::trd::msg::CF_XX&  order_info, const mtk::trd::msg::sub_exec_conf& exec);
 
     Phonon::MediaObject *mediaObject;
 
     void contextMenuEvent(QContextMenuEvent *);
 };
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//      QExecsTable_one_order
+
+class QExecsTable_one_order : public QExecsTable //, public mtk::SignalReceptor     father has it
+{
+    Q_OBJECT
+    typedef  QExecsTable_one_order  CLASS_NAME;
+
+public:
+    explicit QExecsTable_one_order(QWidget *parent = 0);
+
+    void   set_executions(mtk::CountPtr<mtk::trd::hist::order_EXECS_historic>  execs_history);
+
+
+signals:
+
+private slots:
+
+private:
+
+    mtk::CountPtr<mtk::trd::hist::order_EXECS_historic>   execs_history;
+    void on_new_item(const mtk::trd::hist::order_exec_item&  exec_item);
+
+};
+
+
 
 #endif // QEXEC_TABLE_H

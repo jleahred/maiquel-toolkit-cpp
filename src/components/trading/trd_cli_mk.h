@@ -79,7 +79,8 @@ public:
     //  ACCESS
     const mtk::nullable<mtk::trd::msg::CF_XX_MK>           &  last_confirmation () const;
     const mtk::nullable<mtk::trd::msg::RQ_XX_MK>           &  last_request () const;
-    const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>    &  history () const;
+    const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   &  history () const;
+    const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>   &  executions () const;
     const bool                                             &  in_market () const;
     const bool                                             &  is_canceled () const;
     const bool                                             &  is_full_executed () const;
@@ -150,7 +151,8 @@ public:
     //  ACCESS
     const mtk::nullable<mtk::trd::msg::CF_XX_MK>           &  last_confirmation () const;
     const mtk::nullable<mtk::trd::msg::RQ_XX_MK>           &  last_request () const;
-    const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>    &  history () const;
+    const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   &  history () const;
+    const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>   &  executions () const;
     const bool                                             &  in_market () const;
     const bool                                             &  is_canceled () const;
     const bool                                             &  is_full_executed () const;

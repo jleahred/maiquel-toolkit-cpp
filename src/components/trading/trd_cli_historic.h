@@ -21,6 +21,9 @@ enum en_trans_type2 {  tt2_nw,      tt2_md,     tt2_cc,     tt2_ex  };
 
 
 
+///////////////////////////////////////////////////////////
+//      order_historic_item
+
 struct  order_historic_item
 {
           bool                                error;
@@ -36,6 +39,10 @@ struct  order_historic_item
           std::string                         remarks;
 };
 
+
+
+///////////////////////////////////////////////////////////
+//      order_exec_item
 
 struct  order_exec_item
 {
@@ -59,16 +66,40 @@ public:
     mtk::Signal<int, const order_historic_item&>        signal_modified_item;
 
 
-
-    std::string   get_lasttr_rjdescr (void)  const;
+    bool          is_last_tr_rj    (void)  const;
+    std::string   get_lasttr_descr (void)  const;
 
     order_historic_dangerous_not_signal_warped(void);
 
 private:
-    mtk::CountPtr<mtk::list<order_historic_item> >            list_historic_item;
+    mtk::CountPtr<mtk::list<order_historic_item> >      list_historic_item;
 
 };
 
+
+
+class  order_EXECS_historic_dangerous_not_signal_warped
+{
+    mtk::non_copyable nc;
+public:
+
+    void                                                add_item(const order_exec_item&  item);
+    mtk::CountPtr<mtk::list<order_exec_item> >          get_items_list(void) const   { return list_execs_item;  };
+
+    mtk::Signal<const order_exec_item&>                 signal_new_item_added;
+
+
+    order_EXECS_historic_dangerous_not_signal_warped(void);
+
+private:
+    mtk::CountPtr<mtk::list<order_exec_item> >          list_execs_item;
+
+};
+
+
+
+
+///////////////////////////////////////////////////////////
 
 class  order_historic2
 {
@@ -76,13 +107,15 @@ class  order_historic2
 public:
 
         //  add_item will return  the error message, empty if there is no error
-    std::string                                         add_item(const order_historic_item&  item)  {  return  ptr->add_item(item);  }
-    mtk::CountPtr<mtk::list<order_historic_item> >      get_items_list(void) const   { return   ptr->get_items_list();    }
+    std::string                                         add_item(const order_historic_item&  item)  {  return  ptr->add_item(item);       }
+    mtk::CountPtr<mtk::list<order_historic_item> >      get_items_list(void) const                  {  return   ptr->get_items_list();    }
 
     mtk::Signal<const order_historic_item&>             signal_new_item_added;
     mtk::Signal<int, const order_historic_item&>        signal_modified_item;
 
-    std::string   get_lasttr_rjdescr (void)  const  {  return ptr->get_lasttr_rjdescr();    }
+
+    bool          is_last_tr_rj    (void)  const  {  return ptr->is_last_tr_rj();       }
+    std::string   get_lasttr_descr (void)  const  {  return ptr->get_lasttr_descr();    }
 
 
 
@@ -100,9 +133,49 @@ private:
 };
 
 
+
+
+///////////////////////////////////////////////////////////
+
+class  order_EXECS_historic
+{
+    mtk::non_copyable nc;
+public:
+
+    void                                                add_item(const order_exec_item&  item)      {  return   ptr->add_item(item);      }
+    mtk::CountPtr<mtk::list<order_exec_item> >          get_items_list(void) const                  {  return   ptr->get_items_list();    }
+
+    mtk::Signal<const order_exec_item&>                 signal_new_item_added;
+
+
+
+    explicit  order_EXECS_historic(const mtk::CountPtr<order_EXECS_historic_dangerous_not_signal_warped> _ptr) : ptr(_ptr)
+    {
+        try
+        {
+            ptr->signal_new_item_added.connect(&signal_new_item_added);
+        } MTK_CATCH_RETHROW("order_EXECS_historic","connecting signals")
+    }
+
+private:
+    mtk::CountPtr<order_EXECS_historic_dangerous_not_signal_warped>   ptr;
+
+};
+
+
+
+
+
+
+
 inline  mtk::CountPtr<order_historic2>   order_historic2_sig_wp_cptr(const mtk::CountPtr<order_historic_dangerous_not_signal_warped>  oh)
 {
     return mtk::make_cptr(new order_historic2(oh));
+}
+
+inline  mtk::CountPtr<order_EXECS_historic>   order_EXECS_sig_wp_cptr(const mtk::CountPtr<order_EXECS_historic_dangerous_not_signal_warped>  oe)
+{
+    return mtk::make_cptr(new order_EXECS_historic(oe));
 }
 
 

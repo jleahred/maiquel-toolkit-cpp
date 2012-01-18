@@ -34,6 +34,7 @@ void   whistoric_order::set_order(const mtk::trd::msg::sub_order_id& order_id)
         order_mk = mtk::CountPtr<mtk::trd::trd_cli_mk>();
         ui->historic->set_historic(mtk::trd::hist::order_historic2_sig_wp_cptr(order_ls->history()));
         MTK_CONNECT_THIS(order_ls->sig_changed, update_on_change);
+        ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(order_ls->executions()));
     }
     if(ot ==  mtk::trd::trd_cli_ord_book::ot_market)
     {
@@ -41,6 +42,7 @@ void   whistoric_order::set_order(const mtk::trd::msg::sub_order_id& order_id)
         order_mk = mtk::trd::trd_cli_ord_book::get_order_mk(order_id);
         ui->historic->set_historic(mtk::trd::hist::order_historic2_sig_wp_cptr(order_mk->history()));
         MTK_CONNECT_THIS(order_mk->sig_changed, update_on_change);
+        ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(order_ls->executions()));
     }
 
     update_on_change();
@@ -110,4 +112,12 @@ void whistoric_order::update_on_change(void)
 
     else if(order_mk.isValid())
         fill_from(this, *order_mk);
+}
+
+void whistoric_order::on_radioButton_toggled(bool checked)
+{
+    if(checked)
+        ui->stackedWidget->setCurrentIndex(0);
+    else
+        ui->stackedWidget->setCurrentIndex(1);
 }

@@ -198,6 +198,7 @@
 #define  ADD_HIST_CFEX(__VAR_NAME__)  \
     {       \
         using namespace mtk::trd::hist;       \
+        ci->executions()->add_item( {__VAR_NAME__, __VAR_NAME__.executed_pos} );  \
         std::string result_additem = ci->history()->add_item(order_historic_item({false, tt_cf, tt2_ex,        \
                         mtk::dtNowLocal(), mtk::dtSeconds(0), __VAR_NAME__.req_id,        \
                         mtk::nullable<mtk::FixedNumber>(), __VAR_NAME__.executed_pos.quantity,        \

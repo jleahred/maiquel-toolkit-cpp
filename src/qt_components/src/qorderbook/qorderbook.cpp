@@ -71,7 +71,7 @@ void on_request_with_user_check_mk(mtk::trd::msg::RQ_XX_MK& rq, bool& canceled, 
 
 QOrderBook::QOrderBook(QWidget *parent) :
     QWidget(parent),
-    table_executions(new QExecsTable(this)),
+    table_executions(new QExecsTable_ALL_execs(this)),
     historic_order_window(new whistoric_order(this))
 {
     historic_order_window->setAttribute(Qt::WA_ShowWithoutActivating);
@@ -205,7 +205,7 @@ void QOrderBook::slot_tab_index_changed(int /*index*/)
     }
     else
         filter_button->setChecked(false);
-    update_historic();
+    init_historic();
 }
 
 void QOrderBook::slot_filter_changed()
@@ -318,7 +318,7 @@ void QOrderBook::slot_show_historic(void)
         if(order_id.HasValue())
         {
             historic_order_window->setVisible(true);
-            update_historic();
+            init_historic();
         }
     }
 }
@@ -328,7 +328,7 @@ void QOrderBook::slot_hide_historic(void)
     historic_order_window->setVisible(false);
 }
 
-void QOrderBook::update_historic(void)
+void QOrderBook::init_historic(void)
 {
     if(historic_order_window->isVisible())
     {
@@ -347,7 +347,7 @@ void QOrderBook::update_historic(void)
 
 void QOrderBook::slot_order_table_cell_changed(int, int, int, int)
 {
-    update_historic();
+    init_historic();
 }
 
 void QOrderBook::slot_order_table_double_clicked(QModelIndex)

@@ -18,14 +18,15 @@
 
 
 namespace {
-    const int col_count = 6;
+    const int col_count = 7;
 
     const int col_market_product    = 0;
     const int col_side              = 1;
     const int col_exec_quantity     = 2;
     const int col_exec_price        = 3;
     const int col_exec_time         = 4;
-    const int col_exec_description  = 5;
+    const int col_exec_id           = 5;
+    const int col_exec_description  = 6;
     /*const char* col_captions[] = {    "product",            defined later for translations
                                         "side",
                                         "qty",
@@ -64,10 +65,8 @@ public:
         {
             items[column] = new QTableWidgetItem;
             items[column]->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-            //items[column]->setBackgroundColor(Qt::white);
             table_widget->setItem(row, column, items[column]);
-            //if (column == col_exec_price  ||  column == col_exec_quantity)
-            //    items[column]->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+            items[column]->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
         }
 
         update();
@@ -82,6 +81,7 @@ public:
         update_item_exec_price          ();
         update_item_side                ();
         update_item_time                ();
+        update_item_exec_id             ();
         update_item_description         ();
     }
 
@@ -137,6 +137,12 @@ public:
         item->setText(QLatin1String(MTK_SS(exec_item.confirm_info.orig_control_fluct.datetime).substr(11, 8).c_str()));
         item->setBackgroundColor(get_default_color());
     }
+    void update_item_exec_id (void)
+    {
+        QTableWidgetItem* item = items[col_exec_id];
+        item->setText(QLatin1String(exec_item.exec_info.exec_id.c_str()));
+        item->setBackgroundColor(get_default_color());
+    }
     void update_item_description (void)
     {
         QTableWidgetItem* item = items[col_exec_description];
@@ -155,8 +161,7 @@ public:
 QExecsTable::QExecsTable(QWidget *parent) :
         QWidget(parent),
         table_widget(new QTableWidget(this)),
-        exec_in_table(new mtk::list<Exec_in_table*>),
-        mediaObject (Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("../data/execution.wav"))))
+        exec_in_table(new mtk::list<Exec_in_table*>)
 {
     QHBoxLayout *hl= new QHBoxLayout(this);
     hl->setSpacing(0);
@@ -170,6 +175,7 @@ QExecsTable::QExecsTable(QWidget *parent) :
                                                         QT_TR_NOOP("qty"),
                                                         QT_TR_NOOP("price"),
                                                         QT_TR_NOOP("time"),
+                                                        QT_TR_NOOP("exec.id."),
                                                         QT_TR_NOOP("remarks"),
                                                         0          };
 
@@ -201,37 +207,10 @@ QExecsTable::QExecsTable(QWidget *parent) :
     table_widget->setColumnWidth(col_exec_price, 60);
     table_widget->setColumnWidth(col_exec_quantity, 60);
     table_widget->setColumnWidth(col_exec_time, 60);
+    table_widget->setColumnWidth(col_exec_id, 100);
     table_widget->setColumnWidth(col_exec_description, 60);
 
-    //  setting up actions
-    /*
-    setContextMenuPolicy(Qt::ActionsContextMenu);
-    {
-        QAction* action = new QAction("cancel", this);
-        connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
-        addAction(action);
-    }
-    {
-        QAction* action = new QAction("modif", this);
-        connect(action, SIGNAL(triggered()), this, SLOT(request_modif()));
-        addAction(action);
-    }
-    {
-        QAction* action = new QAction(this);
-        action->setSeparator(true);
-        addAction(action);
-    }
-    {
-        QAction* action = new QAction("filter", this);
-        connect(action, SIGNAL(triggered()), this, SLOT(request_cancel()));
-        addAction(action);
-    }
-    */
 
-
-
-
-    MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_execution(), on_new_execution);
     MTK_TIMER_1C(timer_get_execs2add);
     //setContentsMargins(0,0,0,0);
 }
@@ -244,19 +223,9 @@ void QExecsTable::__direct_add_new_execution(const mtk::trd::hist::order_exec_it
 
 void QExecsTable::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_info, const mtk::trd::msg::sub_exec_conf& exec)
 {
-    mtk::trd::hist::order_exec_item  oei { confirm_info, exec};
+    mtk::trd::hist::order_exec_item  oei { confirm_info, exec  };
     execs2add_online.push_back(oei);
     execs_all.push_back(oei);
-    MTK_EXEC_MAX_FREC(mtk::dtSeconds(1))
-        mediaObject->play();
-    MTK_END_EXEC_MAX_FREC
-    /*
-    if(mediaObject->remainingTime()==0)
-    {
-        mediaObject->stop();
-        mediaObject->play();
-    }
-    */
 }
 
 
@@ -289,13 +258,36 @@ void QExecsTable::update_sizes()
     table_widget->verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.2);
 }
 
-void  QExecsTable::slot_clean_execs(void)
+
+
+
+
+
+
+
+
+//      ALL EXECS TABLE
+
+
+
+
+QExecsTable_ALL_execs::QExecsTable_ALL_execs(QWidget *parent) :
+        QExecsTable(parent),
+        mediaObject (Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("../data/execution.wav"))))
+{
+    MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_execution(), on_new_execution);
+    //setContentsMargins(0,0,0,0);
+}
+
+
+
+void  QExecsTable_ALL_execs::slot_clean_execs(void)
 {
     table_widget->setRowCount(0);
     exec_in_table->clear();
 }
 
-void  QExecsTable::slot_show_all_execs(void)
+void  QExecsTable_ALL_execs::slot_show_all_execs(void)
 {
     slot_clean_execs();
     if(execs2add_loading.size()!=0)
@@ -306,7 +298,7 @@ void  QExecsTable::slot_show_all_execs(void)
 }
 
 
-void QExecsTable::contextMenuEvent(QContextMenuEvent *e)
+void QExecsTable_ALL_execs::contextMenuEvent(QContextMenuEvent *e)
 {
     QMenu  menu;
     {
@@ -320,4 +312,41 @@ void QExecsTable::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     menu.exec(this->mapToGlobal(e->pos()));
+}
+
+void QExecsTable_ALL_execs::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_info, const mtk::trd::msg::sub_exec_conf& exec)
+{
+    QExecsTable::on_new_execution(confirm_info, exec);
+    MTK_EXEC_MAX_FREC(mtk::dtSeconds(1))
+        mediaObject->play();
+    MTK_END_EXEC_MAX_FREC
+}
+
+
+
+
+QExecsTable_one_order::QExecsTable_one_order(QWidget *parent) :
+        QExecsTable(parent)
+{
+}
+
+void QExecsTable_one_order::on_new_item(const mtk::trd::hist::order_exec_item&  exec_item)
+{
+    QExecsTable::on_new_execution(exec_item.confirm_info, exec_item.exec_info);
+}
+
+
+void   QExecsTable_one_order::set_executions(mtk::CountPtr<mtk::trd::hist::order_EXECS_historic>  _execs_history)
+{
+    mtk::CountPtr<mtk::list<mtk::trd::hist::order_exec_item> >   hist_execs =   _execs_history->get_items_list();
+
+    MTK_CONNECT_THIS(_execs_history->signal_new_item_added, on_new_item);
+
+    table_widget->setRowCount(0);
+    execs2add_online.clear();
+
+    for(auto it = hist_execs->rbegin(); it != hist_execs->rend(); ++it)
+        on_new_item(*it);
+
+    execs_history = _execs_history;
 }

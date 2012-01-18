@@ -39,12 +39,23 @@ namespace mtk{namespace trd{
 
 
     /**
-     *      It will return the reject description of last transaction (if it is a reject, in other case it will return "")
+     *      It will return the description of last transaction
      */
     template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
-    std::string    get_lasttr_rjdescr  (const ORDER_TYPE& order)
+    std::string    get_lasttr_descr  (const ORDER_TYPE& order)
     {
-        return order.history()->get_lasttr_rjdescr();
+        return order.history()->get_lasttr_descr();
+    }
+
+
+
+    /**
+     *      If last transition is a reject, it will return true
+     */
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    bool     is_last_tr_rj  (const ORDER_TYPE& order)
+    {
+        return order.history()->is_last_tr_rj();
     }
 
 

@@ -304,7 +304,7 @@ public:
     {
         if      (inner_order->serrors() != "")
             return qtmisc::mtk_color_problem;
-        else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market()==false)
+        else if (is_last_tr_rj(*inner_order)   &&  inner_order->in_market()==false)
             return qtmisc::mtk_color_rejected;
         else if (inner_order->in_market())
             return Qt::white;
@@ -349,7 +349,7 @@ public:
             item->setText(QLatin1String(inner_order->last_request().Get().invariant.product_code.market.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-        if (get_lasttr_rjdescr(*inner_order)!="")
+        if (is_last_tr_rj(*inner_order))
         {
             item->setBackgroundColor(qtmisc::mtk_color_rejected);
             //item->setForeground(Qt::white);
@@ -370,7 +370,7 @@ public:
             item->setText(QLatin1String(inner_order->last_request().Get().invariant.product_code.product.c_str()));
         else
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
-        if (get_lasttr_rjdescr(*inner_order)!="")
+        if (is_last_tr_rj(*inner_order))
         {
             item->setBackgroundColor(qtmisc::mtk_color_rejected);
             //item->setForeground(Qt::white);
@@ -483,9 +483,9 @@ public:
             remarks = ref_cli;
         remarks += QLatin1String(inner_order->serrors().c_str());
         item->setText(remarks);
-        std::string  reject_reason = get_lasttr_rjdescr(*inner_order);
-        if(reject_reason != "")
-            item->setText(QLatin1String(reject_reason.c_str()) + QLatin1String("  ") + item->text());
+        std::string  last_tr_description = get_lasttr_descr(*inner_order);
+        if(last_tr_description != "")
+            item->setText(QLatin1String(last_tr_description.c_str()) + QLatin1String("  ") + item->text());
     }
     void update_item_cli_code            ()
     {
