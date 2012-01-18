@@ -66,6 +66,7 @@ public:
     mtk::Signal< const mtk::trd::msg::RJ_MD_LS&   /*rj*/          > sig_cli_rj_md;
     mtk::Signal< const mtk::trd::msg::RJ_CC_LS&   /*rj*/          > sig_cli_rj_cc;
     mtk::Signal< const mtk::trd::msg::CF_EX_LS&   /*ex*/          > sig_cli_cf_ex;
+    mtk::Signal< const mtk::trd::msg::CF_EXLK&   /*exlk*/        > sig_cli_cf_exlk;
 
 
     //  ACCESS
@@ -125,6 +126,7 @@ public:
     mtk::Signal< const mtk::trd::msg::RJ_MD_LS&   /*rj*/          > sig_cli_rj_md;
     mtk::Signal< const mtk::trd::msg::RJ_CC_LS&   /*rj*/          > sig_cli_rj_cc;
     mtk::Signal< const mtk::trd::msg::CF_EX_LS&   /*ex*/          > sig_cli_cf_ex;
+    mtk::Signal< const mtk::trd::msg::CF_EXLK&   /*exlk*/        > sig_cli_cf_exlk;
 
 
     //  ACCESS

@@ -25,7 +25,6 @@ sub_exec_conf   [< >]
     exec_id  (eid)  :   string
     price    (pri)  :   fix_num
     quantity (qt)   :   fix_num
-    side     (sd)   :   enBuySell
 }
 
 
@@ -108,8 +107,23 @@ CF_XX  [< >]
 
 RQ_ORDERS_STATUS  [< QE:CLI_MK, SUBJ:MK.${account.client_code}.${market}.RQORDST >]
 {
-    request_info       (rqi)   :   mtk::msg::sub_request_info
+    request_info        (rqi)   :   mtk::msg::sub_request_info
 
     market              (mk)    :    string
     account             (acc)   :    sub_account_info
+}
+
+
+
+
+//---------------------------------------------------------------------
+//	LINKED EXECUTION
+
+//  THIS IS NOT AN ORDER CONFIRMATION
+//  on this executions the invariant will not be checked. Generally, the product code, side... will be diferent
+//  total execs has to be empty
+
+CF_EXLK  [< I:CF_XX,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
+{
+    executed_pos  (exp)   :  sub_exec_conf
 }

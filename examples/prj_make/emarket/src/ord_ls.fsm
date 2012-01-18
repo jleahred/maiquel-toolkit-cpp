@@ -44,6 +44,7 @@
 
 
 	sig_cli_cf_ex        (ex   :  mtk::trd::msg::CF_EX_LS)
+    sig_cli_cf_exlk      (exlk :  mtk::trd::msg::CF_EXLK )
 
 
 
@@ -157,7 +158,17 @@ executed --   mkt_cf_ex                    /   LE                             ''
             cf_ex
                 [{
                     if (last_confirmation().HasValue())
+                    {
                         ci->sig_cli_cf_ex.emit(ex);
+                        mtk::trd::msg::CF_EXLK   exlk(ex, ex.executed_pos);
+                        exlk.invariant.product_code.product = MTK_SS("LK_" <<  exlk.invariant.product_code.product);
+                        if(exlk.invariant.side == mtk::trd::msg::buy)
+                            exlk.invariant.side = mtk::trd::msg::sell;
+                        else
+                            exlk.invariant.side = mtk::trd::msg::buy;
+                        exlk.executed_pos.price = ++exlk.executed_pos.price;
+                        ci->sig_cli_cf_exlk.emit(exlk);
+                    }
                     else
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on "
                                                                 << method_name << "  received:  "  << "  " << ex

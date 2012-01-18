@@ -58,6 +58,7 @@ public:
     void rj_md          ( const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc          ( const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex          ( const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK        ( const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st          ( const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -130,6 +131,7 @@ public:
     void rj_md          ( const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc          ( const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex          ( const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK        ( const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st          ( const mtk::trd::msg::CF_ST_LS&   st           );
 
 

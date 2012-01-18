@@ -30,6 +30,7 @@ struct   scoverage
         , init__rj_md (0)
         , init__rj_cc (0)
         , init__cf_ex (0)
+        , init__cf_exLK (0)
         , init__cf_st (0)
         , w_cfnw__rq_nw (0)
         , w_cfnw__rq_md (0)
@@ -41,6 +42,7 @@ struct   scoverage
         , w_cfnw__rj_md (0)
         , w_cfnw__rj_cc (0)
         , w_cfnw__cf_ex (0)
+        , w_cfnw__cf_exLK (0)
         , w_cfnw__cf_st (0)
         , market__rq_nw (0)
         , market__rq_md (0)
@@ -52,6 +54,7 @@ struct   scoverage
         , market__rj_md (0)
         , market__rj_cc (0)
         , market__cf_ex (0)
+        , market__cf_exLK (0)
         , market__cf_st (0)
         , w_cfmd__rq_nw (0)
         , w_cfmd__rq_md (0)
@@ -63,6 +66,7 @@ struct   scoverage
         , w_cfmd__rj_md (0)
         , w_cfmd__rj_cc (0)
         , w_cfmd__cf_ex (0)
+        , w_cfmd__cf_exLK (0)
         , w_cfmd__cf_st (0)
         , w_cfcc__rq_nw (0)
         , w_cfcc__rq_md (0)
@@ -74,6 +78,7 @@ struct   scoverage
         , w_cfcc__rj_md (0)
         , w_cfcc__rj_cc (0)
         , w_cfcc__cf_ex (0)
+        , w_cfcc__cf_exLK (0)
         , w_cfcc__cf_st (0)
         , w_cfmdcc__rq_nw (0)
         , w_cfmdcc__rq_md (0)
@@ -85,6 +90,7 @@ struct   scoverage
         , w_cfmdcc__rj_md (0)
         , w_cfmdcc__rj_cc (0)
         , w_cfmdcc__cf_ex (0)
+        , w_cfmdcc__cf_exLK (0)
         , w_cfmdcc__cf_st (0)
         , w_cfnwmd__rq_nw (0)
         , w_cfnwmd__rq_md (0)
@@ -96,6 +102,7 @@ struct   scoverage
         , w_cfnwmd__rj_md (0)
         , w_cfnwmd__rj_cc (0)
         , w_cfnwmd__cf_ex (0)
+        , w_cfnwmd__cf_exLK (0)
         , w_cfnwmd__cf_st (0)
         , w_cfnwcc__rq_nw (0)
         , w_cfnwcc__rq_md (0)
@@ -107,6 +114,7 @@ struct   scoverage
         , w_cfnwcc__rj_md (0)
         , w_cfnwcc__rj_cc (0)
         , w_cfnwcc__cf_ex (0)
+        , w_cfnwcc__cf_exLK (0)
         , w_cfnwcc__cf_st (0)
         , canceled__rq_nw (0)
         , canceled__rq_md (0)
@@ -118,6 +126,7 @@ struct   scoverage
         , canceled__rj_md (0)
         , canceled__rj_cc (0)
         , canceled__cf_ex (0)
+        , canceled__cf_exLK (0)
         , canceled__cf_st (0)
         , executed__rq_nw (0)
         , executed__rq_md (0)
@@ -129,6 +138,7 @@ struct   scoverage
         , executed__rj_md (0)
         , executed__rj_cc (0)
         , executed__cf_ex (0)
+        , executed__cf_exLK (0)
         , executed__cf_st (0)
         , error__rq_nw (0)
         , error__rq_md (0)
@@ -140,6 +150,7 @@ struct   scoverage
         , error__rj_md (0)
         , error__rj_cc (0)
         , error__cf_ex (0)
+        , error__cf_exLK (0)
         , error__cf_st (0)
     {}
 
@@ -153,6 +164,7 @@ struct   scoverage
     int   init__rj_md;
     int   init__rj_cc;
     int   init__cf_ex;
+    int   init__cf_exLK;
     int   init__cf_st;
     int   w_cfnw__rq_nw;
     int   w_cfnw__rq_md;
@@ -164,6 +176,7 @@ struct   scoverage
     int   w_cfnw__rj_md;
     int   w_cfnw__rj_cc;
     int   w_cfnw__cf_ex;
+    int   w_cfnw__cf_exLK;
     int   w_cfnw__cf_st;
     int   market__rq_nw;
     int   market__rq_md;
@@ -175,6 +188,7 @@ struct   scoverage
     int   market__rj_md;
     int   market__rj_cc;
     int   market__cf_ex;
+    int   market__cf_exLK;
     int   market__cf_st;
     int   w_cfmd__rq_nw;
     int   w_cfmd__rq_md;
@@ -186,6 +200,7 @@ struct   scoverage
     int   w_cfmd__rj_md;
     int   w_cfmd__rj_cc;
     int   w_cfmd__cf_ex;
+    int   w_cfmd__cf_exLK;
     int   w_cfmd__cf_st;
     int   w_cfcc__rq_nw;
     int   w_cfcc__rq_md;
@@ -197,6 +212,7 @@ struct   scoverage
     int   w_cfcc__rj_md;
     int   w_cfcc__rj_cc;
     int   w_cfcc__cf_ex;
+    int   w_cfcc__cf_exLK;
     int   w_cfcc__cf_st;
     int   w_cfmdcc__rq_nw;
     int   w_cfmdcc__rq_md;
@@ -208,6 +224,7 @@ struct   scoverage
     int   w_cfmdcc__rj_md;
     int   w_cfmdcc__rj_cc;
     int   w_cfmdcc__cf_ex;
+    int   w_cfmdcc__cf_exLK;
     int   w_cfmdcc__cf_st;
     int   w_cfnwmd__rq_nw;
     int   w_cfnwmd__rq_md;
@@ -219,6 +236,7 @@ struct   scoverage
     int   w_cfnwmd__rj_md;
     int   w_cfnwmd__rj_cc;
     int   w_cfnwmd__cf_ex;
+    int   w_cfnwmd__cf_exLK;
     int   w_cfnwmd__cf_st;
     int   w_cfnwcc__rq_nw;
     int   w_cfnwcc__rq_md;
@@ -230,6 +248,7 @@ struct   scoverage
     int   w_cfnwcc__rj_md;
     int   w_cfnwcc__rj_cc;
     int   w_cfnwcc__cf_ex;
+    int   w_cfnwcc__cf_exLK;
     int   w_cfnwcc__cf_st;
     int   canceled__rq_nw;
     int   canceled__rq_md;
@@ -241,6 +260,7 @@ struct   scoverage
     int   canceled__rj_md;
     int   canceled__rj_cc;
     int   canceled__cf_ex;
+    int   canceled__cf_exLK;
     int   canceled__cf_st;
     int   executed__rq_nw;
     int   executed__rq_md;
@@ -252,6 +272,7 @@ struct   scoverage
     int   executed__rj_md;
     int   executed__rj_cc;
     int   executed__cf_ex;
+    int   executed__cf_exLK;
     int   executed__cf_st;
     int   error__rq_nw;
     int   error__rq_md;
@@ -263,6 +284,7 @@ struct   scoverage
     int   error__rj_md;
     int   error__rj_cc;
     int   error__cf_ex;
+    int   error__cf_exLK;
     int   error__cf_st;
 
     std::string  get_string(void)
@@ -283,6 +305,7 @@ struct   scoverage
               if(init__rj_md)   {++num_touched; last_result += MTK_SS("init__rj_md:" << init__rj_md << std::endl);}
               if(init__rj_cc)   {++num_touched; last_result += MTK_SS("init__rj_cc:" << init__rj_cc << std::endl);}
               if(init__cf_ex)   {++num_touched; last_result += MTK_SS("init__cf_ex:" << init__cf_ex << std::endl);}
+              if(init__cf_exLK)   {++num_touched; last_result += MTK_SS("init__cf_exLK:" << init__cf_exLK << std::endl);}
               if(init__cf_st)   {++num_touched; last_result += MTK_SS("init__cf_st:" << init__cf_st << std::endl);}
               if(w_cfnw__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnw__rq_nw:" << w_cfnw__rq_nw << std::endl);}
               if(w_cfnw__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnw__rq_md:" << w_cfnw__rq_md << std::endl);}
@@ -294,6 +317,7 @@ struct   scoverage
               if(w_cfnw__rj_md)   {++num_touched; last_result += MTK_SS("w_cfnw__rj_md:" << w_cfnw__rj_md << std::endl);}
               if(w_cfnw__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfnw__rj_cc:" << w_cfnw__rj_cc << std::endl);}
               if(w_cfnw__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_ex:" << w_cfnw__cf_ex << std::endl);}
+              if(w_cfnw__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_exLK:" << w_cfnw__cf_exLK << std::endl);}
               if(w_cfnw__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_st:" << w_cfnw__cf_st << std::endl);}
               if(market__rq_nw)   {++num_touched; last_result += MTK_SS("market__rq_nw:" << market__rq_nw << std::endl);}
               if(market__rq_md)   {++num_touched; last_result += MTK_SS("market__rq_md:" << market__rq_md << std::endl);}
@@ -305,6 +329,7 @@ struct   scoverage
               if(market__rj_md)   {++num_touched; last_result += MTK_SS("market__rj_md:" << market__rj_md << std::endl);}
               if(market__rj_cc)   {++num_touched; last_result += MTK_SS("market__rj_cc:" << market__rj_cc << std::endl);}
               if(market__cf_ex)   {++num_touched; last_result += MTK_SS("market__cf_ex:" << market__cf_ex << std::endl);}
+              if(market__cf_exLK)   {++num_touched; last_result += MTK_SS("market__cf_exLK:" << market__cf_exLK << std::endl);}
               if(market__cf_st)   {++num_touched; last_result += MTK_SS("market__cf_st:" << market__cf_st << std::endl);}
               if(w_cfmd__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfmd__rq_nw:" << w_cfmd__rq_nw << std::endl);}
               if(w_cfmd__rq_md)   {++num_touched; last_result += MTK_SS("w_cfmd__rq_md:" << w_cfmd__rq_md << std::endl);}
@@ -316,6 +341,7 @@ struct   scoverage
               if(w_cfmd__rj_md)   {++num_touched; last_result += MTK_SS("w_cfmd__rj_md:" << w_cfmd__rj_md << std::endl);}
               if(w_cfmd__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfmd__rj_cc:" << w_cfmd__rj_cc << std::endl);}
               if(w_cfmd__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_ex:" << w_cfmd__cf_ex << std::endl);}
+              if(w_cfmd__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_exLK:" << w_cfmd__cf_exLK << std::endl);}
               if(w_cfmd__cf_st)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_st:" << w_cfmd__cf_st << std::endl);}
               if(w_cfcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfcc__rq_nw:" << w_cfcc__rq_nw << std::endl);}
               if(w_cfcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfcc__rq_md:" << w_cfcc__rq_md << std::endl);}
@@ -327,6 +353,7 @@ struct   scoverage
               if(w_cfcc__rj_md)   {++num_touched; last_result += MTK_SS("w_cfcc__rj_md:" << w_cfcc__rj_md << std::endl);}
               if(w_cfcc__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfcc__rj_cc:" << w_cfcc__rj_cc << std::endl);}
               if(w_cfcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_ex:" << w_cfcc__cf_ex << std::endl);}
+              if(w_cfcc__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_exLK:" << w_cfcc__cf_exLK << std::endl);}
               if(w_cfcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_st:" << w_cfcc__cf_st << std::endl);}
               if(w_cfmdcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rq_nw:" << w_cfmdcc__rq_nw << std::endl);}
               if(w_cfmdcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rq_md:" << w_cfmdcc__rq_md << std::endl);}
@@ -338,6 +365,7 @@ struct   scoverage
               if(w_cfmdcc__rj_md)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rj_md:" << w_cfmdcc__rj_md << std::endl);}
               if(w_cfmdcc__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rj_cc:" << w_cfmdcc__rj_cc << std::endl);}
               if(w_cfmdcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_ex:" << w_cfmdcc__cf_ex << std::endl);}
+              if(w_cfmdcc__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_exLK:" << w_cfmdcc__cf_exLK << std::endl);}
               if(w_cfmdcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_st:" << w_cfmdcc__cf_st << std::endl);}
               if(w_cfnwmd__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rq_nw:" << w_cfnwmd__rq_nw << std::endl);}
               if(w_cfnwmd__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rq_md:" << w_cfnwmd__rq_md << std::endl);}
@@ -349,6 +377,7 @@ struct   scoverage
               if(w_cfnwmd__rj_md)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rj_md:" << w_cfnwmd__rj_md << std::endl);}
               if(w_cfnwmd__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rj_cc:" << w_cfnwmd__rj_cc << std::endl);}
               if(w_cfnwmd__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_ex:" << w_cfnwmd__cf_ex << std::endl);}
+              if(w_cfnwmd__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_exLK:" << w_cfnwmd__cf_exLK << std::endl);}
               if(w_cfnwmd__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_st:" << w_cfnwmd__cf_st << std::endl);}
               if(w_cfnwcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rq_nw:" << w_cfnwcc__rq_nw << std::endl);}
               if(w_cfnwcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rq_md:" << w_cfnwcc__rq_md << std::endl);}
@@ -360,6 +389,7 @@ struct   scoverage
               if(w_cfnwcc__rj_md)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rj_md:" << w_cfnwcc__rj_md << std::endl);}
               if(w_cfnwcc__rj_cc)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rj_cc:" << w_cfnwcc__rj_cc << std::endl);}
               if(w_cfnwcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_ex:" << w_cfnwcc__cf_ex << std::endl);}
+              if(w_cfnwcc__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_exLK:" << w_cfnwcc__cf_exLK << std::endl);}
               if(w_cfnwcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_st:" << w_cfnwcc__cf_st << std::endl);}
               if(canceled__rq_nw)   {++num_touched; last_result += MTK_SS("canceled__rq_nw:" << canceled__rq_nw << std::endl);}
               if(canceled__rq_md)   {++num_touched; last_result += MTK_SS("canceled__rq_md:" << canceled__rq_md << std::endl);}
@@ -371,6 +401,7 @@ struct   scoverage
               if(canceled__rj_md)   {++num_touched; last_result += MTK_SS("canceled__rj_md:" << canceled__rj_md << std::endl);}
               if(canceled__rj_cc)   {++num_touched; last_result += MTK_SS("canceled__rj_cc:" << canceled__rj_cc << std::endl);}
               if(canceled__cf_ex)   {++num_touched; last_result += MTK_SS("canceled__cf_ex:" << canceled__cf_ex << std::endl);}
+              if(canceled__cf_exLK)   {++num_touched; last_result += MTK_SS("canceled__cf_exLK:" << canceled__cf_exLK << std::endl);}
               if(canceled__cf_st)   {++num_touched; last_result += MTK_SS("canceled__cf_st:" << canceled__cf_st << std::endl);}
               if(executed__rq_nw)   {++num_touched; last_result += MTK_SS("executed__rq_nw:" << executed__rq_nw << std::endl);}
               if(executed__rq_md)   {++num_touched; last_result += MTK_SS("executed__rq_md:" << executed__rq_md << std::endl);}
@@ -382,6 +413,7 @@ struct   scoverage
               if(executed__rj_md)   {++num_touched; last_result += MTK_SS("executed__rj_md:" << executed__rj_md << std::endl);}
               if(executed__rj_cc)   {++num_touched; last_result += MTK_SS("executed__rj_cc:" << executed__rj_cc << std::endl);}
               if(executed__cf_ex)   {++num_touched; last_result += MTK_SS("executed__cf_ex:" << executed__cf_ex << std::endl);}
+              if(executed__cf_exLK)   {++num_touched; last_result += MTK_SS("executed__cf_exLK:" << executed__cf_exLK << std::endl);}
               if(executed__cf_st)   {++num_touched; last_result += MTK_SS("executed__cf_st:" << executed__cf_st << std::endl);}
               if(error__rq_nw)   {++num_touched; last_result += MTK_SS("error__rq_nw:" << error__rq_nw << std::endl);}
               if(error__rq_md)   {++num_touched; last_result += MTK_SS("error__rq_md:" << error__rq_md << std::endl);}
@@ -393,6 +425,7 @@ struct   scoverage
               if(error__rj_md)   {++num_touched; last_result += MTK_SS("error__rj_md:" << error__rj_md << std::endl);}
               if(error__rj_cc)   {++num_touched; last_result += MTK_SS("error__rj_cc:" << error__rj_cc << std::endl);}
               if(error__cf_ex)   {++num_touched; last_result += MTK_SS("error__cf_ex:" << error__cf_ex << std::endl);}
+              if(error__cf_exLK)   {++num_touched; last_result += MTK_SS("error__cf_exLK:" << error__cf_exLK << std::endl);}
               if(error__cf_st)   {++num_touched; last_result += MTK_SS("error__cf_st:" << error__cf_st << std::endl);}
 
         last_result += MTK_SS("__num_touched__:"  <<  num_touched);
@@ -508,6 +541,7 @@ public:
     virtual void rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj           )=0;
     virtual void rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj           )=0;
     virtual void cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex           )=0;
+    virtual void cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk         )=0;
     virtual void cf_st ( const mtk::trd::msg::CF_ST_LS&   st           )=0;
 
 
@@ -563,6 +597,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -605,6 +640,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -647,6 +683,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -689,6 +726,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -731,6 +769,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -773,6 +812,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -815,6 +855,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -857,6 +898,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -899,6 +941,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -941,6 +984,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -991,6 +1035,7 @@ public:
     void rj_md (const mtk::trd::msg::RJ_MD_LS&   rj           );
     void rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           );
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
+    void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
 
 
@@ -1341,6 +1386,41 @@ void init::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
   ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void init::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.init__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "init::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, ("received cfexlk with no order")));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
 
         }
     
@@ -1980,6 +2060,41 @@ void w_cfnw::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     ci->signal_remove_temp_status();
 }
 
+void w_cfnw::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfnw__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "w_cfnw::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, ("received cfexlk waiting for confirmation")));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void w_cfnw::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
 {
     //  coverage
@@ -2588,6 +2703,41 @@ void market::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
   ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void market::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.market__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "market::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new market (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
 
         }
     
@@ -3242,6 +3392,41 @@ void w_cfmd::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     ci->signal_remove_temp_status();
 }
 
+void w_cfmd::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfmd__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "w_cfmd::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfmd (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void w_cfmd::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
 {
     //  coverage
@@ -3754,6 +3939,41 @@ void w_cfcc::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
   ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_cfcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfcc__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "w_cfcc::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfcc (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
 
         }
     
@@ -4388,6 +4608,41 @@ void w_cfmdcc::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     ci->signal_remove_temp_status();
 }
 
+void w_cfmdcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfmdcc__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "w_cfmdcc::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void w_cfmdcc::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
 {
     //  coverage
@@ -5013,6 +5268,41 @@ void w_cfnwmd::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     ci->signal_remove_temp_status();
 }
 
+void w_cfnwmd::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfnwmd__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "w_cfnwmd::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, ("received cfexlk waiting for confirmation2")));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void w_cfnwmd::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
 {
     //  coverage
@@ -5585,6 +5875,41 @@ void w_cfnwcc::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     ci->signal_remove_temp_status();
 }
 
+void w_cfnwcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfnwcc__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "w_cfnwcc::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, ("received cfexlk waiting for confirmation3")));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void w_cfnwcc::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
 {
     //  coverage
@@ -6081,6 +6406,41 @@ void canceled::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     ci->signal_remove_temp_status();
 }
 
+void canceled::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.canceled__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "canceled::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new canceled (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void canceled::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
 {
     //  coverage
@@ -6569,6 +6929,41 @@ void executed::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                     else
                         throw mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", "Cannot request a cancelation with no previus request or previus confirmation", mtk::alPriorCritic, mtk::alTypeNoPermisions);
                 
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void executed::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.executed__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "executed::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new executed (ci));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
 
         }
     
@@ -7117,6 +7512,41 @@ void error::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     ci->signal_remove_temp_status();
 }
 
+void error::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
+{
+    //  coverage
+    ++status_common_info::coverage.error__cf_exLK;
+
+    //  remove unused warning
+    (void) exlk;
+
+    
+	static const char* method_name = "error::cf_exLK";
+
+      
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            ci->signal_new_status.emit(new_status);
+//  inserting macro: cf_cfexLK
+
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void error::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
 {
     //  coverage
@@ -7235,6 +7665,11 @@ void mtk::trd::trd_cli_ls_dangerous_signals_not_warped::cf_ex (const mtk::trd::m
 {
     mtk::CountPtr<fsmgen_trd_cli_ls::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cf_ex(ex);
+}
+void mtk::trd::trd_cli_ls_dangerous_signals_not_warped::cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         )
+{
+    mtk::CountPtr<fsmgen_trd_cli_ls::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
+    current_status_to_keep_alive_on_scope->cf_exLK(exlk);
 }
 void mtk::trd::trd_cli_ls_dangerous_signals_not_warped::cf_st (const mtk::trd::msg::CF_ST_LS&   st           )
 {
@@ -7372,6 +7807,10 @@ void mtk::trd::trd_cli_ls::rj_cc (const mtk::trd::msg::RJ_CC_LS&   rj           
 void mtk::trd::trd_cli_ls::cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           )
 {
     ptr->cf_ex(ex);
+}
+void mtk::trd::trd_cli_ls::cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         )
+{
+    ptr->cf_exLK(exlk);
 }
 void mtk::trd::trd_cli_ls::cf_st (const mtk::trd::msg::CF_ST_LS&   st           )
 {

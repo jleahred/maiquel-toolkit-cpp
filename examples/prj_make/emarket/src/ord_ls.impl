@@ -92,7 +92,7 @@ struct   scoverage
 
 struct  status_common_info
 {
-    status_common_info ( mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_add_order, mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_del_order, mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_modif_order, mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_check_execs, mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_update_prices, mtk::Signal<const mtk::trd::msg::CF_NW_LS&   /*cf*/         >& _sig_cli_cf_nw, mtk::Signal<const mtk::trd::msg::CF_MD_LS&   /*cf*/         >& _sig_cli_cf_md, mtk::Signal<const mtk::trd::msg::CF_CC_LS&   /*cf*/         >& _sig_cli_cf_cc, mtk::Signal<const mtk::trd::msg::RJ_NW_LS&   /*rj*/         >& _sig_cli_rj_nw, mtk::Signal<const mtk::trd::msg::RJ_MD_LS&   /*rj*/         >& _sig_cli_rj_md, mtk::Signal<const mtk::trd::msg::RJ_CC_LS&   /*rj*/         >& _sig_cli_rj_cc, mtk::Signal<const mtk::trd::msg::CF_EX_LS&   /*ex*/         >& _sig_cli_cf_ex)
+    status_common_info ( mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_add_order, mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_del_order, mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_modif_order, mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_check_execs, mtk::Signal<const mtk::trd::msg::CF_XX_LS&   /*order_st*/   >& _sig_ob_update_prices, mtk::Signal<const mtk::trd::msg::CF_NW_LS&   /*cf*/         >& _sig_cli_cf_nw, mtk::Signal<const mtk::trd::msg::CF_MD_LS&   /*cf*/         >& _sig_cli_cf_md, mtk::Signal<const mtk::trd::msg::CF_CC_LS&   /*cf*/         >& _sig_cli_cf_cc, mtk::Signal<const mtk::trd::msg::RJ_NW_LS&   /*rj*/         >& _sig_cli_rj_nw, mtk::Signal<const mtk::trd::msg::RJ_MD_LS&   /*rj*/         >& _sig_cli_rj_md, mtk::Signal<const mtk::trd::msg::RJ_CC_LS&   /*rj*/         >& _sig_cli_rj_cc, mtk::Signal<const mtk::trd::msg::CF_EX_LS&   /*ex*/         >& _sig_cli_cf_ex, mtk::Signal<const mtk::trd::msg::CF_EXLK&   /*exlk*/       >& _sig_cli_cf_exlk)
         :  
         __last_confirmation(mtk::nullable<mtk::trd::msg::CF_XX_LS>() ),
         __last_request(mtk::nullable<mtk::trd::msg::RQ_XX_LS>() ),
@@ -108,7 +108,8 @@ struct  status_common_info
         sig_cli_rj_nw (_sig_cli_rj_nw), 
         sig_cli_rj_md (_sig_cli_rj_md), 
         sig_cli_rj_cc (_sig_cli_rj_cc), 
-        sig_cli_cf_ex (_sig_cli_cf_ex)
+        sig_cli_cf_ex (_sig_cli_cf_ex), 
+        sig_cli_cf_exlk (_sig_cli_cf_exlk)
         {};
     virtual ~status_common_info(){};
 
@@ -134,6 +135,7 @@ struct  status_common_info
     mtk::Signal<const mtk::trd::msg::RJ_MD_LS&   /*rj*/         >& sig_cli_rj_md;
     mtk::Signal<const mtk::trd::msg::RJ_CC_LS&   /*rj*/         >& sig_cli_rj_cc;
     mtk::Signal<const mtk::trd::msg::CF_EX_LS&   /*ex*/         >& sig_cli_cf_ex;
+    mtk::Signal<const mtk::trd::msg::CF_EXLK&   /*exlk*/       >& sig_cli_cf_exlk;
 
 
     mtk::Signal<mtk::CountPtr<abstract_status> > signal_new_status;
@@ -877,7 +879,17 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 //  inserting macro: cf_ex
 
                     if (last_confirmation().HasValue())
+                    {
                         ci->sig_cli_cf_ex.emit(ex);
+                        mtk::trd::msg::CF_EXLK   exlk(ex, ex.executed_pos);
+                        exlk.invariant.product_code.product = MTK_SS("LK_" <<  exlk.invariant.product_code.product);
+                        if(exlk.invariant.side == mtk::trd::msg::buy)
+                            exlk.invariant.side = mtk::trd::msg::sell;
+                        else
+                            exlk.invariant.side = mtk::trd::msg::buy;
+                        exlk.executed_pos.price = ++exlk.executed_pos.price;
+                        ci->sig_cli_cf_exlk.emit(exlk);
+                    }
                     else
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on "
                                                                 << method_name << "  received:  "  << "  " << ex
@@ -899,7 +911,17 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 //  inserting macro: cf_ex
 
                     if (last_confirmation().HasValue())
+                    {
                         ci->sig_cli_cf_ex.emit(ex);
+                        mtk::trd::msg::CF_EXLK   exlk(ex, ex.executed_pos);
+                        exlk.invariant.product_code.product = MTK_SS("LK_" <<  exlk.invariant.product_code.product);
+                        if(exlk.invariant.side == mtk::trd::msg::buy)
+                            exlk.invariant.side = mtk::trd::msg::sell;
+                        else
+                            exlk.invariant.side = mtk::trd::msg::buy;
+                        exlk.executed_pos.price = ++exlk.executed_pos.price;
+                        ci->sig_cli_cf_exlk.emit(exlk);
+                    }
                     else
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, method_name, MTK_SS("Error mising last confirmation trying to send confirm cancelation. Errors on "
                                                                 << method_name << "  received:  "  << "  " << ex
@@ -1239,7 +1261,7 @@ void executed::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
 ord_ls_dangerous_signals_not_warped::ord_ls_dangerous_signals_not_warped()
 {
     mtk::CountPtr<fsmgen_ord_ls::status_common_info> ci = mtk::make_cptr(
-                            new fsmgen_ord_ls::status_common_info ( sig_ob_add_order,sig_ob_del_order,sig_ob_modif_order,sig_ob_check_execs,sig_ob_update_prices,sig_cli_cf_nw,sig_cli_cf_md,sig_cli_cf_cc,sig_cli_rj_nw,sig_cli_rj_md,sig_cli_rj_cc,sig_cli_cf_ex));
+                            new fsmgen_ord_ls::status_common_info ( sig_ob_add_order,sig_ob_del_order,sig_ob_modif_order,sig_ob_check_execs,sig_ob_update_prices,sig_cli_cf_nw,sig_cli_cf_md,sig_cli_cf_cc,sig_cli_rj_nw,sig_cli_rj_md,sig_cli_rj_cc,sig_cli_cf_ex,sig_cli_cf_exlk));
 
     current_status = mtk::make_cptr(new fsmgen_ord_ls::init(ci ) );
     MTK_CONNECT_THIS(ci->signal_new_status, on_new_status)
@@ -1321,6 +1343,7 @@ ord_ls::ord_ls (void)
     ptr->sig_cli_rj_md.connect(&sig_cli_rj_md);
     ptr->sig_cli_rj_cc.connect(&sig_cli_rj_cc);
     ptr->sig_cli_cf_ex.connect(&sig_cli_cf_ex);
+    ptr->sig_cli_cf_exlk.connect(&sig_cli_cf_exlk);
 }
 ord_ls::ord_ls (const mtk::CountPtr<ord_ls_dangerous_signals_not_warped>& _ptr)
     :   ptr(_ptr)
@@ -1339,6 +1362,7 @@ ord_ls::ord_ls (const mtk::CountPtr<ord_ls_dangerous_signals_not_warped>& _ptr)
     ptr->sig_cli_rj_md.connect(&sig_cli_rj_md);
     ptr->sig_cli_rj_cc.connect(&sig_cli_rj_cc);
     ptr->sig_cli_cf_ex.connect(&sig_cli_cf_ex);
+    ptr->sig_cli_cf_exlk.connect(&sig_cli_cf_exlk);
     } MTK_CATCH_RETHROW("ord_ls","connecting signals")
 }
 
@@ -1357,6 +1381,7 @@ ptr = _ptr;
     ptr->sig_cli_rj_md.connect(&sig_cli_rj_md);
     ptr->sig_cli_rj_cc.connect(&sig_cli_rj_cc);
     ptr->sig_cli_cf_ex.connect(&sig_cli_cf_ex);
+    ptr->sig_cli_cf_exlk.connect(&sig_cli_cf_exlk);
 }
 
 

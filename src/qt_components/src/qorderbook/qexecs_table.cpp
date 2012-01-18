@@ -106,7 +106,7 @@ public:
     void update_item_side(void)
     {
         QTableWidgetItem* item = items[col_side];
-        if (exec_item.exec_info.side == mtk::trd::msg::buy)
+        if (exec_item.confirm_info.invariant.side == mtk::trd::msg::buy)
         {
             item->setText(QObject::tr("buy"));
             item->setBackgroundColor(qtmisc::mtk_color_buy_cell);

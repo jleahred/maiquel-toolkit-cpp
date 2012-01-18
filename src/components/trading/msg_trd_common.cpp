@@ -425,8 +425,8 @@ void sub_order_id::before_send(void) const
 
 
 
-sub_exec_conf::sub_exec_conf (   const std::string&  _exec_id,   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const enBuySell&  _side)
-    :     exec_id(_exec_id),   price(_price),   quantity(_quantity),   side(_side) 
+sub_exec_conf::sub_exec_conf (   const std::string&  _exec_id,   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity)
+    :     exec_id(_exec_id),   price(_price),   quantity(_quantity) 
        
     {  
         std::string cr = check_recomended ();  
@@ -613,6 +613,33 @@ void RQ_ORDERS_STATUS::before_send(void) const
 
 
 
+
+CF_EXLK::CF_EXLK ( const CF_XX&  parent,   const sub_exec_conf&  _executed_pos)
+    :  CF_XX(parent),   executed_pos(_executed_pos) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string CF_EXLK::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void CF_EXLK::before_send(void) const
+{
+
+}
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_order_id & c)
 {
     o << "{ "
@@ -649,7 +676,7 @@ std::ostream& operator<< (std::ostream& o, const sub_exec_conf & c)
 {
     o << "{ "
 
-        << "exec_id:"<<   c.exec_id << "  "        << "price:"<<   c.price << "  "        << "quantity:"<<   c.quantity << "  "        << "side:"<< c.side<<"  "
+        << "exec_id:"<<   c.exec_id << "  "        << "price:"<<   c.price << "  "        << "quantity:"<<   c.quantity << "  "
         << " }";
     return o;
 };
@@ -660,7 +687,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_exec_conf & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "exec_id"  << YAML::Value <<   c.exec_id        << YAML::Key << "price"  << YAML::Value <<   c.price        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity        << YAML::Key << "side"  << YAML::Value << c.side
+        << YAML::Key << "exec_id"  << YAML::Value <<   c.exec_id        << YAML::Key << "price"  << YAML::Value <<   c.price        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity
         << YAML::EndMap;
     return o;
 };
@@ -674,7 +701,6 @@ void  operator >> (const YAML::Node& node, sub_exec_conf & c)
         node["exec_id"]  >> c.exec_id;
         node["price"]  >> c.price;
         node["quantity"]  >> c.quantity;
-        node["side"]  >> c.side;
 
 
 };
@@ -889,6 +915,39 @@ void  operator >> (const YAML::Node& node, RQ_ORDERS_STATUS & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const CF_EXLK & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const CF_XX&>(c)  << ")" 
+        << "executed_pos:"<< c.executed_pos<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const CF_EXLK & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "CF_XX" <<  YAML::Value << static_cast<const CF_XX&>(c)  
+        << YAML::Key << "executed_pos"  << YAML::Value << c.executed_pos
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, CF_EXLK & c)
+{
+
+    node["CF_XX"]   >>   static_cast<CF_XX&>(c)  ;
+
+        node["executed_pos"]  >> c.executed_pos;
+
+
+};
+
+
 bool operator< (const sub_account_info& a, const sub_account_info& b)
 {
     if (false)   return true;
@@ -917,7 +976,7 @@ bool operator!= (const sub_order_id& a, const sub_order_id& b)
 
 bool operator== (const sub_exec_conf& a, const sub_exec_conf& b)
 {
-    return (          a.exec_id ==  b.exec_id  &&          a.price ==  b.price  &&          a.quantity ==  b.quantity  &&          a.side ==  b.side  &&   true  );
+    return (          a.exec_id ==  b.exec_id  &&          a.price ==  b.price  &&          a.quantity ==  b.quantity  &&   true  );
 };
 
 bool operator!= (const sub_exec_conf& a, const sub_exec_conf& b)
@@ -999,6 +1058,18 @@ bool operator!= (const RQ_ORDERS_STATUS& a, const RQ_ORDERS_STATUS& b)
 
 
 
+bool operator== (const CF_EXLK& a, const CF_EXLK& b)
+{
+    return ( (static_cast<const CF_XX&>(a)   ==  static_cast<const CF_XX&>(b))  &&           a.executed_pos ==  b.executed_pos  &&   true  );
+};
+
+bool operator!= (const CF_EXLK& a, const CF_EXLK& b)
+{
+    return !(a==b);
+};
+
+
+
 
 //void  __internal_qpid_fill (sub_order_id& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_order_id& c, const qpid::types::Variant& v)
@@ -1063,14 +1134,6 @@ void  copy (sub_exec_conf& c, const qpid::types::Variant& v)
                     else
                         copy(c.quantity, it->second);
                         //c.quantity = it->second;
-//   sub_msg_type
-
-                    it = mv.find("sd");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field side on message sub_exec_conf::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.side, it->second);
-                        //__internal_qpid_fill(c.side, it->second.asMap());
 
     }
 
@@ -1087,8 +1150,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_exec_conf& a)
         __internal_add2map(map, a.price, std::string("pri"));
 //  field_type
         __internal_add2map(map, a.quantity, std::string("qt"));
-//  sub_msg_type
-        __internal_add2map(map, a.side, std::string("sd"));
 
 
 };
@@ -1518,6 +1579,50 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_
 
 
 
+
+
+//void  __internal_qpid_fill (CF_EXLK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (CF_EXLK& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<CF_XX&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("exp");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field executed_pos on message CF_EXLK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.executed_pos, it->second);
+                        //__internal_qpid_fill(c.executed_pos, it->second.asMap());
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_EXLK& a)
+{
+
+    a.before_send();
+
+//  parent
+__internal_add2map(map, static_cast<const CF_XX&>(a));
+
+//  sub_msg_type
+        __internal_add2map(map, a.executed_pos, std::string("exp"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EXLK>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1556,6 +1661,31 @@ qpid::messaging::Message RQ_ORDERS_STATUS::qpidmsg_codded_as_qpid_message (const
 
 
 
+qpid::messaging::Message CF_EXLK::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+//  parent
+__internal_add2map(content, static_cast<const CF_XX&>(*this));
+
+//  sub_msg_type
+//        content["exp"] =  qpidmsg_coded_as_qpid_Map(this->executed_pos);
+        __internal_add2map(content, this->executed_pos, std::string("exp"));
+
+
+    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
     sub_order_id  __internal_get_default(sub_order_id*)
     {
         return sub_order_id(
@@ -1571,9 +1701,7 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
 //   field_type
    __internal_get_default ((mtk::FixedNumber*)0),
 //   field_type
-   __internal_get_default ((mtk::FixedNumber*)0),
-//   sub_msg_type
-   __internal_get_default((enBuySell*)0)
+   __internal_get_default ((mtk::FixedNumber*)0)
             );
     }
     
@@ -1659,6 +1787,14 @@ __internal_get_default((mtk::msg::sub_request_id*)0)
             );
     }
     
+    CF_EXLK  __internal_get_default(CF_EXLK*)
+    {
+        return CF_EXLK(
+__internal_get_default((CF_XX*)0), //   sub_msg_type
+   __internal_get_default((sub_exec_conf*)0)
+            );
+    }
+    
 
 sub_order_id::sub_order_id (const qpid::types::Variant::Map&  mv)
     :  mtk::msg::sub_request_id(mv) 
@@ -1678,9 +1814,7 @@ sub_exec_conf::sub_exec_conf (const qpid::types::Variant::Map&  mv)
 //   field_type
    price(__internal_get_default((mtk::FixedNumber*)0)),
 //   field_type
-   quantity(__internal_get_default((mtk::FixedNumber*)0)),
-//   sub_msg_type
-   side(__internal_get_default((enBuySell*)0)) 
+   quantity(__internal_get_default((mtk::FixedNumber*)0)) 
     {
         copy(*this, mv);
         std::string cr = check_recomended ();  
@@ -1801,6 +1935,19 @@ RQ_ORDERS_STATUS::RQ_ORDERS_STATUS (const qpid::types::Variant::Map&  mv)
                 MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
+
+
+CF_EXLK::CF_EXLK (const qpid::types::Variant::Map&  mv)
+    :  CF_XX(mv), //   sub_msg_type
+   executed_pos(__internal_get_default((sub_exec_conf*)0)) 
+    {
+        copy(*this, mv);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
 mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_in_subject (const std::string& account_client_code,const std::string& market)
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << account_client_code << "." << market << ".RQORDST"));
@@ -1814,6 +1961,22 @@ mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_in_subject (const std::string& account
         return mtk::t_qpid_address(MTK_SS("CLI_MK"));
     }
     mtk::t_qpid_address  RQ_ORDERS_STATUS::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_filter  CF_EXLK::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name)
+    {
+        return mtk::t_qpid_filter(MTK_SS("CLI." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << ".TRD"));
+    }
+    mtk::t_qpid_filter  CF_EXLK::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->invariant.account.client_code << "." << this->invariant.product_code.market << "." << this->invariant.account.name << ".TRD"));
+    }
+    /*static*/  mtk::t_qpid_address  CF_EXLK::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  CF_EXLK::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("CLI_MK"));
     }

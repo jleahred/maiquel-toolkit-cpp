@@ -31,6 +31,8 @@
                                 CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         }]
 
+	cf_exLK         (exlk   :  mtk::trd::msg::CF_EXLK)  [{  }]
+
 	cf_st           (st   :  mtk::trd::msg::CF_ST_LS)   [{  IF_LAST_CONF_ISNULL__WRITE_IT         }]
 
 
@@ -138,6 +140,8 @@ init    --   cf_ex                           /   , cf_cfex             -->   mar
 init    --   cf_st  &&  full_exec            /   , cf_cfst             -->   executed
 init    --   cf_st  &&  is_rem_qty_zero      /   , cf_cfst             -->   canceled
 init    --   cf_st                           /   , cf_cfst             -->   market
+init    --   cf_exLK                         /   , cf_cfexLK           ''>   error      ("received cfexlk with no order")
+
 
 
 w_cfnw  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
@@ -154,6 +158,7 @@ w_cfnw  --   rj_md                           /   , cf_rjmd & rq_cc     ''>   err
 w_cfnw  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
 w_cfnw  --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error      (method_name)
 w_cfnw  --   cf_st                                                     ''>   w_cfnw
+w_cfnw  --   cf_exLK                         /   , cf_cfexLK           ''>   error      ("received cfexlk waiting for confirmation")
 
 
 market  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
@@ -171,6 +176,7 @@ market  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   err
 market  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
 market  --   cf_ex                           /   , cf_cfex             ''>   market
 market  --   cf_st                                                     ''>   market
+market  --   cf_exLK                         /   , cf_cfexLK           ''>   market
 
 
 w_cfmd  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
@@ -190,6 +196,7 @@ w_cfmd  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   err
 w_cfmd  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
 w_cfmd  --   cf_ex                           /   , cf_cfex             ''>   w_cfmd
 w_cfmd  --   cf_st                                                     ''>   w_cfmd
+w_cfmd  --   cf_exLK                         /   , cf_cfexLK           ''>   w_cfmd
 
 
 
@@ -206,6 +213,7 @@ w_cfcc  --   rj_cc                           /   , cf_rjcc            ''>   mark
 w_cfcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
 w_cfcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfcc
 w_cfcc  --   cf_st                                                    ''>   w_cfcc
+w_cfcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfcc
 
 
 
@@ -226,6 +234,7 @@ w_cfmdcc  --   rj_cc                           /   , cf_rjcc            ''>   w_
 w_cfmdcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
 w_cfmdcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfmdcc
 w_cfmdcc  --   cf_st                                                    ''>   w_cfmdcc
+w_cfmdcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfmdcc
 
 
 
@@ -243,6 +252,7 @@ w_cfnwmd  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   er
 w_cfnwmd  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   cf_st                                                    ''>   w_cfnwmd
+w_cfnwmd  --   cf_exLK                         /   , cf_cfexLK          ''>   error     ("received cfexlk waiting for confirmation2")
 
 
 w_cfnwcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
@@ -257,6 +267,7 @@ w_cfnwcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   er
 w_cfnwcc  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   cf_st                                                    ''>   w_cfnwcc
+w_cfnwcc  --   cf_exLK                         /   , cf_cfexLK          ''>   error     ("received cfexlk waiting for confirmation3")
 
 
 
@@ -271,6 +282,7 @@ canceled --   rj_md                           /   , cf_rjmd             ''>   ca
 canceled --   rj_cc                           /   , cf_rjcc             ''>   canceled
 canceled --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 canceled --   cf_st                                                     ''>   canceled
+canceled --   cf_exLK                         /   , cf_cfexLK           ''>   canceled
 
 
 executed --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
@@ -284,6 +296,7 @@ executed --   rj_md                           /   , cf_rjmd             ''>   ex
 executed --   rj_cc                           /   , cf_rjcc             ''>   executed
 executed --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 executed --   cf_st                                                     ''>   executed
+executed --   cf_exLK                         /   , cf_cfexLK           ''>   executed
 
 
 
@@ -298,6 +311,7 @@ error    --   rj_md                           /   , cf_rjmd & rq_cc     ''>   er
 error    --   rj_cc                           /   , cf_rjcc             ''>   error     (method_name)
 error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 error    --   cf_st                                                     ''>   error     (method_name)
+error    --   cf_exLK                         /   , cf_cfexLK           ''>   error     (method_name)
 
 
 
@@ -331,6 +345,14 @@ error    --   cf_st                                                     ''>   er
 
         //  CONFIRM EXECUTIONS..........................................
             cf_cfex         [{  ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  }]
+
+
+        //  CONFIRM LINKED execs..........................................
+            cf_cfexLK
+            [{
+                using namespace mtk::trd::hist;
+                ci->executions()->add_item( { exlk, exlk.executed_pos } );
+            }]
 
 
         //  progressing  rejects.................................................

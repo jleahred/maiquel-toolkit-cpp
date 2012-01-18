@@ -7,11 +7,12 @@
 
 
 namespace {
-    const char*   VERSION = "2011-03-16";
+    const char*   VERSION = "2012-01-18";
 
     const char*   MODIFICATIONS =
                         "           2011-03-16     first version\n"
-                        "           2011-05-13     added market orders\n";
+                        "           2011-05-13     added market orders\n"
+                        "           2012-01-18     added linked orders\n";
 
 
 void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
@@ -65,6 +66,8 @@ namespace  trd_cli_ord_book {
 
 struct handles_qpid
 {
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EXLK>  > cf_exlk;
+
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_LS> > cf_nw_ls;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_LS> > cf_md_ls;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_LS> > cf_cc_ls;
@@ -112,6 +115,7 @@ bool      deleted=false;
 
 
 
+void cf_exlk (const mtk::trd::msg::CF_EXLK& exlk);
 void cf_nw_ls(const mtk::trd::msg::CF_NW_LS& cf);
 void cf_md_ls(const mtk::trd::msg::CF_MD_LS& cf);
 void cf_cc_ls(const mtk::trd::msg::CF_CC_LS& cf);
@@ -170,6 +174,16 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
             std::string market = grant.key.market;
             std::string account_name = grant.key.account.name;
             std::string session_id = mtk::admin::get_session_id();
+
+
+            MTK_QPID_RECEIVER_CONNECT_F(
+                                    handles.cf_exlk,
+                                    mtk::admin::get_url("client"),
+                                    mtk::trd::msg::CF_EXLK::get_in_subject(broker_code, market, account_name),
+                                    mtk::trd::msg::CF_EXLK,
+                                    cf_exlk)
+
+
 
             MTK_QPID_RECEIVER_CONNECT_F(
                                     handles.cf_nw_ls,
@@ -720,6 +734,26 @@ mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_cc_mk    ( const msg
 
 
 
+
+void cf_exlk(const mtk::trd::msg::CF_EXLK& exlk)
+{
+std::cout << "cf_exlk  "  <<  exlk  << std::endl;
+    mtk::admin::check_control_fluct(exlk.orig_control_fluct);
+
+    en_order_type     ot  =  get_order_type(exlk.invariant.order_id);
+    if(ot == ot_limit)
+    {
+        auto  order = get_order_ls(exlk.invariant.order_id);
+        order->cf_exLK(exlk);
+    }
+    else if (ot == ot_market)
+    {
+        auto  order = get_order_mk(exlk.invariant.order_id);
+        order->cf_exLK(exlk);
+    }
+    else
+        throw mtk::Alarm(MTK_HERE, "cli_order_book", MTK_SS("unkown order type " << int(ot)), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+}
 
 
 void cf_nw_ls(const mtk::trd::msg::CF_NW_LS& cf)

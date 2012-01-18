@@ -267,6 +267,7 @@ void orders_book::add_product (const emarket::sub_product_config&  product_confi
         cached_last_request->sig_cli_rj_md.connect(&send_to_client);    \
         cached_last_request->sig_cli_rj_cc.connect(&send_to_client);    \
         cached_last_request->sig_cli_cf_ex.connect(&send_to_client);    \
+        cached_last_request->sig_cli_cf_exlk.connect(&send_to_client);    \
         MTK_CONNECT_THIS(cached_last_request->sig_ob_add_order  , add_order);    \
         MTK_CONNECT_THIS(cached_last_request->sig_ob_modif_order, modif_order);    \
         MTK_CONNECT_THIS(cached_last_request->sig_ob_del_order  , del_order);    \
@@ -500,7 +501,7 @@ void orders_in_product_queue::check_execs(void)
                             cf.total_execs.acc_quantity.GetDouble());
                 cf.req_id.session_id += "em";
                 cf.req_id.req_code +=  "em";
-                best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS("mk::ex" << ++ex_counter), exec_price, exec_quantity, mtk::trd::msg::buy)));
+                best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS("mk::ex" << ++ex_counter), exec_price, exec_quantity)));
 
                 if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
                     bid_queue.pop_front();
@@ -516,7 +517,7 @@ void orders_in_product_queue::check_execs(void)
                             cf.total_execs.acc_quantity.GetDouble());
                 cf.req_id.session_id += "em";
                 cf.req_id.req_code +=  "em";
-                best_sell->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS("mk::ex" << ++ex_counter), exec_price, exec_quantity, mtk::trd::msg::sell)));
+                best_sell->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS("mk::ex" << ++ex_counter), exec_price, exec_quantity)));
                 if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
                     ask_queue.pop_front();
             }

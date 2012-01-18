@@ -252,7 +252,6 @@ int   check_exec__last_confirm(const mtk::trd::msg::CF_EX_LS& ex, const mtk::nul
 
     int nerrors=0;
 
-    __INTERNAL_CHECK_EQUAL(ex.executed_pos.side     ,   last_conf.Get().invariant.side    )
     if (mtk::Double(ex.total_execs.acc_quantity.GetDouble()) !=
                 mtk::Double(ex.executed_pos.quantity.GetDouble()) + mtk::Double(last_conf.Get().total_execs.acc_quantity.GetDouble()))
     {
