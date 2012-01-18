@@ -128,7 +128,7 @@ public:
 	__kamikaze_receive_r(       const mtk::t_qpid_url&      _url,
                                 mtk::t_qpid_filter          in_subject,
                                 const std::string           _req_context_info)
-                    : programed_to_delete(false), last_received(mtk::dtNowLocal()+mtk::dtSeconds(30)), espected_secuence(-1),  req_context_info(_req_context_info)
+                    : programed_to_delete(false), last_received(mtk::dtNowLocal()+mtk::dtSeconds(30)), expected_secuence(-1),  req_context_info(_req_context_info)
             {
                 MTK_QPID_RECEIVER_CONNECT_THIS(
                                         hqpid_response,
@@ -151,7 +151,7 @@ private:
     typename mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<MSG_T>      >  hqpid_response;
     bool                                                                        programed_to_delete;
     mtk::dtDateTime                                                             last_received;
-    int                                                                         espected_secuence;
+    int                                                                         expected_secuence;
     const std::string                                                           req_context_info;
 
 
@@ -161,14 +161,14 @@ private:
         last_received = mtk::dtNowLocal();
 
 
-        if(++espected_secuence != response.response_info.seq_number)
+        if(++expected_secuence != response.response_info.seq_number)
         {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "req_response",
-                                MTK_SS("invalid secuence espected/received  " << espected_secuence << "/" << response.response_info.seq_number
+                                MTK_SS("invalid secuence expected/received  " << expected_secuence << "/" << response.response_info.seq_number
                                     << " canceled response"), mtk::alPriorError));
                 MTK_CALL_LATER1S_F(mtk::dtMilliseconds(10), this, delete_later);
                 programed_to_delete = true;
-                espected_secuence = -100;
+                expected_secuence = -100;
                 return;
         }
 

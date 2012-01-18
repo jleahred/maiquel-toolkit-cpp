@@ -1405,7 +1405,10 @@ void init::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "init::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2071,7 +2074,10 @@ void w_cfnw::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "w_cfnw::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2722,7 +2728,10 @@ void market::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "market::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3403,7 +3412,10 @@ void w_cfmd::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "w_cfmd::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -3958,7 +3970,10 @@ void w_cfcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "w_cfcc::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -4619,7 +4634,10 @@ void w_cfmdcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "w_cfmdcc::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5279,7 +5297,10 @@ void w_cfnwmd::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "w_cfnwmd::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -5886,7 +5907,10 @@ void w_cfnwcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "w_cfnwcc::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -6417,7 +6441,10 @@ void canceled::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "canceled::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -6948,7 +6975,10 @@ void executed::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "executed::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -7523,7 +7553,10 @@ void error::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
     
 	static const char* method_name = "error::cf_exLK";
 
-      
+    
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    

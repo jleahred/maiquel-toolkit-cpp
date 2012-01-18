@@ -31,7 +31,11 @@
                                 CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         }]
 
-	cf_exLK         (exlk   :  mtk::trd::msg::CF_EXLK)  [{  }]
+	cf_exLK         (exlk   :  mtk::trd::msg::CF_EXLK)
+                        [{
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        }]
 
 	cf_st           (st   :  mtk::trd::msg::CF_ST_LS)   [{  IF_LAST_CONF_ISNULL__WRITE_IT         }]
 

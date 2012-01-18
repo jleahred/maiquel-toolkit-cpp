@@ -15,11 +15,12 @@ namespace
 {
 
     const char*   APP_NAME          = "ADM_TRADING_DB";
-    const char*   APP_VER           = "2011-06-13";
-    const char*   APP_DESCRIPTION   = "This process save alarms on database\n"
+    const char*   APP_VER           = "2012-01-18";
+    const char*   APP_DESCRIPTION   = "This process save orders on database\n"
                                       "";
 
-    const char*   APP_MODIFICATIONS = "           2011-06-13     first version\n";
+    const char*   APP_MODIFICATIONS =   "           2011-06-13     first version\n"
+                                        "           2012-01-18     added linked executions";
 
 }
 
@@ -91,58 +92,67 @@ void insert_record (const record_info&  record)
 
     mtk::fbInsertParams params;
 
+
+
     #define ADD_OPTIONAL_FIELD(__FIELD_NAME__) \
         if(record.__FIELD_NAME__.HasValue())    \
             params.Add(record.__FIELD_NAME__.Get());  \
         else    \
             params.AddNull();
 
-        params.Add(record.REC_TIME.Get());
-        params.Add(record.SENT_TIME.Get());
-        ADD_OPTIONAL_FIELD(MARKET_ORDER_ID);
-        params.Add(record.OID_SESSION_ID.Get());
-        params.Add(record.OID_RQ_CODE.Get());
-        params.Add(record.PC_MARKET.Get());
-        params.Add(record.PC_PRODUCT_CODE.Get());
-        params.Add(record.SIDE.Get());
-        params.Add(record.ACCOUNT_CC.Get());
-        params.Add(record.ACCOUNT_NAME.Get());
-        params.Add(record.RID_SESSION_ID.Get());
-        params.Add(record.RID_RQ_CODE.Get());
-        params.Add(record.CLI_REF.Get());
-        params.Add(record.CFLUCT_KEY.Get());
-        params.Add(record.CFLUCT_DATE_TIME.Get());
-        params.Add(record.ORDER_TYPE.Get());
-        ADD_OPTIONAL_FIELD(RQ_POS_PRICE);
-        ADD_OPTIONAL_FIELD(RQ_POS_PRICE_DEC);
-        ADD_OPTIONAL_FIELD(RQ_POS_PRICE_INC);
-        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY);
-        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY_DEC);
-        ADD_OPTIONAL_FIELD(RQ_POS_QUANTITY_INC);
-        ADD_OPTIONAL_FIELD(CF_POS_PRICE);
-        ADD_OPTIONAL_FIELD(CF_POS_PRICE_DEC);
-        ADD_OPTIONAL_FIELD(CF_POS_PRICE_INC);
-        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY);
-        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY_DEC);
-        ADD_OPTIONAL_FIELD(CF_POS_QUANTITY_INC);
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_ID);
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE);
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE_DEC);
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_PRICE_INC);
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY);
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY_DEC);
-        ADD_OPTIONAL_FIELD(EXCF_EXEC_QUANTITY_INC);
-        ADD_OPTIONAL_FIELD(TEX_SUM_PRICE_QTY);
-        ADD_OPTIONAL_FIELD(TEX_ACC_QTY);
-        ADD_OPTIONAL_FIELD(TEX_ACC_QTY_DEC);
-        ADD_OPTIONAL_FIELD(TEX_ACC_QTY_INC);
-        ADD_OPTIONAL_FIELD(TEX_REM_QTY);
-        ADD_OPTIONAL_FIELD(TEX_REM_QTY_DEC);
-        ADD_OPTIONAL_FIELD(TEX_REM_QTY_INC);
-        ADD_OPTIONAL_FIELD(DESCRIPTION);
-        ADD_OPTIONAL_FIELD(REMARKS);
-        params.Add(record.AUTOMATIC.Get());
-        params.Add(record.TIME_IN_FORCE.Get());
+    #define ADD_MANDATORY_FIELD(__FIELD_NAME__) \
+        if(record.__FIELD_NAME__.HasValue())    \
+            params.Add(record.__FIELD_NAME__.Get());  \
+        else    \
+            throw mtk::Alarm(MTK_HERE, "tradingdb", MTK_SS("missing value in  " <<  #__FIELD_NAME__  << "  field"), mtk::alPriorError, mtk::alTypeNoPermisions);
+
+
+        ADD_MANDATORY_FIELD  (REC_TIME);
+        ADD_MANDATORY_FIELD  (SENT_TIME);
+        ADD_OPTIONAL_FIELD   (MARKET_ORDER_ID);
+        ADD_MANDATORY_FIELD  (OID_SESSION_ID);
+        ADD_MANDATORY_FIELD  (OID_RQ_CODE);
+        ADD_MANDATORY_FIELD  (PC_MARKET);
+        ADD_MANDATORY_FIELD  (PC_PRODUCT_CODE);
+        ADD_MANDATORY_FIELD  (SIDE);
+        ADD_MANDATORY_FIELD  (ACCOUNT_CC);
+        ADD_MANDATORY_FIELD  (ACCOUNT_NAME);
+        ADD_MANDATORY_FIELD  (RID_SESSION_ID);
+        ADD_MANDATORY_FIELD  (RID_RQ_CODE);
+        ADD_MANDATORY_FIELD  (CLI_REF);
+        ADD_MANDATORY_FIELD  (CFLUCT_KEY);
+        ADD_MANDATORY_FIELD  (CFLUCT_DATE_TIME);
+        ADD_MANDATORY_FIELD  (ORDER_TYPE);
+        ADD_OPTIONAL_FIELD   (RQ_POS_PRICE);
+        ADD_OPTIONAL_FIELD   (RQ_POS_PRICE_DEC);
+        ADD_OPTIONAL_FIELD   (RQ_POS_PRICE_INC);
+        ADD_OPTIONAL_FIELD   (RQ_POS_QUANTITY);
+        ADD_OPTIONAL_FIELD   (RQ_POS_QUANTITY_DEC);
+        ADD_OPTIONAL_FIELD   (RQ_POS_QUANTITY_INC);
+        ADD_OPTIONAL_FIELD   (CF_POS_PRICE);
+        ADD_OPTIONAL_FIELD   (CF_POS_PRICE_DEC);
+        ADD_OPTIONAL_FIELD   (CF_POS_PRICE_INC);
+        ADD_OPTIONAL_FIELD   (CF_POS_QUANTITY);
+        ADD_OPTIONAL_FIELD   (CF_POS_QUANTITY_DEC);
+        ADD_OPTIONAL_FIELD   (CF_POS_QUANTITY_INC);
+        ADD_OPTIONAL_FIELD   (EXCF_EXEC_ID);
+        ADD_OPTIONAL_FIELD   (EXCF_EXEC_PRICE);
+        ADD_OPTIONAL_FIELD   (EXCF_EXEC_PRICE_DEC);
+        ADD_OPTIONAL_FIELD   (EXCF_EXEC_PRICE_INC);
+        ADD_OPTIONAL_FIELD   (EXCF_EXEC_QUANTITY);
+        ADD_OPTIONAL_FIELD   (EXCF_EXEC_QUANTITY_DEC);
+        ADD_OPTIONAL_FIELD   (EXCF_EXEC_QUANTITY_INC);
+        ADD_OPTIONAL_FIELD   (TEX_SUM_PRICE_QTY);
+        ADD_OPTIONAL_FIELD   (TEX_ACC_QTY);
+        ADD_OPTIONAL_FIELD   (TEX_ACC_QTY_DEC);
+        ADD_OPTIONAL_FIELD   (TEX_ACC_QTY_INC);
+        ADD_OPTIONAL_FIELD   (TEX_REM_QTY);
+        ADD_OPTIONAL_FIELD   (TEX_REM_QTY_DEC);
+        ADD_OPTIONAL_FIELD   (TEX_REM_QTY_INC);
+        ADD_OPTIONAL_FIELD   (DESCRIPTION);
+        ADD_OPTIONAL_FIELD   (REMARKS);
+        ADD_MANDATORY_FIELD  (AUTOMATIC);
+        ADD_MANDATORY_FIELD  (TIME_IN_FORCE);
 
         //  Request asynchronous write
         fbi.Insert(params);
@@ -234,6 +244,24 @@ void  fill_ex_xx(record_info& full_record, const mtk::trd::msg::sub_exec_conf& e
     full_record.EXCF_EXEC_ID = executed_pos.exec_id;
     FILL_FIXED_NUMBER(full_record.EXCF_EXEC_PRICE,        executed_pos.price);
     FILL_FIXED_NUMBER(full_record.EXCF_EXEC_QUANTITY,     executed_pos.quantity);
+}
+
+
+
+
+//  CF_EXLK
+template<typename T>        //  ie:  mtk::trd::msg::CF_EX_LS
+void on_cf_exLK(const T&  ex)
+{
+    record_info  full_record;
+
+    fill_cf_xx(full_record, ex);
+    fill_ex_xx(full_record, ex.executed_pos);
+    full_record.SENT_TIME  =  ex.__internal_warning_control_fields->sent_date_time;
+    full_record.ORDER_TYPE =  ex.__internal_warning_control_fields->message_type;
+    full_record.REC_TIME   =  mtk::dtNowLocal();
+    full_record.CLI_REF  =  "";
+    insert_record(full_record);
 }
 
 
@@ -382,6 +410,11 @@ int main(int argc, char ** argv)
         else
             mtk::admin::init(argv[1], APP_NAME, APP_VER, APP_DESCRIPTION, APP_MODIFICATIONS);
 
+
+
+
+        //      CF_EXLK
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_EXLK, on_cf_exLK);
 
 
         //      LS

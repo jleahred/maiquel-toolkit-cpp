@@ -167,6 +167,8 @@ executed --   mkt_cf_ex                    /   LE                             ''
                         else
                             exlk.invariant.side = mtk::trd::msg::buy;
                         exlk.executed_pos.price = ++exlk.executed_pos.price;
+                        exlk.total_execs.acc_quantity.SetIntCode(0);
+                        exlk.total_execs.sum_price_by_qty = 0;
                         ci->sig_cli_cf_exlk.emit(exlk);
                     }
                     else

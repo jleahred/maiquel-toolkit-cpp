@@ -737,7 +737,6 @@ mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>   rq_cc_mk    ( const msg
 
 void cf_exlk(const mtk::trd::msg::CF_EXLK& exlk)
 {
-std::cout << "cf_exlk  "  <<  exlk  << std::endl;
     mtk::admin::check_control_fluct(exlk.orig_control_fluct);
 
     en_order_type     ot  =  get_order_type(exlk.invariant.order_id);
