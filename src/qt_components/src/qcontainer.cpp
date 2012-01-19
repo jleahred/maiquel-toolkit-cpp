@@ -7,6 +7,9 @@
 #include <QMouseEvent>
 #include <QVBoxLayout>
 #include <QMessageBox>
+#include <QScrollBar>
+#include <QMessageBox>
+
 
 
 #include "qt_components/src/qdepth.h"
@@ -31,7 +34,6 @@ QMarginal*  qContainer::insert_qmarginal(void)
 {
     QMarginal* marginals= new QMarginal(this->widget());
     connect(marginals, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
-    connect(marginals, SIGNAL(signal_moving(QRect)), this, SLOT(slot_widget_moved_or_deleted()));
     marginals->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
@@ -44,7 +46,6 @@ QDepth* qContainer::insert_qdepth()
 {
     QDepth* depth= new QDepth(this->widget());
     connect(depth, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
-    connect(depth, SIGNAL(signal_moving(QRect)), this, SLOT(slot_widget_moved_or_deleted()));
     depth->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
@@ -114,7 +115,34 @@ void qContainer::slot_widget_moved_or_deleted(void)
                 maxwith = mtkwidget->geometry().left()+mtkwidget->geometry().width();
         }
     }
-    this->widget()->setGeometry(0,0,maxwith, maxheigh);
+
+    bool  will_show_horiz_sb = 0;
+    bool  will_show_vert_sb = 0;
+    if(maxwith > this->geometry().width())
+        will_show_horiz_sb = 1;
+    if(maxheigh > this->geometry().height())
+        will_show_vert_sb = 1;
+
+    int  hsb_value = this->horizontalScrollBar()->value();
+    int  vsb_value = this->verticalScrollBar()->value();
+
+
+    if(maxwith < this->geometry().width() - will_show_vert_sb * this->verticalScrollBar()->width())
+        maxwith  =  this->geometry().width()-4    - will_show_vert_sb * this->verticalScrollBar()->width();
+    if(maxheigh < this->geometry().height()- will_show_horiz_sb * this->verticalScrollBar()->width())
+        maxheigh  =  this->geometry().height()-4  - will_show_horiz_sb * this->verticalScrollBar()->width();
+    static int  prev_maxwith;
+    static int  prev_maxheigh;
+    if(prev_maxheigh != maxheigh   ||  prev_maxwith  !=  maxheigh)
+        this->widget()->setGeometry(0,0,maxwith, maxheigh);
+
+    this->horizontalScrollBar()->setValue(hsb_value);
+    this->verticalScrollBar()->setValue(vsb_value);
 }
 
 
+void qContainer::resizeEvent ( QResizeEvent * event)
+{
+    QScrollArea::resizeEvent ( event );
+    slot_widget_moved_or_deleted();
+}
