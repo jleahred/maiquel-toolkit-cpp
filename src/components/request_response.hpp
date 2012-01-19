@@ -94,7 +94,7 @@ private:
             DATA_T d = list.front();
             list.pop_front();
             mtk::send_message_with_sender(  sender,
-                                MSG_T(  mtk::msg::sub_r_response(req_info, int16_t(++counter), list.size()==0), d));
+                                MSG_T(  mtk::msg::sub_r_response(mtk::admin::get_process_info(), req_info, int16_t(++counter), list.size()==0), d));
 
         }
 

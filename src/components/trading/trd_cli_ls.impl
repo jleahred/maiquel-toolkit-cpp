@@ -1407,7 +1407,7 @@ void init::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -2076,7 +2076,7 @@ void w_cfnw::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -2730,7 +2730,7 @@ void market::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -3414,7 +3414,7 @@ void w_cfmd::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -3972,7 +3972,7 @@ void w_cfcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -4636,7 +4636,7 @@ void w_cfmdcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -5299,7 +5299,7 @@ void w_cfnwmd::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -5909,7 +5909,7 @@ void w_cfnwcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -6443,7 +6443,7 @@ void canceled::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -6977,7 +6977,7 @@ void executed::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;
@@ -7555,7 +7555,7 @@ void error::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
 
     
                             if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
-                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("espected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
                         
 
     mtk::CountPtr<abstract_status> new_status;

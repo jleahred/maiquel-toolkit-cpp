@@ -1717,13 +1717,13 @@ mtk::t_qpid_filter  pub_add_user::get_in_subject (const std::string& broker_code
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  res_user_list::get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
+    mtk::t_qpid_filter  res_user_list::get_in_subject (const std::string& response_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code)
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS." << response_info_request_info_process_info_location_broker_code << ".SRV.ACS." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSUL"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << response_info_process_info_location_broker_code << ".SRV.ACS." << response_info_request_info_process_info_location_broker_code << "." << response_info_request_info_process_info_location_machine << "." << response_info_request_info_process_info_process_uuid << "." << response_info_request_info_req_id_session_id << "." << response_info_request_info_req_id_req_code << ".RSUL"));
     }
     mtk::t_qpid_filter  res_user_list::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("SYS." << this->response_info.request_info.process_info.location.broker_code << ".SRV.ACS." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSUL"));
+        return mtk::t_qpid_filter(MTK_SS("SYS." << this->response_info.process_info.location.broker_code << ".SRV.ACS." << this->response_info.request_info.process_info.location.broker_code << "." << this->response_info.request_info.process_info.location.machine << "." << this->response_info.request_info.process_info.process_uuid << "." << this->response_info.request_info.req_id.session_id << "." << this->response_info.request_info.req_id.req_code << ".RSUL"));
     }
     /*static*/  mtk::t_qpid_address  res_user_list::static_get_qpid_address ()
     {

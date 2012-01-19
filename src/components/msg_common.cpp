@@ -532,8 +532,8 @@ void sub_request_info::before_send(void) const
 
 
 
-sub_r_response::sub_r_response (   const sub_request_info&  _request_info,   const int16_t&  _seq_number,   const bool&  _is_last_response)
-    :     request_info(_request_info),   seq_number(_seq_number),   is_last_response(_is_last_response) 
+sub_r_response::sub_r_response (   const sub_process_info&  _process_info,   const sub_request_info&  _request_info,   const int16_t&  _seq_number,   const bool&  _is_last_response)
+    :     process_info(_process_info),   request_info(_request_info),   seq_number(_seq_number),   is_last_response(_is_last_response) 
        
     {  
         std::string cr = check_recomended ();  
@@ -783,7 +783,7 @@ std::ostream& operator<< (std::ostream& o, const sub_r_response & c)
 {
     o << "{ "
 
-        << "request_info:"<< c.request_info<<"  "        << "seq_number:"<<   c.seq_number << "  "        << "is_last_response:"<< c.is_last_response<<"  "
+        << "process_info:"<< c.process_info<<"  "        << "request_info:"<< c.request_info<<"  "        << "seq_number:"<<   c.seq_number << "  "        << "is_last_response:"<< c.is_last_response<<"  "
         << " }";
     return o;
 };
@@ -794,7 +794,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_r_response & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "seq_number"  << YAML::Value <<   c.seq_number        << YAML::Key << "is_last_response"  << YAML::Value << c.is_last_response
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "seq_number"  << YAML::Value <<   c.seq_number        << YAML::Key << "is_last_response"  << YAML::Value << c.is_last_response
         << YAML::EndMap;
     return o;
 };
@@ -805,6 +805,7 @@ void  operator >> (const YAML::Node& node, sub_r_response & c)
 {
 
 
+        node["process_info"]  >> c.process_info;
         node["request_info"]  >> c.request_info;
         node["seq_number"]  >> c.seq_number;
         node["is_last_response"]  >> c.is_last_response;
@@ -941,7 +942,7 @@ bool operator!= (const sub_request_info& a, const sub_request_info& b)
 
 bool operator== (const sub_r_response& a, const sub_r_response& b)
 {
-    return (          a.request_info ==  b.request_info  &&          a.seq_number ==  b.seq_number  &&          a.is_last_response ==  b.is_last_response  &&   true  );
+    return (          a.process_info ==  b.process_info  &&          a.request_info ==  b.request_info  &&          a.seq_number ==  b.seq_number  &&          a.is_last_response ==  b.is_last_response  &&   true  );
 };
 
 bool operator!= (const sub_r_response& a, const sub_r_response& b)
@@ -1259,6 +1260,14 @@ void  copy (sub_r_response& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
 
+                    it = mv.find("pi");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field process_info on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.process_info, it->second);
+                        //__internal_qpid_fill(c.process_info, it->second.asMap());
+//   sub_msg_type
+
                     it = mv.find("rqi");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message sub_r_response::__internal_qpid_fill", mtk::alPriorCritic);
@@ -1291,6 +1300,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a
     a.before_send();
 
 
+//  sub_msg_type
+        __internal_add2map(map, a.process_info, std::string("pi"));
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
 //  field_type
@@ -1479,6 +1490,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
     {
         return sub_r_response(
 //   sub_msg_type
+   __internal_get_default((sub_process_info*)0),
+//   sub_msg_type
    __internal_get_default((sub_request_info*)0),
 //   field_type
    __internal_get_default ((int16_t*)0),
@@ -1589,6 +1602,8 @@ sub_request_info::sub_request_info (const qpid::types::Variant::Map&  mv)
 
 sub_r_response::sub_r_response (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
+   process_info(__internal_get_default((sub_process_info*)0)),
+//   sub_msg_type
    request_info(__internal_get_default((sub_request_info*)0)),
 //   field_type
    seq_number(__internal_get_default((int16_t*)0)),

@@ -76,6 +76,8 @@ sub_request_info [< >]
 
 sub_r_response [< >]
 {
+    process_info       (pi)     :   sub_process_info        //  process sending the response
+
     request_info       (rqi)    :   sub_request_info
     seq_number         (sqn)    :   int16       //  it will start with 0
     is_last_response   (lr)     :   bool

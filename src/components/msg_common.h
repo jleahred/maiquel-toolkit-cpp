@@ -278,7 +278,7 @@ public:
 
     
     // constructor
-    explicit sub_r_response (    const sub_request_info&  _request_info,   const int16_t&  _seq_number,   const bool&  _is_last_response );
+    explicit sub_r_response (    const sub_process_info&  _process_info,   const sub_request_info&  _request_info,   const int16_t&  _seq_number,   const bool&  _is_last_response );
     explicit sub_r_response ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_r_response (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_r_response"; };
@@ -290,6 +290,7 @@ public:
     
 
     // fields
+    sub_process_info                          process_info; 
     sub_request_info                          request_info; 
     int16_t                                   seq_number; 
     bool                                      is_last_response; 
