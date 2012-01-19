@@ -14,13 +14,14 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_PRODUCT_LOADER";
-    const char*   APP_VER           = "2011-04-12";
+    const char*   APP_VER           = "2012-01-19";
     const char*   APP_DESCRIPTION   = "I will keep prices and other product information on memory and I will serve it to clients or other proceses\n"
                                       "I will receive this information listening as a client";
 
     const char*   APP_MODIFICATIONS =   "           2011-04-12     first version\n"
                                         "           2011-08-01     filling product publishing protocol (update)\n"
                                         "           2012-01-13     delete on init from publisher and modifs on check activity\n"
+                                        "           2012-01-19     reduce exponentially no activity message\n"
                                         ;
 
 }
@@ -56,10 +57,11 @@ namespace
     {
         public:
             market_info(const std::string& _name, const mtk::dtTimeQuantity& tq, const mtk::dtDateTime&  _starts, const mtk::dtDateTime&  _ends)
-                :  name(_name), check_interval(tq), last_update_received(mtk::dtNowLocal()) , starts(_starts), ends(_ends) {}
+                :  name(_name), check_interval(tq), delay_notif(mtk::dtSeconds(0)), last_update_received(mtk::dtNowLocal()) , starts(_starts), ends(_ends) {}
 
             std::string             name;
             mtk::dtTimeQuantity     check_interval;
+            mtk::dtTimeQuantity     delay_notif;
             mtk::DateTime           last_update_received;
             mtk::DateTime           starts;
             mtk::DateTime           ends;
@@ -370,11 +372,12 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
     else
     {
         mtk::dtDateTime  now = mtk::dtNowLocal();
-        itlu->second.last_update_received  = now;
-        if(itlu->second.last_update_received - now > itlu->second.check_interval)
+        if(now - itlu->second.last_update_received  > itlu->second.check_interval)
         {
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("recovered activity  " << it->first  << "  checking interval " << itlu->second.check_interval), mtk::alPriorError, mtk::alTypeOverflow));
+            itlu->second.delay_notif = mtk::dtSeconds(0);
         }
+        itlu->second.last_update_received  = now;
     }
 }
 
@@ -399,11 +402,19 @@ void check_inactivity(void)
                 mtk::dtDateTime  now = mtk::dtNowLocal();
                 if(it->second.starts < now  &&   it->second.ends > now)
                 {
-                    if(it->second.last_update_received + it->second.check_interval < mtk::dtNowLocal())
+                    if(it->second.last_update_received + it->second.check_interval + it->second.delay_notif < mtk::dtNowLocal())
                     {
-                        MTK_EXEC_MAX_FREC_S_A(mtk::dtSeconds(30), A)
-                            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too many time with no activity " << it->first  << "  checking interval " << it->second.check_interval), mtk::alPriorError, mtk::alTypeOverflow));
-                        MTK_END_EXEC_MAX_FREC
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too much time with no activity " << it->first
+                                                                                << "  checking interval " << it->second.check_interval
+                                                                                << "  +delay notifying " << it->second.delay_notif
+                                                                                ), mtk::alPriorError, mtk::alTypeOverflow));
+                        if(it->second.delay_notif > mtk::dtSeconds(0))
+                        {
+                            if(it->second.delay_notif < mtk::dtHours(2))
+                                it->second.delay_notif += it->second.delay_notif;
+                        }
+                        else
+                            it->second.delay_notif = mtk::dtMinutes(1);
                     }
                 }
             }
