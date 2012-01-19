@@ -71,7 +71,7 @@ void QListProcesses::init(const mtk::t_qpid_url& url,const std::string&  _cli_sr
 
 
 
-    MTK_TIMER_1S(check_ka)
+    MTK_TIMER_1C(check_ka)
     set_status_tool_tip();
 }
 
@@ -175,28 +175,31 @@ void QListProcesses::on_ka_server_received   (const mtk::admin::msg::pub_keep_al
 
 void QListProcesses::check_ka(void)
 {
-    for(int i=0;i<this->count();i++){
-        QListWidgetItem_ka* itka = dynamic_cast<QListWidgetItem_ka*>(this->item(i));
-        if(itka)
-        {
-            if(itka->next_ka.HasValue())
+    MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
+        for(int i=0;i<this->count();i++){
+            QListWidgetItem_ka* itka = dynamic_cast<QListWidgetItem_ka*>(this->item(i));
+            if(itka)
             {
-                if(itka->next_ka.Get() < mtk::dtNowLocal())
+                if(itka->next_ka.HasValue())
                 {
-                        signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor",MTK_SS(get_composed_name(itka->process_info).toStdString()
-                                                                      << "." << itka->process_info.process_uuid
-                                                                      << "  lost keep alive"), mtk::alPriorError, mtk::alTypeNoPermisions));
-                        itka->setBackgroundColor(Qt::red);
-                        itka->next_ka = mtk::nullable<mtk::DateTime>();
-                }
-                else
-                {
-                    itka->setBackgroundColor(Qt::white);
+                    mtk::dtDateTime  now =  mtk::dtNowLocal();
+                    if(itka->next_ka.Get() + mtk::dtMilliseconds(200) < now)
+                    {
+                            signal_alarm.emit(mtk::Alarm(MTK_HERE, "monitor",MTK_SS(get_composed_name(itka->process_info).toStdString()
+                                                                          << "." << itka->process_info.process_uuid
+                                                                          << "  lost keep alive  "  <<  now - itka->next_ka.Get()), mtk::alPriorError, mtk::alTypeNoPermisions));
+                            itka->setBackgroundColor(Qt::red);
+                            itka->next_ka = mtk::nullable<mtk::DateTime>();
+                    }
+                    else
+                    {
+                        itka->setBackgroundColor(Qt::white);
+                    }
                 }
             }
         }
-    }
-    set_status_tool_tip();
+        set_status_tool_tip();
+    MTK_END_EXEC_MAX_FREC
 }
 
 
