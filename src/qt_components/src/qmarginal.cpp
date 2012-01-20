@@ -221,13 +221,19 @@ QTableMarginal::QTableMarginal(QWidget *parent)
 
 
 marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg::sub_product_code& product_code, int row)
-    : id(++counter), table_widget(_table_widget), pending_screen_update(false)
+    : id(++counter), table_widget(_table_widget), pending_screen_update(false),
+      prev_painted_prices(mtk::prices::msg::__internal_get_default((mtk::prices::msg::sub_best_prices*)0)),
+      last_blinking(mtk::dtNowLocal()-mtk::dtDays(300))
 {
     tw_product  = new QTableWidgetItemProduct(product_code, this->id);
     tw_BID      = new QTableWidgetItem();
     tw_ASK      = new QTableWidgetItem();
     tw_qty_bid  = new QTableWidgetItem();
     tw_qty_ask  = new QTableWidgetItem();
+
+    mtk::dtDateTime  now = mtk::dtNowLocal();
+    for(int i=0; i<5; ++i)
+        v_blinking.push_back(now - mtk::dtDays(30));
 
     if (row>=0 && row<table_widget->rowCount())
         table_widget->insertRow(row);
@@ -288,6 +294,8 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     update_prices(product_code, price_manager->get_best_prices());
 
     MTK_TIMER_1D(check_for_pending_screen_update)
+
+    MTK_TIMER_1D(check_blinking);
 }
 
 
@@ -390,6 +398,7 @@ void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, cons
         tw_BID->setBackgroundColor(color_price);
         tw_qty_bid->setBackgroundColor(color_qty);
     }
+    generate_blinking(best_prices);
 }
 
 void marginal_in_table::on_message(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_best_prices& /*msg*/)
@@ -415,6 +424,82 @@ void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, cons
     else
         clean_prices();
 }
+
+
+void marginal_in_table::add_blinking(int col, const mtk::DateTime&  till)
+{
+    if(till > last_blinking)
+        last_blinking = till;
+    v_blinking[col] = till;
+}
+
+void marginal_in_table::check_blinking(void)
+{
+    //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
+        static  mtk::DateTime    one_year_before = mtk::dtNowLocal() - mtk::dtDays(300);
+        mtk::DateTime  one_hour_before = mtk::dtNowLocal() - mtk::dtHours(1);
+        int pending_blinkings = 0;
+        mtk::dtDateTime  now = mtk::dtNowLocal();
+
+        if(last_blinking > one_hour_before)
+        {
+            #define  BLINKING(__COL__, __TW__)  \
+                    if(v_blinking[__COL__] > one_hour_before)     \
+                    {     \
+                          if(v_blinking[__COL__] < now)        \
+                          {     \
+                                v_blinking[__COL__] = one_year_before;     \
+                                if(__COL__ == 2  ||  __COL__ == 3)     \
+                                    __TW__->setBackgroundColor(color_price);     \
+                                else     \
+                                    __TW__->setBackgroundColor(color_qty);     \
+                          }       \
+                          else     \
+                              ++pending_blinkings;\
+                    }
+
+            BLINKING(1, tw_qty_bid)
+            BLINKING(2, tw_BID)
+            BLINKING(3, tw_ASK)
+            BLINKING(4, tw_qty_ask)
+
+            if(pending_blinkings == 0)
+                last_blinking = one_year_before;
+        }
+    //MTK_END_EXEC_MAX_FREC
+}
+
+
+void marginal_in_table::generate_blinking(const mtk::prices::msg::sub_best_prices&  prices)
+{
+    mtk::DateTime  now = mtk::dtNowLocal();
+
+    if(prices.bids.level0.quantity != prev_painted_prices.bids.level0.quantity)
+    {
+        tw_qty_bid->setBackgroundColor(qtmisc::mtk_color_blinking2);
+        add_blinking(1, now + mtk::dtMilliseconds(200));
+    }
+    if(prices.bids.level0.price != prev_painted_prices.bids.level0.price)
+    {
+        tw_BID->setBackgroundColor(qtmisc::mtk_color_blinking2);
+        add_blinking(2, now + mtk::dtMilliseconds(200));
+    }
+
+    if(prices.asks.level0.price != prev_painted_prices.asks.level0.price)
+    {
+        tw_ASK->setBackgroundColor(qtmisc::mtk_color_blinking2);
+        add_blinking(3, now + mtk::dtMilliseconds(200));
+    }
+    if(prices.asks.level0.quantity != prev_painted_prices.asks.level0.quantity)
+    {
+        tw_qty_ask->setBackgroundColor(qtmisc::mtk_color_blinking2);
+        add_blinking(4, now + mtk::dtMilliseconds(200));
+    }
+
+
+    prev_painted_prices = prices;
+}
+
 
 
 
@@ -985,9 +1070,12 @@ void             operator >> (const YAML::Node&   node,       QMarginal& m)
 
 
 
-void QTableMarginal::slot_sectionMoved ( int logicalIndex, int oldVisualIndex, int newVisualIndex )
+void QTableMarginal::slot_sectionMoved ( int /*logicalIndex*/, int /*oldVisualIndex*/, int /*newVisualIndex*/ )
 {
     this->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
     horizontalHeader()->resizeSection(horizontalHeader()->logicalIndex(horizontalHeader()->count()-1), 10);
     horizontalHeader()->setStretchLastSection(true);
 }
+
+
+

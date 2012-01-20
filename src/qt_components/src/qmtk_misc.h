@@ -45,6 +45,7 @@ const QColor mtk_color_null         (QColor(40, 0, 60));
 //const QColor mtk_color_rejected     (QColor(200, 100, 150));
 const QColor mtk_color_rejected     (QColor(230, 130, 180));
 const QColor mtk_color_blinking     (QColor(100, 0, 50));
+const QColor mtk_color_blinking2    (QColor(230, 130, 180));
 //const QColor mtk_color_blinking     (QColor(140, 40, 90));
 
 

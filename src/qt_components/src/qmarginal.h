@@ -64,6 +64,15 @@ private:
     void update_prices(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_best_prices&   best_prices);
     void on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg);
 
+
+    mtk::prices::msg::sub_best_prices  prev_painted_prices;     //  for blinking
+    std::vector<mtk::DateTime>  v_blinking;
+    mtk::DateTime               last_blinking;
+    void generate_blinking(const mtk::prices::msg::sub_best_prices&  prices);
+    void check_blinking(void);
+    void add_blinking(int col, const mtk::DateTime&  till);
+
+
     static int counter;
 };
 
@@ -147,6 +156,7 @@ private:
     void enable_trading_actions(void);
 
     mtk::msg::sub_product_code get_current_product_code(void);
+
 };
 
 
