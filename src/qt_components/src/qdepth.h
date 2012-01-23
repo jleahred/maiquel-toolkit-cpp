@@ -38,6 +38,7 @@ public:
 
 
 signals:
+    void  signal_delete_component(QWidget*);
 
 public slots:
 
@@ -78,6 +79,9 @@ private slots:
     void make_transparent(void);
     void remove_transparecy(void);
 
+    void slot_delete(void);
+
+
 private:
     QTableDeph   *table_widget;
     QLabel       *title;
@@ -103,6 +107,7 @@ private:
     QAction* action_lift_the_offer;
     QAction* action_buy_market;
     QAction* action_sell_market;
+    QAction* action_delete_component;
 
     bool showing_menu;
     void disable_actions(void);

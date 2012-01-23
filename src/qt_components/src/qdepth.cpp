@@ -328,7 +328,7 @@ QDepth::QDepth(QWidget *parent) :
     table_widget(new QTableDeph(this)),
     pending_screen_update(false),
     action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
-    action_buy_market(0), action_sell_market(0),
+    action_buy_market(0), action_sell_market(0), action_delete_component(0),
     showing_menu(false),
     keep_paint_focus(false)
 {
@@ -464,6 +464,12 @@ QDepth::QDepth(QWidget *parent) :
     connect(action_sell_market, SIGNAL(triggered()), this, SLOT(request_sell_market()));
     this->addAction(action_sell_market);
 
+    action_delete_component = new QAction(tr("delete depth"), this);
+    action_delete_component->setShortcut(Qt::Key_Delete);
+    connect(action_delete_component, SIGNAL(triggered()), this, SLOT(slot_delete()));
+    this->addAction(action_delete_component);
+
+
     this->disable_actions();
 
 
@@ -472,6 +478,11 @@ QDepth::QDepth(QWidget *parent) :
 
 QDepth::~QDepth()
 {
+}
+
+void QDepth::slot_delete(void)
+{
+    Q_EMIT signal_delete_component(this);
 }
 
 
@@ -789,6 +800,9 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     sub_menu_market_orders.addAction(action_sell_market);
     menu.addMenu(&sub_menu_market_orders);
 
+    menu.addSeparator();
+    menu.addAction(action_delete_component);
+
 
     //  permisions
     mtk::msg::sub_product_code product_code (price_manager->get_product_code());
@@ -912,6 +926,8 @@ void QDepth::remove_focus(void)
             table_widget->setStyleSheet(style_sheet_normal);
     }
 }
+
+
 
 
 YAML::Emitter& operator << (YAML::Emitter& out, const QDepth& m)

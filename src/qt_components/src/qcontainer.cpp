@@ -51,7 +51,15 @@ QDepth* qContainer::insert_qdepth()
     counter_insertions %= 6;
     depth->show();
 
+    connect(depth, SIGNAL(signal_delete_component(QWidget*)), this, SLOT(slot_delete_component(QWidget*)));
+
     return depth;
+}
+
+void qContainer::slot_delete_component(QWidget*  widget)
+{
+    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove the component?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+        widget->deleteLater();
 }
 
 

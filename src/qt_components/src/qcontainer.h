@@ -37,6 +37,7 @@ public slots:
 
 private slots:
     void slot_widget_moved_or_deleted(void);
+    void slot_delete_component(QWidget*);
 
 };
 
