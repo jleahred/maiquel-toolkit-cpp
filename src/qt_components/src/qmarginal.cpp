@@ -146,9 +146,14 @@ QTableMarginal::QTableMarginal(QWidget *parent)
         //table_marginals->setSelectionMode(QAbstractItemView::NoSelection);
         //verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.6);
         verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-        horizontalHeader()->setStretchLastSection(true);
         //horizontalHeader()->setDefaultSectionSize(100);
         horizontalHeader()->resizeSection(0, 150);
+        //this->horizontalHeader()->setResizeMode(this->columnCount()-1, QHeaderView::Stretch);
+        //this->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+        //this->horizontalHeader()->setResizeMode(0, QHeaderView::Interactive);
+        this->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+        horizontalHeader()->resizeSection(horizontalHeader()->count()-1, 10);
+        horizontalHeader()->setStretchLastSection(true);
 
 
         setColumnCount(5);
@@ -171,6 +176,9 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     }
     this->setFrameShape(QFrame::NoFrame);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    connect(this->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(slot_sectionMoved(int,int,int)));
+
 
     action_buy = new QAction(tr("buy"), this);
     action_buy->setShortcut(Qt::Key_Plus);
@@ -207,7 +215,6 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     connect(action_remove_product, SIGNAL(triggered()), this, SLOT(slot_remove_current_row()));
     this->addAction(action_remove_product);
     this->disable_actions();
-    this->horizontalHeader()->setResizeMode(this->columnCount()-1, QHeaderView::Stretch);
 }
 
 
@@ -978,4 +985,9 @@ void             operator >> (const YAML::Node&   node,       QMarginal& m)
 
 
 
-
+void QTableMarginal::slot_sectionMoved ( int logicalIndex, int oldVisualIndex, int newVisualIndex )
+{
+    this->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+    horizontalHeader()->resizeSection(horizontalHeader()->logicalIndex(horizontalHeader()->count()-1), 10);
+    horizontalHeader()->setStretchLastSection(true);
+}

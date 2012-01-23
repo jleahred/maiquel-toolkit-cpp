@@ -112,6 +112,7 @@ private slots:
     void request_side_market(mtk::trd::msg::enBuySell bs);
 
     void slot_remove_current_row(void);
+    void slot_sectionMoved ( int logicalIndex, int oldVisualIndex, int newVisualIndex );
 
 private:
     QPoint startPos;
@@ -125,8 +126,6 @@ private:
 
     void remove_row(int id);
     void adjust_pajama(void);
-
-
 
 
     void focusInEvent (QFocusEvent *e) { this->update(); enable_actions();  QTableWidget::focusInEvent(e);}

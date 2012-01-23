@@ -382,7 +382,6 @@ QDepth::QDepth(QWidget *parent) :
         table_widget->horizontalHeader()->setVisible(false);
         table_widget->setSelectionMode(QAbstractItemView::NoSelection);
         table_widget->verticalHeader()->setDefaultSectionSize(20);
-        table_widget->verticalHeader()->setStretchLastSection(true);
         table_widget->horizontalHeader()->setDefaultSectionSize(20);
         table_widget->setShowGrid(false);
         //QPalette p(table_widget->palette());
