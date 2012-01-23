@@ -372,6 +372,7 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                                                                     <<  "  last request: " << last_request()
                                                                     <<  "  last confirmed: " << last_confirmation()),
                                                                     mtk::alPriorError);
+                        lc.description = MTK_SS("pr:" << last_request());
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                     else
@@ -381,7 +382,7 @@ void init::cli_rq_nw ( const mtk::trd::msg::oms_RQ_NW_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS("moid::" << ++market_order_id), rq.request_info.req_id, total_execs, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS("moid::" << ++market_order_id), rq.request_info.req_id, total_execs, MTK_SS("pr:" << rq.request_info.req_id), mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
@@ -667,6 +668,7 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                                                                     <<  "  last request: " << last_request()
                                                                     <<  "  last confirmed: " << last_confirmation()),
                                                                     mtk::alPriorError);
+                        lc.description = MTK_SS("pr:" << last_request());
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                     else
@@ -676,7 +678,7 @@ void market::cli_rq_md ( const mtk::trd::msg::oms_RQ_MD_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS("moid::" << ++market_order_id), rq.request_info.req_id, total_execs, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS("moid::" << ++market_order_id), rq.request_info.req_id, total_execs, MTK_SS("pr:" << rq.request_info.req_id), mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
@@ -781,6 +783,7 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
                                                                     <<  "  last request: " << last_request()
                                                                     <<  "  last confirmed: " << last_confirmation()),
                                                                     mtk::alPriorError);
+                        lc.description = MTK_SS("pr:" << last_request());
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                     else
@@ -790,7 +793,7 @@ void market::cli_rq_cc ( const mtk::trd::msg::oms_RQ_CC_LS&   rq            )
                                           0.
                                         , mtk::FixedNumber(mtk::fnDouble(0) ,  mtk::fnDec(0),  mtk::fnInc(1))
                                         , rq.request_pos.quantity);
-                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS("moid::" << ++market_order_id), rq.request_info.req_id, total_execs, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+                        mtk::trd::msg::CF_XX    cfxx (rq.invariant, MTK_SS("moid::" << ++market_order_id), rq.request_info.req_id, total_execs, MTK_SS("pr:" << rq.request_info.req_id), mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
                         mtk::trd::msg::CF_XX_LS lc   (cfxx, rq.request_pos);
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }

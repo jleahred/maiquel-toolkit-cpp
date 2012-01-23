@@ -54,6 +54,7 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
                 {
                     prev_item.type = tt_rq_confirmated;
                     prev_item.market_code = new_item.market_code;
+                    prev_item.remarks = new_item.remarks;
                 }
                 else if (new_item.type == tt_rj)        //  rejects will be added as new item
                     prev_item.type = tt_rq_not_pending;
@@ -190,7 +191,7 @@ bool     order_historic_dangerous_not_signal_warped::is_last_tr_rj    (void)  co
 
 std::string   order_historic_dangerous_not_signal_warped::get_lasttr_descr (void)  const
 {
-    if(list_historic_item->size()>0  &&  list_historic_item->front().type  ==  tt_rj)
+    if(list_historic_item->size()>0)
         return list_historic_item->front().remarks;
     else
         return "";
