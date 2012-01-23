@@ -140,6 +140,17 @@ namespace {
             throw mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order type for orderid " << ord_id), mtk::alPriorCritic, mtk::alTypeNoPermisions);
     }
 
+    std::string    get_cli_ref(const mtk::trd::msg::sub_order_id& ord_id)
+    {
+        mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
+        if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+            return mtk::trd::get_cli_ref(*mtk::trd::trd_cli_ord_book::get_order_ls(ord_id));
+        else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+            return mtk::trd::get_cli_ref(*mtk::trd::trd_cli_ord_book::get_order_mk(ord_id));
+        else
+            throw mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order type for orderid " << ord_id), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    }
+
     mtk::FixedNumber   get_total_exec_quantity (const mtk::trd::msg::sub_order_id& ord_id)
     {
         mtk::trd::trd_cli_ord_book::en_order_type  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
@@ -902,6 +913,10 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
     if(multicheck_string(mtk::s_toUpper(account.name), fd.account.toUpper().toStdString()))
         ++matches;
 
+    std::string    cli_ref   = get_cli_ref(order_id);
+    if(multicheck_string(mtk::s_toUpper(cli_ref), fd.cli_ref.toUpper().toStdString()))
+        ++matches;
+
     if(check_no_tab_filter_config)
     {
         if(fd.liveFilter == filter_data::lfAll)
@@ -915,12 +930,12 @@ bool check_filter_order(const filter_data     fd, const mtk::trd::msg::sub_order
                           ))
             ++matches;
 
-        if(matches==5)  return true;
+        if(matches==6)  return true;
         else            return false;
     }
     else
     {
-        if(matches==4)  return true;
+        if(matches==5)  return true;
         else            return false;
     }
 }

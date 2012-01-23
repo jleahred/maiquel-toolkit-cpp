@@ -37,6 +37,17 @@ namespace mtk{namespace trd{
             throw mtk::Alarm(MTK_HERE, "trd_cli_support", MTK_SS("no request no confirmation on order"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
     }
 
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    std::string   get_cli_ref(const ORDER_TYPE& order)
+    {
+        if(order.last_request().HasValue())
+            return order.last_request().Get().request_pos.cli_ref;
+        else if (order.last_confirmation().HasValue())
+            return order.last_confirmation().Get().market_pos.cli_ref;
+        else
+            throw mtk::Alarm(MTK_HERE, "trd_cli_support", MTK_SS("no request no confirmation on order"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    }
+
 
     /**
      *      It will return the description of last transaction

@@ -74,6 +74,7 @@ void filter_form::slot_button_pressed(QAbstractButton* button)
         fd.market = ui->market->text().trimmed().toUpper();
         fd.product = ui->product->text().trimmed().toUpper();
         fd.client_code = ui->client_code->text().trimmed().toUpper();
+        fd.cli_ref = ui->cli_ref->text().trimmed().toUpper();
         Q_EMIT(signal_filter_modified(fd));
     }
 }
@@ -87,6 +88,7 @@ void filter_form::set_filter_conf(const filter_data& _fd)
     ui->market->setText(fd.market);
     ui->product->setText(fd.product);
     ui->client_code->setText(fd.client_code);
+    ui->cli_ref->setText(fd.cli_ref);
 }
 
 void filter_form::keyPressEvent(QKeyEvent *e)
@@ -121,4 +123,5 @@ void filter_form::set_status_filter_not_modified(void)
     ui->client_code->setStyleSheet(QLatin1String(""));
     ui->market->setStyleSheet(QLatin1String(""));
     ui->product->setStyleSheet(QLatin1String(""));
+    ui->cli_ref->setStyleSheet(QLatin1String(""));
 }

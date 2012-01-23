@@ -20,6 +20,7 @@ struct  filter_data
     QString   market;
     QString   product;
     QString   account;
+    QString   cli_ref;
 
     enum enLiveFilter { lfAll, lfLive, lfLiveExecuted };
     enLiveFilter  liveFilter;
