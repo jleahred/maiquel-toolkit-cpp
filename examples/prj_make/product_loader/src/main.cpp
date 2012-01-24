@@ -412,6 +412,8 @@ void check_inactivity(void)
                         {
                             if(it->second.delay_notif < mtk::dtHours(2))
                                 it->second.delay_notif += it->second.delay_notif;
+                            else
+                                it->second.delay_notif += mtk::dtHours(2);
                         }
                         else
                             it->second.delay_notif = mtk::dtMinutes(1);
