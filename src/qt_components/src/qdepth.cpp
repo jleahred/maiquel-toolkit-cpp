@@ -196,37 +196,32 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
 {
     mtk::DateTime  now = mtk::dtNowLocal();
     //  marginals
-    if(prices.bids.level0.price != prev_painted_prices.bids.level0.price)
-    {
-        int row=5;  int col=0;
-        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
-        add_blinking(row, col, now + mtk::dtMilliseconds(200));
-        item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);
-        add_blinking(row, 1, now + mtk::dtMilliseconds(200));
-    }
-    else
-    {
-        if(prices.bids.level0.quantity != prev_painted_prices.bids.level0.quantity)
-        {
-            int row=5;  int col=1;
-            item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
-            add_blinking(row, col, now + mtk::dtMilliseconds(200));
+    #define BLINKING_MARGINALS(__BID_ASK__)     \
+        {       \
+                int  prev_quantity = prev_painted_prices.__BID_ASK__.level0.quantity.GetIntCode();       \
+                int  new_quantity  = prices.__BID_ASK__.level0.quantity.GetIntCode();       \
+                bool  just_ONE_quantity_is_zero = (prev_quantity*new_quantity == 0   &&  prev_quantity+new_quantity != 0 );  \
+                if(prices.__BID_ASK__.level0.price != prev_painted_prices.__BID_ASK__.level0.price  ||   just_ONE_quantity_is_zero)       \
+                {       \
+                    int row=5;  int col=0;       \
+                    item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                    add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
+                    item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                    add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
+                }       \
+                else       \
+                {       \
+                    if(prices.__BID_ASK__.level0.quantity != prev_painted_prices.__BID_ASK__.level0.quantity)       \
+                    {       \
+                        int row=5;  int col=1;       \
+                        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                        add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
+                    }       \
+                }       \
         }
-    }
-    if(prices.asks.level0.price != prev_painted_prices.asks.level0.price)
-    {
-        int row=4;  int col=2;
-        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
-        add_blinking(row, col, now + mtk::dtMilliseconds(200));
-        item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);
-        add_blinking(row, 1, now + mtk::dtMilliseconds(200));
-    }
-    else if(prices.asks.level0.quantity != prev_painted_prices.asks.level0.quantity)
-    {
-        int row=4;  int col=1;
-        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
-        add_blinking(row, col, now + mtk::dtMilliseconds(200));
-    }
+    BLINKING_MARGINALS(bids)
+    BLINKING_MARGINALS(asks)
+
 
 
     #define BLINKING_NO_MARGINALS(__level__, __prev_level__, __next_level__)       \
@@ -305,18 +300,6 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
     BLINKING_NO_MARGINALS(2, 1, 3);
     BLINKING_NO_MARGINALS(3, 2, 4);
     BLINKING_NO_MARGINALS(4, 3, 4);
-
-    /*
-    if(     prices.bids.level1.price != prev_painted_prices.bids.level1.price
-        &&  prices.bids.level1.price != prev_painted_prices.bids.level0.price
-        &&  prices.bids.level1.price != prev_painted_prices.bids.level2.price)
-    {
-        int row=6;  int col=0;
-        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);
-        add_blinking(row, 1, now + mtk::dtSeconds(1));
-    }
-    */
-
 
     prev_painted_prices = prices;
 }
@@ -618,7 +601,7 @@ void QDepth::request_side(mtk::trd::msg::enBuySell bs)
             price = price_manager->get_best_prices().Get().asks.level0.price;
             quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
         }
-        quantity.SetIntCode(0);
+        if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
         mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
         mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos);
     }
@@ -652,7 +635,7 @@ void QDepth::request_side_market(mtk::trd::msg::enBuySell bs)
         {
             quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
         }
-        quantity.SetIntCode(0);
+        if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
         mtk::trd::msg::sub_position_mk     pos(quantity, "" /*cli ref*/);
         mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(price_manager->get_product_code(), bs, pos);
     }
@@ -692,7 +675,7 @@ void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
         }
         if(quantity.GetIntCode() != 0)
         {
-            quantity.SetIntCode(0);
+            quantity.SetIntCode(-1);        //  means, default quantity
             mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
             mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, true);
         }
@@ -885,6 +868,7 @@ void QDepth::disable_trading_actions(void)
             action_lift_the_offer->setEnabled(false);
             action_buy_market->setEnabled(false);
             action_sell_market->setEnabled(false);
+            action_delete_component->setEnabled(false);
         }
     }
 }
@@ -899,6 +883,7 @@ void QDepth::enable_trading_actions(void)
         action_lift_the_offer->setEnabled(true);
         action_buy_market->setEnabled(true);
         action_sell_market->setEnabled(true);
+        action_delete_component->setEnabled(true);
     }
 }
 

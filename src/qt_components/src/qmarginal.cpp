@@ -151,9 +151,7 @@ QTableMarginal::QTableMarginal(QWidget *parent)
         //this->horizontalHeader()->setResizeMode(this->columnCount()-1, QHeaderView::Stretch);
         //this->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
         //this->horizontalHeader()->setResizeMode(0, QHeaderView::Interactive);
-        this->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-        horizontalHeader()->resizeSection(horizontalHeader()->count()-1, 10);
-        horizontalHeader()->setStretchLastSection(true);
+        slot_sectionMoved(0,0,0);
 
 
         setColumnCount(5);
@@ -443,7 +441,7 @@ void marginal_in_table::check_blinking(void)
 
         if(last_blinking > one_hour_before)
         {
-            #define  BLINKING(__COL__, __TW__)  \
+            #define  CHECK_BLINKING(__COL__, __TW__)  \
                     if(v_blinking[__COL__] > one_hour_before)     \
                     {     \
                           if(v_blinking[__COL__] < now)        \
@@ -453,15 +451,16 @@ void marginal_in_table::check_blinking(void)
                                     __TW__->setBackgroundColor(color_price);     \
                                 else     \
                                     __TW__->setBackgroundColor(color_qty);     \
+                                __TW__->setForeground(QBrush());    \
                           }       \
                           else     \
                               ++pending_blinkings;\
                     }
 
-            BLINKING(1, tw_qty_bid)
-            BLINKING(2, tw_BID)
-            BLINKING(3, tw_ASK)
-            BLINKING(4, tw_qty_ask)
+            CHECK_BLINKING(1, tw_qty_bid)
+            CHECK_BLINKING(2, tw_BID)
+            CHECK_BLINKING(3, tw_ASK)
+            CHECK_BLINKING(4, tw_qty_ask)
 
             if(pending_blinkings == 0)
                 last_blinking = one_year_before;
@@ -474,28 +473,24 @@ void marginal_in_table::generate_blinking(const mtk::prices::msg::sub_best_price
 {
     mtk::DateTime  now = mtk::dtNowLocal();
 
-    if(prices.bids.level0.quantity != prev_painted_prices.bids.level0.quantity)
-    {
-        tw_qty_bid->setBackgroundColor(qtmisc::mtk_color_blinking2);
-        add_blinking(1, now + mtk::dtMilliseconds(200));
-    }
-    if(prices.bids.level0.price != prev_painted_prices.bids.level0.price)
-    {
-        tw_BID->setBackgroundColor(qtmisc::mtk_color_blinking2);
-        add_blinking(2, now + mtk::dtMilliseconds(200));
-    }
-
-    if(prices.asks.level0.price != prev_painted_prices.asks.level0.price)
-    {
-        tw_ASK->setBackgroundColor(qtmisc::mtk_color_blinking2);
-        add_blinking(3, now + mtk::dtMilliseconds(200));
-    }
-    if(prices.asks.level0.quantity != prev_painted_prices.asks.level0.quantity)
-    {
-        tw_qty_ask->setBackgroundColor(qtmisc::mtk_color_blinking2);
-        add_blinking(4, now + mtk::dtMilliseconds(200));
+    #define BLINKING(__BID_ASK__, __PRICE_QUANTITY__, __ITEM__, __COL__)    \
+    {       \
+        int  prev_quantity = prev_painted_prices.__BID_ASK__.level0.quantity.GetIntCode();  \
+        int  new_quantity  = prices.__BID_ASK__.level0.quantity.GetIntCode();   \
+        if(prices.__BID_ASK__.level0.__PRICE_QUANTITY__ != prev_painted_prices.__BID_ASK__.level0.__PRICE_QUANTITY__    \
+           ||   ( prev_quantity*new_quantity == 0   &&  prev_quantity+new_quantity != 0))    \
+        {    \
+            __ITEM__->setBackgroundColor(qtmisc::mtk_color_blinking);    \
+            __ITEM__->setForeground(QBrush(QColor(191,219,255)));    \
+            add_blinking(__COL__, now + mtk::dtMilliseconds(200));    \
+        }       \
     }
 
+
+    BLINKING(bids, quantity,  tw_qty_bid, 1)
+    BLINKING(bids, price,     tw_BID,     2)
+    BLINKING(asks, price,     tw_ASK,     3)
+    BLINKING(asks, quantity,  tw_qty_ask, 4)
 
     prev_painted_prices = prices;
 }
@@ -751,7 +746,7 @@ void QTableMarginal::request_side(mtk::trd::msg::enBuySell bs)
                 price = price_manager->get_best_prices().Get().asks.level0.price;
                 quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
             }
-            quantity.SetIntCode(0);
+            if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
             mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
             mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos);
         }
@@ -801,7 +796,7 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
             }
             if(quantity.GetIntCode() != 0)
             {
-                quantity.SetIntCode(0);
+                quantity.SetIntCode(-1);        //  means, default quantity
                 mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
                 mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, true);
             }
@@ -860,7 +855,7 @@ void QTableMarginal::request_side_market(mtk::trd::msg::enBuySell bs)
             mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
             if(bs == mtk::trd::msg::sell)
                 quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
-            quantity.SetIntCode(0);
+            if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
             mtk::trd::msg::sub_position_mk     pos(quantity, "" /*cli ref*/);
             mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, bs, pos);
         }
@@ -929,6 +924,7 @@ void QTableMarginal::disable_trading_actions(void)
             action_lift_the_offer->setEnabled(false);
             action_sell_market->setEnabled(false);
             action_buy_market->setEnabled(false);
+            action_remove_product->setEnabled(false);
         }
     }
 }
@@ -943,6 +939,7 @@ void QTableMarginal::enable_trading_actions(void)
         action_lift_the_offer->setEnabled(true);
         action_sell_market->setEnabled(true);
         action_buy_market->setEnabled(true);
+        action_remove_product->setEnabled(true);
     }
 }
 
@@ -1009,7 +1006,7 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
     //  writing sections sizes
     out << YAML::Key   <<  "sect_sizes"
             << YAML::Value << YAML::Flow  << YAML::BeginSeq;
-    for(int i=0; i<m.horizontalHeader()->count(); ++i)
+    for(int i=0; i<m.horizontalHeader()->count()-1; ++i)
     {
         out << m.horizontalHeader()->sectionSize(i);
     }
@@ -1074,6 +1071,7 @@ void QTableMarginal::slot_sectionMoved ( int /*logicalIndex*/, int /*oldVisualIn
 {
     this->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
     horizontalHeader()->resizeSection(horizontalHeader()->logicalIndex(horizontalHeader()->count()-1), 10);
+    this->horizontalHeader()->setResizeMode(horizontalHeader()->logicalIndex(horizontalHeader()->count()-1), QHeaderView::Fixed);
     horizontalHeader()->setStretchLastSection(true);
 }
 

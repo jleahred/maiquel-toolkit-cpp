@@ -13,7 +13,11 @@ public:
 
     QValidator::State validate(QString &input, int &pos) const;
 
+    void  set_empty(void);
+
 private:
+    bool  is_empty;
+
     void keyPressEvent(QKeyEvent *event);
     QString textFromValue(double val) const;
 

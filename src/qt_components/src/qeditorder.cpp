@@ -52,16 +52,17 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
     ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
     ui->price->setSingleStep(1./pow(10.,rq.request_pos.price.GetExt().GetDec())*rq.request_pos.price.GetExt().GetInc());
-    if(rq.request_pos.quantity.GetIntCode()==0  &&  rq.request_pos.price.GetIntCode()==0)
-        ui->price->clear();
+    if(rq.request_pos.price.GetIntCode()==0  &&  rq.request_pos.quantity.GetIntCode()==0)
+        ui->price->set_empty();
+        //ui->price->clear();
     else
         ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
     ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
     ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
-    if(rq.request_pos.quantity.GetIntCode()!=0)
+    if(rq.request_pos.quantity.GetIntCode()>=0)
         ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     else
-        ui->quantity->setValue(1.);//ui->quantity->clear();
+        ui->quantity->set_empty();
     ui->cliref->setText(QLatin1String(rq.request_pos.cli_ref.c_str()));
 
 
@@ -92,11 +93,11 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     }
     else
     {
-        if(rq.request_pos.quantity.GetIntCode() == 0)
+        if(rq.request_pos.quantity.GetIntCode() <= 0)
         {
             QLatin1String default_q (s_default_qty.Get().c_str());
             if(default_q == ""  ||  default_q == "~")
-                ui->quantity->setValue(1.);
+                ui->quantity->set_empty();
             else
                 ui->quantity->setValue(QString(default_q).toDouble());
         }
@@ -148,10 +149,12 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     ui->price->setEnabled(false);
     ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
     ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
-    if(rq.request_pos.quantity.GetIntCode()!=0)
-        ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
+    if(rq.request_pos.quantity.GetIntCode()==-1)
+        ui->quantity->set_empty();
+    else if(rq.request_pos.quantity.GetIntCode()==0)
+        ui->quantity->set_empty();
     else
-        ui->quantity->setValue(1.);//ui->quantity->clear();
+        ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     ui->cliref->setText(QLatin1String(rq.request_pos.cli_ref.c_str()));
 
 
@@ -182,11 +185,11 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     }
     else
     {
-        if(rq.request_pos.quantity.GetIntCode() == 0)
+        if(rq.request_pos.quantity.GetIntCode() <= 0)
         {
             QLatin1String default_q (s_default_qty.Get().c_str());
             if(default_q == ""  ||  default_q == "~")
-                ui->quantity->setValue(1.);
+                ui->quantity->set_empty();
             else
                 ui->quantity->setValue(QString(default_q).toDouble());
         }
