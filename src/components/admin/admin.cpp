@@ -661,7 +661,7 @@ namespace {
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorError, mtk::alTypeRealTime));
             }
-            if(max_5min_fluct > tqwarning)
+            else if(max_5min_fluct > tqwarning)
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, ref, MTK_SS("5min: " << flucts._1), mtk::alPriorWarning, mtk::alTypeRealTime));
             }
