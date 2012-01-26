@@ -196,14 +196,14 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
 {
     mtk::DateTime  now = mtk::dtNowLocal();
     //  marginals
-    #define BLINKING_MARGINALS(__BID_ASK__)     \
+    #define BLINKING_MARGINALS(__BID_ASK__, __ROW__, __COL__)     \
         {       \
                 int  prev_quantity = prev_painted_prices.__BID_ASK__.level0.quantity.GetIntCode();       \
                 int  new_quantity  = prices.__BID_ASK__.level0.quantity.GetIntCode();       \
                 bool  just_ONE_quantity_is_zero = (prev_quantity*new_quantity == 0   &&  prev_quantity+new_quantity != 0 );  \
                 if(prices.__BID_ASK__.level0.price != prev_painted_prices.__BID_ASK__.level0.price  ||   just_ONE_quantity_is_zero)       \
                 {       \
-                    int row=5;  int col=0;       \
+                    int row=__ROW__;  int col=__COL__;       \
                     item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
                     add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
                     item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
@@ -213,14 +213,14 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
                 {       \
                     if(prices.__BID_ASK__.level0.quantity != prev_painted_prices.__BID_ASK__.level0.quantity)       \
                     {       \
-                        int row=5;  int col=1;       \
+                        int row=__ROW__;  int col=1;       \
                         item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
                         add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
                     }       \
                 }       \
         }
-    BLINKING_MARGINALS(bids)
-    BLINKING_MARGINALS(asks)
+    BLINKING_MARGINALS(bids, 5, 0)
+    BLINKING_MARGINALS(asks, 4, 2)
 
 
 
