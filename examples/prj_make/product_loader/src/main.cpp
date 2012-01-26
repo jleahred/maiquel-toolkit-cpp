@@ -14,7 +14,7 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_PRODUCT_LOADER";
-    const char*   APP_VER           = "2012-01-19";
+    const char*   APP_VER           = "2012-01-26";
     const char*   APP_DESCRIPTION   = "I will keep prices and other product information on memory and I will serve it to clients or other proceses\n"
                                       "I will receive this information listening as a client";
 
@@ -35,15 +35,22 @@ namespace
     void command_lock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_unlock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_status(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_set_frecuency(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_set_frecuency_provisional(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+    void command_get_activity_config(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+
 
     void register_global_commands (void)
     {
-        mtk::admin::register_command("__GLOBAL__"  ,   "stats",     "")->connect(command_stats);
-        mtk::admin::register_command("product_loader", "stats",     "")->connect(command_stats);
-        mtk::admin::register_command("product_loader", "lock",      "I will ignore all request (no response)", true)->connect(command_lock);
-        mtk::admin::register_command("product_loader", "unlock",    "I will response again", true)->connect(command_unlock);
-        mtk::admin::register_command("__GLOBAL__",     "status",    "Info about my current status")->connect(command_status);
-        mtk::admin::register_command("product_loader", "status",    "Info about my current status")->connect(command_status);
+        mtk::admin::register_command("__GLOBAL__",  "stats",                 "")->connect(command_stats);
+        mtk::admin::register_command("pl",          "stats",                 "")->connect(command_stats);
+        mtk::admin::register_command("pl",          "lock",                  "I will ignore all request (no response)", true)->connect(command_lock);
+        mtk::admin::register_command("pl",          "unlock",                "I will response again", true)->connect(command_unlock);
+        mtk::admin::register_command("__GLOBAL__",  "status",                "Info about my current status")->connect(command_status);
+        mtk::admin::register_command("pl",          "status",                "Info about my current status")->connect(command_status);
+        mtk::admin::register_command("pl",          "set_frec_activity",     "<new_frec>  Configure the frecuency to check activity", true)->connect(command_set_frecuency);
+        mtk::admin::register_command("pl",          "set_frec_activity_prov","<new_frec> <for_time> Configure the frecuency to check activity for a period of time")->connect(command_set_frecuency_provisional);
+        mtk::admin::register_command("pl",          "get_activity_config",   "show all activity configurations")->connect(command_get_activity_config);
     }
 
     MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
@@ -57,14 +64,31 @@ namespace
     {
         public:
             market_info(const std::string& _name, const mtk::dtTimeQuantity& tq, const mtk::dtDateTime&  _starts, const mtk::dtDateTime&  _ends)
-                :  name(_name), check_interval(tq), delay_notif(mtk::dtSeconds(0)), last_update_received(mtk::dtNowLocal()) , starts(_starts), ends(_ends) {}
+                :         name(_name)
+                        , official_check_interval(tq)
+                        , provisonal_check_interval(tq)
+                        , provisional_valid_till(mtk::dtNowLocal())
+                        , delay_notif(mtk::dtSeconds(0))
+                        , last_update_received(mtk::dtNowLocal())
+                        , starts(_starts), ends(_ends) {}
 
             std::string             name;
-            mtk::dtTimeQuantity     check_interval;
+            mtk::dtTimeQuantity     official_check_interval;
+            mtk::dtTimeQuantity     provisonal_check_interval;
+            mtk::dtDateTime         provisional_valid_till;
             mtk::dtTimeQuantity     delay_notif;
             mtk::DateTime           last_update_received;
             mtk::DateTime           starts;
             mtk::DateTime           ends;
+
+            mtk::dtTimeQuantity     get_check_interval(void)  const
+            {
+                mtk::dtDateTime  now  = mtk::dtNowLocal();
+                if(now<provisional_valid_till)
+                    return provisonal_check_interval;
+                else
+                    return official_check_interval;
+            }
     };
     mtk::map<std::string, market_info >    map_market_info;
 
@@ -181,6 +205,117 @@ void command_unlock(const std::string& /*command*/, const std::string& /*params*
 void command_status(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
 {
     response_lines.push_back(MTK_SS("lock status: " << int(lock_request_status)));
+}
+
+
+
+bool  check_and_split_params(const std::string& params, mtk::list<std::string>&  response_lines, int number_of_params, mtk::vector<std::string>& vparams)
+{
+    mtk::vector<std::string> temp_vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
+    //  remove empty params
+    vparams.clear();
+    for(unsigned i=0; i<temp_vparams.size(); ++i)
+    {
+        std::string param = mtk::s_trim(temp_vparams[i], ' ');
+        if(param != "")
+            vparams.push_back(param);
+    }
+    if(vparams.size() != unsigned(number_of_params))
+    {
+        response_lines.push_back(MTK_SS("invalid number of params. There is needed "  <<  number_of_params  <<  "  params:   "  << params));
+        return  false;
+    }
+    return true;
+}
+
+void command_set_frecuency(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+{
+    mtk::vector<std::string>  vparams;
+    if(check_and_split_params(params, response_lines, 2, vparams)  == false)     return;
+
+    std::string  market  =   vparams[0];
+    auto  new_frecuency  =   mtk::s_TRY_stotq(vparams[1], mtk::dtSeconds(0));
+
+    if(new_frecuency._1  ==  false)
+    {
+        response_lines.push_back(MTK_SS("invalid frecuency string  " <<  vparams[0]));
+        return;
+    }
+
+    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(market);
+    if(itlu == map_market_info.end())
+    {
+        response_lines.push_back(MTK_SS("market code not found  " <<  market));
+        return;
+    }
+
+    itlu->second.official_check_interval    = new_frecuency._0;
+    itlu->second.provisional_valid_till     = mtk::dtNowLocal();
+    itlu->second.provisonal_check_interval  = new_frecuency._0;
+
+    mtk::admin::set_config_property(MTK_SS("MARKETS" << "." <<  market << ".check_activity"), MTK_SS(new_frecuency._0));
+
+    command_get_activity_config("", "", response_lines);
+}
+
+void command_set_frecuency_provisional(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+{
+    mtk::vector<std::string>  vparams;
+    if(check_and_split_params(params, response_lines, 3, vparams)  == false)     return;
+
+    std::string  market  =   vparams[0];
+    auto  new_frecuency  =   mtk::s_TRY_stotq(vparams[1], mtk::dtSeconds(0));
+    auto  for_time       =   mtk::s_TRY_stotq(vparams[2], mtk::dtSeconds(0));
+
+    if(new_frecuency._1  ==  false)
+    {
+        response_lines.push_back(MTK_SS("invalid frecuency string  " <<  vparams[1]));
+        return;
+    }
+    if(for_time._1  ==  false)
+    {
+        response_lines.push_back(MTK_SS("invalid second param  (for time)    " <<  vparams[2]));
+        return;
+    }
+
+    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(market);
+    if(itlu == map_market_info.end())
+    {
+        response_lines.push_back(MTK_SS("market code not found  " <<  market));
+        return;
+    }
+
+    itlu->second.provisional_valid_till     = mtk::dtNowLocal() + for_time._0;
+    itlu->second.provisonal_check_interval  = new_frecuency._0;
+
+    command_get_activity_config("", "", response_lines);
+}
+
+
+
+void command_get_activity_config(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+{
+    if (mtk::s_trim(params, ' ')  != "")
+    {
+        response_lines.push_back(MTK_SS("non exptected params  "));
+        return;
+    }
+
+    for(auto it=map_market_info.begin(); it!=map_market_info.end(); ++it)
+    {
+        response_lines.push_back(MTK_SS(it->first  <<  "    --------------------------------"));
+        response_lines.push_back(MTK_SS("CHECKING INTERVAL....   "  <<  it->second.get_check_interval()));
+        #define WRITE_RESPONSE(__NAME__)  \
+            response_lines.push_back(MTK_SS(#__NAME__ ":  "  << it->second.__NAME__));
+        WRITE_RESPONSE(official_check_interval);
+        WRITE_RESPONSE(provisonal_check_interval);
+        WRITE_RESPONSE(provisional_valid_till);
+        response_lines.push_back(MTK_SS("provisional valid for:  "  <<  it->second.provisional_valid_till - mtk::dtNowLocal()));
+        WRITE_RESPONSE(delay_notif);
+        WRITE_RESPONSE(last_update_received);
+        WRITE_RESPONSE(starts);
+        WRITE_RESPONSE(ends);
+    }
 }
 
 
@@ -372,9 +507,11 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
     else
     {
         mtk::dtDateTime  now = mtk::dtNowLocal();
-        if(now - itlu->second.last_update_received  > itlu->second.check_interval)
+        if(now - itlu->second.last_update_received  > itlu->second.get_check_interval())
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("recovered activity  " << it->first  << "  checking interval " << itlu->second.check_interval), mtk::alPriorError, mtk::alTypeOverflow));
+            if(itlu->second.starts < now  &&   itlu->second.ends > now)
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("recovered activity  " << itlu->second.name  <<  " after  " <<  now - itlu->second.last_update_received
+                                                            << "  checking interval " << itlu->second.get_check_interval()), mtk::alPriorError, mtk::alTypeOverflow));
             itlu->second.delay_notif = mtk::dtSeconds(0);
         }
         itlu->second.last_update_received  = now;
@@ -390,7 +527,7 @@ void check_inactivity(void)
         mtk::map<std::string, market_info >::iterator  it = map_market_info.begin();
         for( ; it!= map_market_info.end(); ++it)
         {
-            if(it->second.check_interval > mtk::dtSeconds(1))
+            if(it->second.get_check_interval() > mtk::dtSeconds(1))
             {
                 if(it->second.ends  -  it->second.starts   < mtk::dtHours(2))
                 {
@@ -402,10 +539,10 @@ void check_inactivity(void)
                 mtk::dtDateTime  now = mtk::dtNowLocal();
                 if(it->second.starts < now  &&   it->second.ends > now)
                 {
-                    if(it->second.last_update_received + it->second.check_interval + it->second.delay_notif < mtk::dtNowLocal())
+                    if(it->second.last_update_received + it->second.get_check_interval() + it->second.delay_notif < mtk::dtNowLocal())
                     {
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("too much time with no activity " << it->first
-                                                                                << "  checking interval " << it->second.check_interval
+                                                                                << "  checking interval " << it->second.get_check_interval()
                                                                                 << "  +delay notifying " << it->second.delay_notif
                                                                                 ), mtk::alPriorError, mtk::alTypeOverflow));
                         if(it->second.delay_notif > mtk::dtSeconds(0))
@@ -422,10 +559,10 @@ void check_inactivity(void)
             }
             else
             {
-                if(it->second.check_interval > mtk::dtMilliseconds(10))
+                if(it->second.get_check_interval() > mtk::dtMilliseconds(10))
                 {
                     MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(15), A)
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("check activity time configuration too low " << it->second.check_interval), mtk::alPriorError, mtk::alTypeOverflow));
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("check activity time configuration too low " << it->second.get_check_interval()), mtk::alPriorError, mtk::alTypeOverflow));
                     MTK_END_EXEC_MAX_FREC
                 }
             }
