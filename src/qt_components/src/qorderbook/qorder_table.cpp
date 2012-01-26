@@ -338,6 +338,8 @@ public:
             return Qt::white;
         //else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market()==false)
         //    return Qt::white;
+        else if (is_last_tr_rj(*inner_order)   &&  inner_order->in_market()==false)
+            return Qt::white;
         else
             return Qt::black;
     }
@@ -363,7 +365,7 @@ public:
         if (is_last_tr_rj(*inner_order))
         {
             item->setBackgroundColor(qtmisc::mtk_color_rejected);
-            //item->setForeground(Qt::white);
+            item->setForeground(Qt::white);
         }
         else
         {
@@ -384,7 +386,7 @@ public:
         if (is_last_tr_rj(*inner_order))
         {
             item->setBackgroundColor(qtmisc::mtk_color_rejected);
-            //item->setForeground(Qt::white);
+            item->setForeground(Qt::white);
         }
         else
         {
