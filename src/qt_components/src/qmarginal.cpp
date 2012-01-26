@@ -480,7 +480,7 @@ void marginal_in_table::generate_blinking(const mtk::prices::msg::sub_best_price
         if(prices.__BID_ASK__.level0.__PRICE_QUANTITY__ != prev_painted_prices.__BID_ASK__.level0.__PRICE_QUANTITY__    \
            ||   ( prev_quantity*new_quantity == 0   &&  prev_quantity+new_quantity != 0))    \
         {    \
-            __ITEM__->setBackgroundColor(qtmisc::mtk_color_blinking);    \
+            __ITEM__->setBackgroundColor(qtmisc::mtk_color_blinking2);    \
             __ITEM__->setForeground(QBrush(QColor(191,219,255)));    \
             add_blinking(__COL__, now + mtk::dtMilliseconds(200));    \
         }       \
@@ -1031,7 +1031,7 @@ void             operator >> (const YAML::Node&   node,        QTableMarginal& m
         node["sect_sizes"][i] >> sect_size;
         m.horizontalHeader()->resizeSection(i, sect_size);
     }
-
+    m.slot_sectionMoved(0,0,0);
 }
 
 
