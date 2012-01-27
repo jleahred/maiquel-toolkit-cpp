@@ -251,11 +251,6 @@ namespace mtk{namespace trd{
                     serrors += MTK_SS("cf.invariant  !=  last_conf.Get().invariant  "  <<  cf.invariant  <<  "  !=  "  <<  last_conf.Get().invariant);
                     ++nerrors;
                 }
-                if (cf.market_order_id  !=  last_conf.Get().market_order_id)
-                {
-                    ++nerrors;
-                    serrors += "  modified  market order id";
-                }
 
 
                 if (mtk::Double(cf.total_execs.acc_quantity.GetDouble())  >  (mtk::Double(last_conf.Get().market_pos.quantity.GetDouble())))
