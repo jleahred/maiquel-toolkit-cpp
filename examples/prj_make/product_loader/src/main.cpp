@@ -14,7 +14,7 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_PRODUCT_LOADER";
-    const char*   APP_VER           = "2012-01-26";
+    const char*   APP_VER           = "2012-01-30";
     const char*   APP_DESCRIPTION   = "I will keep prices and other product information on memory and I will serve it to clients or other proceses\n"
                                       "I will receive this information listening as a client";
 
@@ -22,6 +22,7 @@ namespace
                                         "           2011-08-01     filling product publishing protocol (update)\n"
                                         "           2012-01-13     delete on init from publisher and modifs on check activity\n"
                                         "           2012-01-19     reduce exponentially no activity message\n"
+                                        "           2012-01-30     recover activity only when frecuency > 0\n"
                                         ;
 
 }
@@ -507,7 +508,7 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
     else
     {
         mtk::dtDateTime  now = mtk::dtNowLocal();
-        if(now - itlu->second.last_update_received  > itlu->second.get_check_interval())
+        if(now - itlu->second.last_update_received  > itlu->second.get_check_interval()  &&  itlu->second.get_check_interval() > mtk::dtSeconds(1))
         {
             if(itlu->second.starts < now  &&   itlu->second.ends > now)
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("recovered activity  " << itlu->second.name  <<  " after  " <<  now - itlu->second.last_update_received
