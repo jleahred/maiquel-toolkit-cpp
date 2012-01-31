@@ -456,6 +456,12 @@ DateTime        dtNowLocal                  (void);
 dtTimeQuantity  dtMachineGetTotalMillisecs  (void);
 DateTime        dtToday_0Time               (void);
 
+
+DateTime    dtNowLocal__non_monotonic(void);
+DateTime    dtNowUTC__non_monotonic  (void);
+void        dtResynchr_monotonic       (void);
+
+
 dtTimeQuantity  abs(const dtTimeQuantity& ti);
 
 

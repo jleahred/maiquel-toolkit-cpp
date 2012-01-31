@@ -1049,7 +1049,7 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
 #if (MTK_PLATFORM == MTK_WIN_PLATFORM)
 
 
-    DateTime    dtNowUTC(void)
+    DateTime    dtNowUTC__non_monotonic(void)
     {
         SYSTEMTIME systemtime;
         GetSystemTime(&systemtime);
@@ -1066,7 +1066,7 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
     }
 
 
-    DateTime    dtNowLocal(void)
+    DateTime    dtNowLocal__non_monotonic(void)
     {
         SYSTEMTIME systemtime;
         GetLocalTime(&systemtime);
@@ -1100,7 +1100,7 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
 
 
 
-    dtTimeQuantity  dtMachineGetTotalMillisecs (void)
+    uint64_t  __internal__dtMachineGetTotalMillisecs (void)
     {
     //    return  dtTotalMillisecs(GetTickCount());
 
@@ -1115,13 +1115,13 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
         }
 
         previusTickCount32 = currentTickCount32;
-        return  dtTotalMillisecs((__int64)(currentTickCount32) + (__int64)(vueltas64));
+        return  (__int64)(currentTickCount32) + (__int64)(vueltas64);
     }
 
 
 #elif MTK_PLATFORM == MTK_LINUX_PLATFORM
 
-    DateTime    dtNowUTC(void)
+    DateTime    dtNowUTC__non_monotonic(void)
     {
         static struct timeb tp;
         ftime(&tp);
@@ -1139,7 +1139,7 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
     }
 
 
-    DateTime    dtNowLocal(void)
+    DateTime    dtNowLocal__non_monotonic(void)
     {
         static struct timeb tp;
         ftime(&tp);
@@ -1173,20 +1173,109 @@ dtTimeQuantity    DateTime::EncodeDate (dtYear _year, dtMonth _month, dtDay _day
             );
     }
 
-    dtTimeQuantity  dtMachineGetTotalMillisecs (void)
-    {
-        //  En linux no hay una forma fácil (razonable)
-        //  para obtener esta información
-        static DateTime firstCallDateTime = dtNowLocal();
 
-        return dtNowLocal() - firstCallDateTime;
+
+
+
+    uint64_t  __internal__dtMachineGetTotalMillisecs (void)
+    {
+        const uint64_t NT_SEC  = 1000000000ULL; // 1 second
+        //const uint64_t NT_DSEC =  100000000ULL; // 0.1 second
+        //const uint64_t NT_CSEC =   10000000ULL; // 0.01 second
+        const uint64_t NT_MSEC =    1000000ULL; // 1 mili second
+        //const uint64_t NT_USEC =       1000ULL; // 1 micro second
+
+        timespec x_time;
+        clock_gettime( CLOCK_MONOTONIC_RAW, &x_time );
+        return  uint64_t( (x_time.tv_sec*NT_SEC + x_time.tv_nsec) / NT_MSEC );
     }
+
 
 #else
 
     #error  Unknown platfrom
 
 #endif  //#if (MTK_PLATFORM == MTK_WIN_PLATFORM)
+
+
+
+dtTimeQuantity    dtMachineGetTotalMillisecs (void)
+{
+    return  dtTotalMillisecs(__internal__dtMachineGetTotalMillisecs());
+}
+
+
+
+DateTime&          __internal_init_dt_local(void)
+{
+    static  auto value     =   new DateTime(dtNowLocal__non_monotonic());
+    return  *value;
+}
+DateTime&         __internal_init_dt_utc(void)
+{
+    static  auto value     =   new DateTime(dtNowUTC__non_monotonic());
+    return  *value;
+}
+uint64_t&          __internal_init_milliseconds(void)
+{
+    static  auto value     =   new uint64_t(__internal__dtMachineGetTotalMillisecs());
+    return  *value;
+}
+DateTime        dtNowLocal                  (void)
+{
+    static  uint64_t   last_called = __internal__dtMachineGetTotalMillisecs();
+
+    uint64_t   current_milliseconds = __internal__dtMachineGetTotalMillisecs();
+
+    DateTime  result =  __internal_init_dt_local() + mtk::dtTotalMillisecs(current_milliseconds  -  __internal_init_milliseconds());
+
+
+    if(current_milliseconds - last_called > 1000*60*10)        //  inform with 10 minuts maximun frecuency of   if diferency is bigger than x seconds
+                                                         // very important to avoid infinite recursive call with alarm.h
+    {
+        last_called = current_milliseconds;
+        if(mtk::abs(result - dtNowLocal__non_monotonic())  > dtSeconds(2))
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock out synchr", MTK_SS("    dif... "  <<  result - dtNowLocal__non_monotonic()  <<  "    monotonic "  <<  result  << "   non monotonic" << dtNowLocal__non_monotonic()), mtk::alPriorWarning));
+    }
+
+    return result;
+}
+DateTime    dtNowUTC  (void)
+{
+    static  uint64_t   last_called = __internal__dtMachineGetTotalMillisecs();
+
+    uint64_t   current_milliseconds = __internal__dtMachineGetTotalMillisecs();
+
+    DateTime  result  =   __internal_init_dt_utc() + mtk::dtTotalMillisecs(current_milliseconds  -  __internal_init_milliseconds());
+
+    if(current_milliseconds - last_called > 1000*60*10)        //  inform with 10 minuts maximun frecuency of   if diferency is bigger than x seconds
+                                                         // very important to avoid infinite recursive call with alarm.h
+    {
+        last_called = current_milliseconds;
+        if(mtk::abs(result - dtNowUTC__non_monotonic())  > dtSeconds(2))
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock out synchr", MTK_SS("    dif... "  <<   result - dtNowUTC__non_monotonic()   <<  "    monotonic "  <<  result  << "   non monotonic" << dtNowUTC__non_monotonic()), mtk::alPriorWarning));
+    }
+
+    return  result;
+}
+void        dtResynchr_monotonic(void)
+{
+    mtk::dtDateTime   now_before = dtNowLocal();
+
+    __internal_init_dt_local()     = dtNowLocal__non_monotonic();
+    __internal_init_dt_utc()       = dtNowUTC__non_monotonic();
+    __internal_init_milliseconds() = __internal__dtMachineGetTotalMillisecs();
+
+    mtk::dtDateTime   now_after = dtNowLocal();
+
+    mtk::dtTimeQuantity   adjusted  =  now_after  -  now_before;
+
+    if(adjusted<mtk::dtSeconds(2))
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock resynchr_monotonic", MTK_SS("adjusting... "  <<  adjusted  << "  before " << now_before << "  after "  << now_after), mtk::alPriorWarning));
+    else
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock resynchr_monotonic", MTK_SS("adjusting... "  <<  adjusted  << "  before " << now_before << "  after "  << now_after), mtk::alPriorError));
+}
+
 
 
 

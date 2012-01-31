@@ -37,9 +37,11 @@ namespace {
 
     bool  auto_close_canceled=false;
     void  timer_check_auto_close(void);
+    void  timer_check_resynchr_monotonic(void);
     void command_autoclose_show         (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
     void command_autoclose_cancel       (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
     void command_autoclose_reactivate   (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+    void command_resynchr_monotonic     (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
 
 
     mtk::Signal<>*           signal_admin_ready  = 0;
@@ -458,8 +460,10 @@ namespace {
         register_command("ADMIN",         "autoclose.show",        "Shows autoclose configured time" )->connect(&command_autoclose_show);
         register_command("ADMIN",         "autoclose.cancel",      "cancel autoclose",      true     )->connect(&command_autoclose_cancel);
         register_command("ADMIN",         "autoclose.reactivate",  "reactivate autoclose",  true     )->connect(&command_autoclose_reactivate);
+        register_command("ADMIN",         "resynchr",              "DANGEROUS.  resynchr monotonic clock with system clock",  true     )->connect(&command_resynchr_monotonic);
 
         MTK_TIMER_1SF(timer_check_auto_close);
+        MTK_TIMER_1SF(timer_check_resynchr_monotonic);
     }
 
 
@@ -964,6 +968,10 @@ namespace {
     {
         response_lines.push_back(MTK_SS("current_date_time       " << mtk::dtNowLocal()  << std::endl
                                   <<    "current_date_time_utc   " << mtk::dtNowUTC()));
+        response_lines.push_back(MTK_SS("current_date_time      non_monotonic   " << mtk::dtNowLocal__non_monotonic()  << std::endl
+                                  <<    "current_date_time_utc  non_monotonic    " << mtk::dtNowUTC__non_monotonic()));
+        response_lines.push_back(MTK_SS("diference monotonic and non_monotonic   " << mtk::dtNowLocal()  -  mtk::dtNowLocal__non_monotonic()));
+
     }
 
     void admin_status::command_set_machine_code(const std::string& /*command*/, const std::string& param, mtk::list<std::string>&  response_lines)
@@ -1368,7 +1376,7 @@ namespace {
             if(autoclose_converted._1 == false)
             {
                 AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("autoclose:   wrong format string   " << config_auto_close_time),
-                                                            mtk::alPriorWarning, mtk::alTypeUnknown));
+                                                            mtk::alPriorError, mtk::alTypeUnknown));
             }
             static  mtk::DateTime auto_close_on  = mtk::dtToday_0Time() + autoclose_converted._0;
 
@@ -1389,6 +1397,30 @@ namespace {
                                                         <<  "   in "  << (auto_close_on - mtk::dtNowLocal())  << "   you can cancel close with admin.autclose.cancel command"),
                                                                     mtk::alPriorError, mtk::alTypeUnknown));
                 MTK_END_EXEC_MAX_FREC
+            }
+        MTK_END_EXEC_MAX_FREC
+    }
+    void  timer_check_resynchr_monotonic(void)
+    {
+        MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(1))
+            //const char*   PROPERTY_NAME = "autosyncr_time";
+            //static  std::string  config_auto_synchr  =  mtk::admin::get_config_mandatory_property(MTK_SS("ADMIN." <<  PROPERTY_NAME));
+
+            //auto  autosynchr_converted = mtk::s_TRY_stotq(config_auto_synchr, mtk::dtSeconds(0));
+            //if(autosynchr_converted._1 == false)
+            //    throw mtk::Alarm(MTK_HERE, "admin", MTK_SS(PROPERTY_NAME  <<  ":   wrong format string   " << config_auto_synchr),
+            //                                                mtk::alPriorError, mtk::alTypeUnknown);
+            //static  mtk::DateTime autosynchr  = mtk::dtToday_0Time() + autosynchr_converted._0;
+
+
+            static  mtk::DateTime autosynchr  = mtk::dtToday_0Time() + mtk::dtHours(3);
+            mtk::dtDateTime  now = mtk::dtNowLocal();
+            if(now > autosynchr)
+            {
+                auto  next_resynchr  =  autosynchr + mtk::dtDays(1);
+                AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("calling resynchr,  next resynchr...  "  <<  next_resynchr), mtk::alPriorWarning, mtk::alTypeUnknown));
+                mtk::dtResynchr_monotonic();
+                autosynchr  = next_resynchr;
             }
         MTK_END_EXEC_MAX_FREC
     }
@@ -1434,6 +1466,13 @@ namespace {
             response_lines.push_back("autoclose has been DEACTIVATED, to reactivate use auto_close_reactivate command");
         else
             response_lines.push_back("autoclose is ACTIVE, to reactivate use auto_close_reactivate command");
+    }
+
+    void command_resynchr_monotonic     (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back(MTK_SS("date time before synchr... "  << mtk::dtNowLocal()));
+        mtk::dtResynchr_monotonic();
+        response_lines.push_back(MTK_SS("date time after synchr... "  << mtk::dtNowLocal()));
     }
 
 };
