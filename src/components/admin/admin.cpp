@@ -1184,7 +1184,7 @@ t_qpid_url      get_url             (const std::string& url_for)
 {
     mtk::Nullable<std::string> url = admin_status::i()->get_config_file().GetValue(MTK_SS("ADMIN.URLS." << url_for));
     if(url.HasValue()==false)
-        throw mtk::Alarm(MTK_HERE, "admin", MTK_SS(url_for  << "   requested invalid url"), mtk::alPriorCritic);
+        throw mtk::Alarm(MTK_HERE, "admin", MTK_SS("'" << url_for  << "'   is an invalid url"), mtk::alPriorCritic);
     else
         return t_qpid_url(url.Get());
 }

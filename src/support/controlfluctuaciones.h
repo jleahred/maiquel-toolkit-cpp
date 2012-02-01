@@ -29,22 +29,27 @@ struct TimeStats {
     dtTimeQuantity  maxTime;
     int             totalCounter;
     int             _0_02s_counter;
-    int             _02_1s_counter;
+    int             _02_05s_counter;
+    int             _05_1s_counter;
     int             _1_5s_counter;
     int             _5_15s_counter;
     int             _more_15s_counter;
 
     TimeStats() :
-        maxTime (dtSeconds(0)) ,       totalCounter(0)         ,
-        _0_02s_counter(0)       ,       _02_1s_counter(0)       ,
-        _1_5s_counter(0)        ,       _5_15s_counter(0)       ,
-        _more_15s_counter(0)            {};
+        maxTime (dtSeconds  (0))   ,       totalCounter(0)         ,
+        _0_02s_counter      (0)    ,
+        _02_05s_counter     (0)    ,
+        _05_1s_counter      (0)    ,
+        _1_5s_counter       (0)    ,
+        _5_15s_counter      (0)    ,
+        _more_15s_counter   (0)    {};
     void AddTime(const dtTimeQuantity& tq) {
         //if (tq <= dtMilliseconds(40))   return;
         if (tq > maxTime)      maxTime = tq;
         ++totalCounter;
         if      (tq < dtMilliseconds(200))      ++_0_02s_counter;
-        else if (tq < dtSeconds(1))             ++_02_1s_counter;
+        else if (tq < dtMilliseconds(500))      ++_02_05s_counter;
+        else if (tq < dtSeconds(1))             ++_05_1s_counter;
         else if (tq < dtSeconds(5))             ++_1_5s_counter;
         else if (tq < dtSeconds(15))            ++_5_15s_counter;
         else                                    ++_more_15s_counter;
@@ -54,11 +59,12 @@ struct TimeStats {
         result.push_back(MTK_SS("\t\tmaxTime     :" <<  maxTime));
         result.push_back(MTK_SS("\t\t#total      :" <<  totalCounter));
         result.push_back(MTK_SS("\t\t#_0_02s     :" <<  _0_02s_counter));
-        result.push_back(MTK_SS("\t\t#_02_1s     :" <<  _02_1s_counter));
+        result.push_back(MTK_SS("\t\t#_02_05s    :" <<  _02_05s_counter));
+        result.push_back(MTK_SS("\t\t#_05_1s     :" <<  _05_1s_counter));
         result.push_back(MTK_SS("\t\t#_1_5s      :" <<  _1_5s_counter));
         result.push_back(MTK_SS("\t\t#_5_15s     :" <<  _5_15s_counter));
         result.push_back(MTK_SS("\t\t#_more_15s  :" <<  _more_15s_counter));
-    
+
         return result;
     }
 };
@@ -83,7 +89,7 @@ public:
 
     tuple<dtTimeQuantity, dtTimeQuantity>       //  prevFluct,  5minFluct
     CheckFluctuacion(dtTimeQuantity  tqSender);
-    
+
     tuple<dtTimeQuantity, dtTimeQuantity>       //  prevFluct,  5minFluct
     CheckFluctuacion(DateTime  dtSender)
     {
@@ -98,29 +104,30 @@ public:
 
     mtk::list<std::string> GetReport(void) const {
         mtk::list<std::string>  result;
-        
+
         result.push_back(MTK_SS("\tprev....         \t 5min...."));
         result.push_back(MTK_SS("\tmaxTime   :" <<  statFluctsPrev.maxTime          <<"\t " << statFlucts5min.maxTime));
         result.push_back(MTK_SS("\t#total    :" <<  statFluctsPrev.totalCounter     <<"\t " << statFlucts5min.totalCounter));
         result.push_back(MTK_SS("\t#_0_02s   :" <<  statFluctsPrev._0_02s_counter   <<"\t " << statFlucts5min._0_02s_counter));
-        result.push_back(MTK_SS("\t#_02_1s   :" <<  statFluctsPrev._02_1s_counter   <<"\t " << statFlucts5min._02_1s_counter));
+        result.push_back(MTK_SS("\t#_02_05s  :" <<  statFluctsPrev._02_05s_counter  <<"\t " << statFlucts5min._02_05s_counter));
+        result.push_back(MTK_SS("\t#_05_1s   :" <<  statFluctsPrev._05_1s_counter   <<"\t " << statFlucts5min._05_1s_counter));
         result.push_back(MTK_SS("\t#_1_5s    :" <<  statFluctsPrev._1_5s_counter    <<"\t " << statFlucts5min._1_5s_counter));
         result.push_back(MTK_SS("\t#_5_15s   :" <<  statFluctsPrev._5_15s_counter   <<"\t " << statFlucts5min._5_15s_counter));
         result.push_back(MTK_SS("\t#_more_15s:" <<  statFluctsPrev._more_15s_counter<<"\t " << statFlucts5min._more_15s_counter));
         /*
         result.push_back("    prev.....................");
         mtk::list<std::string>  partial_result;
-        
+
         partial_result = statFluctsPrev.GetReport();
         for(mtk::list<std::string>::iterator it=partial_result.begin(); it!=partial_result.end(); ++it)
             result.push_back(*it);
-        
+
         result.push_back("    5min.....................");
         partial_result = statFlucts5min.GetReport();
         for(mtk::list<std::string>::iterator it=partial_result.begin(); it!=partial_result.end(); ++it)
             result.push_back(*it);
-        */ 
-    
+        */
+
         return result;
     }
 };
@@ -194,7 +201,7 @@ public:
         {
 
             result.push_back(MTK_SS("[" << it->first << std::string("]  _______________________")));
-            
+
             mtk::list<std::string>  partial_result = it->second.GetReport();
             for(mtk::list<std::string>::iterator it2=partial_result.begin(); it2!=partial_result.end(); ++it2)
                 result.push_back(*it2);

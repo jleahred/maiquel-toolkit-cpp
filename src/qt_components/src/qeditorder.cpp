@@ -231,6 +231,19 @@ bool QEditOrder::check_if_order_can_be_sent(void)
 
     if(rq_ls.HasValue())
     {
+        //  check there are no rounds
+        mtk::FixedNumber  price = rq_ls.Get().request_pos.price;
+        price.SetDouble(ui->price->value());
+        if(price.GetDouble() !=  mtk::Double(ui->price->value()))
+        {
+            ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+            ui->message->setText(tr("invalid price"));
+            result = false;
+        }
+    }
+    /*
+    if(rq_ls.HasValue())
+    {
         text = ui->price->text();
         if(ui->price->validate(text, pos) != QValidator::Acceptable)
         {
@@ -239,7 +252,7 @@ bool QEditOrder::check_if_order_can_be_sent(void)
             result = false;
         }
     }
-
+    */
     if(ui->account->currentIndex() == -1)
     {
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
@@ -383,3 +396,4 @@ void QEditOrder::fill_accounts(const mtk::trd::msg::RQ_XX& rq)
         ui->account->setCurrentIndex(0);
     }
 }
+

@@ -472,7 +472,7 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_cli&  c
                     <<  client_keep_alive.login_confirmation.user_name) != "")
         {
             MTK_EXEC_MAX_FREC_NO_FIRST_S(mtk::dtMinutes(1))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clikeepaliverec", MTK_SS("received keep alive with invalid session id " << client_keep_alive), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clikeepaliverec", MTK_SS("received keep alive with empty session id " << client_keep_alive), mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
             return;
         }
@@ -500,7 +500,7 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_cli&  c
                 else
                     ++it;
             }
-            if(located==false)
+            if(located==false  &&  client_keep_alive.login_confirmation.session_id!="")
             {
                 //  if application started few minutes ago, let this keep alive to be registered (but not notified to other processes)
                 if(*start_application + mtk::dtMinutes(3) > mtk::dtNowLocal())
@@ -511,7 +511,7 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_cli&  c
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"clikeepaliverec", MTK_SS("hot register keep alive for  " << client_keep_alive), mtk::alPriorWarning));
                 }
                 else
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"clikeepaliverec", MTK_SS("received keep alive with invalid session id " << client_keep_alive), mtk::alPriorCritic));
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"clikeepaliverec", MTK_SS("received keep alive with not registered sessionid. It will be ignored" << client_keep_alive), mtk::alPriorCritic));
             }
         }
 }
@@ -698,7 +698,7 @@ void on_server_pub_partial_user_list_serv2acs(const mtk::acs_server::msg::pub_pa
         if(!located)
         {
             mtk::acs_server::msg::pub_del_user msg_del_user(mtk::admin::get_process_info().location.broker_code, session_info);
-            mtk_send_message("sever",  msg_del_user);
+            mtk_send_message("server",  msg_del_user);
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"acs_user_list_serv2acs", MTK_SS("Not registered sessionid, could be a concurrency behaviour sending delete  "
                                                 << session_info), mtk::alPriorError, mtk::alTypeNoPermisions));
         }

@@ -340,7 +340,7 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
                 } catch (const Alarm& alError) {
                     Alarm  qpid_error(
                                 MTK_HERE, "handle_qpid_exchange_receiver",
-                                std::string(" address>") + "pending",
+                                std::string("exception processing message"),
                                 alPriorCritic
                         );
                     qpid::types::Variant::Map mv;

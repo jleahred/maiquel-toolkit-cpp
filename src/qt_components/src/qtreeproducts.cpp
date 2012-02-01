@@ -198,7 +198,7 @@ void qTreeProducts::start_drag(void)
 
 void qTreeProducts::request_root_items(void)
 {
-    MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
+    MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtSeconds(10))
     {
         if(this->topLevelItemCount() == 0)
         {
