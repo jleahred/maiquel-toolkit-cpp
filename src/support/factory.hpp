@@ -17,20 +17,20 @@
 namespace mtk{
 
 
-    
+
 template<typename TRETURN, typename TKEY>
 CountPtr< TRETURN > create_instance_for_factory (const TKEY& key, CountPtr< TRETURN > result=CountPtr< TRETURN >());
 
 
-    
-    
+
+
 template<typename TRETURN, typename TKEY>
-inline 
+inline
 CountPtr< TRETURN >
 get_from_factory(const TKEY& key, CountPtr< TRETURN > result = CountPtr< TRETURN >())
 {
     static std::map< TKEY, CountPtr< TRETURN > > factory_map;
-    
+
     //CountPtr< TRETURN > result;
 
     // limpieza no determinista
@@ -39,7 +39,7 @@ get_from_factory(const TKEY& key, CountPtr< TRETURN > result = CountPtr< TRETURN
         if (factory_map.size()>2000)
         {
             AlarmMsg  (Alarm(
-                        MTK_HERE, "factory", 
+                        MTK_HERE, "factory",
                         MTK_SS (" too many suscriptions " << factory_map.size()),
                         alPriorError, alTypeNoPermisions));
         }
@@ -67,10 +67,10 @@ get_from_factory(const TKEY& key, CountPtr< TRETURN > result = CountPtr< TRETURN
     if (it == factory_map.end())//  ||  it->second.isValid()==false)
     {
         result = create_instance_for_factory<TRETURN> (key);
-        
+
         if(factory_map.find(key) != factory_map.end())
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "factory", MTK_SS("nested factory on " << key), mtk::alPriorError));
-            
+
         typename std::map< TKEY,  CountPtr< TRETURN > >::iterator itNew =
                 factory_map.insert(
                         std::make_pair(key, result))

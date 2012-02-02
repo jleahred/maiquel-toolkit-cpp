@@ -40,7 +40,7 @@ public:
     
     // constructor
     explicit LimitPosition (    const mtk::nullable<std::string>&  _buy_sell,   const mtk::nullable<mtk::FixedNumber>&  _price,   const mtk::FixedNumber&  _quantity );
-    explicit LimitPosition ( const qpid::messaging::Message& message );
+    explicit LimitPosition ( const qpid::types::Variant::Map&  mv );
     virtual ~LimitPosition (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPosition"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPosition"; };
@@ -97,7 +97,7 @@ public:
         
         // constructor
         explicit IC_control_fields_ (    const mtk::DateTime&  _clock_id,   const int32_t&  _secuence );
-        explicit IC_control_fields_ ( const qpid::messaging::Message& message );
+        explicit IC_control_fields_ ( const qpid::types::Variant::Map&  mv );
         virtual ~IC_control_fields_ (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_control_fields_"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_control_fields_"; };
@@ -144,7 +144,7 @@ public:
         
         // constructor
         explicit IC_product_code (    const std::string&  _market,   const std::string&  _product_code,   const std::string&  _aditional_code );
-        explicit IC_product_code ( const qpid::messaging::Message& message );
+        explicit IC_product_code ( const qpid::types::Variant::Map&  mv );
         virtual ~IC_product_code (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_product_code"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_product_code"; };
@@ -183,7 +183,7 @@ public:
     
     // constructor
     explicit RQ_NW_LS (    const std::string&  _order_id,   const std::string&  _cli_ref,   const LimitPosition&  _position,   const LimitPosition&  _positionnn,   const IC_control_fields_&  _control_fields_,   const IC_product_code&  _product_code,   const mtk::list<std::string >&  _names,   const mtk::list<LimitPosition >&  _postitions );
-    explicit RQ_NW_LS ( const qpid::messaging::Message& message );
+    explicit RQ_NW_LS ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
@@ -240,7 +240,7 @@ public:
     
     // constructor
     explicit LimitPositionChild (  const LimitPosition&  parent,   const std::string&  _new_field );
-    explicit LimitPositionChild ( const qpid::messaging::Message& message );
+    explicit LimitPositionChild ( const qpid::types::Variant::Map&  mv );
     virtual ~LimitPositionChild (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPositionChild"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPositionChild"; };

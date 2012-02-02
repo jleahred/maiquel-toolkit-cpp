@@ -1,7 +1,6 @@
 #ifndef MTK_CONTAINERS_MAP_GUARD
 #define MTK_CONTAINERS_MAP_GUARD
 
-//  maintainer: 
 
 
 
@@ -87,7 +86,14 @@ public:
 
 
 	map()  : registered_as(internal_for_containers::register_container(true)) {};
-	~map() {  internal_for_containers::unregister_container(registered_as); };
+	~map()
+    {
+        try{
+            internal_for_containers::unregister_container(registered_as);
+        } catch(...){
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+        }
+    };
 
     map(const map<key_type, T>& m);
     map<key_type, T>& operator=(const map<key_type, T>& m);

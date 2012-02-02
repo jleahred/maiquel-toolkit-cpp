@@ -556,7 +556,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
     }
     
 
-sub_test_key::sub_test_key (const qpid::messaging::Message& msg)
+sub_test_key::sub_test_key (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    name(__internal_get_default((std::string*)0)),
 //   field_type
@@ -566,10 +566,7 @@ sub_test_key::sub_test_key (const qpid::messaging::Message& msg)
 //   field_type
    email(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

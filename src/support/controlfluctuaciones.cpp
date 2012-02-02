@@ -7,8 +7,6 @@
 
 //#include <iostream>			//	debug
 
-//  maintainer: Miguel
-//  LastChange: 04/11/2009
 
 
 namespace mtk {

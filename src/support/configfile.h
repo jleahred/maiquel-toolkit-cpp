@@ -1,7 +1,6 @@
 #ifndef MTK_CONFIGFILE_H
 #define MTK_CONFIGFILE_H
 
-//  maintainer: 
 
 
 /*
@@ -41,7 +40,7 @@ public:
 
     //  acceso a las propiedades
     mtk::Nullable<std::string>             GetValue(const std::string& key) const;
-    
+
     mtk::Nullable<mtk::list<std::string> > GetList (const std::string& key) const;
 
     void        Modif                (const std::string& key, const std::string& value, const std::string& comment="");
@@ -60,7 +59,7 @@ public:
 
     std::string GetStringConfigFileLines(void) const;
 	std::string GetFileName_current(void)const { return filename; };
-    
+
     bool IsLoaded(void) const  {  return is_loaded;  };
 //     void debug_print(void);
 

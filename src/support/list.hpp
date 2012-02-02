@@ -2,7 +2,6 @@
 #define __mtk_list__
 
 
-//  maintainer: 
 
 
 #include <list>
@@ -153,7 +152,14 @@ public:
 
 
 	list()  : registered_as(internal_for_containers::register_container(true)) {};
-	~list() {  internal_for_containers::unregister_container(registered_as); };
+	~list()
+    {
+        try{
+            internal_for_containers::unregister_container(registered_as);
+        } catch(...){
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+        }
+    };
 
     list(const list<T>& l);
     list<T>& operator=(const list<T>& l);

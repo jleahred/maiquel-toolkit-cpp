@@ -40,7 +40,7 @@ public:
     
     // constructor
     explicit sub_test_key (    const std::string&  _name,   const std::string&  _address,   const std::string&  _telephone,   const std::string&  _email );
-    explicit sub_test_key ( const qpid::messaging::Message& message );
+    explicit sub_test_key ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_test_key (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_test_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_test_key"; };

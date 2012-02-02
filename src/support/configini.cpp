@@ -19,7 +19,7 @@ ConfigINI::ConfigINI(std::string _fileName)
     {
             throw
                         Alarm (
-                            MTK_HERE, "configini", 
+                            MTK_HERE, "configini",
                             std::string("No se pudo abrir el fichero  ") + fileName,
                             alPriorCritic,
                             alTypeNoPermisions
@@ -52,6 +52,15 @@ ConfigINI::ConfigINI(std::string _fileName)
 
     mapSecciones[inSection] = currentInfoSection;
     listSeccionesOriginalOrder.push_back(inSection);
+}
+
+ConfigINI::~ConfigINI()
+{
+    try{
+        Write();
+    } catch(...){
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+    }
 }
 
 
@@ -107,7 +116,7 @@ std::list<std::string>  ConfigINI::GetPropertiesInSection  (const std::string& _
         return result;
     const std::list<LineInfo>& llif = mapSecciones.find(_section)->second.lLineInfo;
 
-    for(auto itLineInfo=llif.begin(); itLineInfo!=llif.end(); ++itLineInfo) 
+    for(auto itLineInfo=llif.begin(); itLineInfo!=llif.end(); ++itLineInfo)
     {
         if (itLineInfo->propertyName != "")
             result.push_back(itLineInfo->propertyName);
@@ -189,7 +198,7 @@ bool  ConfigINI::DeleteValue (
 
 
     std::list<LineInfo>& llif = mapSecciones.find(_section)->second.lLineInfo;
-    for(auto itLineInfo=llif.begin(); itLineInfo!=llif.end(); ++itLineInfo) 
+    for(auto itLineInfo=llif.begin(); itLineInfo!=llif.end(); ++itLineInfo)
     {
         if (itLineInfo->propertyName == _propName) {
                 llif.erase(itLineInfo);
@@ -214,7 +223,7 @@ void ConfigINI::Write      ( void )
     {
             throw
                         Alarm (
-                            MTK_HERE, "configini", 
+                            MTK_HERE, "configini",
                             std::string("No se pudo abrir el fichero  ") + fileName,
                             alPriorCritic,
                             alTypeNoPermisions

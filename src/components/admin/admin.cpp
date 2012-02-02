@@ -1323,12 +1323,19 @@ void check_control_fields_flucts    (const std::string&  key, const mtk::DateTim
 
 void AlarmMsg (const Alarm& alarm)
 {
-    if(admin_status::admin_status_instance!=0   &&  admin_status::i()->full_initialized)
-        admin_status::i()->NotifyAlarm(alarm);
-    else
+    try
     {
-        std::cerr << "admin not initialized" << std::endl;
-        std::cerr << alarm << std::endl;
+        if(admin_status::admin_status_instance!=0   &&  admin_status::i()->full_initialized)
+            admin_status::i()->NotifyAlarm(alarm);
+        else
+        {
+            std::cerr << "admin not initialized" << std::endl;
+            std::cerr << alarm << std::endl;
+        }
+    }
+    catch(...)
+    {
+        std::cerr << __PRETTY_FUNCTION__ << "(" << __FILE__ << ":" << __LINE__ << ")"  << "exception publishing alarm"  <<  std::endl;
     }
 }
 

@@ -107,7 +107,15 @@ struct mtkqpid_session
             qpid_session = connection.createSession();
             ++mtk_qpid_stats::num_created_sessions();
     }
-    ~mtkqpid_session() {qpid_session.close();   ++mtk_qpid_stats::num_deleted_sessions();  }
+    ~mtkqpid_session()
+    {
+        try{
+            qpid_session.close();
+            ++mtk_qpid_stats::num_deleted_sessions();
+        } catch(...){
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+        }
+    }
 };
 
 
@@ -130,7 +138,15 @@ struct mtkqpid_sender2
             qpid_sender.setCapacity(100);
             ++mtk_qpid_stats::num_created_senders();
     }
-    ~mtkqpid_sender2() { qpid_sender.close();      ++mtk_qpid_stats::num_deleted_senders();  }
+    ~mtkqpid_sender2()
+    {
+        try{
+            qpid_sender.close();
+            ++mtk_qpid_stats::num_deleted_senders();
+        } catch(...){
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+        }
+    }
 };
 
 
@@ -158,9 +174,16 @@ struct mtkqpid_receiver
         qpid_receiver.setCapacity(100);
         ++mtk_qpid_stats::num_created_receivers();
     }
-    ~mtkqpid_receiver() {       qpid_receiver.close();      //  http://apache-qpid-users.2158936.n2.nabble.com/receptor-out-of-scope-with-no-calling-receptor-close-td6858408.html
-                                                //  this not is a fully solution  http://192.168.7.10/wiki/index.php?n=Main.QPIDProblems
-                                ++mtk_qpid_stats::num_deleted_receivers();  }
+    ~mtkqpid_receiver()
+    {
+        try{
+            qpid_receiver.close();      //  http://apache-qpid-users.2158936.n2.nabble.com/receptor-out-of-scope-with-no-calling-receptor-close-td6858408.html
+                                                    //  this not is a fully solution  http://192.168.7.10/wiki/index.php?n=Main.QPIDProblems
+            ++mtk_qpid_stats::num_deleted_receivers();
+        } catch(...){
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+        }
+    }
 };
 
 
@@ -229,8 +252,14 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
 
     public:
         explicit handle_qpid_exchange_receiver(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
-        ~handle_qpid_exchange_receiver(void) {
-                    ++mtk_qpid_stats::num_deleted_suscriptions_no_parsing(); }
+        ~handle_qpid_exchange_receiver(void)
+        {
+            try{
+                ++mtk_qpid_stats::num_deleted_suscriptions_no_parsing();
+            } catch(...){
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+            }
+        }
 
         CountPtr< Signal<const qpid::messaging::Message&> >       signalMessage;
 
@@ -400,7 +429,14 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
 
     public:
         explicit handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
-        ~handle_qpid_exchange_receiverMT(void) {  ++mtk_qpid_stats::num_deleted_suscriptions();  }
+        ~handle_qpid_exchange_receiverMT(void)
+        {
+            try{
+                ++mtk_qpid_stats::num_deleted_suscriptions();
+            } catch(...){
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+            }
+        }
 
         CountPtr< Signal<const MESSAGE_TYPE&> >       signalMessage;
 

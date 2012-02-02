@@ -21,7 +21,7 @@ class ConfigINI {
 
 public:
     ConfigINI(std::string fileName);
-    ~ConfigINI() { Write();  }
+    ~ConfigINI();
 
 
     std::list<std::string>  GetSectionsNames        (void)  const;

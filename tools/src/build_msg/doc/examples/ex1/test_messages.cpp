@@ -1198,14 +1198,11 @@ __internal_get_default((LimitPosition*)0), //   field_type
     }
     
 
-LimitPosition::LimitPosition (const qpid::messaging::Message& msg)
+LimitPosition::LimitPosition (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    quantity(__internal_get_default((mtk::FixedNumber*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1214,7 +1211,7 @@ LimitPosition::LimitPosition (const qpid::messaging::Message& msg)
 
 
 
-RQ_NW_LS::RQ_NW_LS (const qpid::messaging::Message& msg)
+RQ_NW_LS::RQ_NW_LS (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    order_id(__internal_get_default((std::string*)0)),
 //   field_type
@@ -1232,10 +1229,7 @@ RQ_NW_LS::RQ_NW_LS (const qpid::messaging::Message& msg)
 //   sub_msg_type
    postitions(__internal_get_default((mtk::list<LimitPosition >*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1244,16 +1238,13 @@ RQ_NW_LS::RQ_NW_LS (const qpid::messaging::Message& msg)
 
 
 
-RQ_NW_LS::IC_control_fields_::IC_control_fields_ (const qpid::messaging::Message& msg)
+RQ_NW_LS::IC_control_fields_::IC_control_fields_ (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    clock_id(__internal_get_default((mtk::DateTime*)0)),
 //   field_type
    secuence(__internal_get_default((int32_t*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1262,7 +1253,7 @@ RQ_NW_LS::IC_control_fields_::IC_control_fields_ (const qpid::messaging::Message
 
 
 
-RQ_NW_LS::IC_product_code::IC_product_code (const qpid::messaging::Message& msg)
+RQ_NW_LS::IC_product_code::IC_product_code (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)),
 //   field_type
@@ -1270,10 +1261,7 @@ RQ_NW_LS::IC_product_code::IC_product_code (const qpid::messaging::Message& msg)
 //   field_type
    aditional_code(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
@@ -1282,14 +1270,11 @@ RQ_NW_LS::IC_product_code::IC_product_code (const qpid::messaging::Message& msg)
 
 
 
-LimitPositionChild::LimitPositionChild (const qpid::messaging::Message& msg)
-    :  LimitPosition(msg), //   field_type
+LimitPositionChild::LimitPositionChild (const qpid::types::Variant::Map&  mv)
+    :  LimitPosition(mv), //   field_type
    new_field(__internal_get_default((std::string*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
+        copy(*this, mv);
         std::string cr = check_recomended ();  
         if (cr!= "")
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 

@@ -42,7 +42,7 @@ private:
     static const double     INVALID_VALUE = 1e307;  //  esto no compila en bcb
     double                  value;
 
-    Double() : value(INVALID_VALUE) {};        //  ocultado el 31/12/2008
+    Double() : value(INVALID_VALUE) {};
 
 public:
 

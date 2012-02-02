@@ -34,6 +34,7 @@
 
 #include <list>
 #include <stdexcept>    //  run_time_error exception
+#include <iostream>
 
 #include "support/basic_types.hpp"
 #include "support/count_ptr.hpp"
@@ -50,8 +51,8 @@
 
 namespace mtk {
 
-	
-	
+
+
 const int SIGNAL_SLOT_MAX_DEEP_EMIT = 20;
 
 
@@ -177,17 +178,20 @@ public:
     };
 
     virtual ~SignalReceptor(void) {
-    //  avisar a las señales que nos apuntan de que nos vamos...
-        for(auto itConnection = listConnections.begin(); itConnection != listConnections.end(); ++itConnection)
-        {
-            if ( (*itConnection).isValid()==false ) {
-                itConnection = listConnections.erase(itConnection);
-                --itConnection;
-                continue;
+        try{
+        //  avisar a las señales que nos apuntan de que nos vamos...
+            for(auto itConnection = listConnections.begin(); itConnection != listConnections.end(); ++itConnection)
+            {
+                if ( (*itConnection).isValid()==false ) {
+                    itConnection = listConnections.erase(itConnection);
+                    --itConnection;
+                    continue;
+                }
+                (*itConnection)->Disconnect();
             }
-            (*itConnection)->Disconnect();
+        } catch(...){
+            std::cerr << __PRETTY_FUNCTION__ << "(" << __FILE__ << ":" << __LINE__ << ")"  << "exception on destructor"  <<  std::endl;
         }
-
     };
 
 };
@@ -309,11 +313,15 @@ public:
 	Signal() : processing_emit(0) {}
 
 	~Signal() {
-        disconnect_all();
-		if (processing_emit>0)
-            throw std::runtime_error("~Signal<> on emit");
-			//	no se deben lanzar excepciones desde señales
-			//	pero en este caso, es una clase que no hereda ni heredan de ella
+        try{
+            disconnect_all();
+            if (processing_emit>0)
+                throw std::runtime_error("~Signal<> on emit");
+                //	no se deben lanzar excepciones desde señales
+                //	pero en este caso, es una clase que no hereda ni heredan de ella
+        } catch(...){
+            std::cerr << __PRETTY_FUNCTION__ << "(" << __FILE__ << ":" << __LINE__ << ")"  << "exception on destructor"  <<  std::endl;
+        }
     }
 
 	int get_processing_emits(void) const {  return  processing_emit; }
@@ -337,7 +345,7 @@ public:
 
     template<typename TReceiver>
     bool disconnect(TReceiver* receiver, void (TReceiver::*fpt)(void)) {
-        for(auto it2ptrBaseConnection = connections.begin(); it2ptrBaseConnection != connections.end(); ++it2ptrBaseConnection) 
+        for(auto it2ptrBaseConnection = connections.begin(); it2ptrBaseConnection != connections.end(); ++it2ptrBaseConnection)
         {
             Connection<TReceiver>* pconnection = dynamic_cast<Connection<TReceiver>* > (it2ptrBaseConnection->get2());
             if  (
@@ -387,7 +395,7 @@ public:
                             );
 				if (processing_emit>0)
 					(*it2ptrBaseConnection)->Disconnect();
-			
+
             }
         }
 
@@ -405,12 +413,12 @@ public:
 			functConnections.clear();
 			connections.clear();
 		}
-		
+
     };
 
     int emit(void) {
         int count=0;
-		try 
+		try
 		{
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
@@ -612,11 +620,15 @@ public:
 	Signal() : processing_emit(0) {}
 
     ~Signal() {
-        disconnect_all();
-		if (processing_emit)
-            throw std::runtime_error("~Signal<> on emit");
-			//	no se deben lanzar excepciones desde señales
-			//	pero en este caso, es una clase que no hereda ni heredan de ella
+        try{
+            disconnect_all();
+            if (processing_emit)
+                throw std::runtime_error("~Signal<> on emit");
+                //	no se deben lanzar excepciones desde señales
+                //	pero en este caso, es una clase que no hereda ni heredan de ella
+        } catch(...){
+            std::cerr << __PRETTY_FUNCTION__ << "(" << __FILE__ << ":" << __LINE__ << ")"  << "exception on destructor"  <<  std::endl;
+        }
     }
 
 	int get_processing_emits(void) const {  return  processing_emit; }
@@ -717,12 +729,12 @@ public:
 			connections.clear();
 			functConnections.clear();
 		}
-		
+
     };
 
     int emit(TP1 p1) {
 		int count=0;
-		try 
+		try
 		{
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
@@ -921,11 +933,15 @@ public:
 	Signal() : processing_emit(0) {}
 
     ~Signal() {
-        disconnect_all();
-		if (processing_emit)
-            throw std::runtime_error("~Signal<> on emit");
-			//	no se deben lanzar excepciones desde señales
-			//	pero en este caso, es una clase que no hereda ni heredan de ella
+        try{
+            disconnect_all();
+            if (processing_emit)
+                throw std::runtime_error("~Signal<> on emit");
+                //	no se deben lanzar excepciones desde señales
+                //	pero en este caso, es una clase que no hereda ni heredan de ella
+        } catch(...){
+            std::cerr << __PRETTY_FUNCTION__ << "(" << __FILE__ << ":" << __LINE__ << ")"  << "exception on destructor"  <<  std::endl;
+        }
     }
 
 	int get_processing_emits(void) const {  return  processing_emit; }
@@ -1026,12 +1042,12 @@ public:
 			connections.clear();
 			functConnections.clear();
 		}
-		
+
     };
 
     int emit(TP1 p1, TP2 p2) {
 		int count=0;
-		try 
+		try
 		{
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
@@ -1229,11 +1245,15 @@ public:
 	Signal() : processing_emit(0) {}
 
     ~Signal() {
-        disconnect_all();
-		if (processing_emit)
-            throw std::runtime_error("~Signal<> on emit");
-			//	no se deben lanzar excepciones desde señales
-			//	pero en este caso, es una clase que no hereda ni heredan de ella
+        try{
+            disconnect_all();
+            if (processing_emit)
+                throw std::runtime_error("~Signal<> on emit");
+                //	no se deben lanzar excepciones desde señales
+                //	pero en este caso, es una clase que no hereda ni heredan de ella
+        } catch(...){
+            std::cerr << __PRETTY_FUNCTION__ << "(" << __FILE__ << ":" << __LINE__ << ")"  << "exception on destructor"  <<  std::endl;
+        }
     }
 
 	int get_processing_emits(void) const {  return  processing_emit; }
@@ -1334,12 +1354,12 @@ public:
 			connections.clear();
 			functConnections.clear();
 		}
-		
+
     };
 
     int emit(TP1 p1, TP2 p2, TP3 p3) {
 		int count=0;
-		try 
+		try
 		{
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)
@@ -1538,11 +1558,15 @@ public:
 	Signal() : processing_emit(0) {}
 
     ~Signal() {
-        disconnect_all();
-		if (processing_emit)
-            throw std::runtime_error("~Signal<> on emit");
-			//	no se deben lanzar excepciones desde señales
-			//	pero en este caso, es una clase que no hereda ni heredan de ella
+        try{
+            disconnect_all();
+            if (processing_emit)
+                throw std::runtime_error("~Signal<> on emit");
+                //	no se deben lanzar excepciones desde señales
+                //	pero en este caso, es una clase que no hereda ni heredan de ella
+        } catch(...){
+            std::cerr << __PRETTY_FUNCTION__ << "(" << __FILE__ << ":" << __LINE__ << ")"  << "exception on destructor"  <<  std::endl;
+        }
     }
 
 	int get_processing_emits(void) const {  return  processing_emit; }
@@ -1643,12 +1667,12 @@ public:
 			connections.clear();
 			functConnections.clear();
 		}
-		
+
     };
 
     int emit(TP1 p1, TP2 p2, TP3 p3, TP4 p4) {
 		int count=0;
-		try 
+		try
 		{
 			++processing_emit;
 			if (processing_emit>mtk::SIGNAL_SLOT_MAX_DEEP_EMIT)

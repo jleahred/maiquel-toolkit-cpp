@@ -1,7 +1,6 @@
 #ifndef MTK_CONTAINERS_VECTOR_GUARD
 #define MTK_CONTAINERS_VECTOR_GUARD
 
-//  maintainer: 
 
 
 

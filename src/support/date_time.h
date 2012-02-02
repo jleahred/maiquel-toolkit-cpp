@@ -1,5 +1,4 @@
 //---------------------------------------------------------------------------
-//  Creado: 3/4/2008        JLE
 #ifndef mtkDateTimeH
 #define mtkDateTimeH
 

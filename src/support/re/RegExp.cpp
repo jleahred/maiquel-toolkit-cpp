@@ -28,7 +28,11 @@ RegExp::RegExp(const std::string &p, int options)
 
 RegExp::~RegExp()
 {
-	Clear(true);
+    try{
+        Clear(true);
+    } catch(...){
+        std::cerr  <<  MTK_HERE  <<  "exception on destructor"  <<   std::endl;
+    }
 }
 
 void RegExp::Clear(bool freemem)

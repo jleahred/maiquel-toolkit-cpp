@@ -1,7 +1,6 @@
 #ifndef MTK_CONTAINERS_SET_GUARD
 #define MTK_CONTAINERS_SET_GUARD
 
-//  maintainer: 
 
 
 
@@ -87,7 +86,14 @@ public:
 
 
 	set()  : registered_as(internal_for_containers::register_container(true)) {};
-	~set() {  internal_for_containers::unregister_container(registered_as); };
+	~set()
+    {
+        try{
+            internal_for_containers::unregister_container(registered_as);
+        } catch(...){
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+        }
+    };
 
     set(const set<key_type>& s);
     set<key_type>& operator=(const set<key_type>& s);

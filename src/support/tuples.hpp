@@ -82,7 +82,7 @@ bool operator<(const tuple <T0, T1>& t0, const tuple <T0, T1>& t1)
 template<typename T0, typename T1>
 std::ostream& operator<< (std::ostream& o, const tuple <T0, T1>& t)
 {
-    o << "(" << t._0 << "," << t._1 << ")";
+    o << "(" << t._0 << ", " << t._1 << ")";
     return o;
 };
 
@@ -133,7 +133,7 @@ bool operator<(const tuple <T0, T1, T2>& t0, const tuple <T0, T1, T2>& t1)
 template<typename T0, typename T1, typename T2>
 std::ostream& operator<< (std::ostream& o, const tuple <T0, T1, T2>& t)
 {
-    o << std::string("(") << t._0 << "," << t._1 << ", " << t._2 << ")";
+    o << std::string("(") << t._0 << ", " << t._1 << ", " << t._2 << ")";
     return o;
 };
 
@@ -187,7 +187,7 @@ bool operator<(const tuple <T0, T1, T2, T3>& t0, const tuple <T0, T1, T2, T3>& t
 template <typename T0, typename T1, typename T2, typename T3>
 std::ostream& operator<< (std::ostream& o, const tuple <T0, T1, T2, T3>& t)
 {
-    o << std::string("(") << t._0 << "," << t._1 << ", " << t._2 << "," << t._3 << ")";
+    o << std::string("(") << t._0 << ", " << t._1 << ", " << t._2 << ", " << t._3 << ")";
     return o;
 };
 
