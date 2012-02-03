@@ -37,6 +37,9 @@ long& num_deleted_senders                    (void);
 long& num_created_receivers                  (void);
 long& num_deleted_receivers                  (void);
 
+long& num_restored_sessions(void);
+
+
 
 std::string get_mtk_qpid_stats_string        (void);
 

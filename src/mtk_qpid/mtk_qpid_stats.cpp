@@ -46,33 +46,103 @@ long __num_deleted_senders=0;
 long __num_created_receivers=0;
 long __num_deleted_receivers=0;
 
+long  __num_restored_sessions=0;
 
 
-long& num_messages_received(void) { return __num_messages_received; };
-long& num_messages_sent(void) { return __num_messages_sent; };
+long& num_messages_received(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+long& num_messages_sent(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
 
-long& num_messages_received_today(void) { return __num_messages_received_today; };
-long& num_messages_sent_today(void) { return __num_messages_sent_today; };
+long& num_messages_received_today(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+long& num_messages_sent_today(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
 
 
-long& num_created_suscriptions(void) { return __num_created_suscriptions; };
-long& num_deleted_suscriptions(void) { return __num_deleted_suscriptions; };
+long& num_created_suscriptions(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+long& num_deleted_suscriptions(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
 
-long& num_created_suscriptions_no_parsing(void) { return __num_created_suscriptions_no_parsing; };
-long& num_deleted_suscriptions_no_parsing(void) { return __num_deleted_suscriptions_no_parsing; };
+long& num_created_suscriptions_no_parsing(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+long& num_deleted_suscriptions_no_parsing(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
 
 
-long& num_created_sessions(void) { return __num_created_sessions; };
-long& num_deleted_sessions(void) { return __num_deleted_sessions; };
+long& num_created_sessions(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+long& num_deleted_sessions(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
 
 
 
-long& num_created_senders(void) { return __num_created_senders; };
-long& num_deleted_senders(void) { return __num_deleted_senders; };
+long& num_created_senders(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+
+long& num_deleted_senders(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
 
 
-long& num_created_receivers(void) { return __num_created_receivers; };
-long& num_deleted_receivers(void) { return __num_deleted_receivers; };
+long& num_created_receivers(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+
+long& num_deleted_receivers(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+
+
+
+long& num_restored_sessions(void)
+{
+    static  long*  value = new long(0);
+    return *value;
+};
+
+
+
 
 
 mtk::DateTime  __last_received_message=mtk::dtNowLocal();
@@ -102,8 +172,10 @@ std::string get_mtk_qpid_stats_string(void) {
         "mtkqpid_delsenders:  " << -1*num_deleted_senders() << std::endl <<
 
         "mtkqpid_newrecev:  " << num_created_receivers() << std::endl <<
-        "mtkqpid_delrecev:  " << -1*num_deleted_receivers()
-    );
+        "mtkqpid_delrecev:  " << -1*num_deleted_receivers()  << std::endl <<
+
+        "mtkqpid_rest_sess: " << num_restored_sessions()
+    );;
 }
 
 //  stats info

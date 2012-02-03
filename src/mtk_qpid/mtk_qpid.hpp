@@ -96,26 +96,45 @@ namespace mtk{
 struct mtkqpid_session
 {
     qpid::messaging::Connection         connection;
-    qpid::messaging::Session            qpid_session;
     const t_qpid_url                    url;
+    qpid::messaging::Session&           qpid_session(void)
+    {
+        if(_qpid_session.hasError())
+        {
+            _qpid_session  = connection.createSession();
+            ++mtk_qpid_stats::num_restored_sessions();
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "restoring session", "invalid session", mtk::alPriorCritic));
+            try
+            {
+                _qpid_session.checkError();
+            } catch (const qpid::types::Exception & error)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "restoring session", error.what(), mtk::alPriorCritic));
+            }
+        }
+        return  _qpid_session;
+    }
 
     mtkqpid_session(const t_qpid_url& _url)
         :  connection   (_url.WarningDontDoThisGetInternal())
          , url          (_url)
     {
             connection.open();
-            qpid_session = connection.createSession();
+            _qpid_session = connection.createSession();
             ++mtk_qpid_stats::num_created_sessions();
     }
     ~mtkqpid_session()
     {
         try{
-            qpid_session.close();
+            _qpid_session.close();
             ++mtk_qpid_stats::num_deleted_sessions();
         } catch(...){
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
         }
     }
+
+private:
+    qpid::messaging::Session            _qpid_session;
 };
 
 
@@ -124,29 +143,53 @@ struct mtkqpid_sender2
 {
     mtk::CountPtr<mtkqpid_session>      session;
     const t_qpid_address                address;
-    qpid::messaging::Sender             qpid_sender;
+    mtk::t_qpid_exch_sender_conf        qe_config;
+    qpid::messaging::Sender&            qpid_sender(void)
+    {
+        if(_qpid_sender.getSession().hasError())
+        {
+            if(session->qpid_session().hasError()==false)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "mtkqpid_sender2", "reseting sender", mtk::alPriorError));
+                create_sender();
+            }
+            else
+                throw mtk::Alarm(MTK_HERE, "mtkqpid_sender2", "invalid sender and session. not possible to recover", mtk::alPriorCritic);
+        }
+        return _qpid_sender;
+    }
 
 
-    mtkqpid_sender2(const t_qpid_url& _url, const t_qpid_address& _address, mtk::t_qpid_exch_sender_conf  qe_config=mtk::t_qpid_exch_sender_conf(""))
+    mtkqpid_sender2(const t_qpid_url& _url, const t_qpid_address& _address, mtk::t_qpid_exch_sender_conf  _qe_config=mtk::t_qpid_exch_sender_conf(""))
         :  session (mtk::get_from_factory<mtkqpid_session>(_url))
          , address      (_address)
+         , qe_config(_qe_config)
     {
-            if(qe_config.WarningDontDoThisGetInternal() == "")
-                qpid_sender = session->qpid_session.createSender(MTK_SS(address<< ";" << QUEUE__DEFAULT_SENDER_CONFIG));
-            else
-                qpid_sender = session->qpid_session.createSender(MTK_SS(address<< ";" <<  qe_config));
-            qpid_sender.setCapacity(100);
-            ++mtk_qpid_stats::num_created_senders();
+        create_sender();
     }
     ~mtkqpid_sender2()
     {
         try{
-            qpid_sender.close();
+            _qpid_sender.close();
             ++mtk_qpid_stats::num_deleted_senders();
         } catch(...){
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
         }
     }
+
+private:
+    qpid::messaging::Sender             _qpid_sender;
+
+    void create_sender(void)
+    {
+        if(qe_config.WarningDontDoThisGetInternal() == "")
+            _qpid_sender = session->qpid_session().createSender(MTK_SS(address<< ";" << QUEUE__DEFAULT_SENDER_CONFIG));
+        else
+            _qpid_sender = session->qpid_session().createSender(MTK_SS(address<< ";" <<  qe_config));
+        _qpid_sender.setCapacity(100);
+        ++mtk_qpid_stats::num_created_senders();
+    }
+
 };
 
 
@@ -156,13 +199,47 @@ struct mtkqpid_receiver
     mtk::CountPtr<mtkqpid_session>      session;
     const t_qpid_address                address;
     const t_qpid_filter                 filter;
-    qpid::messaging::Receiver           qpid_receiver;
+    mtk::t_qpid_exch_recept_conf        qe_config;
+
+    qpid::messaging::Receiver&          qpid_receiver()
+    {
+        if(_qpid_receiver.getSession().hasError())
+        {
+            if(session->qpid_session().hasError()==false)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "mtkqpid_receiver", "reseting sender", mtk::alPriorError));
+                create_receiver();
+            }
+            else
+                throw mtk::Alarm(MTK_HERE, "mtkqpid_receiver", "invalid sender and session. not possible to recover", mtk::alPriorCritic);
+        }
+        return _qpid_receiver;
+    }
 
 
-    mtkqpid_receiver(const t_qpid_url& _url, const t_qpid_address&  _address, const t_qpid_filter& _filter, mtk::t_qpid_exch_recept_conf  qe_config=mtk::t_qpid_exch_recept_conf(""))
+    mtkqpid_receiver(const t_qpid_url& _url, const t_qpid_address&  _address, const t_qpid_filter& _filter, mtk::t_qpid_exch_recept_conf  _qe_config=mtk::t_qpid_exch_recept_conf(""))
         :  session (mtk::get_from_factory<mtkqpid_session>(_url))
          , address      (_address)
          , filter       (_filter)
+         , qe_config    (_qe_config)
+    {
+        create_receiver();
+    }
+    ~mtkqpid_receiver()
+    {
+        try{
+            _qpid_receiver.close();      //  http://apache-qpid-users.2158936.n2.nabble.com/receptor-out-of-scope-with-no-calling-receptor-close-td6858408.html
+                                                    //  this not is a fully solution  http://192.168.7.10/wiki/index.php?n=Main.QPIDProblems
+            ++mtk_qpid_stats::num_deleted_receivers();
+        } catch(...){
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
+        }
+    }
+
+private:
+    qpid::messaging::Receiver           _qpid_receiver;
+
+    void create_receiver(void)
     {
         std::string receptor_config;
         if(qe_config.WarningDontDoThisGetInternal() == "")
@@ -170,20 +247,11 @@ struct mtkqpid_receiver
         else
             receptor_config = MTK_SS(address << "/" <<  filter << "; " <<   qe_config);
 
-        qpid_receiver = session->qpid_session.createReceiver(receptor_config);
-        qpid_receiver.setCapacity(100);
+        _qpid_receiver = session->qpid_session().createReceiver(receptor_config);
+        _qpid_receiver.setCapacity(100);
         ++mtk_qpid_stats::num_created_receivers();
     }
-    ~mtkqpid_receiver()
-    {
-        try{
-            qpid_receiver.close();      //  http://apache-qpid-users.2158936.n2.nabble.com/receptor-out-of-scope-with-no-calling-receptor-close-td6858408.html
-                                                    //  this not is a fully solution  http://192.168.7.10/wiki/index.php?n=Main.QPIDProblems
-            ++mtk_qpid_stats::num_deleted_receivers();
-        } catch(...){
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
-        }
-    }
+
 };
 
 
@@ -223,7 +291,7 @@ struct mtkqpid_receiver
         //qpid::messaging::Sender sender = qpid_session->createSender(subject);
         qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message(control_fluct_key));
         msg.setSubject(MTK_SS(subject));
-        sender->qpid_sender.send(msg);
+        sender->qpid_sender().send(msg);
     }
 
     #define mtk_send_message(__URL_FOR__, __MESSAGE__)  \
@@ -323,12 +391,29 @@ inline handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const t_qpid
     ++mtk_qpid_stats::num_created_suscriptions_no_parsing();
 
     MTK_TIMER_1C(check_queue);
-
 }
 
 inline void handle_qpid_exchange_receiver::check_queue(void)
 {
-        qpid::messaging::Receiver           local_receiver = receiver->qpid_receiver;
+        qpid::messaging::Receiver           local_receiver;
+        try
+        {
+             local_receiver = receiver->qpid_receiver();
+        }
+        catch(mtk::Alarm alarm)
+        {
+            MTK_TIMER_1C_STOP(check_queue);
+            mtk::AlarmMsg(alarm.Add(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  on address  " << receiver->address), mtk::alPriorCritic)));
+        }
+        catch(const std::exception& e)
+        {
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  on address  " << receiver->address << "  "  << e.what()), mtk::alPriorCritic));
+        }
+        catch(...)
+        {
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  (...) on address  " << receiver->address), mtk::alPriorCritic));
+        }
+
         //  this is to protect in case of  handle_qpid_exchange_receiver is out of scope when is processing a message
 
 

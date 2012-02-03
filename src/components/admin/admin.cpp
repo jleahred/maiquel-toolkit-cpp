@@ -24,10 +24,11 @@
 
 
 namespace {
-    const char*   VERSION = "2011-03-16";
+    const char*   VERSION = "2012-02-03";
 
     const char*   MODIFICATIONS =
-                        "           2011-03-16     first version\n";
+                        "           2011-03-16     first version\n"
+                        "           2012-02-03     restoring session and  cerr \n";
 
 
 
@@ -568,6 +569,7 @@ namespace {
     {
         if(alarm.priority == mtk::alPriorCritic  ||  alarm.priority == mtk::alPriorError)
         {
+std::cerr  <<   alarm << std::endl;     //  provisional
             NotifyAlarmErrorCritic(alarm);
             signal_alarm_error_critic->emit(alarm);
         }

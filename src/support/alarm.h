@@ -17,16 +17,16 @@
 namespace mtk {
 
 
-    
+
 #define __INTERNAL_LOCAL_MTK_SS(__REDIRECT__, ...)          \
     ({      \
         std::ostringstream __oss_mtk_ss__##__VA_ARGS__;      \
         __oss_mtk_ss__ << __REDIRECT__;         \
         __oss_mtk_ss__.str();                   \
     })
-    
+
 #define MTK_HERE  __INTERNAL_LOCAL_MTK_SS(__PRETTY_FUNCTION__ << "(" << __FILE__ << ":" << __LINE__ << ")")
-    
+
 
 //---------------------------------------------------------------------------
 
@@ -103,11 +103,12 @@ struct Alarm : public BaseAlarm {
 
         const int   alarmID;
 
-        void Add (const BaseAlarm& prevAlarm) {
+        Alarm&  Add (const BaseAlarm& prevAlarm) {
             stackAlarms.push_back(prevAlarm);
+            return *this;
         };
 
-        void Add (const Alarm& prevAlarm) {
+        Alarm&  Add (const Alarm& prevAlarm) {
             stackAlarms.push_back(prevAlarm);
 
             std::list<BaseAlarm>::const_iterator it= prevAlarm.stackAlarms.begin();
@@ -116,6 +117,7 @@ struct Alarm : public BaseAlarm {
                 stackAlarms.push_back(*it);
                 ++it;
             }
+            return *this;
         };
 
     std::list<BaseAlarm>  stackAlarms;
