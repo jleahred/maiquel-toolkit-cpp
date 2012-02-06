@@ -28,7 +28,7 @@ José Luis Esteban
 include::../../VERSION[]
 **
 
-| Writter   |   José Luis Esteban
+| Writer   |   José Luis Esteban
 
 | Creation date |   2010-11-13
 

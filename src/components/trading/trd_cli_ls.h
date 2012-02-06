@@ -19,6 +19,7 @@
 #include "components/trading/trd_cli_support.h"
 #include "components/admin/admin.h"
 #include "components/trading/trd_cli_historic.h"
+#include "support/call_later.h"
 
 namespace fsmgen_trd_cli_ls {
     class abstract_status;
@@ -60,6 +61,7 @@ public:
     void cf_ex          ( const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK        ( const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st          ( const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out       ( const int&          _            );
 
 
     //  OUTPUT
@@ -133,6 +135,7 @@ public:
     void cf_ex          ( const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK        ( const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st          ( const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out       ( const int&          _            );
 
 
     //  OUTPUT

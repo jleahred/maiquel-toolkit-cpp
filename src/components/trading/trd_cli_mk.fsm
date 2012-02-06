@@ -7,7 +7,9 @@
         INCLUDES = [    '#include "components/trading/msg_trd_cli_mk.h"',
                         '#include "components/trading/trd_cli_support.h"',
                         '#include "components/admin/admin.h"',
-                        '#include "components/trading/trd_cli_historic.h"']
+                        '#include "components/trading/trd_cli_historic.h"',
+                        '#include "support/call_later.h"',
+                        ]
 
 
 ::INPUTS::
@@ -31,9 +33,15 @@
                                 CHECK_CONFIRM_AND_WRITE_LAST_CONF
                         }]
 
-	cf_exLK         (exlk   :  mtk::trd::msg::CF_EXLK)  [{  }]
+	cf_exLK         (exlk   :  mtk::trd::msg::CF_EXLK)
+                        [{
+                            if(exlk.total_execs.acc_quantity.GetIntCode() != 0   ||  exlk.total_execs.sum_price_by_qty > 0.001)
+                                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("expected empty total executions " << exlk.total_execs), mtk::alPriorCritic));
+                        }]
 
 	cf_st           (st   :  mtk::trd::msg::CF_ST_MK)   [{  IF_LAST_CONF_ISNULL__WRITE_IT         }]
+
+    time_out        (_:   int )  [{  mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  }]
 
 
 
@@ -79,25 +87,37 @@
 ::STATUS::init
 
 ::STATUS::w_cfnw
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
       has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
 
 ::STATUS::market
       in_market               :  bool                                        ({true})
 
 ::STATUS::w_cfmd
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
       has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
 
 ::STATUS::w_cfcc
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
       has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
 
 ::STATUS::w_cfmdcc
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
       has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
 
 ::STATUS::w_cfnwmd
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
       has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
 
 ::STATUS::w_cfnwcc
+      check_time_out          :  mtk::dtTimeQuantity                         ({_})
       has_pending_rq          :  bool                                        ({true})
+      [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
 
 ::STATUS::canceled
       is_canceled             :  bool                                        ({true})
@@ -126,7 +146,7 @@
 
 
 init    --   rq_nw  &&   invalid_rq          /   , rj_rqnw             ''>   error      ("invalid rqnw ")       //  errors details provided by guardian
-init    --   rq_nw                           /   , rq_rqnw             -->   w_cfnw
+init    --   rq_nw                           /   , rq_rqnw             -->   w_cfnw     (mtk::dtSeconds(2))
 init    --   rq_md                           /   , rj_rqmd             ''>   error      (method_name)
 init    --   rq_cc                           /   , rj_rqcc             ''>   error      (method_name)
 init    --   cf_nw                           /   , cf_cfnw             -->   market
@@ -141,14 +161,15 @@ init    --   cf_st  &&  full_exec            /   , cf_cfst             -->   exe
 init    --   cf_st  &&  is_rem_qty_zero      /   , cf_cfst             -->   canceled
 init    --   cf_st                           /   , cf_cfst             -->   market
 init    --   cf_exLK                         /   , cf_cfexLK           ''>   error      ("received cfexlk with no order")
+init    --   time_out                                                  ''>   error      (method_name)
 
 
 
 w_cfnw  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
-w_cfnw  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   w_cfnwcc
-w_cfnw  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfnwcc
-w_cfnw  --   rq_md                           /   , rq_rqmd             -->   w_cfnwmd
-w_cfnw  --   rq_cc                           /   , rq_cc               -->   w_cfnwcc
+w_cfnw  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   w_cfnwcc   (mtk::dtSeconds(2))
+w_cfnw  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfnwcc   (mtk::dtSeconds(2))
+w_cfnw  --   rq_md                           /   , rq_rqmd             -->   w_cfnwmd   (mtk::dtSeconds(2))
+w_cfnw  --   rq_cc                           /   , rq_cc               -->   w_cfnwcc   (mtk::dtSeconds(2))
 w_cfnw  --   cf_nw  &&   invalid_cf          /   , cf_cfnw & rq_cc     ''>   error      ("invalid cfnw ")       //  errors details provided by guardian
 w_cfnw  --   cf_nw                           /   , cf_cfnw             -->   market
 w_cfnw  --   cf_md                           /   , cf_cfmd & rq_cc     ''>   error      (method_name)
@@ -157,15 +178,16 @@ w_cfnw  --   rj_nw                           /   , cf_rjnw             ''>   can
 w_cfnw  --   rj_md                           /   , cf_rjmd & rq_cc     ''>   error      (method_name)
 w_cfnw  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
 w_cfnw  --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error      (method_name)
-w_cfnw  --   cf_st                                                     ''>   w_cfnw
+w_cfnw  --   cf_st                                                     ''>   w_cfnw     (mtk::dtSeconds(2))
 w_cfnw  --   cf_exLK                         /   , cf_cfexLK           ''>   error      ("received cfexlk waiting for confirmation")
+w_cfnw  --   time_out                                                  ''>   w_cfnw     (mtk::dtSeconds(0))
 
 
 market  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
-market  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   w_cfcc
-market  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfcc
-market  --   rq_md                           /   , rq_rqmd             -->   w_cfmd
-market  --   rq_cc                           /   , rq_cc               -->   w_cfcc
+market  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   w_cfcc     (mtk::dtSeconds(2))
+market  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfcc     (mtk::dtSeconds(2))
+market  --   rq_md                           /   , rq_rqmd             -->   w_cfmd     (mtk::dtSeconds(2))
+market  --   rq_cc                           /   , rq_cc               -->   w_cfcc     (mtk::dtSeconds(2))
 market  --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error      (method_name)
 market  --   cf_md                           /   , cf_cfmd_nr          ''>   market
 market  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc  ''>   error	    ("invalid cfcc")   //	perhaps we receive a confirm cancelation on diferent order
@@ -177,97 +199,102 @@ market  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   exe
 market  --   cf_ex                           /   , cf_cfex             ''>   market
 market  --   cf_st                                                     ''>   market
 market  --   cf_exLK                         /   , cf_cfexLK           ''>   market
+market  --   time_out                                                  ''>   error      (method_name)
 
 
 w_cfmd  --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error      (method_name)
 w_cfmd  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc     ''>   error      ("invalid rqmd")
-w_cfmd  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfmdcc
-w_cfmd  --   rq_md                           /   , rq_rqmd             ''>   w_cfmd
-w_cfmd  --   rq_cc                           /   , rq_cc               -->   w_cfmdcc
+w_cfmd  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc     ''>   w_cfmdcc   (mtk::dtSeconds(2))
+w_cfmd  --   rq_md                           /   , rq_rqmd             ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   rq_cc                           /   , rq_cc               -->   w_cfmdcc   (mtk::dtSeconds(2))
 w_cfmd  --   cf_nw                           /   , cf_cfnw & rq_cc     ''>   error      (method_name)
 w_cfmd  --   cf_md  &&   invalid_cf          /   , cf_cfmd & rq_cc     ''>   error      ("invalid cfmd")
 w_cfmd  --   cf_md  &&   is_conf_last_rqmd   /   , cf_cfmd             -->   market
-w_cfmd  --   cf_md                           /   , cf_cfmd_pend        ''>   w_cfmd
+w_cfmd  --   cf_md                           /   , cf_cfmd_pend        ''>   w_cfmd     (mtk::dtSeconds(2))
 w_cfmd  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc  ''>   error	    ("invalid cfcc")  //	perhaps we receive a confirm cancelation on diferent order
 w_cfmd  --   cf_cc                           /   , cf_cfcc_nr          -->   canceled
 w_cfmd  --   rj_nw                           /   , cf_rjnw & rq_cc     ''>   error      (method_name)
 w_cfmd  --   rj_md                           /   , cf_rjmd             ''>   market
 w_cfmd  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
 w_cfmd  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
-w_cfmd  --   cf_ex                           /   , cf_cfex             ''>   w_cfmd
-w_cfmd  --   cf_st                                                     ''>   w_cfmd
-w_cfmd  --   cf_exLK                         /   , cf_cfexLK           ''>   w_cfmd
+w_cfmd  --   cf_ex                           /   , cf_cfex             ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   cf_st                                                     ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   cf_exLK                         /   , cf_cfexLK           ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   time_out                                                  ''>   w_cfmd     (mtk::dtSeconds(0))
 
 
 
 w_cfcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error       (method_name)
-w_cfcc  --   rq_md                           /   , rj_rqmd            ''>   w_cfcc
-w_cfcc  --   rq_cc                           /   , rq_cc              ''>   w_cfcc
+w_cfcc  --   rq_md                           /   , rj_rqmd            ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   rq_cc                           /   , rq_cc              ''>   w_cfcc      (mtk::dtSeconds(2))
 w_cfcc  --   cf_nw                           /   , cf_cfnw & rq_cc    ''>   error       (method_name)
-w_cfcc  --   cf_md                           /   , cf_cfmd            ''>   w_cfcc
+w_cfcc  --   cf_md                           /   , cf_cfmd            ''>   w_cfcc      (mtk::dtSeconds(2))
 w_cfcc  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc ''>   error	    ("invalid cfcc")  //	perhaps we receive a confirm cancelation on diferent order
 w_cfcc  --   cf_cc                           /   , cf_cfcc            -->   canceled
 w_cfcc  --   rj_nw                           /   , cf_rjnw & rq_cc    ''>   error       (method_name)
 w_cfcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error       (method_name)
 w_cfcc  --   rj_cc                           /   , cf_rjcc            ''>   market
 w_cfcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
-w_cfcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfcc
-w_cfcc  --   cf_st                                                    ''>   w_cfcc
-w_cfcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfcc
-
+w_cfcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   cf_st                                                    ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   time_out                                                 ''>   w_cfcc      (mtk::dtSeconds(0))
 
 
 w_cfmdcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
-w_cfmdcc  --   rq_md  &&   invalid_rq          /   , rj_rqmd            ''>   w_cfmdcc
-w_cfmdcc  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc    ''>   w_cfmdcc
-w_cfmdcc  --   rq_md                           /   , rj_rqmd & rq_cc    ''>   w_cfmdcc
-w_cfmdcc  --   rq_cc                           /   , rq_cc              ''>   w_cfmdcc
+w_cfmdcc  --   rq_md  &&   invalid_rq          /   , rj_rqmd            ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc    ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   rq_md                           /   , rj_rqmd & rq_cc    ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   rq_cc                           /   , rq_cc              ''>   w_cfmdcc  (mtk::dtSeconds(2))
 w_cfmdcc  --   cf_nw                           /   , cf_cfnw & rq_cc    ''>   error     (method_name)
 w_cfmdcc  --   cf_md  &&   invalid_cf          /   , cf_cfmd & rq_cc    ''>   error     ("invalid cfmd")
-w_cfmdcc  --   cf_md  &&   is_conf_last_rqmd   /   , cf_cfmd            -->   w_cfcc
-w_cfmdcc  --   cf_md                           /   , cf_cfmd_pend       ''>   w_cfmdcc
+w_cfmdcc  --   cf_md  &&   is_conf_last_rqmd   /   , cf_cfmd            -->   w_cfcc    (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_md                           /   , cf_cfmd_pend       ''>   w_cfmdcc  (mtk::dtSeconds(2))
 w_cfmdcc  --   cf_cc  &&   invalid_cf          /   , cf_cfcc_nr & rq_cc ''>   error	    ("invalid cfcc")  //	perhaps we receive a confirm cancelation on diferent order
 w_cfmdcc  --   cf_cc                           /   , cf_cfcc            -->   canceled
 w_cfmdcc  --   rj_nw                           /   , cf_rjnw & rq_cc    ''>   error     (method_name)
-w_cfmdcc  --   rj_md                           /   , cf_rjmd            ''>   w_cfcc
-w_cfmdcc  --   rj_cc                           /   , cf_rjcc            ''>   w_cfmd
+w_cfmdcc  --   rj_md                           /   , cf_rjmd            ''>   w_cfcc    (mtk::dtSeconds(2))
+w_cfmdcc  --   rj_cc                           /   , cf_rjcc            ''>   w_cfmd    (mtk::dtSeconds(2))
 w_cfmdcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
-w_cfmdcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfmdcc
-w_cfmdcc  --   cf_st                                                    ''>   w_cfmdcc
-w_cfmdcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfmdcc
+w_cfmdcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_st                                                    ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   time_out                                                 ''>   w_cfmdcc  (mtk::dtSeconds(0))
 
 
 
 w_cfnwmd  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
-w_cfnwmd  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc    ''>   w_cfnwcc
-w_cfnwmd  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc    ''>   w_cfnwcc
-w_cfnwmd  --   rq_md                           /   , rq_rqmd            ''>   w_cfnwmd
-w_cfnwmd  --   rq_cc                           /   , rq_cc              -->   w_cfnwcc
+w_cfnwmd  --   rq_md  &&   invalid_rq          /   , rj_rqmd & rq_cc    ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwmd  --   rq_md  &&   quantity_lower_ex   /   , rj_rqmd & rq_cc    ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwmd  --   rq_md                           /   , rq_rqmd            ''>   w_cfnwmd  (mtk::dtSeconds(2))
+w_cfnwmd  --   rq_cc                           /   , rq_cc              -->   w_cfnwcc  (mtk::dtSeconds(2))
 w_cfnwmd  --   cf_nw  &&   invalid_cf          /   , cf_cfnw & rq_cc    ''>   error     ("invalid cfnw")
-w_cfnwmd  --   cf_nw                           /   , cf_cfnw            -->   w_cfmd
+w_cfnwmd  --   cf_nw                           /   , cf_cfnw            -->   w_cfmd    (mtk::dtSeconds(2))
 w_cfnwmd  --   cf_md                           /   , cf_cfmd & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   cf_cc                           /   , cf_cfcc & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   rj_nw                           /   , cf_rjnw            ''>   canceled
 w_cfnwmd  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
-w_cfnwmd  --   cf_st                                                    ''>   w_cfnwmd
+w_cfnwmd  --   cf_st                                                    ''>   w_cfnwmd  (mtk::dtSeconds(2))
 w_cfnwmd  --   cf_exLK                         /   , cf_cfexLK          ''>   error     ("received cfexlk waiting for confirmation2")
+w_cfnwmd  --   time_out                                                 ''>   w_cfnwmd  (mtk::dtSeconds(0))
 
 
 w_cfnwcc  --   rq_nw                           /   , rj_rqnw & rq_cc    ''>   error     (method_name)
-w_cfnwcc  --   rq_md                           /   , rq_rqmd & rq_cc    ''>   w_cfnwcc
-w_cfnwcc  --   rq_cc                           /   , rq_cc              ''>   w_cfnwcc
+w_cfnwcc  --   rq_md                           /   , rq_rqmd & rq_cc    ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwcc  --   rq_cc                           /   , rq_cc              ''>   w_cfnwcc  (mtk::dtSeconds(2))
 w_cfnwcc  --   cf_nw  &&   invalid_cf          /   , cf_cfnw & rq_cc    ''>   error     ("invalid cfnw")
-w_cfnwcc  --   cf_nw                           /   , cf_cfnw            -->   w_cfcc
+w_cfnwcc  --   cf_nw                           /   , cf_cfnw            -->   w_cfcc    (mtk::dtSeconds(2))
 w_cfnwcc  --   cf_md                           /   , cf_cfmd & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   cf_cc                           /   , cf_cfcc & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   rj_nw                           /   , cf_rjnw            ''>   canceled
 w_cfnwcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
-w_cfnwcc  --   cf_st                                                    ''>   w_cfnwcc
+w_cfnwcc  --   cf_st                                                    ''>   w_cfnwcc  (mtk::dtSeconds(2))
 w_cfnwcc  --   cf_exLK                         /   , cf_cfexLK          ''>   error     ("received cfexlk waiting for confirmation3")
+w_cfnwcc  --   time_out                                                 ''>   w_cfnwcc  (mtk::dtSeconds(0))
 
 
 
@@ -283,6 +310,7 @@ canceled --   rj_cc                           /   , cf_rjcc             ''>   ca
 canceled --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 canceled --   cf_st                                                     ''>   canceled
 canceled --   cf_exLK                         /   , cf_cfexLK           ''>   canceled
+canceled --   time_out                                                  ''>   error      (method_name)
 
 
 executed --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
@@ -297,6 +325,7 @@ executed --   rj_cc                           /   , cf_rjcc             ''>   ex
 executed --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 executed --   cf_st                                                     ''>   executed
 executed --   cf_exLK                         /   , cf_cfexLK           ''>   executed
+executed --   time_out                                                  ''>   error      (method_name)
 
 
 
@@ -312,6 +341,7 @@ error    --   rj_cc                           /   , cf_rjcc             ''>   er
 error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 error    --   cf_st                                                     ''>   error     (method_name)
 error    --   cf_exLK                         /   , cf_cfexLK           ''>   error     (method_name)
+error    --   time_out                                                  ''>   error     (method_name)
 
 
 
@@ -369,7 +399,7 @@ error    --   cf_exLK                         /   , cf_cfexLK           ''>   er
             rj_rqcc [{ CREATE_AND_SEND_REJECT(sig_rj_cc, RJ_CC_MK, MTK_SS(ci->__serrors << " in " << method_name))      ADD_HIST_RJ(csr_rj, cc)      ci->sig_changed();  }]
             rj_rqmd [{ std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_MK, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  }]
 
 

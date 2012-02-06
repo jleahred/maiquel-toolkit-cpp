@@ -80,7 +80,7 @@ std::string  check_item_cf_or_rj__is_ok__and_update_prev_item_status_and_delay(o
         if(prev_item.quantity  != new_item.quantity  &&  new_item.type2 != tt2_cc)
                 result_errors += MTK_SS("diferent quantity " << prev_item.quantity << "  !=  " << new_item.quantity);
         if(prev_item.cli_ref  != new_item.cli_ref  &&  new_item.type2 != tt2_cc)
-                result_errors += MTK_SS("diferent client_code " << prev_item.cli_ref << "  !=  " << new_item.cli_ref);
+                result_errors += MTK_SS("diferent cli_ref " << prev_item.cli_ref << "  !=  " << new_item.cli_ref);
 
         if(result_errors=="")
         {

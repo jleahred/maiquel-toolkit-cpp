@@ -32,6 +32,7 @@ struct   scoverage
         , init__cf_ex (0)
         , init__cf_exLK (0)
         , init__cf_st (0)
+        , init__time_out (0)
         , w_cfnw__rq_nw (0)
         , w_cfnw__rq_md (0)
         , w_cfnw__rq_cc (0)
@@ -44,6 +45,7 @@ struct   scoverage
         , w_cfnw__cf_ex (0)
         , w_cfnw__cf_exLK (0)
         , w_cfnw__cf_st (0)
+        , w_cfnw__time_out (0)
         , market__rq_nw (0)
         , market__rq_md (0)
         , market__rq_cc (0)
@@ -56,6 +58,7 @@ struct   scoverage
         , market__cf_ex (0)
         , market__cf_exLK (0)
         , market__cf_st (0)
+        , market__time_out (0)
         , w_cfmd__rq_nw (0)
         , w_cfmd__rq_md (0)
         , w_cfmd__rq_cc (0)
@@ -68,6 +71,7 @@ struct   scoverage
         , w_cfmd__cf_ex (0)
         , w_cfmd__cf_exLK (0)
         , w_cfmd__cf_st (0)
+        , w_cfmd__time_out (0)
         , w_cfcc__rq_nw (0)
         , w_cfcc__rq_md (0)
         , w_cfcc__rq_cc (0)
@@ -80,6 +84,7 @@ struct   scoverage
         , w_cfcc__cf_ex (0)
         , w_cfcc__cf_exLK (0)
         , w_cfcc__cf_st (0)
+        , w_cfcc__time_out (0)
         , w_cfmdcc__rq_nw (0)
         , w_cfmdcc__rq_md (0)
         , w_cfmdcc__rq_cc (0)
@@ -92,6 +97,7 @@ struct   scoverage
         , w_cfmdcc__cf_ex (0)
         , w_cfmdcc__cf_exLK (0)
         , w_cfmdcc__cf_st (0)
+        , w_cfmdcc__time_out (0)
         , w_cfnwmd__rq_nw (0)
         , w_cfnwmd__rq_md (0)
         , w_cfnwmd__rq_cc (0)
@@ -104,6 +110,7 @@ struct   scoverage
         , w_cfnwmd__cf_ex (0)
         , w_cfnwmd__cf_exLK (0)
         , w_cfnwmd__cf_st (0)
+        , w_cfnwmd__time_out (0)
         , w_cfnwcc__rq_nw (0)
         , w_cfnwcc__rq_md (0)
         , w_cfnwcc__rq_cc (0)
@@ -116,6 +123,7 @@ struct   scoverage
         , w_cfnwcc__cf_ex (0)
         , w_cfnwcc__cf_exLK (0)
         , w_cfnwcc__cf_st (0)
+        , w_cfnwcc__time_out (0)
         , canceled__rq_nw (0)
         , canceled__rq_md (0)
         , canceled__rq_cc (0)
@@ -128,6 +136,7 @@ struct   scoverage
         , canceled__cf_ex (0)
         , canceled__cf_exLK (0)
         , canceled__cf_st (0)
+        , canceled__time_out (0)
         , executed__rq_nw (0)
         , executed__rq_md (0)
         , executed__rq_cc (0)
@@ -140,6 +149,7 @@ struct   scoverage
         , executed__cf_ex (0)
         , executed__cf_exLK (0)
         , executed__cf_st (0)
+        , executed__time_out (0)
         , error__rq_nw (0)
         , error__rq_md (0)
         , error__rq_cc (0)
@@ -152,6 +162,7 @@ struct   scoverage
         , error__cf_ex (0)
         , error__cf_exLK (0)
         , error__cf_st (0)
+        , error__time_out (0)
     {}
 
     int   init__rq_nw;
@@ -166,6 +177,7 @@ struct   scoverage
     int   init__cf_ex;
     int   init__cf_exLK;
     int   init__cf_st;
+    int   init__time_out;
     int   w_cfnw__rq_nw;
     int   w_cfnw__rq_md;
     int   w_cfnw__rq_cc;
@@ -178,6 +190,7 @@ struct   scoverage
     int   w_cfnw__cf_ex;
     int   w_cfnw__cf_exLK;
     int   w_cfnw__cf_st;
+    int   w_cfnw__time_out;
     int   market__rq_nw;
     int   market__rq_md;
     int   market__rq_cc;
@@ -190,6 +203,7 @@ struct   scoverage
     int   market__cf_ex;
     int   market__cf_exLK;
     int   market__cf_st;
+    int   market__time_out;
     int   w_cfmd__rq_nw;
     int   w_cfmd__rq_md;
     int   w_cfmd__rq_cc;
@@ -202,6 +216,7 @@ struct   scoverage
     int   w_cfmd__cf_ex;
     int   w_cfmd__cf_exLK;
     int   w_cfmd__cf_st;
+    int   w_cfmd__time_out;
     int   w_cfcc__rq_nw;
     int   w_cfcc__rq_md;
     int   w_cfcc__rq_cc;
@@ -214,6 +229,7 @@ struct   scoverage
     int   w_cfcc__cf_ex;
     int   w_cfcc__cf_exLK;
     int   w_cfcc__cf_st;
+    int   w_cfcc__time_out;
     int   w_cfmdcc__rq_nw;
     int   w_cfmdcc__rq_md;
     int   w_cfmdcc__rq_cc;
@@ -226,6 +242,7 @@ struct   scoverage
     int   w_cfmdcc__cf_ex;
     int   w_cfmdcc__cf_exLK;
     int   w_cfmdcc__cf_st;
+    int   w_cfmdcc__time_out;
     int   w_cfnwmd__rq_nw;
     int   w_cfnwmd__rq_md;
     int   w_cfnwmd__rq_cc;
@@ -238,6 +255,7 @@ struct   scoverage
     int   w_cfnwmd__cf_ex;
     int   w_cfnwmd__cf_exLK;
     int   w_cfnwmd__cf_st;
+    int   w_cfnwmd__time_out;
     int   w_cfnwcc__rq_nw;
     int   w_cfnwcc__rq_md;
     int   w_cfnwcc__rq_cc;
@@ -250,6 +268,7 @@ struct   scoverage
     int   w_cfnwcc__cf_ex;
     int   w_cfnwcc__cf_exLK;
     int   w_cfnwcc__cf_st;
+    int   w_cfnwcc__time_out;
     int   canceled__rq_nw;
     int   canceled__rq_md;
     int   canceled__rq_cc;
@@ -262,6 +281,7 @@ struct   scoverage
     int   canceled__cf_ex;
     int   canceled__cf_exLK;
     int   canceled__cf_st;
+    int   canceled__time_out;
     int   executed__rq_nw;
     int   executed__rq_md;
     int   executed__rq_cc;
@@ -274,6 +294,7 @@ struct   scoverage
     int   executed__cf_ex;
     int   executed__cf_exLK;
     int   executed__cf_st;
+    int   executed__time_out;
     int   error__rq_nw;
     int   error__rq_md;
     int   error__rq_cc;
@@ -286,6 +307,7 @@ struct   scoverage
     int   error__cf_ex;
     int   error__cf_exLK;
     int   error__cf_st;
+    int   error__time_out;
 
     std::string  get_string(void)
     {
@@ -307,6 +329,7 @@ struct   scoverage
               if(init__cf_ex)   {++num_touched; last_result += MTK_SS("init__cf_ex:" << init__cf_ex << std::endl);}
               if(init__cf_exLK)   {++num_touched; last_result += MTK_SS("init__cf_exLK:" << init__cf_exLK << std::endl);}
               if(init__cf_st)   {++num_touched; last_result += MTK_SS("init__cf_st:" << init__cf_st << std::endl);}
+              if(init__time_out)   {++num_touched; last_result += MTK_SS("init__time_out:" << init__time_out << std::endl);}
               if(w_cfnw__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnw__rq_nw:" << w_cfnw__rq_nw << std::endl);}
               if(w_cfnw__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnw__rq_md:" << w_cfnw__rq_md << std::endl);}
               if(w_cfnw__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfnw__rq_cc:" << w_cfnw__rq_cc << std::endl);}
@@ -319,6 +342,7 @@ struct   scoverage
               if(w_cfnw__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_ex:" << w_cfnw__cf_ex << std::endl);}
               if(w_cfnw__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_exLK:" << w_cfnw__cf_exLK << std::endl);}
               if(w_cfnw__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnw__cf_st:" << w_cfnw__cf_st << std::endl);}
+              if(w_cfnw__time_out)   {++num_touched; last_result += MTK_SS("w_cfnw__time_out:" << w_cfnw__time_out << std::endl);}
               if(market__rq_nw)   {++num_touched; last_result += MTK_SS("market__rq_nw:" << market__rq_nw << std::endl);}
               if(market__rq_md)   {++num_touched; last_result += MTK_SS("market__rq_md:" << market__rq_md << std::endl);}
               if(market__rq_cc)   {++num_touched; last_result += MTK_SS("market__rq_cc:" << market__rq_cc << std::endl);}
@@ -331,6 +355,7 @@ struct   scoverage
               if(market__cf_ex)   {++num_touched; last_result += MTK_SS("market__cf_ex:" << market__cf_ex << std::endl);}
               if(market__cf_exLK)   {++num_touched; last_result += MTK_SS("market__cf_exLK:" << market__cf_exLK << std::endl);}
               if(market__cf_st)   {++num_touched; last_result += MTK_SS("market__cf_st:" << market__cf_st << std::endl);}
+              if(market__time_out)   {++num_touched; last_result += MTK_SS("market__time_out:" << market__time_out << std::endl);}
               if(w_cfmd__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfmd__rq_nw:" << w_cfmd__rq_nw << std::endl);}
               if(w_cfmd__rq_md)   {++num_touched; last_result += MTK_SS("w_cfmd__rq_md:" << w_cfmd__rq_md << std::endl);}
               if(w_cfmd__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfmd__rq_cc:" << w_cfmd__rq_cc << std::endl);}
@@ -343,6 +368,7 @@ struct   scoverage
               if(w_cfmd__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_ex:" << w_cfmd__cf_ex << std::endl);}
               if(w_cfmd__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_exLK:" << w_cfmd__cf_exLK << std::endl);}
               if(w_cfmd__cf_st)   {++num_touched; last_result += MTK_SS("w_cfmd__cf_st:" << w_cfmd__cf_st << std::endl);}
+              if(w_cfmd__time_out)   {++num_touched; last_result += MTK_SS("w_cfmd__time_out:" << w_cfmd__time_out << std::endl);}
               if(w_cfcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfcc__rq_nw:" << w_cfcc__rq_nw << std::endl);}
               if(w_cfcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfcc__rq_md:" << w_cfcc__rq_md << std::endl);}
               if(w_cfcc__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfcc__rq_cc:" << w_cfcc__rq_cc << std::endl);}
@@ -355,6 +381,7 @@ struct   scoverage
               if(w_cfcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_ex:" << w_cfcc__cf_ex << std::endl);}
               if(w_cfcc__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_exLK:" << w_cfcc__cf_exLK << std::endl);}
               if(w_cfcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfcc__cf_st:" << w_cfcc__cf_st << std::endl);}
+              if(w_cfcc__time_out)   {++num_touched; last_result += MTK_SS("w_cfcc__time_out:" << w_cfcc__time_out << std::endl);}
               if(w_cfmdcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rq_nw:" << w_cfmdcc__rq_nw << std::endl);}
               if(w_cfmdcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rq_md:" << w_cfmdcc__rq_md << std::endl);}
               if(w_cfmdcc__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfmdcc__rq_cc:" << w_cfmdcc__rq_cc << std::endl);}
@@ -367,6 +394,7 @@ struct   scoverage
               if(w_cfmdcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_ex:" << w_cfmdcc__cf_ex << std::endl);}
               if(w_cfmdcc__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_exLK:" << w_cfmdcc__cf_exLK << std::endl);}
               if(w_cfmdcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfmdcc__cf_st:" << w_cfmdcc__cf_st << std::endl);}
+              if(w_cfmdcc__time_out)   {++num_touched; last_result += MTK_SS("w_cfmdcc__time_out:" << w_cfmdcc__time_out << std::endl);}
               if(w_cfnwmd__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rq_nw:" << w_cfnwmd__rq_nw << std::endl);}
               if(w_cfnwmd__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rq_md:" << w_cfnwmd__rq_md << std::endl);}
               if(w_cfnwmd__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfnwmd__rq_cc:" << w_cfnwmd__rq_cc << std::endl);}
@@ -379,6 +407,7 @@ struct   scoverage
               if(w_cfnwmd__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_ex:" << w_cfnwmd__cf_ex << std::endl);}
               if(w_cfnwmd__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_exLK:" << w_cfnwmd__cf_exLK << std::endl);}
               if(w_cfnwmd__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnwmd__cf_st:" << w_cfnwmd__cf_st << std::endl);}
+              if(w_cfnwmd__time_out)   {++num_touched; last_result += MTK_SS("w_cfnwmd__time_out:" << w_cfnwmd__time_out << std::endl);}
               if(w_cfnwcc__rq_nw)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rq_nw:" << w_cfnwcc__rq_nw << std::endl);}
               if(w_cfnwcc__rq_md)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rq_md:" << w_cfnwcc__rq_md << std::endl);}
               if(w_cfnwcc__rq_cc)   {++num_touched; last_result += MTK_SS("w_cfnwcc__rq_cc:" << w_cfnwcc__rq_cc << std::endl);}
@@ -391,6 +420,7 @@ struct   scoverage
               if(w_cfnwcc__cf_ex)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_ex:" << w_cfnwcc__cf_ex << std::endl);}
               if(w_cfnwcc__cf_exLK)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_exLK:" << w_cfnwcc__cf_exLK << std::endl);}
               if(w_cfnwcc__cf_st)   {++num_touched; last_result += MTK_SS("w_cfnwcc__cf_st:" << w_cfnwcc__cf_st << std::endl);}
+              if(w_cfnwcc__time_out)   {++num_touched; last_result += MTK_SS("w_cfnwcc__time_out:" << w_cfnwcc__time_out << std::endl);}
               if(canceled__rq_nw)   {++num_touched; last_result += MTK_SS("canceled__rq_nw:" << canceled__rq_nw << std::endl);}
               if(canceled__rq_md)   {++num_touched; last_result += MTK_SS("canceled__rq_md:" << canceled__rq_md << std::endl);}
               if(canceled__rq_cc)   {++num_touched; last_result += MTK_SS("canceled__rq_cc:" << canceled__rq_cc << std::endl);}
@@ -403,6 +433,7 @@ struct   scoverage
               if(canceled__cf_ex)   {++num_touched; last_result += MTK_SS("canceled__cf_ex:" << canceled__cf_ex << std::endl);}
               if(canceled__cf_exLK)   {++num_touched; last_result += MTK_SS("canceled__cf_exLK:" << canceled__cf_exLK << std::endl);}
               if(canceled__cf_st)   {++num_touched; last_result += MTK_SS("canceled__cf_st:" << canceled__cf_st << std::endl);}
+              if(canceled__time_out)   {++num_touched; last_result += MTK_SS("canceled__time_out:" << canceled__time_out << std::endl);}
               if(executed__rq_nw)   {++num_touched; last_result += MTK_SS("executed__rq_nw:" << executed__rq_nw << std::endl);}
               if(executed__rq_md)   {++num_touched; last_result += MTK_SS("executed__rq_md:" << executed__rq_md << std::endl);}
               if(executed__rq_cc)   {++num_touched; last_result += MTK_SS("executed__rq_cc:" << executed__rq_cc << std::endl);}
@@ -415,6 +446,7 @@ struct   scoverage
               if(executed__cf_ex)   {++num_touched; last_result += MTK_SS("executed__cf_ex:" << executed__cf_ex << std::endl);}
               if(executed__cf_exLK)   {++num_touched; last_result += MTK_SS("executed__cf_exLK:" << executed__cf_exLK << std::endl);}
               if(executed__cf_st)   {++num_touched; last_result += MTK_SS("executed__cf_st:" << executed__cf_st << std::endl);}
+              if(executed__time_out)   {++num_touched; last_result += MTK_SS("executed__time_out:" << executed__time_out << std::endl);}
               if(error__rq_nw)   {++num_touched; last_result += MTK_SS("error__rq_nw:" << error__rq_nw << std::endl);}
               if(error__rq_md)   {++num_touched; last_result += MTK_SS("error__rq_md:" << error__rq_md << std::endl);}
               if(error__rq_cc)   {++num_touched; last_result += MTK_SS("error__rq_cc:" << error__rq_cc << std::endl);}
@@ -427,6 +459,7 @@ struct   scoverage
               if(error__cf_ex)   {++num_touched; last_result += MTK_SS("error__cf_ex:" << error__cf_ex << std::endl);}
               if(error__cf_exLK)   {++num_touched; last_result += MTK_SS("error__cf_exLK:" << error__cf_exLK << std::endl);}
               if(error__cf_st)   {++num_touched; last_result += MTK_SS("error__cf_st:" << error__cf_st << std::endl);}
+              if(error__time_out)   {++num_touched; last_result += MTK_SS("error__time_out:" << error__time_out << std::endl);}
 
         last_result += MTK_SS("__num_touched__:"  <<  num_touched);
         return last_result;
@@ -543,6 +576,7 @@ public:
     virtual void cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex           )=0;
     virtual void cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk         )=0;
     virtual void cf_st ( const mtk::trd::msg::CF_ST_LS&   st           )=0;
+    virtual void time_out ( const int&          _            )=0;
 
 
     //  ACCESS
@@ -599,6 +633,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -613,16 +648,25 @@ class w_cfnw  :   public  abstract_status
     typedef w_cfnw  CLASS_NAME;
 
 public:
-    w_cfnw (mtk::CountPtr<status_common_info> _ci)
+    w_cfnw (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
         : 
         abstract_status(_ci),
+        __check_time_out(_check_time_out),
         __has_pending_rq(true)
-        {  };
+        { 
+            try
+            {
+                  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   
+            }
+            MTK_CATCH_RETHROW("w_cfnw_ctor", "rethrowed") };
     
     std::string  GetStatusName()  {  return "w_cfnw"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::dtTimeQuantity                          __check_time_out;
+    virtual const mtk::dtTimeQuantity                         &  check_time_out() const {  return __check_time_out; };
+    virtual void set_check_time_out(const mtk::dtTimeQuantity                         &  _prop) {  __check_time_out = _prop;  };
     bool                                         __has_pending_rq;
     virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
     virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
@@ -642,6 +686,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -685,6 +730,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -699,16 +745,25 @@ class w_cfmd  :   public  abstract_status
     typedef w_cfmd  CLASS_NAME;
 
 public:
-    w_cfmd (mtk::CountPtr<status_common_info> _ci)
+    w_cfmd (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
         : 
         abstract_status(_ci),
+        __check_time_out(_check_time_out),
         __has_pending_rq(true)
-        {  };
+        { 
+            try
+            {
+                  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   
+            }
+            MTK_CATCH_RETHROW("w_cfmd_ctor", "rethrowed") };
     
     std::string  GetStatusName()  {  return "w_cfmd"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::dtTimeQuantity                          __check_time_out;
+    virtual const mtk::dtTimeQuantity                         &  check_time_out() const {  return __check_time_out; };
+    virtual void set_check_time_out(const mtk::dtTimeQuantity                         &  _prop) {  __check_time_out = _prop;  };
     bool                                         __has_pending_rq;
     virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
     virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
@@ -728,6 +783,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -742,16 +798,25 @@ class w_cfcc  :   public  abstract_status
     typedef w_cfcc  CLASS_NAME;
 
 public:
-    w_cfcc (mtk::CountPtr<status_common_info> _ci)
+    w_cfcc (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
         : 
         abstract_status(_ci),
+        __check_time_out(_check_time_out),
         __has_pending_rq(true)
-        {  };
+        { 
+            try
+            {
+                  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   
+            }
+            MTK_CATCH_RETHROW("w_cfcc_ctor", "rethrowed") };
     
     std::string  GetStatusName()  {  return "w_cfcc"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::dtTimeQuantity                          __check_time_out;
+    virtual const mtk::dtTimeQuantity                         &  check_time_out() const {  return __check_time_out; };
+    virtual void set_check_time_out(const mtk::dtTimeQuantity                         &  _prop) {  __check_time_out = _prop;  };
     bool                                         __has_pending_rq;
     virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
     virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
@@ -771,6 +836,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -785,16 +851,25 @@ class w_cfmdcc  :   public  abstract_status
     typedef w_cfmdcc  CLASS_NAME;
 
 public:
-    w_cfmdcc (mtk::CountPtr<status_common_info> _ci)
+    w_cfmdcc (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
         : 
         abstract_status(_ci),
+        __check_time_out(_check_time_out),
         __has_pending_rq(true)
-        {  };
+        { 
+            try
+            {
+                  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   
+            }
+            MTK_CATCH_RETHROW("w_cfmdcc_ctor", "rethrowed") };
     
     std::string  GetStatusName()  {  return "w_cfmdcc"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::dtTimeQuantity                          __check_time_out;
+    virtual const mtk::dtTimeQuantity                         &  check_time_out() const {  return __check_time_out; };
+    virtual void set_check_time_out(const mtk::dtTimeQuantity                         &  _prop) {  __check_time_out = _prop;  };
     bool                                         __has_pending_rq;
     virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
     virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
@@ -814,6 +889,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -828,16 +904,25 @@ class w_cfnwmd  :   public  abstract_status
     typedef w_cfnwmd  CLASS_NAME;
 
 public:
-    w_cfnwmd (mtk::CountPtr<status_common_info> _ci)
+    w_cfnwmd (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
         : 
         abstract_status(_ci),
+        __check_time_out(_check_time_out),
         __has_pending_rq(true)
-        {  };
+        { 
+            try
+            {
+                  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   
+            }
+            MTK_CATCH_RETHROW("w_cfnwmd_ctor", "rethrowed") };
     
     std::string  GetStatusName()  {  return "w_cfnwmd"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::dtTimeQuantity                          __check_time_out;
+    virtual const mtk::dtTimeQuantity                         &  check_time_out() const {  return __check_time_out; };
+    virtual void set_check_time_out(const mtk::dtTimeQuantity                         &  _prop) {  __check_time_out = _prop;  };
     bool                                         __has_pending_rq;
     virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
     virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
@@ -857,6 +942,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -871,16 +957,25 @@ class w_cfnwcc  :   public  abstract_status
     typedef w_cfnwcc  CLASS_NAME;
 
 public:
-    w_cfnwcc (mtk::CountPtr<status_common_info> _ci)
+    w_cfnwcc (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
         : 
         abstract_status(_ci),
+        __check_time_out(_check_time_out),
         __has_pending_rq(true)
-        {  };
+        { 
+            try
+            {
+                  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   
+            }
+            MTK_CATCH_RETHROW("w_cfnwcc_ctor", "rethrowed") };
     
     std::string  GetStatusName()  {  return "w_cfnwcc"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    mtk::dtTimeQuantity                          __check_time_out;
+    virtual const mtk::dtTimeQuantity                         &  check_time_out() const {  return __check_time_out; };
+    virtual void set_check_time_out(const mtk::dtTimeQuantity                         &  _prop) {  __check_time_out = _prop;  };
     bool                                         __has_pending_rq;
     virtual const bool                                        &  has_pending_rq() const {  return __has_pending_rq; };
     virtual void set_has_pending_rq(const bool                                        &  _prop) {  __has_pending_rq = _prop;  };
@@ -900,6 +995,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -943,6 +1039,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -986,6 +1083,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -1037,6 +1135,7 @@ public:
     void cf_ex (const mtk::trd::msg::CF_EX_LS&   ex           );
     void cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st (const mtk::trd::msg::CF_ST_LS&   st           );
+    void time_out (const int&          _            );
 
 
 };
@@ -1078,7 +1177,7 @@ void init::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnw (ci));
+            new_status = mtk::make_cptr(new w_cfnw (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqnw
   ADD_HIST_RQ(rq, nw)     ci->sig_rq_nw(rq);  ci->sig_changed();  
@@ -1115,7 +1214,7 @@ void init::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
@@ -1491,6 +1590,36 @@ void init::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
     ci->signal_remove_temp_status();
 }
 
+void init::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.init__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "init::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void w_cfnw::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
 {
     //  coverage
@@ -1569,12 +1698,12 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     nerrors > 0
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -1607,12 +1736,12 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     qty_lower_exec
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -1642,7 +1771,7 @@ void w_cfnw::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnwmd (ci));
+            new_status = mtk::make_cptr(new w_cfnwmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
   ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
@@ -1674,7 +1803,7 @@ void w_cfnw::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_cc
 
@@ -2121,7 +2250,37 @@ void w_cfnw::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnw (ci));
+            new_status = mtk::make_cptr(new w_cfnw (ci, (mtk::dtSeconds(2))));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_cfnw::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfnw__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "w_cfnw::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfnw (ci, (mtk::dtSeconds(0))));
             ci->signal_new_status.emit(new_status);
 
         }
@@ -2209,12 +2368,12 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     nerrors > 0
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -2247,12 +2406,12 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     qty_lower_exec
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -2282,7 +2441,7 @@ void market::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmd (ci));
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
   ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
@@ -2314,7 +2473,7 @@ void market::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_cc
 
@@ -2785,6 +2944,36 @@ void market::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
     ci->signal_remove_temp_status();
 }
 
+void market::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.market__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "market::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void w_cfmd::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
 {
     //  coverage
@@ -2868,7 +3057,7 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -2901,12 +3090,12 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     qty_lower_exec
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -2936,7 +3125,7 @@ void w_cfmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmd (ci));
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
   ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
@@ -2968,7 +3157,7 @@ void w_cfmd::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_cc
 
@@ -3129,7 +3318,7 @@ void w_cfmd::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmd (ci));
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd_pend
   ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
@@ -3389,7 +3578,7 @@ void w_cfmd::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmd (ci));
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
   ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
@@ -3424,7 +3613,7 @@ void w_cfmd::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmd (ci));
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfexLK
 
@@ -3459,7 +3648,37 @@ void w_cfmd::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmd (ci));
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(2))));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_cfmd::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfmd__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "w_cfmd::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(0))));
             ci->signal_new_status.emit(new_status);
 
         }
@@ -3544,12 +3763,12 @@ void w_cfcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
@@ -3579,7 +3798,7 @@ void w_cfcc::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_cc
 
@@ -3687,7 +3906,7 @@ void w_cfcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
   ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
@@ -3947,7 +4166,7 @@ void w_cfcc::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
   ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
@@ -3982,7 +4201,7 @@ void w_cfcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfexLK
 
@@ -4017,7 +4236,37 @@ void w_cfcc::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_cfcc::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfcc__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "w_cfcc::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(0))));
             ci->signal_new_status.emit(new_status);
 
         }
@@ -4105,12 +4354,12 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     nerrors > 0
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
@@ -4120,12 +4369,12 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     qty_lower_exec
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -4155,12 +4404,12 @@ void w_cfmdcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -4213,7 +4462,7 @@ void w_cfmdcc::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_cc
 
@@ -4365,7 +4614,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
                     })
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd
   ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
@@ -4374,7 +4623,7 @@ void w_cfmdcc::cf_md ( const mtk::trd::msg::CF_MD_LS&   cf            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfmd_pend
   ADD_HIST_CF(cf, md)     ci->sig_cf_md(cf);  ci->sig_changed();  
@@ -4528,7 +4777,7 @@ void w_cfmdcc::rj_md ( const mtk::trd::msg::RJ_MD_LS&   rj            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjmd
   ADD_HIST_RJ(rj, md)     ci->sig_rj_md(rj);  ci->sig_changed();  
@@ -4560,7 +4809,7 @@ void w_cfmdcc::rj_cc ( const mtk::trd::msg::RJ_CC_LS&   rj            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmd (ci));
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_rjcc
   ADD_HIST_RJ(rj, cc)     ci->sig_rj_cc(rj);  ci->sig_changed();  
@@ -4611,7 +4860,7 @@ void w_cfmdcc::cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfex
   ADD_HIST_CFEX(ex)       ci->sig_cf_ex(ex);  ci->sig_changed();  
@@ -4646,7 +4895,7 @@ void w_cfmdcc::cf_exLK ( const mtk::trd::msg::CF_EXLK&   exlk          )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfexLK
 
@@ -4681,7 +4930,37 @@ void w_cfmdcc::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmdcc (ci));
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(2))));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_cfmdcc::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfmdcc__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "w_cfmdcc::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfmdcc (ci, (mtk::dtSeconds(0))));
             ci->signal_new_status.emit(new_status);
 
         }
@@ -4769,12 +5048,12 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     nerrors > 0
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -4807,12 +5086,12 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
                     qty_lower_exec
                  ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 //  inserting macro: rq_cc
 
@@ -4842,7 +5121,7 @@ void w_cfnwmd::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnwmd (ci));
+            new_status = mtk::make_cptr(new w_cfnwmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
   ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
@@ -4874,7 +5153,7 @@ void w_cfnwmd::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_cc
 
@@ -4962,7 +5241,7 @@ void w_cfnwmd::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfmd (ci));
+            new_status = mtk::make_cptr(new w_cfmd (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
   ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
@@ -5344,7 +5623,37 @@ void w_cfnwmd::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnwmd (ci));
+            new_status = mtk::make_cptr(new w_cfnwmd (ci, (mtk::dtSeconds(2))));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_cfnwmd::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfnwmd__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "w_cfnwmd::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfnwmd (ci, (mtk::dtSeconds(0))));
             ci->signal_new_status.emit(new_status);
 
         }
@@ -5429,7 +5738,7 @@ void w_cfnwcc::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_rqmd
   ADD_HIST_RQ(rq, md)     ci->sig_rq_md(rq);  ci->sig_changed();  
@@ -5484,7 +5793,7 @@ void w_cfnwcc::rq_cc ( const mtk::trd::msg::RQ_CC_LS&   rq            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: rq_cc
 
@@ -5572,7 +5881,7 @@ void w_cfnwcc::cf_nw ( const mtk::trd::msg::CF_NW_LS&   cf            )
     else 
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfcc (ci));
+            new_status = mtk::make_cptr(new w_cfcc (ci, (mtk::dtSeconds(2))));
             ci->signal_new_status.emit(new_status);
 //  inserting macro: cf_cfnw
   ADD_HIST_CF(cf, nw)     ci->sig_cf_nw(cf);  ci->sig_changed();  
@@ -5954,7 +6263,37 @@ void w_cfnwcc::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
         
         if (true ) {
 
-            new_status = mtk::make_cptr(new w_cfnwcc (ci));
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(2))));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
+void w_cfnwcc::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.w_cfnwcc__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "w_cfnwcc::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new w_cfnwcc (ci, (mtk::dtSeconds(0))));
             ci->signal_new_status.emit(new_status);
 
         }
@@ -6044,7 +6383,7 @@ void canceled::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
@@ -6498,6 +6837,36 @@ void canceled::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
     ci->signal_remove_temp_status();
 }
 
+void canceled::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.canceled__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "canceled::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void executed::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
 {
     //  coverage
@@ -6578,7 +6947,7 @@ void executed::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
@@ -7032,6 +7401,36 @@ void executed::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
     ci->signal_remove_temp_status();
 }
 
+void executed::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.executed__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "executed::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 void error::rq_nw ( const mtk::trd::msg::RQ_NW_LS&   rq            )
 {
     //  coverage
@@ -7112,7 +7511,7 @@ void error::rq_md ( const mtk::trd::msg::RQ_MD_LS&   rq            )
 //  inserting macro: rj_rqmd
  std::string rj_message = MTK_SS(ci->__serrors << " in " << method_name);
                        if(qty_lower_exec)
-                            rj_message =  " quantity lower than executed quantity  " +  rj_message;
+                            rj_message =  " quantity lower or equal than executed quantity  " +  rj_message;
                         CREATE_AND_SEND_REJECT(sig_rj_md, RJ_MD_LS, rj_message) ADD_HIST_RJ(csr_rj, md)      ci->sig_changed();  
 
         }
@@ -7610,6 +8009,36 @@ void error::cf_st ( const mtk::trd::msg::CF_ST_LS&   st            )
     ci->signal_remove_temp_status();
 }
 
+void error::time_out ( const int&          _             )
+{
+    //  coverage
+    ++status_common_info::coverage.error__time_out;
+
+    //  remove unused warning
+    (void) _;
+
+    
+	static const char* method_name = "error::time_out";
+
+      mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  
+
+    mtk::CountPtr<abstract_status> new_status;
+    ci->signal_keep_temp_status();    
+    try
+    {
+        
+        if (true ) {
+
+            new_status = mtk::make_cptr(new error (ci, (method_name)));
+            ci->signal_new_status.emit(new_status);
+
+        }
+    
+    }
+    MTK_CATCH_RETHROW(method_name, "exception fsm, rethrowed")
+    ci->signal_remove_temp_status();
+}
+
 
 };  // end   namespace fsmgen_trd_cli_ls {
 
@@ -7708,6 +8137,11 @@ void mtk::trd::trd_cli_ls_dangerous_signals_not_warped::cf_st (const mtk::trd::m
 {
     mtk::CountPtr<fsmgen_trd_cli_ls::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
     current_status_to_keep_alive_on_scope->cf_st(st);
+}
+void mtk::trd::trd_cli_ls_dangerous_signals_not_warped::time_out (const int&          _            )
+{
+    mtk::CountPtr<fsmgen_trd_cli_ls::abstract_status>  current_status_to_keep_alive_on_scope = current_status;
+    current_status_to_keep_alive_on_scope->time_out(_);
 }
 const mtk::nullable<mtk::trd::msg::CF_XX_LS>           & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::last_confirmation (void) const
 {
@@ -7848,6 +8282,10 @@ void mtk::trd::trd_cli_ls::cf_exLK (const mtk::trd::msg::CF_EXLK&   exlk        
 void mtk::trd::trd_cli_ls::cf_st (const mtk::trd::msg::CF_ST_LS&   st           )
 {
     ptr->cf_st(st);
+}
+void mtk::trd::trd_cli_ls::time_out (const int&          _            )
+{
+    ptr->time_out(_);
 }
 const mtk::nullable<mtk::trd::msg::CF_XX_LS>           & mtk::trd::trd_cli_ls::last_confirmation (void) const
 {

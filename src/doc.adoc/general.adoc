@@ -7,7 +7,7 @@
 === Code style
 
 
-There are many styles codding C++ (Scott Meyers, standar library, Bijarne Stroustroup, Thinkin in C++, Google, Qt...) +
+There are many styles codding C++ (Scott Meyers, standard library, Bijarne Stroustroup, Thinking in C++, Google, Qt...) +
 Many of them uses the CamelCase with classes starting in uppercase. +
 In your programs, you will have to mix some of them using standard library and Qt library (for example)
 
@@ -22,13 +22,13 @@ In your programs, you will have to mix some of them using standard library and Q
 * Arguments will be const references (except basic types)
 * Conversion to string and concatenating
 ** Using +MTK_SS+
-** This is not good for internationalitation
+** This is not good for internationalization
 ** Never user + to concatenate strings
 * Enumerators
 ** Enumerator definition will be  +en<name>+
 ** Enumerator options will be <sufix_name><Option>
 * The source code has to be in +utf-8+ and +carry-return+ as end of line (Linux style). If necessary, modify configuration in your IDE
-* To help writting with code completion, try to group clasess and functions by prefixname. It will be easier to find your funcion with codecompletion +
+* To help writing with code completion, try to group classes and functions by prefix-name. It will be easier to find your function with code-completion +
   Even if it means to write words in names in a weird order
 * Header files will have +.h+ extension, except files with no +.cpp+. In these cases, the extension will be +.hpp+
 
