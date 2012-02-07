@@ -47,6 +47,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login_key"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -98,6 +100,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "res_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login_key"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -148,6 +152,8 @@ public:
     virtual ~req_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -212,6 +218,8 @@ public:
         static  std::string static_get_message_type_as_string(void)        { return "IC_session_info"; };
     
         
+    
+        
         
         
         
@@ -249,6 +257,8 @@ public:
     virtual ~res_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -300,6 +310,8 @@ public:
     virtual ~conf_logout (){};
     virtual std::string get_message_type_as_string       (void) const  { return "conf_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_logout"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -353,6 +365,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_logout"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -402,6 +416,8 @@ public:
     virtual ~req_change_password (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_change_password"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -467,6 +483,8 @@ public:
         static  std::string static_get_message_type_as_string(void)        { return "IC_change_password_info"; };
     
         
+    
+        
         
         
         
@@ -502,6 +520,8 @@ public:
     virtual ~res_change_password (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_change_password"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     

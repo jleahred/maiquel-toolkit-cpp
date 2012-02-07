@@ -46,6 +46,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "LimitPosition"; };
 
     
+
+    
     
     
     
@@ -103,6 +105,8 @@ public:
         static  std::string static_get_message_type_as_string(void)        { return "IC_control_fields_"; };
     
         
+    
+        
         
         
         
@@ -150,6 +154,8 @@ public:
         static  std::string static_get_message_type_as_string(void)        { return "IC_product_code"; };
     
         
+    
+        
         
         
         
@@ -187,6 +193,8 @@ public:
     virtual ~RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::make_nullable(mtk::s_TRY_stodt("2012-02-05", mtk::dtNowLocal()- mtk::dtDays(500))._0); };
 
     
     
@@ -244,6 +252,8 @@ public:
     virtual ~LimitPositionChild (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPositionChild"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPositionChild"; };
+
+    
 
     
     

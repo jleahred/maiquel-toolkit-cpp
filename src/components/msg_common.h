@@ -48,6 +48,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_location"; };
 
     
+
+    
     
     
     
@@ -93,6 +95,8 @@ public:
     virtual ~sub_process_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_process_info"; };
+
+    
 
     
     
@@ -144,6 +148,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fluct"; };
 
     
+
+    
     
     
     
@@ -189,6 +195,8 @@ public:
     virtual ~sub_request_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_id"; };
+
+    
 
     
     
@@ -238,6 +246,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_info"; };
 
     
+
+    
     
     
     
@@ -283,6 +293,8 @@ public:
     virtual ~sub_r_response (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_r_response"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_r_response"; };
+
+    
 
     
     
@@ -334,6 +346,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_gen_response_location"; };
 
     
+
+    
     
     
     
@@ -379,6 +393,8 @@ public:
     virtual ~sub_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_product_code"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_product_code"; };
+
+    
 
     
     

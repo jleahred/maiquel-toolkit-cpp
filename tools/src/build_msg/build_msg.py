@@ -108,6 +108,7 @@ def generate_class(class_name, class_info, class_properties, send_code):
     SUBJECT_METHODS = ''
     ADDRESS_METHODS = ''
     QUEUE_EXCHANGE_NAME = ''
+    DEPRECIATED_ON = ''
     
     INHERITS_FROM = ''
     if class_properties.has_key('I') :
@@ -141,6 +142,8 @@ $INNER_CLASSES
     virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
     static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
 
+    ${DEPRECIATED_ON}
+
     
     
     $CODE_AS_QPID_MESSAGE
@@ -172,6 +175,17 @@ private:
     #   constructor params
             
     CONSTRUCTOR_PARAMS_DEBUG_DECL = get_constructor_params(class_name, class_info, class_properties, send_code)[:-1]
+
+    #   depreciated configuration
+    if class_properties.has_key('QE'):
+        if class_properties.has_key('DEPRECIATED')  :
+            DEPRECIATED_ON_RETURN = 'mtk::make_nullable(mtk::s_TRY_stodt("'  + class_properties['DEPRECIATED']  +  '", mtk::dtNowLocal()- mtk::dtDays(500))._0)'
+        else :
+            DEPRECIATED_ON_RETURN = 'mtk::nullable<mtk::DateTime>{}'
+        DEPRECIATED_ON = \
+            Template('static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return ${DEPRECIATED_ON_RETURN}; };')  \
+            .substitute(DEPRECIATED_ON_RETURN=DEPRECIATED_ON_RETURN)
+
 
     #   member definitions
     for field in class_info:
@@ -228,7 +242,8 @@ private:
                                                     POINTER_TO_CONTROL_FIELDS = pointer_to_control_fields,
                                                     CODE_AS_QPID_MESSAGE = code_as_qpid_message,
                                                     KEY_CODE = KEY_CODE,
-                                                    QUEUE_EXCHANGE_NAME = QUEUE_EXCHANGE_NAME
+                                                    QUEUE_EXCHANGE_NAME = QUEUE_EXCHANGE_NAME,
+                                                    DEPRECIATED_ON = DEPRECIATED_ON
                                                 )
 
 
@@ -1018,7 +1033,7 @@ qpid::messaging::Message ${class_name}::qpidmsg_codded_as_qpid_message (const st
 $OUTPUT_PARENT
 $OUPUT_PER_FIELD
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

@@ -397,8 +397,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_control_fields::sub_control_fields (   const std::string&  _message_type,   const std::string&  _control_fluct_key,   const mtk::DateTime&  _sent_date_time)
-    :     message_type(_message_type),   control_fluct_key(_control_fluct_key),   sent_date_time(_sent_date_time) 
+sub_control_fields::sub_control_fields (   const std::string&  _message_type,   const std::string&  _control_fluct_key,   const mtk::DateTime&  _sent_date_time,   const mtk::nullable<mtk::DateTime>&  _depreciated_on)
+    :     message_type(_message_type),   control_fluct_key(_control_fluct_key),   sent_date_time(_sent_date_time),   depreciated_on(_depreciated_on) 
        
     {  
         std::string cr = check_recomended ();  
@@ -427,7 +427,7 @@ std::ostream& operator<< (std::ostream& o, const sub_control_fields & c)
 {
     o << "{ "
 
-        << "message_type:"<<   c.message_type << "  "        << "control_fluct_key:"<<   c.control_fluct_key << "  "        << "sent_date_time:"<<   c.sent_date_time << "  "
+        << "message_type:"<<   c.message_type << "  "        << "control_fluct_key:"<<   c.control_fluct_key << "  "        << "sent_date_time:"<<   c.sent_date_time << "  "        << "depreciated_on:"<< c.depreciated_on<<"  "
         << " }";
     return o;
 };
@@ -438,7 +438,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_control_fields & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "message_type"  << YAML::Value <<   c.message_type        << YAML::Key << "control_fluct_key"  << YAML::Value <<   c.control_fluct_key        << YAML::Key << "sent_date_time"  << YAML::Value <<   c.sent_date_time
+        << YAML::Key << "message_type"  << YAML::Value <<   c.message_type        << YAML::Key << "control_fluct_key"  << YAML::Value <<   c.control_fluct_key        << YAML::Key << "sent_date_time"  << YAML::Value <<   c.sent_date_time        << YAML::Key << "depreciated_on"  << YAML::Value << c.depreciated_on
         << YAML::EndMap;
     return o;
 };
@@ -452,6 +452,7 @@ void  operator >> (const YAML::Node& node, sub_control_fields & c)
         node["message_type"]  >> c.message_type;
         node["control_fluct_key"]  >> c.control_fluct_key;
         node["sent_date_time"]  >> c.sent_date_time;
+        node["depreciated_on"]  >> c.depreciated_on;
 
 
 };
@@ -459,7 +460,7 @@ void  operator >> (const YAML::Node& node, sub_control_fields & c)
 
 bool operator== (const sub_control_fields& a, const sub_control_fields& b)
 {
-    return (          a.message_type ==  b.message_type  &&          a.control_fluct_key ==  b.control_fluct_key  &&          a.sent_date_time ==  b.sent_date_time  &&   true  );
+    return (          a.message_type ==  b.message_type  &&          a.control_fluct_key ==  b.control_fluct_key  &&          a.sent_date_time ==  b.sent_date_time  &&          a.depreciated_on ==  b.depreciated_on  &&   true  );
 };
 
 bool operator!= (const sub_control_fields& a, const sub_control_fields& b)
@@ -500,6 +501,12 @@ void  copy (sub_control_fields& c, const qpid::types::Variant& v)
                     else
                         copy(c.sent_date_time, it->second);
                         //c.sent_date_time = it->second;
+//   sub_msg_type
+
+                    it = mv.find("do");
+                    if (it!= mv.end())
+                        copy(c.depreciated_on, it->second);
+                        //__internal_qpid_fill(c.depreciated_on, it->second.asMap());
 
     }
 
@@ -516,6 +523,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_field
         __internal_add2map(map, a.control_fluct_key, std::string("cfk"));
 //  field_type
         __internal_add2map(map, a.sent_date_time, std::string("sdt"));
+if (a.depreciated_on.HasValue())
+//  sub_msg_type
+        __internal_add2map(map, a.depreciated_on, std::string("do"));
 
 
 };
@@ -539,7 +549,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((mtk::DateTime*)0)
+   __internal_get_default ((mtk::DateTime*)0),
+//   sub_msg_type
+   mtk::nullable<mtk::DateTime>()
             );
     }
     

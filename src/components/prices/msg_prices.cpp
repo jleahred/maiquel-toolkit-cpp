@@ -1873,7 +1873,7 @@ qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (const 
         __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1896,7 +1896,7 @@ qpid::messaging::Message pub_new_products::qpidmsg_codded_as_qpid_message (const
         __internal_add2map(content, this->market, std::string("mk"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1922,7 +1922,7 @@ qpid::messaging::Message req_product_info::qpidmsg_codded_as_qpid_message (const
         __internal_add2map(content, this->product_code, std::string("pc"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 
@@ -1948,7 +1948,7 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
         __internal_add2map(content, this->response, std::string("rs"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

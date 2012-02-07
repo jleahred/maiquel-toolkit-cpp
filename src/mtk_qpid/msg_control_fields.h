@@ -40,11 +40,13 @@ public:
 
     
     // constructor
-    explicit sub_control_fields (    const std::string&  _message_type,   const std::string&  _control_fluct_key,   const mtk::DateTime&  _sent_date_time );
+    explicit sub_control_fields (    const std::string&  _message_type,   const std::string&  _control_fluct_key,   const mtk::DateTime&  _sent_date_time,   const mtk::nullable<mtk::DateTime>&  _depreciated_on );
     explicit sub_control_fields ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_control_fields (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fields"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fields"; };
+
+    
 
     
     
@@ -55,6 +57,7 @@ public:
     std::string                               message_type; 
     std::string                               control_fluct_key; 
     mtk::DateTime                             sent_date_time; 
+    mtk::nullable<mtk::DateTime>              depreciated_on; 
 
 
 

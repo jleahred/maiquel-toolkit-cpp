@@ -165,7 +165,7 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     QLabel * version = new QLabel();
     //version->setFrameShape(QFrame::Panel);
     //version->setFrameShadow(QFrame::Sunken);
-    version->setText("0.11");
+    version->setText("0.12");
     statusBar()->addWidget(version);
 
 
@@ -246,6 +246,7 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
 
 Monitor::~Monitor()
 {
+    on_mem_save_refresh_clicked();
     delete ui;
 }
 

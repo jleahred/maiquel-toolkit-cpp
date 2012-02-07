@@ -52,8 +52,8 @@ MSG_PROPERTIES  ::=  _ mp_name _ : _ mp_value                           ##transf
 MSG_PROPERTIES  ::=  _ 
 
 
-mp_name  ::=  (I|SUBJ|LessOP|KEY|QE)
-mp_value ::=  ([a-zA-Z0-9_\:\.\$\{\}\(\)]+)
+mp_name  ::=  (I|SUBJ|LessOP|KEY|QE|DEPRECIATED)
+mp_value ::=  ([a-zA-Z0-9_\:\.\$\{\}\(\)\-]+)
 
 
 

@@ -49,6 +49,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_tree_item"; };
 
     
+
+    
     
     
     
@@ -103,6 +105,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_tree_items"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -153,6 +157,8 @@ public:
     virtual ~res_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_tree_items"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     

@@ -50,6 +50,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_order_id"; };
 
     
+
+    
     
     
     
@@ -93,6 +95,8 @@ public:
     virtual ~sub_exec_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_exec_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_exec_conf"; };
+
+    
 
     
     
@@ -143,6 +147,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_total_executions"; };
 
     
+
+    
     
     
     
@@ -189,6 +195,8 @@ public:
     virtual ~sub_account_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_account_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_account_info"; };
+
+    
 
     
     
@@ -245,6 +253,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_invariant_order_info"; };
 
     
+
+    
     
     
     
@@ -296,6 +306,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX"; };
 
     
+
+    
     
     
     
@@ -342,6 +354,8 @@ public:
     virtual ~CF_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX"; };
+
+    
 
     
     
@@ -394,6 +408,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_ORDERS_STATUS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_ORDERS_STATUS"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -445,6 +461,8 @@ public:
     virtual ~CF_EXLK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_EXLK"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_EXLK"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     

@@ -49,6 +49,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_level"; };
 
     
+
+    
     
     
     
@@ -94,6 +96,8 @@ public:
     virtual ~sub_price_deph5 (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_deph5"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_deph5"; };
+
+    
 
     
     
@@ -146,6 +150,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_best_prices"; };
 
     
+
+    
     
     
     
@@ -191,6 +197,8 @@ public:
     virtual ~pub_best_prices (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_best_prices"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_best_prices"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -244,6 +252,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_new_products"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_new_products"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -293,6 +303,8 @@ public:
     virtual ~sub_additional_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_additional_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_additional_info"; };
+
+    
 
     
     
@@ -346,6 +358,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_full_product_info"; };
 
     
+
+    
     
     
     
@@ -392,6 +406,8 @@ public:
     virtual ~sub_full_product_info_optionals (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info_optionals"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_full_product_info_optionals"; };
+
+    
 
     
     
@@ -441,6 +457,8 @@ public:
     virtual ~req_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_product_info"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -503,6 +521,8 @@ public:
         static  std::string static_get_message_type_as_string(void)        { return "IC_response"; };
     
         
+    
+        
         
         
         
@@ -538,6 +558,8 @@ public:
     virtual ~res_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_product_info"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     

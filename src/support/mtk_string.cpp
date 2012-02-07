@@ -16,12 +16,12 @@
 
 //std::ostringstream __oss_mtk_ss__;
 
-typedef 
-        std::list< 
-                    mtk::tuple< 
+typedef
+        std::list<
+                    mtk::tuple<
                         mtk::CountPtr<std::ostringstream> ,
                         mtk::dtDateTime
-                    >   
+                    >
         >    t_list_MTK_SS;
 mtk::CountPtr<t_list_MTK_SS> l_os_stack;
 
@@ -30,7 +30,7 @@ mtk::CountPtr<t_list_MTK_SS> l_os_stack;
 //{
 //    if (l_os_stack.isValid() == false)
 //        l_os_stack = mtk::make_cptr(new t_list_MTK_SS() );
-//    
+//
 //    //  verificación de tamaño y limpieza (si corresponde)
 //    if (l_os_stack->size() != 0   &&   l_os_stack->size() % 50 == 0)
 //    {
@@ -53,7 +53,7 @@ mtk::CountPtr<t_list_MTK_SS> l_os_stack;
 //        }
 //    }
 //
-//    
+//
 //    l_os_stack->push_back(mtk::make_tuple(mtk::make_cptr( new std::ostringstream()), mtk::dtNowLocal()));
 //    return *(l_os_stack->back()._0);
 //}
@@ -219,31 +219,28 @@ namespace mtk {
             return make_tuple(defVal, false);
         }
     }
-    
-    
+
+
     mtk::tuple<DateTime, bool>
     s_TRY_stodt   (const std::string&    s, const DateTime& defVal )
     {
         //  formatos posibles...
         //  2011-03-29 09:16:33.123
+        //  2011-03-29
 
         mtk::RegExp re("^ *([12][0-9]{3})-(1[0-2]|0[1-9])-([012][0-9]|[3][01]) ([01][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])\\.([0-9]{3}) *$");
-        if(re.Match(s) == false)
-        {
-            return make_tuple(defVal, false);
-        }
-        else
+        if(re.Match(s))
         {
             try
             {
                 return make_tuple(
-                    DateTime(   dtYear(s_TRY_stoi           (re[0], -1)._0), 
-                                dtMonth(s_TRY_stoi          (re[1], -1)._0), 
-                                dtDay(s_TRY_stoi            (re[2], -1)._0), 
-                                dtHours(s_TRY_stoi          (re[3], -1)._0), 
-                                dtMinutes(s_TRY_stoi        (re[4], -1)._0), 
-                                dtSeconds(s_TRY_stoi        (re[5], -1)._0), 
-                                dtMilliseconds(s_TRY_stoi   (re[6], -1)._0))
+                    DateTime{   dtYear(s_TRY_stoi           (re[0], -1)._0),
+                                dtMonth(s_TRY_stoi          (re[1], -1)._0),
+                                dtDay(s_TRY_stoi            (re[2], -1)._0),
+                                dtHours(s_TRY_stoi          (re[3], -1)._0),
+                                dtMinutes(s_TRY_stoi        (re[4], -1)._0),
+                                dtSeconds(s_TRY_stoi        (re[5], -1)._0),
+                                dtMilliseconds(s_TRY_stoi   (re[6], -1)._0)}
                     , true);
             }
             catch(...)
@@ -251,6 +248,26 @@ namespace mtk {
                 return make_tuple(defVal, false);
             }
         }
+        else
+        {
+            mtk::RegExp re2("^ *([12][0-9]{3})-(1[0-2]|0[1-9])-([012][0-9]|[3][01]) *$");
+            if(re2.Match(s))
+            {
+                try
+                {
+                    return make_tuple(
+                        DateTime{   dtYear(s_TRY_stoi           (re2[0], -1)._0),
+                                    dtMonth(s_TRY_stoi          (re2[1], -1)._0),
+                                    dtDay(s_TRY_stoi            (re2[2], -1)._0) }
+                        , true);
+                }
+                catch(...)
+                {
+                    return make_tuple(defVal, false);
+                }
+            }
+        }
+        return make_tuple(defVal, false);
     }
 
 
@@ -305,7 +322,7 @@ mtk::tuple<int, bool> s_TRY_stoi(const std::string&    _s, int    defVal )
     std::string s = mtk::s_trim(_s, ' ');
     if (s.size() == 0)
         return make_tuple(defVal, false);
-    
+
     std::istringstream is;
 
     is.str(s);

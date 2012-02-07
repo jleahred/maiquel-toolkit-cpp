@@ -50,6 +50,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_position_ls"; };
 
     
+
+    
     
     
     
@@ -98,6 +100,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX_LS"; };
 
     
+
+    
     
     
     
@@ -142,6 +146,8 @@ public:
     virtual ~RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -192,6 +198,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_MD_LS"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -240,6 +248,8 @@ public:
     virtual ~RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_CC_LS"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -291,6 +301,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX_LS"; };
 
     
+
+    
     
     
     
@@ -335,6 +347,8 @@ public:
     virtual ~CF_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_NW_LS"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -385,6 +399,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "CF_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_MD_LS"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -434,6 +450,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "CF_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_CC_LS"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -482,6 +500,8 @@ public:
     virtual ~CF_EX_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_EX_LS"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -534,6 +554,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "RJ_XX_LS"; };
 
     
+
+    
     
     
     
@@ -578,6 +600,8 @@ public:
     virtual ~RJ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_NW_LS"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -628,6 +652,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_MD_LS"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -677,6 +703,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RJ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RJ_CC_LS"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -725,6 +753,8 @@ public:
     virtual ~CF_ST_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_ST_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_ST_LS"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     

@@ -1,33 +1,61 @@
+//  <1>
 BEGIN_INIT
 
-INCLUDES = [ ]
-NAMESPACES = [ 'users_manager' ]
+NAMESPACES = ['testing']
 
 END_INIT
 
 
 
-//---------------------------------------------------------------------
-//        
-//
-//---------------------------------------------------------------------
-
-
-sub_user  [<    >]
+LimitPosition   [< >]      // <2>
 {
-    check_pass_wrong    (cpwr)          :       int
+   buy_sell (bs)   :  string       [optional]        // <3>
+   price    (pr)   :  fix_num      [recomended]
+   quantity (qt)   :  fix_num      [mandatory]
 }
 
 
 
-sub_user_acs_info  [<  QE: PUB  >]
+
+RQ_NW_LS  [< DEPRECIATED:2012-02-05,  SUBJ:hola.pajaarito, QE:testing >]   // <4>
 {
-    user_info           (ui)            :       sub_user_info
-    passwordcrc32       (pw32)          :       string
-    created_on          (dtc)           :       date_time
-    last_access         (dt)            :       date_time
-    check_pass_ok       (cpok)          :       int
-    check_pass_wrong    (cpwr)          :       int
+   //  single fields
+   order_id (oid)  :  string       [mandatory]
+   cli_ref  (cr)   :  string       [mandatory]
+
+   // External nested submessage          <5>
+   position (pos)  : LimitPosition [mandatory]
+
+   // External not nested submessage     <6>
+   positionnn      : LimitPosition
+
+
+
+
+   //  group of fields not nested on "wired" message   <7>
+   control_fields_  [< >]
+   {
+      clock_id (ci)       :  date_time    [mandatory]
+      secuence (sec)      :  int32        [mandatory]
+   }
+
+   //  group of fields nested on "wired" message    <8>
+   product_code (pc)   [< >]
+   {
+      market        (mk)       :  string       [mandatory]
+      product_code  (pr)       :  string       [mandatory]
+      aditional_code(ac)       :  string       //[mandatory]  by default is mandatory  <9>
+   }
+
+    [names]       (ns)          :  string            // <10>
+    [postitions]  (poss)        :  LimitPosition     // <11>
 }
 
 
+
+LimitPositionChild   [< I:LimitPosition >]      // <12>
+{
+   new_field   (nf)  : string
+
+  #send  [{  std::cout  << "#send " << this->new_field << std::endl; }]    //    <13>
+}

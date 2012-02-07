@@ -49,6 +49,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_add_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_add_user"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -100,6 +102,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_del_user"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_del_user"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -150,6 +154,8 @@ public:
     virtual ~req_session_id_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_session_id_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_session_id_conf"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -203,6 +209,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_acs2serv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_acs2serv"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -253,6 +261,8 @@ public:
     virtual ~pub_partial_user_list_serv2acs (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_partial_user_list_serv2acs"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_partial_user_list_serv2acs"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -305,6 +315,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "req_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_user_list"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -354,6 +366,8 @@ public:
     virtual ~res_user_list (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_user_list"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_user_list"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     

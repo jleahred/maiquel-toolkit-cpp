@@ -49,6 +49,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_product_info"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -99,6 +101,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -148,6 +152,8 @@ public:
     virtual ~ps_req_init_prod_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -200,6 +206,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -250,6 +258,8 @@ public:
     virtual ~ps_conf_full_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -303,6 +313,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -351,6 +363,8 @@ public:
     virtual ~ps_req_init_prod_info__to_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info__to_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info__to_publisher"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -401,6 +415,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init__from_publisher"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -449,6 +465,8 @@ public:
     virtual ~ps_conf_full_product_info__from_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info__from_publisher"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     

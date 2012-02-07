@@ -92,12 +92,13 @@ int main(int /*argc*/, char** /*argv*/)
         //  <2>
         //-----------------------------------------------------------------------------------------------------
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<testing::RQ_NW_LS> > hqpidr2;
-        MTK_QPID_RECEIVER_CONNECT_F(
+        MTK_QPID_RECEIVER_CONNECT_F__DEPRECIATED(
                                 hqpidr2,
                                 g_url,
                                 testing::RQ_NW_LS::get_in_subject(),        //  using implicit subject defined on message
                                 testing::RQ_NW_LS,
-                                on_message)
+                                on_message,
+                                (mtk::dtDateTime{mtk::dtYear(2012), mtk::dtMonth(2), mtk::dtDay(5)}))
         //-----------------------------------------------------------------------------------------------------
 
 

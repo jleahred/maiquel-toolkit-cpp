@@ -60,6 +60,8 @@ public:
         static  std::string static_get_message_type_as_string(void)        { return "IC_key"; };
     
         
+    
+        
         
         
         
@@ -96,6 +98,8 @@ public:
     virtual ~sub_grant (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_grant"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_grant"; };
+
+    
 
     
     
@@ -151,6 +155,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "rq_accounts"; };
     static  std::string static_get_message_type_as_string(void)        { return "rq_accounts"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -200,6 +206,8 @@ public:
     virtual ~conf_add_accounts (){};
     virtual std::string get_message_type_as_string       (void) const  { return "conf_add_accounts"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_add_accounts"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -252,6 +260,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_accmgr_init"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_accmgr_init"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -302,6 +312,8 @@ public:
     virtual ~rq_accounts_oninit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "rq_accounts_oninit"; };
     static  std::string static_get_message_type_as_string(void)        { return "rq_accounts_oninit"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     

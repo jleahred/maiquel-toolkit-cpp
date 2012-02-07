@@ -1121,7 +1121,7 @@ qpid::messaging::Message RQ_NW_LS::qpidmsg_codded_as_qpid_message (const std::st
         __internal_add2map(content, this->postitions, std::string("poss"));
 
 
-    mtk::msg::sub_control_fields control_fields(static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal());
+    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
     //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
     __internal_add2map(content, control_fields, std::string("_cf_"));
 

@@ -50,6 +50,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_enter"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_enter"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -103,6 +105,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_srv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_srv"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -155,6 +159,8 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_cli"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_cli"; };
 
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
     
     
     qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
@@ -204,6 +210,8 @@ public:
     virtual ~pub_exit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_exit"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_exit"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -256,6 +264,8 @@ public:
     virtual ~pub_alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_alarm"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_alarm"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -316,6 +326,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "req_command2"; };
 
     
+
+    
     
     
     
@@ -363,6 +375,8 @@ public:
     virtual ~req_command_srv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command_srv"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command_srv"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -412,6 +426,8 @@ public:
     virtual ~req_command_cli (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command_cli"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command_cli"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -463,6 +479,8 @@ public:
     static  std::string static_get_message_type_as_string(void)        { return "sub_command_rd"; };
 
     
+
+    
     
     
     
@@ -507,6 +525,8 @@ public:
     virtual ~res_command (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_command"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_command"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
@@ -558,6 +578,8 @@ public:
     virtual ~pub_central_keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_central_keep_alive"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_central_keep_alive"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
     
     
