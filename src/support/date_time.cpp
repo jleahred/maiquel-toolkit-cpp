@@ -914,6 +914,7 @@ dtMilliseconds               DateTime::GetMilliseconds             (void) const
 
 dtMillisecsDay          DateTime::GetMillisecsDay           (void) const
 {
+    DecodeDate();
     return  dtMillisecsDay(
                 int(
                         hours.WarningDontDoThisGetInternal()   * 60. * 60. *1000.
