@@ -3,7 +3,7 @@ INCLUDES = -I../../../src
 
 
 # library paths
-LIBS = -L../../../lib  -lmtksupport -lyaml
+LIBS = -L../../../lib  -lmtksupport -lyaml -lrt
 
 
 
