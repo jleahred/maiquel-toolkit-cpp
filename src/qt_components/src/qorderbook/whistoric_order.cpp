@@ -121,3 +121,9 @@ void whistoric_order::on_radioButton_toggled(bool checked)
     else
         ui->stackedWidget->setCurrentIndex(1);
 }
+
+void whistoric_order::showEvent ( QShowEvent * event )
+{
+    QDialog::showEvent(event);
+    ui->show_execs->setChecked(true);
+}

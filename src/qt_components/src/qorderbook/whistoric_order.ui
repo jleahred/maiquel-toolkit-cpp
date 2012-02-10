@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>773</width>
-    <height>349</height>
+    <height>363</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,24 +51,7 @@ QLabel#exec_price, QLabel#exec_quantity
 </string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="3">
-    <widget class="QLabel" name="product_name">
-     <property name="text">
-      <string notr="true">product_name</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="4">
-    <widget class="QLabel" name="exec_price">
-     <property name="text">
-      <string notr="true">exec_price</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="side">
      <property name="text">
       <string notr="true">side</string>
@@ -78,7 +61,7 @@ QLabel#exec_price, QLabel#exec_quantity
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="3" column="1">
     <widget class="QLabel" name="quantity">
      <property name="text">
       <string notr="true">quantity</string>
@@ -88,7 +71,7 @@ QLabel#exec_price, QLabel#exec_quantity
      </property>
     </widget>
    </item>
-   <item row="2" column="2">
+   <item row="3" column="2">
     <widget class="QLabel" name="price">
      <property name="text">
       <string notr="true">price</string>
@@ -98,7 +81,7 @@ QLabel#exec_price, QLabel#exec_quantity
      </property>
     </widget>
    </item>
-   <item row="2" column="4">
+   <item row="3" column="4">
     <widget class="QLabel" name="exec_quantity">
      <property name="text">
       <string notr="true">exec_quantity</string>
@@ -108,7 +91,7 @@ QLabel#exec_price, QLabel#exec_quantity
      </property>
     </widget>
    </item>
-   <item row="3" column="4">
+   <item row="4" column="4">
     <widget class="QLabel" name="rem_quantity">
      <property name="text">
       <string notr="true">rem_quantity</string>
@@ -118,17 +101,7 @@ QLabel#exec_price, QLabel#exec_quantity
      </property>
     </widget>
    </item>
-   <item row="0" column="4">
-    <widget class="QLabel" name="order_id">
-     <property name="text">
-      <string notr="true">order_id</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="4">
+   <item row="4" column="0" rowspan="2" colspan="4">
     <widget class="QLabel" name="remarks">
      <property name="text">
       <string notr="true">remarks</string>
@@ -138,7 +111,7 @@ QLabel#exec_price, QLabel#exec_quantity
      </property>
     </widget>
    </item>
-   <item row="4" column="4">
+   <item row="5" column="4">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QRadioButton" name="radioButton">
@@ -146,23 +119,26 @@ QLabel#exec_price, QLabel#exec_quantity
         <string>hist</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton_2">
+      <widget class="QRadioButton" name="show_execs">
        <property name="text">
         <string>execs</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="5" column="0" colspan="5">
+   <item row="6" column="0" colspan="5">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -184,6 +160,33 @@ QLabel#exec_price, QLabel#exec_quantity
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QLabel" name="exec_price">
+     <property name="text">
+      <string notr="true">exec_price</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QLabel" name="order_id">
+     <property name="text">
+      <string notr="true">order_id</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="product_name">
+     <property name="text">
+      <string notr="true">product_name</string>
+     </property>
     </widget>
    </item>
   </layout>

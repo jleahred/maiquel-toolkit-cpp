@@ -29,6 +29,8 @@ public:
 
     void set_order  (const mtk::trd::msg::sub_order_id& order_id);
 
+protected:
+    void   showEvent ( QShowEvent * event );        //  overwritten
 
 private:
     Ui::whistoric_order *ui;
