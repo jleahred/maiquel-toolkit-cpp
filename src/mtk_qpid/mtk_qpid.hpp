@@ -20,6 +20,7 @@
 #include <qpid/messaging/Sender.h>
 #include <qpid/messaging/Session.h>
 #include <qpid/messaging/Message.h>
+#include "qpid/client/ConnectionSettings.h"
 
 
 #include "support/basic_types.hpp"
@@ -240,10 +241,11 @@ struct mtkqpid_session
     }
 
     mtkqpid_session(const t_qpid_url& _url)
-        :  connection   (_url.WarningDontDoThisGetInternal())
-         , url          (_url)
+        :    connection   (_url.WarningDontDoThisGetInternal())
+           , url          (_url)
     {
             connection.open();
+            connection.setOption("tcp-nodelay", true);
             _qpid_session = connection.createSession();
             ++mtk_qpid_stats::num_created_sessions();
     }
