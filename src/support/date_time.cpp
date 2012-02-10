@@ -1224,11 +1224,46 @@ uint64_t&          __internal_init_milliseconds(void)
 }
 
 
-DateTime        dtNowLocal                  (void)
+
+inline  void   __internal_check_clock_adjustment(bool now_local, const mtk::dtDateTime now,  uint64_t   current_milliseconds)
 {
     static  uint64_t   num_adjustments = 0;
-    static  uint64_t   previus_called = 0;
+    static  uint64_t   previus_adjustment = 0;
+    static  uint64_t   last_checked_adjustent = __internal__dtMachineGetTotalMillisecs();
+    if(current_milliseconds - last_checked_adjustent > 1000*15     // check diference with system time and apply a small correction
+                    &&     current_milliseconds - previus_adjustment > 3)
+    {
+        //  correction will be 3 milliseconds per 15 seconds maximum
+        //  it produce a maximun correction of 17.3 seconds per day
+        last_checked_adjustent = current_milliseconds;
+        auto diff = mtk::dtTimeQuantity(mtk::dtMilliseconds(0));
+        if(now_local)
+            diff = now - dtNowLocal__non_monotonic();
+        else
+            diff = now - dtNowUTC__non_monotonic();
+        if(diff  >  mtk::dtMilliseconds(20))       //  now bigger, we have to reduce it
+        {
+            __internal_init_milliseconds() += 3;
+            ++num_adjustments;
+            previus_adjustment = current_milliseconds;
+        }
+        else if(diff  <  mtk::dtMilliseconds(-20))
+        {
+            __internal_init_milliseconds() -= 3;
+            ++num_adjustments;
+            previus_adjustment = current_milliseconds;
+        }
+    }
 
+    static  uint64_t   last_alarm_adjustment = __internal__dtMachineGetTotalMillisecs();
+    if(current_milliseconds - last_alarm_adjustment > 1000*60*60)      //  1000*60*60  -> cada hora
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock adjustments", MTK_SS("num adjustments: "  <<   num_adjustments), mtk::alPriorError));
+}
+
+
+
+DateTime        dtNowLocal                  (void)
+{
     uint64_t   current_milliseconds = __internal__dtMachineGetTotalMillisecs();
 
     DateTime  result =  __internal_init_dt_local() + mtk::dtTotalMillisecs(current_milliseconds  -  __internal_init_milliseconds());
@@ -1243,30 +1278,7 @@ DateTime        dtNowLocal                  (void)
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock out synchr", MTK_SS("    dif... "  <<  result - dtNowLocal__non_monotonic()  <<  "    monotonic "  <<  result  << "   non monotonic" << dtNowLocal__non_monotonic()), mtk::alPriorError));
     }
 
-    static  uint64_t   last_checked_adjustent = __internal__dtMachineGetTotalMillisecs();
-    if(current_milliseconds - last_checked_adjustent > 1000*15     // check diference with system time and apply a small correction
-                    &&     current_milliseconds - previus_called > 3)
-    {
-        //  correction will be 3 milliseconds per 15 seconds maximum
-        //  it produce a maximun correction of 17.3 seconds per day
-        last_checked_adjustent = current_milliseconds;
-        auto  diff = result - dtNowLocal__non_monotonic();
-        if(diff  >  mtk::dtMilliseconds(20))       //  result bigger, we have to reduce it
-        {
-            __internal_init_milliseconds() -= 3;
-            ++num_adjustments;
-        }
-        if(diff  <  mtk::dtMilliseconds(-20))
-        {
-            __internal_init_milliseconds() += 3;
-            ++num_adjustments;
-        }
-    }
-    previus_called = current_milliseconds;
-
-    static  uint64_t   last_alarm_adjustment = __internal__dtMachineGetTotalMillisecs();
-    if(current_milliseconds - last_alarm_adjustment > 1000*60*60)      //  1000*60*60  -> cada hora
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock adjustments", MTK_SS("num adjustments: "  <<   num_adjustments), mtk::alPriorError));
+    __internal_check_clock_adjustment(true, result, current_milliseconds);
 
     return result;
 }
@@ -1274,9 +1286,6 @@ DateTime        dtNowLocal                  (void)
 
 DateTime    dtNowUTC  (void)
 {
-    static  uint64_t   num_adjustments = 0;
-    static  uint64_t   previus_called = 0;
-
     uint64_t   current_milliseconds = __internal__dtMachineGetTotalMillisecs();
 
     DateTime  result =  __internal_init_dt_utc() + mtk::dtTotalMillisecs(current_milliseconds  -  __internal_init_milliseconds());
@@ -1291,30 +1300,7 @@ DateTime    dtNowUTC  (void)
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock out synchr", MTK_SS("    dif... "  <<   result - dtNowUTC__non_monotonic()   <<  "    monotonic "  <<  result  << "   non monotonic" << dtNowUTC__non_monotonic()), mtk::alPriorError));
     }
 
-    static  uint64_t   last_checked_adjustent = __internal__dtMachineGetTotalMillisecs();
-    if(current_milliseconds - last_checked_adjustent > 1000*15     // check diference with system time and apply a small correction
-                    &&     current_milliseconds - previus_called > 3)
-    {
-        //  correction will be 3 milliseconds per 15 seconds maximum
-        //  it produce a maximun correction of 17.3 seconds per day
-        last_checked_adjustent = current_milliseconds;
-        auto  diff = result - dtNowLocal__non_monotonic();
-        if(diff  >  mtk::dtMilliseconds(20))       //  result bigger, we have to reduce it
-        {
-            __internal_init_milliseconds() -= 3;
-            ++num_adjustments;
-        }
-        if(diff  <  mtk::dtMilliseconds(-20))
-        {
-            __internal_init_milliseconds() += 3;
-            ++num_adjustments;
-        }
-    }
-    previus_called = current_milliseconds;
-
-    static  uint64_t   last_alarm_adjustment = __internal__dtMachineGetTotalMillisecs();
-    if(current_milliseconds - last_alarm_adjustment > 1000*60*60)      //  1000*60*60  -> cada hora
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock adjustments", MTK_SS("num adjustments: "  <<   num_adjustments), mtk::alPriorError));
+    __internal_check_clock_adjustment(false, result, current_milliseconds);
 
     return result;
 }
