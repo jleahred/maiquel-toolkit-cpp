@@ -43,8 +43,9 @@ struct TimeStats {
         _1_5s_counter       (0)    ,
         _5_15s_counter      (0)    ,
         _more_15s_counter   (0)    {};
-    void AddTime(const dtTimeQuantity& tq) {
+    void AddTime(const dtTimeQuantity& _tq) {
         //if (tq <= dtMilliseconds(40))   return;
+        dtTimeQuantity  tq  =  mtk::abs(_tq);
         if (tq > maxTime)      maxTime = tq;
         ++totalCounter;
         if      (tq < dtMilliseconds(200))      ++_0_02s_counter;
