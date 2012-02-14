@@ -10,7 +10,7 @@ Here we have the messages definitions (and in some cases the state diagrams) fro
 include::../../../VERSION[]
 **
 
-| Writter   |   José Luis Esteban
+| Writer   |   José Luis Esteban
 
 | Creation date |   2011-05-16
 
@@ -84,7 +84,7 @@ include::/tmp/adoc/generate_messages_doc.txt[]
 --
 . *SYS* Servers with logic
 .. *MK* Market servers
-.. *GS*  General servesr
+.. *GS*  General servers
 . *CLI* Terminals and servers for them
 .. *TS*, *CS*, *CTS*  Terminal servers, client servers, client terminal servers
 . *TERMINALS*
@@ -122,7 +122,7 @@ In some cases, in order to avoid creation of an aditional addresses, a +MK+ or +
 | GS.<cli_code>.#  |  CLI->GS | request from client (password, grants, ...) +
                                 This format is for client request +
                                 The <cli_code> is used to filter on +CS+
-| GS.<broler_code>.#             |  ALL->GS  |  comunication to +GS+ from other servers
+| GS.<broler_code>.#             |  ALL->GS  |  communication to +GS+ from other servers
 
 | MK.<market>.#    |  GS->MK | Market is used to filter for specific server +
                                 ps_conf, ps_req, ... +
@@ -154,10 +154,10 @@ PRICES.<market>::
 
 
 // * +PUB+ will be used on messages sent to many. Broadcast with no response and therefore no end response
-// * +CONF+ to send messages to many but they depend from any request or previus suscription information and the suscription is  _permanent_. +
+// * +CONF+ to send messages to many but they depend from any request or previous subscription information and the subscription is  _permanent . +
 //   Orders confirmation for example
 // * +REQ+ is for request responses and request confirmation patterns
-// * +REP+ responses of request response pattern. _Non permanent_ suscriptions
+// * +REP+ responses of request response pattern. _Non permanent_ subscriptions
 
 
 === Message name convention
@@ -185,7 +185,7 @@ Dotted lines mean filtered routes
 PRICES.<market>::
 * This is a one direccion *dynamic* exchange route
 * This is a special case with LVQ queues
-* Information starts on market connections and is distribuited to terminals
+* Information starts on market connections and is distributed to terminals
 * i.e. prices
 ["graphviz", "queue_topology_prices.png"]
 -----------
@@ -621,7 +621,7 @@ include::../../../src/components/acs/msg_acs.msg[]
 
 * There is no reject message or code
 * If not configured or not granted, there will not be response
-* This behaivor lets to configure several +tree_servers+ for diferent users, having the posibility to show diferent trees to diferent users
+* This behavior lets to configure several +tree_servers+ for different users, having the possibility to show different trees to different users
 +
 .components/gen/msg_tree_server.msg
 [source,{cpp}]
@@ -834,10 +834,10 @@ digraph dfd0_graph {
 * +tree_servers+ will receive the +rq_tree_items+ and they will send response to client
 * +tree_servers+ will check permisions for +rq_tree_items+ and +rq_prod_info+
 * If the request is not configurated on +tree_server+ or the user has no permision, the tree server will not reject the message
-* This behavior gives the oportunity to a diferent +tree_server+ instance, to check and send response (if so). In this case, +tree_servers+ will work in parallalel
+* This behavior gives the oportunity to a different +tree_server+ instance, to check and send response (if so). In this case, +tree_servers+ will work in parallel
 * A +tree_server+ could verify the request, and if it's ok, it could send this request to another +tree_server+ with the information to send the response. Working in pipeline
 * The easiest case is when tree_server on level 1 send response directly
-* When a +tree_server+ detects new products on tree, it will send a colapse brach (where new products were inserted)
+* When a +tree_server+ detects new products on tree, it will send a collapse branch (where new products were inserted)
 +
 .DFD  rq_tree_items  res_tree_items  option A
 ["graphviz", "tree_items_dfdA.png"]
@@ -874,14 +874,14 @@ tree_server2 ->  CLIENT  [label = rs_tree_items ]
 === Product Loader
 
 * +product_loader+ will keep products info in order to send a snapshot of an specific product
-* They will work after +prodinfo_grants+. The +prodinfo_grants+ will check the permisions for each product info request.
+* They will work after +prodinfo_grants+. The +prodinfo_grants+ will check the permissions for each product info request.
 * +product_loader+ will listen on client_side the messages +pub_(marg,depth,trades...)+ to build the status info per product
 * It will listen on server side, messages +pub_full_product_info+ and +pub_end_product_info_init+ for a initialization
 * When the process starts, it will send +req_init_prod_info+
-** This message gives the oportunity to market price server, to start sendind initialization (i.e.)
+** This message gives the opportunity to market price server, to start sending initialization (i.e.)
 * This process will listen to +pub_market_pubisher_ready+, to send +req_init_prod_info+ to publisher
 +
-.DFD  resquest response product info
+.DFD  request response product info
 ["graphviz", "product_loaderA.png"]
 -----------
 digraph dfd0_graph {
