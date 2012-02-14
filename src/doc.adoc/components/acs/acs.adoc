@@ -12,7 +12,7 @@
 * This component has been generated with +fsm_gen+ from +fsm_cli_acs.fsm+
 +
 .login and change password status diagram
-["graphviz", "components_trading_o_ls.png"]
+["graphviz", "components_acs.png"]
 -----------
 include::../../../components/acs/cli/fsm_cli_acs.dot[]
 ------------

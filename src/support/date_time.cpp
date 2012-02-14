@@ -1257,7 +1257,10 @@ inline  void   __internal_check_clock_adjustment(bool now_local, const mtk::dtDa
 
     static  uint64_t   last_alarm_adjustment = __internal__dtMachineGetTotalMillisecs();
     if(current_milliseconds - last_alarm_adjustment > 1000*60*60)      //  1000*60*60  -> cada hora
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock adjustments", MTK_SS("num adjustments: "  <<   num_adjustments), mtk::alPriorError));
+    {
+        last_alarm_adjustment = __internal__dtMachineGetTotalMillisecs();
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock adjustments", MTK_SS("num adjustments: "  <<   num_adjustments), mtk::alPriorWarning));
+    }
 }
 
 
