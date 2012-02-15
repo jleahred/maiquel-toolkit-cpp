@@ -230,7 +230,7 @@ void send_orders_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
         return;
     }
 
-    {       //      limit orders
+    {
         mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders = get_map_order<CF_TYPE>();
         for(auto it = map_orders->begin(); it != map_orders->end(); ++it)
         {
@@ -254,6 +254,60 @@ void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 
 };      //  anonymous namespace
 
+
+
+
+
+template<typename  CF_TYPE>     //  ex:  mtk::trd::msg::CF_XX_LS
+int   delete_end_of_day_orders(void)
+{
+    int  result = 0;
+
+    mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders = get_map_order<CF_TYPE>();
+    auto it = map_orders->begin();
+    while  (it != map_orders->end())
+    {
+        if(it->second.invariant.time_in_force ==  "DAY")
+        {
+            it = map_orders->erase(it);
+            ++result;
+        }
+        else
+        {
+            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "orders_loader", MTK_SS("Order with time_in_foce not DAY??? " << it->second.invariant),
+                                                        mtk::alPriorError, mtk::alTypeNoPermisions));
+            MTK_END_EXEC_MAX_FREC
+            ++it;
+        }
+    }
+
+    return  result;
+}
+
+
+void  timer_check_delete_end_of_day(void)
+{
+    //  At this moment, it is not configurable the time to do it
+    //  in the future (if would be necessary), we could add the time on configuration file, or even use a market message
+    MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(1))
+        static  mtk::DateTime  time_delete_end_of_day_order  = mtk::dtToday_0Time() + mtk::dtHours(2);
+        mtk::dtDateTime  now = mtk::dtNowLocal();
+        if(now > time_delete_end_of_day_order)
+        {
+            auto  next_time_delete_end_of_day_order  =  time_delete_end_of_day_order + mtk::dtDays(1);
+            int deleted_orders=0;
+
+            deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_LS>();
+            deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_MK>();
+
+
+            AlarmMsg(mtk::Alarm(MTK_HERE, "order loader", MTK_SS("deleted end of day ordes...   next:"  <<  next_time_delete_end_of_day_order <<
+                    "  num orders deleted:"  << deleted_orders), mtk::alPriorWarning, mtk::alTypeUnknown));
+            time_delete_end_of_day_order  = next_time_delete_end_of_day_order;
+        }
+    MTK_END_EXEC_MAX_FREC
+}
 
 
 
@@ -339,6 +393,7 @@ int main(int argc, char ** argv)
         }
 
 
+        MTK_TIMER_1SF(timer_check_delete_end_of_day)
 
         mtk::start_timer_wait_till_end();
 
