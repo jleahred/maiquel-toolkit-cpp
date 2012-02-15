@@ -299,13 +299,6 @@ private:
 
 
 
-typedef FixedNumber   fn;
-
-
-
-
-
-
 std::ostream&  operator<< (std::ostream&  os, const FixedNumber& fn);
 std::ostream&  operator<< (std::ostream&  os, const fnExt& fnExt);
 

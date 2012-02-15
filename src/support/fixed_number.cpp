@@ -438,7 +438,7 @@ FixedNumber&    FixedNumber::operator++ (void)
 
 const FixedNumber    FixedNumber::operator++ (int )
 {
-    fn temp (*this);
+    FixedNumber temp (*this);
     operator++();
     return temp;
 }
@@ -450,7 +450,7 @@ FixedNumber&    FixedNumber::operator-- (void)
 
 const FixedNumber    FixedNumber::operator-- (int )
 {
-    fn temp (*this);
+    FixedNumber temp (*this);
     operator--();
     return temp;
 }
@@ -458,13 +458,13 @@ const FixedNumber    FixedNumber::operator-- (int )
 
 FixedNumber     FixedNumber::operator+  (const fnTicks&  ticks) const
 {
-    fn result(*this);
+    FixedNumber result(*this);
     return result += ticks;
 }
 
 FixedNumber     FixedNumber::operator-  (const fnTicks&  ticks) const
 {
-    fn result(*this);
+    FixedNumber result(*this);
     return result -= ticks;
 }
 

@@ -8,7 +8,7 @@ DIR_SRC_CXX = src
 #
 #
 # library paths
-LIBS = -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtkfirebird -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging -lfbclient64
+LIBS = -L./mtk/external/lib/linux -L./mtk/lib -lmtk_components -lmtkfirebird -lmtksupport -lyaml -lmtk_qpid -lqpidclient -lqpidmessaging -lqpidtypes -lfbclient64
 #
 #
 # include directories

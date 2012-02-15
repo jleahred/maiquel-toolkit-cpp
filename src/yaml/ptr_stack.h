@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+
 template <typename T>
 class ptr_stack: private YAML::noncopyable
 {
@@ -26,7 +27,7 @@ public:
 	bool empty() const { return m_data.empty(); }
 	
 	void push(std::auto_ptr<T> t) {
-		m_data.push_back(NULL);
+		m_data.push_back(0);
 		m_data.back() = t.release();
 	}
 	std::auto_ptr<T> pop() {

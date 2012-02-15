@@ -28,7 +28,7 @@ namespace YAML {
 		bool empty() const { return m_data.empty(); }
 		
 		void push_back(std::auto_ptr<T> t) {
-			m_data.push_back(NULL);
+			m_data.push_back(0);
 			m_data.back() = t.release();
 		}
 		T& operator[](std::size_t i) { return *m_data[i]; }
