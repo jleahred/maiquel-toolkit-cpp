@@ -1278,7 +1278,7 @@ DateTime        dtNowLocal                  (void)
     {
         last_checked_diference = current_milliseconds;
         if(mtk::abs(result - dtNowLocal__non_monotonic())  > dtSeconds(2))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock out synchr", MTK_SS("    dif... "  <<  result - dtNowLocal__non_monotonic()  <<  "    monotonic "  <<  result  << "   non monotonic" << dtNowLocal__non_monotonic()), mtk::alPriorError));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock out synchr", MTK_SS("    dif... "  <<  result - dtNowLocal__non_monotonic()  <<  "    monotonic "  <<  result  << "   non monotonic" << dtNowLocal__non_monotonic()), mtk::alPriorWarning));
     }
 
     __internal_check_clock_adjustment(true, result, current_milliseconds);
@@ -1300,7 +1300,7 @@ DateTime    dtNowUTC  (void)
     {
         last_checked_diference = current_milliseconds;
         if(mtk::abs(result - dtNowUTC__non_monotonic())  > dtSeconds(2))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock out synchr", MTK_SS("    dif... "  <<   result - dtNowUTC__non_monotonic()   <<  "    monotonic "  <<  result  << "   non monotonic" << dtNowUTC__non_monotonic()), mtk::alPriorError));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "clock out synchr", MTK_SS("    dif... "  <<   result - dtNowUTC__non_monotonic()   <<  "    monotonic "  <<  result  << "   non monotonic " << dtNowUTC__non_monotonic()), mtk::alPriorWarning));
     }
 
     __internal_check_clock_adjustment(false, result, current_milliseconds);
