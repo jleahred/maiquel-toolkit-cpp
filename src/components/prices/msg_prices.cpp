@@ -560,8 +560,62 @@ void sub_additional_info::before_send(void) const
 
 
 
-sub_full_product_info::sub_full_product_info (   const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const sub_additional_info&  _additional_info)
-    :     product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info) 
+sub_last_mk_execs_ticker::sub_last_mk_execs_ticker (   const mtk::FixedNumber&  _last_price,   const mtk::FixedNumber&  _last_quantity,   const mtk::trd::msg::enBuySell&  _side,   const mtk::FixedNumber&  _max_last_price,   const mtk::FixedNumber&  _min_last_price,   const mtk::FixedNumber&  _opened_price)
+    :     last_price(_last_price),   last_quantity(_last_quantity),   side(_side),   max_last_price(_max_last_price),   min_last_price(_min_last_price),   opened_price(_opened_price) 
+       
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string sub_last_mk_execs_ticker::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void sub_last_mk_execs_ticker::before_send(void) const
+{
+
+}
+
+
+
+
+pub_last_mk_execs_ticker::pub_last_mk_execs_ticker (   const mtk::msg::sub_product_code&  _product_code,   const sub_last_mk_execs_ticker&  _last_mk_execs_ticker,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     product_code(_product_code),   last_mk_execs_ticker(_last_mk_execs_ticker),   orig_control_fluct(_orig_control_fluct) 
+       , __internal_warning_control_fields(0)
+    {  
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                    MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+std::string pub_last_mk_execs_ticker::check_recomended(void) const
+{
+    std::string result;
+
+    return result;
+}
+
+void pub_last_mk_execs_ticker::before_send(void) const
+{
+
+}
+
+
+
+
+sub_full_product_info::sub_full_product_info (   const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const sub_additional_info&  _additional_info,   const mtk::nullable<sub_last_mk_execs_ticker>&  _last_mk_execs_ticker)
+    :     product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info),   last_mk_execs_ticker(_last_mk_execs_ticker) 
        
     {  
         std::string cr = check_recomended ();  
@@ -576,6 +630,11 @@ std::string sub_full_product_info::check_recomended(void) const
 {
     std::string result;
 
+    MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
+        if (last_mk_execs_ticker.HasValue() == false)
+            result += "sub_full_product_info::check_recomended  missing recomended field **last_mk_execs_ticker** on sub_full_product_info";
+    MTK_END_EXEC_MAX_FREC
+
     return result;
 }
 
@@ -587,8 +646,8 @@ void sub_full_product_info::before_send(void) const
 
 
 
-sub_full_product_info_optionals::sub_full_product_info_optionals (   const bool&  _initialized,   const mtk::msg::sub_product_code&  _product_code,   const mtk::nullable<sub_best_prices>&  _best_prices,   const mtk::nullable<sub_additional_info>&  _additional_info)
-    :     initialized(_initialized),   product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info) 
+sub_full_product_info_optionals::sub_full_product_info_optionals (   const bool&  _initialized,   const mtk::msg::sub_product_code&  _product_code,   const mtk::nullable<sub_best_prices>&  _best_prices,   const mtk::nullable<sub_additional_info>&  _additional_info,   const mtk::nullable<sub_last_mk_execs_ticker>&  _last_mk_execs_ticker)
+    :     initialized(_initialized),   product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info),   last_mk_execs_ticker(_last_mk_execs_ticker) 
        
     {  
         std::string cr = check_recomended ();  
@@ -899,11 +958,82 @@ void  operator >> (const YAML::Node& node, sub_additional_info & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const sub_last_mk_execs_ticker & c)
+{
+    o << "{ "
+
+        << "last_price:"<<   c.last_price << "  "        << "last_quantity:"<<   c.last_quantity << "  "        << "side:"<< c.side<<"  "        << "max_last_price:"<<   c.max_last_price << "  "        << "min_last_price:"<<   c.min_last_price << "  "        << "opened_price:"<<   c.opened_price << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_last_mk_execs_ticker & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "last_price"  << YAML::Value <<   c.last_price        << YAML::Key << "last_quantity"  << YAML::Value <<   c.last_quantity        << YAML::Key << "side"  << YAML::Value << c.side        << YAML::Key << "max_last_price"  << YAML::Value <<   c.max_last_price        << YAML::Key << "min_last_price"  << YAML::Value <<   c.min_last_price        << YAML::Key << "opened_price"  << YAML::Value <<   c.opened_price
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_last_mk_execs_ticker & c)
+{
+
+
+        node["last_price"]  >> c.last_price;
+        node["last_quantity"]  >> c.last_quantity;
+        node["side"]  >> c.side;
+        node["max_last_price"]  >> c.max_last_price;
+        node["min_last_price"]  >> c.min_last_price;
+        node["opened_price"]  >> c.opened_price;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const pub_last_mk_execs_ticker & c)
+{
+    o << "{ "
+
+        << "product_code:"<< c.product_code<<"  "        << "last_mk_execs_ticker:"<< c.last_mk_execs_ticker<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_last_mk_execs_ticker & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "last_mk_execs_ticker"  << YAML::Value << c.last_mk_execs_ticker        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, pub_last_mk_execs_ticker & c)
+{
+
+
+        node["product_code"]  >> c.product_code;
+        node["last_mk_execs_ticker"]  >> c.last_mk_execs_ticker;
+        node["orig_control_fluct"]  >> c.orig_control_fluct;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_full_product_info & c)
 {
     o << "{ "
 
-        << "product_code:"<< c.product_code<<"  "        << "best_prices:"<< c.best_prices<<"  "        << "additional_info:"<< c.additional_info<<"  "
+        << "product_code:"<< c.product_code<<"  "        << "best_prices:"<< c.best_prices<<"  "        << "additional_info:"<< c.additional_info<<"  "        << "last_mk_execs_ticker:"<< c.last_mk_execs_ticker<<"  "
         << " }";
     return o;
 };
@@ -914,7 +1044,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_full_product_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices        << YAML::Key << "additional_info"  << YAML::Value << c.additional_info
+        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices        << YAML::Key << "additional_info"  << YAML::Value << c.additional_info        << YAML::Key << "last_mk_execs_ticker"  << YAML::Value << c.last_mk_execs_ticker
         << YAML::EndMap;
     return o;
 };
@@ -928,6 +1058,7 @@ void  operator >> (const YAML::Node& node, sub_full_product_info & c)
         node["product_code"]  >> c.product_code;
         node["best_prices"]  >> c.best_prices;
         node["additional_info"]  >> c.additional_info;
+        node["last_mk_execs_ticker"]  >> c.last_mk_execs_ticker;
 
 
 };
@@ -937,7 +1068,7 @@ std::ostream& operator<< (std::ostream& o, const sub_full_product_info_optionals
 {
     o << "{ "
 
-        << "initialized:"<< c.initialized<<"  "        << "product_code:"<< c.product_code<<"  "        << "best_prices:"<< c.best_prices<<"  "        << "additional_info:"<< c.additional_info<<"  "
+        << "initialized:"<< c.initialized<<"  "        << "product_code:"<< c.product_code<<"  "        << "best_prices:"<< c.best_prices<<"  "        << "additional_info:"<< c.additional_info<<"  "        << "last_mk_execs_ticker:"<< c.last_mk_execs_ticker<<"  "
         << " }";
     return o;
 };
@@ -948,7 +1079,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_full_product_info_option
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "initialized"  << YAML::Value << c.initialized        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices        << YAML::Key << "additional_info"  << YAML::Value << c.additional_info
+        << YAML::Key << "initialized"  << YAML::Value << c.initialized        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "best_prices"  << YAML::Value << c.best_prices        << YAML::Key << "additional_info"  << YAML::Value << c.additional_info        << YAML::Key << "last_mk_execs_ticker"  << YAML::Value << c.last_mk_execs_ticker
         << YAML::EndMap;
     return o;
 };
@@ -963,6 +1094,7 @@ void  operator >> (const YAML::Node& node, sub_full_product_info_optionals & c)
         node["product_code"]  >> c.product_code;
         node["best_prices"]  >> c.best_prices;
         node["additional_info"]  >> c.additional_info;
+        node["last_mk_execs_ticker"]  >> c.last_mk_execs_ticker;
 
 
 };
@@ -1138,9 +1270,33 @@ bool operator!= (const sub_additional_info& a, const sub_additional_info& b)
 
 
 
+bool operator== (const sub_last_mk_execs_ticker& a, const sub_last_mk_execs_ticker& b)
+{
+    return (          a.last_price ==  b.last_price  &&          a.last_quantity ==  b.last_quantity  &&          a.side ==  b.side  &&          a.max_last_price ==  b.max_last_price  &&          a.min_last_price ==  b.min_last_price  &&          a.opened_price ==  b.opened_price  &&   true  );
+};
+
+bool operator!= (const sub_last_mk_execs_ticker& a, const sub_last_mk_execs_ticker& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const pub_last_mk_execs_ticker& a, const pub_last_mk_execs_ticker& b)
+{
+    return (          a.product_code ==  b.product_code  &&          a.last_mk_execs_ticker ==  b.last_mk_execs_ticker  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
+};
+
+bool operator!= (const pub_last_mk_execs_ticker& a, const pub_last_mk_execs_ticker& b)
+{
+    return !(a==b);
+};
+
+
+
 bool operator== (const sub_full_product_info& a, const sub_full_product_info& b)
 {
-    return (          a.product_code ==  b.product_code  &&          a.best_prices ==  b.best_prices  &&          a.additional_info ==  b.additional_info  &&   true  );
+    return (          a.product_code ==  b.product_code  &&          a.best_prices ==  b.best_prices  &&          a.additional_info ==  b.additional_info  &&          a.last_mk_execs_ticker ==  b.last_mk_execs_ticker  &&   true  );
 };
 
 bool operator!= (const sub_full_product_info& a, const sub_full_product_info& b)
@@ -1152,7 +1308,7 @@ bool operator!= (const sub_full_product_info& a, const sub_full_product_info& b)
 
 bool operator== (const sub_full_product_info_optionals& a, const sub_full_product_info_optionals& b)
 {
-    return (          a.initialized ==  b.initialized  &&          a.product_code ==  b.product_code  &&          a.best_prices ==  b.best_prices  &&          a.additional_info ==  b.additional_info  &&   true  );
+    return (          a.initialized ==  b.initialized  &&          a.product_code ==  b.product_code  &&          a.best_prices ==  b.best_prices  &&          a.additional_info ==  b.additional_info  &&          a.last_mk_execs_ticker ==  b.last_mk_execs_ticker  &&   true  );
 };
 
 bool operator!= (const sub_full_product_info_optionals& a, const sub_full_product_info_optionals& b)
@@ -1572,6 +1728,158 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+//void  __internal_qpid_fill (sub_last_mk_execs_ticker& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (sub_last_mk_execs_ticker& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("lp");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field last_price on message sub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.last_price, it->second);
+                        //c.last_price = it->second;
+//   field_type
+
+                    it = mv.find("lq");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field last_quantity on message sub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.last_quantity, it->second);
+                        //c.last_quantity = it->second;
+//   sub_msg_type
+
+                    it = mv.find("sd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field side on message sub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.side, it->second);
+                        //__internal_qpid_fill(c.side, it->second.asMap());
+//   field_type
+
+                    it = mv.find("lmin");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field max_last_price on message sub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.max_last_price, it->second);
+                        //c.max_last_price = it->second;
+//   field_type
+
+                    it = mv.find("lmax");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field min_last_price on message sub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.min_last_price, it->second);
+                        //c.min_last_price = it->second;
+//   field_type
+
+                    it = mv.find("op");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field opened_price on message sub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.opened_price, it->second);
+                        //c.opened_price = it->second;
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_last_mk_execs_ticker& a)
+{
+
+    a.before_send();
+
+
+//  field_type
+        __internal_add2map(map, a.last_price, std::string("lp"));
+//  field_type
+        __internal_add2map(map, a.last_quantity, std::string("lq"));
+//  sub_msg_type
+        __internal_add2map(map, a.side, std::string("sd"));
+//  field_type
+        __internal_add2map(map, a.max_last_price, std::string("lmin"));
+//  field_type
+        __internal_add2map(map, a.min_last_price, std::string("lmax"));
+//  field_type
+        __internal_add2map(map, a.opened_price, std::string("op"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_last_mk_execs_ticker>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+//void  __internal_qpid_fill (pub_last_mk_execs_ticker& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+void  copy (pub_last_mk_execs_ticker& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("pc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_code on message pub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.product_code, it->second);
+                        //__internal_qpid_fill(c.product_code, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("lme");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field last_mk_execs_ticker on message pub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.last_mk_execs_ticker, it->second);
+                        //__internal_qpid_fill(c.last_mk_execs_ticker, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("ocf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field orig_control_fluct on message pub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.orig_control_fluct, it->second);
+                        //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
+
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk_execs_ticker& a)
+{
+
+    a.before_send();
+
+
+//  sub_msg_type
+        __internal_add2map(map, a.product_code, std::string("pc"));
+//  sub_msg_type
+        __internal_add2map(map, a.last_mk_execs_ticker, std::string("lme"));
+//  sub_msg_type
+        __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk_execs_ticker>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
 //void  __internal_qpid_fill (sub_full_product_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_full_product_info& c, const qpid::types::Variant& v)
     {  
@@ -1602,6 +1910,12 @@ void  copy (sub_full_product_info& c, const qpid::types::Variant& v)
                     else
                         copy(c.additional_info, it->second);
                         //__internal_qpid_fill(c.additional_info, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("lme");
+                    if (it!= mv.end())
+                        copy(c.last_mk_execs_ticker, it->second);
+                        //__internal_qpid_fill(c.last_mk_execs_ticker, it->second.asMap());
 
     }
 
@@ -1618,6 +1932,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_
         __internal_add2map(map, a.best_prices, std::string("bp"));
 //  sub_msg_type
         __internal_add2map(map, a.additional_info, std::string("ainf"));
+if (a.last_mk_execs_ticker.HasValue())
+//  sub_msg_type
+        __internal_add2map(map, a.last_mk_execs_ticker, std::string("lme"));
 
 
 };
@@ -1667,6 +1984,12 @@ void  copy (sub_full_product_info_optionals& c, const qpid::types::Variant& v)
                     if (it!= mv.end())
                         copy(c.additional_info, it->second);
                         //__internal_qpid_fill(c.additional_info, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("lme");
+                    if (it!= mv.end())
+                        copy(c.last_mk_execs_ticker, it->second);
+                        //__internal_qpid_fill(c.last_mk_execs_ticker, it->second.asMap());
 
     }
 
@@ -1687,6 +2010,9 @@ if (a.best_prices.HasValue())
 if (a.additional_info.HasValue())
 //  sub_msg_type
         __internal_add2map(map, a.additional_info, std::string("ainf"));
+if (a.last_mk_execs_ticker.HasValue())
+//  sub_msg_type
+        __internal_add2map(map, a.last_mk_execs_ticker, std::string("lme"));
 
 
 };
@@ -1855,6 +2181,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {
@@ -1894,6 +2222,35 @@ qpid::messaging::Message pub_new_products::qpidmsg_codded_as_qpid_message (const
 //  field_type
 //        content["mk"] = this->market;
         __internal_add2map(content, this->market, std::string("mk"));
+
+
+    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message pub_last_mk_execs_ticker::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  sub_msg_type
+//        content["pc"] =  qpidmsg_coded_as_qpid_Map(this->product_code);
+        __internal_add2map(content, this->product_code, std::string("pc"));
+//  sub_msg_type
+//        content["lme"] =  qpidmsg_coded_as_qpid_Map(this->last_mk_execs_ticker);
+        __internal_add2map(content, this->last_mk_execs_ticker, std::string("lme"));
+//  sub_msg_type
+//        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
+        __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
 
 
     mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
@@ -2034,6 +2391,36 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
             );
     }
     
+    sub_last_mk_execs_ticker  __internal_get_default(sub_last_mk_execs_ticker*)
+    {
+        return sub_last_mk_execs_ticker(
+//   field_type
+   __internal_get_default ((mtk::FixedNumber*)0),
+//   field_type
+   __internal_get_default ((mtk::FixedNumber*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::trd::msg::enBuySell*)0),
+//   field_type
+   __internal_get_default ((mtk::FixedNumber*)0),
+//   field_type
+   __internal_get_default ((mtk::FixedNumber*)0),
+//   field_type
+   __internal_get_default ((mtk::FixedNumber*)0)
+            );
+    }
+    
+    pub_last_mk_execs_ticker  __internal_get_default(pub_last_mk_execs_ticker*)
+    {
+        return pub_last_mk_execs_ticker(
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_product_code*)0),
+//   sub_msg_type
+   __internal_get_default((sub_last_mk_execs_ticker*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_control_fluct*)0)
+            );
+    }
+    
     sub_full_product_info  __internal_get_default(sub_full_product_info*)
     {
         return sub_full_product_info(
@@ -2042,7 +2429,9 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
 //   sub_msg_type
    __internal_get_default((sub_best_prices*)0),
 //   sub_msg_type
-   __internal_get_default((sub_additional_info*)0)
+   __internal_get_default((sub_additional_info*)0),
+//   sub_msg_type
+   mtk::nullable<sub_last_mk_execs_ticker>()
             );
     }
     
@@ -2056,7 +2445,9 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
 //   sub_msg_type
    mtk::nullable<sub_best_prices>(),
 //   sub_msg_type
-   mtk::nullable<sub_additional_info>()
+   mtk::nullable<sub_additional_info>(),
+//   sub_msg_type
+   mtk::nullable<sub_last_mk_execs_ticker>()
             );
     }
     
@@ -2187,6 +2578,46 @@ sub_additional_info::sub_additional_info (const qpid::types::Variant::Map&  mv)
 
 
 
+sub_last_mk_execs_ticker::sub_last_mk_execs_ticker (const qpid::types::Variant::Map&  mv)
+    :  //   field_type
+   last_price(__internal_get_default((mtk::FixedNumber*)0)),
+//   field_type
+   last_quantity(__internal_get_default((mtk::FixedNumber*)0)),
+//   sub_msg_type
+   side(__internal_get_default((mtk::trd::msg::enBuySell*)0)),
+//   field_type
+   max_last_price(__internal_get_default((mtk::FixedNumber*)0)),
+//   field_type
+   min_last_price(__internal_get_default((mtk::FixedNumber*)0)),
+//   field_type
+   opened_price(__internal_get_default((mtk::FixedNumber*)0)) 
+    {
+        copy(*this, mv);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
+pub_last_mk_execs_ticker::pub_last_mk_execs_ticker (const qpid::types::Variant::Map&  mv)
+    :  //   sub_msg_type
+   product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
+//   sub_msg_type
+   last_mk_execs_ticker(__internal_get_default((sub_last_mk_execs_ticker*)0)),
+//   sub_msg_type
+   orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
+    {
+        copy(*this, mv);
+        std::string cr = check_recomended ();  
+        if (cr!= "")
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
+                MTK_SS(cr<<*this), mtk::alPriorError));
+    }
+
+
+
 sub_full_product_info::sub_full_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
@@ -2291,6 +2722,22 @@ mtk::t_qpid_filter  pub_best_prices::get_in_subject (const std::string& product_
     mtk::t_qpid_address  pub_new_products::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_filter  pub_last_mk_execs_ticker::get_in_subject (const std::string& product_code_market,const std::string& product_code_product)
+    {
+        return mtk::t_qpid_filter(MTK_SS("EXTK." << product_code_market << "." << product_code_product << ""));
+    }
+    mtk::t_qpid_filter  pub_last_mk_execs_ticker::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("EXTK." << this->product_code.market << "." << this->product_code.product << ""));
+    }
+    /*static*/  mtk::t_qpid_address  pub_last_mk_execs_ticker::static_get_qpid_address (const std::string& product_code_market)
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << product_code_market << ""));
+    }
+    mtk::t_qpid_address  pub_last_mk_execs_ticker::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << this->product_code.market << ""));
     }
     mtk::t_qpid_filter  req_product_info::get_in_subject (const std::string& request_info_process_info_location_broker_code,const std::string& product_code_market)
     {

@@ -86,6 +86,9 @@ private:
     QTableDeph   *table_widget;
     QLabel       *title;
 
+    QLabel       *last_price;
+    QLabel       *last_quantity;
+
     QString       style_sheet_normal;
     QString       style_sheet_null;
 
@@ -98,6 +101,10 @@ private:
     void update_prices(const mtk::prices::msg::sub_best_prices&   best_prices);
     void update_prices(const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices);
     void upate_null_prices(void);
+
+    void update_last_mk_execs_ticker(const mtk::prices::msg::sub_last_mk_execs_ticker&);
+    void update_last_mk_execs_ticker(const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&);
+    void upate_null_last_mk_execs_ticker(void);
 
     QPoint startPos;
 

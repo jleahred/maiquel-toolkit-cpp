@@ -10,6 +10,7 @@
 #include <QStyledItemDelegate>
 #include <QPainter>
 #include <QPen>
+#include <QVBoxLayout>
 
 #include <iostream>
 
@@ -331,7 +332,7 @@ QDepth::QDepth(QWidget *parent) :
                                         QString::number(qtmisc::mtk_color_null.green()) + QLatin1String(", ") +
                                         QString::number(qtmisc::mtk_color_null.blue()) +  QLatin1String(");");
         style_sheet_null = QString::fromUtf8("background-color: ") + snullcolor  + QString::fromUtf8("\n" "color: rgb(0, 220, 0); font-weight: 1000;");
-        style_sheet_normal = QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0); font-weight: 1000;");
+        style_sheet_normal = QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(191,219,255); font-weight: 1000;");
     }
 
     {
@@ -357,8 +358,35 @@ QDepth::QDepth(QWidget *parent) :
     }
 
     {
+        QHBoxLayout* layout_last = new QHBoxLayout(this);
+        layout_last->setSpacing(0);
+        layout_last->setContentsMargins(0,0,0,0);
+        layout->addLayout(layout_last);
+
+        last_price = new QLabel(this);
+        layout_last->addWidget(last_price);
+        last_price->setAlignment(Qt::AlignCenter);
+        last_price->setAutoFillBackground(true);
+        last_price->setFrameShape(QFrame::Box);
+        last_price->setFrameShadow(QFrame::Plain);
+        last_price->setLineWidth(3);
+        last_price->setStyleSheet(style_sheet_normal);
+        last_price->setMargin(3);
+
+        last_quantity = new QLabel(this);
+        layout_last->addWidget(last_quantity);
+        last_quantity->setAlignment(Qt::AlignCenter);
+        last_quantity->setAutoFillBackground(true);
+        last_quantity->setFrameShape(QFrame::Box);
+        last_quantity->setFrameShadow(QFrame::Plain);
+        last_quantity->setLineWidth(3);
+        last_quantity->setStyleSheet(style_sheet_normal);
+        last_quantity->setMargin(3);
+    }
+
+    {
         layout->addWidget(table_widget);
-        table_widget->setStyleSheet(style_sheet_normal);//QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
+        //table_widget->setStyleSheet(style_sheet_normal);//QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
         table_widget->setRowCount(10);
         table_widget->setColumnCount(3);
         table_widget->verticalHeader()->setVisible(false);
@@ -532,7 +560,8 @@ void QDepth::check_for_pending_screen_update(void)
     if(pending_screen_update   &&   price_manager.get2())
     {
         //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
-            update_prices(price_manager->get_best_prices());
+            update_prices               (price_manager->get_best_prices());
+            update_last_mk_execs_ticker (price_manager->get_last_mk_execs_ticker());
             pending_screen_update = false;
         //MTK_END_EXEC_MAX_FREC
     }
@@ -582,6 +611,32 @@ void QDepth::upate_null_prices(void)
 {
     delete_cells(table_widget);
     table_widget->setStyleSheet(style_sheet_null);
+}
+
+
+
+
+
+void QDepth::update_last_mk_execs_ticker(const mtk::prices::msg::sub_last_mk_execs_ticker&   execs_ticker)
+{
+    if(execs_ticker.last_quantity.GetIntCode() == 0  &&  execs_ticker.last_price.GetIntCode() == 0)
+    {
+        last_price->setText(QLatin1String(""));
+        last_quantity->setText(QLatin1String(""));
+    }
+    else
+    {
+        last_price->setText(qtmisc::fn_as_QString(execs_ticker.last_price));
+        last_quantity->setText(qtmisc::fn_as_QString(execs_ticker.last_quantity));
+    }
+}
+
+void QDepth::update_last_mk_execs_ticker(const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&   mk_execs_full_info)
+{
+    if(mk_execs_full_info.HasValue())
+        update_last_mk_execs_ticker(mk_execs_full_info.Get());
+    else
+        upate_null_prices();
 }
 
 
@@ -722,7 +777,8 @@ void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
 
     //  this will make a permanent suscription  for this prices_manager instance
-    update_prices(price_manager->get_best_prices());
+    update_prices               (price_manager->get_best_prices());
+    update_last_mk_execs_ticker (price_manager->get_last_mk_execs_ticker());
     title->setText(QLatin1String(MTK_SS(price_manager->get_product_code().market << "."<< price_manager->get_product_code().product).c_str()));
 }
 

@@ -466,7 +466,7 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info__from_publisher"; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::make_nullable(mtk::s_TRY_stodt("2012-02-20", mtk::dtNowLocal()- mtk::dtDays(500))._0); };
 
     
     

@@ -1,7 +1,8 @@
 BEGIN_INIT
 
 NAMESPACES = ['mtk', 'prices', 'msg']
-INCLUDES = ['#include "components/msg_common.h"', '#include "support/mtk_double.h"']
+INCLUDES = ['#include "components/msg_common.h"', '#include "support/mtk_double.h"', '#include "components/trading/msg_trd_common_support.h"']
+
 
 END_INIT
 
@@ -76,6 +77,40 @@ sub_additional_info [< >]
 
 
 
+//---------------------------------------------------------------------
+//    sub_last_mk_execs_ticker
+//---------------------------------------------------------------------
+
+sub_last_mk_execs_ticker [< >]
+{
+    last_price           (lp)    :   fix_num
+    last_quantity        (lq)    :   fix_num
+    side                 (sd)    :   mtk::trd::msg::enBuySell        //  aggression side
+
+    max_last_price       (lmin)  :   fix_num          //  max and min price on interval
+    min_last_price       (lmax)  :   fix_num
+
+    opened_price         (op)    :   fix_num          //  it could be open price, prev session open price
+}
+
+
+//---------------------------------------------------------------------
+//    pub_last_mk_execs_ticker
+//---------------------------------------------------------------------
+
+pub_last_mk_execs_ticker [< QE:PRICES.${product_code.market}, SUBJ:EXTK.${product_code.market}.${product_code.product}  >]
+{
+    product_code         (pc)    :   mtk::msg::sub_product_code
+
+
+    last_mk_execs_ticker (lme)   :   sub_last_mk_execs_ticker
+
+    orig_control_fluct   (ocf)   :   mtk::msg::sub_control_fluct
+}
+
+
+
+
 
 
 //---------------------------------------------------------------------
@@ -83,12 +118,17 @@ sub_additional_info [< >]
 //---------------------------------------------------------------------
 sub_full_product_info [< >]
 {
-    product_code        (pc)        :       mtk::msg::sub_product_code
+    product_code        (pc)       :       mtk::msg::sub_product_code
 
-    best_prices         (bp)        :       sub_best_prices
-    additional_info      (ainf)     :       sub_additional_info
+    best_prices         (bp)       :       sub_best_prices
+    additional_info     (ainf)     :       sub_additional_info
+    last_mk_execs_ticker(lme)      :       sub_last_mk_execs_ticker        [recomended]
     //  ...
 }
+
+
+
+
 
 
 sub_full_product_info_optionals [< >]
@@ -98,6 +138,7 @@ sub_full_product_info_optionals [< >]
 
     best_prices         (bp)        :       sub_best_prices                 [optional]
     additional_info     (ainf)      :       sub_additional_info             [optional]
+    last_mk_execs_ticker(lme)       :       sub_last_mk_execs_ticker        [optional]
     //  ...
 }
 

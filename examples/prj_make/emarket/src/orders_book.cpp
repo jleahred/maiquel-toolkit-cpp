@@ -90,7 +90,7 @@ public:
     void add_order  (mtk::CountPtr<ord_ls> order);
     void del_order  (mtk::CountPtr<ord_ls> order);
     void modif_order(mtk::CountPtr<ord_ls> order);
-    void check_execs(void                       );     //  here will be generated the output  cf_ex if so
+    void check_execs(const mtk::msg::sub_product_code& product_code);     //  here will be generated the output  cf_ex if so
     void update_prices(const mtk::msg::sub_product_code& product_code);
 
     orders_in_product_queue()
@@ -353,7 +353,7 @@ void internal_orders_book::modif_order  (const mtk::trd::msg::CF_XX_LS& order_in
 void internal_orders_book::check_execs  (const mtk::trd::msg::CF_XX_LS& order_info)
 {
     CHECK_CACHTED_ORDER("check_execs")
-    this->queue_by_product[cached_last_request->last_confirmation().Get().invariant.product_code].check_execs();
+    this->queue_by_product[cached_last_request->last_confirmation().Get().invariant.product_code].check_execs(cached_last_request->last_confirmation().Get().invariant.product_code);
 }
 
 void internal_orders_book::update_prices(const mtk::trd::msg::CF_XX_LS& /*order_info*/)
@@ -464,11 +464,9 @@ mtk::FixedNumber get_exec_price(const mtk::tuple<mtk::FixedNumber, int>& b, cons
     else             return s._0;
 }
 
-void orders_in_product_queue::check_execs(void)
+void orders_in_product_queue::check_execs(const mtk::msg::sub_product_code& product_code)
 {
     static int ex_counter=0;
-    //  pending...
-    //  check executions
     if (bid_queue.size() > 0  &&  ask_queue.size() > 0)
     {
         mtk::CountPtr<ord_ls> best_buy = bid_queue.front();
@@ -479,8 +477,14 @@ void orders_in_product_queue::check_execs(void)
 
         while (best_buy_price._0 >= best_sell_price._0)
         {
+            //  this is incorrect, we don't manage aggression, but is just for testing
             mtk::FixedNumber exec_price = get_exec_price(best_buy_price, best_sell_price);
             mtk::FixedNumber exec_quantity = min(get_pending_quantity(best_buy), get_pending_quantity(best_sell));
+
+            //  send mk execs ticker
+            mtk::prices::msg::sub_last_mk_execs_ticker  sub_last_mk_execs_ticker(exec_price, exec_quantity, mtk::trd::msg::buy, exec_price, exec_price, exec_price);
+            mtk::prices::msg::pub_last_mk_execs_ticker  mk_execs_ticker(product_code, sub_last_mk_execs_ticker, mtk::msg::sub_control_fluct("EMARKET.PRC", mtk::dtNowLocal()));
+            mtk_send_message("server", mk_execs_ticker);
 
             if (exec_quantity.GetDouble() == mtk::Double(0.))
             {
@@ -626,7 +630,16 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
                 ps_conf_full_product_info_init(mtk::prices::msg::ps_conf_full_product_info_init("MARKET", mtk::admin::get_process_info()));
     mtk_send_message("server", ps_conf_full_product_info_init);
 
-    mtk::prices::msg::sub_additional_info additional_info ("GROUP", mtk::nullable<mtk::DateTime>(), mtk::nullable<mtk::DateTime>(), 0, mtk::nullable<mtk::DateTime>(), "");
+    mtk::prices::msg::sub_additional_info       additional_info ("GROUP", mtk::nullable<mtk::DateTime>(), mtk::nullable<mtk::DateTime>(), 0, mtk::nullable<mtk::DateTime>(), "");
+    mtk::prices::msg::sub_last_mk_execs_ticker  mk_execs_full_info(
+                                                                get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
+                                                                get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
+                                                                mtk::trd::msg::buy,
+                                                                get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
+                                                                get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
+                                                                get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1)))
+                                                                );
+
     int counter = 0;
     for(auto it_queue_by_product = queue_by_product.begin(); it_queue_by_product != queue_by_product.end(); ++it_queue_by_product)
     {
@@ -634,8 +647,8 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
         //        mtk::list<mtk::CountPtr<ord_ls> >  ask_queue;
         mtk::prices::msg::sub_full_product_info   sub_full_product_info(  it_queue_by_product->first,
                                                             get_empty_sub_best_prices(get_ext_price_quantity_for_product(it_queue_by_product->first.product)),
-                                                            additional_info
-                                                            );
+                                                            additional_info,
+                                                            mtk::make_nullable(mk_execs_full_info));
         fill_side(it_queue_by_product->second.bid_queue, sub_full_product_info.best_prices.bids);
         fill_side(it_queue_by_product->second.ask_queue, sub_full_product_info.best_prices.asks);
 

@@ -20,21 +20,32 @@ mtk::prices::msg::sub_full_product_info   get_full_product_info_from_optional(co
         throw mtk::Alarm(MTK_HERE, "prices_support", MTK_SS("get_full_product_info_from_optional  with no  aditional info   " << pio),
                                         mtk::alPriorCritic, mtk::alTypeLogicError);
 
-    return  mtk::prices::msg::sub_full_product_info (pio.product_code, pio.best_prices.Get(), pio.additional_info.Get());
+    if(pio.last_mk_execs_ticker.HasValue() == false)
+        throw mtk::Alarm(MTK_HERE, "prices_support", MTK_SS("get_full_product_info_from_optional  with no  last_mk_execs  " << pio),
+                                        mtk::alPriorCritic, mtk::alTypeLogicError);
+
+    return  mtk::prices::msg::sub_full_product_info (pio.product_code, pio.best_prices.Get(), pio.additional_info.Get(), pio.last_mk_execs_ticker);
 }
 
 
 mtk::prices::msg::sub_full_product_info_optionals   get_empty_full_product_info_optional    (const mtk::msg::sub_product_code&  pc)
 {
     return mtk::prices::msg::sub_full_product_info_optionals(false, pc, mtk::nullable<mtk::prices::msg::sub_best_prices>(),
-                                                                        mtk::nullable<mtk::prices::msg::sub_additional_info>());
+                                                                        mtk::nullable<mtk::prices::msg::sub_additional_info>(),
+                                                                        mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>()
+                                                                        );
 }
 
 
 mtk::prices::msg::sub_full_product_info_optionals   get_full_product_info_optional_from__full_product_info
                                                                                             (const mtk::prices::msg::sub_full_product_info&  pi)
 {
-    return mtk::prices::msg::sub_full_product_info_optionals(true, pi.product_code, mtk::make_nullable(pi.best_prices), mtk::make_nullable(pi.additional_info));
+    return mtk::prices::msg::sub_full_product_info_optionals(   true,
+                                                                pi.product_code,
+                                                                mtk::make_nullable(pi.best_prices),
+                                                                mtk::make_nullable(pi.additional_info),
+                                                                pi.last_mk_execs_ticker
+                                                            );
 }
 
 

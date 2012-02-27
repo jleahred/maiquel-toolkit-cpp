@@ -99,6 +99,7 @@ namespace
     int  stats_req_rec=0;
     int  stats_req_unknown=0;
     int  stats_prec_update=0;
+    int  stats_mk_last_execs_update=0;
     int  stats_prod_init=0;
 
 
@@ -111,10 +112,11 @@ namespace
 
 
 
-void on_request_load_prices(const mtk::prices::msg::ps_req_product_info& req);
-void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price);
-void check_inactivity(void);
-void init_map_market_info(void);
+void on_request_load_prices      (const mtk::prices::msg::ps_req_product_info& req);
+void on_price_update             (const mtk::prices::msg::pub_best_prices& msg_update_price);
+void on_mk_last_ex_ticher_update (const mtk::prices::msg::pub_last_mk_execs_ticker& msg_mk_last_ex_ticker);
+void check_inactivity            (void);
+void init_map_market_info        (void);
 
 
 void send_req_init_prod_info_to_markets__to_publisher(void);
@@ -177,6 +179,7 @@ void command_stats(const std::string& /*command*/, const std::string& /*params*/
     response_lines.push_back(MTK_SS("#products : " << map_products->size()));
     response_lines.push_back(MTK_SS("#rq_rec   : " << stats_req_rec));
     response_lines.push_back(MTK_SS("#prec_upd : " << stats_prec_update));
+    response_lines.push_back(MTK_SS("#last_ex  : " << stats_mk_last_execs_update));
     response_lines.push_back(MTK_SS("#req_unkn : " << stats_req_unknown));
     response_lines.push_back(MTK_SS("#prod_init: " << stats_prod_init));
 }
@@ -332,11 +335,15 @@ void send_req_init_prod_info_to_markets__to_publisher(void)
 
 void suscribe_publisher_updates(void)
 {
-    typedef  mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> >      type_cptrhandle;
+    typedef  mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> >               type_cptrhandle;
     static mtk::list< type_cptrhandle >  hqpid_update_best_prices_list_by_market;
+
+    typedef  mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> >      type_cptrhandle_last_mk_execs_ticker;
+    static mtk::list< type_cptrhandle_last_mk_execs_ticker >  hqpid_update_last_mk_execs_ticker_list_by_market;
+
     for(auto it=map_market_info.begin(); it!=map_market_info.end(); ++it)
     {
-        hqpid_update_best_prices_list_by_market.push_back(type_cptrhandle());
+        hqpid_update_best_prices_list_by_market.push_back(type_cptrhandle{});
         MTK_QPID_RECEIVER_CONNECT_F__WITH_ADDRESS(
                                 hqpid_update_best_prices_list_by_market.back(),
                                 mtk::admin::get_url("client"),
@@ -344,6 +351,15 @@ void suscribe_publisher_updates(void)
                                 mtk::prices::msg::pub_best_prices::get_in_subject(it->first, "*"),
                                 mtk::prices::msg::pub_best_prices,
                                 on_price_update)
+
+        hqpid_update_last_mk_execs_ticker_list_by_market.push_back(type_cptrhandle_last_mk_execs_ticker{});
+        MTK_QPID_RECEIVER_CONNECT_F__WITH_ADDRESS(
+                                hqpid_update_last_mk_execs_ticker_list_by_market.back(),
+                                mtk::admin::get_url("client"),
+                                mtk::prices::msg::pub_last_mk_execs_ticker::static_get_qpid_address(it->first),
+                                mtk::prices::msg::pub_last_mk_execs_ticker::get_in_subject(it->first, "*"),
+                                mtk::prices::msg::pub_last_mk_execs_ticker,
+                                on_mk_last_ex_ticher_update)
     }
 }
 void suscribe_cli_request_product(void)
@@ -505,6 +521,35 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
     mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(msg_update_price.product_code.market);
     if(itlu==map_market_info.end())
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << msg_update_price.product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+    else
+    {
+        mtk::dtDateTime  now = mtk::dtNowLocal();
+        if(now - itlu->second.last_update_received  > itlu->second.get_check_interval()  &&  itlu->second.get_check_interval() > mtk::dtSeconds(1))
+        {
+            if(itlu->second.starts < now  &&   itlu->second.ends > now)
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "produc_server", MTK_SS("recovered activity  " << itlu->second.name  <<  " after  " <<  now - itlu->second.last_update_received
+                                                            << "  checking interval " << itlu->second.get_check_interval()), mtk::alPriorError, mtk::alTypeOverflow));
+            itlu->second.delay_notif = mtk::dtSeconds(0);
+        }
+        itlu->second.last_update_received  = now;
+    }
+}
+
+
+void on_mk_last_ex_ticher_update (const mtk::prices::msg::pub_last_mk_execs_ticker& msg_mk_last_ex_ticker)
+{
+    ++stats_mk_last_execs_update;
+    auto it = map_products->find(msg_mk_last_ex_ticker.product_code);
+    if(it == map_products->end())
+        map_products->insert(std::make_pair(msg_mk_last_ex_ticker.product_code, mtk::prices::get_empty_full_product_info_optional(msg_mk_last_ex_ticker.product_code)));
+    else
+        it->second.last_mk_execs_ticker = msg_mk_last_ex_ticker.last_mk_execs_ticker;
+    mtk::admin::check_control_fluct(msg_mk_last_ex_ticker.orig_control_fluct);
+
+    //  update last received message for this market
+    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(msg_mk_last_ex_ticker.product_code.market);
+    if(itlu==map_market_info.end())
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << msg_mk_last_ex_ticker.product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
     else
     {
         mtk::dtDateTime  now = mtk::dtNowLocal();
