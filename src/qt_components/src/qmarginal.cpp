@@ -15,7 +15,7 @@
 
 
 #include <iostream>
-
+#include <iomanip>
 
 #include "components/trading/trd_cli_ord_book.h"
 #include "qt_components/src/qmtk_misc.h"
@@ -35,8 +35,11 @@ namespace {
     const char*   VERSION = "2011-03-16";
 
     const char*   MODIFICATIONS =
-                        "           2011-03-16     first version\n";
+                        "           2011-03-16     first version\n"
+                        "           2012-02-28     added last and company\n";
 
+
+    static int  col_count =10;
 
 void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
 {
@@ -142,7 +145,6 @@ QTableMarginal::QTableMarginal(QWidget *parent)
 
     {
         setRowCount(0);
-        setColumnCount(5);
         verticalHeader()->setVisible(false);
         horizontalHeader()->setVisible(true);
         //table_marginals->setSelectionMode(QAbstractItemView::NoSelection);
@@ -156,7 +158,7 @@ QTableMarginal::QTableMarginal(QWidget *parent)
         slot_sectionMoved(0,0,0);
 
 
-        setColumnCount(5);
+        setColumnCount(col_count);
         #define QMARG_INIT_HEADER_ITEM(__COLUMN__, __TEXT__) \
         {   \
             item = new QTableWidgetItem(); \
@@ -171,6 +173,11 @@ QTableMarginal::QTableMarginal(QWidget *parent)
             QMARG_INIT_HEADER_ITEM(2, tr("BID")    )
             QMARG_INIT_HEADER_ITEM(3, tr("ASK")    )
             QMARG_INIT_HEADER_ITEM(4, tr("Qty ask"))
+            QMARG_INIT_HEADER_ITEM(5, tr("Last"))
+            QMARG_INIT_HEADER_ITEM(6, tr("L.qty"))
+            QMARG_INIT_HEADER_ITEM(7, tr("Ref.pr."))
+            QMARG_INIT_HEADER_ITEM(8, tr("var"))
+            QMARG_INIT_HEADER_ITEM(9, tr("%var"))
         }
         horizontalHeader()->setMovable(true);
     }
@@ -223,14 +230,20 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
       prev_painted_prices(mtk::prices::msg::__internal_get_default((mtk::prices::msg::sub_best_prices*)0)),
       last_blinking(mtk::dtNowLocal()-mtk::dtDays(300))
 {
-    tw_product  = new QTableWidgetItemProduct(product_code, this->id);
-    tw_BID      = new QTableWidgetItem();
-    tw_ASK      = new QTableWidgetItem();
-    tw_qty_bid  = new QTableWidgetItem();
-    tw_qty_ask  = new QTableWidgetItem();
+    tw_product      = new QTableWidgetItemProduct(product_code, this->id);
+    tw_BID          = new QTableWidgetItem();
+    tw_ASK          = new QTableWidgetItem();
+    tw_qty_bid      = new QTableWidgetItem();
+    tw_qty_ask      = new QTableWidgetItem();
+    tw_last_price   = new QTableWidgetItem();
+    tw_last_quantity= new QTableWidgetItem();
+    tw_ref_price    = new QTableWidgetItem();
+    tw_var          = new QTableWidgetItem();
+    tw_var_percent  = new QTableWidgetItem();
+
 
     mtk::dtDateTime  now = mtk::dtNowLocal();
-    for(int i=0; i<5; ++i)
+    for(int i=0; i<col_count; ++i)
         v_blinking.push_back(now - mtk::dtDays(30));
 
     if (row>=0 && row<table_widget->rowCount())
@@ -245,6 +258,11 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     table_widget->setItem(row, 2, tw_BID);
     table_widget->setItem(row, 3, tw_ASK);
     table_widget->setItem(row, 4, tw_qty_ask);
+    table_widget->setItem(row, 5, tw_last_price);
+    table_widget->setItem(row, 6, tw_last_quantity);
+    table_widget->setItem(row, 7, tw_ref_price);
+    table_widget->setItem(row, 8, tw_var);
+    table_widget->setItem(row, 9, tw_var_percent);
 
 
     //QFont font(table_widget->font());
@@ -286,10 +304,33 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
         tw_qty_ask->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
 
-    price_manager = mtk::make_cptr(new mtk::prices::price_manager(product_code));
-    MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
+    {
+        tw_last_price->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+        tw_last_price->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    }
+    {
+        tw_last_quantity->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+        tw_last_quantity->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    }
+    {
+        tw_ref_price->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+        tw_ref_price->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    }
+    {
+        tw_var->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+        tw_var->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    }
+    {
+        tw_var_percent->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+        tw_var_percent->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+    }
 
-    update_prices(product_code, price_manager->get_best_prices());
+    price_manager = mtk::make_cptr(new mtk::prices::price_manager(product_code));
+    MTK_CONNECT_THIS(price_manager->signal_best_prices_update,   on_best_prices);
+    MTK_CONNECT_THIS(price_manager->signal_last_mk_execs_ticker, on_last_mk_execs_ticker_msg);
+
+    update_prices               (product_code, price_manager->get_best_prices());
+    update_last_mk_execs_ticker (product_code, price_manager->get_last_mk_execs_ticker());
 
     MTK_TIMER_1D(check_for_pending_screen_update)
 
@@ -316,6 +357,11 @@ void marginal_in_table::set_normal_color(int transparency)
     tw_ASK->setBackgroundColor(color_transparency(color_price, transparency));
     tw_qty_bid->setBackgroundColor(color_transparency(color_qty, transparency));
     tw_qty_ask->setBackgroundColor(color_transparency(color_qty, transparency));
+    tw_last_price->setBackgroundColor(color_transparency(color_qty, transparency));
+    tw_last_quantity->setBackgroundColor(color_transparency(color_qty, transparency));
+    tw_ref_price->setBackgroundColor(color_transparency(color_qty, transparency));
+    tw_var->setBackgroundColor(color_transparency(color_qty, transparency));
+    tw_var_percent->setBackgroundColor(color_transparency(color_qty, transparency));
 
     if((price_manager.isValid()==false)  ||  (price_manager.isValid()  &&  price_manager->get_best_prices().HasValue()==false))
     {
@@ -323,6 +369,11 @@ void marginal_in_table::set_normal_color(int transparency)
         tw_ASK->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
         tw_qty_bid->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
         tw_qty_ask->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+        tw_last_price->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+        tw_last_quantity->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+        tw_ref_price->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+        tw_var->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
+        tw_var_percent->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
     }
 }
 
@@ -336,6 +387,11 @@ void marginal_in_table::set_dark_color(void)
     tw_ASK->setBackgroundColor(color_price.darker(105));
     tw_qty_bid->setBackgroundColor(color_qty.darker(105));
     tw_qty_ask->setBackgroundColor(color_qty.darker(105));
+    tw_last_price->setBackgroundColor(color_qty.darker(105));
+    tw_last_quantity->setBackgroundColor(color_qty.darker(105));
+    tw_ref_price->setBackgroundColor(color_qty.darker(105));
+    tw_var->setBackgroundColor(color_qty.darker(105));
+    tw_var_percent->setBackgroundColor(color_qty.darker(105));
 }
 
 
@@ -371,10 +427,22 @@ void marginal_in_table::clean_prices(void)
     tw_BID->setText(QLatin1String(""));
     tw_qty_bid->setText(QLatin1String(""));
 
+    tw_last_price->setText(QLatin1String(""));
+    tw_last_quantity->setText(QLatin1String(""));
+    tw_ref_price->setText(QLatin1String(""));
+    tw_var->setText(QLatin1String(""));
+    tw_var_percent->setText(QLatin1String(""));
+
     tw_ASK->setBackgroundColor(qtmisc::mtk_color_null);
     tw_qty_ask->setBackgroundColor(qtmisc::mtk_color_null);
     tw_BID->setBackgroundColor(qtmisc::mtk_color_null);
     tw_qty_bid->setBackgroundColor(qtmisc::mtk_color_null);
+
+    tw_last_price->setBackgroundColor(qtmisc::mtk_color_null);
+    tw_last_quantity->setBackgroundColor(qtmisc::mtk_color_null);
+    tw_ref_price->setBackgroundColor(qtmisc::mtk_color_null);
+    tw_var->setBackgroundColor(qtmisc::mtk_color_null);
+    tw_var_percent->setBackgroundColor(qtmisc::mtk_color_null);
 }
 
 void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_best_prices&   best_prices)
@@ -399,22 +467,6 @@ void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, cons
     generate_blinking(best_prices);
 }
 
-void marginal_in_table::on_message(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_best_prices& /*msg*/)
-{
-    pending_screen_update = true;
-}
-
-void marginal_in_table::check_for_pending_screen_update(void)
-{
-    if(pending_screen_update   &&   price_manager.get2())
-    {
-        //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
-            update_prices(price_manager->get_product_code(), price_manager->get_best_prices());
-            pending_screen_update = false;
-        //MTK_END_EXEC_MAX_FREC
-    }
-}
-
 void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices)
 {
     if(n_best_prices.HasValue())
@@ -422,6 +474,78 @@ void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, cons
     else
         clean_prices();
 }
+
+
+
+void marginal_in_table::update_last_mk_execs_ticker(const mtk::msg::sub_product_code& , const mtk::prices::msg::sub_last_mk_execs_ticker&   last_mk_execs_ticker)
+{
+    tw_last_price->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.last_price));
+    tw_last_quantity->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.last_quantity));
+    tw_ref_price->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.opened_price));
+    mtk::Double  var = last_mk_execs_ticker.last_price.GetDouble() - last_mk_execs_ticker.opened_price.GetDouble();
+    tw_var->setText( QLatin1String(MTK_SS(std::setprecision(3) << std::fixed << var).c_str()) );
+    tw_var_percent->setText(  QLatin1String(MTK_SS(std::setprecision(1) << std::fixed  <<  var / last_mk_execs_ticker.last_quantity.GetDouble() << " %").c_str())  );
+
+    if(tw_last_price->backgroundColor() == qtmisc::mtk_color_null)
+    {
+        tw_last_price->setBackgroundColor(color_qty);
+        tw_last_quantity->setBackgroundColor(color_qty);
+        tw_ref_price->setBackgroundColor(color_qty);
+        tw_var->setBackgroundColor(color_qty);
+        tw_var_percent->setBackgroundColor(color_qty);
+    }
+
+}
+
+
+
+void marginal_in_table::update_last_mk_execs_ticker(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&   n_last_mk_execs_ticker)
+{
+    if(n_last_mk_execs_ticker.HasValue())
+        update_last_mk_execs_ticker(pc, n_last_mk_execs_ticker.Get());
+    else
+    {
+        tw_last_price->setText      (QLatin1String(""));
+        tw_last_quantity->setText   (QLatin1String(""));
+        tw_ref_price->setText       (QLatin1String(""));
+        tw_var->setText             (QLatin1String(""));
+        tw_var_percent->setText     (QLatin1String(""));
+    }
+}
+
+
+
+
+void marginal_in_table::on_best_prices(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_best_prices& /*msg*/)
+{
+    pending_screen_update = true;
+}
+
+
+void marginal_in_table::on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_last_mk_execs_ticker& /*msg*/)
+{
+    pending_screen_update = true;
+}
+
+
+
+
+void marginal_in_table::check_for_pending_screen_update(void)
+{
+    if(pending_screen_update   &&   price_manager.get2())
+    {
+        //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
+            update_prices(price_manager->get_product_code(), price_manager->get_best_prices());
+            update_last_mk_execs_ticker(price_manager->get_product_code(), price_manager->get_last_mk_execs_ticker());
+            pending_screen_update = false;
+        //MTK_END_EXEC_MAX_FREC
+    }
+}
+
+
+
+
+
 
 
 void marginal_in_table::add_blinking(int col, const mtk::DateTime&  till)

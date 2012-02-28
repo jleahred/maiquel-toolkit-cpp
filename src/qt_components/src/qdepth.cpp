@@ -886,8 +886,8 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
 void QDepth::make_transparent(void)
 {
     title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 150); font-weight: 400;"));
-    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0,0,30, 150);\n" "color: rgb(0, 220, 0);"));
-    frame_last->setStyleSheet(QString::fromUtf8("background-color: rgba(0, 0, 30,0 );\n" "color: rgb(191,219,255); font-weight: 1000;"));
+    table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0,0,30, 150);\n" "color: rgba(191,219,255, 150);"));
+    frame_last->setStyleSheet(QString::fromUtf8("background-color: rgba(0, 0, 30,0 );\n" "color: rgba(191,219,255, 150); font-weight: 1000;"));
     last_price->setStyleSheet(QString::fromUtf8("background-color: rgba(0, 0, 30,150 );\n" "color: rgb(191,219,255); font-weight: 1000;"));
     last_quantity->setStyleSheet(QString::fromUtf8("background-color: rgba(0, 0, 30,150 );\n" "color: rgb(191,219,255); font-weight: 1000;"));
 }

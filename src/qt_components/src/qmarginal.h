@@ -51,6 +51,12 @@ private:
     QTableWidgetItem*  tw_qty_bid;
     QTableWidgetItem*  tw_qty_ask;
 
+    QTableWidgetItem*  tw_last_price;
+    QTableWidgetItem*  tw_last_quantity;
+    QTableWidgetItem*  tw_ref_price;
+    QTableWidgetItem*  tw_var;
+    QTableWidgetItem*  tw_var_percent;
+
     QTableWidget* table_widget;
 
 
@@ -60,9 +66,14 @@ private:
 
 
     void clean_prices(void);
+
     void update_prices(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices);
     void update_prices(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_best_prices&   best_prices);
-    void on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg);
+    void on_best_prices(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg);
+
+    void update_last_mk_execs_ticker(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&);
+    void update_last_mk_execs_ticker(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_last_mk_execs_ticker&);
+    void on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_last_mk_execs_ticker& msg);
 
 
     mtk::prices::msg::sub_best_prices  prev_painted_prices;     //  for blinking
