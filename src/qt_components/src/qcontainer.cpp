@@ -24,9 +24,11 @@
 
 
 
+
 qContainer::qContainer(QWidget *parent) :
     QScrollArea(parent), counter_insertions(0)
 {
+    this->setFocusPolicy(Qt::NoFocus);
 }
 
 
@@ -154,3 +156,5 @@ void qContainer::resizeEvent ( QResizeEvent * event)
     QScrollArea::resizeEvent ( event );
     slot_widget_moved_or_deleted();
 }
+
+

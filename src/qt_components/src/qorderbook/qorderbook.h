@@ -28,6 +28,7 @@ public:
     ~QOrderBook();
 
     void update_sizes(void);
+    void go_last_session_order(void);
 
 signals:
 

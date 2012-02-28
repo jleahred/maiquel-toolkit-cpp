@@ -36,6 +36,9 @@ public:
     mtk::trd::msg::RQ_XX_LS   get_request_ls(void);
     mtk::trd::msg::RQ_XX_MK   get_request_mk(void);
 
+protected:
+    virtual bool eventFilter(QObject *, QEvent *);
+
 private:
     Ui::QEditOrder *ui;
 
@@ -49,6 +52,8 @@ private:
     void mouseDoubleClickEvent(QMouseEvent *);
 
     void fill_accounts(const mtk::trd::msg::RQ_XX& rq);
+    void register_event_filters(void);
+
 
 private slots:
     void on_account_currentIndexChanged(QString );

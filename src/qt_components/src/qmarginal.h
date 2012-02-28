@@ -137,7 +137,7 @@ private:
     void adjust_pajama(void);
 
 
-    void focusInEvent (QFocusEvent *e) { this->update(); enable_actions();  QTableWidget::focusInEvent(e);}
+    void focusInEvent (QFocusEvent *e);
     void focusOutEvent(QFocusEvent *e) { this->update(); disable_actions(); QTableWidget::focusOutEvent(e); }
     QAction* action_buy;
     QAction* action_sell;

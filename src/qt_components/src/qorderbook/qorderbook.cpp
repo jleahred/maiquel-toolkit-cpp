@@ -379,3 +379,14 @@ void QOrderBook::slot_columnMoved(qorder_table* origin, int logicalIndex, int ol
         }
     }
 }
+
+
+void QOrderBook::go_last_session_order(void)
+{
+    qorder_table* ot = dynamic_cast<qorder_table*>(tab_widget->widget(tab_widget->currentIndex()));
+    if(ot != 0)
+        ot->setFocus();
+}
+
+
+

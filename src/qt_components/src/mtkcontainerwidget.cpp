@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QMessageBox>
+#include <QScrollArea>
 
 
 #include "qt_components/src/qmtk_misc.h"
@@ -126,7 +127,7 @@ mtkContainerWidget::mtkContainerWidget(QWidget *parent) :
     QWidget(parent)
 {
     title = new mtk_uTitle(this);
-    title->setGeometry(0,0,80,15);
+    title->setGeometry(0,0,160,15);
     connect(title, SIGNAL(on_mouseMoveEvent(QMouseEvent*)), this, SLOT(title_mouseMoveEvent(QMouseEvent*)));
     connect(title, SIGNAL(on_mousePressEvent(QMouseEvent*)), this, SLOT(title_mousePressEvent(QMouseEvent*)));
     connect(title, SIGNAL(on_mouseReleaseEvent(QMouseEvent*)), this, SLOT(title_mouseReleaseEvent(QMouseEvent*)));
@@ -256,4 +257,10 @@ void             operator >> (const YAML::Node& node,    mtkContainerWidget& m)
     node["geometry"][3] >> height;
 
     m.setGeometry(left, top, width, height);
+}
+
+
+void    mtkContainerWidget::focusInEvent (QFocusEvent * /*event*/ )
+{
+    raise();
 }

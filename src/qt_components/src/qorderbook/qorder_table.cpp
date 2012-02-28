@@ -255,6 +255,10 @@ public:
 
         table_widget->scrollToBottom();
         //update();     calling virtual functions on constructor????    crazy
+        if(order_id.session_id  ==  mtk::admin::get_session_id())
+            table_widget->setCurrentItem(items[0]);
+        else if (table_widget->rowCount() == 1)
+            table_widget->setCurrentCell(0,0);
     }
     virtual ~order_in_qbook() {
         delete [] items;
@@ -638,6 +642,7 @@ qorder_table::qorder_table(QWidget *parent) :
         delegate_paint(new QCommonTableDelegate(table_widget))
 {
     table_widget->installEventFilter(this);
+    this->setFocusProxy(table_widget);
 
     QHBoxLayout *hl= new QHBoxLayout(this);
     hl->setSpacing(0);
@@ -1357,3 +1362,5 @@ void qorder_table::slot_columnMoved(int logicalIndex, int oldVisualIndex, int ne
 {
     Q_EMIT(signal_columnMoved(this, logicalIndex, oldVisualIndex, newVisualIndex));
 }
+
+

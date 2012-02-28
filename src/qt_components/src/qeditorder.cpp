@@ -12,6 +12,26 @@
 
 
 
+namespace
+{
+    static QPoint  last_pos;
+    QPoint   normalize_pos(void)
+    {
+        QPoint  result = QPoint(QApplication::activeWindow()->childrenRect().x() + last_pos.x(), QApplication::activeWindow()->childrenRect().y() + last_pos.y());
+        if(result.x() < QApplication::activeWindow()->x())
+            result.setX(QApplication::activeWindow()->x() + 10);
+        if(result.y() < QApplication::activeWindow()->y())
+            result.setY(QApplication::activeWindow()->y() + 10);
+        if(result.x() > QApplication::activeWindow()->x() + QApplication::activeWindow()->width())
+            result.setX(QApplication::activeWindow()->x() + QApplication::activeWindow()->width()/2);
+        if(result.y() > QApplication::activeWindow()->y() + QApplication::activeWindow()->height())
+            result.setY(QApplication::activeWindow()->y() + QApplication::activeWindow()->height()/2);
+
+        return result;
+    }
+};
+
+
 /*
 QEditOrder::QEditOrder(QWidget *parent) :
     QDialog(parent),
@@ -23,6 +43,7 @@ QEditOrder::QEditOrder(QWidget *parent) :
 
 QEditOrder::~QEditOrder()
 {
+    last_pos = this->pos();
     delete ui;
 }
 
@@ -38,6 +59,9 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     ui->setupUi(this);
 
     this->setWindowTitle(tr("Edit Limit Order"));
+    if(last_pos.x() != 0    ||    last_pos.y()!=0)
+        this->move(normalize_pos());
+
 
     QFont font(this->font());
     font.setPixelSize(qtmisc::get_base_font_size()+2);
@@ -58,7 +82,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     else
         ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
     ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
-    ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
+    //ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
     if(rq.request_pos.quantity.GetIntCode()>=0)
         ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     else
@@ -121,6 +145,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
         ui->message->setText(configure_default_field);
 
     this->adjustSize();
+    register_event_filters();
 }
 
 QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QWidget *parent) :
@@ -130,6 +155,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
 {
     ui->setupUi(this);
     this->setWindowTitle(tr("Edit Limit Order"));
+    if(last_pos.x() != 0    ||    last_pos.y()!=0)
+        this->move(normalize_pos());
 
     QFont font(this->font());
     font.setPixelSize(qtmisc::get_base_font_size()+2);
@@ -200,6 +227,9 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     this->check_if_order_can_be_sent();
     if(configure_default_field!=QLatin1String(""))
         ui->message->setText(configure_default_field);
+
+    this->adjustSize();
+    register_event_filters();
 }
 
 
@@ -397,3 +427,29 @@ void QEditOrder::fill_accounts(const mtk::trd::msg::RQ_XX& rq)
     }
 }
 
+bool QEditOrder::eventFilter(QObject *object, QEvent *event)
+{
+    if(event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent* key_event = static_cast<QKeyEvent*>(event);
+
+        if(key_event->key() == Qt::Key_Up)
+        {
+            ui->price->stepUp();
+            return true;
+        }
+        else if(key_event->key() == Qt::Key_Down)
+        {
+            ui->price->stepDown();
+            return true;
+        }
+    }
+    return QDialog::eventFilter(object, event);
+}
+
+void QEditOrder::register_event_filters(void)
+{
+    ui->quantity->installEventFilter(this);
+    ui->cliref->installEventFilter(this);
+    ui->buttonBox->installEventFilter(this);
+}

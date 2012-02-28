@@ -116,6 +116,8 @@ QMarginal::QMarginal(QWidget *parent) :
     connect(this, SIGNAL(signal_start_moving()), SLOT(make_transparent()));
     connect(this, SIGNAL(signal_stop_moving()), SLOT(remove_transparent()));
     this->inserting_components_ended();
+
+    this->setFocusProxy(table_marginals);
 }
 
 QMarginal::~QMarginal()
@@ -179,22 +181,20 @@ QTableMarginal::QTableMarginal(QWidget *parent)
 
 
     action_buy = new QAction(tr("buy"), this);
-    action_buy->setShortcut(Qt::Key_Plus);
     connect(action_buy, SIGNAL(triggered()), this, SLOT(request_buy()));
     this->addAction(action_buy);
 
     action_sell = new QAction(tr("sell"), this);
-    action_sell->setShortcut(Qt::Key_Minus);
     connect(action_sell, SIGNAL(triggered()), this, SLOT(request_sell()));
     this->addAction(action_sell);
 
     action_lift_the_offer = new QAction(tr("lift the offer"), this);
-    action_lift_the_offer->setShortcut(Qt::Key_F8);
+    action_lift_the_offer->setShortcut(Qt::Key_Plus);
     connect(action_lift_the_offer, SIGNAL(triggered()), this, SLOT(request_lift_the_offer()));
     this->addAction(action_lift_the_offer);
 
     action_hit_the_bid = new QAction(tr("hit the bid"), this);
-    action_hit_the_bid->setShortcut(Qt::Key_F12);
+    action_hit_the_bid->setShortcut(Qt::Key_Minus);
     connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
     this->addAction(action_hit_the_bid);
 
@@ -1077,3 +1077,9 @@ void QTableMarginal::slot_sectionMoved ( int /*logicalIndex*/, int /*oldVisualIn
 
 
 
+void QTableMarginal::focusInEvent (QFocusEvent *e)
+{
+    this->update();
+    enable_actions();
+    QTableWidget::focusInEvent(e);
+}

@@ -96,7 +96,7 @@ private:
 
 protected:
     virtual void    resizeEvent  (QResizeEvent * event );
-    virtual void    focusInEvent (QFocusEvent * /*event*/ ) { raise(); }
+    virtual void    focusInEvent (QFocusEvent * /*event*/ );
     virtual void    paintEvent   (QPaintEvent *);
 
 
