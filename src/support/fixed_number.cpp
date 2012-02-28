@@ -226,13 +226,13 @@ FixedNumber& FixedNumber::SetIntCode(int value, const fnEnRound round)
                 if (intValue!=value)
                     throw   fnErrorFixedNumber (Alarm (
                                 MTK_HERE, "fixednumber",
-                                "red not allowed",
+                                "round not allowed",
                                 alPriorError, alTypeNoPermisions));
                 break;
         default:
 	        throw   fnErrorFixedNumber (Alarm (
 						    MTK_HERE, "fixednumber",
-						    "red not allowed. default??",
+						    "round not allowed. default??",
 						    alPriorError, alTypeNoPermisions));
     };
 
@@ -341,13 +341,13 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
                 if (intValue!=int(valuePow10))
                     throw   fnErrorFixedNumber (Alarm (
                                 MTK_HERE, "fixednumber",
-                                "red not allowed",
+                                "round not allowed",
                                 alPriorError, alTypeNoPermisions));
                 break;
         default:
 	        throw   fnErrorFixedNumber (Alarm (
 						    MTK_HERE, "fixednumber",
-						    "red not allowed. default??",
+						    "round not allowed. default??",
 						    alPriorError, alTypeNoPermisions));
     };
 

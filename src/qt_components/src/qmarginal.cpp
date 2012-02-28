@@ -106,7 +106,7 @@ QMarginal::QMarginal(QWidget *parent) :
     mtkContainerWidget(parent),
     table_marginals(new QTableMarginal(this))
 {
-    this->setGeometry(QRect(5, 5, 100*4+150+2*5, 300));
+    this->setGeometry(QRect(5, 5, 100*4+150+2*5-2, 300-2));
     this->setAcceptDrops(true);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setContentsMargins(5,5,5,5);
@@ -117,7 +117,7 @@ QMarginal::QMarginal(QWidget *parent) :
     connect(this, SIGNAL(signal_stop_moving()), SLOT(remove_transparent()));
     this->inserting_components_ended();
 
-    this->setFocusProxy(table_marginals);
+    //this->setFocusProxy(table_marginals);
 }
 
 QMarginal::~QMarginal()
@@ -1076,6 +1076,13 @@ void QTableMarginal::slot_sectionMoved ( int /*logicalIndex*/, int /*oldVisualIn
 }
 
 
+
+void QTableMarginal::focusOutEvent(QFocusEvent *e)
+{
+    this->update();
+    disable_actions();
+    QTableWidget::focusOutEvent(e);
+}
 
 void QTableMarginal::focusInEvent (QFocusEvent *e)
 {

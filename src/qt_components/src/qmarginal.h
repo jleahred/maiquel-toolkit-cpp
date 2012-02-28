@@ -138,7 +138,7 @@ private:
 
 
     void focusInEvent (QFocusEvent *e);
-    void focusOutEvent(QFocusEvent *e) { this->update(); disable_actions(); QTableWidget::focusOutEvent(e); }
+    void focusOutEvent(QFocusEvent *e);
     QAction* action_buy;
     QAction* action_sell;
     QAction* action_hit_the_bid;

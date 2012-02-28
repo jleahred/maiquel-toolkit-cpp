@@ -204,7 +204,8 @@ void mtkContainerWidget::resize_mouseMoveEvent(QMouseEvent* event)
     if (newsize.height() < 100)
         newsize.setHeight(100);
     newsize = newsize/10*10;
-    newsize.setWidth(newsize.width()-1);
+    newsize.setHeight(newsize.height()-2);
+    newsize.setWidth(newsize.width()-2);
     resize(newsize);
 }
 

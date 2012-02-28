@@ -316,7 +316,7 @@ QDepth::QDepth(QWidget *parent) :
     showing_menu(false),
     keep_paint_focus(false)
 {
-    this->setGeometry(QRect(5, 5, 290, 300));
+    this->setGeometry(QRect(5, 5, 290-2, 300-2));
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(5,5,5,5);
@@ -346,8 +346,8 @@ QDepth::QDepth(QWidget *parent) :
         title->setBackgroundRole(QPalette::Light);
         title->setAlignment(Qt::AlignCenter);
         title->setAutoFillBackground(true);
-        title->setFrameShape(QFrame::Box);
-        title->setFrameShadow(QFrame::Plain);
+        //title->setFrameShape(QFrame::Box);
+        //title->setFrameShadow(QFrame::Plain);
         //title->setStyleSheet("color: rgba(30,0,100); background-color: rgba(207,213,235, 200);");
         title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
         title->setLineWidth(2);
@@ -358,18 +358,32 @@ QDepth::QDepth(QWidget *parent) :
     }
 
     {
-        QHBoxLayout* layout_last = new QHBoxLayout(this);
+        //QHBoxLayout* layout_last = new QHBoxLayout(this);
+        //layout_last->setSpacing(0);
+        //layout_last->setContentsMargins(0,0,0,0);
+        //layout->addLayout(layout_last);
+
+
+
+        frame_last = new QFrame(this);
+        layout->addWidget(frame_last);
+        frame_last->setFrameShadow(QFrame::Plain);
+        frame_last->setAutoFillBackground(true);
+        frame_last->setFrameShape(QFrame::Box);
+        frame_last->setFrameShadow(QFrame::Plain);
+        frame_last->setLineWidth(1);
+        frame_last->setStyleSheet(style_sheet_normal);
+        QHBoxLayout*  layout_last = new QHBoxLayout(frame_last);
         layout_last->setSpacing(0);
         layout_last->setContentsMargins(0,0,0,0);
-        layout->addLayout(layout_last);
 
         last_price = new QLabel(this);
         layout_last->addWidget(last_price);
         last_price->setAlignment(Qt::AlignCenter);
         last_price->setAutoFillBackground(true);
-        last_price->setFrameShape(QFrame::Box);
-        last_price->setFrameShadow(QFrame::Plain);
-        last_price->setLineWidth(3);
+        //last_price->setFrameShape(QFrame::Box);
+        //last_price->setFrameShadow(QFrame::Plain);
+        //last_price->setLineWidth(3);
         last_price->setStyleSheet(style_sheet_normal);
         last_price->setMargin(3);
 
@@ -377,9 +391,9 @@ QDepth::QDepth(QWidget *parent) :
         layout_last->addWidget(last_quantity);
         last_quantity->setAlignment(Qt::AlignCenter);
         last_quantity->setAutoFillBackground(true);
-        last_quantity->setFrameShape(QFrame::Box);
-        last_quantity->setFrameShadow(QFrame::Plain);
-        last_quantity->setLineWidth(3);
+        //last_quantity->setFrameShape(QFrame::Box);
+        //last_quantity->setFrameShadow(QFrame::Plain);
+        //last_quantity->setLineWidth(3);
         last_quantity->setStyleSheet(style_sheet_normal);
         last_quantity->setMargin(3);
     }
@@ -475,11 +489,11 @@ QDepth::QDepth(QWidget *parent) :
 
     action_delete_component = new QAction(tr("delete depth"), this);
     action_delete_component->setShortcut(Qt::Key_Delete);
-    connect(action_delete_component, SIGNAL(triggered()), this, SLOT(slot_delete()));
     this->addAction(action_delete_component);
 
 
     this->disable_actions();
+    remove_focus();
 
 
     MTK_TIMER_1D(check_for_pending_screen_update);
@@ -862,6 +876,9 @@ void QDepth::make_transparent(void)
 {
     title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 150); font-weight: 400;"));
     table_widget->setStyleSheet(QString::fromUtf8("background-color: rgb(0,0,30, 150);\n" "color: rgb(0, 220, 0);"));
+    frame_last->setStyleSheet(QString::fromUtf8("background-color: rgba(0, 0, 30,0 );\n" "color: rgb(191,219,255); font-weight: 1000;"));
+    last_price->setStyleSheet(QString::fromUtf8("background-color: rgba(0, 0, 30,150 );\n" "color: rgb(191,219,255); font-weight: 1000;"));
+    last_quantity->setStyleSheet(QString::fromUtf8("background-color: rgba(0, 0, 30,150 );\n" "color: rgb(191,219,255); font-weight: 1000;"));
 }
 
 void QDepth::remove_transparecy(void)
@@ -949,6 +966,11 @@ void QDepth::paint_focus(void)
         table_widget->setStyleSheet(style_sheet_null);
     else
         table_widget->setStyleSheet(style_sheet_normal);
+
+    frame_last->setStyleSheet(style_sheet_normal);
+    last_price->setStyleSheet(style_sheet_normal);
+    last_quantity->setStyleSheet(style_sheet_normal);
+
 }
 
 void QDepth::remove_focus(void)

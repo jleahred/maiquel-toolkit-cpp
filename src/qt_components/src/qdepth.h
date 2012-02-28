@@ -14,6 +14,8 @@
 
 class QTableDeph;
 class QLabel;
+class QFrame;
+
 namespace YAML { class Emitter;  class Node;      };
 
 
@@ -78,13 +80,12 @@ private slots:
     void make_transparent(void);
     void remove_transparecy(void);
 
-    void slot_delete(void);
-
 
 private:
     QTableDeph   *table_widget;
     QLabel       *title;
 
+    QFrame       *frame_last;
     QLabel       *last_price;
     QLabel       *last_quantity;
 
