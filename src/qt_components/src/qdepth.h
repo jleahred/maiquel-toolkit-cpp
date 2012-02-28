@@ -38,7 +38,6 @@ public:
 
 
 signals:
-    void  signal_delete_component(QWidget*);
 
 public slots:
 

@@ -489,10 +489,6 @@ QDepth::~QDepth()
 {
 }
 
-void QDepth::slot_delete(void)
-{
-    Q_EMIT signal_delete_component(this);
-}
 
 
 void	QDepth::resizeEvent ( QResizeEvent *  event )
@@ -634,7 +630,10 @@ void QDepth::update_last_mk_execs_ticker(const mtk::nullable<mtk::prices::msg::s
     if(mk_execs_full_info.HasValue())
         update_last_mk_execs_ticker(mk_execs_full_info.Get());
     else
-        upate_null_prices();
+    {
+        last_price->setText(QLatin1String(""));
+        last_quantity->setText(QLatin1String(""));
+    }
 }
 
 
