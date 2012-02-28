@@ -9,8 +9,7 @@
 namespace mtk {
 
 
-//const double Double::INVALID_VALUE=1e401;       //  bcb static init
-
+const double Double::INVALID_VALUE=1e307;
 
 
 

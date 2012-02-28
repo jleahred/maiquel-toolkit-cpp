@@ -39,7 +39,7 @@ class Double {
 
 
 private:
-    static const double     INVALID_VALUE = 1e307;  //  esto no compila en bcb
+    static const double     INVALID_VALUE;
     double                  value;
 
     Double() : value(INVALID_VALUE) {};
