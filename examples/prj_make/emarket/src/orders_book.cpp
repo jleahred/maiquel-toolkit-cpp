@@ -482,7 +482,7 @@ void orders_in_product_queue::check_execs(const mtk::msg::sub_product_code& prod
             mtk::FixedNumber exec_quantity = min(get_pending_quantity(best_buy), get_pending_quantity(best_sell));
 
             //  send mk execs ticker
-            mtk::prices::msg::sub_last_mk_execs_ticker  sub_last_mk_execs_ticker(exec_price, exec_quantity, mtk::trd::msg::buy, exec_price, exec_price, exec_price);
+            mtk::prices::msg::sub_last_mk_execs_ticker  sub_last_mk_execs_ticker(exec_price, exec_quantity, exec_price, exec_price, exec_price);
             mtk::prices::msg::pub_last_mk_execs_ticker  mk_execs_ticker(product_code, sub_last_mk_execs_ticker, mtk::msg::sub_control_fluct("EMARKET.PRC", mtk::dtNowLocal()));
             mtk_send_message("server", mk_execs_ticker);
 
@@ -634,7 +634,6 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
     mtk::prices::msg::sub_last_mk_execs_ticker  mk_execs_full_info(
                                                                 get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
                                                                 get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
-                                                                mtk::trd::msg::buy,
                                                                 get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
                                                                 get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
                                                                 get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1)))

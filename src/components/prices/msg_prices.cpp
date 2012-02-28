@@ -560,8 +560,8 @@ void sub_additional_info::before_send(void) const
 
 
 
-sub_last_mk_execs_ticker::sub_last_mk_execs_ticker (   const mtk::FixedNumber&  _last_price,   const mtk::FixedNumber&  _last_quantity,   const mtk::trd::msg::enBuySell&  _side,   const mtk::FixedNumber&  _max_last_price,   const mtk::FixedNumber&  _min_last_price,   const mtk::FixedNumber&  _opened_price)
-    :     last_price(_last_price),   last_quantity(_last_quantity),   side(_side),   max_last_price(_max_last_price),   min_last_price(_min_last_price),   opened_price(_opened_price) 
+sub_last_mk_execs_ticker::sub_last_mk_execs_ticker (   const mtk::FixedNumber&  _last_price,   const mtk::FixedNumber&  _last_quantity,   const mtk::FixedNumber&  _max_last_price,   const mtk::FixedNumber&  _min_last_price,   const mtk::FixedNumber&  _opened_price)
+    :     last_price(_last_price),   last_quantity(_last_quantity),   max_last_price(_max_last_price),   min_last_price(_min_last_price),   opened_price(_opened_price) 
        
     {  
         std::string cr = check_recomended ();  
@@ -962,7 +962,7 @@ std::ostream& operator<< (std::ostream& o, const sub_last_mk_execs_ticker & c)
 {
     o << "{ "
 
-        << "last_price:"<<   c.last_price << "  "        << "last_quantity:"<<   c.last_quantity << "  "        << "side:"<< c.side<<"  "        << "max_last_price:"<<   c.max_last_price << "  "        << "min_last_price:"<<   c.min_last_price << "  "        << "opened_price:"<<   c.opened_price << "  "
+        << "last_price:"<<   c.last_price << "  "        << "last_quantity:"<<   c.last_quantity << "  "        << "max_last_price:"<<   c.max_last_price << "  "        << "min_last_price:"<<   c.min_last_price << "  "        << "opened_price:"<<   c.opened_price << "  "
         << " }";
     return o;
 };
@@ -973,7 +973,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_last_mk_execs_ticker & c
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "last_price"  << YAML::Value <<   c.last_price        << YAML::Key << "last_quantity"  << YAML::Value <<   c.last_quantity        << YAML::Key << "side"  << YAML::Value << c.side        << YAML::Key << "max_last_price"  << YAML::Value <<   c.max_last_price        << YAML::Key << "min_last_price"  << YAML::Value <<   c.min_last_price        << YAML::Key << "opened_price"  << YAML::Value <<   c.opened_price
+        << YAML::Key << "last_price"  << YAML::Value <<   c.last_price        << YAML::Key << "last_quantity"  << YAML::Value <<   c.last_quantity        << YAML::Key << "max_last_price"  << YAML::Value <<   c.max_last_price        << YAML::Key << "min_last_price"  << YAML::Value <<   c.min_last_price        << YAML::Key << "opened_price"  << YAML::Value <<   c.opened_price
         << YAML::EndMap;
     return o;
 };
@@ -986,7 +986,6 @@ void  operator >> (const YAML::Node& node, sub_last_mk_execs_ticker & c)
 
         node["last_price"]  >> c.last_price;
         node["last_quantity"]  >> c.last_quantity;
-        node["side"]  >> c.side;
         node["max_last_price"]  >> c.max_last_price;
         node["min_last_price"]  >> c.min_last_price;
         node["opened_price"]  >> c.opened_price;
@@ -1272,7 +1271,7 @@ bool operator!= (const sub_additional_info& a, const sub_additional_info& b)
 
 bool operator== (const sub_last_mk_execs_ticker& a, const sub_last_mk_execs_ticker& b)
 {
-    return (          a.last_price ==  b.last_price  &&          a.last_quantity ==  b.last_quantity  &&          a.side ==  b.side  &&          a.max_last_price ==  b.max_last_price  &&          a.min_last_price ==  b.min_last_price  &&          a.opened_price ==  b.opened_price  &&   true  );
+    return (          a.last_price ==  b.last_price  &&          a.last_quantity ==  b.last_quantity  &&          a.max_last_price ==  b.max_last_price  &&          a.min_last_price ==  b.min_last_price  &&          a.opened_price ==  b.opened_price  &&   true  );
 };
 
 bool operator!= (const sub_last_mk_execs_ticker& a, const sub_last_mk_execs_ticker& b)
@@ -1750,14 +1749,6 @@ void  copy (sub_last_mk_execs_ticker& c, const qpid::types::Variant& v)
                     else
                         copy(c.last_quantity, it->second);
                         //c.last_quantity = it->second;
-//   sub_msg_type
-
-                    it = mv.find("sd");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field side on message sub_last_mk_execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.side, it->second);
-                        //__internal_qpid_fill(c.side, it->second.asMap());
 //   field_type
 
                     it = mv.find("lmin");
@@ -1796,8 +1787,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_last_mk_execs
         __internal_add2map(map, a.last_price, std::string("lp"));
 //  field_type
         __internal_add2map(map, a.last_quantity, std::string("lq"));
-//  sub_msg_type
-        __internal_add2map(map, a.side, std::string("sd"));
 //  field_type
         __internal_add2map(map, a.max_last_price, std::string("lmin"));
 //  field_type
@@ -2398,8 +2387,6 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
    __internal_get_default ((mtk::FixedNumber*)0),
 //   field_type
    __internal_get_default ((mtk::FixedNumber*)0),
-//   sub_msg_type
-   __internal_get_default((mtk::trd::msg::enBuySell*)0),
 //   field_type
    __internal_get_default ((mtk::FixedNumber*)0),
 //   field_type
@@ -2583,8 +2570,6 @@ sub_last_mk_execs_ticker::sub_last_mk_execs_ticker (const qpid::types::Variant::
    last_price(__internal_get_default((mtk::FixedNumber*)0)),
 //   field_type
    last_quantity(__internal_get_default((mtk::FixedNumber*)0)),
-//   sub_msg_type
-   side(__internal_get_default((mtk::trd::msg::enBuySell*)0)),
 //   field_type
    max_last_price(__internal_get_default((mtk::FixedNumber*)0)),
 //   field_type

@@ -352,7 +352,7 @@ public:
 
     
     // constructor
-    explicit sub_last_mk_execs_ticker (    const mtk::FixedNumber&  _last_price,   const mtk::FixedNumber&  _last_quantity,   const mtk::trd::msg::enBuySell&  _side,   const mtk::FixedNumber&  _max_last_price,   const mtk::FixedNumber&  _min_last_price,   const mtk::FixedNumber&  _opened_price );
+    explicit sub_last_mk_execs_ticker (    const mtk::FixedNumber&  _last_price,   const mtk::FixedNumber&  _last_quantity,   const mtk::FixedNumber&  _max_last_price,   const mtk::FixedNumber&  _min_last_price,   const mtk::FixedNumber&  _opened_price );
     explicit sub_last_mk_execs_ticker ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_last_mk_execs_ticker (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_last_mk_execs_ticker"; };
@@ -368,7 +368,6 @@ public:
     // fields
     mtk::FixedNumber                          last_price; 
     mtk::FixedNumber                          last_quantity; 
-    mtk::trd::msg::enBuySell                  side; 
     mtk::FixedNumber                          max_last_price; 
     mtk::FixedNumber                          min_last_price; 
     mtk::FixedNumber                          opened_price; 

@@ -85,7 +85,6 @@ sub_last_mk_execs_ticker [< >]
 {
     last_price           (lp)    :   fix_num
     last_quantity        (lq)    :   fix_num
-    side                 (sd)    :   mtk::trd::msg::enBuySell        //  aggression side
 
     max_last_price       (lmin)  :   fix_num          //  max and min price on interval
     min_last_price       (lmax)  :   fix_num
