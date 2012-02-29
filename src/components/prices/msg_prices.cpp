@@ -402,19 +402,13 @@ sub_price_level::sub_price_level (   const mtk::FixedNumber&  _price,   const mt
     :     price(_price),   quantity(_quantity) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_price_level::check_recomended(void) const
+void  sub_price_level::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_price_level::before_send(void) const
@@ -429,19 +423,13 @@ sub_price_deph5::sub_price_deph5 (   const sub_price_level&  _level0,   const su
     :     level0(_level0),   level1(_level1),   level2(_level2),   level3(_level3),   level4(_level4) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_price_deph5::check_recomended(void) const
+void  sub_price_deph5::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_price_deph5::before_send(void) const
@@ -456,19 +444,13 @@ sub_best_prices::sub_best_prices (   const sub_price_deph5&  _bids,   const sub_
     :     bids(_bids),   asks(_asks) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_best_prices::check_recomended(void) const
+void  sub_best_prices::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_best_prices::before_send(void) const
@@ -483,19 +465,13 @@ pub_best_prices::pub_best_prices (   const mtk::msg::sub_product_code&  _product
     :     product_code(_product_code),   best_prices(_best_prices),   orig_control_fluct(_orig_control_fluct) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string pub_best_prices::check_recomended(void) const
+void  pub_best_prices::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void pub_best_prices::before_send(void) const
@@ -510,19 +486,13 @@ pub_new_products::pub_new_products (   const std::string&  _market)
     :     market(_market) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string pub_new_products::check_recomended(void) const
+void  pub_new_products::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void pub_new_products::before_send(void) const
@@ -537,19 +507,13 @@ sub_additional_info::sub_additional_info (   const std::string&  _group,   const
     :     group(_group),   maturity(_maturity),   value_date(_value_date),   unit_cost(_unit_cost),   last_trading_dt(_last_trading_dt),   yaml_misc(_yaml_misc) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_additional_info::check_recomended(void) const
+void  sub_additional_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_additional_info::before_send(void) const
@@ -564,19 +528,13 @@ sub_last_mk_execs_ticker::sub_last_mk_execs_ticker (   const mtk::FixedNumber&  
     :     last_price(_last_price),   last_quantity(_last_quantity),   max_last_price(_max_last_price),   min_last_price(_min_last_price),   opened_price(_opened_price) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_last_mk_execs_ticker::check_recomended(void) const
+void  sub_last_mk_execs_ticker::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_last_mk_execs_ticker::before_send(void) const
@@ -591,19 +549,13 @@ pub_last_mk_execs_ticker::pub_last_mk_execs_ticker (   const mtk::msg::sub_produ
     :     product_code(_product_code),   last_mk_execs_ticker(_last_mk_execs_ticker),   orig_control_fluct(_orig_control_fluct) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string pub_last_mk_execs_ticker::check_recomended(void) const
+void  pub_last_mk_execs_ticker::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void pub_last_mk_execs_ticker::before_send(void) const
@@ -618,24 +570,18 @@ sub_full_product_info::sub_full_product_info (   const mtk::msg::sub_product_cod
     :     product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info),   last_mk_execs_ticker(_last_mk_execs_ticker) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_full_product_info::check_recomended(void) const
+void  sub_full_product_info::check_recomended(void) const
 {
-    std::string result;
 
-    MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
-        if (last_mk_execs_ticker.HasValue() == false)
-            result += "sub_full_product_info::check_recomended  missing recomended field **last_mk_execs_ticker** on sub_full_product_info";
-    MTK_END_EXEC_MAX_FREC
+    if (last_mk_execs_ticker.HasValue() == false)
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", "sub_full_product_info::check_recomended  missing recomended field **last_mk_execs_ticker** on sub_full_product_info", mtk::alPriorError));
+        MTK_END_EXEC_MAX_FREC
 
-    return result;
 }
 
 void sub_full_product_info::before_send(void) const
@@ -650,19 +596,13 @@ sub_full_product_info_optionals::sub_full_product_info_optionals (   const bool&
     :     initialized(_initialized),   product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info),   last_mk_execs_ticker(_last_mk_execs_ticker) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_full_product_info_optionals::check_recomended(void) const
+void  sub_full_product_info_optionals::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_full_product_info_optionals::before_send(void) const
@@ -677,19 +617,13 @@ req_product_info::req_product_info (   const mtk::msg::sub_request_info&  _reque
     :     request_info(_request_info),   product_code(_product_code) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string req_product_info::check_recomended(void) const
+void  req_product_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void req_product_info::before_send(void) const
@@ -704,19 +638,13 @@ res_product_info::res_product_info (   const mtk::msg::sub_r_response&  _respons
     :     response_info(_response_info),   response(_response) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_product_info::check_recomended(void) const
+void  res_product_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_product_info::before_send(void) const
@@ -731,19 +659,13 @@ res_product_info::IC_response::IC_response (   const sub_full_product_info&  _fu
     :     full_product_info(_full_product_info) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_product_info::IC_response::check_recomended(void) const
+void  res_product_info::IC_response::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_product_info::IC_response::before_send(void) const
@@ -1354,7 +1276,6 @@ bool operator!= (const res_product_info& a, const res_product_info& b)
 
 
 
-//void  __internal_qpid_fill (sub_price_level& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_price_level& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1377,6 +1298,7 @@ void  copy (sub_price_level& c, const qpid::types::Variant& v)
                         copy(c.quantity, it->second);
                         //c.quantity = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1384,7 +1306,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& 
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.price, std::string("pri"));
@@ -1405,7 +1327,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_price_deph5& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_price_deph5& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1452,6 +1373,7 @@ void  copy (sub_price_deph5& c, const qpid::types::Variant& v)
                         copy(c.level4, it->second);
                         //__internal_qpid_fill(c.level4, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1459,7 +1381,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_deph5& 
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.level0, std::string("b0"));
@@ -1486,7 +1408,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_best_prices& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_best_prices& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1509,6 +1430,7 @@ void  copy (sub_best_prices& c, const qpid::types::Variant& v)
                         copy(c.asks, it->second);
                         //__internal_qpid_fill(c.asks, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1516,7 +1438,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_best_prices& 
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.bids, std::string("bids"));
@@ -1537,7 +1459,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (pub_best_prices& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (pub_best_prices& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1568,6 +1489,7 @@ void  copy (pub_best_prices& c, const qpid::types::Variant& v)
                         copy(c.orig_control_fluct, it->second);
                         //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1575,7 +1497,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& 
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.product_code, std::string("pc"));
@@ -1598,7 +1520,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (pub_new_products& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (pub_new_products& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1613,6 +1534,7 @@ void  copy (pub_new_products& c, const qpid::types::Variant& v)
                         copy(c.market, it->second);
                         //c.market = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1620,7 +1542,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_new_products&
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.market, std::string("mk"));
@@ -1639,7 +1561,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (sub_additional_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_additional_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1688,6 +1609,7 @@ void  copy (sub_additional_info& c, const qpid::types::Variant& v)
                         copy(c.yaml_misc, it->second);
                         //c.yaml_misc = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1695,7 +1617,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_additional_in
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.group, std::string("gr"));
@@ -1727,7 +1649,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_last_mk_execs_ticker& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_last_mk_execs_ticker& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1774,6 +1695,7 @@ void  copy (sub_last_mk_execs_ticker& c, const qpid::types::Variant& v)
                         copy(c.opened_price, it->second);
                         //c.opened_price = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1781,7 +1703,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_last_mk_execs
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.last_price, std::string("lp"));
@@ -1808,7 +1730,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (pub_last_mk_execs_ticker& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (pub_last_mk_execs_ticker& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1839,6 +1760,7 @@ void  copy (pub_last_mk_execs_ticker& c, const qpid::types::Variant& v)
                         copy(c.orig_control_fluct, it->second);
                         //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1846,7 +1768,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk_execs
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.product_code, std::string("pc"));
@@ -1869,7 +1791,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (sub_full_product_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_full_product_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1906,6 +1827,7 @@ void  copy (sub_full_product_info& c, const qpid::types::Variant& v)
                         copy(c.last_mk_execs_ticker, it->second);
                         //__internal_qpid_fill(c.last_mk_execs_ticker, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1913,7 +1835,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.product_code, std::string("pc"));
@@ -1939,7 +1861,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_full_product_info_optionals& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_full_product_info_optionals& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1980,6 +1901,7 @@ void  copy (sub_full_product_info_optionals& c, const qpid::types::Variant& v)
                         copy(c.last_mk_execs_ticker, it->second);
                         //__internal_qpid_fill(c.last_mk_execs_ticker, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1987,7 +1909,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.initialized, std::string("init"));
@@ -2017,7 +1939,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (req_product_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (req_product_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -2040,6 +1961,7 @@ void  copy (req_product_info& c, const qpid::types::Variant& v)
                         copy(c.product_code, it->second);
                         //__internal_qpid_fill(c.product_code, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -2047,7 +1969,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_product_info&
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -2068,7 +1990,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
-//void  __internal_qpid_fill (res_product_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_product_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -2091,6 +2012,7 @@ void  copy (res_product_info& c, const qpid::types::Variant& v)
                         copy(c.response, it->second);
                         //__internal_qpid_fill(c.response, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -2098,7 +2020,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info&
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("rsi"));
@@ -2120,7 +2042,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//void  __internal_qpid_fill (res_product_info::IC_response& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_product_info::IC_response& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -2135,6 +2056,7 @@ void  copy (res_product_info::IC_response& c, const qpid::types::Variant& v)
                         copy(c.full_product_info, it->second);
                         //__internal_qpid_fill(c.full_product_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -2142,7 +2064,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info:
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.full_product_info, std::string("bp"));
@@ -2466,7 +2388,6 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
             );
     }
     
-
 sub_price_level::sub_price_level (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    price(__internal_get_default((mtk::FixedNumber*)0)),
@@ -2474,13 +2395,8 @@ sub_price_level::sub_price_level (const qpid::types::Variant::Map&  mv)
    quantity(__internal_get_default((mtk::FixedNumber*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_price_deph5::sub_price_deph5 (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2495,13 +2411,8 @@ sub_price_deph5::sub_price_deph5 (const qpid::types::Variant::Map&  mv)
    level4(__internal_get_default((sub_price_level*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_best_prices::sub_best_prices (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2510,13 +2421,8 @@ sub_best_prices::sub_best_prices (const qpid::types::Variant::Map&  mv)
    asks(__internal_get_default((sub_price_deph5*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 pub_best_prices::pub_best_prices (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2527,26 +2433,16 @@ pub_best_prices::pub_best_prices (const qpid::types::Variant::Map&  mv)
    orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 pub_new_products::pub_new_products (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_additional_info::sub_additional_info (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -2557,13 +2453,8 @@ sub_additional_info::sub_additional_info (const qpid::types::Variant::Map&  mv)
    yaml_misc(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_last_mk_execs_ticker::sub_last_mk_execs_ticker (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -2578,13 +2469,8 @@ sub_last_mk_execs_ticker::sub_last_mk_execs_ticker (const qpid::types::Variant::
    opened_price(__internal_get_default((mtk::FixedNumber*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 pub_last_mk_execs_ticker::pub_last_mk_execs_ticker (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2595,13 +2481,8 @@ pub_last_mk_execs_ticker::pub_last_mk_execs_ticker (const qpid::types::Variant::
    orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_full_product_info::sub_full_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2612,13 +2493,8 @@ sub_full_product_info::sub_full_product_info (const qpid::types::Variant::Map&  
    additional_info(__internal_get_default((sub_additional_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_full_product_info_optionals::sub_full_product_info_optionals (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2627,13 +2503,8 @@ sub_full_product_info_optionals::sub_full_product_info_optionals (const qpid::ty
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 req_product_info::req_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2642,13 +2513,8 @@ req_product_info::req_product_info (const qpid::types::Variant::Map&  mv)
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_product_info::res_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2657,25 +2523,16 @@ res_product_info::res_product_info (const qpid::types::Variant::Map&  mv)
    response(__internal_get_default((res_product_info::IC_response*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_product_info::IC_response::IC_response (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    full_product_info(__internal_get_default((sub_full_product_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 mtk::t_qpid_filter  pub_best_prices::get_in_subject (const std::string& product_code_market,const std::string& product_code_product)
     {
         return mtk::t_qpid_filter(MTK_SS("BP." << product_code_market << "." << product_code_product << ""));

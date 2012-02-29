@@ -402,19 +402,13 @@ req_login_key::req_login_key (   const mtk::msg::sub_request_info&  _request_inf
     :     request_info(_request_info),   user_name(_user_name) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string req_login_key::check_recomended(void) const
+void  req_login_key::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void req_login_key::before_send(void) const
@@ -429,19 +423,13 @@ res_login_key::res_login_key (   const mtk::msg::sub_r_response&  _response_info
     :     response_info(_response_info),   key(_key) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_login_key::check_recomended(void) const
+void  res_login_key::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_login_key::before_send(void) const
@@ -456,19 +444,13 @@ req_login::req_login (   const mtk::msg::sub_request_info&  _request_info,   con
     :     request_info(_request_info),   user_name(_user_name),   key(_key),   coded_pass(_coded_pass) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string req_login::check_recomended(void) const
+void  req_login::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void req_login::before_send(void) const
@@ -483,19 +465,13 @@ res_login::res_login (   const mtk::msg::sub_r_response&  _response_info,   cons
     :     response_info(_response_info),   session_info(_session_info) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_login::check_recomended(void) const
+void  res_login::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_login::before_send(void) const
@@ -510,19 +486,13 @@ res_login::IC_session_info::IC_session_info (   const std::string&  _user_name, 
     :     user_name(_user_name),   client_code(_client_code),   session_id(_session_id) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_login::IC_session_info::check_recomended(void) const
+void  res_login::IC_session_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_login::IC_session_info::before_send(void) const
@@ -537,19 +507,13 @@ conf_logout::conf_logout (   const mtk::msg::sub_location&  _location,   const s
     :     location(_location),   session_id(_session_id),   description(_description) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string conf_logout::check_recomended(void) const
+void  conf_logout::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void conf_logout::before_send(void) const
@@ -564,19 +528,13 @@ req_logout::req_logout (   const mtk::msg::sub_request_info&  _request_info)
     :     request_info(_request_info) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string req_logout::check_recomended(void) const
+void  req_logout::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void req_logout::before_send(void) const
@@ -591,19 +549,13 @@ req_change_password::req_change_password (   const mtk::msg::sub_request_info&  
     :     request_info(_request_info),   user_name(_user_name),   key(_key),   old_password(_old_password),   new_password(_new_password) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string req_change_password::check_recomended(void) const
+void  req_change_password::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void req_change_password::before_send(void) const
@@ -618,19 +570,13 @@ res_change_password::res_change_password (   const mtk::msg::sub_r_response&  _r
     :     response_info(_response_info),   change_password_info(_change_password_info) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_change_password::check_recomended(void) const
+void  res_change_password::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_change_password::before_send(void) const
@@ -645,19 +591,13 @@ res_change_password::IC_change_password_info::IC_change_password_info (   const 
     :     accepted(_accepted) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_change_password::IC_change_password_info::check_recomended(void) const
+void  res_change_password::IC_change_password_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_change_password::IC_change_password_info::before_send(void) const
@@ -1123,7 +1063,6 @@ bool operator!= (const res_change_password& a, const res_change_password& b)
 
 
 
-//void  __internal_qpid_fill (req_login_key& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (req_login_key& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1146,6 +1085,7 @@ void  copy (req_login_key& c, const qpid::types::Variant& v)
                         copy(c.user_name, it->second);
                         //c.user_name = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1153,7 +1093,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_login_key& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -1174,7 +1114,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
-//void  __internal_qpid_fill (res_login_key& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_login_key& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1197,6 +1136,7 @@ void  copy (res_login_key& c, const qpid::types::Variant& v)
                         copy(c.key, it->second);
                         //c.key = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1204,7 +1144,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login_key& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("rsi"));
@@ -1225,7 +1165,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//void  __internal_qpid_fill (req_login& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (req_login& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1264,6 +1203,7 @@ void  copy (req_login& c, const qpid::types::Variant& v)
                         copy(c.coded_pass, it->second);
                         //c.coded_pass = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1271,7 +1211,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_login& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -1296,7 +1236,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
-//void  __internal_qpid_fill (res_login& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_login& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1319,6 +1258,7 @@ void  copy (res_login& c, const qpid::types::Variant& v)
                         copy(c.session_info, it->second);
                         //__internal_qpid_fill(c.session_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1326,7 +1266,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("rsi"));
@@ -1348,7 +1288,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//void  __internal_qpid_fill (res_login::IC_session_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_login::IC_session_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1379,6 +1318,7 @@ void  copy (res_login::IC_session_info& c, const qpid::types::Variant& v)
                         copy(c.session_id, it->second);
                         //c.session_id = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1386,7 +1326,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_ses
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.user_name, std::string("un"));
@@ -1409,7 +1349,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//void  __internal_qpid_fill (conf_logout& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (conf_logout& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1440,6 +1379,7 @@ void  copy (conf_logout& c, const qpid::types::Variant& v)
                         copy(c.description, it->second);
                         //c.description = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1447,7 +1387,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.location, std::string("lc"));
@@ -1470,7 +1410,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<con
 
 
 
-//void  __internal_qpid_fill (req_logout& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (req_logout& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1485,6 +1424,7 @@ void  copy (req_logout& c, const qpid::types::Variant& v)
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1492,7 +1432,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_logout& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -1511,7 +1451,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
-//void  __internal_qpid_fill (req_change_password& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (req_change_password& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1558,6 +1497,7 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
                         copy(c.new_password, it->second);
                         //c.new_password = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1565,7 +1505,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_change_passwo
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -1592,7 +1532,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
-//void  __internal_qpid_fill (res_change_password& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_change_password& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1615,6 +1554,7 @@ void  copy (res_change_password& c, const qpid::types::Variant& v)
                         copy(c.change_password_info, it->second);
                         //__internal_qpid_fill(c.change_password_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1622,7 +1562,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_change_passwo
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("rsi"));
@@ -1644,7 +1584,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
-//void  __internal_qpid_fill (res_change_password::IC_change_password_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_change_password::IC_change_password_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1659,6 +1598,7 @@ void  copy (res_change_password::IC_change_password_info& c, const qpid::types::
                         copy(c.accepted, it->second);
                         //__internal_qpid_fill(c.accepted, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1666,7 +1606,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_change_passwo
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.accepted, std::string("a"));
@@ -2027,7 +1967,6 @@ qpid::messaging::Message res_change_password::qpidmsg_codded_as_qpid_message (co
             );
     }
     
-
 req_login_key::req_login_key (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
@@ -2035,13 +1974,8 @@ req_login_key::req_login_key (const qpid::types::Variant::Map&  mv)
    user_name(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_login_key::res_login_key (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2050,13 +1984,8 @@ res_login_key::res_login_key (const qpid::types::Variant::Map&  mv)
    key(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 req_login::req_login (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2069,13 +1998,8 @@ req_login::req_login (const qpid::types::Variant::Map&  mv)
    coded_pass(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_login::res_login (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2084,13 +2008,8 @@ res_login::res_login (const qpid::types::Variant::Map&  mv)
    session_info(__internal_get_default((res_login::IC_session_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_login::IC_session_info::IC_session_info (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -2101,13 +2020,8 @@ res_login::IC_session_info::IC_session_info (const qpid::types::Variant::Map&  m
    session_id(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 conf_logout::conf_logout (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2118,26 +2032,16 @@ conf_logout::conf_logout (const qpid::types::Variant::Map&  mv)
    description(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 req_logout::req_logout (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 req_change_password::req_change_password (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2152,13 +2056,8 @@ req_change_password::req_change_password (const qpid::types::Variant::Map&  mv)
    new_password(__internal_get_default((mtk::list<int32_t >*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_change_password::res_change_password (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -2167,25 +2066,16 @@ res_change_password::res_change_password (const qpid::types::Variant::Map&  mv)
    change_password_info(__internal_get_default((res_change_password::IC_change_password_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_change_password::IC_change_password_info::IC_change_password_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    accepted(__internal_get_default((bool*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
         return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_broker_code << ".ACS.RQK"));

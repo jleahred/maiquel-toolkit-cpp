@@ -402,19 +402,13 @@ oms_RQ_NW_LS::oms_RQ_NW_LS ( const RQ_NW_LS&  parent,   const std::string&  _rej
     :  RQ_NW_LS(parent),   reject_description(_reject_description),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string oms_RQ_NW_LS::check_recomended(void) const
+void  oms_RQ_NW_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void oms_RQ_NW_LS::before_send(void) const
@@ -429,19 +423,13 @@ oms_RQ_MD_LS::oms_RQ_MD_LS ( const RQ_MD_LS&  parent,   const std::string&  _rej
     :  RQ_MD_LS(parent),   reject_description(_reject_description),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string oms_RQ_MD_LS::check_recomended(void) const
+void  oms_RQ_MD_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void oms_RQ_MD_LS::before_send(void) const
@@ -456,19 +444,13 @@ oms_RQ_CC_LS::oms_RQ_CC_LS ( const RQ_CC_LS&  parent,   const std::string&  _rej
     :  RQ_CC_LS(parent),   reject_description(_reject_description),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string oms_RQ_CC_LS::check_recomended(void) const
+void  oms_RQ_CC_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void oms_RQ_CC_LS::before_send(void) const
@@ -483,19 +465,13 @@ oms_RQ_NW_MK::oms_RQ_NW_MK ( const RQ_NW_MK&  parent,   const std::string&  _rej
     :  RQ_NW_MK(parent),   reject_description(_reject_description),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string oms_RQ_NW_MK::check_recomended(void) const
+void  oms_RQ_NW_MK::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void oms_RQ_NW_MK::before_send(void) const
@@ -510,19 +486,13 @@ oms_RQ_MD_MK::oms_RQ_MD_MK ( const RQ_MD_MK&  parent,   const std::string&  _rej
     :  RQ_MD_MK(parent),   reject_description(_reject_description),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string oms_RQ_MD_MK::check_recomended(void) const
+void  oms_RQ_MD_MK::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void oms_RQ_MD_MK::before_send(void) const
@@ -537,19 +507,13 @@ oms_RQ_CC_MK::oms_RQ_CC_MK ( const RQ_CC_MK&  parent,   const std::string&  _rej
     :  RQ_CC_MK(parent),   reject_description(_reject_description),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string oms_RQ_CC_MK::check_recomended(void) const
+void  oms_RQ_CC_MK::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void oms_RQ_CC_MK::before_send(void) const
@@ -564,19 +528,13 @@ oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS ( const RQ_ORDERS_STATUS&  parent,   
     :  RQ_ORDERS_STATUS(parent),   reject_description(_reject_description),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string oms_RQ_ORDERS_STATUS::check_recomended(void) const
+void  oms_RQ_ORDERS_STATUS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void oms_RQ_ORDERS_STATUS::before_send(void) const
@@ -909,7 +867,6 @@ bool operator!= (const oms_RQ_ORDERS_STATUS& a, const oms_RQ_ORDERS_STATUS& b)
 
 
 
-//void  __internal_qpid_fill (oms_RQ_NW_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (oms_RQ_NW_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -932,6 +889,7 @@ copy(static_cast<RQ_NW_LS&>(c), v);
                         copy(c.from, it->second);
                         //c.from = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -939,7 +897,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_NW_LS&>(a));
 
@@ -962,7 +920,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
-//void  __internal_qpid_fill (oms_RQ_MD_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (oms_RQ_MD_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -985,6 +942,7 @@ copy(static_cast<RQ_MD_LS&>(c), v);
                         copy(c.from, it->second);
                         //c.from = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -992,7 +950,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_MD_LS&>(a));
 
@@ -1015,7 +973,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
-//void  __internal_qpid_fill (oms_RQ_CC_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (oms_RQ_CC_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1038,6 +995,7 @@ copy(static_cast<RQ_CC_LS&>(c), v);
                         copy(c.from, it->second);
                         //c.from = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1045,7 +1003,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_CC_LS&>(a));
 
@@ -1068,7 +1026,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
-//void  __internal_qpid_fill (oms_RQ_NW_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (oms_RQ_NW_MK& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1091,6 +1048,7 @@ copy(static_cast<RQ_NW_MK&>(c), v);
                         copy(c.from, it->second);
                         //c.from = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1098,7 +1056,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_MK& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_NW_MK&>(a));
 
@@ -1121,7 +1079,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
-//void  __internal_qpid_fill (oms_RQ_MD_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (oms_RQ_MD_MK& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1144,6 +1101,7 @@ copy(static_cast<RQ_MD_MK&>(c), v);
                         copy(c.from, it->second);
                         //c.from = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1151,7 +1109,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_MK& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_MD_MK&>(a));
 
@@ -1174,7 +1132,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
-//void  __internal_qpid_fill (oms_RQ_CC_MK& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (oms_RQ_CC_MK& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1197,6 +1154,7 @@ copy(static_cast<RQ_CC_MK&>(c), v);
                         copy(c.from, it->second);
                         //c.from = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1204,7 +1162,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_MK& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_CC_MK&>(a));
 
@@ -1227,7 +1185,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
-//void  __internal_qpid_fill (oms_RQ_ORDERS_STATUS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (oms_RQ_ORDERS_STATUS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1250,6 +1207,7 @@ copy(static_cast<RQ_ORDERS_STATUS&>(c), v);
                         copy(c.from, it->second);
                         //c.from = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1257,7 +1215,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_ORDERS_STA
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_ORDERS_STATUS&>(a));
 
@@ -1552,7 +1510,6 @@ __internal_get_default((RQ_ORDERS_STATUS*)0), //   field_type
             );
     }
     
-
 oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_NW_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
@@ -1560,13 +1517,8 @@ oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::types::Variant::Map&  mv)
    from(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_MD_LS(mv), //   field_type
@@ -1575,13 +1527,8 @@ oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::types::Variant::Map&  mv)
    from(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_CC_LS(mv), //   field_type
@@ -1590,13 +1537,8 @@ oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::types::Variant::Map&  mv)
    from(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::types::Variant::Map&  mv)
     :  RQ_NW_MK(mv), //   field_type
@@ -1605,13 +1547,8 @@ oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::types::Variant::Map&  mv)
    from(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::types::Variant::Map&  mv)
     :  RQ_MD_MK(mv), //   field_type
@@ -1620,13 +1557,8 @@ oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::types::Variant::Map&  mv)
    from(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::types::Variant::Map&  mv)
     :  RQ_CC_MK(mv), //   field_type
@@ -1635,13 +1567,8 @@ oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::types::Variant::Map&  mv)
    from(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::types::Variant::Map&  mv)
     :  RQ_ORDERS_STATUS(mv), //   field_type
@@ -1650,12 +1577,8 @@ oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::types::Variant::Map&  mv
    from(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));

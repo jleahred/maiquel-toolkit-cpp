@@ -74,8 +74,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 

@@ -401,19 +401,13 @@ sub_location::sub_location (   const std::string&  _broker_code,   const std::st
     :     broker_code(_broker_code),   machine(_machine) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_location::check_recomended(void) const
+void  sub_location::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_location::before_send(void) const
@@ -428,19 +422,13 @@ sub_process_info::sub_process_info (   const sub_location&  _location,   const s
     :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid),   version(_version) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_process_info::check_recomended(void) const
+void  sub_process_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_process_info::before_send(void) const
@@ -455,19 +443,13 @@ sub_control_fluct::sub_control_fluct (   const std::string&  _key,   const mtk::
     :     key(_key),   datetime(_datetime) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_control_fluct::check_recomended(void) const
+void  sub_control_fluct::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_control_fluct::before_send(void) const
@@ -482,19 +464,13 @@ sub_request_id::sub_request_id (   const std::string&  _session_id,   const std:
     :     session_id(_session_id),   req_code(_req_code) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_request_id::check_recomended(void) const
+void  sub_request_id::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_request_id::before_send(void) const
@@ -509,19 +485,13 @@ sub_request_info::sub_request_info (   const sub_request_id&  _req_id,   const s
     :     req_id(_req_id),   process_info(_process_info) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_request_info::check_recomended(void) const
+void  sub_request_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_request_info::before_send(void) const
@@ -536,19 +506,13 @@ sub_r_response::sub_r_response (   const sub_process_info&  _process_info,   con
     :     process_info(_process_info),   request_info(_request_info),   seq_number(_seq_number),   is_last_response(_is_last_response) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_r_response::check_recomended(void) const
+void  sub_r_response::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_r_response::before_send(void) const
@@ -563,19 +527,13 @@ sub_gen_response_location::sub_gen_response_location (   const std::string&  _se
     :     session_id(_session_id),   broker_code(_broker_code) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_gen_response_location::check_recomended(void) const
+void  sub_gen_response_location::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_gen_response_location::before_send(void) const
@@ -590,19 +548,13 @@ sub_product_code::sub_product_code (   const std::string&  _market,   const std:
     :     market(_market),   product(_product) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_product_code::check_recomended(void) const
+void  sub_product_code::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_product_code::before_send(void) const
@@ -977,7 +929,6 @@ bool operator!= (const sub_product_code& a, const sub_product_code& b)
 
 
 
-//void  __internal_qpid_fill (sub_location& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_location& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1000,6 +951,7 @@ void  copy (sub_location& c, const qpid::types::Variant& v)
                         copy(c.machine, it->second);
                         //c.machine = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1007,7 +959,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_location& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.broker_code, std::string("bc"));
@@ -1028,7 +980,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_process_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_process_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1067,6 +1018,7 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
                         copy(c.version, it->second);
                         //c.version = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1074,7 +1026,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info&
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.location, std::string("lc"));
@@ -1099,7 +1051,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_control_fluct& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_control_fluct& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1122,6 +1073,7 @@ void  copy (sub_control_fluct& c, const qpid::types::Variant& v)
                         copy(c.datetime, it->second);
                         //c.datetime = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1129,7 +1081,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fluct
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.key, std::string("k"));
@@ -1150,7 +1102,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_request_id& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_request_id& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1173,6 +1124,7 @@ void  copy (sub_request_id& c, const qpid::types::Variant& v)
                         copy(c.req_code, it->second);
                         //c.req_code = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1180,7 +1132,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_id& a
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.session_id, std::string("sid"));
@@ -1201,7 +1153,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_request_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_request_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1224,6 +1175,7 @@ void  copy (sub_request_info& c, const qpid::types::Variant& v)
                         copy(c.process_info, it->second);
                         //__internal_qpid_fill(c.process_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1231,7 +1183,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_request_info&
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.req_id, std::string("rqid"));
@@ -1252,7 +1204,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_r_response& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_r_response& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1291,6 +1242,7 @@ void  copy (sub_r_response& c, const qpid::types::Variant& v)
                         copy(c.is_last_response, it->second);
                         //__internal_qpid_fill(c.is_last_response, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1298,7 +1250,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_r_response& a
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
@@ -1323,7 +1275,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_gen_response_location& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_gen_response_location& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1346,6 +1297,7 @@ void  copy (sub_gen_response_location& c, const qpid::types::Variant& v)
                         copy(c.broker_code, it->second);
                         //c.broker_code = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1353,7 +1305,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_gen_response_
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.session_id, std::string("sid"));
@@ -1374,7 +1326,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_product_code& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_product_code& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1397,6 +1348,7 @@ void  copy (sub_product_code& c, const qpid::types::Variant& v)
                         copy(c.product, it->second);
                         //c.product = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1404,7 +1356,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code&
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.market, std::string("mk"));
@@ -1520,7 +1472,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
             );
     }
     
-
 sub_location::sub_location (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    broker_code(__internal_get_default((std::string*)0)),
@@ -1528,13 +1479,8 @@ sub_location::sub_location (const qpid::types::Variant::Map&  mv)
    machine(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_process_info::sub_process_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -1547,13 +1493,8 @@ sub_process_info::sub_process_info (const qpid::types::Variant::Map&  mv)
    version(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_control_fluct::sub_control_fluct (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1562,13 +1503,8 @@ sub_control_fluct::sub_control_fluct (const qpid::types::Variant::Map&  mv)
    datetime(__internal_get_default((mtk::DateTime*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_request_id::sub_request_id (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1577,13 +1513,8 @@ sub_request_id::sub_request_id (const qpid::types::Variant::Map&  mv)
    req_code(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_request_info::sub_request_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -1592,13 +1523,8 @@ sub_request_info::sub_request_info (const qpid::types::Variant::Map&  mv)
    process_info(__internal_get_default((sub_process_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_r_response::sub_r_response (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -1611,13 +1537,8 @@ sub_r_response::sub_r_response (const qpid::types::Variant::Map&  mv)
    is_last_response(__internal_get_default((bool*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_gen_response_location::sub_gen_response_location (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1626,13 +1547,8 @@ sub_gen_response_location::sub_gen_response_location (const qpid::types::Variant
    broker_code(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_product_code::sub_product_code (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1641,12 +1557,8 @@ sub_product_code::sub_product_code (const qpid::types::Variant::Map&  mv)
    product(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 
 
 };   //namespace mtk {

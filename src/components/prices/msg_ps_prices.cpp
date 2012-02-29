@@ -402,19 +402,13 @@ ps_req_product_info::ps_req_product_info ( const req_product_info&  parent,   co
     :  req_product_info(parent),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_req_product_info::check_recomended(void) const
+void  ps_req_product_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_req_product_info::before_send(void) const
@@ -429,19 +423,13 @@ ps_pub_prod_info_mtk_ready::ps_pub_prod_info_mtk_ready (   const std::string&  _
     :     market(_market) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_pub_prod_info_mtk_ready::check_recomended(void) const
+void  ps_pub_prod_info_mtk_ready::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_pub_prod_info_mtk_ready::before_send(void) const
@@ -456,19 +444,13 @@ ps_req_init_prod_info::ps_req_init_prod_info (   const std::string&  _market,   
     :     market(_market),   process_info(_process_info) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_req_init_prod_info::check_recomended(void) const
+void  ps_req_init_prod_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_req_init_prod_info::before_send(void) const
@@ -483,19 +465,13 @@ ps_conf_full_product_info_init::ps_conf_full_product_info_init (   const std::st
     :     market(_market),   to_process_info(_to_process_info) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_conf_full_product_info_init::check_recomended(void) const
+void  ps_conf_full_product_info_init::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_conf_full_product_info_init::before_send(void) const
@@ -510,19 +486,13 @@ ps_conf_full_product_info::ps_conf_full_product_info (   const sub_full_product_
     :     full_prod_info(_full_prod_info),   to_process_info(_to_process_info),   seq_number(_seq_number) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_conf_full_product_info::check_recomended(void) const
+void  ps_conf_full_product_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_conf_full_product_info::before_send(void) const
@@ -537,19 +507,13 @@ ps_pub_prod_info_mtk_ready__from_publisher::ps_pub_prod_info_mtk_ready__from_pub
     :  ps_pub_prod_info_mtk_ready(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_pub_prod_info_mtk_ready__from_publisher::check_recomended(void) const
+void  ps_pub_prod_info_mtk_ready__from_publisher::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_pub_prod_info_mtk_ready__from_publisher::before_send(void) const
@@ -564,19 +528,13 @@ ps_req_init_prod_info__to_publisher::ps_req_init_prod_info__to_publisher ( const
     :  ps_req_init_prod_info(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_req_init_prod_info__to_publisher::check_recomended(void) const
+void  ps_req_init_prod_info__to_publisher::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_req_init_prod_info__to_publisher::before_send(void) const
@@ -591,19 +549,13 @@ ps_conf_full_product_info_init__from_publisher::ps_conf_full_product_info_init__
     :  ps_conf_full_product_info_init(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_conf_full_product_info_init__from_publisher::check_recomended(void) const
+void  ps_conf_full_product_info_init__from_publisher::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_conf_full_product_info_init__from_publisher::before_send(void) const
@@ -618,19 +570,13 @@ ps_conf_full_product_info__from_publisher::ps_conf_full_product_info__from_publi
     :  ps_conf_full_product_info(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ps_conf_full_product_info__from_publisher::check_recomended(void) const
+void  ps_conf_full_product_info__from_publisher::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void ps_conf_full_product_info__from_publisher::before_send(void) const
@@ -1042,7 +988,6 @@ bool operator!= (const ps_conf_full_product_info__from_publisher& a, const ps_co
 
 
 
-//void  __internal_qpid_fill (ps_req_product_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_req_product_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1057,6 +1002,7 @@ copy(static_cast<req_product_info&>(c), v);
                         copy(c.from, it->second);
                         //c.from = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1064,7 +1010,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_req_product_in
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const req_product_info&>(a));
 
@@ -1085,7 +1031,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 
 
 
-//void  __internal_qpid_fill (ps_pub_prod_info_mtk_ready& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_pub_prod_info_mtk_ready& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1100,6 +1045,7 @@ void  copy (ps_pub_prod_info_mtk_ready& c, const qpid::types::Variant& v)
                         copy(c.market, it->second);
                         //c.market = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1107,7 +1053,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_pub_prod_info_
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.market, std::string("mk"));
@@ -1126,7 +1072,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 
 
 
-//void  __internal_qpid_fill (ps_req_init_prod_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_req_init_prod_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1149,6 +1094,7 @@ void  copy (ps_req_init_prod_info& c, const qpid::types::Variant& v)
                         copy(c.process_info, it->second);
                         //__internal_qpid_fill(c.process_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1156,7 +1102,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_req_init_prod_
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.market, std::string("mk"));
@@ -1177,7 +1123,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 
 
 
-//void  __internal_qpid_fill (ps_conf_full_product_info_init& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_conf_full_product_info_init& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1200,6 +1145,7 @@ void  copy (ps_conf_full_product_info_init& c, const qpid::types::Variant& v)
                         copy(c.to_process_info, it->second);
                         //__internal_qpid_fill(c.to_process_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1207,7 +1153,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_prod
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.market, std::string("mk"));
@@ -1228,7 +1174,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 
 
 
-//void  __internal_qpid_fill (ps_conf_full_product_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_conf_full_product_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1259,6 +1204,7 @@ void  copy (ps_conf_full_product_info& c, const qpid::types::Variant& v)
                         copy(c.seq_number, it->second);
                         //__internal_qpid_fill(c.seq_number, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1266,7 +1212,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_prod
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.full_prod_info, std::string("fpi"));
@@ -1289,13 +1235,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 
 
 
-//void  __internal_qpid_fill (ps_pub_prod_info_mtk_ready__from_publisher& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_pub_prod_info_mtk_ready__from_publisher& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<ps_pub_prod_info_mtk_ready&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1303,7 +1249,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_pub_prod_info_
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const ps_pub_prod_info_mtk_ready&>(a));
 
@@ -1322,13 +1268,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 
 
 
-//void  __internal_qpid_fill (ps_req_init_prod_info__to_publisher& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_req_init_prod_info__to_publisher& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<ps_req_init_prod_info&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1336,7 +1282,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_req_init_prod_
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const ps_req_init_prod_info&>(a));
 
@@ -1355,13 +1301,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 
 
 
-//void  __internal_qpid_fill (ps_conf_full_product_info_init__from_publisher& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_conf_full_product_info_init__from_publisher& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<ps_conf_full_product_info_init&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1369,7 +1315,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_prod
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const ps_conf_full_product_info_init&>(a));
 
@@ -1388,13 +1334,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 
 
 
-//void  __internal_qpid_fill (ps_conf_full_product_info__from_publisher& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (ps_conf_full_product_info__from_publisher& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<ps_conf_full_product_info&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1402,7 +1348,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_prod
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const ps_conf_full_product_info&>(a));
 
@@ -1722,32 +1668,21 @@ __internal_get_default((ps_conf_full_product_info*)0)
             );
     }
     
-
 ps_req_product_info::ps_req_product_info (const qpid::types::Variant::Map&  mv)
     :  req_product_info(mv), //   field_type
    from(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 ps_pub_prod_info_mtk_ready::ps_pub_prod_info_mtk_ready (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 ps_req_init_prod_info::ps_req_init_prod_info (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1756,13 +1691,8 @@ ps_req_init_prod_info::ps_req_init_prod_info (const qpid::types::Variant::Map&  
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 ps_conf_full_product_info_init::ps_conf_full_product_info_init (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1771,13 +1701,8 @@ ps_conf_full_product_info_init::ps_conf_full_product_info_init (const qpid::type
    to_process_info(__internal_get_default((mtk::msg::sub_process_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 ps_conf_full_product_info::ps_conf_full_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -1788,60 +1713,36 @@ ps_conf_full_product_info::ps_conf_full_product_info (const qpid::types::Variant
    seq_number(__internal_get_default((int*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 ps_pub_prod_info_mtk_ready__from_publisher::ps_pub_prod_info_mtk_ready__from_publisher (const qpid::types::Variant::Map&  mv)
     :  ps_pub_prod_info_mtk_ready(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 ps_req_init_prod_info__to_publisher::ps_req_init_prod_info__to_publisher (const qpid::types::Variant::Map&  mv)
     :  ps_req_init_prod_info(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 ps_conf_full_product_info_init__from_publisher::ps_conf_full_product_info_init__from_publisher (const qpid::types::Variant::Map&  mv)
     :  ps_conf_full_product_info_init(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 ps_conf_full_product_info__from_publisher::ps_conf_full_product_info__from_publisher (const qpid::types::Variant::Map&  mv)
     :  ps_conf_full_product_info(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 mtk::t_qpid_filter  ps_req_product_info::get_in_subject (const std::string& product_code_market,const std::string& from)
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << product_code_market << ".REQ.PI." << from << ""));

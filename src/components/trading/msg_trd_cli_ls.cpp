@@ -402,19 +402,13 @@ sub_position_ls::sub_position_ls (   const mtk::FixedNumber&  _price,   const mt
     :     price(_price),   quantity(_quantity),   cli_ref(_cli_ref) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_position_ls::check_recomended(void) const
+void  sub_position_ls::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_position_ls::before_send(void) const
@@ -429,19 +423,13 @@ RQ_XX_LS::RQ_XX_LS ( const RQ_XX&  parent,   const sub_position_ls&  _request_po
     :  RQ_XX(parent),   request_pos(_request_pos) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string RQ_XX_LS::check_recomended(void) const
+void  RQ_XX_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void RQ_XX_LS::before_send(void) const
@@ -456,19 +444,13 @@ RQ_NW_LS::RQ_NW_LS ( const RQ_XX_LS&  parent)
     :  RQ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string RQ_NW_LS::check_recomended(void) const
+void  RQ_NW_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void RQ_NW_LS::before_send(void) const
@@ -483,19 +465,13 @@ RQ_MD_LS::RQ_MD_LS ( const RQ_XX_LS&  parent)
     :  RQ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string RQ_MD_LS::check_recomended(void) const
+void  RQ_MD_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void RQ_MD_LS::before_send(void) const
@@ -510,19 +486,13 @@ RQ_CC_LS::RQ_CC_LS ( const RQ_XX_LS&  parent)
     :  RQ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string RQ_CC_LS::check_recomended(void) const
+void  RQ_CC_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void RQ_CC_LS::before_send(void) const
@@ -537,19 +507,13 @@ CF_XX_LS::CF_XX_LS ( const CF_XX&  parent,   const sub_position_ls&  _market_pos
     :  CF_XX(parent),   market_pos(_market_pos) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string CF_XX_LS::check_recomended(void) const
+void  CF_XX_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void CF_XX_LS::before_send(void) const
@@ -564,19 +528,13 @@ CF_NW_LS::CF_NW_LS ( const CF_XX_LS&  parent)
     :  CF_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string CF_NW_LS::check_recomended(void) const
+void  CF_NW_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void CF_NW_LS::before_send(void) const
@@ -591,19 +549,13 @@ CF_MD_LS::CF_MD_LS ( const CF_XX_LS&  parent)
     :  CF_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string CF_MD_LS::check_recomended(void) const
+void  CF_MD_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void CF_MD_LS::before_send(void) const
@@ -618,19 +570,13 @@ CF_CC_LS::CF_CC_LS ( const CF_XX_LS&  parent)
     :  CF_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string CF_CC_LS::check_recomended(void) const
+void  CF_CC_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void CF_CC_LS::before_send(void) const
@@ -645,19 +591,13 @@ CF_EX_LS::CF_EX_LS ( const CF_XX_LS&  parent,   const sub_exec_conf&  _executed_
     :  CF_XX_LS(parent),   executed_pos(_executed_pos) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string CF_EX_LS::check_recomended(void) const
+void  CF_EX_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void CF_EX_LS::before_send(void) const
@@ -672,19 +612,13 @@ RJ_XX_LS::RJ_XX_LS ( const CF_XX_LS&  parent,   const sub_position_ls&  _request
     :  CF_XX_LS(parent),   request_pos(_request_pos) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string RJ_XX_LS::check_recomended(void) const
+void  RJ_XX_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void RJ_XX_LS::before_send(void) const
@@ -699,19 +633,13 @@ RJ_NW_LS::RJ_NW_LS ( const RJ_XX_LS&  parent)
     :  RJ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string RJ_NW_LS::check_recomended(void) const
+void  RJ_NW_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void RJ_NW_LS::before_send(void) const
@@ -726,19 +654,13 @@ RJ_MD_LS::RJ_MD_LS ( const RJ_XX_LS&  parent)
     :  RJ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string RJ_MD_LS::check_recomended(void) const
+void  RJ_MD_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void RJ_MD_LS::before_send(void) const
@@ -753,19 +675,13 @@ RJ_CC_LS::RJ_CC_LS ( const RJ_XX_LS&  parent)
     :  RJ_XX_LS(parent) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string RJ_CC_LS::check_recomended(void) const
+void  RJ_CC_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void RJ_CC_LS::before_send(void) const
@@ -780,19 +696,13 @@ CF_ST_LS::CF_ST_LS ( const CF_XX_LS&  parent,   const mtk::msg::sub_gen_response
     :  CF_XX_LS(parent),   gen_response_location(_gen_response_location) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string CF_ST_LS::check_recomended(void) const
+void  CF_ST_LS::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void CF_ST_LS::before_send(void) const
@@ -1470,7 +1380,6 @@ bool operator!= (const CF_ST_LS& a, const CF_ST_LS& b)
 
 
 
-//void  __internal_qpid_fill (sub_position_ls& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_position_ls& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1501,6 +1410,7 @@ void  copy (sub_position_ls& c, const qpid::types::Variant& v)
                         copy(c.cli_ref, it->second);
                         //c.cli_ref = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1508,7 +1418,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_ls& 
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.price, std::string("pri"));
@@ -1531,7 +1441,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (RQ_XX_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RQ_XX_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1546,6 +1455,7 @@ copy(static_cast<RQ_XX&>(c), v);
                         copy(c.request_pos, it->second);
                         //__internal_qpid_fill(c.request_pos, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1553,7 +1463,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_XX&>(a));
 
@@ -1574,13 +1484,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_
 
 
 
-//void  __internal_qpid_fill (RQ_NW_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<RQ_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1588,7 +1498,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 
@@ -1607,13 +1517,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_
 
 
 
-//void  __internal_qpid_fill (RQ_MD_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RQ_MD_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<RQ_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1621,7 +1531,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_MD_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 
@@ -1640,13 +1550,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_
 
 
 
-//void  __internal_qpid_fill (RQ_CC_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RQ_CC_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<RQ_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1654,7 +1564,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_CC_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RQ_XX_LS&>(a));
 
@@ -1673,7 +1583,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_
 
 
 
-//void  __internal_qpid_fill (CF_XX_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (CF_XX_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1688,6 +1597,7 @@ copy(static_cast<CF_XX&>(c), v);
                         copy(c.market_pos, it->second);
                         //__internal_qpid_fill(c.market_pos, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1695,7 +1605,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const CF_XX&>(a));
 
@@ -1716,13 +1626,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
-//void  __internal_qpid_fill (CF_NW_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (CF_NW_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<CF_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1730,7 +1640,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_NW_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1749,13 +1659,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
-//void  __internal_qpid_fill (CF_MD_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (CF_MD_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<CF_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1763,7 +1673,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_MD_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1782,13 +1692,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
-//void  __internal_qpid_fill (CF_CC_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (CF_CC_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<CF_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1796,7 +1706,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_CC_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1815,7 +1725,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
-//void  __internal_qpid_fill (CF_EX_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (CF_EX_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1830,6 +1739,7 @@ copy(static_cast<CF_XX_LS&>(c), v);
                         copy(c.executed_pos, it->second);
                         //__internal_qpid_fill(c.executed_pos, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1837,7 +1747,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1858,7 +1768,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
-//void  __internal_qpid_fill (RJ_XX_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RJ_XX_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1873,6 +1782,7 @@ copy(static_cast<CF_XX_LS&>(c), v);
                         copy(c.request_pos, it->second);
                         //__internal_qpid_fill(c.request_pos, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1880,7 +1790,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_XX_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -1901,13 +1811,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 
 
 
-//void  __internal_qpid_fill (RJ_NW_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RJ_NW_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<RJ_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1915,7 +1825,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_NW_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
@@ -1934,13 +1844,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 
 
 
-//void  __internal_qpid_fill (RJ_MD_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RJ_MD_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<RJ_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1948,7 +1858,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_MD_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
@@ -1967,13 +1877,13 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 
 
 
-//void  __internal_qpid_fill (RJ_CC_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (RJ_CC_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 copy(static_cast<RJ_XX_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
+        c.check_recomended ();
     }
 
 
@@ -1981,7 +1891,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RJ_CC_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const RJ_XX_LS&>(a));
 
@@ -2000,7 +1910,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RJ_
 
 
 
-//void  __internal_qpid_fill (CF_ST_LS& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (CF_ST_LS& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -2015,6 +1924,7 @@ copy(static_cast<CF_XX_LS&>(c), v);
                         copy(c.gen_response_location, it->second);
                         //__internal_qpid_fill(c.gen_response_location, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -2022,7 +1932,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_ST_LS& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 //  parent
 __internal_add2map(map, static_cast<const CF_XX_LS&>(a));
 
@@ -2420,7 +2330,6 @@ __internal_get_default((CF_XX_LS*)0), //   sub_msg_type
             );
     }
     
-
 sub_position_ls::sub_position_ls (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    price(__internal_get_default((mtk::FixedNumber*)0)),
@@ -2430,185 +2339,111 @@ sub_position_ls::sub_position_ls (const qpid::types::Variant::Map&  mv)
    cli_ref(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 RQ_XX_LS::RQ_XX_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_XX(mv), //   sub_msg_type
    request_pos(__internal_get_default((sub_position_ls*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 RQ_NW_LS::RQ_NW_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 RQ_MD_LS::RQ_MD_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 RQ_CC_LS::RQ_CC_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 CF_XX_LS::CF_XX_LS (const qpid::types::Variant::Map&  mv)
     :  CF_XX(mv), //   sub_msg_type
    market_pos(__internal_get_default((sub_position_ls*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 CF_NW_LS::CF_NW_LS (const qpid::types::Variant::Map&  mv)
     :  CF_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 CF_MD_LS::CF_MD_LS (const qpid::types::Variant::Map&  mv)
     :  CF_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 CF_CC_LS::CF_CC_LS (const qpid::types::Variant::Map&  mv)
     :  CF_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 CF_EX_LS::CF_EX_LS (const qpid::types::Variant::Map&  mv)
     :  CF_XX_LS(mv), //   sub_msg_type
    executed_pos(__internal_get_default((sub_exec_conf*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 RJ_XX_LS::RJ_XX_LS (const qpid::types::Variant::Map&  mv)
     :  CF_XX_LS(mv), //   sub_msg_type
    request_pos(__internal_get_default((sub_position_ls*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 RJ_NW_LS::RJ_NW_LS (const qpid::types::Variant::Map&  mv)
     :  RJ_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 RJ_MD_LS::RJ_MD_LS (const qpid::types::Variant::Map&  mv)
     :  RJ_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 RJ_CC_LS::RJ_CC_LS (const qpid::types::Variant::Map&  mv)
     :  RJ_XX_LS(mv) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 CF_ST_LS::CF_ST_LS (const qpid::types::Variant::Map&  mv)
     :  CF_XX_LS(mv), //   sub_msg_type
    gen_response_location(__internal_get_default((mtk::msg::sub_gen_response_location*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 mtk::t_qpid_filter  RQ_NW_LS::get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name,const std::string& invariant_product_code_product)
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << invariant_account_client_code << "." << invariant_product_code_market << "." << invariant_account_name << "." << invariant_product_code_product << ".TRD"));

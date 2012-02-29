@@ -402,19 +402,13 @@ pub_add_user::pub_add_user (   const std::string&  _broker_code,   const mtk::ac
     :     broker_code(_broker_code),   login_confirmation(_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string pub_add_user::check_recomended(void) const
+void  pub_add_user::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void pub_add_user::before_send(void) const
@@ -429,19 +423,13 @@ pub_del_user::pub_del_user (   const std::string&  _broker_code,   const mtk::ac
     :     broker_code(_broker_code),   login_confirmation(_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string pub_del_user::check_recomended(void) const
+void  pub_del_user::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void pub_del_user::before_send(void) const
@@ -456,19 +444,13 @@ req_session_id_conf::req_session_id_conf (   const std::string&  _broker_code,  
     :     broker_code(_broker_code),   session_id(_session_id),   from(_from) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string req_session_id_conf::check_recomended(void) const
+void  req_session_id_conf::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void req_session_id_conf::before_send(void) const
@@ -483,19 +465,13 @@ pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (   const std::st
     :     broker_code(_broker_code),   list_login_confirmation(_list_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string pub_partial_user_list_acs2serv::check_recomended(void) const
+void  pub_partial_user_list_acs2serv::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void pub_partial_user_list_acs2serv::before_send(void) const
@@ -510,19 +486,13 @@ pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (   const std::st
     :     broker_code(_broker_code),   list_login_confirmation(_list_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string pub_partial_user_list_serv2acs::check_recomended(void) const
+void  pub_partial_user_list_serv2acs::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void pub_partial_user_list_serv2acs::before_send(void) const
@@ -537,19 +507,13 @@ req_user_list::req_user_list (   const mtk::msg::sub_request_info&  _request_inf
     :     request_info(_request_info) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string req_user_list::check_recomended(void) const
+void  req_user_list::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void req_user_list::before_send(void) const
@@ -564,19 +528,13 @@ res_user_list::res_user_list (   const mtk::msg::sub_r_response&  _response_info
     :     response_info(_response_info),   list_login_confirmation(_list_login_confirmation) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_user_list::check_recomended(void) const
+void  res_user_list::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_user_list::before_send(void) const
@@ -902,7 +860,6 @@ bool operator!= (const res_user_list& a, const res_user_list& b)
 
 
 
-//void  __internal_qpid_fill (pub_add_user& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (pub_add_user& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -925,6 +882,7 @@ void  copy (pub_add_user& c, const qpid::types::Variant& v)
                         copy(c.login_confirmation, it->second);
                         //__internal_qpid_fill(c.login_confirmation, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -932,7 +890,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_add_user& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.broker_code, std::string("bc"));
@@ -953,7 +911,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (pub_del_user& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (pub_del_user& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -976,6 +933,7 @@ void  copy (pub_del_user& c, const qpid::types::Variant& v)
                         copy(c.login_confirmation, it->second);
                         //__internal_qpid_fill(c.login_confirmation, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -983,7 +941,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_del_user& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.broker_code, std::string("bc"));
@@ -1004,7 +962,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (req_session_id_conf& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (req_session_id_conf& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1035,6 +992,7 @@ void  copy (req_session_id_conf& c, const qpid::types::Variant& v)
                         copy(c.from, it->second);
                         //__internal_qpid_fill(c.from, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1042,7 +1000,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_session_id_co
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.broker_code, std::string("bc"));
@@ -1065,7 +1023,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
-//void  __internal_qpid_fill (pub_partial_user_list_acs2serv& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (pub_partial_user_list_acs2serv& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1088,6 +1045,7 @@ void  copy (pub_partial_user_list_acs2serv& c, const qpid::types::Variant& v)
                         copy(c.list_login_confirmation, it->second);
                         //__internal_qpid_fill(c.list_login_confirmation, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1095,7 +1053,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_partial_user_
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.broker_code, std::string("bc"));
@@ -1116,7 +1074,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (pub_partial_user_list_serv2acs& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (pub_partial_user_list_serv2acs& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1139,6 +1096,7 @@ void  copy (pub_partial_user_list_serv2acs& c, const qpid::types::Variant& v)
                         copy(c.list_login_confirmation, it->second);
                         //__internal_qpid_fill(c.list_login_confirmation, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1146,7 +1104,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_partial_user_
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.broker_code, std::string("bc"));
@@ -1167,7 +1125,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (req_user_list& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (req_user_list& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1182,6 +1139,7 @@ void  copy (req_user_list& c, const qpid::types::Variant& v)
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1189,7 +1147,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_user_list& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -1208,7 +1166,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
-//void  __internal_qpid_fill (res_user_list& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_user_list& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1231,6 +1188,7 @@ void  copy (res_user_list& c, const qpid::types::Variant& v)
                         copy(c.list_login_confirmation, it->second);
                         //__internal_qpid_fill(c.list_login_confirmation, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1238,7 +1196,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_user_list& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("rsi"));
@@ -1517,7 +1475,6 @@ qpid::messaging::Message res_user_list::qpidmsg_codded_as_qpid_message (const st
             );
     }
     
-
 pub_add_user::pub_add_user (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    broker_code(__internal_get_default((std::string*)0)),
@@ -1525,13 +1482,8 @@ pub_add_user::pub_add_user (const qpid::types::Variant::Map&  mv)
    login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 pub_del_user::pub_del_user (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1540,13 +1492,8 @@ pub_del_user::pub_del_user (const qpid::types::Variant::Map&  mv)
    login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 req_session_id_conf::req_session_id_conf (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1557,13 +1504,8 @@ req_session_id_conf::req_session_id_conf (const qpid::types::Variant::Map&  mv)
    from(__internal_get_default((mtk::msg::sub_process_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1572,13 +1514,8 @@ pub_partial_user_list_acs2serv::pub_partial_user_list_acs2serv (const qpid::type
    list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1587,26 +1524,16 @@ pub_partial_user_list_serv2acs::pub_partial_user_list_serv2acs (const qpid::type
    list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 req_user_list::req_user_list (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_user_list::res_user_list (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -1615,12 +1542,8 @@ res_user_list::res_user_list (const qpid::types::Variant::Map&  mv)
    list_login_confirmation(__internal_get_default((mtk::list<mtk::acs::msg::res_login::IC_session_info >*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 mtk::t_qpid_filter  pub_add_user::get_in_subject (const std::string& broker_code)
     {
         return mtk::t_qpid_filter(MTK_SS("SYS." << broker_code << ".SRV.ACS_SYNC.AU"));

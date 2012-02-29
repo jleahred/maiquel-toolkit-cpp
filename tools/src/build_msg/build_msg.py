@@ -166,8 +166,7 @@ $ADDRESS_METHODS
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -259,19 +258,13 @@ ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} ($CONSTRUCTOR_PARAMS_DEBUG_DECL)
     :  $CONSTRUCTOR_PARAMS_DEBUG_INIT 
        $CONTROL_FIELD_INITIALIZER
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string ${CLASS_NAME}::check_recomended(void) const
+void  ${CLASS_NAME}::check_recomended(void) const
 {
-    std::string result;
 $CHECK_RECOMENDED
-    return result;
 }
 
 void ${CLASS_NAME}::before_send(void) const
@@ -326,10 +319,10 @@ $SEND_CODE
         if field.has_key('OPTIONS'):
             if field['OPTIONS'].count('recomended') > 0:
                 CHECK_RECOMENDED += Template("""
-    MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
-        if ($FIELD_NAME.HasValue() == false)
-            result += "$class_name::check_recomended  missing recomended field **$FIELD_NAME** on $class_name";
-    MTK_END_EXEC_MAX_FREC
+    if (last_mk_execs_ticker.HasValue() == false)
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", "sub_full_product_info::check_recomended  missing recomended field **$FIELD_NAME** on $class_name", mtk::alPriorError));
+        MTK_END_EXEC_MAX_FREC
 """).substitute(
                                                     FIELD_NAME = field['FIELD_NAME'],
                                                     class_name = class_name
@@ -464,17 +457,12 @@ def ctor_conversion_from_qpid_msg(class_name, class_info, class_properties, send
     CONSTRUCTOR_PARAMS_DEBUG_INIT = ''
     CLASS_NAME_NOT_NESTED = class_name.split('::')[-1]
     IMPL_TEMPLATE = """
-
 ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} (const qpid::types::Variant::Map&  mv)
     :  $CONSTRUCTOR_PARAMS_DEBUG_INIT 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 """
 
     if class_properties.has_key('I'):
@@ -545,13 +533,13 @@ def generate__internal_qpid_fill(class_name, class_info, class_properties, send_
         PARENT = Template('copy(static_cast<${parent}&>(c), v);').substitute(parent=class_properties['I'])
     IMPL_TEMPLATE = """
 
-//void  __internal_qpid_fill (${CLASS_NAME}& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (${CLASS_NAME}& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 $PARENT
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 $FILL_FIELDS
+        c.check_recomended ();
     }
 
 """
@@ -966,7 +954,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const $class_name& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 $OUTPUT_PARENT
 $OUPUT_PER_FIELD
 

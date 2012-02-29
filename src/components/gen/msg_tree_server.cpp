@@ -402,19 +402,13 @@ sub_tree_item::sub_tree_item (   const std::string&  _branch,   const std::strin
     :     branch(_branch),   description(_description),   product_code(_product_code) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_tree_item::check_recomended(void) const
+void  sub_tree_item::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_tree_item::before_send(void) const
@@ -429,19 +423,13 @@ req_tree_items::req_tree_items (   const mtk::msg::sub_request_info&  _request_i
     :     request_info(_request_info),   branch(_branch) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string req_tree_items::check_recomended(void) const
+void  req_tree_items::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void req_tree_items::before_send(void) const
@@ -456,19 +444,13 @@ res_tree_items::res_tree_items (   const mtk::msg::sub_r_response&  _response_in
     :     response_info(_response_info),   item(_item) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string res_tree_items::check_recomended(void) const
+void  res_tree_items::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void res_tree_items::before_send(void) const
@@ -615,7 +597,6 @@ bool operator!= (const res_tree_items& a, const res_tree_items& b)
 
 
 
-//void  __internal_qpid_fill (sub_tree_item& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_tree_item& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -644,6 +625,7 @@ void  copy (sub_tree_item& c, const qpid::types::Variant& v)
                         copy(c.product_code, it->second);
                         //__internal_qpid_fill(c.product_code, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -651,7 +633,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.branch, std::string("br"));
@@ -675,7 +657,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (req_tree_items& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (req_tree_items& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -698,6 +679,7 @@ void  copy (req_tree_items& c, const qpid::types::Variant& v)
                         copy(c.branch, it->second);
                         //c.branch = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -705,7 +687,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items& a
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -726,7 +708,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 
-//void  __internal_qpid_fill (res_tree_items& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (res_tree_items& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -749,6 +730,7 @@ void  copy (res_tree_items& c, const qpid::types::Variant& v)
                         copy(c.item, it->second);
                         //__internal_qpid_fill(c.item, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -756,7 +738,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.response_info, std::string("rsi"));
@@ -863,7 +845,6 @@ qpid::messaging::Message res_tree_items::qpidmsg_codded_as_qpid_message (const s
             );
     }
     
-
 sub_tree_item::sub_tree_item (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    branch(__internal_get_default((std::string*)0)),
@@ -871,13 +852,8 @@ sub_tree_item::sub_tree_item (const qpid::types::Variant::Map&  mv)
    description(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 req_tree_items::req_tree_items (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -886,13 +862,8 @@ req_tree_items::req_tree_items (const qpid::types::Variant::Map&  mv)
    branch(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 res_tree_items::res_tree_items (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -901,12 +872,8 @@ res_tree_items::res_tree_items (const qpid::types::Variant::Map&  mv)
    item(__internal_get_default((sub_tree_item*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 mtk::t_qpid_filter  req_tree_items::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
         return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_broker_code << ".TREE.REQ"));

@@ -401,19 +401,13 @@ sub_control_fields::sub_control_fields (   const std::string&  _message_type,   
     :     message_type(_message_type),   control_fluct_key(_control_fluct_key),   sent_date_time(_sent_date_time),   depreciated_on(_depreciated_on) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_control_fields::check_recomended(void) const
+void  sub_control_fields::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_control_fields::before_send(void) const
@@ -471,7 +465,6 @@ bool operator!= (const sub_control_fields& a, const sub_control_fields& b)
 
 
 
-//void  __internal_qpid_fill (sub_control_fields& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_control_fields& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -508,6 +501,7 @@ void  copy (sub_control_fields& c, const qpid::types::Variant& v)
                         copy(c.depreciated_on, it->second);
                         //__internal_qpid_fill(c.depreciated_on, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -515,7 +509,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_field
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.message_type, std::string("mt"));
@@ -555,7 +549,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
             );
     }
     
-
 sub_control_fields::sub_control_fields (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    message_type(__internal_get_default((std::string*)0)),
@@ -565,12 +558,8 @@ sub_control_fields::sub_control_fields (const qpid::types::Variant::Map&  mv)
    sent_date_time(__internal_get_default((mtk::DateTime*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 
 
 };   //namespace mtk {

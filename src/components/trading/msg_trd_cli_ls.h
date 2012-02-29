@@ -76,8 +76,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -124,8 +123,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -175,8 +173,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -226,8 +223,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -277,8 +273,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -325,8 +320,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -376,8 +370,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -427,8 +420,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -478,8 +470,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -530,8 +521,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -578,8 +568,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -629,8 +618,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -680,8 +668,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -731,8 +718,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -783,8 +769,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 

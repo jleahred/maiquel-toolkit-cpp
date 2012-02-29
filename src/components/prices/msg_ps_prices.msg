@@ -72,6 +72,6 @@ ps_conf_full_product_info_init__from_publisher [< QE:CLI_MK, I:ps_conf_full_prod
 {
 }
 
-ps_conf_full_product_info__from_publisher [< DEPRECIATED:2012-02-20, QE:ALL_GS, I:ps_conf_full_product_info, SUBJ:MK.${full_prod_info.product_code.market}.PS.FPI.${to_process_info.process_name}.${to_process_info.process_uuid}.CONFFPI_FMK >]
+ps_conf_full_product_info__from_publisher [< QE:ALL_GS, I:ps_conf_full_product_info, SUBJ:MK.${full_prod_info.product_code.market}.PS.FPI.${to_process_info.process_name}.${to_process_info.process_uuid}.CONFFPI_FMK >]
 {
 }

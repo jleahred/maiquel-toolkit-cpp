@@ -403,19 +403,13 @@ sub_grant::sub_grant (   const IC_key&  _key,   const std::string&  _type)
     :     key(_key),   type(_type) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_grant::check_recomended(void) const
+void  sub_grant::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_grant::before_send(void) const
@@ -430,19 +424,13 @@ sub_grant::IC_key::IC_key (   const std::string&  _market,   const mtk::trd::msg
     :     market(_market),   account(_account) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_grant::IC_key::check_recomended(void) const
+void  sub_grant::IC_key::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_grant::IC_key::before_send(void) const
@@ -457,19 +445,13 @@ rq_accounts::rq_accounts (   const mtk::msg::sub_request_info&  _request_info)
     :     request_info(_request_info) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string rq_accounts::check_recomended(void) const
+void  rq_accounts::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void rq_accounts::before_send(void) const
@@ -484,19 +466,13 @@ conf_add_accounts::conf_add_accounts (   const mtk::msg::sub_gen_response_locati
     :     gen_response_location(_gen_response_location),   grant_list(_grant_list) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string conf_add_accounts::check_recomended(void) const
+void  conf_add_accounts::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void conf_add_accounts::before_send(void) const
@@ -511,19 +487,13 @@ pub_accmgr_init::pub_accmgr_init (   const mtk::msg::sub_process_info&  _process
     :     process_info(_process_info),   request_sufix_subjetc(_request_sufix_subjetc) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string pub_accmgr_init::check_recomended(void) const
+void  pub_accmgr_init::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void pub_accmgr_init::before_send(void) const
@@ -538,19 +508,13 @@ rq_accounts_oninit::rq_accounts_oninit (   const mtk::msg::sub_request_info&  _r
     :     request_info(_request_info),   request_sufix_subjetc(_request_sufix_subjetc) 
        , __internal_warning_control_fields(0)
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string rq_accounts_oninit::check_recomended(void) const
+void  rq_accounts_oninit::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void rq_accounts_oninit::before_send(void) const
@@ -844,7 +808,6 @@ bool operator!= (const rq_accounts_oninit& a, const rq_accounts_oninit& b)
 
 
 
-//void  __internal_qpid_fill (sub_grant& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_grant& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -863,6 +826,7 @@ void  copy (sub_grant& c, const qpid::types::Variant& v)
                         copy(c.type, it->second);
                         //c.type = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -870,7 +834,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_grant& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  IN_MSG
         __internal_add2map(map, a.key);
@@ -891,7 +855,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (sub_grant::IC_key& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_grant::IC_key& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -914,6 +877,7 @@ void  copy (sub_grant::IC_key& c, const qpid::types::Variant& v)
                         copy(c.account, it->second);
                         //__internal_qpid_fill(c.account, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -921,7 +885,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_grant::IC_key
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.market, std::string("mk"));
@@ -942,7 +906,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
-//void  __internal_qpid_fill (rq_accounts& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (rq_accounts& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -957,6 +920,7 @@ void  copy (rq_accounts& c, const qpid::types::Variant& v)
                         copy(c.request_info, it->second);
                         //__internal_qpid_fill(c.request_info, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -964,7 +928,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const rq_accounts& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -983,7 +947,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<rq_
 
 
 
-//void  __internal_qpid_fill (conf_add_accounts& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (conf_add_accounts& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1006,6 +969,7 @@ void  copy (conf_add_accounts& c, const qpid::types::Variant& v)
                         copy(c.grant_list, it->second);
                         //__internal_qpid_fill(c.grant_list, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -1013,7 +977,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const conf_add_accounts
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.gen_response_location, std::string("grl"));
@@ -1034,7 +998,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<con
 
 
 
-//void  __internal_qpid_fill (pub_accmgr_init& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (pub_accmgr_init& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1057,6 +1020,7 @@ void  copy (pub_accmgr_init& c, const qpid::types::Variant& v)
                         copy(c.request_sufix_subjetc, it->second);
                         //c.request_sufix_subjetc = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1064,7 +1028,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_accmgr_init& 
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
@@ -1085,7 +1049,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
-//void  __internal_qpid_fill (rq_accounts_oninit& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (rq_accounts_oninit& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1108,6 +1071,7 @@ void  copy (rq_accounts_oninit& c, const qpid::types::Variant& v)
                         copy(c.request_sufix_subjetc, it->second);
                         //c.request_sufix_subjetc = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -1115,7 +1079,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const rq_accounts_onini
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  sub_msg_type
         __internal_add2map(map, a.request_info, std::string("rqi"));
@@ -1300,7 +1264,6 @@ qpid::messaging::Message rq_accounts_oninit::qpidmsg_codded_as_qpid_message (con
             );
     }
     
-
 sub_grant::sub_grant (const qpid::types::Variant::Map&  mv)
     :  //   IN_MSG
    key(__internal_get_default((sub_grant::IC_key*)0)),
@@ -1308,13 +1271,8 @@ sub_grant::sub_grant (const qpid::types::Variant::Map&  mv)
    type(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 sub_grant::IC_key::IC_key (const qpid::types::Variant::Map&  mv)
     :  //   field_type
@@ -1323,26 +1281,16 @@ sub_grant::IC_key::IC_key (const qpid::types::Variant::Map&  mv)
    account(__internal_get_default((mtk::trd::msg::sub_account_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 rq_accounts::rq_accounts (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 conf_add_accounts::conf_add_accounts (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -1351,13 +1299,8 @@ conf_add_accounts::conf_add_accounts (const qpid::types::Variant::Map&  mv)
    grant_list(__internal_get_default((mtk::list<sub_grant >*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 pub_accmgr_init::pub_accmgr_init (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -1366,13 +1309,8 @@ pub_accmgr_init::pub_accmgr_init (const qpid::types::Variant::Map&  mv)
    request_sufix_subjetc(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
-
 
 rq_accounts_oninit::rq_accounts_oninit (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
@@ -1381,12 +1319,8 @@ rq_accounts_oninit::rq_accounts_oninit (const qpid::types::Variant::Map&  mv)
    request_sufix_subjetc(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 mtk::t_qpid_filter  rq_accounts::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << request_info_process_info_location_broker_code << ".ALL.ACCOUNT.RQGRANTS"));
