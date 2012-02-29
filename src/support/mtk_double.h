@@ -67,7 +67,8 @@ public:
     };
 
 
-    tuple<double, bool>     get(void) const;
+    tuple<double, bool>     get (void) const;
+    double                  get2(void) const;
 
 
 

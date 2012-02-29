@@ -27,6 +27,15 @@ tuple<double, bool>  Double::get(void) const  {
 
 
 
+double   Double::get2(void) const
+{
+    if (IsValid())
+        return value;
+    else
+        throw mtk::Alarm(MTK_HERE, "get2", "get2 on invalid double number", mtk::alPriorError, mtk::alTypeNoPermisions);
+}
+
+
 
 
 
@@ -261,7 +270,7 @@ YAML::Emitter& operator<< (YAML::Emitter& os, const Double& d)
         os << d.value;
 
     return os;
-    
+
 }
 
 void           operator>> (const YAML::Node& n, Double& d)
