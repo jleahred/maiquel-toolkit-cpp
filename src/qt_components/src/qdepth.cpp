@@ -401,6 +401,9 @@ QDepth::QDepth(QWidget *parent) :
     {
         layout->addWidget(table_widget);
         //table_widget->setStyleSheet(style_sheet_normal);//QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
+        table_widget->setFrameShape(QFrame::Box);
+        table_widget->setFrameShadow(QFrame::Plain);
+        table_widget->setLineWidth(1);
         table_widget->setRowCount(10);
         table_widget->setColumnCount(3);
         table_widget->verticalHeader()->setVisible(false);
@@ -558,10 +561,17 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
 }
 
 
-void QDepth::on_message(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& /*msg*/)
+void QDepth::on_message_best_prices(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& /*msg*/)
 {
     pending_screen_update = true;
 }
+
+void QDepth::on_message_last_mk_execs_ticker(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_last_mk_execs_ticker& /*msg*/)
+{
+    pending_screen_update = true;
+}
+
+
 
 void QDepth::check_for_pending_screen_update(void)
 {
@@ -785,7 +795,8 @@ void QDepth::dropEvent(QDropEvent *event)
 void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
 {
     price_manager = mtk::make_cptr(new mtk::prices::price_manager(_product_code));
-    MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message);
+    MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message_best_prices);
+    MTK_CONNECT_THIS(price_manager->signal_last_mk_execs_ticker, on_message_last_mk_execs_ticker);
 
     //  this will make a permanent suscription  for this prices_manager instance
     update_prices               (price_manager->get_best_prices());
