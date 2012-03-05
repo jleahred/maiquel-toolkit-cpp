@@ -190,10 +190,15 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     action_buy = new QAction(tr("buy"), this);
     connect(action_buy, SIGNAL(triggered()), this, SLOT(request_buy()));
     this->addAction(action_buy);
+    if(mtk::admin::is_production() == false)
+        action_buy->setShortcut(Qt::Key_F4);
+
 
     action_sell = new QAction(tr("sell"), this);
     connect(action_sell, SIGNAL(triggered()), this, SLOT(request_sell()));
     this->addAction(action_sell);
+    if(mtk::admin::is_production() == false)
+        action_sell->setShortcut(Qt::Key_F5);
 
     action_lift_the_offer = new QAction(tr("lift the offer"), this);
     action_lift_the_offer->setShortcut(Qt::Key_Plus);
@@ -477,15 +482,13 @@ void marginal_in_table::update_prices(const mtk::msg::sub_product_code& pc, cons
 
 
 
-void marginal_in_table::update_last_mk_execs_ticker(const mtk::msg::sub_product_code& , const mtk::prices::msg::sub_last_mk_execs_ticker&   last_mk_execs_ticker)
+void marginal_in_table::clean_lasts(void)
 {
-    tw_last_price->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.last_price));
-    tw_last_quantity->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.last_quantity));
-    tw_ref_price->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.opened_price));
-    mtk::Double  var = last_mk_execs_ticker.last_price.GetDouble() - last_mk_execs_ticker.opened_price.GetDouble();
-    tw_var->setText( QLatin1String(MTK_SS(std::setprecision(3) << std::fixed << var).c_str()) );
-    tw_var_percent->setText(  QLatin1String(MTK_SS(std::setprecision(1) << std::fixed  <<  var / last_mk_execs_ticker.last_quantity.GetDouble() << " %").c_str())  );
-
+    tw_last_price->setText      (QLatin1String(""));
+    tw_last_quantity->setText   (QLatin1String(""));
+    tw_ref_price->setText       (QLatin1String(""));
+    tw_var->setText             (QLatin1String(""));
+    tw_var_percent->setText     (QLatin1String(""));
     if(tw_last_price->backgroundColor() == qtmisc::mtk_color_null)
     {
         tw_last_price->setBackgroundColor(color_qty);
@@ -494,7 +497,30 @@ void marginal_in_table::update_last_mk_execs_ticker(const mtk::msg::sub_product_
         tw_var->setBackgroundColor(color_qty);
         tw_var_percent->setBackgroundColor(color_qty);
     }
+}
 
+void marginal_in_table::update_last_mk_execs_ticker(const mtk::msg::sub_product_code& , const mtk::prices::msg::sub_last_mk_execs_ticker&   last_mk_execs_ticker)
+{
+    if(last_mk_execs_ticker.last_quantity.GetDouble() == 0  &&  last_mk_execs_ticker.last_price.GetDouble() == 0)
+        clean_lasts();
+    else
+    {
+        tw_last_price->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.last_price));
+        tw_last_quantity->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.last_quantity));
+        tw_ref_price->setText(qtmisc::fn_as_QString(last_mk_execs_ticker.opened_price));
+        mtk::Double  var = last_mk_execs_ticker.last_price.GetDouble() - last_mk_execs_ticker.opened_price.GetDouble();
+        tw_var->setText( QLatin1String(MTK_SS(std::setprecision(3) << std::fixed << var).c_str()) );
+        tw_var_percent->setText(  QLatin1String(MTK_SS(std::setprecision(1) << std::fixed  <<  var / last_mk_execs_ticker.last_quantity.GetDouble() << " %").c_str())  );
+
+        if(tw_last_price->backgroundColor() == qtmisc::mtk_color_null)
+        {
+            tw_last_price->setBackgroundColor(color_qty);
+            tw_last_quantity->setBackgroundColor(color_qty);
+            tw_ref_price->setBackgroundColor(color_qty);
+            tw_var->setBackgroundColor(color_qty);
+            tw_var_percent->setBackgroundColor(color_qty);
+        }
+    }
 }
 
 
@@ -504,13 +530,7 @@ void marginal_in_table::update_last_mk_execs_ticker(const mtk::msg::sub_product_
     if(n_last_mk_execs_ticker.HasValue())
         update_last_mk_execs_ticker(pc, n_last_mk_execs_ticker.Get());
     else
-    {
-        tw_last_price->setText      (QLatin1String(""));
-        tw_last_quantity->setText   (QLatin1String(""));
-        tw_ref_price->setText       (QLatin1String(""));
-        tw_var->setText             (QLatin1String(""));
-        tw_var_percent->setText     (QLatin1String(""));
-    }
+        clean_lasts();
 }
 
 

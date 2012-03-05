@@ -14,11 +14,12 @@ QCommonTableDelegate::QCommonTableDelegate(QObject *parent) :
 
 // custom item delegate to draw grid lines around cells
 
-QCommonTableDelegate::QCommonTableDelegate(QTableWidget* _tableView)
+QCommonTableDelegate::QCommonTableDelegate(QTableWidget* _tableView, bool _just_cell)
     : QStyledItemDelegate(_tableView),
       tableView(_tableView),
       focus_paint(false),
-      horiz_line_each_xrows(3)
+      horiz_line_each_xrows(3),
+      just_cell(_just_cell)
 {
     // create grid pen
     int gridHint = tableView->style()->styleHint(QStyle::SH_Table_GridLineColor, new QStyleOptionViewItemV4());
@@ -28,9 +29,19 @@ QCommonTableDelegate::QCommonTableDelegate(QTableWidget* _tableView)
 }
 
 
+QColor  more_blue(const QColor& input_color)
+{
+    QColor color = input_color;
+    int new_red = color.red()-45 ;  new_red = new_red < 0 ? 0:  new_red;
+    int new_green = color.green()-45;  new_green = new_green < 0 ? 0:  new_green;
+    color.setRgb(new_red, new_green, color.blue());
+
+    return color;
+}
+
 void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    if (tableView->currentRow()==index.row())
+    if (tableView->currentRow()==index.row()   ||   (just_cell  &&  tableView->currentRow()==index.row()  &&  tableView->currentColumn()==index.column()) )
     {
         if (tableView->hasFocus()  ||  focus_paint)
         {
@@ -39,42 +50,65 @@ void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
             if (ViewOption.state & QStyle::State_HasFocus)
                 ViewOption.state = ViewOption.state ^ QStyle::State_HasFocus;
 
-            QColor color = tableView->item(index.row(), index.column())->background().color();
-            int new_red = color.red()-45 ;  new_red = new_red < 0 ? 0:  new_red;
-            int new_green = color.green()-45;  new_green = new_green < 0 ? 0:  new_green;
-            color.setRgb(new_red, new_green, color.blue());
+            QColor color = more_blue(tableView->item(index.row(), index.column())->background().color());
 
             ViewOption.palette.setColor(QPalette::Highlight, color);
             ViewOption.palette.setColor(QPalette::HighlightedText, tableView->item(index.row(), index.column())->foreground().color());
             QStyledItemDelegate::paint(painter, ViewOption, index);
 
-            /*
             ///////////////////////////////////////////////
-            if ((index.row()+1)%3!=0  &&  (index.row()+2)%3!=0)
+            if ((index.row()+1)%horiz_line_each_xrows==0)
             {
-                QPen grid_pPen = QPen(tableView->item(index.row(), index.column())->background().color().darker(104), 1, tableView->gridStyle()); painter->setPen(grid_pPen);
+                QColor bluer(tableView->item(index.row(), index.column())->background().color());
+                int new_red = bluer.red()-40 ;  new_red = new_red < 0 ? 0:  new_red;
+                int new_green = bluer.green()-40;  new_green = new_green < 0 ? 0:  new_green;
+                bluer = QColor(new_red, new_green, bluer.blue());
+                QPen grid_pPen = QPen(bluer, 1, tableView->gridStyle()); painter->setPen(grid_pPen);
                 painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight()); //draw only horizontal line
+                //QPen grid_pPen = QPen(tableView->item(index.row(), index.column())->background().color().darker(125), 1, tableView->gridStyle()); painter->setPen(grid_pPen);
+                //painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight()); //draw only horizontal line
             }
             ///////////////////////////////////////////////
-            */
             //painter->save();
             painter->setPen(_gridPen);
 
             // uroundborder
-            QPoint urb;
-            if (index.column()==0)
-                urb = QPoint(2,0);
-            if (index.column() == tableView->columnCount()-1)
-                urb = QPoint(-1,0);
+            if(just_cell == false)
+            {
+                QPoint urb;
+                if (index.column()==0)
+                    urb = QPoint(2,0);
+                if (index.column() == tableView->columnCount()-1)
+                    urb = QPoint(-1,0);
 
-            painter->drawLine(option.rect.topLeft()+QPoint(0,1)+urb, option.rect.topRight()+QPoint(0,1)+urb); //draw only horizontal line
-            painter->drawLine(option.rect.bottomLeft()+QPoint(0,0)+urb, option.rect.bottomRight()+QPoint(0,0)+urb); //draw only horizontal line
+                painter->drawLine(option.rect.topLeft()+QPoint(0,1)+urb, option.rect.topRight()+QPoint(0,1)+urb); //draw only horizontal line
+                painter->drawLine(option.rect.bottomLeft()+QPoint(0,0)+urb, option.rect.bottomRight()+QPoint(0,0)+urb); //draw only horizontal line
 
-            if (index.column()==get_left_visual_index())
-                painter->drawLine(option.rect.topLeft()+QPoint(1,2), option.rect.bottomLeft()+QPoint(1,-2)); //draw only horizontal line
-            if (index.column()==get_right_visual_index())
-                painter->drawLine(option.rect.topRight()+QPoint(0,2), option.rect.bottomRight()+QPoint(0,-2)); //draw only horizontal line
+                if (index.column()==get_left_visual_index())
+                    painter->drawLine(option.rect.topLeft()+QPoint(1,2), option.rect.bottomLeft()+QPoint(1,-2)); //draw only horizontal line
+                if (index.column()==get_right_visual_index())
+                    painter->drawLine(option.rect.topRight()+QPoint(0,2), option.rect.bottomRight()+QPoint(0,-2)); //draw only horizontal line
+            }
+            else
+            {
+                if(index.column() == tableView->currentColumn()  &&  index.row() == tableView->currentRow()  &&  (tableView->currentItem()->flags() & Qt::ItemIsSelectable))
+                {
+                    QPoint urb_left = QPoint(2,0);
+                    QPoint urb_right = QPoint(-1,0);
 
+                    painter->drawLine(option.rect.topLeft()+QPoint(0,1)+urb_left, option.rect.topRight()+QPoint(0,1)+urb_right); //draw only horizontal line
+                    painter->drawLine(option.rect.bottomLeft()+QPoint(0,0)+urb_left, option.rect.bottomRight()+QPoint(0,0)+urb_right); //draw only horizontal line
+
+                    painter->drawLine(option.rect.topLeft()+QPoint(1,2), option.rect.bottomLeft()+QPoint(1,-2)); //draw only horizontal line
+                    painter->drawLine(option.rect.topRight()+QPoint(0,2), option.rect.bottomRight()+QPoint(0,-2)); //draw only horizontal line
+                }
+            }
+            if(index.column()==0)
+            {
+                QColor bluer(more_blue(tableView->item(index.row(), index.column())->background().color()));
+                QPen grid_pPen = QPen(bluer, 1, tableView->gridStyle()); painter->setPen(grid_pPen);
+                painter->drawLine(option.rect.topRight(), option.rect.bottomRight()); //draw only horizontal line
+            }
             //painter->restore();
         }
         else
@@ -98,16 +132,13 @@ void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
                 //QPen grid_pPen = QPen(tableView->item(index.row(), index.column())->background().color().darker(125), 1, tableView->gridStyle()); painter->setPen(grid_pPen);
                 //painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight()); //draw only horizontal line
             }
+            ///////////////////////////////////////////////
             if(index.column()==0)
             {
-                QColor bluer(tableView->item(index.row(), index.column())->background().color());
-                int new_red = bluer.red()-40 ;  new_red = new_red < 0 ? 0:  new_red;
-                int new_green = bluer.green()-40;  new_green = new_green < 0 ? 0:  new_green;
-                bluer = QColor(new_red, new_green, bluer.blue());
+                QColor bluer(more_blue(tableView->item(index.row(), index.column())->background().color()));
                 QPen grid_pPen = QPen(bluer, 1, tableView->gridStyle()); painter->setPen(grid_pPen);
                 painter->drawLine(option.rect.topRight(), option.rect.bottomRight()); //draw only horizontal line
             }
-            ///////////////////////////////////////////////
         }
     }
     else
@@ -131,10 +162,7 @@ void QCommonTableDelegate::paint(QPainter* painter, const QStyleOptionViewItem& 
         }
         if(index.column()==0)
         {
-            QColor bluer(tableView->item(index.row(), index.column())->background().color());
-            int new_red = bluer.red()-40 ;  new_red = new_red < 0 ? 0:  new_red;
-            int new_green = bluer.green()-40;  new_green = new_green < 0 ? 0:  new_green;
-            bluer = QColor(new_red, new_green, bluer.blue());
+            QColor bluer(more_blue(tableView->item(index.row(), index.column())->background().color()));
             QPen grid_pPen = QPen(bluer, 1, tableView->gridStyle()); painter->setPen(grid_pPen);
             painter->drawLine(option.rect.topRight(), option.rect.bottomRight()); //draw only horizontal line
         }
@@ -160,3 +188,6 @@ int   QCommonTableDelegate::get_right_visual_index (void) const
 {
     return  tableView->horizontalHeader()->logicalIndex(tableView->columnCount()-1);
 }
+
+
+

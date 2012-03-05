@@ -7,6 +7,7 @@
 namespace YAML { class Emitter;  class Node;  };
 class  QMarginal;
 class  QDepth;
+class  QAlarmPrice;
 
 
 
@@ -16,8 +17,9 @@ class qContainer : public QScrollArea
 public:
     explicit qContainer(QWidget *parent = 0);
 
-    QMarginal*  insert_qmarginal(void);
-    QDepth*     insert_qdepth   (void);
+    QMarginal*      insert_qmarginal        (void);
+    QDepth*         insert_qdepth           (void);
+    QAlarmPrice*    insert_qalarm_price     (void);
 
 
     friend YAML::Emitter& operator << (YAML::Emitter   & out , const qContainer& m);

@@ -37,12 +37,32 @@ QString  dragProductText (const mtk::msg::sub_product_code& product)
     return QLatin1String(csp.Encode().c_str());
 }
 
+
+QString   dragProductText__ext    (const mtk::msg::sub_product_code& product, const mtk::list<mtk::tuple<QString, QString> >&  ext_info)
+{
+    mtk::CodecStringProperties csp;
+
+    csp.AddProperty("product.market", product.market);
+    csp.AddProperty("product.product", product.product);
+
+    for(auto it=ext_info.begin(); it!=ext_info.end(); ++it)
+    {
+        csp.AddProperty(it->_0.toStdString(), it->_1.toStdString());
+    }
+
+    return QLatin1String(csp.Encode().c_str());
+}
+
+
+
+
+
 mtk::msg::sub_product_code  get_product_code(QDropEvent *event)
 {
     mtk::CodecStringProperties csp;
     mtk::CountPtr<std::map<std::string, std::string> > cptr_map_decoded =  csp.Decode(event->mimeData()->text().toStdString());
     if(cptr_map_decoded.isValid()== false)
-        throw mtk::Alarm(MTK_HERE, "mtkmisc", MTK_SS("invalid product code received on event" << event->mimeData()->text().toStdString()), mtk::alPriorWarning);
+        throw mtk::Alarm(MTK_HERE, "mtkmisc", MTK_SS("invalid product code received on event" << event->mimeData()->text().toStdString()), mtk::alPriorError);
 
     std::map<std::string, std::string>& map_decoded = *cptr_map_decoded;
     mtk::msg::sub_product_code product_code("", "");
@@ -51,8 +71,20 @@ mtk::msg::sub_product_code  get_product_code(QDropEvent *event)
     product_code.product    = map_decoded["product.product"];
 
     return product_code;
-
 }
+
+QString  get_property_value(QDropEvent *event, const QString&  prop_name)
+{
+    mtk::CodecStringProperties csp;
+    mtk::CountPtr<std::map<std::string, std::string> > cptr_map_decoded =  csp.Decode(event->mimeData()->text().toStdString());
+    if(cptr_map_decoded.isValid()== false)
+        throw mtk::Alarm(MTK_HERE, "mtkmisc", MTK_SS("invalid drop info format" << event->mimeData()->text().toStdString()), mtk::alPriorError);
+
+    std::map<std::string, std::string>& map_decoded = *cptr_map_decoded;
+
+    return  QLatin1String(map_decoded[prop_name.toStdString()].c_str());
+}
+
 
 
 

@@ -14,6 +14,7 @@
 
 #include "qt_components/src/qdepth.h"
 #include "qt_components/src/qmarginal.h"
+#include "qt_components/src/qalarm_price.h"
 
 
 #include "support/string_codec.h"
@@ -59,30 +60,69 @@ QDepth* qContainer::insert_qdepth()
 }
 
 
+QAlarmPrice*    qContainer::insert_qalarm_price     (void)
+{
+    QAlarmPrice* compo= new QAlarmPrice(this->widget());
+    connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    ++counter_insertions;
+    counter_insertions %= 6;
+    compo->show();
+    compo->setFocus();
+
+    return compo;
+}
+
+
+
+
 
 YAML::Emitter& operator << (YAML::Emitter& out, const qContainer& m)
 {
     out << YAML::BeginMap;
-    out << YAML::Key  << "tables_marginal"  << YAML::Value
-                                            << YAML::BeginSeq;
-    for(int i=0; i<m.widget()->children().count(); ++i)
-    {
-        QMarginal* marginal = dynamic_cast<QMarginal*>(m.widget()->children().at(i));
-        if(marginal!=0)
-            out << *marginal;
-    }
-    out << YAML::EndSeq;
 
-    out << YAML::Key  << "tables_depths"  << YAML::Value
-                                            << YAML::BeginSeq;
 
-    for(int i=0; i<m.widget()->children().count(); ++i)
-    {
-        QDepth* depth = dynamic_cast<QDepth*>(m.widget()->children().at(i));
-        if(depth!=0)
-            out << *depth;
-    }
-    out << YAML::EndSeq;
+
+
+        out << YAML::Key  << "tables_marginal"  << YAML::Value
+                                                << YAML::BeginSeq;
+        for(int i=0; i<m.widget()->children().count(); ++i)
+        {
+            QMarginal* marginal = dynamic_cast<QMarginal*>(m.widget()->children().at(i));
+            if(marginal!=0)
+                out << *marginal;
+        }
+        out << YAML::EndSeq;
+
+
+
+
+        out << YAML::Key  << "tables_depths"  << YAML::Value
+                                                << YAML::BeginSeq;
+
+        for(int i=0; i<m.widget()->children().count(); ++i)
+        {
+            QDepth* depth = dynamic_cast<QDepth*>(m.widget()->children().at(i));
+            if(depth!=0)
+                out << *depth;
+        }
+        out << YAML::EndSeq;
+
+
+
+        out << YAML::Key  << "alarm_tables"  << YAML::Value
+                                                << YAML::BeginSeq;
+
+        for(int i=0; i<m.widget()->children().count(); ++i)
+        {
+            QAlarmPrice* compo = dynamic_cast<QAlarmPrice*>(m.widget()->children().at(i));
+            if(compo!=0)
+                out << *compo;
+        }
+        out << YAML::EndSeq;
+
+
+
 
     out << YAML::EndMap;
     return out;
@@ -99,6 +139,15 @@ void     operator>> (const YAML::Node & node   , qContainer& c)
     {
         QDepth* d = c.insert_qdepth();
         node["tables_depths"][i] >>  *d;
+    }
+
+    if(node.FindValue("alarm_tables"))
+    {
+        for(unsigned i=0; i<node["alarm_tables"].size(); ++i)
+        {
+            QAlarmPrice* d = c.insert_qalarm_price();
+            node["alarm_tables"][i] >>  *d;
+        }
     }
     c.slot_widget_moved_or_deleted();
 }

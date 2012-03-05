@@ -51,7 +51,7 @@ QEditOrder::~QEditOrder()
 /**
   If quantity is empty, it will get the default quantity
   */
-QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidget *parent) :
+QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool /*agressive*/, QWidget *parent) :
         QDialog(parent),
         ui(new Ui::QEditOrder),
         rq_ls(rq)
@@ -130,6 +130,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
     }
 
     ui->quantity->setFocus();
+    ui->quantity->selectAll();
     /*
     if(agressive==false)
     {

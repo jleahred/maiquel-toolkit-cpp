@@ -25,8 +25,10 @@ QString     nullable_fn_as_QString(const mtk::nullable<mtk::FixedNumber>& fn);
 QString     side_as_text(mtk::trd::msg::enBuySell side);
 
 
-QString                             dragProductText (const mtk::msg::sub_product_code& product);
-mtk::msg::sub_product_code          get_product_code(QDropEvent *event);
+QString                             dragProductText         (const mtk::msg::sub_product_code& product);
+mtk::msg::sub_product_code          get_product_code        (QDropEvent *event);
+QString                             get_property_value      (QDropEvent *event, const QString&  prop_name);
+QString                             dragProductText__ext    (const mtk::msg::sub_product_code& product, const mtk::list<mtk::tuple<QString, QString> >&  ext_info);
 
 
 //const QColor mtk_yellow(QColor(Qt::yellow).lighter(150));

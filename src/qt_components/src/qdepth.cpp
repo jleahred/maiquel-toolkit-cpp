@@ -331,7 +331,7 @@ QDepth::QDepth(QWidget *parent) :
         QString  snullcolor = QLatin1String("rgb(")+ QString::number(qtmisc::mtk_color_null.red()) + QLatin1String(", ") +
                                         QString::number(qtmisc::mtk_color_null.green()) + QLatin1String(", ") +
                                         QString::number(qtmisc::mtk_color_null.blue()) +  QLatin1String(");");
-        style_sheet_null = QString::fromUtf8("background-color: ") + snullcolor  + QString::fromUtf8("\n" "color: rgb(0, 220, 0); font-weight: 1000;");
+        style_sheet_null = QString::fromUtf8("background-color: ") + snullcolor  + QString::fromUtf8("\n" "color: rgb(191,219,255); font-weight: 1000;");
         style_sheet_normal = QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(191,219,255); font-weight: 1000;");
     }
 
@@ -400,7 +400,6 @@ QDepth::QDepth(QWidget *parent) :
 
     {
         layout->addWidget(table_widget);
-        //table_widget->setStyleSheet(style_sheet_normal);//QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(0, 220, 0);"));
         table_widget->setFrameShape(QFrame::Box);
         table_widget->setFrameShadow(QFrame::Plain);
         table_widget->setLineWidth(1);
@@ -412,26 +411,7 @@ QDepth::QDepth(QWidget *parent) :
         table_widget->verticalHeader()->setDefaultSectionSize(20);
         table_widget->horizontalHeader()->setDefaultSectionSize(20);
         table_widget->setShowGrid(false);
-        //QPalette p(table_widget->palette());
-        //QPalette p;
-        //p.setColor(QPalette::Base, Qt::black);
-        //p.setColor(QPalette::Base, QColor(0,0,0,100));
-        //p.setColor(QPalette::, Qt::black);
-        //table_widget->setPalette(p);
-        //  setting up actions
-        /*
-        table_widget->setContextMenuPolicy(Qt::ActionsContextMenu);
-        {
-            QAction* action = new QAction("buy", this);
-            connect(action, SIGNAL(triggered()), this, SLOT(request_buy()));
-            table_widget->addAction(action);
-        }
-        {
-            QAction* action = new QAction("sell", this);
-            connect(action, SIGNAL(triggered()), this, SLOT(request_sell()));
-            table_widget->addAction(action);
-        }
-        */
+        table_widget->setStyleSheet(style_sheet_null);
         for (int col=0; col<table_widget->columnCount(); col++)
         {
             for (int row=0; row<table_widget->rowCount(); row++)
@@ -467,10 +447,14 @@ QDepth::QDepth(QWidget *parent) :
     action_buy = new QAction(tr("buy"), this);
     connect(action_buy, SIGNAL(triggered()), this, SLOT(request_buy()));
     this->addAction(action_buy);
+    if(mtk::admin::is_production() == false)
+        action_buy->setShortcut(Qt::Key_F4);
 
     action_sell = new QAction(tr("sell"), this);
     connect(action_sell, SIGNAL(triggered()), this, SLOT(request_sell()));
     this->addAction(action_sell);
+    if(mtk::admin::is_production() == false)
+        action_sell->setShortcut(Qt::Key_F5);
 
     action_lift_the_offer = new QAction(tr("lift the offer"), this);
     action_lift_the_offer->setShortcut(Qt::Key_Plus);

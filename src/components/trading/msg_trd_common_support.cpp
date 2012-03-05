@@ -65,12 +65,12 @@ void   operator>> (const YAML::Node& n, enBuySell& bs)
 {
 
     std::string sbs;
-    
+
     n >> sbs;
-    
+
     if      (sbs=="buy")        bs = buy;
     else if (sbs=="sell")       bs = sell;
-    else    throw "PENDING";
+    else    throw "unknown";
 }
 
 
