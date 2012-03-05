@@ -95,94 +95,6 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_price">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>price</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="qLocaleDoubleSpinBox" name="price">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="accelerated">
-      <bool>true</bool>
-     </property>
-     <property name="correctionMode">
-      <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-     </property>
-     <property name="minimum">
-      <double>-1000000.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>1000000.000000000000000</double>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="2">
-    <widget class="QLabel" name="label_quantity">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>You can configure current quantity as default quantity with dblclick on this tag</string>
-     </property>
-     <property name="text">
-      <string>quantity</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="3">
-    <widget class="qLocaleDoubleSpinBox" name="quantity">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="buttonSymbols">
-      <enum>QAbstractSpinBox::NoButtons</enum>
-     </property>
-     <property name="correctionMode">
-      <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-     </property>
-     <property name="keyboardTracking">
-      <bool>true</bool>
-     </property>
-     <property name="decimals">
-      <number>0</number>
-     </property>
-     <property name="minimum">
-      <double>0.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>100000000.000000000000000</double>
-     </property>
-     <property name="singleStep">
-      <double>0.000000000000000</double>
-     </property>
-    </widget>
-   </item>
    <item row="5" column="2">
     <widget class="QLabel" name="label_cli_ref">
      <property name="toolTip">
@@ -236,6 +148,94 @@
      </property>
     </widget>
    </item>
+   <item row="4" column="3">
+    <widget class="qLocaleDoubleSpinBox" name="price">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="accelerated">
+      <bool>true</bool>
+     </property>
+     <property name="correctionMode">
+      <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+     </property>
+     <property name="minimum">
+      <double>-1000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>1000000.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QLabel" name="label_price">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>price</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="qLocaleDoubleSpinBox" name="quantity">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="buttonSymbols">
+      <enum>QAbstractSpinBox::NoButtons</enum>
+     </property>
+     <property name="correctionMode">
+      <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+     </property>
+     <property name="keyboardTracking">
+      <bool>true</bool>
+     </property>
+     <property name="decimals">
+      <number>0</number>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>100000000.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_quantity">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>You can configure current quantity as default quantity with dblclick on this tag</string>
+     </property>
+     <property name="text">
+      <string>quantity</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -246,8 +246,8 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>price</tabstop>
   <tabstop>quantity</tabstop>
+  <tabstop>price</tabstop>
   <tabstop>cliref</tabstop>
   <tabstop>buttonBox</tabstop>
   <tabstop>account</tabstop>

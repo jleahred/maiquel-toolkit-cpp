@@ -129,6 +129,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
             ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
     }
 
+    ui->quantity->setFocus();
+    /*
     if(agressive==false)
     {
         ui->price->setFocus();
@@ -139,6 +141,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool agressive, QWidge
         ui->quantity->setFocus();
         ui->quantity->selectAll();
     }
+    */
 
     this->check_if_order_can_be_sent();
     if(configure_default_field!=QLatin1String(""))
