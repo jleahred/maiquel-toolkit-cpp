@@ -13,7 +13,11 @@
 #include "qexecs_table.h"
 #include "whistoric_order.h"
 
+#include <QMainWindow>
 
+
+
+QDialog*   get_cimdtrade_window();
 
 
 namespace {
@@ -49,7 +53,7 @@ namespace {
 
 void on_request_with_user_check_ls(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq, agressive);
+    QEditOrder eo(rq, agressive, get_cimdtrade_window());
     if (eo.exec())
     {
         rq = eo.get_request_ls();
