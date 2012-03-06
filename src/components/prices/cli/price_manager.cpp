@@ -133,6 +133,13 @@ void internal_price_manager__factory::on_last_mk_execs_ticker_update(const mtk::
         throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received mk_execs_ticker on " << msg.product_code << " expected product "  << product_code),
                                                     mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
+    if(msg.last_mk_execs_ticker.max_last_price.GetDouble()  < msg.last_mk_execs_ticker.last_price.GetDouble())
+        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received max price (" << msg.last_mk_execs_ticker.max_last_price << ")  lower than  last price  ("  <<  msg.last_mk_execs_ticker.last_price << ")"),
+                                                    mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    if(msg.last_mk_execs_ticker.min_last_price.GetDouble() > msg.last_mk_execs_ticker.last_price.GetDouble())
+        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received min price (" << msg.last_mk_execs_ticker.min_last_price << ")  bigger than  last price  ("  <<  msg.last_mk_execs_ticker.last_price << ")"),
+                                                    mtk::alPriorCritic, mtk::alTypeNoPermisions);
+
     full_prod_info.last_mk_execs_ticker = msg.last_mk_execs_ticker;        //      ->1
 
     if(h_last_mk_execs_ticker.isValid()==false)
