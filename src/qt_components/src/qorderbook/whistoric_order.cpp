@@ -74,9 +74,10 @@ void fill_from(whistoric_order* _this, ORDER_TYPE& order)
     {
         if(total_executions.Get().acc_quantity.GetIntCode() > 0)
         {
-            exec_price     =  QString::number(total_executions.Get().sum_price_by_qty.get()._0 / total_executions.Get().acc_quantity.GetDouble().get()._0, 'f', 5);
-            exec_quantity  =  QString::number(total_executions.Get().acc_quantity.GetDouble().get()._0, 'f', 0);
-            rem_quantity   =  QString::number(total_executions.Get().remaining_qty.GetDouble().get()._0, 'f', 0);
+
+            exec_price     =  QLocale::system().toString(total_executions.Get().sum_price_by_qty.get()._0 / total_executions.Get().acc_quantity.GetDouble().get()._0, 'f', 5);
+            exec_quantity  =  QLocale::system().toString(total_executions.Get().acc_quantity.GetDouble().get()._0, 'f', 5);
+            rem_quantity   =  QLocale::system().toString(total_executions.Get().remaining_qty.GetDouble().get()._0, 'f', 0);
         }
     }
 

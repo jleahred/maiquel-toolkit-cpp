@@ -470,7 +470,7 @@ public:
             confirmed = inner_order->last_confirmation().Get().total_execs.sum_price_by_qty
                             /
                             inner_order->last_confirmation().Get().total_execs.acc_quantity.GetDouble();
-            item->setText(QString::number(confirmed.get()._0, 'f', 5));
+            item->setText(QLocale::system().toString(confirmed.get()._0, 'f', 5));
         }
         if (confirmed.IsValid())
         {
