@@ -3,7 +3,7 @@
 
 
 #include <QTableWidget>
-
+#include <QHeaderView>
 
 #include "qt_components/src/mtkcontainerwidget.h"
 
@@ -16,6 +16,7 @@
 #include "components/prices/cli/price_manager.h"
 
 #include "components/trading/msg_trd_common_support.h"
+
 
 
 
@@ -87,6 +88,28 @@ private:
     static int counter;
 };
 
+
+
+class  QHeaderView_hidding_cols   :   public  QHeaderView
+{
+    Q_OBJECT
+
+
+public:
+    QHeaderView_hidding_cols ( const QList<QString>& _names,  Qt::Orientation orientation, QWidget * parent = 0 )
+        :  QHeaderView (orientation, parent), names(_names)
+    {
+    }
+
+    void mousePressEvent(QMouseEvent *e);
+
+
+public slots:
+    void  hide_show_col(int logicalIndex);
+
+private:
+    const QList<QString>  names;
+};
 
 
 

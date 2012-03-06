@@ -12,7 +12,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
-
+#include <QSignalMapper>
 
 #include <iostream>
 #include <iomanip>
@@ -92,6 +92,53 @@ namespace {
 
 
 
+
+
+void QHeaderView_hidding_cols::mousePressEvent(QMouseEvent *e)
+{
+    if(e->button() == Qt::RightButton)
+    {
+        QMenu menu(this);
+        QSignalMapper *signalMapper = new QSignalMapper(this);
+        connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(hide_show_col(int)));
+
+        for(int i=1; i<this->count(); ++i)
+        {
+            QAction* action_col = new QAction(names.at(i), this);
+            action_col->setCheckable(true);
+            menu.addAction(action_col);
+            signalMapper->setMapping(action_col, i);
+            connect(action_col, SIGNAL(triggered()), signalMapper, SLOT(map()));
+            if(this->sectionSize(i) == 0)
+            {
+                this->resizeSection(i, 100);
+                this->hideSection(i);
+            }
+            if(this->isSectionHidden(i) == false)
+                action_col->setChecked(true);
+            else
+                action_col->setChecked(false);
+        }
+
+        menu.exec(e->globalPos());
+        e->accept();
+    }
+
+    QHeaderView::mousePressEvent(e);
+}
+
+
+void  QHeaderView_hidding_cols::hide_show_col(int logicalIndex)
+{
+    if(isSectionHidden(logicalIndex) == false)
+        this->hideSection(logicalIndex);
+    else
+        this->showSection(logicalIndex);
+}
+
+
+
+
 class QTableWidgetItemProduct : public QTableWidgetItem
 {
 public:
@@ -151,7 +198,6 @@ QTableMarginal::QTableMarginal(QWidget *parent)
         //verticalHeader()->setDefaultSectionSize(QFontMetrics(this->font()).height()*1.6);
         verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
         //horizontalHeader()->setDefaultSectionSize(100);
-        horizontalHeader()->resizeSection(0, 150);
         //this->horizontalHeader()->setResizeMode(this->columnCount()-1, QHeaderView::Stretch);
         //this->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
         //this->horizontalHeader()->setResizeMode(0, QHeaderView::Interactive);
@@ -164,8 +210,10 @@ QTableMarginal::QTableMarginal(QWidget *parent)
             item = new QTableWidgetItem(); \
             item->setText(__TEXT__);   \
             setHorizontalHeaderItem(__COLUMN__, item);   \
+            col_names.append(__TEXT__);                 \
         }
 
+        QList<QString> col_names;
         {
             QTableWidgetItem *item=0;
             QMARG_INIT_HEADER_ITEM(0, tr("Product"))
@@ -179,13 +227,15 @@ QTableMarginal::QTableMarginal(QWidget *parent)
             QMARG_INIT_HEADER_ITEM(8, tr("var"))
             QMARG_INIT_HEADER_ITEM(9, tr("%var"))
         }
+        setHorizontalHeader(new QHeaderView_hidding_cols(col_names, Qt::Horizontal, this));
+        horizontalHeader()->resizeSection(0, 150);
+
         horizontalHeader()->setMovable(true);
     }
     this->setFrameShape(QFrame::NoFrame);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     connect(this->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(slot_sectionMoved(int,int,int)));
-
 
     action_buy = new QAction(tr("buy"), this);
     connect(action_buy, SIGNAL(triggered()), this, SLOT(request_buy()));
@@ -1234,3 +1284,5 @@ void QTableMarginal::focusInEvent (QFocusEvent *e)
     enable_actions();
     QTableWidget::focusInEvent(e);
 }
+
+
