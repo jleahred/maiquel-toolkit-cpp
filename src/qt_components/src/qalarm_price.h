@@ -66,26 +66,20 @@ class marginal_in_table_alarm : public  QObject, public mtk::SignalReceptor
     typedef  marginal_in_table_alarm CLASS_NAME;
 
 public:
+    enum            en_status  {  non_initialized,  ready_to_activate,  activated,  ended  };
+    en_status       status;
+
+
+
     marginal_in_table_alarm(QTableWidget* _table_widget, const mtk::msg::sub_product_code& product_code, double price, const QString& description, int row=-1);
     const int id;
-    //void set_normal_color(int transparency=255);
-    //void set_dark_color(void);
     int  get_row(void) const {  return tw_product->row(); }
 
     mtk::CountPtr<mtk::prices::price_manager>       price_manager;
 
 
+    void  set_status(en_status  _status);
 
-    void initialize_paint(void);
-
-    void activate(void);
-    void stop(void);
-
-    void mark_invalid(void);
-    void mark_valid(void);
-
-
-    void mark_is_close  (bool is_close=true);
     void throw_alarm    (void);
 
 
@@ -108,19 +102,26 @@ private:
 
 
 
-    void update_last_mk_execs_ticker(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&);
-    void update_last_mk_execs_ticker(const mtk::msg::sub_product_code& pc, const mtk::prices::msg::sub_last_mk_execs_ticker&);
     void on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_last_mk_execs_ticker& msg);
 
-    bool        pending_screen_update;
-    void        check_for_pending_screen_update(void);
-    static int  counter;
+    static int  alarm_counter;
 
     mtk::Double           configured_price;
     int                   first_maket__configured_last_sign;
 
+    bool                  alarm_is_checked;
+
     void normalize_last_price_cofigured(double price);
 
+    void  initialize_paint(void);
+
+
+    void  set_non_initialized(void);
+    void  set_ready_to_activate(void);
+    void  set_activated(void);
+    void  set_ended (void);
+
+    //void  mark_is_close (bool close=true);
 };
 
 

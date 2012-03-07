@@ -76,7 +76,7 @@ namespace {
 
 
 
-int marginal_in_table_alarm::counter = 0;
+int marginal_in_table_alarm::alarm_counter = 0;
 
 
 namespace {
@@ -124,7 +124,7 @@ QWidget *qLocaleDoubleSpinBox_delegate::createEditor(QWidget *parent,
 void qLocaleDoubleSpinBox_delegate::setEditorData(QWidget *editor,
                                     const QModelIndex &index) const
 {
-    double value = index.model()->data(index, Qt::EditRole).toDouble();
+    double value = QLocale::system().toDouble(index.model()->data(index, Qt::EditRole).toString());
 
     qLocaleDoubleSpinBox *spinBox = static_cast<qLocaleDoubleSpinBox*>(editor);
     spinBox->setValue(value);
@@ -141,7 +141,7 @@ void qLocaleDoubleSpinBox_delegate::setModelData(QWidget *editor, QAbstractItemM
         double value = spinBox->value();
 
         //model->setData(index, value, Qt::EditRole);
-        model->setData(index, QString::number(value, 'f', decimals), Qt::EditRole);
+        model->setData(index, QLocale::system().toString(value, 'f', decimals), Qt::EditRole);
     }
     else
         model->setData(index, QLatin1String(""), Qt::EditRole);
@@ -179,7 +179,7 @@ QAlarmPrice::QAlarmPrice(QWidget *parent) :
     mtkContainerWidget(parent),
     table_alarms(new QTableAlarmPrice(this))
 {
-    this->setGeometry(QRect(5, 5, 100*4+150+2*5-2, 300-2));
+    this->setGeometry(QRect(5, 5, 100*4+150+2*5-2, 150-2));
     this->setAcceptDrops(true);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setContentsMargins(5,5,5,5);
@@ -259,17 +259,18 @@ void marginal_in_table_alarm::normalize_last_price_cofigured(double price)
         if(n_last_mk_execs_ticker.HasValue() == true)
         {
             mtk::prices::msg::sub_last_mk_execs_ticker  last_mk_execs_ticker = n_last_mk_execs_ticker.Get();
-            tw_last_configured->setText(QString::number(price, 'f', last_mk_execs_ticker.last_price.GetExt().GetDec()));
+
+            tw_last_configured->setText(QLocale::system().toString(price, 'f', last_mk_execs_ticker.last_price.GetExt().GetDec()));
         }
-        else tw_last_configured->setText(QString::number(price, 'f', 3));
+        else tw_last_configured->setText(QLocale::system().toString(price, 'f', 3));
     }
     else
-        tw_last_configured->setText(QString::number(price, 'f', 3));
+        tw_last_configured->setText(QLocale::system().toString(price, 'f', 3));
 }
 
 
 marginal_in_table_alarm::marginal_in_table_alarm(QTableWidget* _table_widget, const mtk::msg::sub_product_code& product_code, double price, const QString& description, int row)
-    : id(++counter), table_widget(_table_widget), pending_screen_update(false), configured_price(mtk::Double::InvalidValue())
+    : status(non_initialized), id(++alarm_counter), table_widget(_table_widget),  configured_price(mtk::Double::InvalidValue()), first_maket__configured_last_sign(0), alarm_is_checked(false)
 {
     tw_product          = new QTableWidgetItemProduct(product_code, this->id);
     tw_last_configured  = new QTableWidgetItem();
@@ -288,43 +289,250 @@ marginal_in_table_alarm::marginal_in_table_alarm(QTableWidget* _table_widget, co
 
 
     tw_product->setText(QLatin1String(MTK_SS(product_code.market << "." << product_code.product).c_str()));
-    //tw_product->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-    tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
-    tw_product->setCheckState(Qt::Unchecked);
-
 
     tw_last_configured->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
-    marginal_in_table_alarm::normalize_last_price_cofigured(price);
+    tw_last_configured->setText(QLocale::system().toString(price, 'f', 3));
+
 
     tw_description->setText(description);
     tw_description->setTextAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-    tw_description->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
-
-    this->initialize_paint();
-    this->mark_invalid();
 
     price_manager = mtk::make_cptr(new mtk::prices::price_manager(product_code));
     MTK_CONNECT_THIS(price_manager->signal_last_mk_execs_ticker, on_last_mk_execs_ticker_msg);
-
-    update_last_mk_execs_ticker (product_code, price_manager->get_last_mk_execs_ticker());
 
     connect(table_widget, SIGNAL(cellChanged(int,int)), this, SLOT(slot_cell_changed(int,int)));
     connect(table_widget, SIGNAL(itemSelectionChanged()), this, SLOT(slot_item_selection_changed()));
     QTableAlarmPrice*  tap = static_cast<QTableAlarmPrice*>(table_widget);
     connect(this, SIGNAL(signal_modif_decimals_increment_for_price_editor(int,int)), tap, SLOT(slot_modif_price_editor(int,int)));
 
-    MTK_TIMER_1D(check_for_pending_screen_update)
-
+    this->set_status(non_initialized);
+    if(price_manager->get_last_mk_execs_ticker().HasValue())
+        this->on_last_mk_execs_ticker_msg(product_code, price_manager->get_last_mk_execs_ticker().Get());
 }
 
 
-namespace {
-    QColor color_transparency(const QColor& color, int transparency)
+
+
+void  marginal_in_table_alarm::set_non_initialized(void)
+{
+    initialize_paint();
+
+    tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
+    tw_product->setCheckState(Qt::Unchecked);
+    tw_product->setBackgroundColor(qtmisc::mtk_color_header);
+    QBrush foreground (tw_product->foreground());
+    foreground.setColor(Qt::darkGray);
+    tw_product->setForeground(foreground);
+    configured_price = mtk::Double::InvalidValue();
+    first_maket__configured_last_sign = 0;
+
+    tw_description->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+    tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
+    tw_product->setCheckState(Qt::Unchecked);
+    tw_last_configured->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+    alarm_is_checked = false;
+    status = non_initialized;
+}
+
+void  marginal_in_table_alarm::set_ready_to_activate(void)
+{
+    if(price_manager.isValid() == false  ||  price_manager->get_last_mk_execs_ticker().HasValue()  == false)
+        this->set_non_initialized();
+
+
+    normalize_last_price_cofigured(QLocale::system().toDouble(tw_last_configured->text()));
+
+    if(status == activated)
     {
-        return QColor(color.red(), color.green(), color.blue(), transparency);
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::deactivated"), MTK_SS("product:"  <<  tw_product->text().toStdString() << "  sign:" << first_maket__configured_last_sign  <<  "  price:"  <<  configured_price
+                                                                            << "  market_price:" << price_manager->get_last_mk_execs_ticker().Get().last_price), mtk::alPriorWarning));
     }
 
-};
+    initialize_paint();
+    mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>  last_mk_execs_ticker  =  price_manager->get_last_mk_execs_ticker();
+    if(last_mk_execs_ticker.HasValue() == false)
+        this->set_non_initialized();
+    else
+    {
+        configured_price = mtk::Double::InvalidValue();
+        first_maket__configured_last_sign = 0;
+        alarm_is_checked = false;
+    }
+
+
+    tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable  | Qt::ItemIsEnabled);
+    tw_product->setCheckState(Qt::Unchecked);
+    tw_description->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+    tw_last_configured->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+
+
+    status = ready_to_activate;
+}
+
+void  marginal_in_table_alarm::set_activated(void)
+{
+    initialize_paint();
+
+    if(tw_description->text() == QLatin1String(""))
+    {
+        tw_product->setCheckState(Qt::Unchecked);
+        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("You have to write a message to activate an alarm"), QMessageBox::Ok);
+        return;
+    }
+
+    mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>  n_last_mk_execs_ticker = price_manager->get_last_mk_execs_ticker();
+    if(n_last_mk_execs_ticker.HasValue() == false)
+    {
+        tw_product->setCheckState(Qt::Unchecked);
+        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Missing last price."), QMessageBox::Ok);
+        return;
+    }
+
+    mtk::Double  dconfigured_last = QLocale::system().toDouble(tw_last_configured->text());
+    mtk::Double abs_var =fabs(((n_last_mk_execs_ticker.Get().last_price.GetDouble()).get2() - dconfigured_last.get2()) / dconfigured_last.get2());
+    if(abs_var > mtk::Double(0.2))
+    {
+        tw_product->setCheckState(Qt::Unchecked);
+        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Configured price too far  ") +
+                                            QLatin1String(MTK_SS(n_last_mk_execs_ticker.Get().last_price.GetDouble() << " " << QLocale::system().toDouble(tw_last_configured->text())).c_str()), QMessageBox::Ok);
+        return;
+    }
+
+    if(n_last_mk_execs_ticker.Get().last_price.GetDouble() ==  QLocale::system().toDouble(tw_last_configured->text()))
+    {
+        tw_product->setCheckState(Qt::Unchecked);
+        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Cannot activate the alarm. Market price and alarm price are equal"), QMessageBox::Ok);
+        return;
+    }
+
+
+    configured_price = QLocale::system().toDouble(tw_last_configured->text());
+    if(price_manager.isValid() == false  ||  price_manager->get_last_mk_execs_ticker().HasValue()==false)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "activating", "missing price manager or not received price", mtk::alPriorError));
+        this->set_non_initialized();
+    }
+
+
+    if(price_manager->get_last_mk_execs_ticker().Get().last_price.GetDouble() - configured_price  <= mtk::Double(0.))
+        first_maket__configured_last_sign = -1;
+    else
+        first_maket__configured_last_sign = 1;
+
+    alarm_is_checked= true;
+
+    tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable  | Qt::ItemIsEnabled);
+    tw_product->setCheckState(Qt::Checked);
+    tw_description->setFlags(0);
+    tw_last_configured->setFlags(0);
+    status = activated;
+
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::activated"), MTK_SS("product:"  <<  tw_product->text().toStdString()  << "  sign:" << first_maket__configured_last_sign  <<  "  price:"  <<  configured_price
+                                                                        << "  market_price:" << price_manager->get_last_mk_execs_ticker().Get().last_price), mtk::alPriorWarning));
+
+}
+
+void  marginal_in_table_alarm::set_ended (void)
+{
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::triggered"), MTK_SS("product:"  <<  tw_product->text().toStdString() << "  sign:" << first_maket__configured_last_sign  <<  "  price:"  <<  configured_price
+                                                                        << "  market_price:" << price_manager->get_last_mk_execs_ticker().Get().last_price), mtk::alPriorWarning));
+    tw_last_configured->setBackgroundColor(Qt::red);
+    tw_description->setBackgroundColor(Qt::red);
+    QBrush foreground (tw_last_configured->foreground());
+    foreground.setColor(Qt::white);
+    tw_last_configured->setForeground(foreground);
+    tw_description->setForeground(foreground);
+    configured_price = mtk::Double::InvalidValue();
+    first_maket__configured_last_sign = 0;
+    alarm_is_checked = true;
+    wUserMessage::show_message(tw_description->text());
+
+    status = ended;
+}
+
+
+void  marginal_in_table_alarm::set_status(en_status  new_status)
+{
+    switch(status)
+    {
+    case  non_initialized:      //  current status
+            switch(new_status)
+            {
+                case  non_initialized:
+                    //mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "non_initialized -> non_initialized", mtk::alPriorError));
+                    set_non_initialized();
+                    break;
+                case  ready_to_activate:
+                    set_ready_to_activate();
+                    break;
+                case  activated:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "non_initialized -> activated", mtk::alPriorError));
+                    set_non_initialized();
+                    break;
+                case  ended:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "non_initialized -> ended", mtk::alPriorError));
+                    set_non_initialized();
+                    break;
+            }
+            break;
+        case  ready_to_activate:    //  current status
+            switch(new_status)
+            {
+                case  non_initialized:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "ready_to_activate -> non_initialized", mtk::alPriorError));
+                    set_non_initialized();
+                    break;
+                case  ready_to_activate:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "ready_to_activate -> ready_to_activate", mtk::alPriorError));
+                    break;
+                case  activated:
+                    set_activated();
+                    break;
+                case  ended:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "non_initialized -> ended", mtk::alPriorError));
+                    set_non_initialized();
+                    break;
+            }
+            break;
+        case  activated:    //  current status
+            switch(new_status)
+            {
+                case  non_initialized:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "activated -> non_initialized", mtk::alPriorError));
+                    set_non_initialized();
+                    break;
+                case  ready_to_activate:
+                    set_ready_to_activate();
+                    break;
+                case  activated:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "activated -> activated", mtk::alPriorError));
+                    break;
+                case  ended:
+                    set_ended();
+                    break;
+            }
+            break;
+        case  ended:    //  current status
+            switch(new_status)
+            {
+                case  non_initialized:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "ended -> non_initialized", mtk::alPriorError));
+                    set_non_initialized();
+                    break;
+                case  ready_to_activate:
+                    set_ready_to_activate();
+                    break;
+                case  activated:
+                    set_activated();
+                    break;
+                case  ended:
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm_set_status", "ended -> ended", mtk::alPriorError));
+                    break;
+            }
+            break;
+    }
+}
+
 
 
 void     marginal_in_table_alarm::initialize_paint(void)
@@ -362,168 +570,57 @@ void     marginal_in_table_alarm::initialize_paint(void)
 }
 
 
-void marginal_in_table_alarm::activate(void)
+
+
+
+
+/*
+void  marginal_in_table_alarm::mark_is_close (bool is_close)
 {
-    initialize_paint();
-
-    if(tw_description->text() == QLatin1String(""))
-    {
-        tw_product->setCheckState(Qt::Unchecked);
-        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("You have to write a message to activate an alarm"), QMessageBox::Ok);
-        return;
-    }
-
-    mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>  n_last_mk_execs_ticker = price_manager->get_last_mk_execs_ticker();
-    if(n_last_mk_execs_ticker.HasValue() == false)
-    {
-        tw_product->setCheckState(Qt::Unchecked);
-        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Missing last price."), QMessageBox::Ok);
-        return;
-    }
-
-    mtk::Double abs_var =fabs((n_last_mk_execs_ticker.Get().last_price.GetDouble()).get2() - tw_last_configured->text().toFloat()) / tw_last_configured->text().toFloat();
-    if(abs_var > mtk::Double(0.2))
-    {
-        tw_product->setCheckState(Qt::Unchecked);
-        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Configured price too far  ") +
-                                            QLatin1String(MTK_SS(n_last_mk_execs_ticker.Get().last_price.GetDouble() << " " << tw_last_configured->text().toFloat()).c_str()), QMessageBox::Ok);
-        return;
-    }
-
-    if(abs_var == mtk::Double(0.))
-    {
-        tw_product->setCheckState(Qt::Unchecked);
-        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Cannot activate the alarm. Market price and alarm price are equal"), QMessageBox::Ok);
-        return;
-    }
-
-
-    mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>  last_mk_execs_ticker  =  price_manager->get_last_mk_execs_ticker();
-    if(last_mk_execs_ticker.HasValue() == false)
-    {
-        this->mark_invalid();
-    }
-    else
-    {
-        configured_price = tw_last_configured->text().toFloat();
-        if(last_mk_execs_ticker.Get().last_price.GetDouble() - configured_price  <= 0)
-            first_maket__configured_last_sign = -1;
-        else
-            first_maket__configured_last_sign = 1;
-    }
-}
-
-void marginal_in_table_alarm::stop(void)
-{
-    initialize_paint();
-    mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>  last_mk_execs_ticker  =  price_manager->get_last_mk_execs_ticker();
-    if(last_mk_execs_ticker.HasValue() == false)
-    {
-        this->mark_invalid();
-    }
-    else
-    {
-        configured_price = mtk::Double::InvalidValue();
-        first_maket__configured_last_sign = 0;
-    }
-}
-
-
-void marginal_in_table_alarm::mark_invalid(void)
-{
-    initialize_paint();
-
-    tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
-    tw_product->setCheckState(Qt::Unchecked);
-    tw_product->setBackgroundColor(qtmisc::mtk_color_header);
-    QBrush foreground (tw_product->foreground());
-    foreground.setColor(Qt::darkGray);
-    tw_product->setForeground(foreground);
-    first_maket__configured_last_sign = 0;
-}
-
-void marginal_in_table_alarm::mark_valid(void)
-{
-    initialize_paint();
-
-    tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable  | Qt::ItemIsEnabled);
-    tw_product->setCheckState(Qt::Unchecked);
-}
-
-void marginal_in_table_alarm::mark_is_close  (bool is_close)
-{
-    QColor color(Qt::white);
+    QColor color(Qt::red);
     if(is_close)
-        color = color.lighter();
+      color = color.lighter();
     tw_last_configured->setBackgroundColor(color);
     tw_description->setBackgroundColor(color);
 }
+*/
 
-void marginal_in_table_alarm::throw_alarm    (void)
+
+
+
+
+
+void marginal_in_table_alarm::on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_last_mk_execs_ticker& last_mk_execs_ticker)
 {
-    tw_last_configured->setBackgroundColor(Qt::red);
-    tw_description->setBackgroundColor(Qt::red);
-    QBrush foreground (tw_last_configured->foreground());
-    foreground.setColor(Qt::white);
-    tw_last_configured->setForeground(foreground);
-    tw_description->setForeground(foreground);
-    first_maket__configured_last_sign = 0;
-    wUserMessage::show_message(tw_description->text());
-}
-
-
-
-void marginal_in_table_alarm::update_last_mk_execs_ticker(const mtk::msg::sub_product_code& , const mtk::prices::msg::sub_last_mk_execs_ticker&   last_mk_execs_ticker)
-{
-    if((tw_product->flags() & Qt::ItemIsEnabled)  == 0)
-        this->mark_valid();
-
-    if(tw_product->checkState()  ==  Qt::Checked)
+    switch(status)
     {
-             if(last_mk_execs_ticker.max_last_price.GetDouble() - configured_price  <= 0  &&  first_maket__configured_last_sign>0)
-            this->throw_alarm();
-        else if(last_mk_execs_ticker.min_last_price.GetDouble() - configured_price  >= 0  &&  first_maket__configured_last_sign<0)
-            this->throw_alarm();
-        else
-        {
-                 if((last_mk_execs_ticker.max_last_price - mtk::fnTicks(2)).GetDouble() - configured_price  <= 0  &&  first_maket__configured_last_sign>0)
-                        this->mark_is_close();
-            else if((last_mk_execs_ticker.min_last_price + mtk::fnTicks(2)).GetDouble() - configured_price  >= 0  &&  first_maket__configured_last_sign<0)
-                       this->mark_is_close();
-            else this->mark_is_close(false);
-        }
+        case  non_initialized:
+            set_status(ready_to_activate);
+            break;
+        case  ready_to_activate:
+            break;
+        case  activated:
+            if     (last_mk_execs_ticker.max_last_price.GetDouble() - configured_price  <= mtk::Double(0.)  &&  first_maket__configured_last_sign>0)
+                this->set_status(ended);
+            else if(last_mk_execs_ticker.min_last_price.GetDouble() - configured_price  >= mtk::Double(0.)  &&  first_maket__configured_last_sign<0)
+                this->set_status(ended);
+            /*
+            else
+            {
+                if     ((last_mk_execs_ticker.max_last_price - mtk::fnTicks(2)).GetDouble() - configured_price  <= 0  &&  first_maket__configured_last_sign>0)
+                            this->mark_is_close();
+                else if((last_mk_execs_ticker.min_last_price + mtk::fnTicks(2)).GetDouble() - configured_price  >= 0  &&  first_maket__configured_last_sign<0)
+                           this->mark_is_close();
+                else this->mark_is_close(false);
+            }
+            */
+            break;
+        case  ended:
+            break;
     }
 }
 
 
-
-void marginal_in_table_alarm::update_last_mk_execs_ticker(const mtk::msg::sub_product_code& pc, const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&   n_last_mk_execs_ticker)
-{
-    if(n_last_mk_execs_ticker.HasValue())
-        update_last_mk_execs_ticker(pc, n_last_mk_execs_ticker.Get());
-
-}
-
-
-
-
-void marginal_in_table_alarm::on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_last_mk_execs_ticker& /*msg*/)
-{
-    pending_screen_update = true;
-}
-
-
-void marginal_in_table_alarm::check_for_pending_screen_update(void)
-{
-    if(pending_screen_update   &&   price_manager.get2())
-    {
-        MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
-            normalize_last_price_cofigured(tw_last_configured->text().toFloat());
-            update_last_mk_execs_ticker(price_manager->get_product_code(), price_manager->get_last_mk_execs_ticker());
-            pending_screen_update = false;
-        MTK_END_EXEC_MAX_FREC
-    }
-}
 
 
 
@@ -566,7 +663,7 @@ void QTableAlarmPrice::dropEvent(QDropEvent *event)
     //  TODO
     QString sprice = qtmisc::get_property_value(event, QLatin1String("alarm_price"));
     QString description = qtmisc::get_property_value(event, QLatin1String("alarm_description"));
-    insert_alarm(qtmisc::get_product_code(event), sprice.toFloat(), description, rowAt(event->pos().y()));
+    insert_alarm(qtmisc::get_product_code(event), QLocale::system().toDouble(sprice), description, rowAt(event->pos().y()));
     if(qobject_cast<QTableAlarmPrice*>(event->source())!=0)
         event->setDropAction(Qt::MoveAction);
     else
@@ -778,7 +875,7 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableAlarmPrice& m)
             {
                 out << YAML::BeginMap;
                         out << YAML::Key   <<  "product_name"  << YAML::Value << iproduct->product_code;
-                        out << YAML::Key   <<  "price"  << YAML::Value << int(m.item(i,1)->text().toFloat() *1000);
+                        out << YAML::Key   <<  "price"  << YAML::Value << int(QLocale::system().toDouble(m.item(i,1)->text()) *1000);
                         out << YAML::Key   <<  "description"  << YAML::Value << m.item(i,2)->text().toStdString();
                 out << YAML::EndMap;
             }
@@ -827,7 +924,7 @@ void             operator >> (const YAML::Node&   node,        QTableAlarmPrice&
 
 YAML::Emitter& operator << (YAML::Emitter& out, const QAlarmPrice& m)
 {
-    if(m.table_alarms->rowCount() == 0)      return out;
+    //if(m.table_alarms->rowCount() == 0)      return out;
 
 
     out     << YAML::BeginMap;
@@ -887,15 +984,19 @@ void marginal_in_table_alarm::slot_cell_changed (int row, int column)
     {
         if(tw_product->row() == row)
         {
-            if(tw_product->checkState()  ==  Qt::Checked)
-                this->activate();
-            else
-                this->stop();
+            if(tw_product->checkState()  ==  Qt::Checked   &&      alarm_is_checked==false)
+            {
+                    this->set_status(activated);
+            }
+            else  if(tw_product->checkState()  !=  Qt::Checked   &&      alarm_is_checked==true)
+            {
+                    this->set_status(ready_to_activate);
+            }
         }
     }
     if(column==1  &&  tw_last_configured->row() == row)
     {
-        normalize_last_price_cofigured(tw_last_configured->text().toFloat());
+        normalize_last_price_cofigured(QLocale::system().toDouble(tw_last_configured->text()));
     }
 }
 
