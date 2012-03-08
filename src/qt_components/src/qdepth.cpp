@@ -579,17 +579,19 @@ void QDepth::update_prices(const mtk::prices::msg::sub_best_prices&   best_price
     {
         table_widget->generate_blinking(best_prices);
 
-        write_in_cell(9, 0, best_prices.bids.level4, table_widget, price_manager->get_product_code());
-        write_in_cell(8, 0, best_prices.bids.level3, table_widget, price_manager->get_product_code());
-        write_in_cell(7, 0, best_prices.bids.level2, table_widget, price_manager->get_product_code());
-        write_in_cell(6, 0, best_prices.bids.level1, table_widget, price_manager->get_product_code());
-        write_in_cell(5, 0, best_prices.bids.level0, table_widget, price_manager->get_product_code());
 
-        write_in_cell(4, 2, best_prices.asks.level0, table_widget, price_manager->get_product_code());
-        write_in_cell(3, 2, best_prices.asks.level1, table_widget, price_manager->get_product_code());
-        write_in_cell(2, 2, best_prices.asks.level2, table_widget, price_manager->get_product_code());
-        write_in_cell(1, 2, best_prices.asks.level3, table_widget, price_manager->get_product_code());
-        write_in_cell(0, 2, best_prices.asks.level4, table_widget, price_manager->get_product_code());
+        auto  product_code = price_manager->get_product_code();
+        write_in_cell(9, 0, best_prices.bids.level4, table_widget, product_code);
+        write_in_cell(8, 0, best_prices.bids.level3, table_widget, product_code);
+        write_in_cell(7, 0, best_prices.bids.level2, table_widget, product_code);
+        write_in_cell(6, 0, best_prices.bids.level1, table_widget, product_code);
+        write_in_cell(5, 0, best_prices.bids.level0, table_widget, product_code);
+
+        write_in_cell(4, 2, best_prices.asks.level0, table_widget, product_code);
+        write_in_cell(3, 2, best_prices.asks.level1, table_widget, product_code);
+        write_in_cell(2, 2, best_prices.asks.level2, table_widget, product_code);
+        write_in_cell(1, 2, best_prices.asks.level3, table_widget, product_code);
+        write_in_cell(0, 2, best_prices.asks.level4, table_widget, product_code);
 
         if(table_widget->styleSheet() == style_sheet_null)
             table_widget->setStyleSheet(style_sheet_normal);
