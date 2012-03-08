@@ -14,10 +14,12 @@
 
 #include "qt_components/src/qdepth.h"
 #include "qt_components/src/qmarginal.h"
+#include "qt_components/src/qmarginal2.h"
 #include "qt_components/src/qalarm_price.h"
 
 
 #include "support/string_codec.h"
+#include "components/admin/admin.h"
 #include "yaml/yaml.h"
 
 
@@ -45,6 +47,25 @@ QMarginal*  qContainer::insert_qmarginal(void)
 
     return marginals;
 }
+
+
+QMarginal2*  qContainer::insert_qmarginal2(void)
+{
+    if(mtk::admin::is_production() == false)
+    {
+        auto compo= new QMarginal2(this->widget());
+        connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+        compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+        ++counter_insertions;
+        counter_insertions %= 6;
+        compo->show();
+        compo->setFocus();
+        return compo;
+    }
+    else return 0;
+}
+
+
 
 QDepth* qContainer::insert_qdepth()
 {

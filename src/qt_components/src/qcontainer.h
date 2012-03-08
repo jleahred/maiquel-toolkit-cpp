@@ -6,6 +6,7 @@
 
 namespace YAML { class Emitter;  class Node;  };
 class  QMarginal;
+class  QMarginal2;
 class  QDepth;
 class  QAlarmPrice;
 
@@ -18,6 +19,7 @@ public:
     explicit qContainer(QWidget *parent = 0);
 
     QMarginal*      insert_qmarginal        (void);
+    QMarginal2*     insert_qmarginal2       (void);
     QDepth*         insert_qdepth           (void);
     QAlarmPrice*    insert_qalarm_price     (void);
 

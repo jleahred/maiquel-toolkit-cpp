@@ -1,8 +1,8 @@
-#ifndef QMARGINAL_H
-#define QMARGINAL_H
+#ifndef QMARGINAL2_H
+#define QMARGINAL2_H
 
 
-#include <QTableWidget>
+#include <QTableView>
 #include <QHeaderView>
 
 #include "qt_components/src/mtkcontainerwidget.h"
@@ -23,29 +23,30 @@
 
 
 class QTableWidget;
-class QTableWidgetItem;
-class QCommonTableDelegate;
+//class QTableWidgetItem;
+//class QCommonTableDelegate;
 
 namespace YAML { class Emitter;  class Node;      };
 
 
 
 
-class marginal_in_table : public mtk::SignalReceptor
+class marginal_in_table2 : public mtk::SignalReceptor
 {
-    typedef  marginal_in_table CLASS_NAME;
+    typedef  marginal_in_table2 CLASS_NAME;
 
 public:
-    marginal_in_table(QTableWidget* _table_widget, const mtk::msg::sub_product_code& product_code, int row=-1);
+    marginal_in_table2(QTableView* _table_widget, const mtk::msg::sub_product_code& product_code, int row=-1);
     const int id;
     void set_normal_color(int transparency=255);
     void set_dark_color(void);
-    int  get_row(void) const {  return tw_product->row(); }
+    //int  get_row(void) const {  return tw_product->row(); }
 
     mtk::CountPtr<mtk::prices::price_manager>       price_manager;
 
 private:
 
+    /*
     QTableWidgetItem*  tw_product;
     QTableWidgetItem*  tw_BID;
     QTableWidgetItem*  tw_ASK;
@@ -57,8 +58,8 @@ private:
     QTableWidgetItem*  tw_ref_price;
     QTableWidgetItem*  tw_var;
     QTableWidgetItem*  tw_var_percent;
-
-    QTableWidget* table_widget;
+    */
+    QTableView* table_view;
 
 
     bool        pending_screen_update;
@@ -92,13 +93,13 @@ private:
 
 
 
-class  QHeaderView_hidding_cols   :   public  QHeaderView
+class  QHeaderView_hidding_cols2   :   public  QHeaderView
 {
     Q_OBJECT
 
 
 public:
-    QHeaderView_hidding_cols ( const QList<QString>& _names,  Qt::Orientation orientation, QWidget * parent = 0 )
+    QHeaderView_hidding_cols2 ( const QList<QString>& _names,  Qt::Orientation orientation, QWidget * parent = 0 )
         :  QHeaderView (orientation, parent), names(_names)
     {
     }
@@ -115,17 +116,17 @@ private:
 
 
 
-class QTableMarginal : public QTableWidget,  public mtk::SignalReceptor
+class QTableMarginal2 : public QTableView
 {
     Q_OBJECT
-    typedef  QTableMarginal CLASS_NAME;
-    friend YAML::Emitter&   operator << (YAML::Emitter&       out, const  QTableMarginal& m);
-    friend void             operator >> (const YAML::Node&   node,        QTableMarginal& m);
+    typedef  QTableMarginal2 CLASS_NAME;
+    friend YAML::Emitter&   operator << (YAML::Emitter&       out, const  QTableMarginal2& m);
+    friend void             operator >> (const YAML::Node&   node,        QTableMarginal2& m);
 
 
 public:
-    explicit QTableMarginal(QWidget *parent = 0);
-    ~QTableMarginal(){}
+    explicit QTableMarginal2(QWidget *parent = 0);
+    ~QTableMarginal2(){}
     void make_transparent(void);
     void remove_transparency(void);
 
@@ -164,13 +165,12 @@ private:
     int    startDragId;
     void start_drag(void);
 
-    mtk::list< mtk::CountPtr<marginal_in_table> >   marginals;
+    mtk::list< mtk::CountPtr<marginal_in_table2> >   marginals;
 
     void insert_marginal(const mtk::msg::sub_product_code& product_code, int row);
     void add_marginal(const mtk::msg::sub_product_code& product_code);
 
     void remove_row(int id);
-    void adjust_pajama(void);
 
 
     void focusInEvent (QFocusEvent *e);
@@ -183,7 +183,7 @@ private:
     QAction* action_buy_market;
     QAction* action_sell_market;
 
-    QCommonTableDelegate* paint_delegate;
+    //QCommonTableDelegate* paint_delegate;
     bool showing_menu;
     void disable_actions(void);
     void enable_actions(void);
@@ -192,6 +192,7 @@ private:
     void enable_trading_actions(void);
 
     mtk::msg::sub_product_code get_current_product_code(void);
+
 };
 
 
@@ -199,16 +200,16 @@ private:
 
 
 
-class QMarginal : public mtkContainerWidget
+class QMarginal2 : public mtkContainerWidget
 {
     Q_OBJECT
-    typedef  QMarginal CLASS_NAME;
-    friend YAML::Emitter&   operator << (YAML::Emitter&       out, const QMarginal& m);
-    friend void             operator >> (const YAML::Node&   node,       QMarginal& m);
+    typedef  QMarginal2 CLASS_NAME;
+    friend YAML::Emitter&   operator << (YAML::Emitter&       out, const QMarginal2& m);
+    friend void             operator >> (const YAML::Node&   node,       QMarginal2& m);
 
 public:
-    explicit QMarginal(QWidget *parent = 0);
-    ~QMarginal();
+    explicit QMarginal2(QWidget *parent = 0);
+    ~QMarginal2();
 
 
 
@@ -225,7 +226,7 @@ private slots:
     void remove_transparent(void) { table_marginals->remove_transparency();  }
 
 private:
-    QTableMarginal *table_marginals;
+    QTableMarginal2 *table_marginals;
 
 };
 
@@ -233,5 +234,5 @@ private:
 
 
 
-#endif // QMARGINAL_H
+#endif // QMARGINAL2_H
 

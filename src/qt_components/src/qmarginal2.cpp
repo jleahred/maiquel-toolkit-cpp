@@ -1,4 +1,4 @@
-#include "qmarginal.h"
+#include "qmarginal2.h"
 
 #include <QVBoxLayout>
 #include <QHeaderView>
@@ -74,7 +74,7 @@ MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
 
 
 
-int marginal_in_table::counter = 0;
+int marginal_in_table2::counter = 0;
 
 
 namespace {
@@ -94,7 +94,7 @@ namespace {
 
 
 
-void QHeaderView_hidding_cols::mousePressEvent(QMouseEvent *e)
+void QHeaderView_hidding_cols2::mousePressEvent(QMouseEvent *e)
 {
     if(e->button() == Qt::RightButton)
     {
@@ -131,7 +131,7 @@ void QHeaderView_hidding_cols::mousePressEvent(QMouseEvent *e)
 }
 
 
-void  QHeaderView_hidding_cols::hide_show_col(int logicalIndex)
+void  QHeaderView_hidding_cols2::hide_show_col(int logicalIndex)
 {
     if(isSectionHidden(logicalIndex) == false)
         this->hideSection(logicalIndex);
@@ -146,23 +146,23 @@ void  QHeaderView_hidding_cols::hide_show_col(int logicalIndex)
 
 
 
-
-class QTableWidgetItemProduct : public QTableWidgetItem
+/*
+class QTableWidgetItemProduct2 : public QTableWidgetItem
 {
 public:
-    QTableWidgetItemProduct (const mtk::msg::sub_product_code&  _product_code, int _id) : QTableWidgetItem(), product_code(_product_code), id(_id) {}
+    QTableWidgetItemProduct2 (const mtk::msg::sub_product_code&  _product_code, int _id) : QTableWidgetItem(), product_code(_product_code), id(_id) {}
     mtk::msg::sub_product_code  product_code;
     const int id;
 };
+*/
 
 
 
 
 
-
-QMarginal::QMarginal(QWidget *parent) :
+QMarginal2::QMarginal2(QWidget *parent) :
     mtkContainerWidget(parent),
-    table_marginals(new QTableMarginal(this))
+    table_marginals(new QTableMarginal2(this))
 {
     this->setGeometry(QRect(5, 5, 100*4+150+2*5-2, 300-2));
     this->setAcceptDrops(true);
@@ -178,28 +178,28 @@ QMarginal::QMarginal(QWidget *parent) :
     //this->setFocusProxy(table_marginals);
 }
 
-QMarginal::~QMarginal()
+QMarginal2::~QMarginal2()
 {
 }
 
 
 
-QTableMarginal::QTableMarginal(QWidget *parent)
-    : QTableWidget(parent), startPos(-1,-1),
+QTableMarginal2::QTableMarginal2(QWidget *parent)
+    : QTableView(parent), startPos(-1,-1),
       action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0), action_remove_product(0),
       action_buy_market(0), action_sell_market(0),
-      paint_delegate(new QCommonTableDelegate(this)),
+      //paint_delegate(new QCommonTableDelegate(this)),
       showing_menu(false)
 {
     this->setAcceptDrops(true);
 
-    setItemDelegate(paint_delegate);
+    //setItemDelegate(paint_delegate);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
     setShowGrid(false);
 
     {
-        setRowCount(0);
+        //setRowCount(0);
         verticalHeader()->setVisible(false);
         horizontalHeader()->setVisible(true);
         //table_marginals->setSelectionMode(QAbstractItemView::NoSelection);
@@ -212,15 +212,16 @@ QTableMarginal::QTableMarginal(QWidget *parent)
         slot_sectionMoved(0,0,0);
 
 
-        setColumnCount(col_count);
+        //setColumnCount(col_count);
         #define QMARG_INIT_HEADER_ITEM(__COLUMN__, __TEXT__) \
         {   \
             item = new QTableWidgetItem(); \
             item->setText(__TEXT__);   \
-            setHorizontalHeaderItem(__COLUMN__, item);   \
+            //setHorizontalHeaderItem(__COLUMN__, item);   \
             col_names.append(__TEXT__);                 \
         }
 
+        /*
         QList<QString> col_names;
         {
             QTableWidgetItem *item=0;
@@ -235,7 +236,8 @@ QTableMarginal::QTableMarginal(QWidget *parent)
             QMARG_INIT_HEADER_ITEM(8, tr("var"))
             QMARG_INIT_HEADER_ITEM(9, tr("%var"))
         }
-        setHorizontalHeader(new QHeaderView_hidding_cols(col_names, Qt::Horizontal, this));
+        */
+        //setHorizontalHeader(new QHeaderView_hidding_cols2(col_names, Qt::Horizontal, this));
         horizontalHeader()->resizeSection(0, 150);
 
         horizontalHeader()->setMovable(true);
@@ -284,19 +286,18 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     this->addAction(action_remove_product);
     this->disable_actions();
     this->slot_sectionMoved(0,0,0);
-
 }
 
 
 
 
-
-marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg::sub_product_code& product_code, int row)
-    : id(++counter), table_widget(_table_widget), pending_screen_update(false),
+marginal_in_table2::marginal_in_table2(QTableView* _table_view, const mtk::msg::sub_product_code& product_code, int row)
+    : id(++counter), table_view(_table_view), pending_screen_update(false),
       prev_painted_prices(mtk::prices::msg::__internal_get_default((mtk::prices::msg::sub_best_prices*)0)),
       prev_painted_last(mtk::prices::msg::__internal_get_default((mtk::prices::msg::sub_last_mk_execs_ticker*)0)),
       last_blinking(mtk::dtNowLocal()-mtk::dtDays(300))
 {
+    /*
     tw_product      = new QTableWidgetItemProduct(product_code, this->id);
     tw_BID          = new QTableWidgetItem();
     tw_ASK          = new QTableWidgetItem();
@@ -307,19 +308,22 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     tw_ref_price    = new QTableWidgetItem();
     tw_var          = new QTableWidgetItem();
     tw_var_percent  = new QTableWidgetItem();
-
+    */
 
     mtk::dtDateTime  now = mtk::dtNowLocal();
     for(int i=0; i<col_count; ++i)
         v_blinking.push_back(now - mtk::dtDays(30));
 
-    if (row>=0 && row<table_widget->rowCount())
+    /*
+    if (row>=0 && row<table_view->rowCount())
         table_widget->insertRow(row);
     else
     {
         table_widget->setRowCount(table_widget->rowCount()+1);
         row = table_widget->rowCount()-1;
     }
+    */
+    /*
     table_widget->setItem(row, 0, tw_product);
     table_widget->setItem(row, 1, tw_qty_bid);
     table_widget->setItem(row, 2, tw_BID);
@@ -330,10 +334,11 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
     table_widget->setItem(row, 7, tw_ref_price);
     table_widget->setItem(row, 8, tw_var);
     table_widget->setItem(row, 9, tw_var_percent);
-
+    */
 
     //QFont font(table_widget->font());
     //font.setBold(true);
+    /*
     {
         tw_product->setText(QLatin1String(MTK_SS(product_code.market << "." << product_code.product).c_str()));
         QFont font(tw_product->font());
@@ -391,7 +396,7 @@ marginal_in_table::marginal_in_table(QTableWidget* _table_widget, const mtk::msg
         tw_var_percent->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
         tw_var_percent->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
-
+    */
     price_manager = mtk::make_cptr(new mtk::prices::price_manager(product_code));
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update,   on_best_prices);
     MTK_CONNECT_THIS(price_manager->signal_last_mk_execs_ticker, on_last_mk_execs_ticker_msg);
@@ -413,8 +418,9 @@ namespace {
 
 };
 
-void marginal_in_table::set_normal_color(int transparency)
+void marginal_in_table2::set_normal_color(int transparency)
 {
+    /*
     tw_product->setBackgroundColor(color_transparency(color_product, transparency));
     QBrush foreground (tw_product->foreground());
     //foreground.setColor(Qt::black);
@@ -442,10 +448,12 @@ void marginal_in_table::set_normal_color(int transparency)
         tw_var->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
         tw_var_percent->setBackgroundColor(color_transparency(qtmisc::mtk_color_null, transparency));
     }
+    */
 }
 
-void marginal_in_table::set_dark_color(void)
+void marginal_in_table2::set_dark_color(void)
 {
+    /*
     tw_product->setBackgroundColor(color_product.darker(110));
     QBrush foreground (tw_product->foreground());
     foreground.setColor(Qt::black);
@@ -459,6 +467,7 @@ void marginal_in_table::set_dark_color(void)
     tw_ref_price->setBackgroundColor(color_qty.darker(105));
     tw_var->setBackgroundColor(color_qty.darker(105));
     tw_var_percent->setBackgroundColor(color_qty.darker(105));
+    */
 }
 
 
@@ -468,8 +477,9 @@ void marginal_in_table::set_dark_color(void)
 
 
 
-void marginal_in_table::clean_prices(void)
+void marginal_in_table2::clean_prices(void)
 {
+    /*
     tw_ASK->setText(QLatin1String(""));
     tw_qty_ask->setText(QLatin1String(""));
     tw_BID->setText(QLatin1String(""));
@@ -492,13 +502,15 @@ void marginal_in_table::clean_prices(void)
     tw_var->setBackgroundColor(qtmisc::mtk_color_null);
     tw_var_percent->setBackgroundColor(qtmisc::mtk_color_null);
     prev_painted_prices = mtk::prices::msg::__internal_get_default((mtk::prices::msg::sub_best_prices*)0);
+    */
 }
 
-void marginal_in_table::update_prices(const mtk::prices::msg::sub_best_prices&   best_prices)
+void marginal_in_table2::update_prices(const mtk::prices::msg::sub_best_prices&   best_prices)
 {
-    //table_widget->setUpdatesEnabled(false);
-    //try
-    //{
+    /*
+    table_widget->setUpdatesEnabled(false);
+    try
+    {
 
         if(best_prices.bids.level0.price != prev_painted_prices.bids.level0.price)
             tw_BID->setText(qtmisc::fn_as_QString(best_prices.bids.level0.price));
@@ -518,27 +530,30 @@ void marginal_in_table::update_prices(const mtk::prices::msg::sub_best_prices&  
             tw_qty_bid->setBackgroundColor(color_qty);
         }
         generate_blinking(best_prices);     //  it will update  prev_painted_prices
-    //}
-    //catch(...)
-    //{
-    //    table_widget->setUpdatesEnabled(true);
-    //    throw;
-    //}
-    //table_widget->setUpdatesEnabled(true);
+    }
+    catch(...)
+    {
+        table_widget->setUpdatesEnabled(true);
+        throw;
+    }
+    table_widget->setUpdatesEnabled(true);
+    */
 }
 
-void marginal_in_table::update_prices(const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices)
+void marginal_in_table2::update_prices(const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices)
 {
     if(n_best_prices.HasValue())
         update_prices(n_best_prices.Get());
     else
         clean_prices();
+
 }
 
 
 
-void marginal_in_table::clean_lasts(void)
+void marginal_in_table2::clean_lasts(void)
 {
+    /*
     tw_last_price->setText      (QLatin1String(""));
     tw_last_quantity->setText   (QLatin1String(""));
     tw_ref_price->setText       (QLatin1String(""));
@@ -552,10 +567,12 @@ void marginal_in_table::clean_lasts(void)
         tw_var->setBackgroundColor(color_qty);
         tw_var_percent->setBackgroundColor(color_qty);
     }
+    */
 }
 
-void marginal_in_table::update_last_mk_execs_ticker(const mtk::prices::msg::sub_last_mk_execs_ticker&   last_mk_execs_ticker)
+void marginal_in_table2::update_last_mk_execs_ticker(const mtk::prices::msg::sub_last_mk_execs_ticker&   last_mk_execs_ticker)
 {
+    /*
     if(last_mk_execs_ticker.last_quantity.GetDouble() == 0  &&  last_mk_execs_ticker.last_price.GetDouble() == 0)
         clean_lasts();
     else
@@ -584,11 +601,12 @@ void marginal_in_table::update_last_mk_execs_ticker(const mtk::prices::msg::sub_
         }
     }
     prev_painted_last = last_mk_execs_ticker;
+    */
 }
 
 
 
-void marginal_in_table::update_last_mk_execs_ticker(const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&   n_last_mk_execs_ticker)
+void marginal_in_table2::update_last_mk_execs_ticker(const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&   n_last_mk_execs_ticker)
 {
     if(n_last_mk_execs_ticker.HasValue())
         update_last_mk_execs_ticker(n_last_mk_execs_ticker.Get());
@@ -599,13 +617,13 @@ void marginal_in_table::update_last_mk_execs_ticker(const mtk::nullable<mtk::pri
 
 
 
-void marginal_in_table::on_best_prices(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_best_prices& /*msg*/)
+void marginal_in_table2::on_best_prices(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_best_prices& /*msg*/)
 {
     pending_screen_update = true;
 }
 
 
-void marginal_in_table::on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_last_mk_execs_ticker& /*msg*/)
+void marginal_in_table2::on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_code& /*pc*/, const mtk::prices::msg::sub_last_mk_execs_ticker& /*msg*/)
 {
     pending_screen_update = true;
 }
@@ -613,7 +631,7 @@ void marginal_in_table::on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_
 
 
 
-void marginal_in_table::check_for_pending_screen_update(void)
+void marginal_in_table2::check_for_pending_screen_update(void)
 {
     if(pending_screen_update   &&   price_manager.get2())
     {
@@ -631,15 +649,16 @@ void marginal_in_table::check_for_pending_screen_update(void)
 
 
 
-void marginal_in_table::add_blinking(int col, const mtk::DateTime&  till)
+void marginal_in_table2::add_blinking(int col, const mtk::DateTime&  till)
 {
     if(till > last_blinking)
         last_blinking = till;
     v_blinking[col] = till;
 }
 
-void marginal_in_table::check_blinking(void)
+void marginal_in_table2::check_blinking(void)
 {
+    /*
     //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
         static  mtk::DateTime    one_year_before = mtk::dtNowLocal() - mtk::dtDays(300);
         mtk::DateTime  one_hour_before = mtk::dtNowLocal() - mtk::dtHours(1);
@@ -673,11 +692,13 @@ void marginal_in_table::check_blinking(void)
                 last_blinking = one_year_before;
         }
     //MTK_END_EXEC_MAX_FREC
+        */
 }
 
 
-void marginal_in_table::generate_blinking(const mtk::prices::msg::sub_best_prices&  prices)
+void marginal_in_table2::generate_blinking(const mtk::prices::msg::sub_best_prices&  prices)
 {
+    /*
     mtk::DateTime  now = mtk::dtNowLocal();
 
     #define BLINKING(__BID_ASK__, __PRICE_QUANTITY__, __ITEM__, __COL__)    \
@@ -700,38 +721,37 @@ void marginal_in_table::generate_blinking(const mtk::prices::msg::sub_best_price
     BLINKING(asks, quantity,  tw_qty_ask, 4)
 
     prev_painted_prices = prices;
+    */
 }
 
 
 
 
 
-void QTableMarginal::insert_marginal(const mtk::msg::sub_product_code& product_code, int row)
+void QTableMarginal2::insert_marginal(const mtk::msg::sub_product_code& product_code, int row)
 {
-    marginals.push_back(mtk::make_cptr(new marginal_in_table(this, product_code, row)));
-    adjust_pajama();
+    marginals.push_back(mtk::make_cptr(new marginal_in_table2(this, product_code, row)));
 }
 
-void QTableMarginal::add_marginal(const mtk::msg::sub_product_code& product_code)
+void QTableMarginal2::add_marginal(const mtk::msg::sub_product_code& product_code)
 {
-    marginals.push_back(mtk::make_cptr(new marginal_in_table(this, product_code)));
-    adjust_pajama();
+    marginals.push_back(mtk::make_cptr(new marginal_in_table2(this, product_code)));
 }
 
-void QTableMarginal::dragEnterEvent(QDragEnterEvent *event)
+void QTableMarginal2::dragEnterEvent(QDragEnterEvent *event)
 {
-    QTableWidget::dragEnterEvent(event);
-    if(qobject_cast<QTableMarginal*>(event->source())!=0)
+    QTableView::dragEnterEvent(event);
+    if(qobject_cast<QTableMarginal2*>(event->source())!=0)
         event->setDropAction(Qt::MoveAction);
     else
         event->setDropAction(Qt::CopyAction);
     event->accept();
 }
 
-void QTableMarginal::dragMoveEvent(QDragMoveEvent *event)
+void QTableMarginal2::dragMoveEvent(QDragMoveEvent *event)
 {
-    QTableWidget::dragMoveEvent(event);
-    if(qobject_cast<QTableMarginal*>(event->source())!=0)
+    QTableView::dragMoveEvent(event);
+    if(qobject_cast<QTableMarginal2*>(event->source())!=0)
         event->setDropAction(Qt::MoveAction);
     else
         event->setDropAction(Qt::CopyAction);
@@ -739,10 +759,10 @@ void QTableMarginal::dragMoveEvent(QDragMoveEvent *event)
 }
 
 
-void QTableMarginal::dropEvent(QDropEvent *event)
+void QTableMarginal2::dropEvent(QDropEvent *event)
 {
     insert_marginal(qtmisc::get_product_code(event), rowAt(event->pos().y()));
-    if(qobject_cast<QTableMarginal*>(event->source())!=0)
+    if(qobject_cast<QTableMarginal2*>(event->source())!=0)
         event->setDropAction(Qt::MoveAction);
     else
         event->setDropAction(Qt::CopyAction);
@@ -750,8 +770,8 @@ void QTableMarginal::dropEvent(QDropEvent *event)
 
     int current_row = rowAt(event->pos().y());
     if (current_row < 0)
-        current_row = this->rowCount()-1;
-    this->setCurrentCell(current_row, 0);
+        ;//current_row = this->rowCount()-1;
+    //this->setCurrentCell(current_row, 0);
     this->setFocus(Qt::OtherFocusReason);
 }
 
@@ -759,40 +779,41 @@ void QTableMarginal::dropEvent(QDropEvent *event)
 
 
 
-void QTableMarginal::mousePressEvent(QMouseEvent *event)
+void QTableMarginal2::mousePressEvent(QMouseEvent *event)
 {
     QWidget* w = dynamic_cast<QWidget*>(this->parent());
     if(w)       w->raise();
     if(columnAt(event->pos().x())>=0  &&  rowAt(event->pos().y())>=0)
     {
         startPos = event->pos();
-        QTableWidgetItemProduct* i = dynamic_cast<QTableWidgetItemProduct*>(this->item(rowAt(startPos.y()), 0));
-        if (i)          startDragId = i->id;
+        ;//QTableWidgetItemProduct* i = dynamic_cast<QTableWidgetItemProduct*>(this->item(rowAt(startPos.y()), 0));
+        ;//if (i)          startDragId = i->id;
     }
-    QTableWidget::mousePressEvent(event);
+    QTableView::mousePressEvent(event);
 }
 
-void QTableMarginal::mouseReleaseEvent(QMouseEvent * /*event*/)
+void QTableMarginal2::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
     startPos = QPoint(-1,-1);
 }
 
-void QTableMarginal::mouseMoveEvent(QMouseEvent *event)
+void QTableMarginal2::mouseMoveEvent(QMouseEvent *event)
 {
-    QTableWidget::mouseMoveEvent(event);
+    QTableView::mouseMoveEvent(event);
 
     if (rowAt(event->pos().y())<0)      return;
 
     if ((event->buttons() & Qt::LeftButton)  &&  startPos.x()>=0  &&  startPos.y()>=0)
     {
         int distance = (event->pos() - startPos).manhattanLength();
-        if (this->currentRow() >=0  &&  distance >= QApplication::startDragDistance()+5)
-            start_drag();
+        ;//if (this->currentRow() >=0  &&  distance >= QApplication::startDragDistance()+5)
+        ;//    start_drag();
     }
 }
 
-void QTableMarginal::start_drag(void)
+void QTableMarginal2::start_drag(void)
 {
+    /*
     QMimeData* mimeData = new QMimeData;
     QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(rowAt(startPos.y()), columnAt(startPos.x())));
     if (item)
@@ -815,11 +836,13 @@ void QTableMarginal::start_drag(void)
         if(drag->exec(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction)
             remove_row(startDragId);
     }
+    */
 }
 
-void QTableMarginal::remove_row(int id)
+void QTableMarginal2::remove_row(int id)
 {
-    mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it = marginals.begin();
+    /*
+    mtk::list< mtk::CountPtr<marginal_in_table2> >::iterator it = marginals.begin();
     while (it != marginals.end())
     {
         if ((*it)->id == id)
@@ -840,26 +863,15 @@ void QTableMarginal::remove_row(int id)
         }
     }
     adjust_pajama();
-}
-
-void QTableMarginal::adjust_pajama(void)
-{
-    mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it =  marginals.begin();
-    while (it != marginals.end())
-    {
-        if ( ((*it)->get_row()+1)%3 == 0)
-            (*it)->set_normal_color();
-            //(*it)->set_dark_color();
-        else
-            (*it)->set_normal_color();
-        ++it;
-    }
+    */
 }
 
 
 
-void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
+
+void QTableMarginal2::contextMenuEvent ( QContextMenuEvent * event )
 {
+    /*
     if (rowAt(event->pos().y())<0)      return;
 
     if (currentRow() <0)        return;
@@ -898,11 +910,12 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
     showing_menu = false;
     this->setFocus();
     enable_actions();
+    */
 }
 
-void QTableMarginal::keyPressEvent ( QKeyEvent * event )
+void QTableMarginal2::keyPressEvent ( QKeyEvent * event )
 {
-    //QAbstractItemView::
+    /*
     if(event->key() == Qt::Key_Up)
     {
         if(this->currentRow() > 0)
@@ -914,12 +927,13 @@ void QTableMarginal::keyPressEvent ( QKeyEvent * event )
             this->setCurrentCell(this->currentRow()+1, 0);
     }
     event->setAccepted(true);
+    */
 }
 
 
-mtk::CountPtr<mtk::prices::price_manager>     locate_price_manager (const mtk::list< mtk::CountPtr<marginal_in_table> >& marginals, int id)
+mtk::CountPtr<mtk::prices::price_manager>     locate_price_manager (const mtk::list< mtk::CountPtr<marginal_in_table2> >& marginals, int id)
 {
-    for(mtk::list< mtk::CountPtr<marginal_in_table> >::const_iterator it=marginals.begin(); it!= marginals.end(); ++it)
+    for(mtk::list< mtk::CountPtr<marginal_in_table2> >::const_iterator it=marginals.begin(); it!= marginals.end(); ++it)
     {
         if((*it)->id == id)
             return (*it)->price_manager;
@@ -931,8 +945,9 @@ mtk::CountPtr<mtk::prices::price_manager>     locate_price_manager (const mtk::l
 
 
 
-void QTableMarginal::request_side(mtk::trd::msg::enBuySell bs)
+void QTableMarginal2::request_side(mtk::trd::msg::enBuySell bs)
 {
+    /*
     QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(currentRow(), 0));
     if (item)
     {
@@ -954,33 +969,35 @@ void QTableMarginal::request_side(mtk::trd::msg::enBuySell bs)
                 quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
             }
             if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
-            mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
+            mtk::trd::msg::sub_position_ls     pos(price, quantity, "" / *cli ref* /);
             mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos);
         }
 
     }
+    */
 }
 
 
-void QTableMarginal::request_buy (void)
+void QTableMarginal2::request_buy (void)
 {
-    paint_delegate->keep_focus_paint(true);
+    //paint_delegate->keep_focus_paint(true);
     request_side(mtk::trd::msg::buy);
-    paint_delegate->keep_focus_paint(false);
+    //paint_delegate->keep_focus_paint(false);
 }
 
-void QTableMarginal::request_sell(void)
+void QTableMarginal2::request_sell(void)
 {
-    paint_delegate->keep_focus_paint(true);
+    //paint_delegate->keep_focus_paint(true);
     request_side(mtk::trd::msg::sell);
-    paint_delegate->keep_focus_paint(false);
+    //paint_delegate->keep_focus_paint(false);
 }
 
 
 
 
-void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
+void QTableMarginal2::request_aggression(mtk::trd::msg::enBuySell bs)
 {
+    /*
     QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(currentRow(), 0));
     if (item)
     {
@@ -1004,7 +1021,7 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
             if(quantity.GetIntCode() != 0)
             {
                 quantity.SetIntCode(-1);        //  means, default quantity
-                mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
+                mtk::trd::msg::sub_position_ls     pos(price, quantity, "" / *cli ref* /);
                 mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, true);
             }
             else
@@ -1014,27 +1031,28 @@ void QTableMarginal::request_aggression(mtk::trd::msg::enBuySell bs)
         }
 
     }
+    */
 }
 
 
-void QTableMarginal::request_hit_the_bid(void)
+void QTableMarginal2::request_hit_the_bid(void)
 {
-    paint_delegate->keep_focus_paint(true);
+    //paint_delegate->keep_focus_paint(true);
     request_aggression(mtk::trd::msg::sell);
-    paint_delegate->keep_focus_paint(false);
+    //paint_delegate->keep_focus_paint(false);
 }
 
-void QTableMarginal::request_lift_the_offer(void)
+void QTableMarginal2::request_lift_the_offer(void)
 {
-    paint_delegate->keep_focus_paint(true);
+    //paint_delegate->keep_focus_paint(true);
     request_aggression(mtk::trd::msg::buy);
-    paint_delegate->keep_focus_paint(false);
+    //paint_delegate->keep_focus_paint(false);
 }
 
 
-void QTableMarginal::make_transparent(void)
+void QTableMarginal2::make_transparent(void)
 {
-    mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it =  marginals.begin();
+    mtk::list< mtk::CountPtr<marginal_in_table2> >::iterator it =  marginals.begin();
     while (it != marginals.end())
     {
         (*it)->set_normal_color(0);
@@ -1044,8 +1062,9 @@ void QTableMarginal::make_transparent(void)
 
 
 
-void QTableMarginal::request_side_market(mtk::trd::msg::enBuySell bs)
+void QTableMarginal2::request_side_market(mtk::trd::msg::enBuySell bs)
 {
+    /*
     QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(currentRow(), 0));
     if (item)
     {
@@ -1063,34 +1082,35 @@ void QTableMarginal::request_side_market(mtk::trd::msg::enBuySell bs)
             if(bs == mtk::trd::msg::sell)
                 quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
             if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
-            mtk::trd::msg::sub_position_mk     pos(quantity, "" /*cli ref*/);
+            mtk::trd::msg::sub_position_mk     pos(quantity, "" / *cli ref* /);
             mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, bs, pos);
         }
     }
+    */
 }
 
 
-void QTableMarginal::request_buy_market(void)
+void QTableMarginal2::request_buy_market(void)
 {
-    paint_delegate->keep_focus_paint(true);
+    //paint_delegate->keep_focus_paint(true);
     request_side_market(mtk::trd::msg::buy);
-    paint_delegate->keep_focus_paint(false);
+    //paint_delegate->keep_focus_paint(false);
 }
 
-void QTableMarginal::request_sell_market(void)
+void QTableMarginal2::request_sell_market(void)
 {
-    paint_delegate->keep_focus_paint(true);
+    //paint_delegate->keep_focus_paint(true);
     request_side_market(mtk::trd::msg::sell);
-    paint_delegate->keep_focus_paint(false);
+    //paint_delegate->keep_focus_paint(false);
 }
 
 
 
 
 
-void QTableMarginal::remove_transparency(void)
+void QTableMarginal2::remove_transparency(void)
 {
-    mtk::list< mtk::CountPtr<marginal_in_table> >::iterator it =  marginals.begin();
+    mtk::list< mtk::CountPtr<marginal_in_table2> >::iterator it =  marginals.begin();
     while (it != marginals.end())
     {
         (*it)->set_normal_color();
@@ -1098,7 +1118,7 @@ void QTableMarginal::remove_transparency(void)
     }
 }
 
-void QTableMarginal::disable_actions(void)
+void QTableMarginal2::disable_actions(void)
 {
     if(showing_menu==false)
     {
@@ -1110,7 +1130,7 @@ void QTableMarginal::disable_actions(void)
     }
 }
 
-void QTableMarginal::enable_actions(void)
+void QTableMarginal2::enable_actions(void)
 {
     if(action_remove_product)
     {
@@ -1119,7 +1139,7 @@ void QTableMarginal::enable_actions(void)
     }
 }
 
-void QTableMarginal::disable_trading_actions(void)
+void QTableMarginal2::disable_trading_actions(void)
 {
     if(showing_menu==false)
     {
@@ -1136,7 +1156,7 @@ void QTableMarginal::disable_trading_actions(void)
     }
 }
 
-void QTableMarginal::enable_trading_actions(void)
+void QTableMarginal2::enable_trading_actions(void)
 {
     if(action_buy)
     {
@@ -1151,12 +1171,13 @@ void QTableMarginal::enable_trading_actions(void)
 }
 
 
-void QTableMarginal::slot_remove_current_row(void)
+void QTableMarginal2::slot_remove_current_row(void)
 {
+    /*
     QTableWidgetItemProduct* i = dynamic_cast<QTableWidgetItemProduct*>(this->item(this->currentRow(), 0));
     if (i)
     {
-        paint_delegate->keep_focus_paint(true);
+        //paint_delegate->keep_focus_paint(true);
         try
         {
             if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove the current product from this table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
@@ -1164,16 +1185,18 @@ void QTableMarginal::slot_remove_current_row(void)
         }
         catch(...)
         {
-            paint_delegate->keep_focus_paint(false);
+            //paint_delegate->keep_focus_paint(false);
             throw;
         }
-        paint_delegate->keep_focus_paint(false);
+        //paint_delegate->keep_focus_paint(false);
     }
+    */
 }
 
 
-mtk::msg::sub_product_code   QTableMarginal::get_current_product_code(void)
+mtk::msg::sub_product_code   QTableMarginal2::get_current_product_code(void)
 {
+    /*
     QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(currentRow(), 0));
     if (item)
     {
@@ -1184,14 +1207,16 @@ mtk::msg::sub_product_code   QTableMarginal::get_current_product_code(void)
             return product_code;
     }
     return mtk::msg::sub_product_code("", "");
+    */
 }
 
 
 
 
 
-YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
+YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal2& m)
 {
+    /*
     out     << YAML::BeginMap;
 
     //  writing products
@@ -1221,11 +1246,13 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal& m)
     //  writing sections sizes
 
     out << YAML::EndMap;
+    */
     return out;
 }
 
-void             operator >> (const YAML::Node&   node,        QTableMarginal& m)
+void             operator >> (const YAML::Node&   node,        QTableMarginal2& m)
 {
+    /*
     for(unsigned i=0; i< node["products"].size(); ++i)
     {
         mtk::msg::sub_product_code pc = mtk::msg::__internal_get_default((mtk::msg::sub_product_code*)0);
@@ -1239,11 +1266,12 @@ void             operator >> (const YAML::Node&   node,        QTableMarginal& m
         m.horizontalHeader()->resizeSection(i, sect_size);
     }
     m.slot_sectionMoved(0,0,0);
+    */
 }
 
 
 
-YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
+YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal2& m)
 {
     //if(m.table_marginals->rowCount() == 0)      return out;
 
@@ -1254,10 +1282,10 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
     out << YAML::Key   <<  "component" << YAML::Value << static_cast<const mtkContainerWidget&>(m);
     //  end component
 
-    //  writing QTableMarginal
+    //  writing QTableMarginal2
     if(m.table_marginals)
-        out << YAML::Key   <<  "qtablemarginal"  << YAML::Value   << *(m.table_marginals);
-    //  end QTableMarginal
+        out << YAML::Key   <<  "QTableMarginal2"  << YAML::Value   << *(m.table_marginals);
+    //  end QTableMarginal2
 
 
     out << YAML::EndMap;
@@ -1266,15 +1294,15 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal& m)
 }
 
 
-void             operator >> (const YAML::Node&   node,       QMarginal& m)
+void             operator >> (const YAML::Node&   node,       QMarginal2& m)
 {
     node["component"] >> static_cast<mtkContainerWidget&>(m);
-    node["qtablemarginal"] >>  (*m.table_marginals);
+    node["QTableMarginal2"] >>  (*m.table_marginals);
 }
 
 
 
-void QTableMarginal::slot_sectionMoved ( int /*logicalIndex*/, int /*oldVisualIndex*/, int /*newVisualIndex*/ )
+void QTableMarginal2::slot_sectionMoved ( int /*logicalIndex*/, int /*oldVisualIndex*/, int /*newVisualIndex*/ )
 {
     this->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
     horizontalHeader()->resizeSection(horizontalHeader()->logicalIndex(horizontalHeader()->count()-1), 10);
@@ -1284,18 +1312,18 @@ void QTableMarginal::slot_sectionMoved ( int /*logicalIndex*/, int /*oldVisualIn
 
 
 
-void QTableMarginal::focusOutEvent(QFocusEvent *e)
+void QTableMarginal2::focusOutEvent(QFocusEvent *e)
 {
     this->update();
     disable_actions();
-    QTableWidget::focusOutEvent(e);
+    QTableView::focusOutEvent(e);
 }
 
-void QTableMarginal::focusInEvent (QFocusEvent *e)
+void QTableMarginal2::focusInEvent (QFocusEvent *e)
 {
     this->update();
     enable_actions();
-    QTableWidget::focusInEvent(e);
+    QTableView::focusInEvent(e);
 }
 
 
