@@ -284,6 +284,16 @@ QTableMarginal::QTableMarginal(QWidget *parent)
     this->addAction(action_remove_product);
     this->disable_actions();
     this->slot_sectionMoved(0,0,0);
+
+    MTK_TIMER_1D(timer_update);
+
+}
+
+void  QTableMarginal::timer_update(void)
+{
+    this->setUpdatesEnabled(true);
+    qApp->processEvents();
+    this->setUpdatesEnabled(false);
 }
 
 
@@ -494,9 +504,9 @@ void marginal_in_table::clean_prices(void)
 
 void marginal_in_table::update_prices(const mtk::prices::msg::sub_best_prices&   best_prices)
 {
-    table_widget->setUpdatesEnabled(false);
-    try
-    {
+    //table_widget->setUpdatesEnabled(false);
+    //try
+    //{
 
         if(best_prices.bids.level0.price != prev_painted_prices.bids.level0.price)
             tw_BID->setText(qtmisc::fn_as_QString(best_prices.bids.level0.price));
@@ -516,13 +526,13 @@ void marginal_in_table::update_prices(const mtk::prices::msg::sub_best_prices&  
             tw_qty_bid->setBackgroundColor(color_qty);
         }
         generate_blinking(best_prices);     //  it will update  prev_painted_prices
-    }
-    catch(...)
-    {
-        table_widget->setUpdatesEnabled(true);
-        throw;
-    }
-    table_widget->setUpdatesEnabled(true);
+    //}
+    //catch(...)
+    //{
+    //    table_widget->setUpdatesEnabled(true);
+    //    throw;
+    //}
+    //table_widget->setUpdatesEnabled(true);
 }
 
 void marginal_in_table::update_prices(const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices)
@@ -801,6 +811,8 @@ void QTableMarginal::start_drag(void)
 
         //if (this->currentRow()!=this->rowCount()-1)
         {
+            this->setUpdatesEnabled(true);
+            qApp->processEvents();
             QRect rect(this->visualItemRect(this->item(this->currentRow(), 0)));
             int oldheight = rect.height();
             QPixmap pixmap (rect.size());
@@ -808,6 +820,7 @@ void QTableMarginal::start_drag(void)
             rect.setHeight(oldheight);
             this->render(&pixmap, QPoint(0, 0), rect);
             drag->setPixmap(pixmap);
+            this->setUpdatesEnabled(false);
         }
 
         if(drag->exec(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction)

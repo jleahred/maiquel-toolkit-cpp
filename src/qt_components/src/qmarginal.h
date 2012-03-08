@@ -115,7 +115,7 @@ private:
 
 
 
-class QTableMarginal : public QTableWidget
+class QTableMarginal : public QTableWidget,  public mtk::SignalReceptor
 {
     Q_OBJECT
     typedef  QTableMarginal CLASS_NAME;
@@ -193,6 +193,7 @@ private:
 
     mtk::msg::sub_product_code get_current_product_code(void);
 
+    void timer_update(void);
 };
 
 
