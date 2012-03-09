@@ -42,7 +42,7 @@ void   whistoric_order::set_order(const mtk::trd::msg::sub_order_id& order_id)
         order_mk = mtk::trd::trd_cli_ord_book::get_order_mk(order_id);
         ui->historic->set_historic(mtk::trd::hist::order_historic2_sig_wp_cptr(order_mk->history()));
         MTK_CONNECT_THIS(order_mk->sig_changed, update_on_change);
-        ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(order_ls->executions()));
+        ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(order_mk->executions()));
     }
 
     update_on_change();

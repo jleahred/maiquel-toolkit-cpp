@@ -14,7 +14,7 @@
 
 namespace
 {
-    
+
     const char*   APP_NAME          = "EMARKET";
     const char*   APP_VER           = "2011-03-16";
     const char*   APP_DESCRIPTION   = "This is a testing market.\n";
@@ -30,7 +30,7 @@ namespace
 
 int main(int argc, char ** argv)
 {
-    
+
     try
     {
         if(argc==1)
@@ -40,15 +40,19 @@ int main(int argc, char ** argv)
 
         check_request  cr;
         orders_book    ob;
-        
-        cr.sig_oms_rq_nw.connect  (&ob, &orders_book::oms_RQ_NW_LS);
-        cr.sig_oms_rq_md.connect  (&ob, &orders_book::oms_RQ_MD_LS);
-        cr.sig_oms_rq_cc.connect  (&ob, &orders_book::oms_RQ_CC_LS);
+
+        cr.sig_oms_rq_nw_ls.connect  (&ob, &orders_book::oms_RQ_NW_LS);
+        cr.sig_oms_rq_md_ls.connect  (&ob, &orders_book::oms_RQ_MD_LS);
+        cr.sig_oms_rq_cc_ls.connect  (&ob, &orders_book::oms_RQ_CC_LS);
+
+        cr.sig_oms_rq_nw_mk.connect  (&ob, &orders_book::oms_RQ_NW_MK);
+
+
         cr.sig_add_product.connect(&ob, &orders_book::add_product);
         cr.init();
-        
+
         mtk::start_timer_wait_till_end();
-        
+
         #include "support/release_on_exit.hpp"
         return 0;
     }

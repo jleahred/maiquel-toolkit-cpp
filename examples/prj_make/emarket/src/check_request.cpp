@@ -112,11 +112,32 @@ void  check_request::init(void)
                             oms_RQ_CC_LS)
     std::cout << " ok" << std::endl;
 
+
+
+    std::cout << "connecting oms_RQ_NW_MK... ";
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            hqpid_rqnwmk,
+                            mtk::admin::get_url("server"),
+                            mtk::trd::msg::oms_RQ_NW_MK::get_in_subject("MARKET", "*", oms_from),
+                            mtk::trd::msg::oms_RQ_NW_MK,
+                            oms_RQ_NW_MK)
+    std::cout << " ok" << std::endl;
+
+
     mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher
                     ps_pub_prod_info_mtk_ready__from_publisher  (mtk::prices::msg::ps_pub_prod_info_mtk_ready("MARKET"));
     mtk::send_message_with_sender(mtk::admin::get_qpid_sender("server", ps_pub_prod_info_mtk_ready__from_publisher.get_qpid_address()), ps_pub_prod_info_mtk_ready__from_publisher);
 }
 
+
+
+std::string check_request_pos (const emarket::sub_product_config&  /*pc*/, const mtk::trd::msg::sub_position_mk&   pos)
+{
+    std::string  result;
+    if(pos.quantity.GetExt() !=  mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1)))
+        result += " extended on quantity doesn't match";
+    return result;
+}
 
 
 std::string check_request_pos (const emarket::sub_product_config&  pc, const mtk::trd::msg::sub_position_ls&   pos)
@@ -151,19 +172,27 @@ void check_request::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_cc.emit(mtk::trd::msg::oms_RQ_CC_LS(rq, reject_reason, ""));
+    sig_oms_rq_cc_ls.emit(mtk::trd::msg::oms_RQ_CC_LS(rq, reject_reason, ""));
 }
 
 void check_request::oms_RQ_MD_LS(const mtk::trd::msg::oms_RQ_MD_LS& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_md.emit(mtk::trd::msg::oms_RQ_MD_LS(rq, reject_reason, ""));
+    sig_oms_rq_md_ls.emit(mtk::trd::msg::oms_RQ_MD_LS(rq, reject_reason, ""));
 }
 
 void check_request::oms_RQ_NW_LS(const mtk::trd::msg::oms_RQ_NW_LS& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_nw.emit(mtk::trd::msg::oms_RQ_NW_LS(rq, reject_reason, ""));
+    sig_oms_rq_nw_ls.emit(mtk::trd::msg::oms_RQ_NW_LS(rq, reject_reason, ""));
+}
+
+
+void check_request::oms_RQ_NW_MK(const mtk::trd::msg::oms_RQ_NW_MK& rq)
+{
+    std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
+    std::string reject_reason = verif_is_valid_request(rq);
+    sig_oms_rq_nw_mk.emit(mtk::trd::msg::oms_RQ_NW_MK(rq, reject_reason, ""));
 }
