@@ -500,24 +500,45 @@ void marginal_in_table::update_prices(const mtk::prices::msg::sub_best_prices&  
     //try
     //{
 
-        if(best_prices.bids.level0.price != prev_painted_prices.bids.level0.price)
+    if(best_prices.bids.level0.price != prev_painted_prices.bids.level0.price)
+    {
+        if(best_prices.bids.level0.quantity.GetIntCode() != 0)
             tw_BID->setText(qtmisc::fn_as_QString(best_prices.bids.level0.price));
-        if(best_prices.bids.level0.quantity != prev_painted_prices.bids.level0.quantity)
+        else
+            tw_BID->setText(QLatin1String(""));
+    }
+    if(best_prices.bids.level0.quantity != prev_painted_prices.bids.level0.quantity)
+    {
+        if(best_prices.bids.level0.quantity.GetIntCode() != 0)
             tw_qty_bid->setText(qtmisc::fn_as_QString(best_prices.bids.level0.quantity));
+        else
+            tw_qty_bid->setText(QLatin1String(""));
+    }
 
-        if(best_prices.asks.level0.price != prev_painted_prices.asks.level0.price)
+    if(best_prices.asks.level0.price != prev_painted_prices.asks.level0.price)
+    {
+        if(best_prices.asks.level0.quantity.GetIntCode() != 0)
             tw_ASK->setText(qtmisc::fn_as_QString(best_prices.asks.level0.price));
-        if(best_prices.asks.level0.quantity != prev_painted_prices.asks.level0.quantity)
-            tw_qty_ask->setText(qtmisc::fn_as_QString(best_prices.asks.level0.quantity));
+        else
+            tw_ASK->setText(QLatin1String(""));
+    }
 
-        if(tw_BID->backgroundColor() == qtmisc::mtk_color_null)
-        {
-            tw_ASK->setBackgroundColor(color_price);
-            tw_qty_ask->setBackgroundColor(color_qty);
-            tw_BID->setBackgroundColor(color_price);
-            tw_qty_bid->setBackgroundColor(color_qty);
-        }
-        generate_blinking(best_prices);     //  it will update  prev_painted_prices
+    if(best_prices.asks.level0.quantity != prev_painted_prices.asks.level0.quantity)
+    {
+        if(best_prices.asks.level0.quantity.GetIntCode() != 0)
+            tw_qty_ask->setText(qtmisc::fn_as_QString(best_prices.asks.level0.quantity));
+        else
+            tw_qty_ask->setText(QLatin1String(""));
+    }
+
+    if(tw_BID->backgroundColor() == qtmisc::mtk_color_null)
+    {
+        tw_ASK->setBackgroundColor(color_price);
+        tw_qty_ask->setBackgroundColor(color_qty);
+        tw_BID->setBackgroundColor(color_price);
+        tw_qty_bid->setBackgroundColor(color_qty);
+    }
+    generate_blinking(best_prices);     //  it will update  prev_painted_prices
     //}
     //catch(...)
     //{
@@ -571,7 +592,7 @@ void marginal_in_table::update_last_mk_execs_ticker(const mtk::prices::msg::sub_
         {
             mtk::Double  var = last_mk_execs_ticker.last_price.GetDouble() - last_mk_execs_ticker.opened_price.GetDouble();
             tw_var->setText( QLocale::system().toString(var.get2(), 'f', 3));
-            tw_var_percent->setText(  QLocale::system().toString(var.get2() / last_mk_execs_ticker.last_quantity.GetDouble().get2(), 'f', 2) + QLatin1String("%") );
+            tw_var_percent->setText(  QLocale::system().toString(var.get2() / last_mk_execs_ticker.opened_price.GetDouble().get2(), 'f', 2) + QLatin1String("%") );
         }
 
         if(tw_last_price->backgroundColor() == qtmisc::mtk_color_null)

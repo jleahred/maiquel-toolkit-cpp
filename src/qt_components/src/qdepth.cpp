@@ -840,12 +840,15 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_lift_the_offer);
     menu.addAction(action_hit_the_bid);
 
-    menu.addSeparator();
-    QMenu sub_menu_market_orders(this);
-    sub_menu_market_orders.setTitle(tr("Market orders"));
-    sub_menu_market_orders.addAction(action_buy_market);
-    sub_menu_market_orders.addAction(action_sell_market);
-    menu.addMenu(&sub_menu_market_orders);
+    if(mtk::admin::is_production() == false)
+    {
+        menu.addSeparator();
+        QMenu sub_menu_market_orders(this);
+        sub_menu_market_orders.setTitle(tr("Market orders"));
+        sub_menu_market_orders.addAction(action_buy_market);
+        sub_menu_market_orders.addAction(action_sell_market);
+        menu.addMenu(&sub_menu_market_orders);
+    }
 
     menu.addSeparator();
     menu.addAction(action_delete_component);

@@ -14,7 +14,7 @@
 
 
 qLocaleDoubleSpinBox::qLocaleDoubleSpinBox(QWidget *parent) :
-    QDoubleSpinBox(parent), is_empty(false)
+    QDoubleSpinBox(parent), _is_empty(false)
 {
 }
 
@@ -27,8 +27,8 @@ void qLocaleDoubleSpinBox::keyPressEvent(QKeyEvent *event)
             return;
     }
     QDoubleSpinBox::keyPressEvent(event);
-    if(this->text() == QLatin1String(""))   is_empty = true;
-    else                                    is_empty = false;
+    if(this->text() == QLatin1String(""))   _is_empty = true;
+    else                                    _is_empty = false;
     Q_EMIT(this->valueChanged(this->text()));
 }
 
@@ -43,7 +43,7 @@ QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) con
 QString qLocaleDoubleSpinBox::textFromValue(double val) const
 {
     //if(this->text() == QLatin1String("")  &&  mtk::Double(val) == mtk::Double(0))
-    if(is_empty  &&  mtk::Double(val) == mtk::Double(0))
+    if(_is_empty  &&  mtk::Double(val) == mtk::Double(0))
         return QLatin1String("");
     else if(this->text() != QLatin1String("+")  &&   this->text() != QLatin1String("-"))
         return QDoubleSpinBox::textFromValue(val);
@@ -54,7 +54,7 @@ QString qLocaleDoubleSpinBox::textFromValue(double val) const
 
 void  qLocaleDoubleSpinBox::set_empty(void)
 {
-    is_empty = true;
+    _is_empty = true;
     this->setValue(0.);
     this->clear();
 }
