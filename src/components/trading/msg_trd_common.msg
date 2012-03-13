@@ -60,9 +60,9 @@ sub_invariant_order_info  [< >]
 
 
 
-//  QUEUES
-//  SUBJ:RQ.client.market.product_code
-//  SUBJ:RS.client.market.product_code
+
+
+
 
 
 

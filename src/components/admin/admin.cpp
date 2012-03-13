@@ -28,8 +28,9 @@ namespace {
 
     const char*   MODIFICATIONS =
                         "           2011-03-16     first version\n"
-                        "           2012-02-03     restoring session and  cerr \n";
-
+                        "           2012-02-03     restoring session and  cerr \n"
+                        "           2012-03-12     removed cerr\n"
+                        ;
 
 
 
@@ -569,7 +570,6 @@ namespace {
     {
         if(alarm.priority == mtk::alPriorCritic  ||  alarm.priority == mtk::alPriorError)
         {
-std::cerr  <<   alarm << std::endl;     //  provisional
             NotifyAlarmErrorCritic(alarm);
             signal_alarm_error_critic->emit(alarm);
         }
@@ -745,7 +745,11 @@ std::cerr  <<   alarm << std::endl;     //  provisional
 
     std::string  fake_process_name(std::string  process_name)
     {
-        size_t pos = mtk::rand() %  (process_name.size()-2)+1;
+        size_t pos;
+        if(process_name.size() > 2)
+            pos = mtk::rand() %  (process_name.size()-2)+1;
+        else
+            pos = 1;
         process_name[pos] = char(process_name[pos] + char(mtk::rand()%4+1));
         return process_name;
     }
@@ -836,14 +840,15 @@ std::cerr  <<   alarm << std::endl;     //  provisional
             if(it2->size() > 500)
             {
                 mtk::vector<std::string>  splitted_lines  =  mtk::s_split(*it2, "\n");
-                for(unsigned ii=0; ii<splitted_lines.size(); ++ii)
+                if(splitted_lines.size() > unsigned(max_lines_to_respond))
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("too many lines  " << splitted_lines.size()  << " >" << max_lines_to_respond+splitted_lines.size() << "   truncating" << command), mtk::alPriorError));
+                for(unsigned ii=0; ii<splitted_lines.size()  &&  max_lines_to_respond ; ++ii, --max_lines_to_respond)
                 {
-                    if(splitted_lines.size() > 600)
+                    if(splitted_lines[ii].size() > 600)
                     {
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in response to command " << command << " truncating"), mtk::alPriorError));
+                        auto truncated_line = splitted_lines[ii].substr(0, 200);
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in command response" << truncated_line  << " >600 " <<  " truncating"), mtk::alPriorError));
                         data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii].substr(0, 200) << std::endl << " truncated line... " << std::endl)));
-                        it2 = response_lines.end(); //  to exit while
-                        break;
                     }
                     else
                         data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii] << std::endl)));
@@ -854,7 +859,7 @@ std::cerr  <<   alarm << std::endl;     //  provisional
 
             ++it2;
             --max_lines_to_respond;
-            if(max_lines_to_respond == 0)
+            if(max_lines_to_respond <= 0)
             {
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("too many lines to respond on  " << command << " truncating"), mtk::alPriorError));
                 data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS("too many lines in response, truncating...  " << std::endl)));
@@ -1331,7 +1336,6 @@ void AlarmMsg (const Alarm& alarm)
             admin_status::i()->NotifyAlarm(alarm);
         else
         {
-            std::cerr << "admin not initialized" << std::endl;
             std::cerr << alarm << std::endl;
         }
     }
