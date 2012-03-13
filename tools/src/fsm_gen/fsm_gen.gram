@@ -262,8 +262,8 @@ PARAMS ::= _ PARAM _
 PARAM  ::= _   P_NAME  _  :  _  P_TYPE  _   ##transf2->{'p_name':'$(P_NAME)', 'p_type':'$(P_TYPE)'}
 
 
-P_TYPE ::= id _ :: _ P_TYPE
-P_TYPE ::= id 
+P_TYPE ::= p_type _ :: _ P_TYPE
+P_TYPE ::= p_type 
 
 
 P_NAME ::= id
@@ -279,6 +279,7 @@ P_TYPE ::= id
 (   ::=  '('
 )   ::=  ')'
 id  ::=  ([a-zA-Z_][a-zA-Z0-9_]*)
+p_type ::= ([a-zA-Z_][\<\>a-zA-Z0-9_]*)
 visibility  ::=  'public'
 visibility  ::=  'private'
 visibility  ::=  'phony'
