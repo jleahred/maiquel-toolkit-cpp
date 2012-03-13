@@ -142,6 +142,10 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
         trans_text += tr(" exec");
         color = qtmisc::mtk_color_executed;
     }
+    else if (item.type2 == mtk::trd::hist::tt2_tr)
+        trans_text += tr(" trig");
+    else
+        trans_text += tr(" ???");
 
 
     this->item(row, col_transaction_type)->setText(trans_text);

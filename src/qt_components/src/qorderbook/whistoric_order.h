@@ -6,6 +6,7 @@
 #include "components/trading/trd_cli_ord_book.h"
 #include "components/trading/trd_cli_ls.h"
 #include "components/trading/trd_cli_mk.h"
+#include "components/trading/trd_cli_sm.h"
 
 
 
@@ -38,6 +39,7 @@ private:
 
     mtk::CountPtr<mtk::trd::trd_cli_ls>   order_ls;
     mtk::CountPtr<mtk::trd::trd_cli_mk>   order_mk;
+    mtk::CountPtr<mtk::trd::trd_cli_sm>   order_sm;
 
     void update_on_change(void);
 

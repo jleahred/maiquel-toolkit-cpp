@@ -213,11 +213,11 @@ QTableMarginal2::QTableMarginal2(QWidget *parent)
 
 
         //setColumnCount(col_count);
+        //setHorizontalHeaderItem(__COLUMN__, item);
         #define QMARG_INIT_HEADER_ITEM(__COLUMN__, __TEXT__) \
         {   \
             item = new QTableWidgetItem(); \
             item->setText(__TEXT__);   \
-            //setHorizontalHeaderItem(__COLUMN__, item);   \
             col_names.append(__TEXT__);                 \
         }
 

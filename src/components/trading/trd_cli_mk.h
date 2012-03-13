@@ -61,6 +61,7 @@ public:
     void cf_ex          ( const mtk::trd::msg::CF_EX_MK&   ex           );
     void cf_exLK        ( const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st          ( const mtk::trd::msg::CF_ST_MK&   st           );
+    void cf_hist        ( const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>&   _history     );
     void time_out       ( const int&          _            );
 
 
@@ -135,6 +136,7 @@ public:
     void cf_ex          ( const mtk::trd::msg::CF_EX_MK&   ex           );
     void cf_exLK        ( const mtk::trd::msg::CF_EXLK&   exlk         );
     void cf_st          ( const mtk::trd::msg::CF_ST_MK&   st           );
+    void cf_hist        ( const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped>&   _history     );
     void time_out       ( const int&          _            );
 
 

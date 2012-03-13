@@ -27,6 +27,9 @@ void   whistoric_order::set_order(const mtk::trd::msg::sub_order_id& order_id)
     if(order_mk.isValid()      &&   (order_id  ==  qtmisc::get_order_invariant(*order_mk).order_id))
         return;
 
+    if(order_sm.isValid()      &&   (order_id  ==  qtmisc::get_order_invariant(*order_sm).order_id))
+        return;
+
     mtk::trd::trd_cli_ord_book::en_order_type     ot  =  mtk::trd::trd_cli_ord_book::get_order_type(order_id);
     if(ot ==  mtk::trd::trd_cli_ord_book::ot_limit)
     {
@@ -36,7 +39,7 @@ void   whistoric_order::set_order(const mtk::trd::msg::sub_order_id& order_id)
         MTK_CONNECT_THIS(order_ls->sig_changed, update_on_change);
         ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(order_ls->executions()));
     }
-    if(ot ==  mtk::trd::trd_cli_ord_book::ot_market)
+    else if(ot ==  mtk::trd::trd_cli_ord_book::ot_market)
     {
         order_ls = mtk::CountPtr<mtk::trd::trd_cli_ls>();
         order_mk = mtk::trd::trd_cli_ord_book::get_order_mk(order_id);
@@ -44,9 +47,35 @@ void   whistoric_order::set_order(const mtk::trd::msg::sub_order_id& order_id)
         MTK_CONNECT_THIS(order_mk->sig_changed, update_on_change);
         ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(order_mk->executions()));
     }
+    else if(ot ==  mtk::trd::trd_cli_ord_book::ot_stop_market)
+    {
+        order_ls = mtk::CountPtr<mtk::trd::trd_cli_ls>();
+        order_mk = mtk::CountPtr<mtk::trd::trd_cli_mk>();
+        order_sm = mtk::trd::trd_cli_ord_book::get_order_sm(order_id);
+        ui->historic->set_historic(mtk::trd::hist::order_historic2_sig_wp_cptr(order_sm->history()));
+        MTK_CONNECT_THIS(order_sm->sig_changed, update_on_change);
+        ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(mtk::make_cptr(new mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped)));
+    }
 
     update_on_change();
 }
+
+template<typename  ORDER_TYPE>
+bool  is_full_executed(const  ORDER_TYPE&  order);
+
+template<>
+bool  is_full_executed<mtk::trd::trd_cli_sm > (const  mtk::trd::trd_cli_sm&  )
+{
+    return  false;
+}
+
+template<typename  ORDER_TYPE>
+bool  is_full_executed(const  ORDER_TYPE&  order)
+{
+    return order.is_full_executed();
+}
+
+
 
 template<typename  ORDER_TYPE>
 void fill_from(whistoric_order* _this, ORDER_TYPE& order)
@@ -57,7 +86,7 @@ void fill_from(whistoric_order* _this, ORDER_TYPE& order)
     QString  price          = qtmisc::nullable_fn_as_QString(qtmisc::get_order_position_price(order));
     QString  quantity       = qtmisc::fn_as_QString(qtmisc::get_order_position_quantity(order));
 
-    if(order.is_full_executed()  ||  order.is_canceled())
+    if(is_full_executed(order)  ||  order.is_canceled())
     {
         price = QLatin1String("");  quantity = QLatin1String("");
     }
@@ -113,6 +142,10 @@ void whistoric_order::update_on_change(void)
 
     else if(order_mk.isValid())
         fill_from(this, *order_mk);
+
+    else if(order_sm.isValid())
+        fill_from(this, *order_sm);
+
 }
 
 void whistoric_order::on_radioButton_toggled(bool checked)

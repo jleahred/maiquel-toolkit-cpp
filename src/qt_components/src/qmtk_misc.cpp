@@ -137,35 +137,13 @@ mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli
 }
 
 
-
-mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order)
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sm_dangerous_signals_not_warped& /*order*/)
 {
-    if(order.has_pending_rq())
-        return order.last_request().Get().request_pos.quantity;
-    else
-        return order.last_confirmation().Get().market_pos.quantity;
+    return mtk::nullable<mtk::FixedNumber>();
 }
-mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls& order)
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sm& /*order*/)
 {
-    if(order.has_pending_rq())
-        return order.last_request().Get().request_pos.quantity;
-    else
-        return order.last_confirmation().Get().market_pos.quantity;
-}
-
-mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order)
-{
-    if(order.has_pending_rq())
-        return order.last_request().Get().request_pos.quantity;
-    else
-        return order.last_confirmation().Get().market_pos.quantity;
-}
-mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk& order)
-{
-    if(order.has_pending_rq())
-        return order.last_request().Get().request_pos.quantity;
-    else
-        return order.last_confirmation().Get().market_pos.quantity;
+    return mtk::nullable<mtk::FixedNumber>();
 }
 
 

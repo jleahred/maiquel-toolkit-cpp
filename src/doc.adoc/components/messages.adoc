@@ -758,6 +758,24 @@ include::../../../src/components/trading/trd_cli_mk.dot[]
 ------------
 
 
+=== Stop market orders
+
+* Online trading +stop market+ Orders client messages
++
+.msg_trd_cli_sm.msg
+-----
+include::../../../src/components/trading/msg_trd_cli_sm.msg[]
+-----
+
+
+* Orders STOP MARKET status diagram
++
+["graphviz", "components_trading_o_sm.png"]
+-----------
+include::../../../src/components/trading/trd_cli_sm.dot[]
+------------
+
+
 
 
 === OMS

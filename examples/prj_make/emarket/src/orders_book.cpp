@@ -131,6 +131,11 @@ public:
 
     void oms_RQ_NW_MK (const mtk::trd::msg::oms_RQ_NW_MK& rq);
 
+    void oms_RQ_NW_SM (const mtk::trd::msg::oms_RQ_NW_SM& rq);
+    void oms_RQ_MD_SM (const mtk::trd::msg::oms_RQ_MD_SM& rq);
+    void oms_RQ_CC_SM (const mtk::trd::msg::oms_RQ_CC_SM& rq);
+
+
     void add_order    (const mtk::trd::msg::CF_XX_LS& order_info);
     void del_order    (const mtk::trd::msg::CF_XX_LS& order_info);
     void modif_order  (const mtk::trd::msg::CF_XX_LS& order_info);
@@ -246,6 +251,24 @@ void orders_book::oms_RQ_NW_MK(const mtk::trd::msg::oms_RQ_NW_MK& rq)
 
 
 
+void orders_book::oms_RQ_NW_SM(const mtk::trd::msg::oms_RQ_NW_SM& rq)
+{
+    ptr->oms_RQ_NW_SM(rq);
+}
+void orders_book::oms_RQ_MD_SM(const mtk::trd::msg::oms_RQ_MD_SM& rq)
+{
+    ptr->oms_RQ_MD_SM(rq);
+}
+void orders_book::oms_RQ_CC_SM(const mtk::trd::msg::oms_RQ_CC_SM& rq)
+{
+    ptr->oms_RQ_CC_SM(rq);
+}
+
+
+
+
+
+
 void orders_book::add_product (const emarket::sub_product_config&  product_config)
 {
     get_map_product_config()->insert(std::make_pair(product_config.product_name, product_config));
@@ -316,19 +339,28 @@ void internal_orders_book::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
 }
 
 
+
+
+template<typename  ORDER_TYPE>      //  ie.  mtk::trd::msg::oms_RQ_NW_MK
+mtk::trd::msg::sub_total_executions     get_empty_total_executions(const ORDER_TYPE& rq)
+{
+        mtk::Double                             sum_price_quantity {0.};
+        mtk::FixedNumber                        acc_quantity(rq.request_pos.quantity);
+        acc_quantity.SetIntCode(0);
+        mtk::FixedNumber                        remaining_quantity(rq.request_pos.quantity);
+
+        return mtk::trd::msg::sub_total_executions     (sum_price_quantity, acc_quantity, remaining_quantity);
+}
+
+
+
 void internal_orders_book::oms_RQ_NW_MK(const mtk::trd::msg::oms_RQ_NW_MK& rq)
 {
     static int counter=0;
     ++counter;
 
     {
-        mtk::Double                             sum_price_quantity {0.};
-        mtk::FixedNumber                        acc_quantity(rq.request_pos.quantity);
-        acc_quantity.SetIntCode(0);
-        mtk::FixedNumber                        remaining_quantity(rq.request_pos.quantity);
-        mtk::trd::msg::sub_total_executions     total_executions(sum_price_quantity, acc_quantity, remaining_quantity);
-
-        mtk::trd::msg::CF_XX        cf_xx       (rq.invariant, MTK_SS("MK_" << counter), rq.request_info.req_id, total_executions, "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+        mtk::trd::msg::CF_XX        cf_xx       (rq.invariant, MTK_SS("MK_" << counter), rq.request_info.req_id, get_empty_total_executions(rq), "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
         mtk::trd::msg::CF_XX_MK     cf_xx_mk    (cf_xx, rq.request_pos);
         mtk::trd::msg::CF_NW_MK     cf_nw_mk    (cf_xx_mk);
 
@@ -351,11 +383,67 @@ void internal_orders_book::oms_RQ_NW_MK(const mtk::trd::msg::oms_RQ_NW_MK& rq)
 
         mtk_send_message("client", cf_ex_mk);
     }
+}
 
 
 
+
+
+void internal_orders_book::oms_RQ_NW_SM(const mtk::trd::msg::oms_RQ_NW_SM& rq)
+{
+    static int counter=0;
+    ++counter;
+
+    mtk::trd::msg::CF_XX        cf_xx       (rq.invariant, MTK_SS("MK_" << counter), rq.request_info.req_id, get_empty_total_executions(rq), "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+    mtk::trd::msg::CF_XX_SM     cf_xx_sm    (cf_xx, rq.request_pos);
+    mtk::trd::msg::CF_NW_SM     cf_nw_sm    (cf_xx_sm);
+
+    mtk_send_message("client", cf_nw_sm);
+
+    if(rq.request_pos.cli_ref == "t")
+    {
+        mtk::trd::msg::CF_TR_SM     cf_tr_sm    (cf_xx_sm);
+        cf_tr_sm.req_id.req_code = MTK_SS(++counter);
+        cf_tr_sm.req_id.session_id = "MK:TR";
+        mtk_send_message("client", cf_tr_sm);
+    }
+}
+void internal_orders_book::oms_RQ_MD_SM(const mtk::trd::msg::oms_RQ_MD_SM& rq)
+{
+    static int counter=0;
+    ++counter;
+
+    mtk::trd::msg::CF_XX        cf_xx       (rq.invariant, MTK_SS("MK_" << counter), rq.request_info.req_id, get_empty_total_executions(rq), "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+    mtk::trd::msg::CF_XX_SM     cf_xx_sm    (cf_xx, rq.request_pos);
+    mtk::trd::msg::CF_MD_SM     cf_md_sm    (cf_xx_sm);
+
+    mtk_send_message("client", cf_md_sm);
+
+    if(rq.request_pos.cli_ref == "t")
+    {
+        mtk::trd::msg::CF_TR_SM     cf_tr_sm    (cf_xx_sm);
+        cf_tr_sm.req_id.req_code = MTK_SS(++counter);
+        cf_tr_sm.req_id.session_id = "MK:TR";
+        mtk_send_message("client", cf_tr_sm);
+    }
 
 }
+void internal_orders_book::oms_RQ_CC_SM(const mtk::trd::msg::oms_RQ_CC_SM& rq)
+{
+    static int counter=0;
+    ++counter;
+
+    mtk::trd::msg::CF_XX        cf_xx       (rq.invariant, MTK_SS("MK_" << counter), rq.request_info.req_id, get_empty_total_executions(rq), "", mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal()));
+    mtk::trd::msg::CF_XX_SM     cf_xx_sm    (cf_xx, rq.request_pos);
+    mtk::trd::msg::CF_CC_SM     cf_cc_sm    (cf_xx_sm);
+
+    mtk_send_message("client", cf_cc_sm);
+}
+
+
+
+
+
 
 
 

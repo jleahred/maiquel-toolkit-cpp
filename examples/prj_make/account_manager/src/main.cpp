@@ -7,6 +7,8 @@
 #include "db/db.h"
 #include "components/acs/serv/acs_synchr.h"
 #include "components/trading/msg_trd_cli_ls.h"
+#include "components/trading/msg_trd_cli_mk.h"
+#include "components/trading/msg_trd_cli_sm.h"
 #include "components/trading/msg_trd_oms_rq.h"
 
 
@@ -256,6 +258,10 @@ namespace
     ON_RQ_XX_XX(RQ_MD_MK, "F");
     ON_RQ_XX_XX(RQ_CC_MK, "C");
 
+    ON_RQ_XX_XX(RQ_NW_SM, "F");
+    ON_RQ_XX_XX(RQ_MD_SM, "F");
+    ON_RQ_XX_XX(RQ_CC_SM, "C");
+
 
 
     void on_RQ_ORDERS_STATUS(const mtk::trd::msg::RQ_ORDERS_STATUS& rq)
@@ -280,6 +286,10 @@ namespace
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_NW_MK> >  RQ_NW_MK;
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_MD_MK> >  RQ_MD_MK;
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_CC_MK> >  RQ_CC_MK;
+
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_NW_SM> >  RQ_NW_SM;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_MD_SM> >  RQ_MD_SM;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_CC_SM> >  RQ_CC_SM;
 
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_ORDERS_STATUS> >  RQ_ORDERS_STATUS;
     };
@@ -307,6 +317,10 @@ namespace
             CONNECT_RECEIVER_ORDER(RQ_NW_MK)
             CONNECT_RECEIVER_ORDER(RQ_MD_MK)
             CONNECT_RECEIVER_ORDER(RQ_CC_MK)
+
+            CONNECT_RECEIVER_ORDER(RQ_NW_SM)
+            CONNECT_RECEIVER_ORDER(RQ_MD_SM)
+            CONNECT_RECEIVER_ORDER(RQ_CC_SM)
 
 
             MTK_QPID_RECEIVER_CONNECT_F(

@@ -15,12 +15,14 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_QUANTITY_FILTER";
-    const char*   APP_VER           = "2011-07-14";
+    const char*   APP_VER           = "2012-03-12";
     const char*   APP_DESCRIPTION   = "Fat fingers filters \n"
                                       "I will check the order quantity with filter configuration\n"
                                       "\n";
 
-    const char*   APP_MODIFICATIONS = "           2011-07-14     first version\n";
+    const char*   APP_MODIFICATIONS =   "           2011-07-14      first version\n"
+                                        "           2012-03-12      added stop market orders\n"
+                                        ;
 
 
 
@@ -129,11 +131,16 @@ namespace
 
     ON_RQ_XX_XX(oms_RQ_NW_LS);
     ON_RQ_XX_XX(oms_RQ_MD_LS);
-    ON_RQ_PASS(oms_RQ_CC_LS);
+    ON_RQ_PASS (oms_RQ_CC_LS);
 
     ON_RQ_XX_XX(oms_RQ_NW_MK);
     ON_RQ_XX_XX(oms_RQ_MD_MK);
-    ON_RQ_PASS(oms_RQ_CC_MK);
+    ON_RQ_PASS (oms_RQ_CC_MK);
+
+    ON_RQ_XX_XX(oms_RQ_NW_SM);
+    ON_RQ_XX_XX(oms_RQ_MD_SM);
+    ON_RQ_PASS (oms_RQ_CC_SM);
+
 
     //ON_RQ_PASS(oms_RQ_ORDERS_STATUS);
 
@@ -150,6 +157,10 @@ namespace
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_NW_MK> >  oms_RQ_NW_MK;
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_MD_MK> >  oms_RQ_MD_MK;
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_CC_MK> >  oms_RQ_CC_MK;
+
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_NW_SM> >  oms_RQ_NW_SM;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_MD_SM> >  oms_RQ_MD_SM;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_CC_SM> >  oms_RQ_CC_SM;
 
         //mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_ORDERS_STATUS> >  oms_RQ_ORDERS_STATUS;
     };
@@ -179,6 +190,10 @@ namespace
             CONNECT_RECEIVER_ORDER(oms_RQ_NW_MK)
             CONNECT_RECEIVER_ORDER(oms_RQ_MD_MK)
             CONNECT_RECEIVER_ORDER(oms_RQ_CC_MK)
+
+            CONNECT_RECEIVER_ORDER(oms_RQ_NW_SM)
+            CONNECT_RECEIVER_ORDER(oms_RQ_MD_SM)
+            CONNECT_RECEIVER_ORDER(oms_RQ_CC_SM)
 
 //	    MTK_QPID_RECEIVER_CONNECT_F(
 //				  current_hqpid_orders.oms_RQ_ORDERS_STATUS,

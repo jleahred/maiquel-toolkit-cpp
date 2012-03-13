@@ -14,6 +14,7 @@
 #include "components/trading/msg_trd_cli_mk.h"
 #include "components/trading/trd_cli_ls.h"
 #include "components/trading/trd_cli_mk.h"
+#include "components/trading/trd_cli_sm.h"
 
 
 
@@ -107,13 +108,23 @@ std::string       get_order_remarks (ORDER_TYPE& order)
 //  by order type   access   ****************************************************************************************
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sm_dangerous_signals_not_warped& order);
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_ls                             & order);
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_mk                             & order);
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sm                             & order);
 
-mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
-mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);
-mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_ls                             & order);
-mtk::FixedNumber   get_order_position_quantity  (mtk::trd::trd_cli_mk                             & order);
+
+template<typename  ORDER_TYPE>
+mtk::FixedNumber   get_order_position_quantity  (const ORDER_TYPE& order)
+{
+    if(order.has_pending_rq())
+        return order.last_request().Get().request_pos.quantity;
+    else
+        return order.last_confirmation().Get().market_pos.quantity;
+}
+
+
+
 
 mtk::trd::msg::sub_position_ls      get_request  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
 mtk::trd::msg::sub_position_mk      get_request  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);

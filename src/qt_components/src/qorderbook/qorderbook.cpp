@@ -24,7 +24,9 @@ namespace {
     const char*   VERSION = "2011-03-16";
 
     const char*   MODIFICATIONS =
-                        "           2011-03-16     first version\n";
+                        "           2011-03-16     first version\n"
+                        "           2012-03-12     adding market stop orders\n"
+                        ;
 
 
     void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
@@ -67,6 +69,16 @@ void on_request_with_user_check_mk(mtk::trd::msg::RQ_XX_MK& rq, bool& canceled, 
     if (eo.exec())
     {
         rq = eo.get_request_mk();
+    }
+    else canceled =true;
+}
+
+void on_request_with_user_check_sm(mtk::trd::msg::RQ_XX_SM& rq, bool& canceled, bool agressive)
+{
+    QEditOrder eo(rq, agressive);
+    if (eo.exec())
+    {
+        rq = eo.get_request_sm();
     }
     else canceled =true;
 }
@@ -141,6 +153,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
 
     mtk::trd::trd_cli_ord_book::get_signal_request_hook_ls().connect(on_request_with_user_check_ls);
     mtk::trd::trd_cli_ord_book::get_signal_request_hook_mk().connect(on_request_with_user_check_mk);
+    mtk::trd::trd_cli_ord_book::get_signal_request_hook_sm().connect(on_request_with_user_check_sm);
 }
 
 QOrderBook::~QOrderBook()

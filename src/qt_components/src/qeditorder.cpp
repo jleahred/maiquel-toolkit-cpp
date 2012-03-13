@@ -29,6 +29,10 @@ namespace
 
         return result;
     }
+
+
+
+
 };
 
 
@@ -48,6 +52,93 @@ QEditOrder::~QEditOrder()
 }
 
 
+
+
+template<typename  RQ_TYPE>
+void QEditOrder::common_init(const RQ_TYPE& rq)
+{
+    ui->label_stop_price->setVisible(false);
+    ui->stop_price->setVisible(false);
+
+    this->setWindowTitle(tr("Edit Limit Order"));
+    if(last_pos.x() != 0    ||    last_pos.y()!=0)
+        this->move(normalize_pos());
+
+
+    QFont font(this->font());
+    font.setPixelSize(qtmisc::get_base_font_size()+2);
+    this->setFont(font);
+
+    if (rq.invariant.side == mtk::trd::msg::buy)
+        ui->side->setText(tr("buy"));
+    else
+        ui->side->setText(tr("sell"));
+
+    ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
+    ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
+
+    ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
+
+    ui->cliref->setText(QLatin1String(rq.request_pos.cli_ref.c_str()));
+
+
+    QString  configure_default_field;
+
+    mtk::Nullable<std::string>  s_default_cli_ref =  mtk::admin::get_config_property("MISC.default_cli_ref");
+    if(s_default_cli_ref.HasValue()==false)
+    {
+        configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
+    }
+    else
+    {
+        if(s_default_cli_ref.Get() == ""   &&   mtk::rand()%100 <= 7)
+            configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
+        if(ui->cliref->text() == QLatin1String(""))
+            ui->cliref->setText(QLatin1String(s_default_cli_ref.Get().c_str()));
+    }
+
+    mtk::Nullable<std::string>  n_default_account =  mtk::admin::get_config_property("MISC.default_account");
+    if(n_default_account.HasValue() == false)
+        configure_default_field =  tr("you can configure default account with dblclick on account label");
+    this->fill_accounts(rq);
+
+    mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
+
+
+    ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
+    ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
+    if(rq.request_pos.quantity.GetIntCode()==0)
+        ui->quantity->set_empty();
+    if(s_default_qty.HasValue()==false)
+    {
+        configure_default_field =  tr("you can configure default qty with dblclick on qty label");
+    }
+    else
+    {
+        if(rq.request_pos.quantity.GetIntCode() <= 0)
+        {
+            QLatin1String default_q (s_default_qty.Get().c_str());
+            if(default_q == ""  ||  default_q == "~")
+                ui->quantity->set_empty();
+            else
+                ui->quantity->setValue(QString(default_q).toDouble());
+        }
+        else
+            ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
+    }
+
+    this->check_if_order_can_be_sent();
+    if(configure_default_field!=QLatin1String(""))
+        ui->message->setText(configure_default_field);
+
+    this->adjustSize();
+    register_event_filters();
+
+}
+
+
+
+
 /**
   If quantity is empty, it will get the default quantity
   */
@@ -58,76 +149,12 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool /*agressive*/, QW
 {
     ui->setupUi(this);
 
-    this->setWindowTitle(tr("Edit Limit Order"));
-    if(last_pos.x() != 0    ||    last_pos.y()!=0)
-        this->move(normalize_pos());
-
-
-    QFont font(this->font());
-    font.setPixelSize(qtmisc::get_base_font_size()+2);
-    this->setFont(font);
-
-    if (rq.invariant.side == mtk::trd::msg::buy)
-        ui->side->setText(tr("buy"));
-    else
-        ui->side->setText(tr("sell"));
-
-    ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
-    ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
     ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
     ui->price->setSingleStep(1./pow(10.,rq.request_pos.price.GetExt().GetDec())*rq.request_pos.price.GetExt().GetInc());
-    if(rq.request_pos.price.GetIntCode()==0  &&  rq.request_pos.quantity.GetIntCode()==0)
+    if(rq.request_pos.price.GetIntCode()==0  &&  (rq.request_pos.quantity.GetIntCode()==0  || rq.request_pos.quantity.GetIntCode()==-1))
         ui->price->set_empty();
-        //ui->price->clear();
     else
         ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
-    ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
-    //ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
-    if(rq.request_pos.quantity.GetIntCode()>=0)
-        ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
-    else
-        ui->quantity->set_empty();
-    ui->cliref->setText(QLatin1String(rq.request_pos.cli_ref.c_str()));
-
-
-    QString  configure_default_field;
-
-    mtk::Nullable<std::string>  s_default_cli_ref =  mtk::admin::get_config_property("MISC.default_cli_ref");
-    if(s_default_cli_ref.HasValue()==false)
-    {
-        configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
-    }
-    else
-    {
-        if(s_default_cli_ref.Get() == ""   &&   mtk::rand()%100 <= 7)
-            configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
-        if(ui->cliref->text() == QLatin1String(""))
-            ui->cliref->setText(QLatin1String(s_default_cli_ref.Get().c_str()));
-    }
-
-    mtk::Nullable<std::string>  n_default_account =  mtk::admin::get_config_property("MISC.default_account");
-    if(n_default_account.HasValue() == false)
-        configure_default_field =  tr("you can configure default account with dblclick on account label");
-    this->fill_accounts(rq);
-
-    mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
-    if(s_default_qty.HasValue()==false)
-    {
-        configure_default_field =  tr("you can configure default qty with dblclick on qty label");
-    }
-    else
-    {
-        if(rq.request_pos.quantity.GetIntCode() <= 0)
-        {
-            QLatin1String default_q (s_default_qty.Get().c_str());
-            if(default_q == ""  ||  default_q == "~")
-                ui->quantity->set_empty();
-            else
-                ui->quantity->setValue(QString(default_q).toDouble());
-        }
-        else
-            ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
-    }
 
     if(ui->price->is_empty() == false)
     {
@@ -138,25 +165,11 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool /*agressive*/, QW
     {
         ui->price->setFocus();
     }
-    /*
-    if(agressive==false)
-    {
-        ui->price->setFocus();
-        ui->price->selectAll();
-    }
-    else
-    {
-        ui->quantity->setFocus();
-        ui->quantity->selectAll();
-    }
-    */
 
-    this->check_if_order_can_be_sent();
-    if(configure_default_field!=QLatin1String(""))
-        ui->message->setText(configure_default_field);
+
+    common_init(rq);
 
     this->adjustSize();
-    register_event_filters();
 }
 
 QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QWidget *parent) :
@@ -165,83 +178,53 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
         rq_mk(rq)
 {
     ui->setupUi(this);
-    this->setWindowTitle(tr("Edit Limit Order"));
-    if(last_pos.x() != 0    ||    last_pos.y()!=0)
-        this->move(normalize_pos());
 
-    QFont font(this->font());
-    font.setPixelSize(qtmisc::get_base_font_size()+2);
-    this->setFont(font);
+    common_init(rq);
 
-    if (rq.invariant.side == mtk::trd::msg::buy)
-    {
-        ui->side->setText(tr("buy"));
-    }
-    else
-    {
-        ui->side->setText(tr("sell"));
-    }
-    ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
-    ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
     ui->price->setVisible(false);
     ui->price->setEnabled(false);
-    ui->quantity->setDecimals(rq.request_pos.quantity.GetExt().GetDec());
-    ui->quantity->setSingleStep(1./pow(10.,rq.request_pos.quantity.GetExt().GetDec())*rq.request_pos.quantity.GetExt().GetInc());
-    if(rq.request_pos.quantity.GetIntCode()==-1)
-        ui->quantity->set_empty();
-    else if(rq.request_pos.quantity.GetIntCode()==0)
-        ui->quantity->set_empty();
-    else
-        ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
-    ui->cliref->setText(QLatin1String(rq.request_pos.cli_ref.c_str()));
-
-
-    QString  configure_default_field;
-
-    mtk::Nullable<std::string>  s_default_cli_ref =  mtk::admin::get_config_property("MISC.default_cli_ref");
-    if(s_default_cli_ref.HasValue()==false)
-    {
-        configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
-    }
-    else
-    {
-        if(s_default_cli_ref.Get() == ""   &&   mtk::rand()%100 <= 7)
-            configure_default_field = tr("you can configure default client reference with dblclick on cli_ref label");
-        if(ui->cliref->text() == QLatin1String(""))
-            ui->cliref->setText(QLatin1String(s_default_cli_ref.Get().c_str()));
-    }
-
-    mtk::Nullable<std::string>  n_default_account =  mtk::admin::get_config_property("MISC.default_account");
-    if(n_default_account.HasValue() == false)
-        configure_default_field =  tr("you can configure default account with dblclick on account label");
-    this->fill_accounts(rq);
-
-    mtk::Nullable<std::string>  s_default_qty =  mtk::admin::get_config_property("MISC.default_qty");
-    if(s_default_qty.HasValue()==false)
-    {
-        configure_default_field =  tr("you can configure default qty with dblclick on qty label");
-    }
-    else
-    {
-        if(rq.request_pos.quantity.GetIntCode() <= 0)
-        {
-            QLatin1String default_q (s_default_qty.Get().c_str());
-            if(default_q == ""  ||  default_q == "~")
-                ui->quantity->set_empty();
-            else
-                ui->quantity->setValue(QString(default_q).toDouble());
-        }
-        else
-            ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
-    }
-
-    this->check_if_order_can_be_sent();
-    if(configure_default_field!=QLatin1String(""))
-        ui->message->setText(configure_default_field);
-
+    ui->label_price->setVisible(false);
     this->adjustSize();
-    register_event_filters();
 }
+
+
+QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_SM& rq, bool /*agressive*/, QWidget *parent) :
+        QDialog(parent),
+        ui(new Ui::QEditOrder),
+        rq_sm(rq)
+{
+    ui->setupUi(this);
+
+    common_init(rq);
+
+    ui->price->setVisible(false);
+    ui->price->setEnabled(false);
+    ui->stop_price->setVisible(true);
+    ui->stop_price->setEnabled(true);
+    ui->label_stop_price->setVisible(false);
+    ui->label_stop_price->setVisible(true);
+    ui->label_price->setVisible(false);
+
+    ui->stop_price->setDecimals(rq.request_pos.stop_price.GetExt().GetDec());
+    ui->stop_price->setSingleStep(1./pow(10.,rq.request_pos.stop_price.GetExt().GetDec())*rq.request_pos.stop_price.GetExt().GetInc());
+    if(rq.request_pos.stop_price.GetIntCode()==0  &&  rq.request_pos.quantity.GetIntCode()==0)
+        ui->stop_price->set_empty();
+    else
+        ui->stop_price->setValue(rq.request_pos.stop_price.GetDouble().get()._0);
+
+    if(ui->stop_price->is_empty() == false)
+    {
+        ui->quantity->setFocus();
+        ui->quantity->selectAll();
+    }
+    else
+    {
+        ui->stop_price->setFocus();
+    }
+    this->adjustSize();
+}
+
+
 
 
 bool QEditOrder::check_if_order_can_be_sent(void)
@@ -341,6 +324,23 @@ mtk::trd::msg::RQ_XX_MK   QEditOrder::get_request_mk(void)
     mtk::trd::msg::RQ_XX_MK  result = rq_mk.Get();
     result.invariant.product_code.market = ui->market->text().toStdString();
     result.invariant.product_code.product = ui->product->text().toStdString();
+    result.request_pos.quantity.SetDouble(ui->quantity->value());
+    result.request_pos.cli_ref = ui->cliref->text().toStdString();
+
+    mtk::list<mtk::trd::msg::sub_account_info>::iterator it_account=account_list.begin();
+    for(int i=0; i<ui->account->currentIndex(); ++i)
+        ++it_account;
+    result.invariant.account = mtk::trd::msg::sub_account_info(*it_account);
+
+    return result;
+}
+
+mtk::trd::msg::RQ_XX_SM   QEditOrder::get_request_sm(void)
+{
+    mtk::trd::msg::RQ_XX_SM  result = rq_sm.Get();
+    result.invariant.product_code.market = ui->market->text().toStdString();
+    result.invariant.product_code.product = ui->product->text().toStdString();
+    result.request_pos.stop_price.SetDouble(ui->stop_price->value());
     result.request_pos.quantity.SetDouble(ui->quantity->value());
     result.request_pos.cli_ref = ui->cliref->text().toStdString();
 

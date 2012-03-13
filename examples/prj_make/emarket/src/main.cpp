@@ -47,6 +47,10 @@ int main(int argc, char ** argv)
 
         cr.sig_oms_rq_nw_mk.connect  (&ob, &orders_book::oms_RQ_NW_MK);
 
+        cr.sig_oms_rq_nw_sm.connect  (&ob, &orders_book::oms_RQ_NW_SM);
+        cr.sig_oms_rq_md_sm.connect  (&ob, &orders_book::oms_RQ_MD_SM);
+        cr.sig_oms_rq_cc_sm.connect  (&ob, &orders_book::oms_RQ_CC_SM);
+
 
         cr.sig_add_product.connect(&ob, &orders_book::add_product);
         cr.init();
