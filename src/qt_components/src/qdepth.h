@@ -115,6 +115,9 @@ private:
     QAction* action_lift_the_offer;
     QAction* action_buy_market;
     QAction* action_sell_market;
+    QAction* action_buy_stop_market;
+    QAction* action_sell_stop_market;
+
     QAction* action_delete_component;
 
     bool showing_menu;

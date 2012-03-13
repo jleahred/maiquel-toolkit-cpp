@@ -312,7 +312,9 @@ QDepth::QDepth(QWidget *parent) :
     table_widget(new QTableDeph(this)),
     pending_screen_update(false),
     action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
-    action_buy_market(0), action_sell_market(0), action_delete_component(0),
+    action_buy_market(0), action_sell_market(0),
+    action_buy_stop_market(0), action_sell_stop_market(0),
+    action_delete_component(0),
     showing_menu(false),
     keep_paint_focus(false)
 {
@@ -466,13 +468,23 @@ QDepth::QDepth(QWidget *parent) :
     connect(action_hit_the_bid, SIGNAL(triggered()), this, SLOT(request_hit_the_bid()));
     this->addAction(action_hit_the_bid);
 
-    action_buy_market = new QAction(tr("buy"), this);
+    action_buy_market = new QAction(tr("market buy"), this);
     connect(action_buy_market, SIGNAL(triggered()), this, SLOT(request_buy_market()));
     this->addAction(action_buy_market);
 
-    action_sell_market = new QAction(tr("sell"), this);
+    action_sell_market = new QAction(tr("market sell"), this);
     connect(action_sell_market, SIGNAL(triggered()), this, SLOT(request_sell_market()));
     this->addAction(action_sell_market);
+
+
+    action_buy_stop_market = new QAction(tr("stop market buy"), this);
+    connect(action_buy_stop_market, SIGNAL(triggered()), this, SLOT(request_buy_stop_market()));
+    this->addAction(action_buy_stop_market);
+
+    action_sell_stop_market = new QAction(tr("stop market sell"), this);
+    connect(action_sell_stop_market, SIGNAL(triggered()), this, SLOT(request_sell_stop_market()));
+    this->addAction(action_sell_stop_market);
+
 
     action_delete_component = new QAction(tr("delete depth"), this);
     action_delete_component->setShortcut(Qt::Key_Delete);
@@ -850,12 +862,25 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
         menu.addMenu(&sub_menu_market_orders);
     }
 
+    mtk::msg::sub_product_code product_code (price_manager->get_product_code());
+    if(product_code.market == "EU"  ||  product_code.market == "MARKET")
+    {
+        if(mtk::admin::is_production() == false)
+        {
+            menu.addSeparator();
+            menu.addAction(action_buy_market);
+            menu.addAction(action_sell_market);
+
+            menu.addAction(action_buy_stop_market);
+            menu.addAction(action_sell_stop_market);
+        }
+    }
+
     menu.addSeparator();
     menu.addAction(action_delete_component);
 
 
     //  permisions
-    mtk::msg::sub_product_code product_code (price_manager->get_product_code());
     std::string grant = mtk::accmgrcli::get_grant_less_restrictive(product_code.market);
     if(grant=="F")
         enable_trading_actions();
@@ -938,6 +963,8 @@ void QDepth::disable_trading_actions(void)
             action_lift_the_offer->setEnabled(false);
             action_buy_market->setEnabled(false);
             action_sell_market->setEnabled(false);
+            action_buy_stop_market->setEnabled(false);
+            action_sell_stop_market->setEnabled(false);
             action_delete_component->setEnabled(false);
         }
     }
@@ -953,6 +980,8 @@ void QDepth::enable_trading_actions(void)
         action_lift_the_offer->setEnabled(true);
         action_buy_market->setEnabled(true);
         action_sell_market->setEnabled(true);
+        action_buy_stop_market->setEnabled(true);
+        action_sell_stop_market->setEnabled(true);
         action_delete_component->setEnabled(true);
     }
 }

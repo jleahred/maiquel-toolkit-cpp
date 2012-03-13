@@ -82,25 +82,22 @@ namespace mtk{namespace trd{
                 if (is_valid(rq.invariant.order_id)==false)
                 {
                     ++nerrors;
-                    serrors + "  invalid order_id on request!!!  ";
+                    serrors += "  invalid order_id on request!!!  ";
                 }
                 if (is_valid(rq.invariant.product_code)==false)
                 {
                     ++nerrors;
-                    serrors + "  invalid product_code on request!!!  ";
+                    serrors += "  invalid product_code on request!!!  ";
                 }
 
                 if (rq.request_pos.quantity.GetIntCode() == 0)
                 {
                     ++nerrors;
-                    serrors + "  invalid quantity!!!  ";
+                    serrors += "  invalid quantity!!!  ";
                 }
 
                 if (nerrors >0)     //  all errors on this level are critic
-                {
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_request", MTK_SS(serrors << "  " << rq ), mtk::alPriorCritic, mtk::alTypeNoPermisions));
-                    ++nerrors;
-                }
                 return mtk::make_tuple(nerrors, serrors);
             }
             template<typename RQ_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS

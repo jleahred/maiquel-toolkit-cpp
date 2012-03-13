@@ -916,9 +916,10 @@ void QTableMarginal::contextMenuEvent ( QContextMenuEvent * event )
             menu.addSeparator();
             menu.addAction(action_buy_market);
             menu.addAction(action_sell_market);
+
+            menu.addAction(action_buy_stop_market);
+            menu.addAction(action_sell_stop_market);
         }
-        menu.addAction(action_buy_stop_market);
-        menu.addAction(action_sell_stop_market);
     }
 
     menu.addSeparator();
