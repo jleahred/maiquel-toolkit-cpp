@@ -778,6 +778,48 @@ void QDepth::request_lift_the_offer(void)
 
 
 
+
+
+void QDepth::request_side_stop_market(mtk::trd::msg::enBuySell bs)
+{
+    //  proposed price
+    if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue() == false)
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
+    else
+    {
+        mtk::FixedNumber price(price_manager->get_best_prices().Get().bids.level0.price);
+        mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
+        if(bs == mtk::trd::msg::sell)
+        {
+            quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
+            price= price_manager->get_best_prices().Get().asks.level0.price;
+        }
+        quantity.SetIntCode(-1);        //  means, default quantity
+        mtk::trd::msg::sub_position_sm     pos(price, quantity,  "" /*cli ref*/);
+        mtk::trd::trd_cli_ord_book::rq_nw_sm_manual(price_manager->get_product_code(), bs, pos);
+    }
+}
+
+
+void QDepth::request_buy_stop_market(void)
+{
+    keep_paint_focus = true;
+    request_side_stop_market(mtk::trd::msg::buy);
+    keep_paint_focus = false;
+}
+
+void QDepth::request_sell_stop_market(void)
+{
+    keep_paint_focus = true;
+    request_side_stop_market(mtk::trd::msg::sell);
+    keep_paint_focus = false;
+}
+
+
+
+
+
+
 void QDepth::dragEnterEvent(QDragEnterEvent *event)
 {
     event->setDropAction(Qt::CopyAction);

@@ -72,7 +72,8 @@ namespace {
         {
             //  look and delete from orders_in_sequence      dangerous optimization
             bool located=false;
-            for(mtk::list<mtk::trd::msg::sub_order_id>::iterator it = __do_not_use_it_directly_orders_in_sequence.begin(); it!= __do_not_use_it_directly_orders_in_sequence.end(); ++it)
+            mtk::list<mtk::trd::msg::sub_order_id>::iterator it = __do_not_use_it_directly_orders_in_sequence.begin();
+            while(it!= __do_not_use_it_directly_orders_in_sequence.end())
             {
                 if(*it == order_id)
                 {
@@ -81,6 +82,8 @@ namespace {
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("duplicated order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
                     located=true;
                 }
+                else
+                    ++it;
             }
             if(located==false)
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("missing order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
@@ -103,7 +106,8 @@ namespace {
         {
             //  look and delete from orders_in_sequence      dangerous optimization
             bool located=false;
-            for(mtk::list<mtk::trd::msg::sub_order_id>::iterator it = __do_not_use_it_directly_orders_in_sequence.begin(); it!= __do_not_use_it_directly_orders_in_sequence.end(); ++it)
+            mtk::list<mtk::trd::msg::sub_order_id>::iterator it = __do_not_use_it_directly_orders_in_sequence.begin();
+            while(it!= __do_not_use_it_directly_orders_in_sequence.end())
             {
                 if(*it == order_id)
                 {
@@ -112,6 +116,8 @@ namespace {
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("duplicated order in sequence " << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
                     located=true;
                 }
+                else
+                    ++it;
             }
             if(located==true)
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("adding new order in sequence, exist a previus one" << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));

@@ -77,6 +77,11 @@ private slots:
     void request_side_market(mtk::trd::msg::enBuySell bs);
 
 
+    void request_buy_stop_market(void);
+    void request_sell_stop_market(void);
+    void request_side_stop_market(mtk::trd::msg::enBuySell bs);
+
+
     void make_transparent(void);
     void remove_transparecy(void);
 
