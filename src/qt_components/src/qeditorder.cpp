@@ -110,22 +110,18 @@ void QEditOrder::common_init(const RQ_TYPE& rq)
     if(rq.request_pos.quantity.GetIntCode()==0)
         ui->quantity->set_empty();
     if(s_default_qty.HasValue()==false)
-    {
         configure_default_field =  tr("you can configure default qty with dblclick on qty label");
+    if(rq.request_pos.quantity.GetIntCode() <= 0)
+    {
+        QLatin1String default_q (s_default_qty.Get().c_str());
+        if(default_q == ""  ||  default_q == "~")
+            ui->quantity->set_empty();
+        else
+            ui->quantity->setValue(QString(default_q).toDouble());
     }
     else
-    {
-        if(rq.request_pos.quantity.GetIntCode() <= 0)
-        {
-            QLatin1String default_q (s_default_qty.Get().c_str());
-            if(default_q == ""  ||  default_q == "~")
-                ui->quantity->set_empty();
-            else
-                ui->quantity->setValue(QString(default_q).toDouble());
-        }
-        else
-            ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
-    }
+        ui->quantity->setValue(rq.request_pos.quantity.GetDouble().get()._0);
+
 
     this->check_if_order_can_be_sent();
     if(configure_default_field!=QLatin1String(""))
@@ -156,6 +152,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool /*agressive*/, QW
     else
         ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
 
+    common_init(rq);
+
     if(ui->price->is_empty() == false)
     {
         ui->quantity->setFocus();
@@ -165,9 +163,6 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool /*agressive*/, QW
     {
         ui->price->setFocus();
     }
-
-
-    common_init(rq);
 
     this->adjustSize();
 }
@@ -184,6 +179,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
     ui->price->setVisible(false);
     ui->price->setEnabled(false);
     ui->label_price->setVisible(false);
+    ui->quantity->setFocus();
+    ui->quantity->selectAll();
     this->adjustSize();
 }
 
