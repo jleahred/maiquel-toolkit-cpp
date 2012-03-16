@@ -23,8 +23,8 @@
 
 
 class QTableWidget;
-//class QTableWidgetItem;
-//class QCommonTableDelegate;
+class qmarginal_table_model;
+class QCommonTableDelegate_view;
 
 namespace YAML { class Emitter;  class Node;      };
 
@@ -36,30 +36,20 @@ class marginal_in_table2 : public mtk::SignalReceptor
     typedef  marginal_in_table2 CLASS_NAME;
 
 public:
-    marginal_in_table2(QTableView* _table_widget, const mtk::msg::sub_product_code& product_code, int row=-1);
+    marginal_in_table2(const mtk::msg::sub_product_code& product_code);
     const int id;
-    void set_normal_color(int transparency=255);
-    void set_dark_color(void);
-    //int  get_row(void) const {  return tw_product->row(); }
 
-    mtk::CountPtr<mtk::prices::price_manager>       price_manager;
+    mtk::CountPtr<mtk::prices::price_manager>                       price_manager;
 
-private:
+    mtk::msg::sub_product_code                                      product_code;
+    mtk::nullable<mtk::prices::msg::sub_best_prices>                best_prices;     //  for blinking  and update
+    mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>       last_mk_execs_ticker;
+    QString                                                         var;
+    QString                                                         percent_var;
+    mtk::DateTime                                                   last_updated;
 
-    /*
-    QTableWidgetItem*  tw_product;
-    QTableWidgetItem*  tw_BID;
-    QTableWidgetItem*  tw_ASK;
-    QTableWidgetItem*  tw_qty_bid;
-    QTableWidgetItem*  tw_qty_ask;
 
-    QTableWidgetItem*  tw_last_price;
-    QTableWidgetItem*  tw_last_quantity;
-    QTableWidgetItem*  tw_ref_price;
-    QTableWidgetItem*  tw_var;
-    QTableWidgetItem*  tw_var_percent;
-    */
-    QTableView* table_view;
+
 
 
     bool        pending_screen_update;
@@ -77,19 +67,57 @@ private:
     void update_last_mk_execs_ticker(const mtk::prices::msg::sub_last_mk_execs_ticker&);
     void on_last_mk_execs_ticker_msg(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_last_mk_execs_ticker& msg);
 
+    void update_vars(const mtk::prices::msg::sub_last_mk_execs_ticker&   _last_mk_execs_ticker);
 
-    mtk::prices::msg::sub_best_prices           prev_painted_prices;     //  for blinking  and update
-    mtk::prices::msg::sub_last_mk_execs_ticker  prev_painted_last;
+
 
     std::vector<mtk::DateTime>  v_blinking;
     mtk::DateTime               last_blinking;
-    void generate_blinking(const mtk::prices::msg::sub_best_prices&  prices);
-    void check_blinking(void);
     void add_blinking(int col, const mtk::DateTime&  till);
 
 
     static int counter;
 };
+
+
+
+class qmarginal_table_model  : public  QAbstractTableModel,   public  mtk::SignalReceptor
+{
+    Q_OBJECT
+    typedef  qmarginal_table_model   CLASS_NAME;
+
+public:
+    qmarginal_table_model(QObject* parent=0);
+
+    int             rowCount(const QModelIndex &parent) const;
+    int             columnCount(const QModelIndex &parent) const;
+    QVariant        data(const QModelIndex &index, int role) const;
+    QVariant        headerData(int section, Qt::Orientation orientation, int role) const;
+    Qt::ItemFlags   flags(const QModelIndex &index) const;
+    bool            insertRows(int row, int count, const QModelIndex &parent);
+    bool            removeRows(int row, int count, const QModelIndex &parent);
+
+
+    void            insert      (const mtk::msg::sub_product_code& product_code, int row);
+    void            update      (int row, int first_col, int last_col);
+    void            remove_row  (int id);
+
+
+    int             row_count(void)  const  {  return marginals.size();  }
+
+    mtk::CountPtr<marginal_in_table2>   get_marginal(int row)  {  return marginals[row];  }
+
+    mutable mtk::Signal<int&>       signal_request_current_row;
+
+private:
+    mtk::DateTime   last_updated_table;
+
+    mtk::vector< mtk::CountPtr<marginal_in_table2> >   marginals;
+
+    void  slot_update_screen(void);
+
+};
+
 
 
 
@@ -116,7 +144,7 @@ private:
 
 
 
-class QTableMarginal2 : public QTableView
+class QTableMarginal2 : public QTableView,   public  mtk::SignalReceptor
 {
     Q_OBJECT
     typedef  QTableMarginal2 CLASS_NAME;
@@ -127,8 +155,6 @@ class QTableMarginal2 : public QTableView
 public:
     explicit QTableMarginal2(QWidget *parent = 0);
     ~QTableMarginal2(){}
-    void make_transparent(void);
-    void remove_transparency(void);
 
 
 protected:
@@ -141,7 +167,6 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event);
     void dropEvent(QDropEvent *);
     void contextMenuEvent ( QContextMenuEvent * event );
-    void keyPressEvent ( QKeyEvent * event );
 
 private slots:
     void request_buy (void);
@@ -165,10 +190,7 @@ private:
     int    startDragId;
     void start_drag(void);
 
-    mtk::list< mtk::CountPtr<marginal_in_table2> >   marginals;
-
     void insert_marginal(const mtk::msg::sub_product_code& product_code, int row);
-    void add_marginal(const mtk::msg::sub_product_code& product_code);
 
     void remove_row(int id);
 
@@ -182,8 +204,10 @@ private:
     QAction* action_remove_product;
     QAction* action_buy_market;
     QAction* action_sell_market;
+    QAction* action_buy_stop_market;
+    QAction* action_sell_stop_market;
 
-    //QCommonTableDelegate* paint_delegate;
+    QCommonTableDelegate_view* paint_delegate;
     bool showing_menu;
     void disable_actions(void);
     void enable_actions(void);
@@ -193,6 +217,9 @@ private:
 
     mtk::msg::sub_product_code get_current_product_code(void);
 
+    qmarginal_table_model*      marginal_table_model;
+
+    void  slot_requested_current_row(int& current_row)    {  if(this->hasFocus())   current_row = this->currentIndex().row();  }
 };
 
 
@@ -222,8 +249,6 @@ protected:
 
 
 private slots:
-    void make_transparent(void) { table_marginals->make_transparent();  }
-    void remove_transparent(void) { table_marginals->remove_transparency();  }
 
 private:
     QTableMarginal2 *table_marginals;

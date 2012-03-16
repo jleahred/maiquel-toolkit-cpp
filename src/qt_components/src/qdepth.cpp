@@ -351,7 +351,7 @@ QDepth::QDepth(QWidget *parent) :
         //title->setFrameShape(QFrame::Box);
         //title->setFrameShadow(QFrame::Plain);
         //title->setStyleSheet("color: rgba(30,0,100); background-color: rgba(207,213,235, 200);");
-        title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
+        title->setStyleSheet(QLatin1String("color: rgb(30,0,100); background-color: rgb(191,219,255); font-weight: 1000;"));
         title->setLineWidth(2);
         //QFont font=title->font();
         //font.setBold(true);
@@ -1031,7 +1031,7 @@ void QDepth::enable_trading_actions(void)
 void QDepth::paint_focus(void)
 {
     //title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(191,219,255, 230); font-weight: 1000;"));
-    title->setStyleSheet(QLatin1String("background-color: rgba(120,150,210); color: rgba(255,255,255, 255); font-weight: 1000;"));
+    title->setStyleSheet(QLatin1String("background-color: rgb(120,120,255); color: rgb(255,255,255); font-weight: 1000;"));
 
     if(price_manager.isValid()==false)
         table_widget->setStyleSheet(style_sheet_null);
@@ -1048,7 +1048,7 @@ void QDepth::remove_focus(void)
 {
     if(keep_paint_focus==false)
     {
-        title->setStyleSheet(QLatin1String("color: rgba(30,0,100); background-color: rgba(191,219,255, 230); font-weight: 1000;"));
+        title->setStyleSheet(QLatin1String("color: rgb(30,0,100); background-color: rgb(191,219,255); font-weight: 1000;"));
         if(price_manager.isValid()   &&   price_manager->get_best_prices().HasValue()==true)
             table_widget->setStyleSheet(style_sheet_normal);
         else if(price_manager.isValid()==false)

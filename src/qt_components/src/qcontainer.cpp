@@ -51,18 +51,14 @@ QMarginal*  qContainer::insert_qmarginal(void)
 
 QMarginal2*  qContainer::insert_qmarginal2(void)
 {
-    if(mtk::admin::is_production() == false)
-    {
-        auto compo= new QMarginal2(this->widget());
-        connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
-        compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
-        ++counter_insertions;
-        counter_insertions %= 6;
-        compo->show();
-        compo->setFocus();
-        return compo;
-    }
-    else return 0;
+    auto compo= new QMarginal2(this->widget());
+    connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    ++counter_insertions;
+    counter_insertions %= 6;
+    compo->show();
+    compo->setFocus();
+    return compo;
 }
 
 
@@ -118,6 +114,19 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qContainer& m)
 
 
 
+        out << YAML::Key  << "tables_marginal2"  << YAML::Value
+                                                << YAML::BeginSeq;
+        for(int i=0; i<m.widget()->children().count(); ++i)
+        {
+            QMarginal2* compo = dynamic_cast<QMarginal2*>(m.widget()->children().at(i));
+            if(compo!=0)
+                out << *compo;
+        }
+        out << YAML::EndSeq;
+
+
+
+
         out << YAML::Key  << "tables_depths"  << YAML::Value
                                                 << YAML::BeginSeq;
 
@@ -151,15 +160,33 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qContainer& m)
 
 void     operator>> (const YAML::Node & node   , qContainer& c)
 {
-    for(unsigned i=0; i<node["tables_marginal"].size(); ++i)
+    if(node.FindValue("tables_marginal"))
     {
-        QMarginal* marginal = c.insert_qmarginal();
-        node["tables_marginal"][i] >>  *marginal;
+        for(unsigned i=0; i<node["tables_marginal"].size(); ++i)
+        {
+            QMarginal* marginal = c.insert_qmarginal();
+            node["tables_marginal"][i] >>  *marginal;
+        }
     }
-    for(unsigned i=0; i<node["tables_depths"].size(); ++i)
+
+
+    if(node.FindValue("tables_marginal2"))
     {
-        QDepth* d = c.insert_qdepth();
-        node["tables_depths"][i] >>  *d;
+        for(unsigned i=0; i<node["tables_marginal2"].size(); ++i)
+        {
+            QMarginal2* compo = c.insert_qmarginal2();
+            node["tables_marginal2"][i] >>  *compo;
+        }
+    }
+
+
+    if(node.FindValue("tables_depths"))
+    {
+        for(unsigned i=0; i<node["tables_depths"].size(); ++i)
+        {
+            QDepth* d = c.insert_qdepth();
+            node["tables_depths"][i] >>  *d;
+        }
     }
 
     if(node.FindValue("alarm_tables"))
