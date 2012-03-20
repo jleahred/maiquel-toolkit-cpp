@@ -53,6 +53,13 @@ class  internal_price_manager__factory;
 //      it will return the current best_prices
 
 
+
+mtk::CountPtr<mtk::Signal<> >   get_signal_too_many_subscriptions_best_prices       (void);
+mtk::CountPtr<mtk::Signal<>  >  get_signal_too_many_subscriptions_last_ex_mk_ticker (void);
+
+
+
+
 class price_manager :  public mtk::SignalReceptor
 {
     typedef  price_manager  CLASS_NAME;

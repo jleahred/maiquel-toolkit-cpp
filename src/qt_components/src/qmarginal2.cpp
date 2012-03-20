@@ -240,6 +240,11 @@ QVariant  qmarginal_table_model::data(const QModelIndex &index, int role) const
     else if (role == Qt::BackgroundRole)
     {
         marginal_in_table2&  mt = *marginals[index.row()];
+
+        if(mt.best_prices.HasValue() == false  &&  index.column()>=1 &&  index.column()<=4)
+            return QBrush(Qt::black);
+        if(mt.last_mk_execs_ticker.HasValue() == false  &&  index.column()>=5 &&  index.column()<=9)
+            return QBrush(Qt::black);
         if(mt.v_blinking[index.column()]  >  mtk::dtNowLocal())
         {
             return QBrush(qtmisc::mtk_color_blinking2);
@@ -634,7 +639,7 @@ void marginal_in_table2::update_vars(const mtk::prices::msg::sub_last_mk_execs_t
     mtk::Double  dvar = _last_mk_execs_ticker.last_price.GetDouble() - _last_mk_execs_ticker.opened_price.GetDouble();
     this->var           =   QLocale::system().toString(dvar.get2(), 'f', 3);
     if(dvar != 0.  &&   _last_mk_execs_ticker.opened_price.GetIntCode() != 0)
-        this->percent_var   =   QLocale::system().toString(dvar.get2() / _last_mk_execs_ticker.opened_price.GetDouble().get2(), 'f', 2) + QLatin1String("%");
+        this->percent_var   =   QLocale::system().toString(dvar.get2() / _last_mk_execs_ticker.opened_price.GetDouble().get2() * 100., 'f', 2) + QLatin1String("%");
     else
         this->percent_var   =   QLatin1String("");
 }

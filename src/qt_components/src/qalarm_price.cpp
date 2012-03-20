@@ -373,12 +373,13 @@ void  marginal_in_table_alarm::set_activated(void)
 {
     initialize_paint();
 
+    /*
     if(tw_description->text() == QLatin1String(""))
     {
         tw_product->setCheckState(Qt::Unchecked);
         QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("You have to write a message to activate an alarm"), QMessageBox::Ok);
         return;
-    }
+    }*/
 
     mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>  n_last_mk_execs_ticker = price_manager->get_last_mk_execs_ticker();
     if(n_last_mk_execs_ticker.HasValue() == false)
@@ -445,7 +446,7 @@ void  marginal_in_table_alarm::set_ended (void)
     configured_price = mtk::Double::InvalidValue();
     first_maket__configured_last_sign = 0;
     alarm_is_checked = true;
-    wUserMessage::show_message(tw_description->text());
+    wUserMessage::show_message(tw_description->text() + QLatin1String(MTK_SS("  alarm product:" << tw_product << "  price:"  << tw_last_configured).c_str()));
 
     status = ended;
 }

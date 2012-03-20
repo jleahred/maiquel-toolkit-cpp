@@ -8,14 +8,36 @@
 
 
 
+//  support functions
+
+namespace {
+
+    struct  stats
+    {
+        int     num_best_prices;
+        int     num_last_exec_ticker;
+        stats()  :  num_best_prices(0), num_last_exec_ticker(0) {};
+    };
+
+    stats&  get_stats(void)
+    {
+        static  stats*  _stats = new stats{};
+        return *_stats;
+    }
+
+
+};  //namespace  {
+
+
 
 namespace
 {
 
-    const char*   VERSION       =   "2011-08-04";
+    const char*   VERSION       =   "2012-03-20";
     const char*   MODIFICATIONS =   "           2011-04-11     first version\n"
                                     "           2011-08-04     updated to prices publishing protocol and correct managment of factory\n"
                                     "           2012-02-23     market exec ticker support\n"
+                                    "           2012-03-20     subscriptions limit\n"
                                     ;
 
 
@@ -23,6 +45,14 @@ namespace
     void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
     {
         response_lines.push_back(MTK_SS(__FILE__ << ":  " << VERSION));
+    }
+
+    void command_stats  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
+    {
+        response_lines.push_back("PRICES SUBSCRIPTIONS");
+        response_lines.push_back(".......................................");
+        response_lines.push_back(MTK_SS("#best_prices      : " << get_stats().num_best_prices));
+        response_lines.push_back(MTK_SS("#last_ex_mk_ticker: " << get_stats().num_last_exec_ticker));
     }
 
     void command_modifications  (const std::string& /*command*/, const std::string& /*param*/,  mtk::list<std::string>&  response_lines)
@@ -33,13 +63,13 @@ namespace
     }
 
 
-
     void register_global_commands (void)
     {
-        mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
-        mtk::admin::register_command("__GLOBAL__",  "modifs",   "")->connect(command_modifications);
-        mtk::admin::register_command("price_manager",  "ver",   "")->connect(command_version);
-        mtk::admin::register_command("price_manager",  "modifs",   "")->connect(command_modifications);
+        mtk::admin::register_command("__GLOBAL__",  "ver",          "")->connect(command_version);
+        mtk::admin::register_command("__GLOBAL__",  "modifs",       "")->connect(command_modifications);
+        mtk::admin::register_command("__GLOBAL__",  "stats",        "")->connect(command_stats);
+        mtk::admin::register_command("price_manager",  "ver",       "")->connect(command_version);
+        mtk::admin::register_command("price_manager",  "modifs",    "")->connect(command_modifications);
     }
 
     MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
@@ -48,14 +78,6 @@ namespace
 
 
 
-//  support functions
-
-namespace {
-
-
-
-
-};  //namespace  {
 
 
 
@@ -69,6 +91,20 @@ namespace mtk
 
 namespace prices
 {
+
+
+
+mtk::CountPtr<mtk::Signal<> >   get_signal_too_many_subscriptions_best_prices       (void)
+{
+    static  mtk::CountPtr<mtk::Signal<> >  _signal = mtk::make_cptr(new mtk::Signal<>);
+    return _signal;
+}
+
+mtk::CountPtr<mtk::Signal<>  >  get_signal_too_many_subscriptions_last_ex_mk_ticker (void)
+{
+    static  mtk::CountPtr<mtk::Signal<> >  _signal = mtk::make_cptr(new mtk::Signal<>);
+    return _signal;
+}
 
 
 
@@ -224,6 +260,10 @@ void    internal_price_manager__factory::request_full_prod_info(void)
     }
 }
 
+void decrease_subscriptions_best_prices(void)
+{
+    get_stats().num_best_prices -= 1;
+}
 
 mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> >
 internal_price_manager__factory::get_best_prices_suscrp_handle(void)
@@ -231,6 +271,12 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
     if(h_best_prices.isValid())
         return  h_best_prices;
 
+
+    if(get_stats().num_best_prices > 23)        //  therefore  24 subscriptions
+    {
+        get_signal_too_many_subscriptions_best_prices()->emit();
+        return  h_best_prices;
+    }
 
     MTK_QPID_RECEIVER_CONNECT_THIS__WITH_ADDRESS(
                             h_best_prices,
@@ -240,6 +286,8 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
                             mtk::prices::msg::pub_best_prices,
                             on_price_update);
 
+    get_stats().num_best_prices += 1;
+    h_best_prices->signalBeforeDestroy.connect(decrease_subscriptions_best_prices);
 
     request_full_prod_info();
 
@@ -249,6 +297,10 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
 }
 
 
+void decrease_subscriptions_last_ex_ticker(void)
+{
+    get_stats().num_last_exec_ticker -= 1;
+}
 
 
 mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> >
@@ -258,6 +310,11 @@ internal_price_manager__factory::get_mk_last_ex_ticker_suscrp_handle(void)
         return  h_last_mk_execs_ticker;
 
 
+    if(get_stats().num_last_exec_ticker > 23)        //  therefore lets 24 subscriptions
+    {
+        get_signal_too_many_subscriptions_last_ex_mk_ticker()->emit();
+        return  h_last_mk_execs_ticker;
+    }
 
     MTK_QPID_RECEIVER_CONNECT_THIS__WITH_ADDRESS(
                             h_last_mk_execs_ticker,
@@ -266,6 +323,9 @@ internal_price_manager__factory::get_mk_last_ex_ticker_suscrp_handle(void)
                             mtk::prices::msg::pub_last_mk_execs_ticker::get_in_subject(product_code.market, product_code.product),
                             mtk::prices::msg::pub_last_mk_execs_ticker,
                             on_last_mk_execs_ticker_update);
+
+    get_stats().num_last_exec_ticker += 1;
+    h_best_prices->signalBeforeDestroy.connect(decrease_subscriptions_last_ex_ticker);
 
     request_full_prod_info();
 

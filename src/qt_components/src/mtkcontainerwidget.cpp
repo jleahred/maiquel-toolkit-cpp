@@ -25,7 +25,7 @@ mtk_uTitle::mtk_uTitle(QWidget *parent) :
     this->setMouseTracking(true);
     updateBackground(false);
     //this->setStyleSheet(QLatin1String("background-color: rgba(0, 0, 255, 200);"));
-    this->setStyleSheet(QLatin1String("background-color: rgb(0, 0, 255);"));
+    this->setStyleSheet(QLatin1String("background-color: rgba(0, 0, 255, 150);"));
 
     image_close.load(QLatin1String(":/small_icons/image_close"));
 }
@@ -128,7 +128,7 @@ mtkContainerWidget::mtkContainerWidget(QWidget *parent) :
     QWidget(parent)
 {
     title = new mtk_uTitle(this);
-    title->setGeometry(0,0,160,15);
+    title->setGeometry(0,0,80,22);
     connect(title, SIGNAL(on_mouseMoveEvent(QMouseEvent*)), this, SLOT(title_mouseMoveEvent(QMouseEvent*)));
     connect(title, SIGNAL(on_mousePressEvent(QMouseEvent*)), this, SLOT(title_mousePressEvent(QMouseEvent*)));
     connect(title, SIGNAL(on_mouseReleaseEvent(QMouseEvent*)), this, SLOT(title_mouseReleaseEvent(QMouseEvent*)));

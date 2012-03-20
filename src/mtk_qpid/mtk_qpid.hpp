@@ -644,6 +644,7 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
         {
             try{
                 ++mtk_qpid_stats::num_deleted_suscriptions();
+                signalBeforeDestroy.emit();
             } catch(...){
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));
             }
@@ -651,6 +652,7 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
 
         mtk::nullable<mtk::DateTime>                  depreciated_on;
         CountPtr< Signal<const MESSAGE_TYPE&> >       signalMessage;
+        mtk::Signal<>                                 signalBeforeDestroy;
 
 
 
