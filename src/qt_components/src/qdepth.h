@@ -85,6 +85,8 @@ private slots:
     void make_transparent(void);
     void remove_transparecy(void);
 
+    void slot_delete_component(void);
+
 
 private:
     QTableDeph   *table_widget;

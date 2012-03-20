@@ -11,6 +11,8 @@
 #include <QPainter>
 #include <QPen>
 #include <QVBoxLayout>
+#include <QMessageBox>
+
 
 #include <iostream>
 
@@ -488,6 +490,7 @@ QDepth::QDepth(QWidget *parent) :
 
     action_delete_component = new QAction(tr("delete depth"), this);
     action_delete_component->setShortcut(Qt::Key_Delete);
+    connect(action_delete_component, SIGNAL(triggered()), this, SLOT(slot_delete_component()));
     this->addAction(action_delete_component);
 
 
@@ -503,6 +506,11 @@ QDepth::~QDepth()
 }
 
 
+void QDepth::slot_delete_component(void)
+{
+    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove this depth table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+        this->deleteLater();
+}
 
 void	QDepth::resizeEvent ( QResizeEvent *  event )
 {
