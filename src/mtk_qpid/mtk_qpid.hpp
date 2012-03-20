@@ -567,7 +567,7 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
 
                 try
                 {
-                    MTK_HANDLE_DIV0_INIT
+                    //MTK_HANDLE_DIV0_INIT
                     {
 
                         //  OJO, después de emit no debe accederse a este objeto
@@ -576,7 +576,7 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
                         localcopy_signalMessage->emit(message);
 
                     }
-                    MTK_HANDLE_DIV0_END
+                    //MTK_HANDLE_DIV0_END
                 } catch (const Alarm& alError) {
                     Alarm  qpid_error(
                                 MTK_HERE, "handle_qpid_exchange_receiver",
