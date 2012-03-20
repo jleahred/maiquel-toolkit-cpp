@@ -573,6 +573,7 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
                         //  OJO, después de emit no debe accederse a este objeto
                         //  por si nos lo borran en el proceso del propio emit
                         //  con stop o reescribiéndolo con otro valor
+                        mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_full);
                         localcopy_signalMessage->emit(message);
 
                     }
@@ -695,7 +696,7 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
     std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
     if (mv.find("_cf_") == mv.end())
-        throw mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiverMT<>", "missing control fileds", mtk::alPriorCritic, mtk::alTypeNoPermisions);
+        throw mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiverMT<>", "missing control fields", mtk::alPriorCritic, mtk::alTypeNoPermisions);
     else
     {
         msg::sub_control_fields cf(__internal_get_default((msg::sub_control_fields*)0));
@@ -704,6 +705,13 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
         {
             MESSAGE_TYPE mt(mv);
             mt.__internal_warning_control_fields = &cf;
+
+            if(cf.message_type  ==  "pub_best_prices")
+                mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_bests);
+            else if(cf.message_type  ==  "pub_last_mk_execs_ticker")
+                mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_last);
+            mtk::mtk_qpid_stats::message_received_for_message_size(message.getContentSize(), cf.message_type);
+
             signalMessage->emit(mt);
             MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
                 check_control_fields_flucts(cf.control_fluct_key, cf.sent_date_time);
