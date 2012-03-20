@@ -13,7 +13,7 @@ namespace qtmisc {
 
 QString fn_as_QString(const mtk::FixedNumber& fn)
 {
-    if(fn.GetExt().GetInc() == 0)       return QLatin1String("");
+    if(fn.GetExt().GetInc() == 0)       return QLatin1String(0);
     else    return QLocale::system().toString(fn.GetDouble().get()._0, 'f', fn.GetExt().GetDec());
 }
 

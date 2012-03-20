@@ -189,6 +189,8 @@ QVariant  qmarginal_table_model::data(const QModelIndex &index, int role) const
                         return qtmisc::fn_as_QString(mt.best_prices.Get().bids.level0.price);
                     else if(mt.best_prices.Get().bids.level0.price.GetIntCode() != 0)
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qmarginal2", MTK_SS("price not cero with quantity cero  " << mt.best_prices.Get()), mtk::alPriorError));
+                    else    //  price and quantity == 0
+                        return QLatin1String("");
                 }
                 return QVariant();
             case 3:
@@ -198,8 +200,10 @@ QVariant  qmarginal_table_model::data(const QModelIndex &index, int role) const
                         return qtmisc::fn_as_QString(mt.best_prices.Get().asks.level0.price);
                     else if(mt.best_prices.Get().asks.level0.price.GetIntCode() != 0)
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qmarginal2", MTK_SS("price not cero with quantity cero  " << mt.best_prices.Get()), mtk::alPriorError));
-                    return QVariant();
+                    else
+                        return QLatin1String("");
                 }
+                return QVariant();
             case 4:
                 if(mt.best_prices.HasValue())
                 {
@@ -916,6 +920,7 @@ void QTableMarginal2::request_side(mtk::trd::msg::enBuySell bs)
             quantity= n_best_prices.Get().asks.level0.quantity;
         }
         if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
+        else                              quantity.SetIntCode(-2);        //  means, no price, default quantity
         mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
         mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos);
     }
@@ -1006,6 +1011,7 @@ void QTableMarginal2::request_side_market(mtk::trd::msg::enBuySell bs)
         if(bs == mtk::trd::msg::sell)
             quantity= n_best_prices.Get().asks.level0.quantity;
         if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
+        else                              quantity.SetIntCode(-2);        //  means, no price, no quantity
         mtk::trd::msg::sub_position_mk     pos(quantity, "" /*cli ref*/);
         mtk::trd::trd_cli_ord_book::rq_nw_mk_manual(product_code, bs, pos);
     }

@@ -147,7 +147,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool /*agressive*/, QW
 
     ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
     ui->price->setSingleStep(1./pow(10.,rq.request_pos.price.GetExt().GetDec())*rq.request_pos.price.GetExt().GetInc());
-    if(rq.request_pos.price.GetIntCode()==0  &&  (rq.request_pos.quantity.GetIntCode()==0  || rq.request_pos.quantity.GetIntCode()==-1))
+    if(rq.request_pos.price.GetIntCode()==0  &&  (rq.request_pos.quantity.GetIntCode()==0  || rq.request_pos.quantity.GetIntCode()==-2))
         ui->price->set_empty();
     else
         ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
@@ -252,14 +252,24 @@ bool QEditOrder::check_if_order_can_be_sent(void)
 
     if(rq_ls.HasValue())
     {
-        //  check there are no rounds
-        mtk::FixedNumber  price = rq_ls.Get().request_pos.price;
-        price.SetDouble(ui->price->value());
-        if(price.GetDouble() !=  mtk::Double(ui->price->value()))
+        text = ui->price->text();
+        if(ui->price->validate(text, pos) != QValidator::Acceptable)
         {
             ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
             ui->message->setText(tr("invalid price"));
             result = false;
+        }
+        else
+        {
+            //  check there are no rounds
+            mtk::FixedNumber  price = rq_ls.Get().request_pos.price;
+            price.SetDouble(ui->price->value());
+            if(price.GetDouble() !=  mtk::Double(ui->price->value()))
+            {
+                ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+                ui->message->setText(tr("invalid price"));
+                result = false;
+            }
         }
     }
     /*

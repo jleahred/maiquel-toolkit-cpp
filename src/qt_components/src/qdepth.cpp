@@ -683,7 +683,8 @@ void QDepth::request_side(mtk::trd::msg::enBuySell bs)
             price = price_manager->get_best_prices().Get().asks.level0.price;
             quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
         }
-        quantity.SetIntCode(-1);        //  means, default quantity
+        if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
+        else                              quantity.SetIntCode(-2);        //  means, no price, default quantity
         mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
         mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos);
     }
