@@ -27,8 +27,7 @@ void send_central_keep_alive(void)
     MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(3))
         mtk::admin::msg::pub_central_keep_alive msg(mtk::admin::get_process_info(), mtk::dtSeconds(3), mtk::dtSeconds(5), is_production);
 
-        mtk_send_message("admin_cli", msg);
-        mtk_send_message("admin_srv", msg);
+        mtk_send_message("admin", msg);
     MTK_END_EXEC_MAX_FREC
 }
 
