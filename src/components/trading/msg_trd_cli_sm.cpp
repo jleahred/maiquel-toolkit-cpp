@@ -1386,7 +1386,7 @@ void  copy (sub_position_sm& c, const qpid::types::Variant& v)
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
 
-                    it = mv.find("pri");
+                    it = mv.find("spr");
                     if (it== mv.end())
                         throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field stop_price on message sub_position_sm::__internal_qpid_fill", mtk::alPriorCritic);
                     else
@@ -1420,7 +1420,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_position_sm& 
     a.check_recomended();
 
 //  field_type
-        __internal_add2map(map, a.stop_price, std::string("pri"));
+        __internal_add2map(map, a.stop_price, std::string("spr"));
 //  field_type
         __internal_add2map(map, a.quantity, std::string("qt"));
 //  field_type

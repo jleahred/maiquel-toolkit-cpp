@@ -22,7 +22,7 @@ END_INIT
 
 sub_position_sm   [< >]
 {
-    stop_price  (pri)  :   fix_num
+    stop_price  (spr)  :   fix_num
     quantity    (qt)   :   fix_num
     cli_ref     (clr)  :   string
 }
