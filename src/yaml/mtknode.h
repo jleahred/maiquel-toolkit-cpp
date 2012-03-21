@@ -26,6 +26,7 @@ namespace
     inline mtk::dtTimeQuantity __internal_get_default(mtk::dtTimeQuantity*) { return mtk::dtTimeQuantity(mtk::dtHours(0), mtk::dtMinutes(0), mtk::dtSeconds(0), mtk::dtMilliseconds(0)); }
     inline bool __internal_get_default(bool*) {  return false; }
     inline int __internal_get_default(int*) { return 0;  }
+    inline int16_t __internal_get_default(int16_t*) { return 0;  }
 
     template<typename T>
     mtk::list<T>  __internal_get_default(mtk::list<T>*)
@@ -36,7 +37,7 @@ namespace
 
 namespace YAML
 {
-    
+
 	template <typename T>
 	inline void operator >> (const Node& node, mtk::list<T>& l)
 	{
@@ -57,8 +58,8 @@ namespace YAML
 		for(unsigned i=0;i<node.size();++i)
 			node[i] >> v[i];
 	}
-	
-	
+
+
 	template <typename K, typename V>
 	inline void operator >> (const Node& node, mtk::map<K, V>& m)
 	{
@@ -80,9 +81,9 @@ namespace YAML
 //            m.insert(std::make_pair(k,v));
 //		}
 	}
-    
+
     template <typename T>
-    inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv) 
+    inline void  operator >> (const YAML::Node& n, mtk::nullable <T>& nv)
     {
         if(n.size()!=0)
         {
@@ -102,7 +103,7 @@ namespace YAML
         YAML::Node doc;
         parser.GetNextDocument(doc);
         doc >> result;
-        
+
         return result;
     }
 

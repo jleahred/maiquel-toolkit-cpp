@@ -48,6 +48,22 @@ pub_best_prices [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.mark
     orig_control_fluct  (ocf)   :   mtk::msg::sub_control_fluct
 }
 
+pbc [< QE:PRICES.${market}, SUBJ:PC.${product}  >]
+{
+    market              (mk)    :  string
+    product             (pr)    :  string
+
+    dec_incr            (di)    :  int16
+    best_bid            (bb)    :  int32
+    best_ask            (ba)    :  int32
+    depth_prices        (dp)    :  int32
+    [depth_quantities]  (dq)    :  int32
+
+    //  fluct control
+    key                 (k)     :  string
+    datetime            (dt)    :  date_time
+}
+
 
 pub_new_products [< QE:CLI_MK, SUBJ:CLI.ALL.${market}.NP  >]
 {

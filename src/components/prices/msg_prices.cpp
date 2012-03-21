@@ -482,6 +482,27 @@ void pub_best_prices::before_send(void) const
 
 
 
+pbc::pbc (   const std::string&  _market,   const std::string&  _product,   const int16_t&  _dec_incr,   const int32_t&  _best_bid,   const int32_t&  _best_ask,   const int32_t&  _depth_prices,   const mtk::list<int32_t >&  _depth_quantities,   const std::string&  _key,   const mtk::DateTime&  _datetime)
+    :     market(_market),   product(_product),   dec_incr(_dec_incr),   best_bid(_best_bid),   best_ask(_best_ask),   depth_prices(_depth_prices),   depth_quantities(_depth_quantities),   key(_key),   datetime(_datetime) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  pbc::check_recomended(void) const
+{
+
+}
+
+void pbc::before_send(void) const
+{
+
+}
+
+
+
+
 pub_new_products::pub_new_products (   const std::string&  _market)
     :     market(_market) 
        , __internal_warning_control_fields(0)
@@ -806,6 +827,46 @@ void  operator >> (const YAML::Node& node, pub_best_prices & c)
         node["product_code"]  >> c.product_code;
         node["best_prices"]  >> c.best_prices;
         node["orig_control_fluct"]  >> c.orig_control_fluct;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const pbc & c)
+{
+    o << "{ "
+
+        << "market:"<<   c.market << "  "        << "product:"<<   c.product << "  "        << "dec_incr:"<<   c.dec_incr << "  "        << "best_bid:"<<   c.best_bid << "  "        << "best_ask:"<<   c.best_ask << "  "        << "depth_prices:"<<   c.depth_prices << "  "        << "depth_quantities:"<<   c.depth_quantities << "  "        << "key:"<<   c.key << "  "        << "datetime:"<<   c.datetime << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const pbc & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "market"  << YAML::Value <<   c.market        << YAML::Key << "product"  << YAML::Value <<   c.product        << YAML::Key << "dec_incr"  << YAML::Value <<   c.dec_incr        << YAML::Key << "best_bid"  << YAML::Value <<   c.best_bid        << YAML::Key << "best_ask"  << YAML::Value <<   c.best_ask        << YAML::Key << "depth_prices"  << YAML::Value <<   c.depth_prices        << YAML::Key << "depth_quantities"  << YAML::Value <<   c.depth_quantities        << YAML::Key << "key"  << YAML::Value <<   c.key        << YAML::Key << "datetime"  << YAML::Value <<   c.datetime
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, pbc & c)
+{
+
+
+        node["market"]  >> c.market;
+        node["product"]  >> c.product;
+        node["dec_incr"]  >> c.dec_incr;
+        node["best_bid"]  >> c.best_bid;
+        node["best_ask"]  >> c.best_ask;
+        node["depth_prices"]  >> c.depth_prices;
+        node["depth_quantities"]  >> c.depth_quantities;
+        node["key"]  >> c.key;
+        node["datetime"]  >> c.datetime;
 
 
 };
@@ -1167,6 +1228,18 @@ bool operator!= (const pub_best_prices& a, const pub_best_prices& b)
 
 
 
+bool operator== (const pbc& a, const pbc& b)
+{
+    return (          a.market ==  b.market  &&          a.product ==  b.product  &&          a.dec_incr ==  b.dec_incr  &&          a.best_bid ==  b.best_bid  &&          a.best_ask ==  b.best_ask  &&          a.depth_prices ==  b.depth_prices  &&          a.depth_quantities ==  b.depth_quantities  &&          a.key ==  b.key  &&          a.datetime ==  b.datetime  &&   true  );
+};
+
+bool operator!= (const pbc& a, const pbc& b)
+{
+    return !(a==b);
+};
+
+
+
 bool operator== (const pub_new_products& a, const pub_new_products& b)
 {
     return (          a.market ==  b.market  &&   true  );
@@ -1511,6 +1584,127 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& 
 
 
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_best_prices>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+void  copy (pbc& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("mk");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.market, it->second);
+                        //c.market = it->second;
+//   field_type
+
+                    it = mv.find("pr");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.product, it->second);
+                        //c.product = it->second;
+//   field_type
+
+                    it = mv.find("di");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field dec_incr on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.dec_incr, it->second);
+                        //c.dec_incr = it->second;
+//   field_type
+
+                    it = mv.find("bb");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field best_bid on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.best_bid, it->second);
+                        //c.best_bid = it->second;
+//   field_type
+
+                    it = mv.find("ba");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field best_ask on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.best_ask, it->second);
+                        //c.best_ask = it->second;
+//   field_type
+
+                    it = mv.find("dp");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field depth_prices on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.depth_prices, it->second);
+                        //c.depth_prices = it->second;
+//   field_type
+
+                    it = mv.find("dq");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field depth_quantities on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.depth_quantities, it->second);
+                        //c.depth_quantities = it->second;
+//   field_type
+
+                    it = mv.find("k");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field key on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.key, it->second);
+                        //c.key = it->second;
+//   field_type
+
+                    it = mv.find("dt");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field datetime on message pbc::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.datetime, it->second);
+                        //c.datetime = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const pbc& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  field_type
+        __internal_add2map(map, a.market, std::string("mk"));
+//  field_type
+        __internal_add2map(map, a.product, std::string("pr"));
+//  field_type
+        __internal_add2map(map, a.dec_incr, std::string("di"));
+//  field_type
+        __internal_add2map(map, a.best_bid, std::string("bb"));
+//  field_type
+        __internal_add2map(map, a.best_ask, std::string("ba"));
+//  field_type
+        __internal_add2map(map, a.depth_prices, std::string("dp"));
+//  field_type
+        __internal_add2map(map, a.depth_quantities, std::string("dq"));
+//  field_type
+        __internal_add2map(map, a.key, std::string("k"));
+//  field_type
+        __internal_add2map(map, a.datetime, std::string("dt"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pbc>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -2094,6 +2288,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
 {
@@ -2110,6 +2305,53 @@ qpid::messaging::Message pub_best_prices::qpidmsg_codded_as_qpid_message (const 
 //  sub_msg_type
 //        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
         __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
+
+
+    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
+    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
+    __internal_add2map(content, control_fields, std::string("_cf_"));
+
+    
+    qpid::messaging::encode(content, __message);
+    return __message;
+};
+
+
+
+
+qpid::messaging::Message pbc::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+{
+    qpid::messaging::Message __message;
+    qpid::types::Variant::Map content;
+
+
+//  field_type
+//        content["mk"] = this->market;
+        __internal_add2map(content, this->market, std::string("mk"));
+//  field_type
+//        content["pr"] = this->product;
+        __internal_add2map(content, this->product, std::string("pr"));
+//  field_type
+//        content["di"] = this->dec_incr;
+        __internal_add2map(content, this->dec_incr, std::string("di"));
+//  field_type
+//        content["bb"] = this->best_bid;
+        __internal_add2map(content, this->best_bid, std::string("bb"));
+//  field_type
+//        content["ba"] = this->best_ask;
+        __internal_add2map(content, this->best_ask, std::string("ba"));
+//  field_type
+//        content["dp"] = this->depth_prices;
+        __internal_add2map(content, this->depth_prices, std::string("dp"));
+//  field_type
+//        content["dq"] = this->depth_quantities;
+        __internal_add2map(content, this->depth_quantities, std::string("dq"));
+//  field_type
+//        content["k"] = this->key;
+        __internal_add2map(content, this->key, std::string("k"));
+//  field_type
+//        content["dt"] = this->datetime;
+        __internal_add2map(content, this->datetime, std::string("dt"));
 
 
     mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
@@ -2276,6 +2518,30 @@ qpid::messaging::Message res_product_info::qpidmsg_codded_as_qpid_message (const
             );
     }
     
+    pbc  __internal_get_default(pbc*)
+    {
+        return pbc(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((int16_t*)0),
+//   field_type
+   __internal_get_default ((int32_t*)0),
+//   field_type
+   __internal_get_default ((int32_t*)0),
+//   field_type
+   __internal_get_default ((int32_t*)0),
+//   field_type
+   __internal_get_default ((mtk::list<int32_t >*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0)
+            );
+    }
+    
     pub_new_products  __internal_get_default(pub_new_products*)
     {
         return pub_new_products(
@@ -2436,6 +2702,30 @@ pub_best_prices::pub_best_prices (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+pbc::pbc (const qpid::types::Variant::Map&  mv)
+    :  //   field_type
+   market(__internal_get_default((std::string*)0)),
+//   field_type
+   product(__internal_get_default((std::string*)0)),
+//   field_type
+   dec_incr(__internal_get_default((int16_t*)0)),
+//   field_type
+   best_bid(__internal_get_default((int32_t*)0)),
+//   field_type
+   best_ask(__internal_get_default((int32_t*)0)),
+//   field_type
+   depth_prices(__internal_get_default((int32_t*)0)),
+//   field_type
+   depth_quantities(__internal_get_default((mtk::list<int32_t >*)0)),
+//   field_type
+   key(__internal_get_default((std::string*)0)),
+//   field_type
+   datetime(__internal_get_default((mtk::DateTime*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
 pub_new_products::pub_new_products (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    market(__internal_get_default((std::string*)0)) 
@@ -2548,6 +2838,22 @@ mtk::t_qpid_filter  pub_best_prices::get_in_subject (const std::string& product_
     mtk::t_qpid_address  pub_best_prices::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("PRICES." << this->product_code.market << ""));
+    }
+    mtk::t_qpid_filter  pbc::get_in_subject (const std::string& product)
+    {
+        return mtk::t_qpid_filter(MTK_SS("PC." << product << ""));
+    }
+    mtk::t_qpid_filter  pbc::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("PC." << this->product << ""));
+    }
+    /*static*/  mtk::t_qpid_address  pbc::static_get_qpid_address (const std::string& market)
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << market << ""));
+    }
+    mtk::t_qpid_address  pbc::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << this->market << ""));
     }
     mtk::t_qpid_filter  pub_new_products::get_in_subject (const std::string& market)
     {
