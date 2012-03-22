@@ -1,0 +1,52 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= Test republic prices
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2012-03-22
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This is a very simple and small process
+* This process will receive prices from a source and it will republish using price contention
+* Prices contention has to be configured to send messages to other place in order to avoid conficts with original publications
++
+
+* The full source code of this process is...
++
+.main.cpp
+[source,{cpp}]
+----
+include::main.cpp[]
+----
+
+
+
+== Document modifications
+* Non aply
