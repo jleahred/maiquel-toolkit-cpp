@@ -7,6 +7,7 @@
 #include "components/prices/msg_prices.h"
 #include "components/prices/msg_ps_prices.h"
 #include "components/admin/admin.h"
+#include "components/prices/prices_publication.h"
 
 
 #include "msg_config_data.h"
@@ -623,8 +624,9 @@ void orders_in_product_queue::check_execs(const mtk::msg::sub_product_code& prod
 
             //  send mk execs ticker
             mtk::prices::msg::sub_last_mk_execs_ticker  sub_last_mk_execs_ticker(exec_price, exec_quantity, exec_price, exec_price, exec_price);
-            mtk::prices::msg::pub_last_mk_execs_ticker  mk_execs_ticker(product_code, sub_last_mk_execs_ticker, mtk::msg::sub_control_fluct("EMARKET.PRC", mtk::dtNowLocal()));
-            mtk_send_message("server", mk_execs_ticker);
+            //mtk::prices::msg::pub_last_mk_execs_ticker  mk_execs_ticker(product_code, sub_last_mk_execs_ticker, mtk::msg::sub_control_fluct("EMARKET.PRC", mtk::dtNowLocal()));
+            //mtk_send_message("server", mk_execs_ticker);
+            mtk::prices::publ::send_last_exec_ticker (product_code, sub_last_mk_execs_ticker);
 
             if (exec_quantity.GetDouble() == mtk::Double(0.))
             {
@@ -714,13 +716,6 @@ mtk::prices::msg::sub_full_product_info    get_emtpy_sub_full_product_info   (co
 */
 
 
-template<typename T>
-void send_prices (const T& mtk_msg)
-{
-    mtk_send_message("client", mtk_msg);
-    std::cout << mtk::dtNowLocal() <<"  updated prices " << mtk_msg.get_message_type_as_string() <<  std::endl;
-}
-
 
 
 void fill_side (const mtk::list<mtk::CountPtr<ord_ls> >& xxx_queue, mtk::prices::msg::sub_price_deph5& deph2fill)
@@ -757,7 +752,8 @@ void orders_in_product_queue::update_prices(const mtk::msg::sub_product_code& pr
     fill_side(bid_queue, pub_best_prices.best_prices.bids);
     fill_side(ask_queue, pub_best_prices.best_prices.asks);
 
-    send_prices(pub_best_prices);
+    //send_prices(pub_best_prices);
+    mtk::prices::publ::send_best_prices(product_code, pub_best_prices.best_prices);
 }
 
 

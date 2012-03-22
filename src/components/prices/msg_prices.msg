@@ -48,6 +48,13 @@ pub_best_prices [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.mark
     orig_control_fluct  (ocf)   :   mtk::msg::sub_control_fluct
 }
 
+pub_best_prices_pr [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.market}.${product_code.product}.PR  >]
+{
+    product_code        (pc)    :   mtk::msg::sub_product_code
+    best_prices         (bp)    :   sub_best_prices
+    orig_control_fluct  (ocf)   :   mtk::msg::sub_control_fluct
+}
+
 pbc [< QE:PRICES.${market}, SUBJ:PC.${product}  >]
 {
     market              (mk)    :  string
@@ -114,6 +121,16 @@ sub_last_mk_execs_ticker [< >]
 //---------------------------------------------------------------------
 
 pub_last_mk_execs_ticker [< QE:PRICES.${product_code.market}, SUBJ:EXTK.${product_code.market}.${product_code.product}  >]
+{
+    product_code         (pc)    :   mtk::msg::sub_product_code
+
+
+    last_mk_execs_ticker (lme)   :   sub_last_mk_execs_ticker
+
+    orig_control_fluct   (ocf)   :   mtk::msg::sub_control_fluct
+}
+
+pub_last_mk_execs_ticker_pr [< QE:PRICES.${product_code.market}, SUBJ:EXTK.${product_code.market}.${product_code.product}.PR  >]
 {
     product_code         (pc)    :   mtk::msg::sub_product_code
 
