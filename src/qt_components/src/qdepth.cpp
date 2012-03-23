@@ -904,28 +904,18 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_lift_the_offer);
     menu.addAction(action_hit_the_bid);
 
-    if(mtk::admin::is_production() == false)
-    {
-        menu.addSeparator();
-        QMenu sub_menu_market_orders(this);
-        sub_menu_market_orders.setTitle(tr("Market orders"));
-        sub_menu_market_orders.addAction(action_buy_market);
-        sub_menu_market_orders.addAction(action_sell_market);
-        menu.addMenu(&sub_menu_market_orders);
-    }
-
     mtk::msg::sub_product_code product_code (price_manager->get_product_code());
     if(product_code.market == "EU"  ||  product_code.market == "MARKET")
     {
+        menu.addSeparator();
         if(mtk::admin::is_production() == false)
         {
-            menu.addSeparator();
             menu.addAction(action_buy_market);
             menu.addAction(action_sell_market);
 
-            menu.addAction(action_buy_stop_market);
-            menu.addAction(action_sell_stop_market);
         }
+        menu.addAction(action_buy_stop_market);
+        menu.addAction(action_sell_stop_market);
     }
 
     //menu.addSeparator();

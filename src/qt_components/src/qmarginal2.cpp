@@ -871,9 +871,9 @@ void QTableMarginal2::contextMenuEvent ( QContextMenuEvent * event )
 
     if(product_code.market == "EU"  ||  product_code.market == "MARKET")
     {
+        menu.addSeparator();
         if(mtk::admin::is_production() == false)
         {
-            menu.addSeparator();
             menu.addAction(action_buy_market);
             menu.addAction(action_sell_market);
 
@@ -1243,7 +1243,10 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QMarginal2& m)
 void             operator >> (const YAML::Node&   node,       QMarginal2& m)
 {
     node["component"] >> static_cast<mtkContainerWidget&>(m);
-    node["QTableMarginal2"] >>  (*m.table_marginals);
+    if(node.FindValue("qtablemarginal"))
+        node["qtablemarginal"] >>  (*m.table_marginals);
+    else if(node.FindValue("QTableMarginal2"))
+        node["QTableMarginal2"] >>  (*m.table_marginals);
 }
 
 

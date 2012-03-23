@@ -209,15 +209,8 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_SM& rq, bool /*agressive*/, QW
     else
         ui->stop_price->setValue(rq.request_pos.stop_price.GetDouble().get()._0);
 
-    if(ui->stop_price->is_empty() == false)
-    {
-        ui->quantity->setFocus();
-        ui->quantity->selectAll();
-    }
-    else
-    {
-        ui->stop_price->setFocus();
-    }
+    ui->stop_price->setFocus();
+    ui->stop_price->selectAll();
     this->adjustSize();
 }
 
