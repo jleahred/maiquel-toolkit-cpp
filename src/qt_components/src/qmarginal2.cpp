@@ -877,9 +877,9 @@ void QTableMarginal2::contextMenuEvent ( QContextMenuEvent * event )
             menu.addAction(action_buy_market);
             menu.addAction(action_sell_market);
 
-            menu.addAction(action_buy_stop_market);
-            menu.addAction(action_sell_stop_market);
         }
+        menu.addAction(action_buy_stop_market);
+        menu.addAction(action_sell_stop_market);
     }
 
     menu.addSeparator();
@@ -1034,6 +1034,48 @@ void QTableMarginal2::request_sell_market(void)
 
 
 
+void QTableMarginal2::request_side_stop_market(mtk::trd::msg::enBuySell bs)
+{
+    mtk::msg::sub_product_code product_code = this->get_current_product_code();
+    if (mtk::msg::is_valid(product_code)==false)      return;
+
+    //  proposed price
+    mtk::nullable<mtk::prices::msg::sub_best_prices>   n_best_prices = this->marginal_table_model->get_marginal(this->currentIndex().row())->best_prices;
+    if(n_best_prices.HasValue() == false)
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "marginal", "on request_side_stop_market   best prices is null", mtk::alPriorError));
+    else
+    {
+        mtk::FixedNumber price(n_best_prices.Get().bids.level0.price);
+        mtk::FixedNumber quantity(n_best_prices.Get().bids.level0.quantity);
+        if(bs == mtk::trd::msg::sell)
+        {
+            price = n_best_prices.Get().asks.level0.price;
+            quantity= n_best_prices.Get().asks.level0.quantity;
+        }
+        if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
+        else                              quantity.SetIntCode(-2);        //  means, no price, default quantity
+
+        mtk::trd::msg::sub_position_sm     pos(price, quantity,  "" /*cli ref*/);
+        mtk::trd::trd_cli_ord_book::rq_nw_sm_manual(product_code, bs, pos);
+    }
+}
+
+
+void QTableMarginal2::request_buy_stop_market(void)
+{
+    paint_delegate->keep_focus_paint(true);
+    request_side_stop_market(mtk::trd::msg::buy);
+    paint_delegate->keep_focus_paint(false);
+}
+
+void QTableMarginal2::request_sell_stop_market(void)
+{
+    paint_delegate->keep_focus_paint(true);
+    request_side_stop_market(mtk::trd::msg::sell);
+    paint_delegate->keep_focus_paint(false);
+}
+
+
 
 
 
@@ -1068,8 +1110,10 @@ void QTableMarginal2::disable_trading_actions(void)
             action_sell->setEnabled(false);
             action_hit_the_bid->setEnabled(false);
             action_lift_the_offer->setEnabled(false);
-            action_sell_market->setEnabled(false);
             action_buy_market->setEnabled(false);
+            action_sell_market->setEnabled(false);
+            action_buy_stop_market->setEnabled(false);
+            action_sell_stop_market->setEnabled(false);
             action_remove_product->setEnabled(false);
         }
     }
@@ -1083,8 +1127,10 @@ void QTableMarginal2::enable_trading_actions(void)
         action_sell->setEnabled(true);
         action_hit_the_bid->setEnabled(true);
         action_lift_the_offer->setEnabled(true);
-        action_sell_market->setEnabled(true);
         action_buy_market->setEnabled(true);
+        action_sell_market->setEnabled(true);
+        action_buy_stop_market->setEnabled(true);
+        action_sell_stop_market->setEnabled(true);
         action_remove_product->setEnabled(true);
     }
 }

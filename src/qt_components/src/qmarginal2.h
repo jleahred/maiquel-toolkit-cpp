@@ -182,6 +182,12 @@ private slots:
     void request_sell_market(void);
     void request_side_market(mtk::trd::msg::enBuySell bs);
 
+    void request_buy_stop_market(void);
+    void request_sell_stop_market(void);
+    void request_side_stop_market(mtk::trd::msg::enBuySell bs);
+
+
+
     void slot_remove_current_row(void);
     void slot_sectionMoved ( int logicalIndex, int oldVisualIndex, int newVisualIndex );
 

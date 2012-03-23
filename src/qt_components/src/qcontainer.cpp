@@ -13,7 +13,6 @@
 
 
 #include "qt_components/src/qdepth.h"
-#include "qt_components/src/qmarginal.h"
 #include "qt_components/src/qmarginal2.h"
 #include "qt_components/src/qalarm_price.h"
 
@@ -35,18 +34,6 @@ qContainer::qContainer(QWidget *parent) :
 }
 
 
-QMarginal*  qContainer::insert_qmarginal(void)
-{
-    QMarginal* marginals= new QMarginal(this->widget());
-    connect(marginals, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
-    marginals->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
-    ++counter_insertions;
-    counter_insertions %= 6;
-    marginals->show();
-    marginals->setFocus();
-
-    return marginals;
-}
 
 
 QMarginal2*  qContainer::insert_qmarginal2(void)
@@ -101,19 +88,6 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qContainer& m)
 
 
 
-        out << YAML::Key  << "tables_marginal"  << YAML::Value
-                                                << YAML::BeginSeq;
-        for(int i=0; i<m.widget()->children().count(); ++i)
-        {
-            QMarginal* marginal = dynamic_cast<QMarginal*>(m.widget()->children().at(i));
-            if(marginal!=0)
-                out << *marginal;
-        }
-        out << YAML::EndSeq;
-
-
-
-
         out << YAML::Key  << "tables_marginal2"  << YAML::Value
                                                 << YAML::BeginSeq;
         for(int i=0; i<m.widget()->children().count(); ++i)
@@ -164,8 +138,8 @@ void     operator>> (const YAML::Node & node   , qContainer& c)
     {
         for(unsigned i=0; i<node["tables_marginal"].size(); ++i)
         {
-            QMarginal* marginal = c.insert_qmarginal();
-            node["tables_marginal"][i] >>  *marginal;
+            QMarginal2* compo = c.insert_qmarginal2();
+            node["tables_marginal"][i] >>  *compo;
         }
     }
 
