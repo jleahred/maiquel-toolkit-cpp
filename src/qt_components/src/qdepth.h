@@ -85,7 +85,7 @@ private slots:
     void make_transparent(void);
     void remove_transparecy(void);
 
-    void slot_delete_component(void);
+    //void slot_delete_component(void);
 
 
 private:
@@ -125,7 +125,7 @@ private:
     QAction* action_buy_stop_market;
     QAction* action_sell_stop_market;
 
-    QAction* action_delete_component;
+    //QAction* action_delete_component;
 
     bool showing_menu;
     void disable_actions(void);

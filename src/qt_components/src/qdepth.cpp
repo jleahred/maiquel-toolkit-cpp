@@ -316,7 +316,7 @@ QDepth::QDepth(QWidget *parent) :
     action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
     action_buy_market(0), action_sell_market(0),
     action_buy_stop_market(0), action_sell_stop_market(0),
-    action_delete_component(0),
+    //action_delete_component(0),
     showing_menu(false),
     keep_paint_focus(false)
 {
@@ -487,12 +487,12 @@ QDepth::QDepth(QWidget *parent) :
     connect(action_sell_stop_market, SIGNAL(triggered()), this, SLOT(request_sell_stop_market()));
     this->addAction(action_sell_stop_market);
 
-
+    /*
     action_delete_component = new QAction(tr("delete depth"), this);
     action_delete_component->setShortcut(Qt::Key_Delete);
     connect(action_delete_component, SIGNAL(triggered()), this, SLOT(slot_delete_component()));
     this->addAction(action_delete_component);
-
+    */
 
     this->disable_actions();
     remove_focus();
@@ -505,12 +505,13 @@ QDepth::~QDepth()
 {
 }
 
-
+/*
 void QDepth::slot_delete_component(void)
 {
     if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove this depth table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
         this->deleteLater();
 }
+*/
 
 void	QDepth::resizeEvent ( QResizeEvent *  event )
 {
@@ -927,8 +928,8 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
         }
     }
 
-    menu.addSeparator();
-    menu.addAction(action_delete_component);
+    //menu.addSeparator();
+    //menu.addAction(action_delete_component);
 
 
     //  permisions
@@ -1016,7 +1017,7 @@ void QDepth::disable_trading_actions(void)
             action_sell_market->setEnabled(false);
             action_buy_stop_market->setEnabled(false);
             action_sell_stop_market->setEnabled(false);
-            action_delete_component->setEnabled(false);
+            //action_delete_component->setEnabled(false);
         }
     }
 }
@@ -1033,7 +1034,7 @@ void QDepth::enable_trading_actions(void)
         action_sell_market->setEnabled(true);
         action_buy_stop_market->setEnabled(true);
         action_sell_stop_market->setEnabled(true);
-        action_delete_component->setEnabled(true);
+        //action_delete_component->setEnabled(true);
     }
 }
 
