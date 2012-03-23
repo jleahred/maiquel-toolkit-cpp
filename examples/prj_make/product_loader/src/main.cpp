@@ -49,8 +49,8 @@ namespace
         mtk::admin::register_command("pl",          "unlock",                "I will response again", true)->connect(command_unlock);
         mtk::admin::register_command("__GLOBAL__",  "status",                "Info about my current status")->connect(command_status);
         mtk::admin::register_command("pl",          "status",                "Info about my current status")->connect(command_status);
-        mtk::admin::register_command("pl",          "set_frec_activity",     "<new_frec>  Configure the frecuency to check activity", true)->connect(command_set_frecuency);
-        mtk::admin::register_command("pl",          "set_frec_activity_prov","<new_frec> <for_time> Configure the frecuency to check activity for a period of time")->connect(command_set_frecuency_provisional);
+        mtk::admin::register_command("pl",          "set_frec_activity",     "<market>  <new_frec>  Configure the frecuency to check activity", true)->connect(command_set_frecuency);
+        mtk::admin::register_command("pl",          "set_frec_activity_prov","<market>  <new_frec> <for_time> Configure the frecuency to check activity for a period of time")->connect(command_set_frecuency_provisional);
         mtk::admin::register_command("pl",          "get_activity_config",   "show all activity configurations")->connect(command_get_activity_config);
     }
 
@@ -573,6 +573,15 @@ void check_inactivity(void)
         mtk::map<std::string, market_info >::iterator  it = map_market_info.begin();
         for( ; it!= map_market_info.end(); ++it)
         {
+            MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(1), A)
+                if(it->second.ends <  mtk::dtToday_0Time())
+                {
+                    init_map_market_info();
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_inactivity", "possible change of day, calling  init_map_market_info", mtk::alPriorWarning));
+                    return;
+                }
+            MTK_END_EXEC_MAX_FREC
+
             if(it->second.get_check_interval() > mtk::dtSeconds(1))
             {
                 if(it->second.ends  -  it->second.starts   < mtk::dtHours(2))
