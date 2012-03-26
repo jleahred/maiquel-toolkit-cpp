@@ -113,8 +113,11 @@ void QEditOrder::common_init(const RQ_TYPE& rq)
         configure_default_field =  tr("you can configure default qty with dblclick on qty label");
     if(rq.request_pos.quantity.GetIntCode() <= 0)
     {
-        QLatin1String default_q (s_default_qty.Get().c_str());
-        if(default_q == ""  ||  default_q == "~")
+        QString default_q;
+        if(s_default_qty.HasValue())
+            default_q = QLatin1String(s_default_qty.Get().c_str());
+
+        if(default_q == QLatin1String("")  ||  default_q == QLatin1String("~"))
             ui->quantity->set_empty();
         else
             ui->quantity->setValue(QString(default_q).toDouble());

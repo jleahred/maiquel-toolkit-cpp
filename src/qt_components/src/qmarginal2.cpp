@@ -233,9 +233,15 @@ QVariant  qmarginal_table_model::data(const QModelIndex &index, int role) const
                 }
                 return QVariant();
             case 8:
-                return mt.var;
+                if(mt.last_mk_execs_ticker.HasValue()  &&  mt.last_mk_execs_ticker.Get().last_quantity.GetIntCode() != 0)
+                {
+                    return mt.var;
+                }
             case 9:
-                return mt.percent_var;
+                if(mt.last_mk_execs_ticker.HasValue()  &&  mt.last_mk_execs_ticker.Get().last_quantity.GetIntCode() != 0)
+                {
+                    return mt.percent_var;
+                }
             }
 
         }

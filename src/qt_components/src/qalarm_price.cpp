@@ -390,9 +390,12 @@ void  marginal_in_table_alarm::set_activated(void)
     }
 
     mtk::Double  dconfigured_last = QLocale::system().toDouble(tw_last_configured->text());
-    mtk::Double abs_var =fabs(((n_last_mk_execs_ticker.Get().last_price.GetDouble()).get2() - dconfigured_last.get2()) / dconfigured_last.get2());
-    if(abs_var > mtk::Double(0.2))
+    mtk::FixedNumber  _100_units = price_manager->get_last_mk_execs_ticker().Get().last_price;
+    _100_units.SetIntCode(100);     //  this means 100 ticks
+    mtk::Double abs_var =fabs(((n_last_mk_execs_ticker.Get().last_price.GetDouble()).get2() - dconfigured_last.get2()) / _100_units.GetDouble().get2());
+    if(abs_var > mtk::Double(0.3))
     {
+        std::cout << abs_var  << std::endl;
         tw_product->setCheckState(Qt::Unchecked);
         QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Configured price too far  ") +
                                             QLatin1String(MTK_SS(n_last_mk_execs_ticker.Get().last_price.GetDouble() << " " << QLocale::system().toDouble(tw_last_configured->text())).c_str()), QMessageBox::Ok);
