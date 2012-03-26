@@ -325,7 +325,7 @@ internal_price_manager__factory::get_mk_last_ex_ticker_suscrp_handle(void)
                             on_last_mk_execs_ticker_update);
 
     get_stats().num_last_exec_ticker += 1;
-    h_best_prices->signalBeforeDestroy.connect(decrease_subscriptions_last_ex_ticker);
+    h_last_mk_execs_ticker->signalBeforeDestroy.connect(decrease_subscriptions_last_ex_ticker);
 
     request_full_prod_info();
 
