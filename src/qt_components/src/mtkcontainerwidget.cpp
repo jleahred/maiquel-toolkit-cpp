@@ -45,9 +45,11 @@ void mtk_uTitle::mousePressEvent(QMouseEvent* event)
     //if (event->pos().x()  >  this->width()-image_close.width())
         //dynamic_cast<mtkContainerWidget*>(this->parent())->close();
         if(QMessageBox::warning(this->parentWidget(), QLatin1String("CimdTrade"), tr("Do you want to remove the component?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+        {
+            event->accept(); // do not propagate
             dynamic_cast<mtkContainerWidget*>(this->parent())->deleteLater();
-        else
-            return;
+        }
+        return;
     }
     moving = true;
     updateBackground(true);
