@@ -333,11 +333,11 @@ void qmarginal_table_model::insert(const mtk::msg::sub_product_code &product_cod
 
 void qmarginal_table_model::remove_row(int id)
 {
-    size_t located_row = -1;
+    int located_row = -1;
     for(unsigned i=0; i<marginals.size()-1; ++i)
     {
         if(marginals[i]->id == id)
-            located_row = i;
+            located_row = int(i);
         if(located_row > -1)
             marginals[i] = marginals[i+1];
     }

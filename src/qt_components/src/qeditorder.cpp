@@ -60,7 +60,6 @@ void QEditOrder::common_init(const RQ_TYPE& rq)
     ui->label_stop_price->setVisible(false);
     ui->stop_price->setVisible(false);
 
-    this->setWindowTitle(tr("Edit Limit Order"));
     if(last_pos.x() != 0    ||    last_pos.y()!=0)
         this->move(normalize_pos());
 
@@ -68,11 +67,6 @@ void QEditOrder::common_init(const RQ_TYPE& rq)
     QFont font(this->font());
     font.setPixelSize(qtmisc::get_base_font_size()+2);
     this->setFont(font);
-
-    if (rq.invariant.side == mtk::trd::msg::buy)
-        ui->side->setText(tr("buy"));
-    else
-        ui->side->setText(tr("sell"));
 
     ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));
     ui->product->setText(QLatin1String(rq.invariant.product_code.product.c_str()));
@@ -130,9 +124,7 @@ void QEditOrder::common_init(const RQ_TYPE& rq)
     if(configure_default_field!=QLatin1String(""))
         ui->message->setText(configure_default_field);
 
-    this->adjustSize();
     register_event_filters();
-
 }
 
 
@@ -157,6 +149,12 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_LS& rq, bool /*agressive*/, QW
 
     common_init(rq);
 
+    this->setWindowTitle(tr("Edit Limit Order"));
+    if (rq.invariant.side == mtk::trd::msg::buy)
+        ui->side->setText(tr("buy"));
+    else
+        ui->side->setText(tr("sell"));
+
     if(ui->price->is_empty() == false)
     {
         ui->quantity->setFocus();
@@ -179,6 +177,12 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_MK& rq, bool /*agressive*/, QW
 
     common_init(rq);
 
+    this->setWindowTitle(tr("Edit MARKET order"));
+    if (rq.invariant.side == mtk::trd::msg::buy)
+        ui->side->setText(tr("MARKET  buy"));
+    else
+        ui->side->setText(tr("MARKET  sell"));
+
     ui->price->setVisible(false);
     ui->price->setEnabled(false);
     ui->label_price->setVisible(false);
@@ -196,6 +200,12 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_SM& rq, bool /*agressive*/, QW
     ui->setupUi(this);
 
     common_init(rq);
+
+    this->setWindowTitle(tr("Edit STOP order"));
+    if (rq.invariant.side == mtk::trd::msg::buy)
+        ui->side->setText(tr("STOP  buy"));
+    else
+        ui->side->setText(tr("STOP  sell"));
 
     ui->price->setVisible(false);
     ui->price->setEnabled(false);

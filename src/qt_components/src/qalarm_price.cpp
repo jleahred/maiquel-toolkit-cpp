@@ -389,6 +389,7 @@ void  marginal_in_table_alarm::set_activated(void)
         return;
     }
 
+    /*
     mtk::Double  dconfigured_last = QLocale::system().toDouble(tw_last_configured->text());
     mtk::FixedNumber  last = price_manager->get_last_mk_execs_ticker().Get().last_price;
     mtk::FixedNumber  limit (last + mtk::fnTicks(80));
@@ -402,6 +403,7 @@ void  marginal_in_table_alarm::set_activated(void)
             return;
         }
     }
+    */
 
     if(n_last_mk_execs_ticker.Get().last_price.GetDouble() ==  QLocale::system().toDouble(tw_last_configured->text()))
     {
