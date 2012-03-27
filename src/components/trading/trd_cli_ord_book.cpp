@@ -55,12 +55,6 @@ namespace  trd_cli_ord_book {
 
 
     void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant&);
-    void   init (void)
-    {
-        //  listen for new accounts
-            //mtk::CountPtr<mtk::Signal<const mtk::trd::account::msg::sub_grant&> >           get_signal_new_grant_received(void);
-        mtk::accmgrcli::get_signal_new_grant_received()->connect(orders_susbcription_for_account);
-    }
 
 
 
@@ -156,6 +150,37 @@ void cf_tr_sm(const mtk::trd::msg::CF_TR_SM& tr);
 #undef REGISTER_ORDER_TYPE
 
 
+    void   init (void)
+    {
+        //  listen for new accounts
+            //mtk::CountPtr<mtk::Signal<const mtk::trd::account::msg::sub_grant&> >           get_signal_new_grant_received(void);
+        mtk::accmgrcli::get_signal_new_grant_received()->connect(orders_susbcription_for_account);
+
+
+        static  mtk::CountPtr< handles_qpid >   handles;
+        if(handles.isValid() == false)
+            handles = mtk::make_cptr( new handles_qpid );
+
+        #define  REGISTER_ORDER_TYPE(__OT__, __ot__)  \
+                        MTK_QPID_RECEIVER_CONNECT_F(  \
+                                                handles->cf_st_##__ot__,  \
+                                                mtk::admin::get_url("client"),  \
+                                                mtk::trd::msg::CF_ST_##__OT__::get_in_subject(client_code, session_id),  \
+                                                mtk::trd::msg::CF_ST_##__OT__,  \
+                                                cf_st_##__ot__)
+
+
+                std::string  client_code = mtk::admin::get_process_info().location.broker_code;
+                if(client_code == "CIMD")
+                    client_code = "*";
+                std::string  session_id  = mtk::admin::get_session_id();
+                REGISTER_ORDER_TYPE(LS, ls);
+                REGISTER_ORDER_TYPE(MK, mk);
+                REGISTER_ORDER_TYPE(SM, sm);
+
+        #undef  REGISTER_ORDER_TYPE
+    }
+
 
 
 
@@ -244,15 +269,8 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                         mtk::trd::msg::RJ_CC_##__OT__::get_in_subject(broker_code, market, account_name),  \
                                         mtk::trd::msg::RJ_CC_##__OT__,  \
                                         rj_cc_##__ot__)  \
-                MTK_QPID_RECEIVER_CONNECT_F(  \
-                                        handles.cf_st_##__ot__,  \
-                                        mtk::admin::get_url("client"),  \
-                                        mtk::trd::msg::CF_ST_##__OT__::get_in_subject(grant.key.account.client_code, ri.req_id.session_id),  \
-                                        mtk::trd::msg::CF_ST_##__OT__,  \
-                                        cf_st_##__ot__)  \
 
 
-            mtk::msg::sub_request_info  ri = mtk::admin::get_request_info();
             REGISTER_ORDER_TYPE(LS, ls);
             REGISTER_ORDER_TYPE(MK, mk);
             REGISTER_ORDER_TYPE(SM, sm);
@@ -282,6 +300,7 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
 
 
 
+            mtk::msg::sub_request_info  ri = mtk::admin::get_request_info();
             mtk::trd::msg::RQ_ORDERS_STATUS  msg_rq_order_status(ri, grant.key.market, grant.key.account);
             mtk::send_message_with_sender(mtk::admin::get_qpid_sender("client", msg_rq_order_status.get_qpid_address()), msg_rq_order_status);
 }

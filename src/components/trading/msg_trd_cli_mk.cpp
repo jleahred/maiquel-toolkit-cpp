@@ -2607,11 +2607,11 @@ CF_ST_MK::CF_ST_MK (const qpid::types::Variant::Map&  mv)
     }
     /*static*/  mtk::t_qpid_address  CF_ST_MK::static_get_qpid_address ()
     {
-        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_address  CF_ST_MK::get_qpid_address (void) const
     {
-        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     
 

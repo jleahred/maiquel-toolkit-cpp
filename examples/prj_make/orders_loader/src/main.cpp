@@ -2,6 +2,7 @@
 
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/trading/msg_trd_cli_mk.h"
+#include "components/trading/msg_trd_cli_sm.h"
 #include "components/admin/admin.h"
 #include "components/admin/msg_admin.h"
 #include "support/call_later.h"
@@ -66,12 +67,12 @@ mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    get_map_order(
 template<typename  CF_TYPE>     //  ex:    mtk::trd::msg::CF_XX_LS
 void update_or_insert(const CF_TYPE&  orders_status)
 {
-    mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders_ls = get_map_order<CF_TYPE>();
-    //auto  map_orders_ls = get_map_order<CF_TYPE>();
+    mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders = get_map_order<CF_TYPE>();
+    //auto  map_orders = get_map_order<CF_TYPE>();
 
-    auto it = map_orders_ls->find(orders_status.invariant.order_id);
-    if(it == map_orders_ls->end())
-        map_orders_ls->insert(std::make_pair(orders_status.invariant.order_id, orders_status));
+    auto it = map_orders->find(orders_status.invariant.order_id);
+    if(it == map_orders->end())
+        map_orders->insert(std::make_pair(orders_status.invariant.order_id, orders_status));
     else
         it->second = orders_status;
 }
@@ -80,12 +81,12 @@ void update_or_insert(const CF_TYPE&  orders_status)
 template<typename  CF_TYPE>     //  ex:    mtk::trd::msg::CF_XX_LS
 void delete_order(const CF_TYPE&  orders_status)
 {
-    mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders_ls = get_map_order<CF_TYPE>();
-    //auto  map_orders_ls = get_map_order<CF_TYPE>();
+    mtk::CountPtr<mtk::map<mtk::trd::msg::sub_order_id, CF_TYPE> >    map_orders = get_map_order<CF_TYPE>();
+    //auto  map_orders = get_map_order<CF_TYPE>();
 
-    auto it = map_orders_ls->find(orders_status.invariant.order_id);
-    if(it != map_orders_ls->end())
-        map_orders_ls->erase(it);
+    auto it = map_orders->find(orders_status.invariant.order_id);
+    if(it != map_orders->end())
+        map_orders->erase(it);
 }
 
 
@@ -148,6 +149,38 @@ void on_cf_cc_mk(const mtk::trd::msg::CF_CC_MK&  cfcc)
 }
 
 
+//      STOP MARKET ORDERS
+
+template<typename T>        //  ie:  mtk::trd::msg::CF_NW_SM
+void on_cf_xx_sm(const T&  cf)
+{
+    update_or_insert(mtk::trd::msg::CF_XX_SM(cf));
+}
+
+
+void on_cf_tr_sm(const mtk::trd::msg::CF_TR_SM&  tr)
+{
+    delete_order(mtk::trd::msg::CF_XX_SM(tr));
+
+    mtk::trd::msg::CF_XX            cf_xx(tr.invariant, tr.market_order_id, tr.req_id, tr.total_execs, tr.description, tr.orig_control_fluct);
+    mtk::trd::msg::sub_position_mk  position_mk(tr.market_pos.quantity, tr.market_pos.cli_ref);
+    mtk::trd::msg::CF_XX_MK         cf_xx_mk(cf_xx, position_mk);
+    update_or_insert(cf_xx_mk);
+}
+
+
+void on_cf_cc_sm(const mtk::trd::msg::CF_CC_SM&  cfcc)
+{
+    if(cfcc.total_execs.acc_quantity.GetIntCode() == 0)
+        delete_order(mtk::trd::msg::CF_XX_SM(cfcc));
+    else
+    {
+        mtk::trd::msg::CF_XX_SM status(cfcc);
+        status.total_execs.remaining_qty.SetIntCode(0);
+        update_or_insert(status);
+    }
+}
+
 
 
 
@@ -159,6 +192,7 @@ void command_stats(const std::string& /*command*/, const std::string& /*params*/
     response_lines.push_back(MTK_SS("orders in memory._____________________"));
     response_lines.push_back(MTK_SS("ls:  " << get_map_order<mtk::trd::msg::CF_XX_LS>()->size()));
     response_lines.push_back(MTK_SS("mk:  " << get_map_order<mtk::trd::msg::CF_XX_MK>()->size()));
+    response_lines.push_back(MTK_SS("sm:  " << get_map_order<mtk::trd::msg::CF_XX_SM>()->size()));
 }
 
 
@@ -216,6 +250,8 @@ void command_find_order(const std::string& /*command*/, const std::string& param
     find_orders<mtk::trd::msg::CF_XX_LS>(vparams[0], vparams[1], vparams[2], vparams[3], response_lines);
     response_lines.push_back(MTK_SS("\n\nMARKET"));
     find_orders<mtk::trd::msg::CF_XX_MK>(vparams[0], vparams[1], vparams[2], vparams[3], response_lines);
+    response_lines.push_back(MTK_SS("\n\nSTOP MARKET"));
+    find_orders<mtk::trd::msg::CF_XX_SM>(vparams[0], vparams[1], vparams[2], vparams[3], response_lines);
 }
 
 
@@ -249,6 +285,7 @@ void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 {
     send_orders_from_request<mtk::trd::msg::CF_XX_LS, mtk::trd::msg::CF_ST_LS>(rq);
     send_orders_from_request<mtk::trd::msg::CF_XX_MK, mtk::trd::msg::CF_ST_MK>(rq);
+    send_orders_from_request<mtk::trd::msg::CF_XX_SM, mtk::trd::msg::CF_ST_SM>(rq);
 }
 
 
@@ -300,6 +337,7 @@ void  timer_check_delete_end_of_day(void)
 
             deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_LS>();
             deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_MK>();
+            deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_SM>();
 
 
             AlarmMsg(mtk::Alarm(MTK_HERE, "order loader", MTK_SS("deleted end of day ordes...   next:"  <<  next_time_delete_end_of_day_order <<
@@ -353,10 +391,17 @@ int main(int argc, char ** argv)
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_LS>             > >   list_hqpid_CF_MD_LS;
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_LS>             > >   list_hqpid_CF_CC_LS;
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_LS>             > >   list_hqpid_CF_EX_LS;
+
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_MK>             > >   list_hqpid_CF_NW_MK;
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_MK>             > >   list_hqpid_CF_MD_MK;
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_MK>             > >   list_hqpid_CF_CC_MK;
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_MK>             > >   list_hqpid_CF_EX_MK;
+
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_SM>             > >   list_hqpid_CF_NW_SM;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_SM>             > >   list_hqpid_CF_MD_SM;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_SM>             > >   list_hqpid_CF_CC_SM;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_TR_SM>             > >   list_hqpid_CF_TR_SM;
+
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_ORDERS_STATUS> > >   list_hqpid_oms_RQ_ORDERS_STATUS;
         for(auto it_market=list_markets.Get().begin(); it_market!=list_markets.Get().end(); ++it_market)
         {
@@ -378,6 +423,14 @@ int main(int argc, char ** argv)
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_CC_MK, on_cf_cc_mk);
 
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_EX_MK, on_cf_ex_mk);
+
+
+            //      SM
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_NW_SM, on_cf_xx_sm);
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_MD_SM, on_cf_xx_sm);
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_CC_SM, on_cf_cc_sm);
+
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_TR_SM, on_cf_tr_sm);
 
 
             //      STATUS

@@ -35,6 +35,7 @@ void   whistoric_order::set_order(const mtk::trd::msg::sub_order_id& order_id)
     {
         order_ls = mtk::trd::trd_cli_ord_book::get_order_ls(order_id);
         order_mk = mtk::CountPtr<mtk::trd::trd_cli_mk>();
+        order_sm = mtk::CountPtr<mtk::trd::trd_cli_sm>();
         ui->historic->set_historic(mtk::trd::hist::order_historic2_sig_wp_cptr(order_ls->history()));
         MTK_CONNECT_THIS(order_ls->sig_changed, update_on_change);
         ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(order_ls->executions()));
@@ -43,6 +44,7 @@ void   whistoric_order::set_order(const mtk::trd::msg::sub_order_id& order_id)
     {
         order_ls = mtk::CountPtr<mtk::trd::trd_cli_ls>();
         order_mk = mtk::trd::trd_cli_ord_book::get_order_mk(order_id);
+        order_sm = mtk::CountPtr<mtk::trd::trd_cli_sm>();
         ui->historic->set_historic(mtk::trd::hist::order_historic2_sig_wp_cptr(order_mk->history()));
         MTK_CONNECT_THIS(order_mk->sig_changed, update_on_change);
         ui->executions->set_executions(mtk::trd::hist::order_EXECS_sig_wp_cptr(order_mk->executions()));

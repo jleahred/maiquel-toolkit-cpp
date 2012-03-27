@@ -109,7 +109,7 @@ RJ_CC_MK  [< I:RJ_XX_MK,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.
 
     //  if the order is canceled, remaining quantity will be 0
 
-CF_ST_MK  [< I:CF_XX_MK,  QE:CLI_MK, SUBJ:CLI.${gen_response_location.broker_code}.${gen_response_location.session_id}.STATUS_CF  >]
+CF_ST_MK  [< I:CF_XX_MK,  QE:ALL_GS, SUBJ:CLI.${gen_response_location.broker_code}.${gen_response_location.session_id}.STATUS_CF  >]
     //  this "generic" subject let us send order status with no request from user
     //  it's possible receive order status several times
 {
