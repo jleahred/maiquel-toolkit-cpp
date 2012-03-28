@@ -48,28 +48,8 @@ pub_best_prices [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.mark
     orig_control_fluct  (ocf)   :   mtk::msg::sub_control_fluct
 }
 
-pub_best_prices_pr [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.market}.${product_code.product}.PR  >]
-{
-    product_code        (pc)    :   mtk::msg::sub_product_code
-    best_prices         (bp)    :   sub_best_prices
-    orig_control_fluct  (ocf)   :   mtk::msg::sub_control_fluct
-}
 
-pbc [< QE:PRICES.${market}, SUBJ:PC.${product}  >]
-{
-    market              (mk)    :  string
-    product             (pr)    :  string
 
-    dec_incr            (di)    :  int16
-    best_bid            (bb)    :  int32
-    best_ask            (ba)    :  int32
-    depth_prices        (dp)    :  int32
-    [depth_quantities]  (dq)    :  int32
-
-    //  fluct control
-    key                 (k)     :  string
-    datetime            (dt)    :  date_time
-}
 
 
 pub_new_products [< QE:CLI_MK, SUBJ:CLI.ALL.${market}.NP  >]
@@ -201,3 +181,20 @@ res_product_info   [< QE:CLI_MK, SUBJ:CLI.${response_info.request_info.process_i
 }
 
 
+
+//---------------------------------------------------------------------
+//    COMPACTED
+//---------------------------------------------------------------------
+
+
+ppc [< QE:PRICES.${market}, SUBJ:PPC.${product}  >]
+{
+    market              (mk)   :  string
+    product             (pr)   :  string
+
+    compacted_data      (cd)   :  string
+
+    //  fluct control
+    key                 (k)    :  string
+    datetime            (dt)   :  date_time
+}

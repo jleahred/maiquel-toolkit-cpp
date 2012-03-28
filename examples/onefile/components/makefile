@@ -5,6 +5,7 @@ default:
 	make -C acs/
 	make -C yaml/
 	make -C fb/
+	make -C prices/
 	echo "FIN"
 
 
@@ -20,5 +21,6 @@ clean:
 	make -C admin/   clean
 	make -C acs/   clean
 	make -C yaml/  clean
+	make -C prices/  clean
 
 

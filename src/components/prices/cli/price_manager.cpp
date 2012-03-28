@@ -5,6 +5,7 @@
 #include "support/list.hpp"
 #include "components/admin/admin.h"
 #include "components/request_response.hpp"
+#include "components/prices/prices_publication.h"
 
 
 
@@ -123,28 +124,35 @@ internal_price_manager__factory::~internal_price_manager__factory()
 
 
 
-void internal_price_manager__factory::on_price_update(const mtk::prices::msg::pub_best_prices& msg)
+void internal_price_manager__factory::on_price_update(const mtk::prices::msg::ppc& msg)
 {
-    if(product_code !=  msg.product_code)
-        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received update on " << msg.product_code << " expected product "  << product_code),
+    if(product_code.market !=  msg.market  ||  product_code.product != msg.product)
+        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received update on " << msg.market << "." << msg.product << " expected product "  << product_code),
                                                     mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
-    if(full_prod_info.best_prices.HasValue()   &&   full_prod_info.best_prices.Get() == msg.best_prices)
+    auto received = mtk::prices::publ::decompact_prices(msg.compacted_data);
+    if(received._0.HasValue() == false)
+        return;
+
+    mtk::prices::msg::sub_best_prices  best_prices = received._0.Get();
+
+
+    if(full_prod_info.best_prices.HasValue()   &&   full_prod_info.best_prices.Get() == best_prices)
     {
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received update with no changes  " << msg.product_code
-                                            << full_prod_info.best_prices << " ==  " << msg.best_prices ), mtk::alPriorError, mtk::alTypeNoPermisions));
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received update with no changes  " << product_code
+                                            << full_prod_info.best_prices << " ==  " << best_prices ), mtk::alPriorError, mtk::alTypeNoPermisions));
         MTK_END_EXEC_MAX_FREC
     }
 
 
-    full_prod_info.best_prices = msg.best_prices;        //      ->1
+    full_prod_info.best_prices = best_prices;        //      ->1
 
     if(h_best_prices.isValid()==false)
     {
         //  if no one is interested, the suscription must be canceled
         MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received update with no suscriptions   on  " << msg.product_code)
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received update with no suscriptions   on  " << product_code)
                                             , mtk::alPriorError, mtk::alTypeLogicError));
         MTK_END_EXEC_MAX_FREC
         return;
@@ -153,36 +161,44 @@ void internal_price_manager__factory::on_price_update(const mtk::prices::msg::pu
     if(signal_best_prices_update.emit(product_code, full_prod_info.best_prices.Get()) ==0)  //  not necessary to check if best_prices has value  ->1
     {
         MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received update on " << msg.product_code << " with no signal receptor"),
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received update on " << product_code << " with no signal receptor"),
                         mtk::alPriorError, mtk::alTypeLogicError));
         MTK_END_EXEC_MAX_FREC
     }
     MTK_EXEC_MAX_FREC(mtk::dtSeconds(1));
-        mtk::admin::check_control_fluct(msg.orig_control_fluct);
+
+        mtk::admin::check_control_fluct(mtk::msg::sub_control_fluct(msg.key, msg.datetime));
     MTK_END_EXEC_MAX_FREC
 }
 
 
-void internal_price_manager__factory::on_last_mk_execs_ticker_update(const mtk::prices::msg::pub_last_mk_execs_ticker& msg)
+void internal_price_manager__factory::on_last_mk_execs_ticker_update(const mtk::prices::msg::ppc& msg)
 {
-    if(product_code !=  msg.product_code)
-        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received mk_execs_ticker on " << msg.product_code << " expected product "  << product_code),
+    if(product_code.market !=  msg.market   ||  product_code.product != msg.product)
+        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received mk_execs_ticker on " << msg.market << "." << msg.product << " expected product "  << product_code),
                                                     mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
-    if(msg.last_mk_execs_ticker.max_last_price.GetDouble()  < msg.last_mk_execs_ticker.last_price.GetDouble())
-        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received max price (" << msg.last_mk_execs_ticker.max_last_price << ")  lower than  last price  ("  <<  msg.last_mk_execs_ticker.last_price << ")"),
+    auto received = mtk::prices::publ::decompact_prices(msg.compacted_data);
+    if(received._1.HasValue() == false)
+        return;
+
+    mtk::prices::msg::sub_last_mk_execs_ticker  last_mk_execs_ticker = received._1.Get();
+
+
+    if(last_mk_execs_ticker.max_last_price.GetDouble()  < last_mk_execs_ticker.last_price.GetDouble())
+        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received max price (" << last_mk_execs_ticker.max_last_price << ")  lower than  last price  ("  <<  last_mk_execs_ticker.last_price << ")"),
                                                     mtk::alPriorCritic, mtk::alTypeNoPermisions);
-    if(msg.last_mk_execs_ticker.min_last_price.GetDouble() > msg.last_mk_execs_ticker.last_price.GetDouble())
-        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received min price (" << msg.last_mk_execs_ticker.min_last_price << ")  bigger than  last price  ("  <<  msg.last_mk_execs_ticker.last_price << ")"),
+    if(last_mk_execs_ticker.min_last_price.GetDouble() > last_mk_execs_ticker.last_price.GetDouble())
+        throw mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received min price (" << last_mk_execs_ticker.min_last_price << ")  bigger than  last price  ("  <<  last_mk_execs_ticker.last_price << ")"),
                                                     mtk::alPriorCritic, mtk::alTypeNoPermisions);
 
-    full_prod_info.last_mk_execs_ticker = msg.last_mk_execs_ticker;        //      ->1
+    full_prod_info.last_mk_execs_ticker = last_mk_execs_ticker;        //      ->1
 
     if(h_last_mk_execs_ticker.isValid()==false)
     {
         //  if no one is interested, the suscription must be canceled
         MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received mk_execs_ticker with no suscriptions   on  " << msg.product_code)
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received mk_execs_ticker with no suscriptions   on  " << product_code)
                                             , mtk::alPriorError, mtk::alTypeLogicError));
         MTK_END_EXEC_MAX_FREC
         return;
@@ -191,12 +207,12 @@ void internal_price_manager__factory::on_last_mk_execs_ticker_update(const mtk::
     if(signal_last_mk_execs_ticker.emit(product_code, full_prod_info.last_mk_execs_ticker.Get())==0)  //  not necessary to check if best_prices has value  ->1
     {
         MTK_EXEC_MAX_FREC(mtk::dtSeconds(10))
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received mk_execs_ticker on " << msg.product_code << " with no signal receptor"),
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "price_manager", MTK_SS("received mk_execs_ticker on " << product_code << " with no signal receptor"),
                         mtk::alPriorError, mtk::alTypeLogicError));
         MTK_END_EXEC_MAX_FREC
     }
     MTK_EXEC_MAX_FREC(mtk::dtSeconds(1));
-        mtk::admin::check_control_fluct(msg.orig_control_fluct);
+        mtk::admin::check_control_fluct(mtk::msg::sub_control_fluct(msg.key, msg.datetime));
     MTK_END_EXEC_MAX_FREC
 }
 
@@ -265,7 +281,7 @@ void decrease_subscriptions_best_prices(void)
     get_stats().num_best_prices -= 1;
 }
 
-mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> >
+mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >
 internal_price_manager__factory::get_best_prices_suscrp_handle(void)
 {
     if(h_best_prices.isValid())
@@ -281,9 +297,9 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
     MTK_QPID_RECEIVER_CONNECT_THIS__WITH_ADDRESS(
                             h_best_prices,
                             mtk::admin::get_url("client"),
-                            mtk::prices::msg::pub_best_prices::static_get_qpid_address(product_code.market),
-                            mtk::prices::msg::pub_best_prices::get_in_subject(product_code.market, product_code.product),
-                            mtk::prices::msg::pub_best_prices,
+                            mtk::prices::msg::ppc::static_get_qpid_address(product_code.market),
+                            mtk::prices::msg::ppc::get_in_subject(product_code.product),
+                            mtk::prices::msg::ppc,
                             on_price_update);
 
     get_stats().num_best_prices += 1;
@@ -291,7 +307,7 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
 
     request_full_prod_info();
 
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> > result = h_best_prices;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> > result = h_best_prices;
     h_best_prices.DANGEROUS_ThisInstance_NOT_Delete();
     return result;
 }
@@ -303,7 +319,7 @@ void decrease_subscriptions_last_ex_ticker(void)
 }
 
 
-mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> >
+mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >
 internal_price_manager__factory::get_mk_last_ex_ticker_suscrp_handle(void)
 {
     if(h_last_mk_execs_ticker.isValid())
@@ -319,9 +335,9 @@ internal_price_manager__factory::get_mk_last_ex_ticker_suscrp_handle(void)
     MTK_QPID_RECEIVER_CONNECT_THIS__WITH_ADDRESS(
                             h_last_mk_execs_ticker,
                             mtk::admin::get_url("client"),
-                            mtk::prices::msg::pub_last_mk_execs_ticker::static_get_qpid_address(product_code.market),
-                            mtk::prices::msg::pub_last_mk_execs_ticker::get_in_subject(product_code.market, product_code.product),
-                            mtk::prices::msg::pub_last_mk_execs_ticker,
+                            mtk::prices::msg::ppc::static_get_qpid_address(product_code.market),
+                            mtk::prices::msg::ppc::get_in_subject(product_code.product),
+                            mtk::prices::msg::ppc,
                             on_last_mk_execs_ticker_update);
 
     get_stats().num_last_exec_ticker += 1;
@@ -330,7 +346,7 @@ internal_price_manager__factory::get_mk_last_ex_ticker_suscrp_handle(void)
     request_full_prod_info();
 
 
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> > result = h_last_mk_execs_ticker;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> > result = h_last_mk_execs_ticker;
     h_last_mk_execs_ticker.DANGEROUS_ThisInstance_NOT_Delete();
     return result;
 }

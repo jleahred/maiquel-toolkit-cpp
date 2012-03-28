@@ -80,8 +80,8 @@ public:
 private:
     mtk::CountPtr<internal_price_manager__factory>  ptr;
 
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> >            handle_best_prices_suscrp;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> >   handle_last_mk_execs_ticker;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >            handle_best_prices_suscrp;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >            handle_last_mk_execs_ticker;
 
 };
 
@@ -107,12 +107,12 @@ public:
 
 
     mtk::nullable<mtk::prices::msg::sub_best_prices>                                                    get_best_prices(void);
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> >            get_best_prices_suscrp_handle(void);
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >                        get_best_prices_suscrp_handle(void);
     mtk::Signal<const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices&>            signal_best_prices_update;
 
 
     mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>                                           get_last_mk_execs_ticker(void);
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> >   get_mk_last_ex_ticker_suscrp_handle(void);
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >                        get_mk_last_ex_ticker_suscrp_handle(void);
     mtk::Signal<const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_last_mk_execs_ticker&>   signal_last_mk_execs_ticker;
 
 
@@ -123,12 +123,14 @@ private:
     mtk::DateTime                                       full_prod_info_last_request;
 
 
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> > h_best_prices;
-    void on_price_update(const mtk::prices::msg::pub_best_prices& msg);
+    //mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> > h_best_prices;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> > h_best_prices;
+    void on_price_update(const mtk::prices::msg::ppc& msg);
 
 
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> > h_last_mk_execs_ticker;
-    void on_last_mk_execs_ticker_update(const mtk::prices::msg::pub_last_mk_execs_ticker& msg);
+    //mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> > h_last_mk_execs_ticker;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> > h_last_mk_execs_ticker;
+    void on_last_mk_execs_ticker_update(const mtk::prices::msg::ppc& msg);
 
 
     void on_res_product_info(const mtk::list<mtk::prices::msg::res_product_info>& res_pi);

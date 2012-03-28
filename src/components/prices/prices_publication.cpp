@@ -4,6 +4,7 @@
 #include "support/mtk_string.h"
 
 #include "components/admin/admin.h"
+#include "support/integer_compactor.h"
 
 
 
@@ -11,10 +12,12 @@
 
 namespace {
 
-    const char*   VERSION = "2012-03-22";
+    const char*   VERSION = "2012-03-28";
 
     const char*   MODIFICATIONS =
-                        "           2012-03-22     first version\n";
+                        "           2012-03-22     first version\n"
+                        "           2012-03-28     price compactation\n"
+                        ;
 
 
     void command_version(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
@@ -37,11 +40,10 @@ namespace {
     {
         mtk::admin::register_command("__GLOBAL__",    "ver",   "")->connect(command_version);
         mtk::admin::register_command("__GLOBAL__",    "modifs","")->connect(command_modifications);
-        mtk::admin::register_command("pp",  "get_min_time_between_changes",   "")->connect(command_get_min_time_between_changes);
-        mtk::admin::register_command("pp",  "set_min_time_between_changes",   "", true)->connect(command_set_min_time_between_changes);
+        mtk::admin::register_command("pp",  "get_min_time",   "get min time between changes")->connect(command_get_min_time_between_changes);
+        mtk::admin::register_command("pp",  "set_min_time",   "set min time between changes", true)->connect(command_set_min_time_between_changes);
     }
     MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
-
 
 }       //  anonymous namespace  to register "static" commnads
 
@@ -49,6 +51,22 @@ namespace {
 namespace mtk {
 namespace prices {
 namespace publ {
+
+
+    std::string  compacted_prices(const mtk::prices::msg::sub_best_prices& best_prices, const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker);
+    std::string  compacted_prices(const mtk::prices::msg::sub_best_prices& best_prices);
+    std::string  compacted_prices(const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker);
+
+    mtk::tuple<mtk::nullable<mtk::prices::msg::sub_best_prices>, mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker> >
+    decompact_prices(const std::string& compacted_prices);
+
+
+
+
+    void prepare_and_send_message(const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_best_prices&  best_prices,  const mtk::prices::msg::sub_best_prices&  previus_sent);
+    void prepare_and_send_message(const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker, const mtk::prices::msg::sub_last_mk_execs_ticker&  /*previus_sent*/);
+
+
 
 
 
@@ -74,7 +92,7 @@ public:
             product_code{_product_code},
             info_last_sent{mtk::prices::msg::__internal_get_default((T_INFO_TO_SEND*)0)},
             info_to_send{_info_to_send},
-            last_sent(mtk::dtNowLocal() - mtk::dtHours(1)), queued(false)
+            last_sent(mtk::dtNowLocal() - mtk::dtHours(1)), queued(false), cancel_send(false)
     {
     }
 
@@ -85,6 +103,7 @@ public:
 
     mtk::DateTime       last_sent;
     bool                queued;         //  to add to list just once
+    bool                cancel_send;
 };
 
 
@@ -101,6 +120,7 @@ public:
 
 bool  merge__and_return_if_has_to_be_queued(mtk::CountPtr<item<mtk::prices::msg::sub_best_prices> >  origin, const  mtk::prices::msg::sub_best_prices&  received)
 {
+    origin->cancel_send = false;
     if(origin->info_last_sent != received)
     {
         origin->info_to_send = received;
@@ -115,6 +135,7 @@ bool  merge__and_return_if_has_to_be_queued(mtk::CountPtr<item<mtk::prices::msg:
 
 bool  merge__and_return_if_has_to_be_queued(mtk::CountPtr<item<mtk::prices::msg::sub_last_mk_execs_ticker> >  origin, const  mtk::prices::msg::sub_last_mk_execs_ticker&  received)
 {
+    origin->cancel_send = false;
     origin->info_to_send.last_price       = received.last_price;
     origin->info_to_send.last_quantity    = received.last_quantity;
     origin->info_to_send.opened_price     = received.opened_price;
@@ -135,28 +156,6 @@ bool  merge__and_return_if_has_to_be_queued(mtk::CountPtr<item<mtk::prices::msg:
 }
 
 
-
-
-// -------------------  prepare_and_send_message  -------------------
-void prepare_and_send_message(const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_best_prices&  best_prices,  const mtk::prices::msg::sub_best_prices&  previus_sent)
-{
-    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
-
-    if(best_prices  !=  previus_sent)
-    {
-        mtk::prices::msg::pub_best_prices_pr  msg_to_send(product_code, best_prices,
-                                                mtk::msg::sub_control_fluct(MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal()));
-        mtk_send_message(url, msg_to_send);
-    }
-}
-
-void prepare_and_send_message(const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker, const mtk::prices::msg::sub_last_mk_execs_ticker&  /*previus_sent*/)
-{
-    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
-    mtk::prices::msg::pub_last_mk_execs_ticker_pr  msg_to_send(product_code, last_mk_execs_ticker,
-                                            mtk::msg::sub_control_fluct(MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal()));
-    mtk_send_message(url, msg_to_send);
-}
 
 
 
@@ -190,6 +189,15 @@ public:
             if(merge__and_return_if_has_to_be_queued(located_item->second, data))
                 list.push_back(located_item->second);
         }
+    }
+
+    mtk::CountPtr<item<T_INFO_TO_SEND> >  get_item(const mtk::msg::sub_product_code& product_code)
+    {
+        auto it = map.find(product_code);
+        if(it!= map.end())
+            return it->second;
+        else
+            return  mtk::CountPtr<item<T_INFO_TO_SEND> >();
     }
 
 private:
@@ -243,6 +251,55 @@ mtk::CountPtr<contention_queue<T_INFO_TO_SEND> >   get_contention_queue  (void)
 
 
 
+// -------------------  prepare_and_send_message  -------------------
+void prepare_and_send_message(const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_best_prices&  best_prices,  const mtk::prices::msg::sub_best_prices&  previus_sent)
+{
+    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
+
+    if(best_prices  !=  previus_sent)
+    {
+        std::string  compacted_data;
+
+        mtk::CountPtr<item<mtk::prices::msg::sub_last_mk_execs_ticker> >
+        item = get_contention_queue<mtk::prices::msg::sub_last_mk_execs_ticker>()->get_item(product_code);
+        if(item.isValid()  &&  item->info_last_sent != item->info_to_send  &&  item->cancel_send==false)
+        {
+            compacted_data = compacted_prices(best_prices, item->info_to_send);
+            item->info_last_sent = item->info_to_send;
+            item->cancel_send = true;
+        }
+        else
+            compacted_data = compacted_prices(best_prices);
+
+        mtk::prices::msg::ppc  msg_to_send(product_code.market, product_code.product,  compacted_data, MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal());
+        mtk_send_message(url, msg_to_send);
+    }
+}
+
+void prepare_and_send_message(const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker, const mtk::prices::msg::sub_last_mk_execs_ticker&  /*previus_sent*/)
+{
+    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
+
+    std::string  compacted_data = compacted_prices(last_mk_execs_ticker);
+
+        mtk::CountPtr<item<mtk::prices::msg::sub_best_prices> >
+        item = get_contention_queue<mtk::prices::msg::sub_best_prices>()->get_item(product_code);
+        if(item.isValid()  &&  item->info_last_sent != item->info_to_send  &&  item->cancel_send==false)
+        {
+            compacted_data = compacted_prices(item->info_to_send, last_mk_execs_ticker);
+            item->info_last_sent = item->info_to_send;
+            item->cancel_send = true;
+        }
+        else
+            compacted_data = compacted_prices(last_mk_execs_ticker);
+
+
+
+    mtk::prices::msg::ppc  msg_to_send(product_code.market, product_code.product,  compacted_data, MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal());
+    mtk_send_message(url, msg_to_send);
+}
+
+
 
 
 
@@ -256,15 +313,215 @@ mtk::CountPtr<contention_queue<T_INFO_TO_SEND> >   get_contention_queue  (void)
 void  send_best_prices      (const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_best_prices&  best_prices)
 {
     get_contention_queue<mtk::prices::msg::sub_best_prices>()->update(product_code, best_prices);
+
+    //  provisional, keeped for compatibility
+    /*
+    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
+    mtk::prices::msg::pub_best_prices_pr  msg_to_send(product_code, best_prices,
+                                            mtk::msg::sub_control_fluct(MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal()));
+    mtk_send_message(url, msg_to_send);
+    */
 }
 
 
 void  send_last_exec_ticker (const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker)
 {
     get_contention_queue<mtk::prices::msg::sub_last_mk_execs_ticker>()->update(product_code, last_mk_execs_ticker);
+
+    //  provisional, keeped for compatibility
+    /*
+    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
+    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
+    mtk::prices::msg::pub_last_mk_execs_ticker_pr  msg_to_send(product_code, last_mk_execs_ticker,
+                                            mtk::msg::sub_control_fluct(MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal()));
+    mtk_send_message(url, msg_to_send);
+     */
 }
 
 
+
+
+
+// -------------------  PRICES MSG COMPACTION   -------------------
+
+
+
+void  __compacted_best_prices(mtk::integer_compactor&  ic, const mtk::prices::msg::sub_best_prices& best_prices)
+{
+    ic.push(best_prices.bids.level0.price.GetIntCode());
+    ic.push(best_prices.bids.level0.quantity.GetIntCode());
+    ic.push(best_prices.bids.level1.price.GetIntCode()      - best_prices.bids.level0.price.GetIntCode());
+    ic.push(best_prices.bids.level1.quantity.GetIntCode()   - best_prices.bids.level0.quantity.GetIntCode());
+    ic.push(best_prices.bids.level2.price.GetIntCode()      - best_prices.bids.level1.price.GetIntCode());
+    ic.push(best_prices.bids.level2.quantity.GetIntCode()   - best_prices.bids.level1.quantity.GetIntCode());
+    ic.push(best_prices.bids.level3.price.GetIntCode()      - best_prices.bids.level2.price.GetIntCode());
+    ic.push(best_prices.bids.level3.quantity.GetIntCode()   - best_prices.bids.level2.quantity.GetIntCode());
+    ic.push(best_prices.bids.level4.price.GetIntCode()      - best_prices.bids.level3.price.GetIntCode());
+    ic.push(best_prices.bids.level4.quantity.GetIntCode()   - best_prices.bids.level3.quantity.GetIntCode());
+
+    ic.push(best_prices.asks.level0.price.GetIntCode());
+    ic.push(best_prices.asks.level0.quantity.GetIntCode());
+    ic.push(best_prices.asks.level1.price.GetIntCode()      - best_prices.asks.level0.price.GetIntCode());
+    ic.push(best_prices.asks.level1.quantity.GetIntCode()   - best_prices.asks.level0.quantity.GetIntCode());
+    ic.push(best_prices.asks.level2.price.GetIntCode()      - best_prices.asks.level1.price.GetIntCode());
+    ic.push(best_prices.asks.level2.quantity.GetIntCode()   - best_prices.asks.level1.quantity.GetIntCode());
+    ic.push(best_prices.asks.level3.price.GetIntCode()      - best_prices.asks.level2.price.GetIntCode());
+    ic.push(best_prices.asks.level3.quantity.GetIntCode()   - best_prices.asks.level2.quantity.GetIntCode());
+    ic.push(best_prices.asks.level4.price.GetIntCode()      - best_prices.asks.level3.price.GetIntCode());
+    ic.push(best_prices.asks.level4.quantity.GetIntCode()   - best_prices.asks.level3.quantity.GetIntCode());
+}
+
+
+void  __compacted_last(mtk::integer_compactor&  ic, const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker)
+{
+    ic.push(last_mk_execs_ticker.last_price.GetIntCode());
+    ic.push(last_mk_execs_ticker.last_quantity.GetIntCode());
+    ic.push(last_mk_execs_ticker.max_last_price.GetIntCode() - last_mk_execs_ticker.last_price.GetIntCode());
+    ic.push(last_mk_execs_ticker.min_last_price.GetIntCode() - last_mk_execs_ticker.last_price.GetIntCode());
+
+    ic.push(last_mk_execs_ticker.opened_price.GetExt().GetDec());
+    ic.push(last_mk_execs_ticker.opened_price.GetExt().GetInc());
+    ic.push(last_mk_execs_ticker.opened_price.GetIntCode());
+}
+
+
+
+std::string  compacted_prices(const mtk::prices::msg::sub_best_prices& best_prices)
+{
+    mtk::integer_compactor  ic;
+
+    ic.push(1);                                                         //  means it has best
+
+    ic.push(best_prices.bids.level0.price.GetExt().GetDec());
+    ic.push(best_prices.bids.level0.price.GetExt().GetInc());
+
+    ic.push(best_prices.bids.level0.quantity.GetExt().GetDec());
+    ic.push(best_prices.bids.level0.quantity.GetExt().GetInc());
+
+
+    //  best  -----------------------------
+    __compacted_best_prices(ic, best_prices);
+
+    return ic.get_buffer();
+}
+
+
+std::string  compacted_prices(const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker)
+{
+    mtk::integer_compactor  ic;
+
+    ic.push(2);                                                         //  means it has best and last
+
+    ic.push(last_mk_execs_ticker.last_price.GetExt().GetDec());
+    ic.push(last_mk_execs_ticker.last_price.GetExt().GetInc());
+
+    ic.push(last_mk_execs_ticker.last_quantity.GetExt().GetDec());
+    ic.push(last_mk_execs_ticker.last_quantity.GetExt().GetInc());
+
+
+
+
+    //  last  -----------------------------
+    __compacted_last(ic, last_mk_execs_ticker);
+
+    return ic.get_buffer();
+}
+
+
+std::string  compacted_prices(const mtk::prices::msg::sub_best_prices& best_prices, const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker)
+{
+    mtk::integer_compactor  ic;
+
+    ic.push(3);                                                         //  means it has best and last
+
+    ic.push(best_prices.bids.level0.price.GetExt().GetDec());
+    ic.push(best_prices.bids.level0.price.GetExt().GetInc());
+
+    ic.push(best_prices.bids.level0.quantity.GetExt().GetDec());
+    ic.push(best_prices.bids.level0.quantity.GetExt().GetInc());
+
+
+    //  best  -----------------------------
+    __compacted_best_prices(ic, best_prices);
+
+
+    //  last  -----------------------------
+    __compacted_last(ic, last_mk_execs_ticker);
+
+    return ic.get_buffer();
+}
+
+
+
+mtk::fnExt   pop_extended(mtk::integer_DEcompactor&  iDEc)
+{
+    int  dec  =  iDEc.pop_int8_t();
+    int  inc  =  iDEc.pop_int8_t();
+
+    return mtk::fnExt(mtk::fnDec(dec), mtk::fnInc(inc));
+}
+
+
+
+mtk::prices::msg::sub_price_level  pop_sub_price_level(mtk::integer_DEcompactor&  iDEc, const mtk::fnExt& extended_price, const mtk::fnExt& extended_quantity, int prev_price, int prev_quantity)
+{
+    mtk::FixedNumber  price     (mtk::fnIntCode(iDEc.pop_int32_t() + prev_price),    extended_price);
+    mtk::FixedNumber  quantity  (mtk::fnIntCode(iDEc.pop_int32_t() + prev_quantity), extended_quantity);
+
+    return mtk::prices::msg::sub_price_level(price, quantity);
+}
+
+mtk::prices::msg::sub_price_deph5  pop_sub_price_deph5(mtk::integer_DEcompactor&  iDEc, const mtk::fnExt& extended_price, const mtk::fnExt& extended_quantity)
+{
+    auto level0 = pop_sub_price_level(iDEc, extended_price, extended_quantity, 0, 0);
+    auto level1 = pop_sub_price_level(iDEc, extended_price, extended_quantity, level0.price.GetIntCode(), level0.quantity.GetIntCode());
+    auto level2 = pop_sub_price_level(iDEc, extended_price, extended_quantity, level1.price.GetIntCode(), level1.quantity.GetIntCode());
+    auto level3 = pop_sub_price_level(iDEc, extended_price, extended_quantity, level2.price.GetIntCode(), level2.quantity.GetIntCode());
+    auto level4 = pop_sub_price_level(iDEc, extended_price, extended_quantity, level3.price.GetIntCode(), level3.quantity.GetIntCode());
+
+    return mtk::prices::msg::sub_price_deph5(  level0, level1, level2, level3, level4 );
+}
+
+mtk::prices::msg::sub_last_mk_execs_ticker  pop_last_mk_execs_ticker(mtk::integer_DEcompactor&  iDEc, const mtk::fnExt& extended_price, const mtk::fnExt& extended_quantity)
+{
+    int last_price_integer_code = iDEc.pop_int32_t();
+    mtk::FixedNumber    last_price      (mtk::fnIntCode(last_price_integer_code),   extended_price);
+    mtk::FixedNumber    last_quantity   (mtk::fnIntCode(iDEc.pop_int32_t()),   extended_quantity);
+
+    mtk::FixedNumber    max_last_price  (mtk::fnIntCode(iDEc.pop_int32_t() + last_price_integer_code),   extended_price);
+    mtk::FixedNumber    min_last_price  (mtk::fnIntCode(iDEc.pop_int32_t() + last_price_integer_code),   extended_price);
+
+    mtk::fnExt          extended_price_openend   =  pop_extended(iDEc);
+    mtk::FixedNumber    opened_price    (mtk::fnIntCode(iDEc.pop_int32_t()),   extended_price_openend);
+
+    return  mtk::prices::msg::sub_last_mk_execs_ticker(last_price, last_quantity, max_last_price, min_last_price, opened_price);
+}
+
+mtk::tuple<mtk::nullable<mtk::prices::msg::sub_best_prices>, mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker> >
+decompact_prices(const std::string& compacted_prices)
+{
+    mtk::nullable<mtk::prices::msg::sub_best_prices>            best_prices;
+    mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>   last_mk_execs_ticker;
+
+    mtk::integer_DEcompactor  iDEc;
+
+    iDEc.set_buffer(compacted_prices);
+    int8_t  coded = iDEc.pop_int8_t();
+    mtk::fnExt  extended_price      =  pop_extended(iDEc);
+    mtk::fnExt  extended_quantity   =  pop_extended(iDEc);
+
+    if(coded&0x01)
+    {
+        auto bids = pop_sub_price_deph5(iDEc, extended_price, extended_quantity);
+        auto asks = pop_sub_price_deph5(iDEc, extended_price, extended_quantity);
+        best_prices = mtk::prices::msg::sub_best_prices(bids, asks);
+    }
+    if(coded&0x02)
+    {
+        last_mk_execs_ticker = pop_last_mk_execs_ticker(iDEc, extended_price, extended_quantity);
+    }
+    return mtk::make_tuple(best_prices, last_mk_execs_ticker);
+}
 
 
 
@@ -308,5 +565,5 @@ namespace {
             response_lines.push_back(MTK_SS("min_time_between_changes: " << *mtk::prices::publ::min_time_between_changes));
         }
     }
-
 }       //  anonymous namespace  to register "static" commnads
+

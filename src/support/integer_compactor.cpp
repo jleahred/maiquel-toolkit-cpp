@@ -43,6 +43,37 @@ int32_t  integer_DEcompactor::pop_int32_t(void)
 }
 
 
+int8_t  get_size(int32_t   val)
+//  returns number of bytes -1 necessary to save the value
+{
+    if(val<=127  &&  val >= -128)
+        return 0;
+    else if(val<=32767  &&  val >= -32768)
+        return 1;
+    else if(val<=8388607  &&  val >= -8388608)
+        return 2;
+    return 3;
+}
+
+int8_t  integer_DEcompactor::pop_int8_t(void)
+{
+    int32_t  result = pop_int32_t();
+
+    if(get_size(result)+1 != 1)
+        throw mtk::Alarm(MTK_HERE, "integer_DEcompactor", MTK_SS("overflow  value is bigger than a bute " << result), mtk::alPriorCritic, mtk::alTypeOverflow);
+    return int8_t(result);
+}
+
+int16_t  integer_DEcompactor::pop_int16_t(void)
+{
+    int32_t  result = pop_int32_t();
+
+    if(get_size(result)+1 != 2)
+        throw mtk::Alarm(MTK_HERE, "integer_DEcompactor", MTK_SS("overflow  value is bigger than a bute " << result), mtk::alPriorCritic, mtk::alTypeOverflow);
+    return int16_t(result);
+}
+
+
 void  integer_DEcompactor::write_temps(void)
 {
     counter_temp = 0;
@@ -82,17 +113,6 @@ integer_compactor::integer_compactor(void)
 }
 
 
-int8_t  get_size(int32_t   val)
-//  returns number of bytes -1 necessary to save the value
-{
-    if(val<=127  &&  val >= -128)
-        return 0;
-    else if(val<=32767  &&  val >= -32768)
-        return 1;
-    else if(val<=8388607  &&  val >= -8388608)
-        return 2;
-    return 3;
-}
 
 int8_t  integer_compactor::get_sizes(void)
 //  returns a byte with 4 next sizes

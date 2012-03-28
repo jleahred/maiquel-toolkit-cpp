@@ -234,118 +234,6 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
 //-------------------------------
-//      pub_best_prices_pr
-//-------------------------------    
-class pub_best_prices_pr     
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit pub_best_prices_pr (    const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
-    explicit pub_best_prices_pr ( const qpid::types::Variant::Map&  mv );
-    virtual ~pub_best_prices_pr (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "pub_best_prices_pr"; };
-    static  std::string static_get_message_type_as_string(void)        { return "pub_best_prices_pr"; };
-
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
-
-    
-    
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
-    
-
-    // fields
-    mtk::msg::sub_product_code                product_code; 
-    sub_best_prices                           best_prices; 
-    mtk::msg::sub_control_fluct               orig_control_fluct; 
-
-
-
-    //  ADDRESS info
-    static mtk::t_qpid_address  static_get_qpid_address (const std::string& product_code_market);
-    mtk::t_qpid_address  get_qpid_address (void) const;
-
-
-
-    //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& product_code_market,const std::string& product_code_product);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
-
-
-    
-    
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
-    
-    void        before_send(void) const;
-    
-    void check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
-//      pbc
-//-------------------------------    
-class pbc     
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit pbc (    const std::string&  _market,   const std::string&  _product,   const int16_t&  _dec_incr,   const int32_t&  _best_bid,   const int32_t&  _best_ask,   const int32_t&  _depth_prices,   const mtk::list<int32_t >&  _depth_quantities,   const std::string&  _key,   const mtk::DateTime&  _datetime );
-    explicit pbc ( const qpid::types::Variant::Map&  mv );
-    virtual ~pbc (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "pbc"; };
-    static  std::string static_get_message_type_as_string(void)        { return "pbc"; };
-
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
-
-    
-    
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
-    
-
-    // fields
-    std::string                               market; 
-    std::string                               product; 
-    int16_t                                   dec_incr; 
-    int32_t                                   best_bid; 
-    int32_t                                   best_ask; 
-    int32_t                                   depth_prices; 
-    mtk::list<int32_t >                       depth_quantities; 
-    std::string                               key; 
-    mtk::DateTime                             datetime; 
-
-
-
-    //  ADDRESS info
-    static mtk::t_qpid_address  static_get_qpid_address (const std::string& market);
-    mtk::t_qpid_address  get_qpid_address (void) const;
-
-
-
-    //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& product);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
-
-
-    
-    
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
-    
-    void        before_send(void) const;
-    
-    void check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
 //      pub_new_products
 //-------------------------------    
 class pub_new_products     
@@ -856,6 +744,61 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
 
+
+//-------------------------------
+//      ppc
+//-------------------------------    
+class ppc     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit ppc (    const std::string&  _market,   const std::string&  _product,   const std::string&  _compacted_data,   const std::string&  _key,   const mtk::DateTime&  _datetime );
+    explicit ppc ( const qpid::types::Variant::Map&  mv );
+    virtual ~ppc (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "ppc"; };
+    static  std::string static_get_message_type_as_string(void)        { return "ppc"; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
+    
+    
+    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    
+
+    // fields
+    std::string                               market; 
+    std::string                               product; 
+    std::string                               compacted_data; 
+    std::string                               key; 
+    mtk::DateTime                             datetime; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address (const std::string& market);
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& product);
+virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
     
     
     
@@ -887,20 +830,6 @@ bool operator!= (const sub_best_prices& a, const sub_best_prices& b);
 
 bool operator== (const pub_best_prices& a, const pub_best_prices& b);
 bool operator!= (const pub_best_prices& a, const pub_best_prices& b);
-
-    std::ostream& operator<< (std::ostream& o, const pub_best_prices_pr & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const pub_best_prices_pr & c);
-   void           operator >> (const YAML::Node& n,       pub_best_prices_pr & c);
-
-bool operator== (const pub_best_prices_pr& a, const pub_best_prices_pr& b);
-bool operator!= (const pub_best_prices_pr& a, const pub_best_prices_pr& b);
-
-    std::ostream& operator<< (std::ostream& o, const pbc & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const pbc & c);
-   void           operator >> (const YAML::Node& n,       pbc & c);
-
-bool operator== (const pbc& a, const pbc& b);
-bool operator!= (const pbc& a, const pbc& b);
 
     std::ostream& operator<< (std::ostream& o, const pub_new_products & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const pub_new_products & c);
@@ -976,6 +905,13 @@ bool operator!= (const res_product_info& a, const res_product_info& b);
 bool operator== (const res_product_info::IC_response& a, const res_product_info::IC_response& b);
 bool operator!= (const res_product_info::IC_response& a, const res_product_info::IC_response& b);
 
+    std::ostream& operator<< (std::ostream& o, const ppc & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const ppc & c);
+   void           operator >> (const YAML::Node& n,       ppc & c);
+
+bool operator== (const ppc& a, const ppc& b);
+bool operator!= (const ppc& a, const ppc& b);
+
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_level>& a, const std::string& field);
@@ -992,14 +928,6 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_best_pri
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_best_prices>& a, const std::string& field);
 void copy (pub_best_prices& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_best_prices_pr& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices_pr& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_best_prices_pr>& a, const std::string& field);
-void copy (pub_best_prices_pr& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pbc& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const pbc& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pbc>& a, const std::string& field);
-void copy (pbc& a, const qpid::types::Variant& map);
 qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_new_products& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_new_products& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_new_products>& a, const std::string& field);
@@ -1040,6 +968,10 @@ qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_product_
 void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info::IC_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_product_info::IC_response>& a, const std::string& field);
 void copy (res_product_info::IC_response& a, const qpid::types::Variant& map);
+qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const ppc& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const ppc& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ppc>& a, const std::string& field);
+void copy (ppc& a, const qpid::types::Variant& map);
 
     sub_price_level  __internal_get_default(sub_price_level *);
     
@@ -1048,10 +980,6 @@ void copy (res_product_info::IC_response& a, const qpid::types::Variant& map);
     sub_best_prices  __internal_get_default(sub_best_prices *);
     
     pub_best_prices  __internal_get_default(pub_best_prices *);
-    
-    pub_best_prices_pr  __internal_get_default(pub_best_prices_pr *);
-    
-    pbc  __internal_get_default(pbc *);
     
     pub_new_products  __internal_get_default(pub_new_products *);
     
@@ -1073,6 +1001,8 @@ void copy (res_product_info::IC_response& a, const qpid::types::Variant& map);
     
     res_product_info::IC_response  __internal_get_default(res_product_info::IC_response *);
     
+    ppc  __internal_get_default(ppc *);
+    
 
 };   //namespace mtk {
 };   //namespace prices {
@@ -1088,13 +1018,12 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_best_prices)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_best_prices_pr)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pbc)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_new_products)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_last_mk_execs_ticker)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_last_mk_execs_ticker_pr)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::req_product_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::res_product_info)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ppc)
 
 
 
