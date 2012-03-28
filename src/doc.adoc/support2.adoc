@@ -139,6 +139,31 @@ Example separating a string with +;+::
 ----
 
 
+=== Integer compactor
+  support/integer_compactor.h
+
+* Generate and parse a buffer of integers compacting them
+* Each element, can be saved with 1, 2, 3 or 4 bytes
+* The number of bytes will depend on value of integer
+
+Header::
++
+.integer_compactor.h
+[source,{cpp}]
+----
+include::../../src/support/integer_compactor.h[]
+----
+
+
+Example and unit test::
++
+.Example integer compactor
+[source,{cpp}]
+----
+include::../../examples/onefile/support/test_integer_compactor.cpp[]
+----
+
+
 === bhvm  Basic Humble Virtual Machine
   support/re/*
 
