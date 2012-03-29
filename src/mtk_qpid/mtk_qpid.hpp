@@ -706,10 +706,8 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
             MESSAGE_TYPE mt(mv);
             mt.__internal_warning_control_fields = &cf;
 
-            if(cf.message_type  ==  "pub_best_prices")
-                mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_bests);
-            else if(cf.message_type  ==  "pub_last_mk_execs_ticker")
-                mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_last);
+            if(cf.message_type  ==  "ppc")
+                mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_prices);
             mtk::mtk_qpid_stats::message_received_for_message_size(message.getContentSize(), cf.message_type);
 
             signalMessage->emit(mt);

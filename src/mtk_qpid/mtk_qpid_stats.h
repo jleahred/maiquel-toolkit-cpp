@@ -48,7 +48,7 @@ mtk::DateTime&  last_received_message     (void);
 
 
 //  Bandwith used
-enum  en_msg_type  {  mt_bests, mt_last, mt_full  };
+enum  en_msg_type  {  mt_prices, mt_full  };
 void    message_received(size_t size_in_bytes, en_msg_type  mt);
 void    message_received_for_message_size(size_t size_in_bytes, const std::string& message_type);
 

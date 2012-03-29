@@ -195,15 +195,15 @@ void    message_received(size_t size_in_bytes, en_msg_type  mt)
     static int    num_messages  = 0;
     static int    max_num_messages  = 0;
 
-    static size_t accumulated_bytes_bests_inlast_sec = 0;
-    static size_t max_bs_bests  = 0;
-    static int    num_messages_bests  = 0;
-    static int    max_num_messages_bests  = 0;
+    static size_t accumulated_bytes_prices_inlast_sec = 0;
+    static size_t max_bs_prices  = 0;
+    static int    num_messages_prices  = 0;
+    static int    max_num_messages_prices  = 0;
 
-    static size_t accumulated_bytes_lasts_inlast_sec = 0;
-    static size_t max_bs_last  = 0;
-    static int    num_messages_lasts  = 0;
-    static int    max_num_messages_lasts  = 0;
+//    static size_t accumulated_bytes_lasts_inlast_sec = 0;
+//    static size_t max_bs_last  = 0;
+//    static int    num_messages_lasts  = 0;
+//    static int    max_num_messages_lasts  = 0;
 
     mtk::DateTime  now = mtk::dtNowLocal();
     if(last_sec_verif < now - mtk::dtSeconds(1))
@@ -215,36 +215,36 @@ void    message_received(size_t size_in_bytes, en_msg_type  mt)
             max_num_messages = num_messages;
         num_messages = 0;
 
-        if(accumulated_bytes_bests_inlast_sec > max_bs_bests)
-            max_bs_bests = accumulated_bytes_bests_inlast_sec;
-        accumulated_bytes_bests_inlast_sec = 0;
+        if(accumulated_bytes_prices_inlast_sec > max_bs_prices)
+            max_bs_prices = accumulated_bytes_prices_inlast_sec;
+        accumulated_bytes_prices_inlast_sec = 0;
 
-        if(num_messages_bests >  max_num_messages_bests)
-            max_num_messages_bests = num_messages_bests;
-        num_messages_bests = 0;
+        if(num_messages_prices >  max_num_messages_prices)
+            max_num_messages_prices = num_messages_prices;
+        num_messages_prices = 0;
 
-        if(accumulated_bytes_lasts_inlast_sec > max_bs_last)
-            max_bs_last = accumulated_bytes_lasts_inlast_sec;
-        accumulated_bytes_lasts_inlast_sec = 0;
-
-        if(num_messages_lasts >  max_num_messages_lasts)
-            max_num_messages_lasts = num_messages_lasts;
-        num_messages_lasts = 0;
+//        if(accumulated_bytes_lasts_inlast_sec > max_bs_last)
+//            max_bs_last = accumulated_bytes_lasts_inlast_sec;
+//        accumulated_bytes_lasts_inlast_sec = 0;
+//
+//        if(num_messages_lasts >  max_num_messages_lasts)
+//            max_num_messages_lasts = num_messages_lasts;
+//        num_messages_lasts = 0;
 
         last_sec_verif = now;
     }
 
 
-    if(mt == mt_bests)
+    if(mt == mt_prices)
     {
-        accumulated_bytes_bests_inlast_sec += size_in_bytes;
-        ++num_messages_bests;
+        accumulated_bytes_prices_inlast_sec += size_in_bytes;
+        ++num_messages_prices;
     }
-    else if(mt == mt_last)
-    {
-        accumulated_bytes_lasts_inlast_sec += size_in_bytes;
-        ++num_messages_lasts;
-    }
+//    else if(mt == mt_last)
+//    {
+//        accumulated_bytes_lasts_inlast_sec += size_in_bytes;
+//        ++num_messages_lasts;
+//    }
     else    //  best and last are called twice, here we remove one of them
     {
         accumulated_bytes_inlast_sec += size_in_bytes;
@@ -256,24 +256,24 @@ void    message_received(size_t size_in_bytes, en_msg_type  mt)
     {
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "stats mtk_qpid",
                     MTK_SS( "maxs/minut  " <<
-                        "all: "    << std::fixed <<  std::setprecision(1) << double(max_bs)      /1024. << "Kb/s "  << max_num_messages       << "#msg/s   "  <<
-                        "bests: "  << std::fixed <<  std::setprecision(1) << double(max_bs_bests)/1024. << "Kb/s "  << max_num_messages_bests << "#msg/s   "  <<
-                        "lasts: "  << std::fixed <<  std::setprecision(1) << double(max_bs_last) /1024. << "Kb/s "  << max_num_messages_lasts << "#msg/s   "
+                        "all: "     << std::fixed <<  std::setprecision(1) << double(max_bs)       /1024. << "Kb/s "  << max_num_messages        << "#msg/s   "  <<
+                        "prices: "  << std::fixed <<  std::setprecision(1) << double(max_bs_prices)/1024. << "Kb/s "  << max_num_messages_prices << "#msg/s   "
+                        //"lasts: "  << std::fixed <<  std::setprecision(1) << double(max_bs_last) /1024. << "Kb/s "  << max_num_messages_lasts << "#msg/s   "
                     )
                     , mtk::alPriorStats));
         lasts_sent_stats = now;
         accumulated_bytes_inlast_sec = 0;
         num_messages =0;
-        accumulated_bytes_bests_inlast_sec = 0;
-        num_messages_bests =0;
-        accumulated_bytes_lasts_inlast_sec = 0;
-        num_messages_lasts  = 0;
+        accumulated_bytes_prices_inlast_sec = 0;
+        num_messages_prices =0;
+//        accumulated_bytes_lasts_inlast_sec = 0;
+//        num_messages_lasts  = 0;
         max_bs  = 0;
-        max_bs_bests  = 0;
-        max_bs_last  = 0;
+        max_bs_prices  = 0;
+//        max_bs_last  = 0;
         max_num_messages = 0;
-        max_num_messages_bests = 0;
-        max_num_messages_lasts = 0;
+        max_num_messages_prices = 0;
+//        max_num_messages_lasts = 0;
     }
 }
 
