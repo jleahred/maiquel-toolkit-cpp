@@ -761,10 +761,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
-qpid::messaging::Message req_tree_items::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   req_tree_items::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -775,22 +774,17 @@ qpid::messaging::Message req_tree_items::qpidmsg_codded_as_qpid_message (const s
         __internal_add2map(content, this->branch, std::string("br"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message res_tree_items::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   res_tree_items::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -801,13 +795,9 @@ qpid::messaging::Message res_tree_items::qpidmsg_codded_as_qpid_message (const s
         __internal_add2map(content, this->item, std::string("it"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 

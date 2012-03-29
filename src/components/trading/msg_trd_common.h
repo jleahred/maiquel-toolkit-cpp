@@ -405,7 +405,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -458,7 +458,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -558,39 +558,30 @@ bool operator!= (const RQ_ORDERS_STATUS& a, const RQ_ORDERS_STATUS& b);
 bool operator== (const CF_EXLK& a, const CF_EXLK& b);
 bool operator!= (const CF_EXLK& a, const CF_EXLK& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_order_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_id>& a, const std::string& field);
 void copy (sub_order_id& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_exec_conf& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_exec_conf& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_exec_conf>& a, const std::string& field);
 void copy (sub_exec_conf& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_total_executions& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executions& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_total_executions>& a, const std::string& field);
 void copy (sub_total_executions& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_account_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_account_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_account_info>& a, const std::string& field);
 void copy (sub_account_info& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_invariant_order_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_invariant_order_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_invariant_order_info>& a, const std::string& field);
 void copy (sub_invariant_order_info& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_XX& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_XX>& a, const std::string& field);
 void copy (RQ_XX& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_XX& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_XX>& a, const std::string& field);
 void copy (CF_XX& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_ORDERS_STATUS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_ORDERS_STATUS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_ORDERS_STATUS>& a, const std::string& field);
 void copy (RQ_ORDERS_STATUS& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const CF_EXLK& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_EXLK& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EXLK>& a, const std::string& field);
 void copy (CF_EXLK& a, const qpid::types::Variant& map);

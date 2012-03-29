@@ -200,7 +200,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -253,7 +253,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -407,7 +407,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -460,7 +460,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -614,7 +614,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -713,7 +713,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -765,7 +765,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -912,63 +912,48 @@ bool operator!= (const res_product_info::IC_response& a, const res_product_info:
 bool operator== (const ppc& a, const ppc& b);
 bool operator!= (const ppc& a, const ppc& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_level>& a, const std::string& field);
 void copy (sub_price_level& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_price_deph5& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_deph5& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_deph5>& a, const std::string& field);
 void copy (sub_price_deph5& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_best_prices& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_best_prices& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_best_prices>& a, const std::string& field);
 void copy (sub_best_prices& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_best_prices& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_best_prices& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_best_prices>& a, const std::string& field);
 void copy (pub_best_prices& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_new_products& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_new_products& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_new_products>& a, const std::string& field);
 void copy (pub_new_products& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_additional_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_additional_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_additional_info>& a, const std::string& field);
 void copy (sub_additional_info& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_last_mk_execs_ticker& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_last_mk_execs_ticker& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_last_mk_execs_ticker>& a, const std::string& field);
 void copy (sub_last_mk_execs_ticker& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_last_mk_execs_ticker& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk_execs_ticker& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk_execs_ticker>& a, const std::string& field);
 void copy (pub_last_mk_execs_ticker& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_last_mk_execs_ticker_pr& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk_execs_ticker_pr& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk_execs_ticker_pr>& a, const std::string& field);
 void copy (pub_last_mk_execs_ticker_pr& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_full_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_full_product_info>& a, const std::string& field);
 void copy (sub_full_product_info& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_full_product_info_optionals& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_info_optionals& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_full_product_info_optionals>& a, const std::string& field);
 void copy (sub_full_product_info_optionals& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_product_info>& a, const std::string& field);
 void copy (req_product_info& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_product_info>& a, const std::string& field);
 void copy (res_product_info& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_product_info::IC_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_product_info::IC_response& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_product_info::IC_response>& a, const std::string& field);
 void copy (res_product_info::IC_response& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const ppc& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const ppc& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ppc>& a, const std::string& field);
 void copy (ppc& a, const qpid::types::Variant& map);

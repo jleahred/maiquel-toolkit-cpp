@@ -108,7 +108,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -160,7 +160,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -216,15 +216,12 @@ bool operator!= (const req_tree_items& a, const req_tree_items& b);
 bool operator== (const res_tree_items& a, const res_tree_items& b);
 bool operator!= (const res_tree_items& a, const res_tree_items& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_tree_item& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_tree_item>& a, const std::string& field);
 void copy (sub_tree_item& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_tree_items& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_tree_items>& a, const std::string& field);
 void copy (req_tree_items& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_tree_items& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_tree_items>& a, const std::string& field);
 void copy (res_tree_items& a, const qpid::types::Variant& map);

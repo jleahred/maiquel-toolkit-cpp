@@ -54,7 +54,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -108,7 +108,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -161,7 +161,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -212,7 +212,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -265,7 +265,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -374,7 +374,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -424,7 +424,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -521,7 +521,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -573,7 +573,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -687,47 +687,36 @@ bool operator!= (const res_command& a, const res_command& b);
 bool operator== (const pub_central_keep_alive& a, const pub_central_keep_alive& b);
 bool operator!= (const pub_central_keep_alive& a, const pub_central_keep_alive& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_enter& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_enter>& a, const std::string& field);
 void copy (pub_enter& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_keep_alive_srv& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_srv& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_srv>& a, const std::string& field);
 void copy (pub_keep_alive_srv& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_keep_alive_cli& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_cli& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_cli>& a, const std::string& field);
 void copy (pub_keep_alive_cli& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_exit& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_exit>& a, const std::string& field);
 void copy (pub_exit& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_alarm& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_alarm>& a, const std::string& field);
 void copy (pub_alarm& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_command2& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_command2& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command2>& a, const std::string& field);
 void copy (req_command2& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_command_srv& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_command_srv& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_srv>& a, const std::string& field);
 void copy (req_command_srv& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_command_cli& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_command_cli& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_cli>& a, const std::string& field);
 void copy (req_command_cli& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_command_rd& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_command_rd>& a, const std::string& field);
 void copy (sub_command_rd& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_command& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_command& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_command>& a, const std::string& field);
 void copy (res_command& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_central_keep_alive& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_alive& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_central_keep_alive>& a, const std::string& field);
 void copy (pub_central_keep_alive& a, const qpid::types::Variant& map);

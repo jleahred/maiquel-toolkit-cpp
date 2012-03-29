@@ -414,8 +414,16 @@ private:
 
         if (subject.WarningDontDoThisGetInternal() == "")
             subject = message.get_out_subject();
-        //qpid::messaging::Sender sender = qpid_session->createSender(subject);
-        qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message(control_fluct_key));
+        //qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message(control_fluct_key));
+        //msg.setSubject(MTK_SS(subject));
+
+        qpid::types::Variant::Map   content = message.qpidmsg_codded_as_qpid_map();
+        mtk::msg::sub_control_fields control_fields{T::static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  T::static_get_depreciated_on()};
+        qpid::types::Variant::Map   map_control_fields;
+        mtk::msg::__internal_add2map(map_control_fields, control_fields);
+        content["_cf_"] = map_control_fields;
+        qpid::messaging::Message msg;
+        qpid::messaging::encode(content, msg);
         msg.setSubject(MTK_SS(subject));
         sender->qpid_sender().send(msg);
     }

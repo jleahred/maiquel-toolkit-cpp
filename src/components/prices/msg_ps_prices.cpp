@@ -1375,10 +1375,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
-qpid::messaging::Message ps_req_product_info::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_req_product_info::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 //  parent
 __internal_add2map(content, static_cast<const req_product_info&>(*this));
@@ -1388,22 +1387,17 @@ __internal_add2map(content, static_cast<const req_product_info&>(*this));
         __internal_add2map(content, this->from, std::string("from"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message ps_pub_prod_info_mtk_ready::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_pub_prod_info_mtk_ready::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  field_type
@@ -1411,22 +1405,17 @@ qpid::messaging::Message ps_pub_prod_info_mtk_ready::qpidmsg_codded_as_qpid_mess
         __internal_add2map(content, this->market, std::string("mk"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message ps_req_init_prod_info::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_req_init_prod_info::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  field_type
@@ -1437,22 +1426,17 @@ qpid::messaging::Message ps_req_init_prod_info::qpidmsg_codded_as_qpid_message (
         __internal_add2map(content, this->process_info, std::string("pi"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message ps_conf_full_product_info_init::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_conf_full_product_info_init::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  field_type
@@ -1463,22 +1447,17 @@ qpid::messaging::Message ps_conf_full_product_info_init::qpidmsg_codded_as_qpid_
         __internal_add2map(content, this->to_process_info, std::string("tpi"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message ps_conf_full_product_info::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_conf_full_product_info::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1492,101 +1471,77 @@ qpid::messaging::Message ps_conf_full_product_info::qpidmsg_codded_as_qpid_messa
         __internal_add2map(content, this->seq_number, std::string("sqn"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message ps_pub_prod_info_mtk_ready__from_publisher::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_pub_prod_info_mtk_ready__from_publisher::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 //  parent
 __internal_add2map(content, static_cast<const ps_pub_prod_info_mtk_ready&>(*this));
 
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message ps_req_init_prod_info__to_publisher::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_req_init_prod_info__to_publisher::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 //  parent
 __internal_add2map(content, static_cast<const ps_req_init_prod_info&>(*this));
 
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message ps_conf_full_product_info_init__from_publisher::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_conf_full_product_info_init__from_publisher::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 //  parent
 __internal_add2map(content, static_cast<const ps_conf_full_product_info_init&>(*this));
 
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message ps_conf_full_product_info__from_publisher::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ps_conf_full_product_info__from_publisher::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 //  parent
 __internal_add2map(content, static_cast<const ps_conf_full_product_info&>(*this));
 
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 

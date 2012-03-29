@@ -146,7 +146,7 @@ $INNER_CLASSES
 
     
     
-    $CODE_AS_QPID_MESSAGE
+    $CODE_AS_QPID_MAP
     
 
     // fields
@@ -218,7 +218,7 @@ $ADDRESS_METHODS
 
 
     pointer_to_control_fields = ''
-    code_as_qpid_message = ''
+    code_as_qpid_map = ''
     # SUBJECT_METHODS
     if class_properties.has_key('SUBJ'):
         SUBJECT_METHODS += get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties, send_code)   
@@ -229,7 +229,7 @@ $ADDRESS_METHODS
         
     if is_message_not_submessage(class_properties):
         pointer_to_control_fields = 'mtk::msg::sub_control_fields*   __internal_warning_control_fields;'
-        code_as_qpid_message = 'qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;'
+        code_as_qpid_map = 'qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;'
 
     return Template(CLASS_TEMPLATE).substitute(   CLASS_NAME = class_name, 
                                                     CLASS_FIELDS = CLASS_FIELDS,
@@ -239,7 +239,7 @@ $ADDRESS_METHODS
                                                     SUBJECT_METHODS = SUBJECT_METHODS,
                                                     ADDRESS_METHODS = ADDRESS_METHODS,
                                                     POINTER_TO_CONTROL_FIELDS = pointer_to_control_fields,
-                                                    CODE_AS_QPID_MESSAGE = code_as_qpid_message,
+                                                    CODE_AS_QPID_MAP = code_as_qpid_map,
                                                     KEY_CODE = KEY_CODE,
                                                     QUEUE_EXCHANGE_NAME = QUEUE_EXCHANGE_NAME,
                                                     DEPRECIATED_ON = DEPRECIATED_ON
@@ -1013,21 +1013,16 @@ def generate_qpid_coding___codded_as_qpid_message (class_name, class_info, class
     OUTPUT_PARENT = ''
 
     METHOD = """
-qpid::messaging::Message ${class_name}::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   ${class_name}::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 $OUTPUT_PARENT
 $OUPUT_PER_FIELD
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
@@ -1294,7 +1289,7 @@ $NOT_CONTROL_FIELDS
 
 
     for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
-        content_file_h += Template("""qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const $class_name& a);\n""").substitute(class_name=class_name)
+        ##content_file_h += Template("""qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const $class_name& a);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const $class_name& a);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$class_name>& a, const std::string& field);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void copy ($class_name& a, const qpid::types::Variant& map);\n""").substitute(class_name=class_name)

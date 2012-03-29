@@ -53,7 +53,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -105,7 +105,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -157,7 +157,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -210,7 +210,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -262,7 +262,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -314,7 +314,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -365,7 +365,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -449,31 +449,24 @@ bool operator!= (const req_user_list& a, const req_user_list& b);
 bool operator== (const res_user_list& a, const res_user_list& b);
 bool operator!= (const res_user_list& a, const res_user_list& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_add_user& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_add_user& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_add_user>& a, const std::string& field);
 void copy (pub_add_user& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_del_user& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_del_user& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_del_user>& a, const std::string& field);
 void copy (pub_del_user& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_session_id_conf& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_session_id_conf& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_session_id_conf>& a, const std::string& field);
 void copy (req_session_id_conf& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_partial_user_list_acs2serv& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_partial_user_list_acs2serv& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_partial_user_list_acs2serv>& a, const std::string& field);
 void copy (pub_partial_user_list_acs2serv& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const pub_partial_user_list_serv2acs& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_partial_user_list_serv2acs& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_partial_user_list_serv2acs>& a, const std::string& field);
 void copy (pub_partial_user_list_serv2acs& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_user_list& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_user_list& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_user_list>& a, const std::string& field);
 void copy (req_user_list& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_user_list& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_user_list& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_user_list>& a, const std::string& field);
 void copy (res_user_list& a, const qpid::types::Variant& map);

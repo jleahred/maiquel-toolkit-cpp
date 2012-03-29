@@ -1634,10 +1634,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
-qpid::messaging::Message req_login_key::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   req_login_key::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1648,22 +1647,17 @@ qpid::messaging::Message req_login_key::qpidmsg_codded_as_qpid_message (const st
         __internal_add2map(content, this->user_name, std::string("un"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message res_login_key::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   res_login_key::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1674,22 +1668,17 @@ qpid::messaging::Message res_login_key::qpidmsg_codded_as_qpid_message (const st
         __internal_add2map(content, this->key, std::string("k"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message req_login::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   req_login::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1706,22 +1695,17 @@ qpid::messaging::Message req_login::qpidmsg_codded_as_qpid_message (const std::s
         __internal_add2map(content, this->coded_pass, std::string("cpw"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message res_login::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   res_login::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1732,22 +1716,17 @@ qpid::messaging::Message res_login::qpidmsg_codded_as_qpid_message (const std::s
         __internal_add2map(content, this->session_info, std::string("lr"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message conf_logout::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   conf_logout::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1761,22 +1740,17 @@ qpid::messaging::Message conf_logout::qpidmsg_codded_as_qpid_message (const std:
         __internal_add2map(content, this->description, std::string("desc"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message req_logout::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   req_logout::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1784,22 +1758,17 @@ qpid::messaging::Message req_logout::qpidmsg_codded_as_qpid_message (const std::
         __internal_add2map(content, this->request_info, std::string("rqi"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message req_change_password::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   req_change_password::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1819,22 +1788,17 @@ qpid::messaging::Message req_change_password::qpidmsg_codded_as_qpid_message (co
         __internal_add2map(content, this->new_password, std::string("npw"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 
 
 
-qpid::messaging::Message res_change_password::qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const
+qpid::types::Variant::Map   res_change_password::qpidmsg_codded_as_qpid_map (void) const
 {
-    qpid::messaging::Message __message;
-    qpid::types::Variant::Map content;
+    qpid::types::Variant::Map   content;
 
 
 //  sub_msg_type
@@ -1845,13 +1809,9 @@ qpid::messaging::Message res_change_password::qpidmsg_codded_as_qpid_message (co
         __internal_add2map(content, this->change_password_info, std::string("cpi"));
 
 
-    mtk::msg::sub_control_fields control_fields{static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  static_get_depreciated_on()};
-    //content["_cf_"] =  qpidmsg_coded_as_qpid_Map(control_fields);
-    __internal_add2map(content, control_fields, std::string("_cf_"));
 
     
-    qpid::messaging::encode(content, __message);
-    return __message;
+    return content;
 };
 
 

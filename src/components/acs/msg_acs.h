@@ -51,7 +51,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -103,7 +103,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -155,7 +155,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -258,7 +258,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -310,7 +310,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -363,7 +363,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -414,7 +414,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -516,7 +516,7 @@ public:
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -629,43 +629,33 @@ bool operator!= (const res_change_password& a, const res_change_password& b);
 bool operator== (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);
 bool operator!= (const res_change_password::IC_change_password_info& a, const res_change_password::IC_change_password_info& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_login_key& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_login_key& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_login_key>& a, const std::string& field);
 void copy (req_login_key& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login_key& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login_key& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login_key>& a, const std::string& field);
 void copy (res_login_key& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_login& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_login& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_login>& a, const std::string& field);
 void copy (req_login& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login>& a, const std::string& field);
 void copy (res_login& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_login::IC_session_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_session_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login::IC_session_info>& a, const std::string& field);
 void copy (res_login::IC_session_info& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const conf_logout& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<conf_logout>& a, const std::string& field);
 void copy (conf_logout& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_logout& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_logout& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_logout>& a, const std::string& field);
 void copy (req_logout& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const req_change_password& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const req_change_password& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_change_password>& a, const std::string& field);
 void copy (req_change_password& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_change_password& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_change_password& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_change_password>& a, const std::string& field);
 void copy (res_change_password& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const res_change_password::IC_change_password_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_change_password::IC_change_password_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_change_password::IC_change_password_info>& a, const std::string& field);
 void copy (res_change_password::IC_change_password_info& a, const qpid::types::Variant& map);
