@@ -14,9 +14,12 @@ namespace mtk {
 
 
 integer_DEcompactor::integer_DEcompactor(void)
-    : lenght(0), position(0), counter_temp(4), temp{0,0,0,0}
+    : lenght(0), position(0), counter_temp(4)//, temp{0,0,0,0}      it doesn't compile on windows (at the moment)
 {
-
+    temp[0] = 0;
+    temp[1] = 0;
+    temp[2] = 0;
+    temp[3] = 0;
 }
 
 void     integer_DEcompactor::set_buffer (const std::string&  _buffer)
@@ -108,8 +111,12 @@ void  integer_DEcompactor::write_temps(void)
 
 
 integer_compactor::integer_compactor(void)
-    : lenght(0), counter_temp(0), temp{0,0,0,0}
+    : lenght(0), counter_temp(0)//, temp{0,0,0,0}   it doesn't compile on windows (at the moment)
 {
+    temp[0] = 0;
+    temp[1] = 0;
+    temp[2] = 0;
+    temp[3] = 0;
 }
 
 
