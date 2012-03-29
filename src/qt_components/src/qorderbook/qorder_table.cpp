@@ -550,6 +550,11 @@ public:
         std::string  last_tr_description = get_lasttr_descr(*inner_order);
         if(last_tr_description != "")
             item->setText(QLatin1String(last_tr_description.c_str()) + QLatin1String("  ") + item->text());
+        else if (dynamic_cast<mtk::trd::trd_cli_sm*>(inner_order.get2()) != 0)
+        {
+            mtk::trd::msg::CF_XX_SM  last_confirmation =  dynamic_cast<mtk::trd::trd_cli_sm*>(inner_order.get2())->last_confirmation().Get();
+            item->setText(QLatin1String(MTK_SS("stop_price:" << last_confirmation.market_pos.stop_price.GetDouble()).c_str()));
+        }
     }
     void update_item_cli_code            ()
     {
