@@ -508,7 +508,7 @@ QDepth::~QDepth()
 /*
 void QDepth::slot_delete_component(void)
 {
-    if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove this depth table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+    if(QMessageBox::warning(this, QLatin1String("eCimd"), tr("Do you want to remove this depth table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
         this->deleteLater();
 }
 */

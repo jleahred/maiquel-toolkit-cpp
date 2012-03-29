@@ -1150,7 +1150,7 @@ void QTableMarginal2::slot_remove_current_row(void)
         paint_delegate->keep_focus_paint(true);
         try
         {
-            if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove the current product from this table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+            if(QMessageBox::warning(this, QLatin1String("eCimd"), tr("Do you want to remove the current product from this table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
                 this->remove_row(this->marginal_table_model->get_marginal(this->currentIndex().row())->id);
         }
         catch(...)

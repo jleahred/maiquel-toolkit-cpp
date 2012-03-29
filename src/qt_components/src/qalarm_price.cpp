@@ -377,7 +377,7 @@ void  marginal_in_table_alarm::set_activated(void)
     if(tw_description->text() == QLatin1String(""))
     {
         tw_product->setCheckState(Qt::Unchecked);
-        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("You have to write a message to activate an alarm"), QMessageBox::Ok);
+        QMessageBox::warning(this->table_widget, QLatin1String("eCimd"), tr("You have to write a message to activate an alarm"), QMessageBox::Ok);
         return;
     }*/
 
@@ -385,7 +385,7 @@ void  marginal_in_table_alarm::set_activated(void)
     if(n_last_mk_execs_ticker.HasValue() == false)
     {
         tw_product->setCheckState(Qt::Unchecked);
-        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Missing last price."), QMessageBox::Ok);
+        QMessageBox::warning(this->table_widget, QLatin1String("eCimd"), tr("Missing last price."), QMessageBox::Ok);
         return;
     }
 
@@ -395,7 +395,7 @@ void  marginal_in_table_alarm::set_activated(void)
     mtk::FixedNumber  limit (last + mtk::fnTicks(80));
     if((limit.GetDouble() > mtk::Double(0)  &&  limit.GetDouble() < dconfigured_last)  ||  (limit.GetDouble()  < mtk::Double(0)  &&  limit.GetDouble() > dconfigured_last))
     {
-        if(QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("You are configuring an alarm too far  ") +
+        if(QMessageBox::warning(this->table_widget, QLatin1String("eCimd"), tr("You are configuring an alarm too far  ") +
                                             QLatin1String(MTK_SS(n_last_mk_execs_ticker.Get().last_price.GetDouble() << " " << QLocale::system().toDouble(tw_last_configured->text())).c_str()),
                                             QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
         {
@@ -408,7 +408,7 @@ void  marginal_in_table_alarm::set_activated(void)
     if(n_last_mk_execs_ticker.Get().last_price.GetDouble() ==  QLocale::system().toDouble(tw_last_configured->text()))
     {
         tw_product->setCheckState(Qt::Unchecked);
-        QMessageBox::warning(this->table_widget, QLatin1String("CimdTrade"), tr("Cannot activate the alarm. Market price and alarm price are equal"), QMessageBox::Ok);
+        QMessageBox::warning(this->table_widget, QLatin1String("eCimd"), tr("Cannot activate the alarm. Market price and alarm price are equal"), QMessageBox::Ok);
         return;
     }
 
@@ -729,7 +729,7 @@ void QTableAlarmPrice::start_drag(void)
     QTableWidgetItemProduct* item = dynamic_cast<QTableWidgetItemProduct*>(this->item(row, column));
     if(this->item(row, 0)->checkState() == Qt::Checked)
     {
-        QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("You cannot move an activated alarm."), QMessageBox::Ok);
+        QMessageBox::warning(this, QLatin1String("eCimd"), tr("You cannot move an activated alarm."), QMessageBox::Ok);
         return;
     }
 
@@ -836,7 +836,7 @@ void QTableAlarmPrice::slot_remove_current_row(void)
         paint_delegate->keep_focus_paint(true);
         try
         {
-            if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to remove the current alarm from this table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+            if(QMessageBox::warning(this, QLatin1String("eCimd"), tr("Do you want to remove the current alarm from this table?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
                 this->remove_row(i->id);
         }
         catch(...)

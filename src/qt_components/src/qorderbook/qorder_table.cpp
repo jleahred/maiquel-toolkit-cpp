@@ -942,7 +942,7 @@ void qorder_table::request_cancel(void)
         if (row==-1)        return;
 
         //  ask for cancelation
-        if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to cancel the order?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+        if(QMessageBox::warning(this, QLatin1String("eCimd"), tr("Do you want to cancel the order?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
         {
             const mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
             auto  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);

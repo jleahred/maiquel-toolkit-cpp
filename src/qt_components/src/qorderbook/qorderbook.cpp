@@ -183,7 +183,7 @@ void QOrderBook::slot_request_new_tab(void)
 void QOrderBook::delete_current_tab(bool ask)
 {
     if(ask)
-        if(QMessageBox::warning(this, QLatin1String("CimdTrade"), tr("Do you want to close current tab?"), QMessageBox::Ok, QMessageBox::Cancel)!=QMessageBox::Ok)
+        if(QMessageBox::warning(this, QLatin1String("eCimd"), tr("Do you want to close current tab?"), QMessageBox::Ok, QMessageBox::Cancel)!=QMessageBox::Ok)
             return;
 
     if(tab_widget->count()==1)      return;

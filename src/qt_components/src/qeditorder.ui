@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../../../../src/rc.qrc">
-    <normaloff>:/small_icons/cimdtrade_ico</normaloff>:/small_icons/cimdtrade_ico</iconset>
+    <normaloff>:/small_icons/ecimd_ico</normaloff>:/small_icons/ecimd_ico</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="3">
