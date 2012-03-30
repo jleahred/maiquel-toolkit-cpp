@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 #include "../msg_common.h"
@@ -49,6 +49,8 @@ public:
     virtual ~pub_enter (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_enter"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_enter"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -73,7 +75,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -103,6 +105,8 @@ public:
     virtual ~pub_keep_alive_srv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_srv"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_srv"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -126,7 +130,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -156,6 +160,8 @@ public:
     virtual ~pub_keep_alive_cli (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_keep_alive_cli"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_keep_alive_cli"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -177,7 +183,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -207,6 +213,8 @@ public:
     virtual ~pub_exit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_exit"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_exit"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -230,7 +238,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -260,6 +268,8 @@ public:
     virtual ~pub_alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_alarm"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_alarm"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -289,7 +299,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -319,6 +329,8 @@ public:
     virtual ~req_command2 (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command2"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command2"; };
+    
+    
 
     
 
@@ -369,6 +381,8 @@ public:
     virtual ~req_command_srv (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command_srv"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command_srv"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -389,7 +403,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& broker_code,const std::string& proc_info__destination_location_broker_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -419,6 +433,8 @@ public:
     virtual ~req_command_cli (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_command_cli"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_command_cli"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -439,7 +455,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& proc_info__destination_location_broker_code,const std::string& proc_info__destination_location_machine,const std::string& proc_info__destination_process_name,const std::string& proc_info__destination_process_uuid);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -469,6 +485,8 @@ public:
     virtual ~sub_command_rd (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_command_rd"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_command_rd"; };
+    
+    
 
     
 
@@ -516,6 +534,8 @@ public:
     virtual ~res_command (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_command"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_command"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -538,7 +558,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_req_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -568,6 +588,8 @@ public:
     virtual ~pub_central_keep_alive (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_central_keep_alive"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_central_keep_alive"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -592,7 +614,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     

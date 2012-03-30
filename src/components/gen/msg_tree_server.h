@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 #include "support/mtk_string.h"
@@ -47,6 +47,8 @@ public:
     virtual ~sub_tree_item (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_tree_item"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_tree_item"; };
+    
+    
 
     
 
@@ -103,6 +105,8 @@ public:
     virtual ~req_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_tree_items"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -125,7 +129,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -155,6 +159,8 @@ public:
     virtual ~res_tree_items (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_tree_items"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_tree_items"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -177,7 +183,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     

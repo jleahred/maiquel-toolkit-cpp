@@ -8,7 +8,7 @@
 #include "trd_cli_ls.h"
 #include "trd_cli_mk.h"
 #include "trd_cli_sm.h"
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 

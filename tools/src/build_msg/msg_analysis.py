@@ -19,7 +19,7 @@ MSG_FIELDS = {}
 MSG_FIELDS__NAMES_WITHOUT_NAMESPACES = {}
 MSG_NAMES = {}
 QE__MSG_SUBJECT = {}
-
+RT__MSG_TYPE_SUBJECT = {}
 
 
 def fill_tag_field_name():
@@ -122,6 +122,27 @@ def fill_QE__msg_subject():
                 QE__MSG_SUBJECT[qe_name][subject] = []
             QE__MSG_SUBJECT[qe_name][subject].append(class_name)
 
+def  fill_RT__MSG_TYPE_SUBJECT():
+    for class_name, class_info, __class_properties, send_code  in MESSAGES:
+        msg_full_name = msg_full_name = '::'.join(NAMESPACES) + '::' + class_name
+        rt_level=''
+        subject = ''
+        if __class_properties.has_key('SUBJ')  and  __class_properties.has_key('RT')==False:
+            rt_level = "missing"
+        elif __class_properties.has_key('SUBJ')==False  and  __class_properties.has_key('RT'):
+            subject = "missing"
+        
+        if __class_properties.has_key('RT')  and  __class_properties.has_key('SUBJ'):
+            rt_level = __class_properties['RT']
+            subject = __class_properties['SUBJ'].replace('$', ' ').replace('{', '<').replace('}', '>')
+            
+        if rt_level != '' :
+            if RT__MSG_TYPE_SUBJECT.has_key(rt_level) == False:
+                RT__MSG_TYPE_SUBJECT[rt_level] = {}
+            if RT__MSG_TYPE_SUBJECT[rt_level].has_key(class_name) == False:
+                RT__MSG_TYPE_SUBJECT[rt_level][class_name] = []
+            RT__MSG_TYPE_SUBJECT[rt_level][class_name].append(subject)
+
 
 
 def print_map(map) :
@@ -149,11 +170,19 @@ def print_map(map) :
 
 
 
+def print_msg_realtime(map) :
+    for k in sorted(map.iterkeys()):
+        m = map[k]
+        print k.replace('{','\{') +'::\n+\n'
+        print_map (m)
+    print '\n\n'
+
+
 
 def print_qe__msg_subject(map) :
     for k in sorted(map.iterkeys()):
         m = map[k]
-        print k +'::\n+\n'
+        print k.replace('{','\{') +'::\n+\n'
         print_map (m)
     print '\n\n'
 
@@ -296,7 +325,13 @@ for file in sys.argv[1:] :
     
     fill_QE__msg_subject();
 
+    fill_RT__MSG_TYPE_SUBJECT ();
 
+
+
+print '===  REALTIME'
+print_msg_realtime(RT__MSG_TYPE_SUBJECT)
+print
 
 
 print '===  QUEUE/EXCHANGE'

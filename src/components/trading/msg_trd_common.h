@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 #include "components/msg_common.h"
@@ -48,6 +48,8 @@ public:
     virtual ~sub_order_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_order_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_order_id"; };
+    
+    
 
     
 
@@ -94,6 +96,8 @@ public:
     virtual ~sub_exec_conf (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_exec_conf"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_exec_conf"; };
+    
+    
 
     
 
@@ -143,6 +147,8 @@ public:
     virtual ~sub_total_executions (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_total_executions"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_total_executions"; };
+    
+    
 
     
 
@@ -192,6 +198,8 @@ public:
     virtual ~sub_account_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_account_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_account_info"; };
+    
+    
 
     
 
@@ -247,6 +255,8 @@ public:
     virtual ~sub_invariant_order_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_invariant_order_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_invariant_order_info"; };
+    
+    
 
     
 
@@ -299,6 +309,8 @@ public:
     virtual ~RQ_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_XX"; };
+    
+    
 
     
 
@@ -348,6 +360,8 @@ public:
     virtual ~CF_XX (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_XX"; };
+    
+    
 
     
 
@@ -400,6 +414,8 @@ public:
     virtual ~RQ_ORDERS_STATUS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_ORDERS_STATUS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_ORDERS_STATUS"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -423,7 +439,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& account_client_code,const std::string& market);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -453,6 +469,8 @@ public:
     virtual ~CF_EXLK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_EXLK"; };
     static  std::string static_get_message_type_as_string(void)        { return "CF_EXLK"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -474,7 +492,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_account_client_code,const std::string& invariant_product_code_market,const std::string& invariant_account_name);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     

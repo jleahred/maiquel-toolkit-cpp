@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 #include "components/msg_common.h"
@@ -48,6 +48,8 @@ public:
     virtual ~sub_price_level (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_level"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_level"; };
+    
+    
 
     
 
@@ -96,6 +98,8 @@ public:
     virtual ~sub_price_deph5 (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_price_deph5"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_price_deph5"; };
+    
+    
 
     
 
@@ -147,6 +151,8 @@ public:
     virtual ~sub_best_prices (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_best_prices"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_best_prices"; };
+    
+    
 
     
 
@@ -195,6 +201,8 @@ public:
     virtual ~pub_best_prices (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_best_prices"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_best_prices"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -218,7 +226,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& product_code_market,const std::string& product_code_product);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -248,6 +256,8 @@ public:
     virtual ~pub_new_products (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_new_products"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_new_products"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -269,7 +279,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -299,6 +309,8 @@ public:
     virtual ~sub_additional_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_additional_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_additional_info"; };
+    
+    
 
     
 
@@ -351,6 +363,8 @@ public:
     virtual ~sub_last_mk_execs_ticker (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_last_mk_execs_ticker"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_last_mk_execs_ticker"; };
+    
+    
 
     
 
@@ -402,6 +416,8 @@ public:
     virtual ~pub_last_mk_execs_ticker (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_last_mk_execs_ticker"; };
     static  std::string static_get_message_type_as_string(void)        { return "pub_last_mk_execs_ticker"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -425,60 +441,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& product_code_market,const std::string& product_code_product);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
-
-
-    
-    
-    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
-    
-    void        before_send(void) const;
-    
-    void check_recomended(void) const;
-};
-
-
-
-
-//-------------------------------
-//      pub_last_mk_execs_ticker_pr
-//-------------------------------    
-class pub_last_mk_execs_ticker_pr     
-{
-public:
-    //  inner classes
-
-    
-    // constructor
-    explicit pub_last_mk_execs_ticker_pr (    const mtk::msg::sub_product_code&  _product_code,   const sub_last_mk_execs_ticker&  _last_mk_execs_ticker,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
-    explicit pub_last_mk_execs_ticker_pr ( const qpid::types::Variant::Map&  mv );
-    virtual ~pub_last_mk_execs_ticker_pr (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "pub_last_mk_execs_ticker_pr"; };
-    static  std::string static_get_message_type_as_string(void)        { return "pub_last_mk_execs_ticker_pr"; };
-
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
-
-    
-    
-    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
-    
-
-    // fields
-    mtk::msg::sub_product_code                product_code; 
-    sub_last_mk_execs_ticker                  last_mk_execs_ticker; 
-    mtk::msg::sub_control_fluct               orig_control_fluct; 
-
-
-
-    //  ADDRESS info
-    static mtk::t_qpid_address  static_get_qpid_address (const std::string& product_code_market);
-    mtk::t_qpid_address  get_qpid_address (void) const;
-
-
-
-    //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& product_code_market,const std::string& product_code_product);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -508,6 +471,8 @@ public:
     virtual ~sub_full_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_full_product_info"; };
+    
+    
 
     
 
@@ -558,6 +523,8 @@ public:
     virtual ~sub_full_product_info_optionals (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_full_product_info_optionals"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_full_product_info_optionals"; };
+    
+    
 
     
 
@@ -609,6 +576,8 @@ public:
     virtual ~req_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_product_info"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -631,7 +600,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code,const std::string& product_code_market);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -670,6 +639,8 @@ public:
         virtual ~IC_response (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_response"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_response"; };
+        
+        
     
         
     
@@ -708,6 +679,8 @@ public:
     virtual ~res_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_product_info"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -730,7 +703,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -760,6 +733,8 @@ public:
     virtual ~ppc (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ppc"; };
     static  std::string static_get_message_type_as_string(void)        { return "ppc"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -785,7 +760,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& product);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -859,13 +834,6 @@ bool operator!= (const sub_last_mk_execs_ticker& a, const sub_last_mk_execs_tick
 bool operator== (const pub_last_mk_execs_ticker& a, const pub_last_mk_execs_ticker& b);
 bool operator!= (const pub_last_mk_execs_ticker& a, const pub_last_mk_execs_ticker& b);
 
-    std::ostream& operator<< (std::ostream& o, const pub_last_mk_execs_ticker_pr & c);
-   YAML::Emitter& operator << (YAML::Emitter&    o, const pub_last_mk_execs_ticker_pr & c);
-   void           operator >> (const YAML::Node& n,       pub_last_mk_execs_ticker_pr & c);
-
-bool operator== (const pub_last_mk_execs_ticker_pr& a, const pub_last_mk_execs_ticker_pr& b);
-bool operator!= (const pub_last_mk_execs_ticker_pr& a, const pub_last_mk_execs_ticker_pr& b);
-
     std::ostream& operator<< (std::ostream& o, const sub_full_product_info & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_full_product_info & c);
    void           operator >> (const YAML::Node& n,       sub_full_product_info & c);
@@ -936,9 +904,6 @@ void copy (sub_last_mk_execs_ticker& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk_execs_ticker& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk_execs_ticker>& a, const std::string& field);
 void copy (pub_last_mk_execs_ticker& a, const qpid::types::Variant& map);
-void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk_execs_ticker_pr& a);
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk_execs_ticker_pr>& a, const std::string& field);
-void copy (pub_last_mk_execs_ticker_pr& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_full_product_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_full_product_info>& a, const std::string& field);
 void copy (sub_full_product_info& a, const qpid::types::Variant& map);
@@ -974,8 +939,6 @@ void copy (ppc& a, const qpid::types::Variant& map);
     
     pub_last_mk_execs_ticker  __internal_get_default(pub_last_mk_execs_ticker *);
     
-    pub_last_mk_execs_ticker_pr  __internal_get_default(pub_last_mk_execs_ticker_pr *);
-    
     sub_full_product_info  __internal_get_default(sub_full_product_info *);
     
     sub_full_product_info_optionals  __internal_get_default(sub_full_product_info_optionals *);
@@ -1005,7 +968,6 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_best_prices)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_new_products)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_last_mk_execs_ticker)
-MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_last_mk_execs_ticker_pr)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::req_product_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::res_product_info)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ppc)

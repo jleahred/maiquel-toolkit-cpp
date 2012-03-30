@@ -116,7 +116,7 @@ namespace {
                                 signal_alarm_error_critic(new mtk::Signal<const mtk::Alarm&> ),
                                 signal_alarm_nonerror(new mtk::Signal<const mtk::Alarm&> ),
                                 process_priority(ppVeryLow),
-                                process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("", ""), "", "", "")),
+                                process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("", ""), "", "", "", mtk::make_nullable(std::string{}))),
                                 ka_interval_send(mtk::dtSeconds(50)),
                                 ka_interval_check(mtk::dtSeconds(50)),
                                 start_date_time(mtk::dtNowLocal()),
@@ -373,7 +373,8 @@ namespace {
                                                             MTK_SS(get_config_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode())),
                                                             app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<<get_config_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())),
-                                                            app_version));
+                                                            app_version,
+                                                            mtk::make_nullable(std::string("c"))));
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
@@ -399,7 +400,9 @@ namespace {
             mon_subject_role = "SRV";
             process_info = mtk::msg::sub_process_info(mtk::msg::sub_process_info(mtk::msg::sub_location(get_config_mandatory_property("ADMIN.SERVER.broker_code"),
                                                             mtk::GetMachineCode()), app_name,
-                                                            mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())), app_version));
+                                                            mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())),
+                                                            app_version,
+                                                            mtk::make_nullable(std::string("s"))));
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(

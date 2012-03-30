@@ -43,13 +43,13 @@ RQ_XX_LS  [< I:RQ_XX   >]
 
 
 
-RQ_NW_LS  [< I:RQ_XX_LS,  QE:CLI_MK, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
+RQ_NW_LS  [< I:RQ_XX_LS,  QE:CLI_MK, RT:0, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
 
 
-RQ_MD_LS  [< I:RQ_XX_LS,  QE:CLI_MK, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
+RQ_MD_LS  [< I:RQ_XX_LS,  QE:CLI_MK, RT:0, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
 
 
-RQ_CC_LS  [< I:RQ_XX_LS,  QE:CLI_MK, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
+RQ_CC_LS  [< I:RQ_XX_LS,  QE:CLI_MK, RT:0, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
 
 
 
@@ -62,13 +62,13 @@ CF_XX_LS  [< I:CF_XX >]
 }
 
 
-CF_NW_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
+CF_NW_LS  [< I:CF_XX_LS,  QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
-CF_MD_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
+CF_MD_LS  [< I:CF_XX_LS,  QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
-CF_CC_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
+CF_CC_LS  [< I:CF_XX_LS,  QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
 
@@ -76,7 +76,7 @@ CF_CC_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.$
 //---------------------------------------------------------------------
 //	executions  LS
 
-CF_EX_LS  [< I:CF_XX_LS,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
+CF_EX_LS  [< I:CF_XX_LS,  QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
 {
     executed_pos  (exp)   :  sub_exec_conf
 }
@@ -96,17 +96,17 @@ RJ_XX_LS  [< I:CF_XX_LS >]
 
 
 
-RJ_NW_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
+RJ_NW_LS  [< I:RJ_XX_LS,   QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 
 
-RJ_MD_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
+RJ_MD_LS  [< I:RJ_XX_LS,   QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 
 
-RJ_CC_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
+RJ_CC_LS  [< I:RJ_XX_LS,   QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 
@@ -118,7 +118,7 @@ RJ_CC_LS  [< I:RJ_XX_LS,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.
 
     //  if the order is canceled, remaining quantity will be 0
 
-CF_ST_LS  [< I:CF_XX_LS,  QE:ALL_GS, SUBJ:CLI.${gen_response_location.broker_code}.${gen_response_location.session_id}.STATUS_CF  >]
+CF_ST_LS  [< I:CF_XX_LS,  QE:ALL_GS, RT:2, SUBJ:CLI.${gen_response_location.broker_code}.${gen_response_location.session_id}.STATUS_CF  >]
     //  this "generic" subject let us send order status with no request from user
     //  it's possible receive order status several times
 {

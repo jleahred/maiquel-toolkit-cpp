@@ -43,13 +43,13 @@ RQ_XX_SM  [< I:RQ_XX   >]
 
 
 
-RQ_NW_SM  [< I:RQ_XX_SM,  QE:CLI_MK, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
+RQ_NW_SM  [< I:RQ_XX_SM,  QE:CLI_MK, RT:0, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
 
 
-RQ_MD_SM  [< I:RQ_XX_SM,  QE:CLI_MK, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
+RQ_MD_SM  [< I:RQ_XX_SM,  QE:CLI_MK, RT:0, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
 
 
-RQ_CC_SM  [< I:RQ_XX_SM,  QE:CLI_MK, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
+RQ_CC_SM  [< I:RQ_XX_SM,  QE:CLI_MK, RT:0, SUBJ:MK.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.${invariant.product_code.product}.TRD >]   {}
 
 
 
@@ -62,20 +62,20 @@ CF_XX_SM  [< I:CF_XX >]
 }
 
 
-CF_NW_SM  [< I:CF_XX_SM,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
+CF_NW_SM  [< I:CF_XX_SM,  QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
-CF_MD_SM  [< I:CF_XX_SM,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
+CF_MD_SM  [< I:CF_XX_SM,  QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
-CF_CC_SM  [< I:CF_XX_SM,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
+CF_CC_SM  [< I:CF_XX_SM,  QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]   {}
 
 
 
 //---------------------------------------------------------------------
 //	CONFIRM TRIGGERED
 
-CF_TR_SM  [< I:CF_XX_SM,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
+CF_TR_SM  [< I:CF_XX_SM,  QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
 {
 }
 
@@ -93,17 +93,17 @@ RJ_XX_SM  [< I:CF_XX_SM >]
 
 
 
-RJ_NW_SM  [< I:RJ_XX_SM,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
+RJ_NW_SM  [< I:RJ_XX_SM,   QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 
 
-RJ_MD_SM  [< I:RJ_XX_SM,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
+RJ_MD_SM  [< I:RJ_XX_SM,   QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 
 
-RJ_CC_SM  [< I:RJ_XX_SM,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
+RJ_CC_SM  [< I:RJ_XX_SM,   QE:CLI_MK, RT:0, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD  >]
 {
 }
 
@@ -115,7 +115,7 @@ RJ_CC_SM  [< I:RJ_XX_SM,   QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.
 
     //  if the order is canceled, remaining quantity will be 0
 
-CF_ST_SM  [< I:CF_XX_SM,  QE:ALL_GS, SUBJ:CLI.${gen_response_location.broker_code}.${gen_response_location.session_id}.STATUS_CF  >]
+CF_ST_SM  [< I:CF_XX_SM,  QE:ALL_GS, RT:2, SUBJ:CLI.${gen_response_location.broker_code}.${gen_response_location.session_id}.STATUS_CF  >]
     //  this "generic" subject let us send order status with no request from user
     //  it's possible receive order status several times
 {

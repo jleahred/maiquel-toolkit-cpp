@@ -5,7 +5,7 @@
 
 #include "support/signalslot.hpp"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 #include "components/prices/msg_prices.h"
 #include "components/prices/cli/price_manager.h"
 #include "components/trading/msg_trd_common_support.h"

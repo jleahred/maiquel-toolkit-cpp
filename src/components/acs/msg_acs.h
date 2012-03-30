@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 #include "components/msg_common.h"
@@ -46,6 +46,8 @@ public:
     virtual ~req_login_key (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login_key"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -68,7 +70,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -98,6 +100,8 @@ public:
     virtual ~res_login_key (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_login_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login_key"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -120,7 +124,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -150,6 +154,8 @@ public:
     virtual ~req_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_login"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -174,7 +180,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -213,6 +219,8 @@ public:
         virtual ~IC_session_info (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_session_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_session_info"; };
+        
+        
     
         
     
@@ -253,6 +261,8 @@ public:
     virtual ~res_login (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_login"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_login"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -275,7 +285,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -305,6 +315,8 @@ public:
     virtual ~conf_logout (){};
     virtual std::string get_message_type_as_string       (void) const  { return "conf_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "conf_logout"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -328,7 +340,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& location_broker_code,const std::string& location_machine,const std::string& session_id);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -358,6 +370,8 @@ public:
     virtual ~req_logout (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_logout"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_logout"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -379,7 +393,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -409,6 +423,8 @@ public:
     virtual ~req_change_password (){};
     virtual std::string get_message_type_as_string       (void) const  { return "req_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "req_change_password"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -434,7 +450,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -473,6 +489,8 @@ public:
         virtual ~IC_change_password_info (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_change_password_info"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_change_password_info"; };
+        
+        
     
         
     
@@ -511,6 +529,8 @@ public:
     virtual ~res_change_password (){};
     virtual std::string get_message_type_as_string       (void) const  { return "res_change_password"; };
     static  std::string static_get_message_type_as_string(void)        { return "res_change_password"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -533,7 +553,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& response_info_request_info_process_info_location_broker_code,const std::string& response_info_request_info_process_info_location_machine,const std::string& response_info_request_info_process_info_process_uuid,const std::string& response_info_request_info_req_id_session_id,const std::string& response_info_request_info_req_id_req_code);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     

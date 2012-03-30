@@ -105,7 +105,7 @@ CF_XX  [< >]
 //---------------------------------------------------------------------
 //	REQUEST ORDERS STATUS
 
-RQ_ORDERS_STATUS  [< QE:CLI_MK, SUBJ:MK.${account.client_code}.${market}.RQORDST >]
+RQ_ORDERS_STATUS  [< QE:CLI_MK, RT:2, SUBJ:MK.${account.client_code}.${market}.RQORDST >]
 {
     request_info        (rqi)   :   mtk::msg::sub_request_info
 
@@ -123,7 +123,7 @@ RQ_ORDERS_STATUS  [< QE:CLI_MK, SUBJ:MK.${account.client_code}.${market}.RQORDST
 //  on this executions the invariant will not be checked. Generally, the product code, side... will be diferent
 //  total execs has to be empty
 
-CF_EXLK  [< I:CF_XX,  QE:CLI_MK, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
+CF_EXLK  [< I:CF_XX,  QE:CLI_MK, RT:2, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
 {
     executed_pos  (exp)   :  sub_exec_conf
 }

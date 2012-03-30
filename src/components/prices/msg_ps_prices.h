@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 #include "components/msg_common.h"
@@ -48,6 +48,8 @@ public:
     virtual ~ps_req_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_product_info"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -69,7 +71,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& product_code_market,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -99,6 +101,8 @@ public:
     virtual ~ps_pub_prod_info_mtk_ready (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -120,7 +124,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -150,6 +154,8 @@ public:
     virtual ~ps_req_init_prod_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -172,7 +178,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -202,6 +208,8 @@ public:
     virtual ~ps_conf_full_product_info_init (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -224,7 +232,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -254,6 +262,8 @@ public:
     virtual ~ps_conf_full_product_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -277,7 +287,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& full_prod_info_product_code_market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -307,6 +317,8 @@ public:
     virtual ~ps_pub_prod_info_mtk_ready__from_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -327,7 +339,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -357,6 +369,8 @@ public:
     virtual ~ps_req_init_prod_info__to_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info__to_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info__to_publisher"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -377,7 +391,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -407,6 +421,8 @@ public:
     virtual ~ps_conf_full_product_info_init__from_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init__from_publisher"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -427,7 +443,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -457,6 +473,8 @@ public:
     virtual ~ps_conf_full_product_info__from_publisher (){};
     virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info__from_publisher"; };
     static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info__from_publisher"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 1; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -477,7 +495,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& full_prod_info_product_code_market,const std::string& to_process_info_process_name,const std::string& to_process_info_process_uuid);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     

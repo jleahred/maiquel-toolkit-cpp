@@ -418,8 +418,8 @@ void sub_location::before_send(void) const
 
 
 
-sub_process_info::sub_process_info (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version)
-    :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid),   version(_version) 
+sub_process_info::sub_process_info (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const mtk::nullable<std::string>&  _role)
+    :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid),   version(_version),   role(_role) 
        
     {  
     }
@@ -428,6 +428,11 @@ sub_process_info::sub_process_info (   const sub_location&  _location,   const s
 
 void  sub_process_info::check_recomended(void) const
 {
+
+    if (role.HasValue() == false)
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", "sub_full_product_info::check_recomended  missing recomended field **role** on sub_process_info", mtk::alPriorError));
+        MTK_END_EXEC_MAX_FREC
 
 }
 
@@ -601,7 +606,7 @@ std::ostream& operator<< (std::ostream& o, const sub_process_info & c)
 {
     o << "{ "
 
-        << "location:"<< c.location<<"  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "        << "version:"<<   c.version << "  "
+        << "location:"<< c.location<<"  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "        << "version:"<<   c.version << "  "        << "role:"<<   c.role << "  "
         << " }";
     return o;
 };
@@ -612,7 +617,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "process_name"  << YAML::Value <<   c.process_name        << YAML::Key << "process_uuid"  << YAML::Value <<   c.process_uuid        << YAML::Key << "version"  << YAML::Value <<   c.version
+        << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "process_name"  << YAML::Value <<   c.process_name        << YAML::Key << "process_uuid"  << YAML::Value <<   c.process_uuid        << YAML::Key << "version"  << YAML::Value <<   c.version        << YAML::Key << "role"  << YAML::Value <<   c.role
         << YAML::EndMap;
     return o;
 };
@@ -627,6 +632,7 @@ void  operator >> (const YAML::Node& node, sub_process_info & c)
         node["process_name"]  >> c.process_name;
         node["process_uuid"]  >> c.process_uuid;
         node["version"]  >> c.version;
+        node["role"]  >> c.role;
 
 
 };
@@ -846,7 +852,7 @@ bool operator!= (const sub_location& a, const sub_location& b)
 
 bool operator== (const sub_process_info& a, const sub_process_info& b)
 {
-    return (          a.location ==  b.location  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&          a.version ==  b.version  &&   true  );
+    return (          a.location ==  b.location  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&          a.version ==  b.version  &&          a.role ==  b.role  &&   true  );
 };
 
 bool operator!= (const sub_process_info& a, const sub_process_info& b)
@@ -1017,6 +1023,12 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
                     else
                         copy(c.version, it->second);
                         //c.version = it->second;
+//   field_type
+
+                    it = mv.find("rl");
+                    if (it!= mv.end())
+                        copy(c.role, it->second);
+                        //c.role = it->second;
 
         c.check_recomended ();
     }
@@ -1036,6 +1048,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info&
         __internal_add2map(map, a.process_uuid, std::string("pui"));
 //  field_type
         __internal_add2map(map, a.version, std::string("ver"));
+if (a.role.HasValue())
+//  field_type
+        __internal_add2map(map, a.role, std::string("rl"));
 
 
 };
@@ -1404,7 +1419,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((std::string*)0)
+   __internal_get_default ((std::string*)0),
+//   field_type
+   mtk::nullable<std::string>()
             );
     }
     

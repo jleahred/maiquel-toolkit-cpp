@@ -109,6 +109,7 @@ def generate_class(class_name, class_info, class_properties, send_code):
     ADDRESS_METHODS = ''
     QUEUE_EXCHANGE_NAME = ''
     DEPRECIATED_ON = ''
+    REAL_TIME_PRIORITY = ''
     
     INHERITS_FROM = ''
     if class_properties.has_key('I') :
@@ -122,6 +123,9 @@ def generate_class(class_name, class_info, class_properties, send_code):
 
     if class_properties.has_key('QE') :
         QUEUE_EXCHANGE_NAME = class_properties['QE']
+
+    if class_properties.has_key('RT') :
+        REAL_TIME_PRIORITY = """static  int         static_return_message_RT_priority(void)        { return """ + str(class_properties['RT']) +  """; };"""
     
     
     CLASS_TEMPLATE = """
@@ -141,6 +145,8 @@ $INNER_CLASSES
     virtual ~${CLASS_NAME} (){};
     virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
     static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
+    
+    ${REAL_TIME_PRIORITY}
 
     ${DEPRECIATED_ON}
 
@@ -222,7 +228,7 @@ $ADDRESS_METHODS
     # SUBJECT_METHODS
     if class_properties.has_key('SUBJ'):
         SUBJECT_METHODS += get_qpidmsg_get_in_subject_forward(class_name, class_info, class_properties, send_code)   
-        SUBJECT_METHODS += Template("""virtual mtk::t_qpid_filter  get_out_subject (void) const;\n""").substitute(class_name=class_name)
+        SUBJECT_METHODS += Template("""    virtual mtk::t_qpid_filter  get_out_subject (void) const;\n""").substitute(class_name=class_name)
 
     if class_properties.has_key('QE'):
         ADDRESS_METHODS += get_qpidmsg_get_qe_address_forward(class_name, class_info, class_properties, send_code)   
@@ -242,7 +248,8 @@ $ADDRESS_METHODS
                                                     CODE_AS_QPID_MAP = code_as_qpid_map,
                                                     KEY_CODE = KEY_CODE,
                                                     QUEUE_EXCHANGE_NAME = QUEUE_EXCHANGE_NAME,
-                                                    DEPRECIATED_ON = DEPRECIATED_ON
+                                                    DEPRECIATED_ON = DEPRECIATED_ON,
+                                                    REAL_TIME_PRIORITY = REAL_TIME_PRIORITY
                                                 )
 
 
@@ -319,7 +326,7 @@ $SEND_CODE
         if field.has_key('OPTIONS'):
             if field['OPTIONS'].count('recomended') > 0:
                 CHECK_RECOMENDED += Template("""
-    if (last_mk_execs_ticker.HasValue() == false)
+    if (${FIELD_NAME}.HasValue() == false)
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", "sub_full_product_info::check_recomended  missing recomended field **$FIELD_NAME** on $class_name", mtk::alPriorError));
         MTK_END_EXEC_MAX_FREC
@@ -1235,7 +1242,7 @@ for file in sys.argv[1:] :
 
     NOT_CONTROL_FIELDS = ''
     if os.path.basename(ORIG_FILE) != 'msg_control_fields.msg':
-        NOT_CONTROL_FIELDS = '#include "mtk_qpid/mtk_qpid.hpp"'
+        NOT_CONTROL_FIELDS = '#include "mtk_qpid/mtk_qpid.h"'
         # control fields has no register messages
         # this is necessary to break loops on include definitions
     content_file_h = Template("""

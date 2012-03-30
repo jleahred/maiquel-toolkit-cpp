@@ -41,7 +41,7 @@ sub_best_prices [< >]
 //    pub_best_prices
 //---------------------------------------------------------------------
 
-pub_best_prices [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.market}.${product_code.product}  >]
+pub_best_prices [< QE:PRICES.${product_code.market}, RT:0, SUBJ:BP.${product_code.market}.${product_code.product}  >]
 {
     product_code        (pc)    :   mtk::msg::sub_product_code
     best_prices         (bp)    :   sub_best_prices
@@ -52,7 +52,7 @@ pub_best_prices [< QE:PRICES.${product_code.market}, SUBJ:BP.${product_code.mark
 
 
 
-pub_new_products [< QE:CLI_MK, SUBJ:CLI.ALL.${market}.NP  >]
+pub_new_products [< QE:CLI_MK, RT:2, SUBJ:CLI.ALL.${market}.NP  >]
 {
     market              (mk)    :   string
 }
@@ -100,7 +100,7 @@ sub_last_mk_execs_ticker [< >]
 //    pub_last_mk_execs_ticker
 //---------------------------------------------------------------------
 
-pub_last_mk_execs_ticker [< QE:PRICES.${product_code.market}, SUBJ:EXTK.${product_code.market}.${product_code.product}  >]
+pub_last_mk_execs_ticker [< QE:PRICES.${product_code.market}, RT:0, SUBJ:EXTK.${product_code.market}.${product_code.product}  >]
 {
     product_code         (pc)    :   mtk::msg::sub_product_code
 
@@ -110,15 +110,6 @@ pub_last_mk_execs_ticker [< QE:PRICES.${product_code.market}, SUBJ:EXTK.${produc
     orig_control_fluct   (ocf)   :   mtk::msg::sub_control_fluct
 }
 
-pub_last_mk_execs_ticker_pr [< QE:PRICES.${product_code.market}, SUBJ:EXTK.${product_code.market}.${product_code.product}.PR  >]
-{
-    product_code         (pc)    :   mtk::msg::sub_product_code
-
-
-    last_mk_execs_ticker (lme)   :   sub_last_mk_execs_ticker
-
-    orig_control_fluct   (ocf)   :   mtk::msg::sub_control_fluct
-}
 
 
 
@@ -161,7 +152,7 @@ sub_full_product_info_optionals [< >]
 //    REQUEST/RESPONSE
 //---------------------------------------------------------------------
 
-req_product_info [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.broker_code}.${product_code.market}.REQPI >]
+req_product_info [< QE:ALL_GS, RT:1, SUBJ:GS.${request_info.process_info.location.broker_code}.${product_code.market}.REQPI >]
 {
     request_info        (rqi)       :   mtk::msg::sub_request_info
 
@@ -170,7 +161,7 @@ req_product_info [< QE:ALL_GS, SUBJ:GS.${request_info.process_info.location.brok
 
 
 
-res_product_info   [< QE:CLI_MK, SUBJ:CLI.${response_info.request_info.process_info.location.broker_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.PRC.RESPI >]
+res_product_info   [< QE:CLI_MK, RT:2, SUBJ:CLI.${response_info.request_info.process_info.location.broker_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.PRC.RESPI >]
 {
     response_info   (rsi)       :   mtk::msg::sub_r_response
 
@@ -187,7 +178,7 @@ res_product_info   [< QE:CLI_MK, SUBJ:CLI.${response_info.request_info.process_i
 //---------------------------------------------------------------------
 
 
-ppc [< QE:PRICES.${market}, SUBJ:PPC.${product}  >]
+ppc [< QE:PRICES.${market}, RT:0, SUBJ:PPC.${product}  >]
 {
     market              (mk)   :  string
     product             (pr)   :  string

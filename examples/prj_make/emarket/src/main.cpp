@@ -1,4 +1,4 @@
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 #include "components/prices/msg_prices.h"
 #include <iostream>
 #include "support/alarm.h"

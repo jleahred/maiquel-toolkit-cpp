@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 #include "support/mtk_string.h"
@@ -46,6 +46,8 @@ public:
     virtual ~sub_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_location"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_location"; };
+    
+    
 
     
 
@@ -89,11 +91,13 @@ public:
 
     
     // constructor
-    explicit sub_process_info (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version );
+    explicit sub_process_info (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const mtk::nullable<std::string>&  _role );
     explicit sub_process_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_process_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_process_info"; };
+    
+    
 
     
 
@@ -107,6 +111,7 @@ public:
     std::string                               process_name; 
     std::string                               process_uuid; 
     std::string                               version; 
+    mtk::nullable<std::string>                role; 
 
 
 
@@ -144,6 +149,8 @@ public:
     virtual ~sub_control_fluct (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fluct"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fluct"; };
+    
+    
 
     
 
@@ -192,6 +199,8 @@ public:
     virtual ~sub_request_id (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_id"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_id"; };
+    
+    
 
     
 
@@ -240,6 +249,8 @@ public:
     virtual ~sub_request_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_request_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_request_info"; };
+    
+    
 
     
 
@@ -288,6 +299,8 @@ public:
     virtual ~sub_r_response (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_r_response"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_r_response"; };
+    
+    
 
     
 
@@ -338,6 +351,8 @@ public:
     virtual ~sub_gen_response_location (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_gen_response_location"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_gen_response_location"; };
+    
+    
 
     
 
@@ -386,6 +401,8 @@ public:
     virtual ~sub_product_code (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_product_code"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_product_code"; };
+    
+    
 
     
 

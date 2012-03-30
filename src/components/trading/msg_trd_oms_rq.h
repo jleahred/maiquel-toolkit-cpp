@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 #include "components/msg_common.h"
@@ -50,6 +50,8 @@ public:
     virtual ~oms_RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_LS"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -72,7 +74,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -102,6 +104,8 @@ public:
     virtual ~oms_RQ_MD_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_LS"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -124,7 +128,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -154,6 +158,8 @@ public:
     virtual ~oms_RQ_CC_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_LS"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -176,7 +182,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -206,6 +212,8 @@ public:
     virtual ~oms_RQ_NW_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_MK"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -228,7 +236,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -258,6 +266,8 @@ public:
     virtual ~oms_RQ_MD_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_MK"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -280,7 +290,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -310,6 +320,8 @@ public:
     virtual ~oms_RQ_CC_MK (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_MK"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_MK"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -332,7 +344,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -362,6 +374,8 @@ public:
     virtual ~oms_RQ_NW_SM (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_SM"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_SM"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -384,7 +398,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -414,6 +428,8 @@ public:
     virtual ~oms_RQ_MD_SM (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_SM"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_SM"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -436,7 +452,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -466,6 +482,8 @@ public:
     virtual ~oms_RQ_CC_SM (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_SM"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_SM"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -488,7 +506,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -518,6 +536,8 @@ public:
     virtual ~oms_RQ_ORDERS_STATUS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_ORDERS_STATUS"; };
     static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_ORDERS_STATUS"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
 
@@ -540,7 +560,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market,const std::string& from);
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     

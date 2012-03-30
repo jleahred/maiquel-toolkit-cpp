@@ -6,7 +6,7 @@
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/trading/msg_trd_oms_rq.h"
 #include "support/signalslot.hpp"
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 namespace  emarket {  class  sub_product_config;  };

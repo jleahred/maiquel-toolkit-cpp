@@ -4,7 +4,7 @@
 #include <QTreeWidget>
 
 #include "support/signalslot.hpp"
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 #include "components/gen/msg_tree_server.h"
 
 

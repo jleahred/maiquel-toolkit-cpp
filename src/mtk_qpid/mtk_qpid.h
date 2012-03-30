@@ -393,39 +393,37 @@ private:
     void         set_control_fluct_key(const std::string& control_fluct_key);   //  defined in mtk_qpid_stats.cpp
 
 
+    void    __internal_send_qpid_message___dont_use_it_directly(     mtk::CountPtr< mtk::mtkqpid_sender2 >      sender,
+                                                                              qpid::types::Variant::Map&        content,
+                                                                        const std::string&                      subject,
+                                                                        const std::string&                      message_type,
+                                                                        const std::string&                      control_fluct_key,
+                                                                        int                                     real_time_level,
+                                                                        mtk::nullable<mtk::DateTime>            depreciated_on
+                                                                        );
+
     template<typename T>
     void send_message_with_sender (mtk::CountPtr< mtk::mtkqpid_sender2 >  sender, const T& message, mtk::t_qpid_filter subject =  mtk::t_qpid_filter(""))
     {
         static std::string  control_fluct_key="";
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(40))
+            if(control_fluct_key == "")
+                control_fluct_key = mtk::get_control_fluct_key();
+        MTK_END_EXEC_MAX_FREC
 
         if(message.get_qpid_address() !=  sender->address)
             throw mtk::Alarm(MTK_HERE, "send_message_with_sender", MTK_SS("sender address and message address doesn't match. Message not sent"), mtk::alPriorCritic);
-
-
-        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(40))
-            if(control_fluct_key == "")
-                control_fluct_key = get_control_fluct_key();
-        MTK_END_EXEC_MAX_FREC
-
-        ++mtk_qpid_stats::num_messages_sent();
-        if(mtk_qpid_stats::last_received_message() >  (mtk::dtToday_0Time() + mtk::dtHours(23) + mtk::dtMinutes(50)))
-            mtk_qpid_stats::num_messages_sent_today() = 0;
-        ++mtk_qpid_stats::num_messages_sent_today();
 
         if (subject.WarningDontDoThisGetInternal() == "")
             subject = message.get_out_subject();
         //qpid::messaging::Message msg(message.qpidmsg_codded_as_qpid_message(control_fluct_key));
         //msg.setSubject(MTK_SS(subject));
 
+        int real_time_level =  T::static_return_message_RT_priority();
+
+
         qpid::types::Variant::Map   content = message.qpidmsg_codded_as_qpid_map();
-        mtk::msg::sub_control_fields control_fields{T::static_get_message_type_as_string(), control_fluct_key, mtk::dtNowLocal(),  T::static_get_depreciated_on()};
-        qpid::types::Variant::Map   map_control_fields;
-        mtk::msg::__internal_add2map(map_control_fields, control_fields);
-        content["_cf_"] = map_control_fields;
-        qpid::messaging::Message msg;
-        qpid::messaging::encode(content, msg);
-        msg.setSubject(MTK_SS(subject));
-        sender->qpid_sender().send(msg);
+        __internal_send_qpid_message___dont_use_it_directly(sender, content, MTK_SS(subject), T::static_get_message_type_as_string(), control_fluct_key, real_time_level, T::static_get_depreciated_on());
     }
 
     #define mtk_send_message(__URL_FOR__, __MESSAGE__)  \
@@ -433,6 +431,8 @@ private:
         static auto qpid_sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(mtk::admin::get_url(__URL_FOR__), __MESSAGE__.get_qpid_address()));    \
         send_message_with_sender(qpid_sender, __MESSAGE__);                                                                                                                     \
     }
+
+
 
 
 //--------------------------------------------------------------------

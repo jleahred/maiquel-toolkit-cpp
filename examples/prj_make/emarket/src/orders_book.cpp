@@ -1,6 +1,6 @@
 #include "orders_book.h"
 #include "support/mtk_string.h"
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 #include "support/list.hpp"
 #include "support/map.hpp"
 
