@@ -418,8 +418,8 @@ void sub_location::before_send(void) const
 
 
 
-sub_process_info::sub_process_info (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const mtk::nullable<std::string>&  _role)
-    :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid),   version(_version),   role(_role) 
+sub_process_info::sub_process_info (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const mtk::nullable<std::string>&  _cli_srv)
+    :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid),   version(_version),   cli_srv(_cli_srv) 
        
     {  
     }
@@ -429,9 +429,9 @@ sub_process_info::sub_process_info (   const sub_location&  _location,   const s
 void  sub_process_info::check_recomended(void) const
 {
 
-    if (role.HasValue() == false)
+    if (cli_srv.HasValue() == false)
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", "sub_full_product_info::check_recomended  missing recomended field **role** on sub_process_info", mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", "sub_full_product_info::check_recomended  missing recomended field **cli_srv** on sub_process_info", mtk::alPriorError));
         MTK_END_EXEC_MAX_FREC
 
 }
@@ -606,7 +606,7 @@ std::ostream& operator<< (std::ostream& o, const sub_process_info & c)
 {
     o << "{ "
 
-        << "location:"<< c.location<<"  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "        << "version:"<<   c.version << "  "        << "role:"<<   c.role << "  "
+        << "location:"<< c.location<<"  "        << "process_name:"<<   c.process_name << "  "        << "process_uuid:"<<   c.process_uuid << "  "        << "version:"<<   c.version << "  "        << "cli_srv:"<<   c.cli_srv << "  "
         << " }";
     return o;
 };
@@ -617,7 +617,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_process_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "process_name"  << YAML::Value <<   c.process_name        << YAML::Key << "process_uuid"  << YAML::Value <<   c.process_uuid        << YAML::Key << "version"  << YAML::Value <<   c.version        << YAML::Key << "role"  << YAML::Value <<   c.role
+        << YAML::Key << "location"  << YAML::Value << c.location        << YAML::Key << "process_name"  << YAML::Value <<   c.process_name        << YAML::Key << "process_uuid"  << YAML::Value <<   c.process_uuid        << YAML::Key << "version"  << YAML::Value <<   c.version        << YAML::Key << "cli_srv"  << YAML::Value <<   c.cli_srv
         << YAML::EndMap;
     return o;
 };
@@ -632,7 +632,7 @@ void  operator >> (const YAML::Node& node, sub_process_info & c)
         node["process_name"]  >> c.process_name;
         node["process_uuid"]  >> c.process_uuid;
         node["version"]  >> c.version;
-        node["role"]  >> c.role;
+        node["cli_srv"]  >> c.cli_srv;
 
 
 };
@@ -852,7 +852,7 @@ bool operator!= (const sub_location& a, const sub_location& b)
 
 bool operator== (const sub_process_info& a, const sub_process_info& b)
 {
-    return (          a.location ==  b.location  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&          a.version ==  b.version  &&          a.role ==  b.role  &&   true  );
+    return (          a.location ==  b.location  &&          a.process_name ==  b.process_name  &&          a.process_uuid ==  b.process_uuid  &&          a.version ==  b.version  &&          a.cli_srv ==  b.cli_srv  &&   true  );
 };
 
 bool operator!= (const sub_process_info& a, const sub_process_info& b)
@@ -1025,10 +1025,10 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
                         //c.version = it->second;
 //   field_type
 
-                    it = mv.find("rl");
+                    it = mv.find("c_s");
                     if (it!= mv.end())
-                        copy(c.role, it->second);
-                        //c.role = it->second;
+                        copy(c.cli_srv, it->second);
+                        //c.cli_srv = it->second;
 
         c.check_recomended ();
     }
@@ -1048,9 +1048,9 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info&
         __internal_add2map(map, a.process_uuid, std::string("pui"));
 //  field_type
         __internal_add2map(map, a.version, std::string("ver"));
-if (a.role.HasValue())
+if (a.cli_srv.HasValue())
 //  field_type
-        __internal_add2map(map, a.role, std::string("rl"));
+        __internal_add2map(map, a.cli_srv, std::string("c_s"));
 
 
 };

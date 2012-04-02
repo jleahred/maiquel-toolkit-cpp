@@ -25,7 +25,7 @@ sub_process_info  [< >]
     process_name    (pn)    :   string
     process_uuid    (pui)   :   string
     version         (ver)   :   string
-    role            (rl)    :   string      [recomended]      //  "c" client   "s"  server
+    cli_srv         (c_s)   :   string      [recomended]    //  "CLI"  or "SVR"
 }
 
 

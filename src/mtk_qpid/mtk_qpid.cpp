@@ -146,7 +146,7 @@ void check_NORMAL_queue(void)
     static  mtk::dtTimeQuantity      check_interval = mtk::dtHours(1);
     if(messages_per_check_interval < 0)
     {
-        if(mtk::admin::get_process_info().role.HasValue()  &&  mtk::admin::get_process_info().role.Get() == "s")
+        if(mtk::admin::get_process_info().cli_srv.HasValue()  &&  mtk::admin::get_process_info().cli_srv.Get() == "SRV")
         {
             messages_per_check_interval = 50;       //  500 msg/s
             check_interval = mtk::dtMilliseconds(10);
@@ -191,7 +191,7 @@ void check_SLOW_queue  (void)
         //  sending from server to client, it will be used...  messages_per_check_interval_client  and  check_interval_client
     }
 
-    if(role == "c")
+    if(role == "CLI")
     {
         MTK_EXEC_MAX_FREC_S(check_interval_client)
         {

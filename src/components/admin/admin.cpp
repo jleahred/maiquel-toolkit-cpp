@@ -374,7 +374,7 @@ namespace {
                                                             app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<<get_config_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())),
                                                             app_version,
-                                                            mtk::make_nullable(std::string("c"))));
+                                                            mtk::make_nullable(std::string("CLI"))));
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
@@ -402,7 +402,7 @@ namespace {
                                                             mtk::GetMachineCode()), app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())),
                                                             app_version,
-                                                            mtk::make_nullable(std::string("s"))));
+                                                            mtk::make_nullable(std::string("SRV"))));
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(

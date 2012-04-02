@@ -2281,13 +2281,13 @@ pub_central_keep_alive::pub_central_keep_alive (const qpid::types::Variant::Map&
         copy(*this, mv);
         check_recomended ();  
     }
-mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv)
+mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& process_info_location_broker_code,const std::string& process_info_cli_srv)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << cli_srv << ".ENTER"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << process_info_cli_srv << ".ENTER"));
     }
     mtk::t_qpid_filter  pub_enter::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->cli_srv << ".ENTER"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->process_info.cli_srv << ".ENTER"));
     }
     /*static*/  mtk::t_qpid_address  pub_enter::static_get_qpid_address ()
     {
@@ -2329,13 +2329,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& process_info_l
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_exit::get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv)
+    mtk::t_qpid_filter  pub_exit::get_in_subject (const std::string& process_info_location_broker_code,const std::string& process_info_cli_srv)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << cli_srv << ".EXIT"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << process_info_cli_srv << ".EXIT"));
     }
     mtk::t_qpid_filter  pub_exit::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->cli_srv << ".EXIT"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->process_info.cli_srv << ".EXIT"));
     }
     /*static*/  mtk::t_qpid_address  pub_exit::static_get_qpid_address ()
     {
@@ -2345,13 +2345,13 @@ mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& process_info_l
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
-    mtk::t_qpid_filter  pub_alarm::get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv)
+    mtk::t_qpid_filter  pub_alarm::get_in_subject (const std::string& process_info_location_broker_code,const std::string& process_info_cli_srv)
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << cli_srv << ".ALARM"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << process_info_cli_srv << ".ALARM"));
     }
     mtk::t_qpid_filter  pub_alarm::get_out_subject (void) const
     {
-        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->cli_srv << ".ALARM"));
+        return mtk::t_qpid_filter(MTK_SS("GS." << this->process_info.location.broker_code << ".MON." << this->process_info.cli_srv << ".ALARM"));
     }
     /*static*/  mtk::t_qpid_address  pub_alarm::static_get_qpid_address ()
     {

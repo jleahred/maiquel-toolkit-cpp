@@ -52,7 +52,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::make_nullable(mtk::s_TRY_stodt("2012-03-30", mtk::dtNowLocal()- mtk::dtDays(500))._0); };
 
     
     
@@ -74,7 +74,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& process_info_cli_srv);
     virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -216,7 +216,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::make_nullable(mtk::s_TRY_stodt("2012-03-30", mtk::dtNowLocal()- mtk::dtDays(500))._0); };
 
     
     
@@ -237,7 +237,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& process_info_cli_srv);
     virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -271,7 +271,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::make_nullable(mtk::s_TRY_stodt("2012-03-30", mtk::dtNowLocal()- mtk::dtDays(500))._0); };
 
     
     
@@ -298,7 +298,7 @@ public:
 
 
     //  subject info
-    static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& cli_srv);
+    static mtk::t_qpid_filter  get_in_subject (const std::string& process_info_location_broker_code,const std::string& process_info_cli_srv);
     virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
