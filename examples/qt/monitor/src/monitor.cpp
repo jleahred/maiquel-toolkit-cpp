@@ -165,7 +165,7 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     QLabel * version = new QLabel();
     //version->setFrameShape(QFrame::Panel);
     //version->setFrameShadow(QFrame::Sunken);
-    version->setText("0.12");
+    version->setText("0.13.d");
     statusBar()->addWidget(version);
 
 

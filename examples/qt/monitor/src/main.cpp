@@ -37,7 +37,12 @@
 
 
 
-
+namespace mtk{
+std::string  get_cli_srv(void)
+{
+    return  "CLI";
+}
+};
 
 
 

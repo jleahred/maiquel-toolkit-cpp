@@ -5,7 +5,7 @@
 
 
 #include "support/date_time.h"
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 #include "components/admin/msg_admin.h"
 
 

@@ -771,6 +771,7 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
 
 
 
+extern    std::string  get_cli_srv(void);
 
 
 

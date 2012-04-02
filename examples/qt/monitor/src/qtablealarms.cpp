@@ -280,7 +280,7 @@ void QTableAlarms::write_alarm_msg2         (const mtk::DateTime&  received, con
 
 void QTableAlarms::write_alarm(const mtk::DateTime&  received,  const mtk::Alarm& alarm)
 {
-    mtk::admin::msg::pub_alarm alarm_msg("CLI", mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
+    mtk::admin::msg::pub_alarm alarm_msg("CLI", mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL", mtk::make_nullable(std::string("CLI"))),
                                      alarm.codeSource, "monitor", alarm.message, alarm.priority, alarm.type, received, -1);
 
     queue_alarm_msg(received, alarm_msg);
@@ -288,7 +288,7 @@ void QTableAlarms::write_alarm(const mtk::DateTime&  received,  const mtk::Alarm
     std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
     while (it != alarm.stackAlarms.end())
     {
-        mtk::admin::msg::pub_alarm alarm_msg("CLI", mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL"),
+        mtk::admin::msg::pub_alarm alarm_msg("CLI", mtk::msg::sub_process_info(mtk::msg::sub_location("LOCAL", "LOCAL"), "LOCAL", "LOCAL", "LOCAL", mtk::make_nullable(std::string("CLI"))),
                                          "monitor", it->codeSource, it->message, it->priority, it->type, received, -1);
         queue_alarm_msg(received, alarm_msg);
         ++it;

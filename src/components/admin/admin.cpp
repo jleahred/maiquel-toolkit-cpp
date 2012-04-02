@@ -1361,6 +1361,11 @@ void  __internal_admin_nevercall_me____release_on_exit(void)
 
 
 
+std::string  get_cli_srv(void)
+{
+    return  mtk::admin::get_process_info().cli_srv.Get();
+}
+
 
 
 };  //namespace mtk {
