@@ -1,3 +1,4 @@
+#include "components/prices/prices_publication.h"
 #include <iostream>
 
 #include "components/admin/admin.h"
@@ -14,7 +15,7 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_PRODUCT_LOADER";
-    const char*   APP_VER           = "2012-01-30";
+    const char*   APP_VER           = "2012-04-02 d";
     const char*   APP_DESCRIPTION   = "I will keep prices and other product information on memory and I will serve it to clients or other proceses\n"
                                       "I will receive this information listening as a client";
 
@@ -23,6 +24,7 @@ namespace
                                         "           2012-01-13     delete on init from publisher and modifs on check activity\n"
                                         "           2012-01-19     reduce exponentially no activity message\n"
                                         "           2012-01-30     recover activity only when frecuency > 0\n"
+                                        "           2012-04-02     price compactation and cli_serv moved from msg_admin\n"
                                         ;
 
 }
@@ -113,8 +115,7 @@ namespace
 
 
 void on_request_load_prices      (const mtk::prices::msg::ps_req_product_info& req);
-void on_price_update             (const mtk::prices::msg::pub_best_prices& msg_update_price);
-void on_mk_last_ex_ticher_update (const mtk::prices::msg::pub_last_mk_execs_ticker& msg_mk_last_ex_ticker);
+void on_price_update__or_last    (const mtk::prices::msg::ppc& msg_update_price__or_last_ex_ticker);
 void check_inactivity            (void);
 void init_map_market_info        (void);
 
@@ -335,11 +336,9 @@ void send_req_init_prod_info_to_markets__to_publisher(void)
 
 void suscribe_publisher_updates(void)
 {
-    typedef  mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_best_prices> >               type_cptrhandle;
+    typedef  mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >               type_cptrhandle;
     static mtk::list< type_cptrhandle >  hqpid_update_best_prices_list_by_market;
 
-    typedef  mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> >      type_cptrhandle_last_mk_execs_ticker;
-    static mtk::list< type_cptrhandle_last_mk_execs_ticker >  hqpid_update_last_mk_execs_ticker_list_by_market;
 
     for(auto it=map_market_info.begin(); it!=map_market_info.end(); ++it)
     {
@@ -347,19 +346,10 @@ void suscribe_publisher_updates(void)
         MTK_QPID_RECEIVER_CONNECT_F__WITH_ADDRESS(
                                 hqpid_update_best_prices_list_by_market.back(),
                                 mtk::admin::get_url("client"),
-                                mtk::prices::msg::pub_best_prices::static_get_qpid_address(it->first),
-                                mtk::prices::msg::pub_best_prices::get_in_subject(it->first, "*"),
-                                mtk::prices::msg::pub_best_prices,
-                                on_price_update)
-
-        hqpid_update_last_mk_execs_ticker_list_by_market.push_back(type_cptrhandle_last_mk_execs_ticker{});
-        MTK_QPID_RECEIVER_CONNECT_F__WITH_ADDRESS(
-                                hqpid_update_last_mk_execs_ticker_list_by_market.back(),
-                                mtk::admin::get_url("client"),
-                                mtk::prices::msg::pub_last_mk_execs_ticker::static_get_qpid_address(it->first),
-                                mtk::prices::msg::pub_last_mk_execs_ticker::get_in_subject(it->first, "*"),
-                                mtk::prices::msg::pub_last_mk_execs_ticker,
-                                on_mk_last_ex_ticher_update)
+                                mtk::prices::msg::ppc::static_get_qpid_address(it->first),
+                                mtk::prices::msg::ppc::get_in_subject("*"),
+                                mtk::prices::msg::ppc,
+                                on_price_update__or_last)
     }
 }
 void suscribe_cli_request_product(void)
@@ -506,21 +496,20 @@ void on_request_load_prices(const mtk::prices::msg::ps_req_product_info& req)
 
 
 
-
-void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
+void on_price_update (const  mtk::msg::sub_product_code& product_code,  const mtk::prices::msg::sub_best_prices&   best_prices)
 {
     ++stats_prec_update;
-    mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::sub_full_product_info_optionals>::iterator it = map_products->find(msg_update_price.product_code);
+    mtk::map<mtk::msg::sub_product_code, mtk::prices::msg::sub_full_product_info_optionals>::iterator it = map_products->find(product_code);
     if(it == map_products->end())
-        map_products->insert(std::make_pair(msg_update_price.product_code, mtk::prices::get_empty_full_product_info_optional(msg_update_price.product_code)));
+        map_products->insert(std::make_pair(product_code, mtk::prices::get_empty_full_product_info_optional(product_code)));
     else
-        it->second.best_prices = msg_update_price.best_prices;
-    mtk::admin::check_control_fluct(msg_update_price.orig_control_fluct);
+        it->second.best_prices = best_prices;
+
 
     //  update last received message for this market
-    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(msg_update_price.product_code.market);
+    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(product_code.market);
     if(itlu==map_market_info.end())
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << msg_update_price.product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
     else
     {
         mtk::dtDateTime  now = mtk::dtNowLocal();
@@ -536,20 +525,21 @@ void on_price_update (const mtk::prices::msg::pub_best_prices& msg_update_price)
 }
 
 
-void on_mk_last_ex_ticher_update (const mtk::prices::msg::pub_last_mk_execs_ticker& msg_mk_last_ex_ticker)
+
+
+void on_mk_last_ex_ticher_update (const  mtk::msg::sub_product_code& product_code,  const mtk::prices::msg::sub_last_mk_execs_ticker&   last_mk_execs_ticker)
 {
     ++stats_mk_last_execs_update;
-    auto it = map_products->find(msg_mk_last_ex_ticker.product_code);
+    auto it = map_products->find(product_code);
     if(it == map_products->end())
-        map_products->insert(std::make_pair(msg_mk_last_ex_ticker.product_code, mtk::prices::get_empty_full_product_info_optional(msg_mk_last_ex_ticker.product_code)));
+        map_products->insert(std::make_pair(product_code, mtk::prices::get_empty_full_product_info_optional(product_code)));
     else
-        it->second.last_mk_execs_ticker = msg_mk_last_ex_ticker.last_mk_execs_ticker;
-    mtk::admin::check_control_fluct(msg_mk_last_ex_ticker.orig_control_fluct);
+        it->second.last_mk_execs_ticker = last_mk_execs_ticker;
 
     //  update last received message for this market
-    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(msg_mk_last_ex_ticker.product_code.market);
+    mtk::map<std::string, market_info >::iterator  itlu = map_market_info.find(product_code.market);
     if(itlu==map_market_info.end())
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << msg_mk_last_ex_ticker.product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("unknown market code " << product_code), mtk::alPriorError, mtk::alTypeNoPermisions));
     else
     {
         mtk::dtDateTime  now = mtk::dtNowLocal();
@@ -563,6 +553,20 @@ void on_mk_last_ex_ticher_update (const mtk::prices::msg::pub_last_mk_execs_tick
         itlu->second.last_update_received  = now;
     }
 }
+
+void  on_price_update__or_last (const mtk::prices::msg::ppc& ppc)
+{
+    auto received = mtk::prices::publ::decompact_prices(ppc.compacted_data);
+
+    mtk::admin::check_control_fluct  (mtk::msg::sub_control_fluct{ppc.key, ppc.datetime});
+    mtk::msg::sub_product_code   product_code{ppc.market, ppc.product};
+    if(received._0.HasValue())
+        on_price_update(product_code, received._0.Get());
+
+    if(received._1.HasValue())
+        on_mk_last_ex_ticher_update(product_code, received._1.Get());
+}
+
 
 
 //  check inactivity
