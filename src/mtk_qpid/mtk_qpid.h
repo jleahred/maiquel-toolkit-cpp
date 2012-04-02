@@ -421,6 +421,13 @@ private:
 
         int real_time_level =  T::static_return_message_RT_priority();
 
+        if(T::static_get_depreciated_on().HasValue()  &&  T::static_get_depreciated_on().Get() < mtk::dtNowLocal())
+        {
+            MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "depreciated", MTK_SS("sending depreciated message " << T::static_get_message_type_as_string() << "  " << T::static_get_depreciated_on()), mtk::alPriorError));
+            MTK_END_EXEC_MAX_FREC
+        }
+
 
         qpid::types::Variant::Map   content = message.qpidmsg_codded_as_qpid_map();
         __internal_send_qpid_message___dont_use_it_directly(sender, content, MTK_SS(subject), T::static_get_message_type_as_string(), control_fluct_key, real_time_level, T::static_get_depreciated_on());

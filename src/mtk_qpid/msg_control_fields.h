@@ -45,6 +45,8 @@ public:
     virtual ~sub_control_fields (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_control_fields"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_control_fields"; };
+    
+    
 
     
 
