@@ -16,6 +16,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         monitor.cpp \
+        highlighter_rules.cpp \
+        highlighter_alarm.cpp \
     qplaintexteditcommand.cpp \
     qlistprocesses.cpp \
     qtablealarms.cpp \
@@ -25,6 +27,8 @@ SOURCES += main.cpp\
     ../../../../src/components/admin/msg*.cpp
 
 HEADERS  += monitor.h \
+        highlighter_rules.h \
+        highlighter_alarm.h \
     qplaintexteditcommand.h \
     qlistprocesses.h \
     qtablealarms.h \

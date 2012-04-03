@@ -2,17 +2,87 @@ version: 1
 amqp_url: amqp:tcp:192.168.8.21:6684
 gs_code: _GS1
 rules__error2warning:
-  - re_rule: received update with no changes  { market:M3  product
-    frequency: "2h "
-    n_received: 43
-    description: description
+  - description: PROVISIONAL JLE  2012-04-02
+    re_rule: .* depreciated .* pub_alarm
+    n_received: 0
+    last_notified: 2012-04-03 19:14:00.311
+    frequency: 8h
+    start_time: 1h  29m
+    end_time: 22h  30m
+  - description: PROVISIONAL JLE  2012-04-02
+    re_rule: \*\*cli_srv\*\*
+    n_received: 1
+    last_notified: 2012-04-03 19:13:55.604
+    frequency: 8h
+    start_time: 1h  29m
+    end_time: 22h  30m
+  - description: PROVISIONAL CIRIACO  2012-03-22
+    re_rule: "LOGIC_ERROR: vector::_M_range_check"
+    n_received: 0
+    last_notified: 2012-04-03 09:45:57.889
+    frequency: 8h
+    start_time: 1h  29m
+    end_time: 22h  30m
+  - description: PROVISIONAL MIGUEL
+    re_rule: SKIP - skip
+    n_received: 0
+    last_notified: 2012-03-22 09:28:51.322
+    frequency: 8h
+    start_time: 1h  29m
+    end_time: 22h  30m
+  - description: PROVISIONAL RECOMENDED FIELD   ..last_mk_execs_ticker..
+    re_rule: check_recomended  missing recomended field ..last_mk_execs_ticker..
+    n_received: 0
+    last_notified: 2012-03-26 09:16:16.378
+    frequency: 8h
+    start_time: 1h  29m
+    end_time: 22h  30m
+  - description: TESTING ON INTERNET
+    re_rule: "machine: fede@.*\x0a.*\x0a.*\x0a.*\x0a.*\x0asubject: fluct.*\x0a"
+    n_received: 0
+    last_notified: 2012-04-02 16:48:11.875
+    frequency: 8h
+    start_time: 1h  29m
+    end_time: 22h  30m
+  - description: provisional ciriaco testing
+    re_rule: MKK_PRICES
+    n_received: 0
+    last_notified: 2012-03-14 17:55:20.025
+    frequency: 8h
     start_time: 0s
-    end_time: "1d "
-    last_notified: 2011-12-15 10:14:44.105
-  - re_rule: received keep alive with invalid session id
-    frequency: "2h "
-    n_received: 27
-    description: description
+    end_time: 1d
+  - description: pending to solve jle
+    re_rule: received keep alive with invalid session id \{ \(\{ process_info
+    n_received: 0
+    last_notified: 2012-02-21 12:41:18.393
+    frequency: 6h
     start_time: 0s
-    end_time: "1d "
-    last_notified: 2011-12-15 10:51:13.559
+    end_time: 1d
+  - description: pending to reduce frecuency on adm  jle
+    re_rule: ".*broker_code: (M3|EU)\x0a.*machine: .*\x00xan.*process_name: (MK_PRICES|FLOW_CONTROL|MTK_TRD|MK_TRD)\x00xa.*\x00xa.*\x00xa.*\x00xa.*\x00xa.*\x00xa.*autoclose:  process will be closed at    ....-..-.. 17:..:.*\x00xa.*\x00xa.*\x00xa.*"
+    n_received: 0
+    last_notified: 2012-03-30 18:20:13.620
+    frequency: " 30m"
+    start_time: 17h  20m
+    end_time: 18h  30m
+  - description: EUREX delays
+    re_rule: "broker_code: EU\x0a.*machine: TFEUREX01\x0a.*\x0a.*\x0a.*\x0a.*\x0a.*\x0a.*subject: fluct.EU_PRC.*\x0amessage.*\x0apriority: error"
+    n_received: 0
+    last_notified: 2012-04-03 19:14:09.588
+    frequency: 6h
+    start_time: 6h  29m
+    end_time: 22h  30m
+  - description: EUREX delays
+    re_rule: "broker_code: EU\x0a.*machine: TFEUREX01\x0a.*\x0a.*\x0a.*\x0a.*\x0a.*subject: fluct.EU_PRC.*\x0amessage.*[123]s.*\x0apriority: critic"
+    n_received: 0
+    last_notified: 2012-03-30 13:48:45.221
+    frequency: 8h
+    start_time: 1h  29m
+    end_time: 22h  30m
+  - description: EUREX delays configured as CRITIC process. It will be mainteined during delays investigation
+    re_rule: "broker_code: EU\x0a.*machine: TFEUREX01\x0a.*\x0a.*\x0a.*\x0a.*\x0a.*\x0a.*subject: fluct.central.*"
+    n_received: 0
+    last_notified: 2012-03-13 11:14:56.832
+    frequency: 6h
+    start_time: 1h  29m
+    end_time: 22h  30m

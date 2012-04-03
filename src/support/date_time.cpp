@@ -579,35 +579,52 @@ void dtTimeQuantity::DecodeTime (void)  const
 std::ostream& operator<< (std::ostream& o, const dtTimeQuantity& tq)
 {
     dtDecodedTimeQuantity dti= tq.GetDecodedTimeQuantity();
+    bool empty = true;
 
 
     if (dti.sign<0)
+    {
         o << "-";
+        empty = false;
+    }
 
 
     if (dti.days.WarningDontDoThisGetInternal()>=1)
     {
-        o << dti.days.WarningDontDoThisGetInternal() << "d ";
+        o << dti.days.WarningDontDoThisGetInternal() << "d";
+        empty = false;
     }
 
     if (dti.hours.WarningDontDoThisGetInternal()>=1)
     {
-        o << dti.hours.WarningDontDoThisGetInternal() << "h ";
+        if(!empty)
+            o << " ";
+        o << dti.hours.WarningDontDoThisGetInternal() << "h";
+        empty = false;
     }
 
     if (dti.minutes.WarningDontDoThisGetInternal()>=1)
     {
-        o << dti.minutes.WarningDontDoThisGetInternal() << "m ";
+        if(!empty)
+            o << " ";
+        o << " " << dti.minutes.WarningDontDoThisGetInternal() << "m";
+        empty = false;
     }
 
     if (dti.seconds.WarningDontDoThisGetInternal()>=1)
     {
-        o << dti.seconds.WarningDontDoThisGetInternal() << "s ";
+        if(!empty)
+            o << " ";
+        o << " " << dti.seconds.WarningDontDoThisGetInternal() << "s";
+        empty = false;
     }
 
     if (dti.milliseconds.WarningDontDoThisGetInternal()>=1)
     {
-        o << dti.milliseconds.WarningDontDoThisGetInternal() << "ms";
+        if(!empty)
+            o << " ";
+        o << " " << dti.milliseconds.WarningDontDoThisGetInternal() << "ms";
+        empty = false;
     }
     return o;
 };

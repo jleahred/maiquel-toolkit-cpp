@@ -397,23 +397,17 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_rule::sub_rule (   const std::string&  _re_rule,   const mtk::dtTimeQuantity&  _frequency,   const int&  _n_received,   const std::string&  _description,   const mtk::dtTimeQuantity&  _start_time,   const mtk::dtTimeQuantity&  _end_time,   const mtk::DateTime&  _last_notified)
-    :     re_rule(_re_rule),   frequency(_frequency),   n_received(_n_received),   description(_description),   start_time(_start_time),   end_time(_end_time),   last_notified(_last_notified) 
+sub_rule::sub_rule (   const std::string&  _description,   const std::string&  _re_rule,   const int&  _n_received,   const mtk::DateTime&  _last_notified,   const mtk::dtTimeQuantity&  _frequency,   const mtk::dtTimeQuantity&  _start_time,   const mtk::dtTimeQuantity&  _end_time)
+    :     description(_description),   re_rule(_re_rule),   n_received(_n_received),   last_notified(_last_notified),   frequency(_frequency),   start_time(_start_time),   end_time(_end_time) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_rule::check_recomended(void) const
+void  sub_rule::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_rule::before_send(void) const
@@ -427,7 +421,7 @@ std::ostream& operator<< (std::ostream& o, const sub_rule & c)
 {
     o << "{ "
 
-        << "re_rule:"<<   c.re_rule << "  "        << "frequency:"<<   c.frequency << "  "        << "n_received:"<< c.n_received<<"  "        << "description:"<<   c.description << "  "        << "start_time:"<<   c.start_time << "  "        << "end_time:"<<   c.end_time << "  "        << "last_notified:"<<   c.last_notified << "  "
+        << "description:"<<   c.description << "  "        << "re_rule:"<<   c.re_rule << "  "        << "n_received:"<< c.n_received<<"  "        << "last_notified:"<<   c.last_notified << "  "        << "frequency:"<<   c.frequency << "  "        << "start_time:"<<   c.start_time << "  "        << "end_time:"<<   c.end_time << "  "
         << " }";
     return o;
 };
@@ -438,7 +432,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_rule & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "re_rule"  << YAML::Value <<   c.re_rule        << YAML::Key << "frequency"  << YAML::Value <<   c.frequency        << YAML::Key << "n_received"  << YAML::Value << c.n_received        << YAML::Key << "description"  << YAML::Value <<   c.description        << YAML::Key << "start_time"  << YAML::Value <<   c.start_time        << YAML::Key << "end_time"  << YAML::Value <<   c.end_time        << YAML::Key << "last_notified"  << YAML::Value <<   c.last_notified
+        << YAML::Key << "description"  << YAML::Value <<   c.description        << YAML::Key << "re_rule"  << YAML::Value <<   c.re_rule        << YAML::Key << "n_received"  << YAML::Value << c.n_received        << YAML::Key << "last_notified"  << YAML::Value <<   c.last_notified        << YAML::Key << "frequency"  << YAML::Value <<   c.frequency        << YAML::Key << "start_time"  << YAML::Value <<   c.start_time        << YAML::Key << "end_time"  << YAML::Value <<   c.end_time
         << YAML::EndMap;
     return o;
 };
@@ -449,13 +443,13 @@ void  operator >> (const YAML::Node& node, sub_rule & c)
 {
 
 
-        node["re_rule"]  >> c.re_rule;
-        node["frequency"]  >> c.frequency;
-        node["n_received"]  >> c.n_received;
         node["description"]  >> c.description;
+        node["re_rule"]  >> c.re_rule;
+        node["n_received"]  >> c.n_received;
+        node["last_notified"]  >> c.last_notified;
+        node["frequency"]  >> c.frequency;
         node["start_time"]  >> c.start_time;
         node["end_time"]  >> c.end_time;
-        node["last_notified"]  >> c.last_notified;
 
 
 };
@@ -463,7 +457,7 @@ void  operator >> (const YAML::Node& node, sub_rule & c)
 
 bool operator== (const sub_rule& a, const sub_rule& b)
 {
-    return (          a.re_rule ==  b.re_rule  &&          a.frequency ==  b.frequency  &&          a.n_received ==  b.n_received  &&          a.description ==  b.description  &&          a.start_time ==  b.start_time  &&          a.end_time ==  b.end_time  &&          a.last_notified ==  b.last_notified  &&   true  );
+    return (          a.description ==  b.description  &&          a.re_rule ==  b.re_rule  &&          a.n_received ==  b.n_received  &&          a.last_notified ==  b.last_notified  &&          a.frequency ==  b.frequency  &&          a.start_time ==  b.start_time  &&          a.end_time ==  b.end_time  &&   true  );
 };
 
 bool operator!= (const sub_rule& a, const sub_rule& b)
@@ -474,12 +468,19 @@ bool operator!= (const sub_rule& a, const sub_rule& b)
 
 
 
-//void  __internal_qpid_fill (sub_rule& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_rule& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("desc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field description on message sub_rule::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.description, it->second);
+                        //c.description = it->second;
 //   field_type
 
                     it = mv.find("rer");
@@ -488,14 +489,6 @@ void  copy (sub_rule& c, const qpid::types::Variant& v)
                     else
                         copy(c.re_rule, it->second);
                         //c.re_rule = it->second;
-//   field_type
-
-                    it = mv.find("fr");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field frequency on message sub_rule::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.frequency, it->second);
-                        //c.frequency = it->second;
 //   sub_msg_type
 
                     it = mv.find("nr");
@@ -506,12 +499,20 @@ void  copy (sub_rule& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.n_received, it->second.asMap());
 //   field_type
 
-                    it = mv.find("desc");
+                    it = mv.find("lnot");
                     if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field description on message sub_rule::__internal_qpid_fill", mtk::alPriorCritic);
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field last_notified on message sub_rule::__internal_qpid_fill", mtk::alPriorCritic);
                     else
-                        copy(c.description, it->second);
-                        //c.description = it->second;
+                        copy(c.last_notified, it->second);
+                        //c.last_notified = it->second;
+//   field_type
+
+                    it = mv.find("fr");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field frequency on message sub_rule::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.frequency, it->second);
+                        //c.frequency = it->second;
 //   field_type
 
                     it = mv.find("st");
@@ -528,15 +529,8 @@ void  copy (sub_rule& c, const qpid::types::Variant& v)
                     else
                         copy(c.end_time, it->second);
                         //c.end_time = it->second;
-//   field_type
 
-                    it = mv.find("lnot");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field last_notified on message sub_rule::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.last_notified, it->second);
-                        //c.last_notified = it->second;
-
+        c.check_recomended ();
     }
 
 
@@ -544,22 +538,22 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_rule& a)
 {
 
     a.before_send();
+    a.check_recomended();
 
-
+//  field_type
+        __internal_add2map(map, a.description, std::string("desc"));
 //  field_type
         __internal_add2map(map, a.re_rule, std::string("rer"));
-//  field_type
-        __internal_add2map(map, a.frequency, std::string("fr"));
 //  sub_msg_type
         __internal_add2map(map, a.n_received, std::string("nr"));
 //  field_type
-        __internal_add2map(map, a.description, std::string("desc"));
+        __internal_add2map(map, a.last_notified, std::string("lnot"));
+//  field_type
+        __internal_add2map(map, a.frequency, std::string("fr"));
 //  field_type
         __internal_add2map(map, a.start_time, std::string("st"));
 //  field_type
         __internal_add2map(map, a.end_time, std::string("et"));
-//  field_type
-        __internal_add2map(map, a.last_notified, std::string("lnot"));
 
 
 };
@@ -581,44 +575,39 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   __internal_get_default ((mtk::dtTimeQuantity*)0),
+   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((int*)0),
 //   field_type
-   __internal_get_default ((std::string*)0),
+   __internal_get_default ((mtk::DateTime*)0),
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0),
 //   field_type
    __internal_get_default ((mtk::dtTimeQuantity*)0),
 //   field_type
-   __internal_get_default ((mtk::DateTime*)0)
+   __internal_get_default ((mtk::dtTimeQuantity*)0)
             );
     }
     
-
 sub_rule::sub_rule (const qpid::types::Variant::Map&  mv)
     :  //   field_type
-   re_rule(__internal_get_default((std::string*)0)),
+   description(__internal_get_default((std::string*)0)),
 //   field_type
-   frequency(__internal_get_default((mtk::dtTimeQuantity*)0)),
+   re_rule(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    n_received(__internal_get_default((int*)0)),
 //   field_type
-   description(__internal_get_default((std::string*)0)),
+   last_notified(__internal_get_default((mtk::DateTime*)0)),
+//   field_type
+   frequency(__internal_get_default((mtk::dtTimeQuantity*)0)),
 //   field_type
    start_time(__internal_get_default((mtk::dtTimeQuantity*)0)),
 //   field_type
-   end_time(__internal_get_default((mtk::dtTimeQuantity*)0)),
-//   field_type
-   last_notified(__internal_get_default((mtk::DateTime*)0)) 
+   end_time(__internal_get_default((mtk::dtTimeQuantity*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 
 
 };   //namespace mon {

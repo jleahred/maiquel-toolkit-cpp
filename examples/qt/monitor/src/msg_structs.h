@@ -40,11 +40,15 @@ public:
 
     
     // constructor
-    explicit sub_rule (    const std::string&  _re_rule,   const mtk::dtTimeQuantity&  _frequency,   const int&  _n_received,   const std::string&  _description,   const mtk::dtTimeQuantity&  _start_time,   const mtk::dtTimeQuantity&  _end_time,   const mtk::DateTime&  _last_notified );
+    explicit sub_rule (    const std::string&  _description,   const std::string&  _re_rule,   const int&  _n_received,   const mtk::DateTime&  _last_notified,   const mtk::dtTimeQuantity&  _frequency,   const mtk::dtTimeQuantity&  _start_time,   const mtk::dtTimeQuantity&  _end_time );
     explicit sub_rule ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_rule (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_rule"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_rule"; };
+    
+    
+
+    
 
     
     
@@ -52,13 +56,13 @@ public:
     
 
     // fields
-    std::string                               re_rule; 
-    mtk::dtTimeQuantity                       frequency; 
-    int                                       n_received; 
     std::string                               description; 
+    std::string                               re_rule; 
+    int                                       n_received; 
+    mtk::DateTime                             last_notified; 
+    mtk::dtTimeQuantity                       frequency; 
     mtk::dtTimeQuantity                       start_time; 
     mtk::dtTimeQuantity                       end_time; 
-    mtk::DateTime                             last_notified; 
 
 
 
@@ -82,8 +86,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -99,7 +102,6 @@ private:
 bool operator== (const sub_rule& a, const sub_rule& b);
 bool operator!= (const sub_rule& a, const sub_rule& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_rule& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_rule& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_rule>& a, const std::string& field);
 void copy (sub_rule& a, const qpid::types::Variant& map);

@@ -18,7 +18,8 @@ class QLabel;
 
 
 
-class Highlighter;
+class Highlighter_rules;
+class Highlighter_alarm;
 namespace Ui {
     class Monitor;
 }
@@ -92,6 +93,8 @@ public:
 
 
 private slots:
+    void on_set_counters_to_zero_clicked();
+    void on_prepare_edit_clicked();
     void on_mem_save_refresh_clicked();
     void on_config_text_modificationChanged(bool );
     void on_pb_save_clicked();
@@ -135,6 +138,13 @@ private:
 
     Config        config_info;
     void update_config_text(const std::string& new_text);
+
+    Highlighter_rules* highlighter_rules;
+    Highlighter_alarm* highlighter_alarm0;
+    Highlighter_alarm* highlighter_alarm1;
+    Highlighter_alarm* highlighter_alarm2;
+    Highlighter_alarm* highlighter_alarm3;
+
 };
 
 #endif // MONITOR_H

@@ -8,9 +8,13 @@
 #include <fstream>
 
 
+#include "highlighter_rules.h"
+#include "highlighter_alarm.h"
+
 #include "../../../../tools/qt/logview/src/highlighter.h"
 #include "support/mtk_string.h"
 #include "components/admin/msg_admin.h"
+
 
 
 
@@ -165,7 +169,7 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     QLabel * version = new QLabel();
     //version->setFrameShape(QFrame::Panel);
     //version->setFrameShadow(QFrame::Sunken);
-    version->setText("0.13.d");
+    version->setText("0.14.d");
     statusBar()->addWidget(version);
 
 
@@ -242,6 +246,12 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
     createTrayIcon();
+
+    highlighter_rules = new Highlighter_rules(ui->config_text->document());
+    highlighter_alarm0 = new Highlighter_alarm(ui->server_alarm_msg_errors->document());
+    highlighter_alarm1 = new Highlighter_alarm(ui->server_alarm_msg_all->document());
+    highlighter_alarm2 = new Highlighter_alarm(ui->cli_alarm_msg_errors->document());
+    highlighter_alarm3 = new Highlighter_alarm(ui->cli_alarm_msg_all->document());
 }
 
 Monitor::~Monitor()
@@ -380,6 +390,8 @@ void Monitor::on_pb_save_clicked()
 {
     config_info.save(ui->config_text->toPlainText().toStdString());
     ui->config_text->document()->setModified(false);
+    ui->config_text->setReadOnly(true);
+    ui->config_text->setStyleSheet("");
 }
 
 void Monitor::update_config_text(const std::string& new_text)
@@ -474,8 +486,13 @@ void Monitor::on_config_text_modificationChanged(bool )
 {
     if(ui->config_text->document()->isModified())
         ui->config_text->setStyleSheet("background-color: rgb(255, 192, 192);");
-   else
-        ui->config_text->setStyleSheet("");
+    else
+    {
+        if(ui->config_text->isReadOnly())
+            ui->config_text->setStyleSheet("");
+        else
+            ui->config_text->setStyleSheet("background-color: rgb(255, 245, 245);");
+    }
 }
 
 //Config*        ptr_config_info=0;
@@ -518,6 +535,8 @@ mtk::alEnPriority  filter_alarm_priority(mtk::alEnPriority  orig_priority, const
 void Monitor::on_mem_save_refresh_clicked()
 {
     config_info.mem_save_refresh();
+    ui->config_text->setReadOnly(true);
+    ui->config_text->setStyleSheet("");
 }
 
 void        Config::mem_save_refresh(void)
@@ -538,7 +557,8 @@ void        Config::mem_save_refresh(void)
         out  << YAML::Key << "gs_code"   <<  YAML::Value   <<  gs_code;
 
         if(rules__error2warning.size() == 0)
-            rules__error2warning.push_back(mon::msg::sub_rule("__just__example__", mtk::dtSeconds(5), 0, "description", mtk::dtSeconds(0), mtk::dtDays(1),  mtk::dtNowLocal()));
+            rules__error2warning.push_back(mon::msg::sub_rule("description", "__just__example__", 0, mtk::dtNowLocal(), mtk::dtSeconds(5), mtk::dtSeconds(0), mtk::dtDays(1)));
+
         out  << YAML::Key << "rules__error2warning"   <<  YAML::Value   <<  rules__error2warning;
 
         out <<  YAML::EndMap;
@@ -581,5 +601,28 @@ void Monitor::slot_compute_re_rule(void)
     else
     {
         ui->re_rule_result->setText("DOESN'T MATCH");
+    }
+}
+
+void Monitor::on_prepare_edit_clicked()
+{
+    config_info.mem_save_refresh();
+    ui->config_text->setReadOnly(false);
+    ui->config_text->setStyleSheet("background-color: rgb(255, 245, 245);");
+}
+
+void Monitor::on_set_counters_to_zero_clicked()
+{
+    if(QMessageBox::warning(this, QLatin1String("monitor"), tr("Do you want to reset all counters to zero??"),
+                                        QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok)
+    {
+        config_info.mem_save_refresh();
+        for(auto it = config_info.rules__error2warning.begin(); it!=config_info.rules__error2warning.end(); ++it)
+        {
+            it->n_received = 0;
+        }
+        config_info.mem_save_refresh();
+        ui->config_text->setReadOnly(true);
+        ui->config_text->setStyleSheet("");
     }
 }

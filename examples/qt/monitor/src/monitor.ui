@@ -29,7 +29,7 @@
       </property>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -308,6 +308,9 @@
            <property name="lineWrapMode">
             <enum>QPlainTextEdit::NoWrap</enum>
            </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -324,6 +327,20 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="set_counters_to_zero">
+             <property name="text">
+              <string>set counters to zero</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="prepare_edit">
+             <property name="text">
+              <string>prepare edit</string>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QPushButton" name="mem_save_refresh">
