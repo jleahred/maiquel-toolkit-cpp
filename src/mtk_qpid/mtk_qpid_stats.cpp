@@ -148,9 +148,12 @@ long& num_restored_sessions(void)
 
 
 
-mtk::DateTime  __last_received_message=mtk::dtNowLocal();
+mtk::DateTime&  last_received_message(void)
+{
+    static mtk::DateTime*  result = new mtk::DateTime{mtk::dtNowLocal()};
 
-mtk::DateTime&  last_received_message(void) { return __last_received_message; };
+    return *result;
+};
 
 
 

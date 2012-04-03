@@ -725,11 +725,6 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
                 mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_prices);
             mtk::mtk_qpid_stats::message_received_for_message_size(message.getContentSize(), cf.message_type);
 
-            signalMessage->emit(mt);
-            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
-                check_control_fields_flucts(cf.control_fluct_key, cf.sent_date_time);
-            MTK_END_EXEC_MAX_FREC
-
             MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(10))
                 if(cf.depreciated_on.HasValue()   &&   this->depreciated_on.HasValue()    &&   cf.depreciated_on.Get() != this->depreciated_on.Get())
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "depreciated",
@@ -751,6 +746,11 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
                             MTK_SS("received depreciated  message   " << MESSAGE_TYPE::static_get_message_type_as_string()
                                     << "  "  <<   cf.depreciated_on.Get()
                             ), mtk::alPriorError));
+            MTK_END_EXEC_MAX_FREC
+
+            signalMessage->emit(mt);
+            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
+                check_control_fields_flucts(cf.control_fluct_key, cf.sent_date_time);
             MTK_END_EXEC_MAX_FREC
         }
 //        nullable<msg::sub_control_fields> cf;
