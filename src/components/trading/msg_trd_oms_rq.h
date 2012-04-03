@@ -27,6 +27,7 @@
 #include "msg_trd_cli_ls.h"
 #include "msg_trd_cli_mk.h"
 #include "msg_trd_cli_sm.h"
+#include "msg_trd_cli_sl.h"
 
 namespace mtk { 
 namespace trd { 
@@ -522,6 +523,168 @@ public:
 
 
 //-------------------------------
+//      oms_RQ_NW_SL
+//-------------------------------    
+class oms_RQ_NW_SL        :  public  RQ_NW_SL
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit oms_RQ_NW_SL (  const RQ_NW_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from );
+    explicit oms_RQ_NW_SL ( const qpid::types::Variant::Map&  mv );
+    virtual ~oms_RQ_NW_SL (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_NW_SL"; };
+    static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_NW_SL"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    std::string                               reject_description; 
+    std::string                               from; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      oms_RQ_MD_SL
+//-------------------------------    
+class oms_RQ_MD_SL        :  public  RQ_MD_SL
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit oms_RQ_MD_SL (  const RQ_MD_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from );
+    explicit oms_RQ_MD_SL ( const qpid::types::Variant::Map&  mv );
+    virtual ~oms_RQ_MD_SL (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_MD_SL"; };
+    static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_MD_SL"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    std::string                               reject_description; 
+    std::string                               from; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      oms_RQ_CC_SL
+//-------------------------------    
+class oms_RQ_CC_SL        :  public  RQ_CC_SL
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit oms_RQ_CC_SL (  const RQ_CC_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from );
+    explicit oms_RQ_CC_SL ( const qpid::types::Variant::Map&  mv );
+    virtual ~oms_RQ_CC_SL (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_CC_SL"; };
+    static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_CC_SL"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    std::string                               reject_description; 
+    std::string                               from; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
 //      oms_RQ_ORDERS_STATUS
 //-------------------------------    
 class oms_RQ_ORDERS_STATUS        :  public  RQ_ORDERS_STATUS
@@ -641,6 +804,27 @@ bool operator!= (const oms_RQ_MD_SM& a, const oms_RQ_MD_SM& b);
 bool operator== (const oms_RQ_CC_SM& a, const oms_RQ_CC_SM& b);
 bool operator!= (const oms_RQ_CC_SM& a, const oms_RQ_CC_SM& b);
 
+    std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_SL & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_NW_SL & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_NW_SL & c);
+
+bool operator== (const oms_RQ_NW_SL& a, const oms_RQ_NW_SL& b);
+bool operator!= (const oms_RQ_NW_SL& a, const oms_RQ_NW_SL& b);
+
+    std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_SL & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_MD_SL & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_MD_SL & c);
+
+bool operator== (const oms_RQ_MD_SL& a, const oms_RQ_MD_SL& b);
+bool operator!= (const oms_RQ_MD_SL& a, const oms_RQ_MD_SL& b);
+
+    std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_SL & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_CC_SL & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_CC_SL & c);
+
+bool operator== (const oms_RQ_CC_SL& a, const oms_RQ_CC_SL& b);
+bool operator!= (const oms_RQ_CC_SL& a, const oms_RQ_CC_SL& b);
+
     std::ostream& operator<< (std::ostream& o, const oms_RQ_ORDERS_STATUS & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_ORDERS_STATUS & c);
    void           operator >> (const YAML::Node& n,       oms_RQ_ORDERS_STATUS & c);
@@ -675,6 +859,15 @@ void copy (oms_RQ_MD_SM& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_SM& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_SM>& a, const std::string& field);
 void copy (oms_RQ_CC_SM& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_SL& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_SL>& a, const std::string& field);
+void copy (oms_RQ_NW_SL& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_SL& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_SL>& a, const std::string& field);
+void copy (oms_RQ_MD_SL& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_SL& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_SL>& a, const std::string& field);
+void copy (oms_RQ_CC_SL& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_ORDERS_STATUS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_ORDERS_STATUS>& a, const std::string& field);
 void copy (oms_RQ_ORDERS_STATUS& a, const qpid::types::Variant& map);
@@ -696,6 +889,12 @@ void copy (oms_RQ_ORDERS_STATUS& a, const qpid::types::Variant& map);
     oms_RQ_MD_SM  __internal_get_default(oms_RQ_MD_SM *);
     
     oms_RQ_CC_SM  __internal_get_default(oms_RQ_CC_SM *);
+    
+    oms_RQ_NW_SL  __internal_get_default(oms_RQ_NW_SL *);
+    
+    oms_RQ_MD_SL  __internal_get_default(oms_RQ_MD_SL *);
+    
+    oms_RQ_CC_SL  __internal_get_default(oms_RQ_CC_SL *);
     
     oms_RQ_ORDERS_STATUS  __internal_get_default(oms_RQ_ORDERS_STATUS *);
     
@@ -722,6 +921,9 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_CC_MK)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_NW_SM)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_MD_SM)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_CC_SM)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_NW_SL)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_MD_SL)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_CC_SL)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_ORDERS_STATUS)
 
 

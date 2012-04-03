@@ -153,6 +153,35 @@ void  check_request::init(void)
     std::cout << " ok" << std::endl;
 
 
+
+    std::cout << "connecting oms_RQ_NW_SL... ";
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            hqpid_rqnwsl,
+                            mtk::admin::get_url("server"),
+                            mtk::trd::msg::oms_RQ_NW_SL::get_in_subject("MARKET", "*", oms_from),
+                            mtk::trd::msg::oms_RQ_NW_SL,
+                            oms_RQ_NW_SL)
+    std::cout << " ok" << std::endl;
+
+    std::cout << "connecting oms_RQ_MD_SL... ";
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            hqpid_rqmdsl,
+                            mtk::admin::get_url("server"),
+                            mtk::trd::msg::oms_RQ_MD_SL::get_in_subject("MARKET", "*", oms_from),
+                            mtk::trd::msg::oms_RQ_MD_SL,
+                            oms_RQ_MD_SL)
+    std::cout << " ok" << std::endl;
+
+    std::cout << "connecting oms_RQ_CC_SL... ";
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            hqpid_rqccsl,
+                            mtk::admin::get_url("server"),
+                            mtk::trd::msg::oms_RQ_CC_SL::get_in_subject("MARKET", "*", oms_from),
+                            mtk::trd::msg::oms_RQ_CC_SL,
+                            oms_RQ_CC_SL)
+    std::cout << " ok" << std::endl;
+
+
     mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher
                     ps_pub_prod_info_mtk_ready__from_publisher  (mtk::prices::msg::ps_pub_prod_info_mtk_ready("MARKET"));
     mtk::send_message_with_sender(mtk::admin::get_qpid_sender("server", ps_pub_prod_info_mtk_ready__from_publisher.get_qpid_address()), ps_pub_prod_info_mtk_ready__from_publisher);
@@ -179,6 +208,18 @@ std::string check_request_pos (const emarket::sub_product_config&  /*pc*/, const
     return result;
 }
 
+
+std::string check_request_pos (const emarket::sub_product_config&  pc, const mtk::trd::msg::sub_position_sl&   pos)
+{
+    std::string  result;
+    if(pos.quantity.GetExt() !=  mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1)))
+        result += " extended on quantity doesn't match";
+    if(pos.stop_price.GetExt() !=  pc.price_fnext)
+        result += " extended on stop price doesn't match";
+    if(pos.price.GetExt() !=  pc.price_fnext)
+        result += " extended on limit price doesn't match";
+    return result;
+}
 
 std::string check_request_pos (const emarket::sub_product_config&  pc, const mtk::trd::msg::sub_position_ls&   pos)
 {
@@ -258,4 +299,27 @@ void check_request::oms_RQ_NW_SM(const mtk::trd::msg::oms_RQ_NW_SM& rq)
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
     sig_oms_rq_nw_sm.emit(mtk::trd::msg::oms_RQ_NW_SM(rq, reject_reason, ""));
+}
+
+
+
+void check_request::oms_RQ_CC_SL(const mtk::trd::msg::oms_RQ_CC_SL& rq)
+{
+    std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
+    std::string reject_reason = verif_is_valid_request(rq);
+    sig_oms_rq_cc_sl.emit(mtk::trd::msg::oms_RQ_CC_SL(rq, reject_reason, ""));
+}
+
+void check_request::oms_RQ_MD_SL(const mtk::trd::msg::oms_RQ_MD_SL& rq)
+{
+    std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
+    std::string reject_reason = verif_is_valid_request(rq);
+    sig_oms_rq_md_sl.emit(mtk::trd::msg::oms_RQ_MD_SL(rq, reject_reason, ""));
+}
+
+void check_request::oms_RQ_NW_SL(const mtk::trd::msg::oms_RQ_NW_SL& rq)
+{
+    std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
+    std::string reject_reason = verif_is_valid_request(rq);
+    sig_oms_rq_nw_sl.emit(mtk::trd::msg::oms_RQ_NW_SL(rq, reject_reason, ""));
 }

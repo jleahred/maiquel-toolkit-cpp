@@ -7,6 +7,7 @@
 #include "components/trading/trd_cli_ls.h"
 #include "components/trading/trd_cli_mk.h"
 #include "components/trading/trd_cli_sm.h"
+#include "components/trading/trd_cli_sl.h"
 
 
 
@@ -31,7 +32,7 @@ public:
     void set_order  (const mtk::trd::msg::sub_order_id& order_id);
 
 protected:
-    void   showEvent ( QShowEvent * event );        //  overwritten
+    void   showEvent ( QShowEvent * event );        //  overwritted
 
 private:
     Ui::whistoric_order *ui;
@@ -40,6 +41,7 @@ private:
     mtk::CountPtr<mtk::trd::trd_cli_ls>   order_ls;
     mtk::CountPtr<mtk::trd::trd_cli_mk>   order_mk;
     mtk::CountPtr<mtk::trd::trd_cli_sm>   order_sm;
+    mtk::CountPtr<mtk::trd::trd_cli_sl>   order_sl;
 
     void update_on_change(void);
 

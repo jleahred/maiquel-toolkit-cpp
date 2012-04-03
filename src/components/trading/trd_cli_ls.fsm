@@ -40,6 +40,7 @@
                         }]
 
 	cf_st           (st   :  mtk::trd::msg::CF_ST_LS)   [{  IF_LAST_CONF_ISNULL__WRITE_IT         }]
+	cf_hist         (_history : mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped> )   [{  ci->set_history(_history);     }]
 
     time_out        (_:   int )  [{  mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ls.fsm", MTK_SS("time out order " << method_name  << "  "  << last_request()), mtk::alPriorError));  }]
 
@@ -160,6 +161,7 @@ init    --   cf_ex                           /   , cf_cfex             -->   mar
 init    --   cf_st  &&  full_exec            /   , cf_cfst             -->   executed
 init    --   cf_st  &&  is_rem_qty_zero      /   , cf_cfst             -->   canceled
 init    --   cf_st                           /   , cf_cfst             -->   market
+init    --   cf_hist                                                   ''>   init
 init    --   cf_exLK                         /   , cf_cfexLK           ''>   error      ("received cfexlk with no order")
 init    --   time_out                                                  ''>   error      (method_name)
 
@@ -179,6 +181,7 @@ w_cfnw  --   rj_md                           /   , cf_rjmd & rq_cc     ''>   err
 w_cfnw  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   error      (method_name)
 w_cfnw  --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error      (method_name)
 w_cfnw  --   cf_st                                                     ''>   w_cfnw     (mtk::dtSeconds(2))
+w_cfnw  --   cf_hist                                                   ''>   error      (method_name)
 w_cfnw  --   cf_exLK                         /   , cf_cfexLK           ''>   error      ("received cfexlk waiting for confirmation")
 w_cfnw  --   time_out                                                  ''>   w_cfnw     (mtk::dtSeconds(0))
 
@@ -198,6 +201,7 @@ market  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   err
 market  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
 market  --   cf_ex                           /   , cf_cfex             ''>   market
 market  --   cf_st                                                     ''>   market
+market  --   cf_hist                                                   ''>   error      (method_name)
 market  --   cf_exLK                         /   , cf_cfexLK           ''>   market
 market  --   time_out                                                  ''>   error      (method_name)
 
@@ -219,6 +223,7 @@ w_cfmd  --   rj_cc                           /   , cf_rjcc & rq_cc     ''>   err
 w_cfmd  --   cf_ex  &&  full_exec            /   , cf_cfex             -->   executed
 w_cfmd  --   cf_ex                           /   , cf_cfex             ''>   w_cfmd     (mtk::dtSeconds(2))
 w_cfmd  --   cf_st                                                     ''>   w_cfmd     (mtk::dtSeconds(2))
+w_cfmd  --   cf_hist                                                   ''>   error      (method_name)
 w_cfmd  --   cf_exLK                         /   , cf_cfexLK           ''>   w_cfmd     (mtk::dtSeconds(2))
 w_cfmd  --   time_out                                                  ''>   w_cfmd     (mtk::dtSeconds(0))
 
@@ -237,6 +242,7 @@ w_cfcc  --   rj_cc                           /   , cf_rjcc            ''>   mark
 w_cfcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
 w_cfcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfcc      (mtk::dtSeconds(2))
 w_cfcc  --   cf_st                                                    ''>   w_cfcc      (mtk::dtSeconds(2))
+w_cfcc  --   cf_hist                                                  ''>   error       (method_name)
 w_cfcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfcc      (mtk::dtSeconds(2))
 w_cfcc  --   time_out                                                 ''>   w_cfcc      (mtk::dtSeconds(0))
 
@@ -258,6 +264,7 @@ w_cfmdcc  --   rj_cc                           /   , cf_rjcc            ''>   w_
 w_cfmdcc  --   cf_ex  &&  full_exec            /   , cf_cfex            -->   executed
 w_cfmdcc  --   cf_ex                           /   , cf_cfex            ''>   w_cfmdcc  (mtk::dtSeconds(2))
 w_cfmdcc  --   cf_st                                                    ''>   w_cfmdcc  (mtk::dtSeconds(2))
+w_cfmdcc  --   cf_hist                                                  ''>   error     (method_name)
 w_cfmdcc  --   cf_exLK                         /   , cf_cfexLK          ''>   w_cfmdcc  (mtk::dtSeconds(2))
 w_cfmdcc  --   time_out                                                 ''>   w_cfmdcc  (mtk::dtSeconds(0))
 
@@ -277,6 +284,7 @@ w_cfnwmd  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   er
 w_cfnwmd  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
 w_cfnwmd  --   cf_st                                                    ''>   w_cfnwmd  (mtk::dtSeconds(2))
+w_cfnwmd  --   cf_hist                                                  ''>   error     (method_name)
 w_cfnwmd  --   cf_exLK                         /   , cf_cfexLK          ''>   error     ("received cfexlk waiting for confirmation2")
 w_cfnwmd  --   time_out                                                 ''>   w_cfnwmd  (mtk::dtSeconds(0))
 
@@ -293,6 +301,7 @@ w_cfnwcc  --   rj_md                           /   , cf_rjmd & rq_cc    ''>   er
 w_cfnwcc  --   rj_cc                           /   , cf_rjcc & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   cf_ex                           /   , cf_cfex & rq_cc    ''>   error     (method_name)
 w_cfnwcc  --   cf_st                                                    ''>   w_cfnwcc  (mtk::dtSeconds(2))
+w_cfnwcc  --   cf_hist                                                  ''>   error     (method_name)
 w_cfnwcc  --   cf_exLK                         /   , cf_cfexLK          ''>   error     ("received cfexlk waiting for confirmation3")
 w_cfnwcc  --   time_out                                                 ''>   w_cfnwcc  (mtk::dtSeconds(0))
 
@@ -309,8 +318,9 @@ canceled --   rj_md                           /   , cf_rjmd             ''>   ca
 canceled --   rj_cc                           /   , cf_rjcc             ''>   canceled
 canceled --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 canceled --   cf_st                                                     ''>   canceled
+canceled --   cf_hist                                                   ''>   error     (method_name)
 canceled --   cf_exLK                         /   , cf_cfexLK           ''>   canceled
-canceled --   time_out                                                  ''>   error      (method_name)
+canceled --   time_out                                                  ''>   error     (method_name)
 
 
 executed --   rq_nw                           /   , rj_rqnw & rq_cc     ''>   error     (method_name)
@@ -324,6 +334,7 @@ executed --   rj_md                           /   , cf_rjmd             ''>   ex
 executed --   rj_cc                           /   , cf_rjcc             ''>   executed
 executed --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 executed --   cf_st                                                     ''>   executed
+executed --   cf_hist                                                   ''>   error      (method_name)
 executed --   cf_exLK                         /   , cf_cfexLK           ''>   executed
 executed --   time_out                                                  ''>   error      (method_name)
 
@@ -340,6 +351,7 @@ error    --   rj_md                           /   , cf_rjmd & rq_cc     ''>   er
 error    --   rj_cc                           /   , cf_rjcc             ''>   error     (method_name)
 error    --   cf_ex                           /   , cf_cfex & rq_cc     ''>   error     (method_name)
 error    --   cf_st                                                     ''>   error     (method_name)
+error    --   cf_hist                                                   ''>   error     (method_name)
 error    --   cf_exLK                         /   , cf_cfexLK           ''>   error     (method_name)
 error    --   time_out                                                  ''>   error     (method_name)
 

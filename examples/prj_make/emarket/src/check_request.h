@@ -31,6 +31,10 @@ public:
     void oms_RQ_MD_SM(const mtk::trd::msg::oms_RQ_MD_SM& rq);
     void oms_RQ_CC_SM(const mtk::trd::msg::oms_RQ_CC_SM& rq);
 
+    void oms_RQ_NW_SL(const mtk::trd::msg::oms_RQ_NW_SL& rq);
+    void oms_RQ_MD_SL(const mtk::trd::msg::oms_RQ_MD_SL& rq);
+    void oms_RQ_CC_SL(const mtk::trd::msg::oms_RQ_CC_SL& rq);
+
 
     // out -> book_orders
     mtk::Signal<const mtk::trd::msg::oms_RQ_NW_LS&>   sig_oms_rq_nw_ls;
@@ -42,6 +46,10 @@ public:
     mtk::Signal<const mtk::trd::msg::oms_RQ_NW_SM&>   sig_oms_rq_nw_sm;
     mtk::Signal<const mtk::trd::msg::oms_RQ_MD_SM&>   sig_oms_rq_md_sm;
     mtk::Signal<const mtk::trd::msg::oms_RQ_CC_SM&>   sig_oms_rq_cc_sm;
+
+    mtk::Signal<const mtk::trd::msg::oms_RQ_NW_SL&>   sig_oms_rq_nw_sl;
+    mtk::Signal<const mtk::trd::msg::oms_RQ_MD_SL&>   sig_oms_rq_md_sl;
+    mtk::Signal<const mtk::trd::msg::oms_RQ_CC_SL&>   sig_oms_rq_cc_sl;
 
 
     mtk::Signal<const emarket::sub_product_config&>   sig_add_product;
@@ -61,6 +69,9 @@ private:
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_MD_SM> > hqpid_rqmdsm;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_CC_SM> > hqpid_rqccsm;
 
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_NW_SL> > hqpid_rqnwsl;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_MD_SL> > hqpid_rqmdsl;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_CC_SL> > hqpid_rqccsl;
 };
 
 

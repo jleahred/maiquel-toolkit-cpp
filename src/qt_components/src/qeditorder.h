@@ -6,6 +6,7 @@
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/trading/msg_trd_cli_mk.h"
 #include "components/trading/msg_trd_cli_sm.h"
+#include "components/trading/msg_trd_cli_sl.h"
 
 
 
@@ -34,6 +35,7 @@ public:
     explicit QEditOrder(const mtk::trd::msg::RQ_XX_LS& _rq, bool agressive, QWidget *parent = 0);
     explicit QEditOrder(const mtk::trd::msg::RQ_XX_MK& _rq, bool agressive, QWidget *parent = 0);
     explicit QEditOrder(const mtk::trd::msg::RQ_XX_SM& _rq, bool agressive, QWidget *parent = 0);
+    explicit QEditOrder(const mtk::trd::msg::RQ_XX_SL& _rq, bool agressive, QWidget *parent = 0);
 
     ~QEditOrder();
 
@@ -41,6 +43,7 @@ public:
     mtk::trd::msg::RQ_XX_LS   get_request_ls(void);
     mtk::trd::msg::RQ_XX_MK   get_request_mk(void);
     mtk::trd::msg::RQ_XX_SM   get_request_sm(void);
+    mtk::trd::msg::RQ_XX_SL   get_request_sl(void);
 
 protected:
     virtual bool eventFilter(QObject *, QEvent *);
@@ -51,6 +54,7 @@ private:
     mtk::nullable<mtk::trd::msg::RQ_XX_LS>      rq_ls;
     mtk::nullable<mtk::trd::msg::RQ_XX_MK>      rq_mk;
     mtk::nullable<mtk::trd::msg::RQ_XX_SM>      rq_sm;
+    mtk::nullable<mtk::trd::msg::RQ_XX_SL>      rq_sl;
     mtk::list<mtk::trd::msg::sub_account_info>  account_list;
 
 

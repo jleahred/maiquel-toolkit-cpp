@@ -16,11 +16,12 @@ namespace
 {
 
     const char*   APP_NAME          = "EMARKET";
-    const char*   APP_VER           = "2011-03-16";
+    const char*   APP_VER           = "2012-04-02 e";
     const char*   APP_DESCRIPTION   = "This is a testing market.\n";
 
     const char*   APP_MODIFICATIONS =   "           2011-03-16     first version\n"
                                         "           2011-08-01     product loader comunication\n"
+                                        "           2012-04-02     stop limit orders\n"
                                         ;
 
 }
@@ -50,6 +51,10 @@ int main(int argc, char ** argv)
         cr.sig_oms_rq_nw_sm.connect  (&ob, &orders_book::oms_RQ_NW_SM);
         cr.sig_oms_rq_md_sm.connect  (&ob, &orders_book::oms_RQ_MD_SM);
         cr.sig_oms_rq_cc_sm.connect  (&ob, &orders_book::oms_RQ_CC_SM);
+
+        cr.sig_oms_rq_nw_sl.connect  (&ob, &orders_book::oms_RQ_NW_SL);
+        cr.sig_oms_rq_md_sl.connect  (&ob, &orders_book::oms_RQ_MD_SL);
+        cr.sig_oms_rq_cc_sl.connect  (&ob, &orders_book::oms_RQ_CC_SL);
 
 
         cr.sig_add_product.connect(&ob, &orders_book::add_product);

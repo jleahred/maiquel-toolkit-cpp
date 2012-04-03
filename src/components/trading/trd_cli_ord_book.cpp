@@ -82,6 +82,9 @@ struct handles_qpid
     REGISTER_ORDER_TYPE(SM, sm);
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_TR_SM> > cf_tr_sm;
 
+    REGISTER_ORDER_TYPE(SL, sl);
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_TR_SL> > cf_tr_sl;
+
 
     #undef  REGISTER_ORDER_TYPE
 };
@@ -112,6 +115,13 @@ struct s_status
 
     mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_sm_dangerous_signals_not_warped>&  >     sig_order_sm_new;
     mtk::Signal< mtk::trd::msg::RQ_XX_SM&, bool& /*canceled*/, bool  /*aggre*/   >          sig_request_hook_sm;
+
+
+    //  sl
+    mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_sl_dangerous_signals_not_warped> >     sl_orders;
+
+    mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_sl_dangerous_signals_not_warped>&  >     sig_order_sl_new;
+    mtk::Signal< mtk::trd::msg::RQ_XX_SL&, bool& /*canceled*/, bool  /*aggre*/   >          sig_request_hook_sl;
 };
 
 
@@ -146,6 +156,9 @@ void cf_ex_mk(const mtk::trd::msg::CF_EX_MK& ex);
 REGISTER_ORDER_TYPE(SM, sm);
 void cf_tr_sm(const mtk::trd::msg::CF_TR_SM& tr);
 
+REGISTER_ORDER_TYPE(SL, sl);
+void cf_tr_sl(const mtk::trd::msg::CF_TR_SL& tr);
+
 
 #undef REGISTER_ORDER_TYPE
 
@@ -177,6 +190,7 @@ void cf_tr_sm(const mtk::trd::msg::CF_TR_SM& tr);
                 REGISTER_ORDER_TYPE(LS, ls);
                 REGISTER_ORDER_TYPE(MK, mk);
                 REGISTER_ORDER_TYPE(SM, sm);
+                REGISTER_ORDER_TYPE(SL, sl);
 
         #undef  REGISTER_ORDER_TYPE
     }
@@ -274,6 +288,7 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
             REGISTER_ORDER_TYPE(LS, ls);
             REGISTER_ORDER_TYPE(MK, mk);
             REGISTER_ORDER_TYPE(SM, sm);
+            REGISTER_ORDER_TYPE(SL, sl);
 
             #undef  REGISTER_ORDER_TYPE
 
@@ -297,6 +312,13 @@ void orders_susbcription_for_account(const mtk::trd::account::msg::sub_grant& gr
                                     mtk::trd::msg::CF_TR_SM::get_in_subject(broker_code, market, account_name),
                                     mtk::trd::msg::CF_TR_SM,
                                     cf_tr_sm)
+
+            MTK_QPID_RECEIVER_CONNECT_F(
+                                    handles.cf_tr_sl,
+                                    mtk::admin::get_url("client"),
+                                    mtk::trd::msg::CF_TR_SL::get_in_subject(broker_code, market, account_name),
+                                    mtk::trd::msg::CF_TR_SL,
+                                    cf_tr_sl)
 
 
 
@@ -342,6 +364,11 @@ mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_mk_danger
 mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_sm_dangerous_signals_not_warped>&  >& get_sig_order_sm_new    (void)
 {
     return get_status_ref().sig_order_sm_new;
+}
+
+mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_sl_dangerous_signals_not_warped>&  >& get_sig_order_sl_new    (void)
+{
+    return get_status_ref().sig_order_sl_new;
 }
 
 
@@ -407,6 +434,12 @@ mtk::CountPtr<trd_cli_sm_dangerous_signals_not_warped>  get_order<trd_cli_sm_dan
     return get_order_withmapandsignal<trd_cli_sm_dangerous_signals_not_warped>(ord_id, get_status_ref().sm_orders, get_status_ref().sig_order_sm_new);
 }
 
+template<>
+mtk::CountPtr<trd_cli_sl_dangerous_signals_not_warped>  get_order<trd_cli_sl_dangerous_signals_not_warped>(const mtk::trd::msg::sub_order_id& ord_id)
+{
+    return get_order_withmapandsignal<trd_cli_sl_dangerous_signals_not_warped>(ord_id, get_status_ref().sl_orders, get_status_ref().sig_order_sl_new);
+}
+
 
 
 
@@ -430,6 +463,10 @@ mtk::CountPtr<trd_cli_sm>          get_order_sm        (const msg::sub_order_id&
     return  mtk::make_cptr(new trd_cli_sm(get_order<trd_cli_sm_dangerous_signals_not_warped>(ord_id)));
 }
 
+mtk::CountPtr<trd_cli_sl>          get_order_sl        (const msg::sub_order_id& ord_id)
+{
+    return  mtk::make_cptr(new trd_cli_sl(get_order<trd_cli_sl_dangerous_signals_not_warped>(ord_id)));
+}
 
 
 
@@ -453,6 +490,10 @@ mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void)
     for(mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_sm_dangerous_signals_not_warped> >::const_iterator it = __internal_ptr_status->sm_orders.begin(); it!=__internal_ptr_status->sm_orders.end(); ++it)
         result.push_back(it->first);
 
+    //mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_sl_dangerous_signals_not_warped> >     sl_orders;
+    for(mtk::map<msg::sub_order_id, mtk::CountPtr<trd_cli_sl_dangerous_signals_not_warped> >::const_iterator it = __internal_ptr_status->sl_orders.begin(); it!=__internal_ptr_status->sl_orders.end(); ++it)
+        result.push_back(it->first);
+
 
     return result;
 }
@@ -472,6 +513,11 @@ mtk::Signal< mtk::trd::msg::RQ_XX_MK&, bool&, bool    >&  get_signal_request_hoo
 mtk::Signal< mtk::trd::msg::RQ_XX_SM&, bool&, bool    >&  get_signal_request_hook_sm         (void)
 {
     return get_status_ref().sig_request_hook_sm;
+}
+
+mtk::Signal< mtk::trd::msg::RQ_XX_SL&, bool&, bool    >&  get_signal_request_hook_sl         (void)
+{
+    return get_status_ref().sig_request_hook_sl;
 }
 
 
@@ -791,6 +837,7 @@ void cf_tr_xx(const TR_TYPE& tr)
 REGISTER_ORDER_TYPE(LS, ls);
 REGISTER_ORDER_TYPE(MK, mk);
 REGISTER_ORDER_TYPE(SM, sm);
+REGISTER_ORDER_TYPE(SL, sl);
 
 
 #undef   REGISTER_ORDER_TYPE
@@ -851,6 +898,21 @@ void cf_tr_sm(const mtk::trd::msg::CF_TR_SM& tr)
 }
 
 
+void cf_tr_sl(const mtk::trd::msg::CF_TR_SL& tr)
+{
+    cf_tr_xx<trd_cli_sl_dangerous_signals_not_warped, mtk::trd::msg::CF_TR_SL>(tr);
+
+
+    mtk::CountPtr<mtk::trd::trd_cli_ls>  order = get_order_ls(tr.invariant.order_id);
+    mtk::msg::sub_gen_response_location  fake_resonse_location(admin::get_session_id(), admin::get_process_info().location.broker_code);
+    mtk::trd::msg::sub_position_ls       position_ls(tr.market_pos.price, tr.market_pos.quantity, tr.market_pos.cli_ref);
+    mtk::trd::msg::CF_XX_LS              cf_xx_ls(mtk::trd::msg::CF_XX(tr), position_ls);
+    mtk::trd::msg::CF_ST_LS              cf_st_ls(cf_xx_ls, fake_resonse_location);
+
+    order->cf_hist(get_order_sl(tr.invariant.order_id)->history());
+    order->cf_st(cf_st_ls);
+}
+
 
 
 
@@ -864,6 +926,8 @@ en_order_type  get_order_type(const msg::sub_order_id& ord_id)
         return ot_market;
     else if(get_status_ref().sm_orders.find(ord_id) !=  get_status_ref().sm_orders.end())
         return ot_stop_market;
+    else if(get_status_ref().sl_orders.find(ord_id) !=  get_status_ref().sl_orders.end())
+        return ot_stop_limit;
     else
         throw mtk::Alarm(MTK_HERE, "cli_order_book", MTK_SS("missing " << ord_id << " looking order type"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
 }
@@ -891,6 +955,7 @@ namespace   //anonymous
         response_lines.push_back(MTK_SS("limit :     " <<  mtk::trd::trd_cli_ord_book::get_status_ref().ls_orders.size()));
         response_lines.push_back(MTK_SS("market:     " <<  mtk::trd::trd_cli_ord_book::get_status_ref().mk_orders.size()));
         response_lines.push_back(MTK_SS("stop market:" <<  mtk::trd::trd_cli_ord_book::get_status_ref().sm_orders.size()));
+        response_lines.push_back(MTK_SS("stop limit: " <<  mtk::trd::trd_cli_ord_book::get_status_ref().sl_orders.size()));
     }
 
 }

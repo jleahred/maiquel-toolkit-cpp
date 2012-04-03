@@ -3,6 +3,7 @@
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/trading/msg_trd_cli_mk.h"
 #include "components/trading/msg_trd_cli_sm.h"
+#include "components/trading/msg_trd_cli_sl.h"
 #include "components/admin/admin.h"
 #include "components/admin/msg_admin.h"
 #include "support/call_later.h"
@@ -16,13 +17,14 @@ namespace
 {
 
     const char*   APP_NAME          = "ADM_TRADING_DB";
-    const char*   APP_VER           = "2012-01-18";
+    const char*   APP_VER           = "2012-04-02 e";
     const char*   APP_DESCRIPTION   = "This process save orders on database\n"
                                       "";
 
     const char*   APP_MODIFICATIONS =   "           2011-06-13     first version\n"
                                         "           2012-01-18     added linked executions"
                                         "           2012-03-12     added market stop orders"
+                                        "           2012-04-02     added market limit orders"
                                         ;
 
 }
@@ -438,6 +440,63 @@ void on_cf_tr_sm(const T&  tr)
 }
 
 
+//      STOP  LIMIT
+template<typename T>        //  ie:  mtk::trd::msg::RQ_NW_SL
+void on_rq_xx_sl(const T&  rq)
+{
+    record_info  full_record;
+
+    //  RQ_XX_SL   position
+    FILL_FIXED_NUMBER(full_record.RQ_POS_PRICE,         rq.request_pos.price);
+    FILL_FIXED_NUMBER(full_record.RQ_POS_QUANTITY,      rq.request_pos.quantity);
+    full_record.CLI_REF  =   rq.request_pos.cli_ref;
+
+    fill_rq_xx(full_record, rq);
+    full_record.SENT_TIME  =  rq.__internal_warning_control_fields->sent_date_time;
+    full_record.ORDER_TYPE =  rq.__internal_warning_control_fields->message_type;
+    full_record.REC_TIME   =  mtk::dtNowLocal();
+    full_record.REMARKS = MTK_SS("stop_price: " << rq.request_pos.stop_price  <<"  "  <<full_record.REMARKS);
+
+    insert_record(full_record);
+}
+
+void  fill_cf_xx_sl(record_info& full_record, const mtk::trd::msg::CF_XX_SL & cf)
+{
+    FILL_FIXED_NUMBER(full_record.CF_POS_PRICE,         cf.market_pos.price);
+    FILL_FIXED_NUMBER(full_record.CF_POS_QUANTITY,      cf.market_pos.quantity);
+    full_record.CLI_REF  =   cf.market_pos.cli_ref;
+
+    fill_cf_xx(full_record, cf);
+}
+
+template<typename T>        //  ie:  mtk::trd::msg::CF_NW_Sl
+void on_cf_xx_sl(const T&  cf)
+{
+    record_info  full_record;
+
+    fill_cf_xx_sl(full_record, cf);
+    full_record.SENT_TIME  =  cf.__internal_warning_control_fields->sent_date_time;
+    full_record.ORDER_TYPE =  cf.__internal_warning_control_fields->message_type;
+    full_record.REC_TIME   =  mtk::dtNowLocal();
+    full_record.REMARKS = MTK_SS("stop_price: " << cf.market_pos.stop_price  <<  "  "  <<  full_record.REMARKS);
+    insert_record(full_record);
+}
+
+template<typename T>        //  ie:  mtk::trd::msg::CF_TR_SL
+void on_cf_tr_sl(const T&  tr)
+{
+    record_info  full_record;
+
+    fill_cf_xx_sl(full_record, tr);
+    full_record.SENT_TIME  =  tr.__internal_warning_control_fields->sent_date_time;
+    full_record.ORDER_TYPE =  tr.__internal_warning_control_fields->message_type;
+    full_record.REC_TIME   =  mtk::dtNowLocal();
+    full_record.REMARKS = MTK_SS("stop_price: " << tr.market_pos.stop_price  <<  "  "  <<  full_record.REMARKS);
+    insert_record(full_record);
+}
+
+
+
 
 
 
@@ -528,6 +587,21 @@ int main(int argc, char ** argv)
 
         MAKE_TRADING_SUSCRIPTION_CF   (CF_TR_SM, on_cf_tr_sm);
 
+
+        //      STOP LIMIT
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_NW_SL, on_rq_xx_sl);
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_MD_SL, on_rq_xx_sl);
+        MAKE_TRADING_SUSCRIPTION_RQ   (RQ_CC_SL, on_rq_xx_sl);
+
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_NW_SL, on_cf_xx_sl);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_MD_SL, on_cf_xx_sl);
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_CC_SL, on_cf_xx_sl);
+
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_NW_SL, on_cf_xx_sl);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_MD_SL, on_cf_xx_sl);
+        MAKE_TRADING_SUSCRIPTION_CF   (RJ_CC_SL, on_cf_xx_sl);
+
+        MAKE_TRADING_SUSCRIPTION_CF   (CF_TR_SL, on_cf_tr_sl);
 
 
 

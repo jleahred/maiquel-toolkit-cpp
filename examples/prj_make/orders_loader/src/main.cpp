@@ -3,6 +3,7 @@
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/trading/msg_trd_cli_mk.h"
 #include "components/trading/msg_trd_cli_sm.h"
+#include "components/trading/msg_trd_cli_sl.h"
 #include "components/admin/admin.h"
 #include "components/admin/msg_admin.h"
 #include "support/call_later.h"
@@ -17,13 +18,16 @@ namespace
 {
 
     const char*   APP_NAME          = "ORDERS_LOADER";
-    const char*   APP_VER           = "2011-07-08";
+    const char*   APP_VER           = "2012-04-02 e";
     const char*   APP_DESCRIPTION   = "I send current order status to clients\n"
                                       "I'm a stupid process\n"
                                       "I'm not checking order sequence, or values on orders\n"
-                                      "I receive, I keep, I response. Not checkings at all\n";
+                                      "I receive, I keep, I response. Not checkings at all\n"
+                                      ;
 
-    const char*   APP_MODIFICATIONS = "           2011-07-08     first version\n";
+    const char*   APP_MODIFICATIONS =   "           2011-07-08     first version\n"
+                                        "           2012-04-02     stop limit orders\n"
+                                        ;
 
 
 
@@ -182,6 +186,38 @@ void on_cf_cc_sm(const mtk::trd::msg::CF_CC_SM&  cfcc)
 }
 
 
+//      STOP LIMIT ORDERS
+
+template<typename T>        //  ie:  mtk::trd::msg::CF_NW_SM
+void on_cf_xx_sl(const T&  cf)
+{
+    update_or_insert(mtk::trd::msg::CF_XX_SL(cf));
+}
+
+
+void on_cf_tr_sl(const mtk::trd::msg::CF_TR_SL&  tr)
+{
+    delete_order(mtk::trd::msg::CF_XX_SL(tr));
+
+    mtk::trd::msg::CF_XX            cf_xx(tr.invariant, tr.market_order_id, tr.req_id, tr.total_execs, tr.description, tr.orig_control_fluct);
+    mtk::trd::msg::sub_position_ls  position_ls(tr.market_pos.price, tr.market_pos.quantity, tr.market_pos.cli_ref);
+    mtk::trd::msg::CF_XX_LS         cf_xx_ls(cf_xx, position_ls);
+    update_or_insert(cf_xx_ls);
+}
+
+
+void on_cf_cc_sl(const mtk::trd::msg::CF_CC_SL&  cfcc)
+{
+    if(cfcc.total_execs.acc_quantity.GetIntCode() == 0)
+        delete_order(mtk::trd::msg::CF_XX_SL(cfcc));
+    else
+    {
+        mtk::trd::msg::CF_XX_SL status(cfcc);
+        status.total_execs.remaining_qty.SetIntCode(0);
+        update_or_insert(status);
+    }
+}
+
 
 
 
@@ -193,6 +229,7 @@ void command_stats(const std::string& /*command*/, const std::string& /*params*/
     response_lines.push_back(MTK_SS("ls:  " << get_map_order<mtk::trd::msg::CF_XX_LS>()->size()));
     response_lines.push_back(MTK_SS("mk:  " << get_map_order<mtk::trd::msg::CF_XX_MK>()->size()));
     response_lines.push_back(MTK_SS("sm:  " << get_map_order<mtk::trd::msg::CF_XX_SM>()->size()));
+    response_lines.push_back(MTK_SS("sl:  " << get_map_order<mtk::trd::msg::CF_XX_SL>()->size()));
 }
 
 
@@ -252,6 +289,8 @@ void command_find_order(const std::string& /*command*/, const std::string& param
     find_orders<mtk::trd::msg::CF_XX_MK>(vparams[0], vparams[1], vparams[2], vparams[3], response_lines);
     response_lines.push_back(MTK_SS("\n\nSTOP MARKET"));
     find_orders<mtk::trd::msg::CF_XX_SM>(vparams[0], vparams[1], vparams[2], vparams[3], response_lines);
+    response_lines.push_back(MTK_SS("\n\nSTOP LIMIT"));
+    find_orders<mtk::trd::msg::CF_XX_SL>(vparams[0], vparams[1], vparams[2], vparams[3], response_lines);
 }
 
 
@@ -286,6 +325,7 @@ void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
     send_orders_from_request<mtk::trd::msg::CF_XX_LS, mtk::trd::msg::CF_ST_LS>(rq);
     send_orders_from_request<mtk::trd::msg::CF_XX_MK, mtk::trd::msg::CF_ST_MK>(rq);
     send_orders_from_request<mtk::trd::msg::CF_XX_SM, mtk::trd::msg::CF_ST_SM>(rq);
+    send_orders_from_request<mtk::trd::msg::CF_XX_SL, mtk::trd::msg::CF_ST_SL>(rq);
 }
 
 
@@ -338,6 +378,7 @@ void  timer_check_delete_end_of_day(void)
             deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_LS>();
             deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_MK>();
             deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_SM>();
+            deleted_orders += delete_end_of_day_orders<mtk::trd::msg::CF_XX_SL>();
 
 
             AlarmMsg(mtk::Alarm(MTK_HERE, "order loader", MTK_SS("deleted end of day ordes...   next:"  <<  next_time_delete_end_of_day_order <<
@@ -402,6 +443,12 @@ int main(int argc, char ** argv)
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_SM>             > >   list_hqpid_CF_CC_SM;
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_TR_SM>             > >   list_hqpid_CF_TR_SM;
 
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_NW_SL>             > >   list_hqpid_CF_NW_SL;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_MD_SL>             > >   list_hqpid_CF_MD_SL;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_CC_SL>             > >   list_hqpid_CF_CC_SL;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_TR_SL>             > >   list_hqpid_CF_TR_SL;
+
+
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_ORDERS_STATUS> > >   list_hqpid_oms_RQ_ORDERS_STATUS;
         for(auto it_market=list_markets.Get().begin(); it_market!=list_markets.Get().end(); ++it_market)
         {
@@ -431,6 +478,14 @@ int main(int argc, char ** argv)
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_CC_SM, on_cf_cc_sm);
 
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_TR_SM, on_cf_tr_sm);
+
+            //      SM
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_NW_SL, on_cf_xx_sl);
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_MD_SL, on_cf_xx_sl);
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_CC_SL, on_cf_cc_sl);
+
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_TR_SL, on_cf_tr_sl);
+
 
 
             //      STATUS

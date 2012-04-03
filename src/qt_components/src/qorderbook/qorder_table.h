@@ -7,6 +7,7 @@
 #include "components/trading/trd_cli_ls.h"
 #include "components/trading/trd_cli_mk.h"
 #include "components/trading/trd_cli_sm.h"
+#include "components/trading/trd_cli_sl.h"
 #include "components/trading/trd_cli_ord_book.h"
 #include "qorderbook/filter_form.h"
 
@@ -72,6 +73,7 @@ private:
     void on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_ls_dangerous_signals_not_warped>& order);
     void on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_mk_dangerous_signals_not_warped>& order);
     void on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_sm_dangerous_signals_not_warped>& order);
+    void on_new_order(const mtk::trd::msg::sub_order_id& order_id, mtk::CountPtr<mtk::trd::trd_cli_sl_dangerous_signals_not_warped>& order);
 
     mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<order_in_qbook> >* orders;
     mtk::list<mtk::trd::msg::sub_order_id>     orders2add_loading;

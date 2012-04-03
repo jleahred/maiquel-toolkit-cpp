@@ -147,6 +147,22 @@ mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli
 }
 
 
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sl_dangerous_signals_not_warped& order)
+{
+    if(order.has_pending_rq())
+        return mtk::make_nullable(order.last_request().Get().request_pos.price);
+    else
+        return mtk::make_nullable(order.last_confirmation().Get().market_pos.price);
+}
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sl& order)
+{
+    if(order.has_pending_rq())
+        return mtk::make_nullable(order.last_request().Get().request_pos.price);
+    else
+        return mtk::make_nullable(order.last_confirmation().Get().market_pos.price);
+}
+
+
 
 
 

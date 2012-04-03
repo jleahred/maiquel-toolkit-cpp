@@ -228,6 +228,49 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_SM& rq, bool /*agressive*/, QW
 }
 
 
+QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_SL& rq, bool /*agressive*/, QWidget *parent) :
+        QDialog(parent),
+        ui(new Ui::QEditOrder),
+        rq_sl(rq)
+{
+    ui->setupUi(this);
+
+    common_init(rq);
+
+    this->setWindowTitle(tr("Edit STOP order"));
+    if (rq.invariant.side == mtk::trd::msg::buy)
+        ui->side->setText(tr("STOP  buy"));
+    else
+        ui->side->setText(tr("STOP  sell"));
+
+    ui->price->setVisible(true);
+    ui->price->setEnabled(true);
+    ui->stop_price->setVisible(true);
+    ui->stop_price->setEnabled(true);
+    ui->label_stop_price->setVisible(false);
+    ui->label_stop_price->setVisible(true);
+    ui->label_price->setVisible(false);
+
+    ui->stop_price->setDecimals(rq.request_pos.stop_price.GetExt().GetDec());
+    ui->stop_price->setSingleStep(1./pow(10.,rq.request_pos.stop_price.GetExt().GetDec())*rq.request_pos.stop_price.GetExt().GetInc());
+    if(rq.request_pos.stop_price.GetIntCode()==0  &&  rq.request_pos.quantity.GetIntCode()==0)
+        ui->stop_price->set_empty();
+    else
+        ui->stop_price->setValue(rq.request_pos.stop_price.GetDouble().get()._0);
+
+    ui->price->setDecimals(rq.request_pos.price.GetExt().GetDec());
+    ui->price->setSingleStep(1./pow(10.,rq.request_pos.price.GetExt().GetDec())*rq.request_pos.price.GetExt().GetInc());
+    if(rq.request_pos.price.GetIntCode()==0  &&  rq.request_pos.quantity.GetIntCode()==0)
+        ui->price->set_empty();
+    else
+        ui->price->setValue(rq.request_pos.price.GetDouble().get()._0);
+
+    ui->stop_price->setFocus();
+    ui->stop_price->selectAll();
+    this->adjustSize();
+}
+
+
 
 
 bool QEditOrder::check_if_order_can_be_sent(void)
@@ -364,6 +407,25 @@ mtk::trd::msg::RQ_XX_SM   QEditOrder::get_request_sm(void)
 
     return result;
 }
+
+mtk::trd::msg::RQ_XX_SL   QEditOrder::get_request_sl(void)
+{
+    mtk::trd::msg::RQ_XX_SL  result = rq_sl.Get();
+    result.invariant.product_code.market = ui->market->text().toStdString();
+    result.invariant.product_code.product = ui->product->text().toStdString();
+    result.request_pos.price.SetDouble(ui->price->value());
+    result.request_pos.stop_price.SetDouble(ui->stop_price->value());
+    result.request_pos.quantity.SetDouble(ui->quantity->value());
+    result.request_pos.cli_ref = ui->cliref->text().toStdString();
+
+    mtk::list<mtk::trd::msg::sub_account_info>::iterator it_account=account_list.begin();
+    for(int i=0; i<ui->account->currentIndex(); ++i)
+        ++it_account;
+    result.invariant.account = mtk::trd::msg::sub_account_info(*it_account);
+
+    return result;
+}
+
 
 
 void QEditOrder::on_account_currentIndexChanged(QString )

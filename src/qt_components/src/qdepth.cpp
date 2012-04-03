@@ -316,6 +316,7 @@ QDepth::QDepth(QWidget *parent) :
     action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
     action_buy_market(0), action_sell_market(0),
     action_buy_stop_market(0), action_sell_stop_market(0),
+    action_buy_stop_limit (0), action_sell_stop_limit (0),
     //action_delete_component(0),
     showing_menu(false),
     keep_paint_focus(false)
@@ -486,6 +487,15 @@ QDepth::QDepth(QWidget *parent) :
     action_sell_stop_market = new QAction(tr("stop market sell"), this);
     connect(action_sell_stop_market, SIGNAL(triggered()), this, SLOT(request_sell_stop_market()));
     this->addAction(action_sell_stop_market);
+
+    action_buy_stop_limit = new QAction(tr("stop buy"), this);
+    connect(action_buy_stop_limit, SIGNAL(triggered()), this, SLOT(request_buy_stop_limit()));
+    this->addAction(action_buy_stop_limit);
+
+    action_sell_stop_limit = new QAction(tr("stop sell"), this);
+    connect(action_sell_stop_limit, SIGNAL(triggered()), this, SLOT(request_sell_stop_limit()));
+    this->addAction(action_sell_stop_limit);
+
 
     /*
     action_delete_component = new QAction(tr("delete depth"), this);
@@ -828,6 +838,46 @@ void QDepth::request_sell_stop_market(void)
 
 
 
+void QDepth::request_side_stop_limit(mtk::trd::msg::enBuySell bs)
+{
+    //  proposed price
+    if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue() == false)
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
+    else
+    {
+        mtk::FixedNumber price(price_manager->get_best_prices().Get().bids.level0.price);
+        mtk::FixedNumber quantity(price_manager->get_best_prices().Get().bids.level0.quantity);
+        if(bs == mtk::trd::msg::sell)
+        {
+            quantity= price_manager->get_best_prices().Get().asks.level0.quantity;
+            price= price_manager->get_best_prices().Get().asks.level0.price;
+        }
+        quantity.SetIntCode(-1);        //  means, default quantity
+        mtk::trd::msg::sub_position_sl     pos(price, price, quantity,  "" /*cli ref*/);
+        mtk::trd::trd_cli_ord_book::rq_nw_sl_manual(price_manager->get_product_code(), bs, pos);
+    }
+}
+
+
+void QDepth::request_buy_stop_limit(void)
+{
+    keep_paint_focus = true;
+    request_side_stop_limit(mtk::trd::msg::buy);
+    keep_paint_focus = false;
+}
+
+void QDepth::request_sell_stop_limit(void)
+{
+    keep_paint_focus = true;
+    request_side_stop_limit(mtk::trd::msg::sell);
+    keep_paint_focus = false;
+}
+
+
+
+
+
+
 
 
 void QDepth::dragEnterEvent(QDragEnterEvent *event)
@@ -916,6 +966,16 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
         }
         menu.addAction(action_buy_stop_market);
         menu.addAction(action_sell_stop_market);
+    }
+
+    if(product_code.market == "M3"  ||  product_code.market == "MARKET")
+    {
+        menu.addSeparator();
+        if(mtk::admin::is_production() == false)
+        {
+            menu.addAction(action_buy_stop_limit);
+            menu.addAction(action_sell_stop_limit);
+        }
     }
 
     //menu.addSeparator();
@@ -1007,6 +1067,8 @@ void QDepth::disable_trading_actions(void)
             action_sell_market->setEnabled(false);
             action_buy_stop_market->setEnabled(false);
             action_sell_stop_market->setEnabled(false);
+            action_buy_stop_limit->setEnabled(false);
+            action_sell_stop_limit->setEnabled(false);
             //action_delete_component->setEnabled(false);
         }
     }
@@ -1024,6 +1086,8 @@ void QDepth::enable_trading_actions(void)
         action_sell_market->setEnabled(true);
         action_buy_stop_market->setEnabled(true);
         action_sell_stop_market->setEnabled(true);
+        action_buy_stop_limit->setEnabled(true);
+        action_sell_stop_limit->setEnabled(true);
         //action_delete_component->setEnabled(true);
     }
 }

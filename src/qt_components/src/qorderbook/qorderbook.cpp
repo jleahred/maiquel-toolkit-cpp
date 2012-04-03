@@ -84,6 +84,16 @@ void on_request_with_user_check_sm(mtk::trd::msg::RQ_XX_SM& rq, bool& canceled, 
 }
 
 
+void on_request_with_user_check_sl(mtk::trd::msg::RQ_XX_SL& rq, bool& canceled, bool agressive)
+{
+    QEditOrder eo(rq, agressive);
+    if (eo.exec())
+    {
+        rq = eo.get_request_sl();
+    }
+    else canceled =true;
+}
+
 
 QOrderBook::QOrderBook(QWidget *parent) :
     QWidget(parent),
@@ -154,6 +164,7 @@ QOrderBook::QOrderBook(QWidget *parent) :
     mtk::trd::trd_cli_ord_book::get_signal_request_hook_ls().connect(on_request_with_user_check_ls);
     mtk::trd::trd_cli_ord_book::get_signal_request_hook_mk().connect(on_request_with_user_check_mk);
     mtk::trd::trd_cli_ord_book::get_signal_request_hook_sm().connect(on_request_with_user_check_sm);
+    mtk::trd::trd_cli_ord_book::get_signal_request_hook_sl().connect(on_request_with_user_check_sl);
 }
 
 QOrderBook::~QOrderBook()

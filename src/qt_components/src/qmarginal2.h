@@ -186,6 +186,10 @@ private slots:
     void request_sell_stop_market(void);
     void request_side_stop_market(mtk::trd::msg::enBuySell bs);
 
+    void request_buy_stop_limit(void);
+    void request_sell_stop_limit(void);
+    void request_side_stop_limit(mtk::trd::msg::enBuySell bs);
+
 
 
     void slot_remove_current_row(void);
@@ -212,6 +216,8 @@ private:
     QAction* action_sell_market;
     QAction* action_buy_stop_market;
     QAction* action_sell_stop_market;
+    QAction* action_buy_stop_limit;
+    QAction* action_sell_stop_limit;
 
     QCommonTableDelegate_view* paint_delegate;
     bool showing_menu;

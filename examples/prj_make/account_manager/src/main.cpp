@@ -9,6 +9,7 @@
 #include "components/trading/msg_trd_cli_ls.h"
 #include "components/trading/msg_trd_cli_mk.h"
 #include "components/trading/msg_trd_cli_sm.h"
+#include "components/trading/msg_trd_cli_sl.h"
 #include "components/trading/msg_trd_oms_rq.h"
 
 
@@ -18,7 +19,7 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_ACCOUNT_MANAGER";
-    const char*   APP_VER           = "2011-05-30";
+    const char*   APP_VER           = "2012-04-02 e";
     const char*   APP_DESCRIPTION   = "I can do two things\n"
                                       "I can send check all order request from client in order to verify the user is logged and account is valid, \n"
                                       "filling the reject_description if necessary and sending the request to order flow control\n"
@@ -27,7 +28,9 @@ namespace
                                       "Generally I will work with one of the possibilities. I will be configured with both, only in case of problems\n"
                                       "\n";
 
-    const char*   APP_MODIFICATIONS = "           2011-05-30     first version\n";
+    const char*   APP_MODIFICATIONS =   "           2011-05-30     first version\n"
+                                        "           2012-04-02     stop limit orders\n"
+                                        ;
 
 
 
@@ -262,6 +265,10 @@ namespace
     ON_RQ_XX_XX(RQ_MD_SM, "F");
     ON_RQ_XX_XX(RQ_CC_SM, "C");
 
+    ON_RQ_XX_XX(RQ_NW_SL, "F");
+    ON_RQ_XX_XX(RQ_MD_SL, "F");
+    ON_RQ_XX_XX(RQ_CC_SL, "C");
+
 
 
     void on_RQ_ORDERS_STATUS(const mtk::trd::msg::RQ_ORDERS_STATUS& rq)
@@ -290,6 +297,11 @@ namespace
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_NW_SM> >  RQ_NW_SM;
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_MD_SM> >  RQ_MD_SM;
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_CC_SM> >  RQ_CC_SM;
+
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_NW_SL> >  RQ_NW_SL;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_MD_SL> >  RQ_MD_SL;
+        mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_CC_SL> >  RQ_CC_SL;
+
 
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_ORDERS_STATUS> >  RQ_ORDERS_STATUS;
     };
@@ -321,6 +333,10 @@ namespace
             CONNECT_RECEIVER_ORDER(RQ_NW_SM)
             CONNECT_RECEIVER_ORDER(RQ_MD_SM)
             CONNECT_RECEIVER_ORDER(RQ_CC_SM)
+
+            CONNECT_RECEIVER_ORDER(RQ_NW_SL)
+            CONNECT_RECEIVER_ORDER(RQ_MD_SL)
+            CONNECT_RECEIVER_ORDER(RQ_CC_SL)
 
 
             MTK_QPID_RECEIVER_CONNECT_F(

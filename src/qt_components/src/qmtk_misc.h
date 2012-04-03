@@ -15,6 +15,7 @@
 #include "components/trading/trd_cli_ls.h"
 #include "components/trading/trd_cli_mk.h"
 #include "components/trading/trd_cli_sm.h"
+#include "components/trading/trd_cli_sl.h"
 
 
 
@@ -109,9 +110,11 @@ std::string       get_order_remarks (ORDER_TYPE& order)
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_ls_dangerous_signals_not_warped& order);
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_mk_dangerous_signals_not_warped& order);
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sm_dangerous_signals_not_warped& order);
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sl_dangerous_signals_not_warped& order);
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_ls                             & order);
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_mk                             & order);
 mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sm                             & order);
+mtk::nullable<mtk::FixedNumber>     get_order_position_price  (mtk::trd::trd_cli_sl                             & order);
 
 
 template<typename  ORDER_TYPE>

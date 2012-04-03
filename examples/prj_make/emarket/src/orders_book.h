@@ -28,6 +28,10 @@ public:
     void oms_RQ_MD_SM(const mtk::trd::msg::oms_RQ_MD_SM& rq);
     void oms_RQ_CC_SM(const mtk::trd::msg::oms_RQ_CC_SM& rq);
 
+    void oms_RQ_NW_SL(const mtk::trd::msg::oms_RQ_NW_SL& rq);
+    void oms_RQ_MD_SL(const mtk::trd::msg::oms_RQ_MD_SL& rq);
+    void oms_RQ_CC_SL(const mtk::trd::msg::oms_RQ_CC_SL& rq);
+
 
     void add_product (const emarket::sub_product_config&  product_config);
 
