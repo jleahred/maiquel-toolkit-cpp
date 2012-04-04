@@ -467,6 +467,9 @@ bool operator!= (const sub_control_fluct& a, const sub_control_fluct& b);
 bool operator== (const sub_request_id& a, const sub_request_id& b);
 bool operator!= (const sub_request_id& a, const sub_request_id& b);
 
+
+    bool operator< (const sub_request_id& a, const sub_request_id& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_request_info & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_request_info & c);
    void           operator >> (const YAML::Node& n,       sub_request_info & c);

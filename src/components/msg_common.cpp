@@ -838,6 +838,20 @@ void  operator >> (const YAML::Node& node, sub_product_code & c)
 };
 
 
+bool operator< (const sub_request_id& a, const sub_request_id& b)
+{
+    if (false)   return true;
+    else if (true)
+    {
+        auto ca = mtk::make_tuple( 0          , a.session_id       , a.req_code );
+        auto cb = mtk::make_tuple( 0          , b.session_id       , b.req_code );
+        return ca < cb;
+    }
+    else
+        return false;
+};
+
+
 bool operator== (const sub_location& a, const sub_location& b)
 {
     return (          a.broker_code ==  b.broker_code  &&          a.machine ==  b.machine  &&   true  );

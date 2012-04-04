@@ -506,6 +506,59 @@ public:
 
 
 
+
+//-------------------------------
+//      CF_ST_EX
+//-------------------------------    
+class CF_ST_EX        :  public  CF_EXLK
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit CF_ST_EX (  const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location&  _gen_response_location );
+    explicit CF_ST_EX ( const qpid::types::Variant::Map&  mv );
+    virtual ~CF_ST_EX (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "CF_ST_EX"; };
+    static  std::string static_get_message_type_as_string(void)        { return "CF_ST_EX"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    mtk::msg::sub_gen_response_location       gen_response_location; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& gen_response_location_broker_code,const std::string& gen_response_location_session_id);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
     
     
     
@@ -576,6 +629,13 @@ bool operator!= (const RQ_ORDERS_STATUS& a, const RQ_ORDERS_STATUS& b);
 bool operator== (const CF_EXLK& a, const CF_EXLK& b);
 bool operator!= (const CF_EXLK& a, const CF_EXLK& b);
 
+    std::ostream& operator<< (std::ostream& o, const CF_ST_EX & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const CF_ST_EX & c);
+   void           operator >> (const YAML::Node& n,       CF_ST_EX & c);
+
+bool operator== (const CF_ST_EX& a, const CF_ST_EX& b);
+bool operator!= (const CF_ST_EX& a, const CF_ST_EX& b);
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_id>& a, const std::string& field);
 void copy (sub_order_id& a, const qpid::types::Variant& map);
@@ -603,6 +663,9 @@ void copy (RQ_ORDERS_STATUS& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_EXLK& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EXLK>& a, const std::string& field);
 void copy (CF_EXLK& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_ST_EX& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_ST_EX>& a, const std::string& field);
+void copy (CF_ST_EX& a, const qpid::types::Variant& map);
 
     sub_order_id  __internal_get_default(sub_order_id *);
     
@@ -622,6 +685,8 @@ void copy (CF_EXLK& a, const qpid::types::Variant& map);
     
     CF_EXLK  __internal_get_default(CF_EXLK *);
     
+    CF_ST_EX  __internal_get_default(CF_ST_EX *);
+    
 
 };   //namespace mtk {
 };   //namespace trd {
@@ -638,6 +703,7 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_ORDERS_STATUS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EXLK)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_ST_EX)
 
 
 

@@ -56,7 +56,7 @@ sub_control_fluct    [< >]
 //  could be with no response as request new order
 //---------------------------------------------------------------------
 
-sub_request_id   [< >]
+sub_request_id   [< LessOP:1 >]
 {
     session_id  (sid) :  string
     req_code    (rqc) :  string

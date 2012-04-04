@@ -105,6 +105,8 @@ CF_XX  [< >]
 //---------------------------------------------------------------------
 //	REQUEST ORDERS STATUS
 
+//  the system will send  CF_ST_XX and   CF_ST_EX  asynchronously
+
 RQ_ORDERS_STATUS  [< QE:CLI_MK, RT:2, SUBJ:MK.${account.client_code}.${market}.RQORDST >]
 {
     request_info        (rqi)   :   mtk::msg::sub_request_info
@@ -122,8 +124,23 @@ RQ_ORDERS_STATUS  [< QE:CLI_MK, RT:2, SUBJ:MK.${account.client_code}.${market}.R
 //  THIS IS NOT AN ORDER CONFIRMATION
 //  on this executions the invariant will not be checked. Generally, the product code, side... will be diferent
 //  total execs has to be empty
+//  This message can be sent for linked executions as counterparties on complex products
 
 CF_EXLK  [< I:CF_XX,  QE:CLI_MK, RT:2, SUBJ:CLI.${invariant.account.client_code}.${invariant.product_code.market}.${invariant.account.name}.TRD   >]
 {
     executed_pos  (exp)   :  sub_exec_conf
 }
+
+
+
+//---------------------------------------------------------------------
+//	STATUS EXECUTIONS
+
+
+CF_ST_EX  [< I:CF_EXLK,  QE:ALL_GS, RT:2, SUBJ:CLI.${gen_response_location.broker_code}.${gen_response_location.session_id}.STATUS_EX  >]
+    //  this "generic" subject let us send order status with no request from user
+    //  it's possible receive order status several times
+{
+    gen_response_location    (grl)    :     mtk::msg::sub_gen_response_location
+}
+

@@ -586,6 +586,27 @@ void CF_EXLK::before_send(void) const
 
 
 
+
+CF_ST_EX::CF_ST_EX ( const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location&  _gen_response_location)
+    :  CF_EXLK(parent),   gen_response_location(_gen_response_location) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  CF_ST_EX::check_recomended(void) const
+{
+
+}
+
+void CF_ST_EX::before_send(void) const
+{
+
+}
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_order_id & c)
 {
     o << "{ "
@@ -894,6 +915,39 @@ void  operator >> (const YAML::Node& node, CF_EXLK & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const CF_ST_EX & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const CF_EXLK&>(c)  << ")" 
+        << "gen_response_location:"<< c.gen_response_location<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const CF_ST_EX & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "CF_EXLK" <<  YAML::Value << static_cast<const CF_EXLK&>(c)  
+        << YAML::Key << "gen_response_location"  << YAML::Value << c.gen_response_location
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, CF_ST_EX & c)
+{
+
+    node["CF_EXLK"]   >>   static_cast<CF_EXLK&>(c)  ;
+
+        node["gen_response_location"]  >> c.gen_response_location;
+
+
+};
+
+
 bool operator< (const sub_account_info& a, const sub_account_info& b)
 {
     if (false)   return true;
@@ -1010,6 +1064,18 @@ bool operator== (const CF_EXLK& a, const CF_EXLK& b)
 };
 
 bool operator!= (const CF_EXLK& a, const CF_EXLK& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const CF_ST_EX& a, const CF_ST_EX& b)
+{
+    return ( (static_cast<const CF_EXLK&>(a)   ==  static_cast<const CF_EXLK&>(b))  &&           a.gen_response_location ==  b.gen_response_location  &&   true  );
+};
+
+bool operator!= (const CF_ST_EX& a, const CF_ST_EX& b)
 {
     return !(a==b);
 };
@@ -1568,6 +1634,50 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
+
+
+void  copy (CF_ST_EX& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<CF_EXLK&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("grl");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field gen_response_location on message CF_ST_EX::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.gen_response_location, it->second);
+                        //__internal_qpid_fill(c.gen_response_location, it->second.asMap());
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_ST_EX& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+//  parent
+__internal_add2map(map, static_cast<const CF_EXLK&>(a));
+
+//  sub_msg_type
+        __internal_add2map(map, a.gen_response_location, std::string("grl"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_ST_EX>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1612,6 +1722,26 @@ __internal_add2map(content, static_cast<const CF_XX&>(*this));
 //  sub_msg_type
 //        content["exp"] =  qpidmsg_coded_as_qpid_Map(this->executed_pos);
         __internal_add2map(content, this->executed_pos, std::string("exp"));
+
+
+
+    
+    return content;
+};
+
+
+
+
+qpid::types::Variant::Map   CF_ST_EX::qpidmsg_codded_as_qpid_map (void) const
+{
+    qpid::types::Variant::Map   content;
+
+//  parent
+__internal_add2map(content, static_cast<const CF_EXLK&>(*this));
+
+//  sub_msg_type
+//        content["grl"] =  qpidmsg_coded_as_qpid_Map(this->gen_response_location);
+        __internal_add2map(content, this->gen_response_location, std::string("grl"));
 
 
 
@@ -1731,6 +1861,14 @@ __internal_get_default((CF_XX*)0), //   sub_msg_type
             );
     }
     
+    CF_ST_EX  __internal_get_default(CF_ST_EX*)
+    {
+        return CF_ST_EX(
+__internal_get_default((CF_EXLK*)0), //   sub_msg_type
+   __internal_get_default((mtk::msg::sub_gen_response_location*)0)
+            );
+    }
+    
 sub_order_id::sub_order_id (const qpid::types::Variant::Map&  mv)
     :  mtk::msg::sub_request_id(mv) 
     {
@@ -1839,6 +1977,14 @@ CF_EXLK::CF_EXLK (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+CF_ST_EX::CF_ST_EX (const qpid::types::Variant::Map&  mv)
+    :  CF_EXLK(mv), //   sub_msg_type
+   gen_response_location(__internal_get_default((mtk::msg::sub_gen_response_location*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
 mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_in_subject (const std::string& account_client_code,const std::string& market)
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << account_client_code << "." << market << ".RQORDST"));
@@ -1870,6 +2016,22 @@ mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_in_subject (const std::string& account
     mtk::t_qpid_address  CF_EXLK::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_filter  CF_ST_EX::get_in_subject (const std::string& gen_response_location_broker_code,const std::string& gen_response_location_session_id)
+    {
+        return mtk::t_qpid_filter(MTK_SS("CLI." << gen_response_location_broker_code << "." << gen_response_location_session_id << ".STATUS_EX"));
+    }
+    mtk::t_qpid_filter  CF_ST_EX::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->gen_response_location.broker_code << "." << this->gen_response_location.session_id << ".STATUS_EX"));
+    }
+    /*static*/  mtk::t_qpid_address  CF_ST_EX::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  CF_ST_EX::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     
 
