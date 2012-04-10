@@ -718,6 +718,7 @@ void orders_in_product_queue::check_execs(const mtk::msg::sub_product_code& prod
                             cf.total_execs.acc_quantity.GetDouble());
                 cf.req_id.session_id += "em";
                 cf.req_id.req_code +=  "em";
+                cf.orig_control_fluct = mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal());
                 best_buy->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS("mk::ex" << ++ex_counter), exec_price, exec_quantity)));
 
                 if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
@@ -734,6 +735,7 @@ void orders_in_product_queue::check_execs(const mtk::msg::sub_product_code& prod
                             cf.total_execs.acc_quantity.GetDouble());
                 cf.req_id.session_id += "em";
                 cf.req_id.req_code +=  "em";
+                cf.orig_control_fluct = mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal());
                 best_sell->mkt_cf_ex(mtk::trd::msg::CF_EX_LS( cf, mtk::trd::msg::sub_exec_conf(MTK_SS("mk::ex" << ++ex_counter), exec_price, exec_quantity)));
                 if (cf.total_execs.acc_quantity  >=  cf.market_pos.quantity)
                     ask_queue.pop_front();

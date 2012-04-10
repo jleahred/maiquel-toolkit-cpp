@@ -25,8 +25,6 @@ QCommonTableDelegate::QCommonTableDelegate(QTableWidget* _tableView, bool _just_
       just_cell(_just_cell)
 {
     // create grid pen
-    int gridHint = tableView->style()->styleHint(QStyle::SH_Table_GridLineColor, new QStyleOptionViewItemV4());
-    QColor gridColor = static_cast<QRgb>(gridHint);
     _gridPen = //QPen(gridColor, 0, tableView->gridStyle());
                 QPen(Qt::blue, 2);
 }
@@ -204,8 +202,6 @@ QCommonTableDelegate_view::QCommonTableDelegate_view(QTableView* _tableView, boo
       just_cell(_just_cell)
 {
     // create grid pen
-    int gridHint = tableView->style()->styleHint(QStyle::SH_Table_GridLineColor, new QStyleOptionViewItemV4());
-    QColor gridColor = static_cast<QRgb>(gridHint);
     _gridPen = //QPen(gridColor, 0, tableView->gridStyle());
                 QPen(Qt::blue, 2);
 }

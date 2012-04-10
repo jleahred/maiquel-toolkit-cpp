@@ -53,7 +53,12 @@ namespace mtk{namespace trd{
 
 
         //  OUTPUT
-        mtk::Signal< const mtk::trd::msg::CF_XX&  /*confirm_info*/, const mtk::trd::msg::sub_exec_conf& >&              get_sig_execution       (void);
+        //  on executions, the system will check to avoid duplicates
+                //  get_sig_execution_RT throws direct executions, not linked executions, not loading executions
+        mtk::Signal< const mtk::trd::msg::CF_XX&  /*confirm_info*/, const mtk::trd::msg::sub_exec_conf& >&              get_sig_execution_RT    (void);
+                //  non real time executions notifications (loading and linked)
+        mtk::Signal< const mtk::trd::msg::CF_XX&  /*confirm_info*/, const mtk::trd::msg::sub_exec_conf& >&              get_sig_execution_NON_RT(void);
+
 
         mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_ls_dangerous_signals_not_warped>&  >&    get_sig_order_ls_new    (void);
         mtk::Signal< const mtk::trd::msg::sub_order_id&, mtk::CountPtr<trd_cli_mk_dangerous_signals_not_warped>&  >&    get_sig_order_mk_new    (void);
@@ -70,6 +75,7 @@ namespace mtk{namespace trd{
 
 
         mtk::list<mtk::trd::msg::sub_order_id>      get_all_order_ids       (void);
+        mtk::list<mtk::trd::msg::CF_EXLK>           get_all_execs           (void);
 
 
         en_order_type  get_order_type(const msg::sub_order_id& ord_id);

@@ -49,7 +49,6 @@ protected:
     mtk::list<Exec_in_table*>*                             exec_in_table;
     mtk::list<mtk::trd::hist::order_exec_item>             execs2add_loading;
     mtk::list<mtk::trd::hist::order_exec_item>             execs2add_online;
-    mtk::list<mtk::trd::hist::order_exec_item>             execs_all;
 
     void            timer_get_execs2add(void);
 };

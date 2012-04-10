@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 
@@ -44,6 +44,8 @@ public:
     virtual ~LimitPosition (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPosition"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPosition"; };
+    
+    
 
     
 
@@ -72,8 +74,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -103,6 +104,8 @@ public:
         virtual ~IC_control_fields_ (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_control_fields_"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_control_fields_"; };
+        
+        
     
         
     
@@ -130,8 +133,7 @@ public:
         
         void        before_send(void) const;
         
-    private:
-        std::string check_recomended(void) const;
+        void check_recomended(void) const;
     };
     
     
@@ -152,6 +154,8 @@ public:
         virtual ~IC_product_code (){};
         virtual std::string get_message_type_as_string       (void) const  { return "IC_product_code"; };
         static  std::string static_get_message_type_as_string(void)        { return "IC_product_code"; };
+        
+        
     
         
     
@@ -180,8 +184,7 @@ public:
         
         void        before_send(void) const;
         
-    private:
-        std::string check_recomended(void) const;
+        void check_recomended(void) const;
     };
     
     
@@ -193,12 +196,14 @@ public:
     virtual ~RQ_NW_LS (){};
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
+    
+    
 
     static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::make_nullable(mtk::s_TRY_stodt("2012-02-05", mtk::dtNowLocal()- mtk::dtDays(500))._0); };
 
     
     
-    qpid::messaging::Message qpidmsg_codded_as_qpid_message (const std::string& control_fluct_key) const;
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
     
 
     // fields
@@ -221,7 +226,7 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject ();
-virtual mtk::t_qpid_filter  get_out_subject (void) const;
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
     
@@ -230,8 +235,7 @@ virtual mtk::t_qpid_filter  get_out_subject (void) const;
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -252,6 +256,8 @@ public:
     virtual ~LimitPositionChild (){};
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPositionChild"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPositionChild"; };
+    
+    
 
     
 
@@ -278,8 +284,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -331,23 +336,18 @@ bool operator!= (const RQ_NW_LS::IC_product_code& a, const RQ_NW_LS::IC_product_
 bool operator== (const LimitPositionChild& a, const LimitPositionChild& b);
 bool operator!= (const LimitPositionChild& a, const LimitPositionChild& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const LimitPosition& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const LimitPosition& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPosition>& a, const std::string& field);
 void copy (LimitPosition& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS>& a, const std::string& field);
 void copy (RQ_NW_LS& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS::IC_control_fields_& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_control_fields_& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS::IC_control_fields_>& a, const std::string& field);
 void copy (RQ_NW_LS::IC_control_fields_& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const RQ_NW_LS::IC_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS::IC_product_code>& a, const std::string& field);
 void copy (RQ_NW_LS::IC_product_code& a, const qpid::types::Variant& map);
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const LimitPositionChild& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const LimitPositionChild& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPositionChild>& a, const std::string& field);
 void copy (LimitPositionChild& a, const qpid::types::Variant& map);

@@ -13,13 +13,13 @@
 namespace mtk{namespace trd{
 
 
-    typedef mtk::tuple<mtk::trd::msg::sub_order_id, std::string/*mk order_id*/, mtk::msg::sub_request_id>    t_exec_key;
+    typedef mtk::tuple<mtk::trd::msg::sub_order_id, mtk::msg::sub_request_id, std::string/*mk order_id*/, std::string/*mk ex_id*/>    t_exec_key;
 
 
     template<typename CF_EX_XX>
     t_exec_key  get_exec_key(const CF_EX_XX&  cf_ex_xx)
     {
-        return mtk::trd::t_exec_key   {cf_ex_xx.invariant.order_id, cf_ex_xx.market_order_id, cf_ex_xx.req_id};
+        return mtk::trd::t_exec_key   {cf_ex_xx.invariant.order_id, cf_ex_xx.req_id, cf_ex_xx.market_order_id, cf_ex_xx.executed_pos.exec_id};
     }
 
 

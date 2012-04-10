@@ -36,7 +36,7 @@ namespace
     void register_global_commands (void)
     {
         mtk::admin::register_command("__GLOBAL__",  "stats",     "")->connect(command_stats);
-        mtk::admin::register_command("orderserver",  "stats",     "")->connect(command_stats);
+        mtk::admin::register_command("execserver",  "stats",     "")->connect(command_stats);
     }
 
 
@@ -66,7 +66,9 @@ void update_or_insert(const CF_TYPE&  cf_ex_xx)
     mtk::CountPtr<mtk::map<mtk::trd::t_exec_key, mtk::trd::msg::CF_EXLK> >    map_execs = get_map_execs();
 
     mtk::trd::t_exec_key        exec_key    {mtk::trd::get_exec_key(cf_ex_xx)};
-    mtk::trd::msg::CF_EXLK      cf_exlk     {cf_ex_xx, cf_ex_xx.executed_pos };
+    mtk::trd::msg::CF_EXLK      cf_exlk     (cf_ex_xx, cf_ex_xx.executed_pos);
+    cf_exlk.orig_control_fluct.key = "__none__";
+    cf_exlk.total_execs = mtk::trd::msg::__internal_get_default((mtk::trd::msg::sub_total_executions*)(0));
 
 
     auto it = map_execs->find(exec_key);
@@ -92,6 +94,10 @@ void on_cf_ex_mk(const mtk::trd::msg::CF_EX_MK&  ex)
     update_or_insert(ex);
 }
 
+void on_cf_exlk(const mtk::trd::msg::CF_EXLK&  ex)
+{
+    update_or_insert(ex);
+}
 
 
 
@@ -124,7 +130,6 @@ void send_execs_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
             {
                 mtk::msg::sub_gen_response_location gen_response_location (rq.request_info.req_id.session_id, rq.request_info.process_info.location.broker_code);
                 mtk::trd::msg::CF_ST_EX   msg(it->second, gen_response_location);
-                msg.orig_control_fluct = mtk::msg::sub_control_fluct("__none__", mtk::dtNowLocal());
                 mtk_send_message("client", msg);
             }
         }
@@ -133,7 +138,6 @@ void send_execs_from_request(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 
 void on_rq_order_status(const mtk::trd::msg::oms_RQ_ORDERS_STATUS&  rq)
 {
-    std::cout << "received request " << rq << std::endl;
     send_execs_from_request(rq);
 }
 
@@ -232,6 +236,7 @@ int main(int argc, char ** argv)
         //  too keep in scope handles created in for
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_LS>             > >   list_hqpid_CF_EX_LS;
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_MK>             > >   list_hqpid_CF_EX_MK;
+        mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EXLK >             > >   list_hqpid_CF_EXLK;
 
 
         mtk::vector<mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::oms_RQ_ORDERS_STATUS> > >   list_hqpid_oms_RQ_ORDERS_STATUS;
@@ -242,6 +247,7 @@ int main(int argc, char ** argv)
 
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_EX_LS, on_cf_ex_ls);
             MAKE_TRADING_SUSCRIPTION(*it_market, CF_EX_MK, on_cf_ex_mk);
+            MAKE_TRADING_SUSCRIPTION(*it_market, CF_EXLK , on_cf_exlk );
 
 
             //      STATUS

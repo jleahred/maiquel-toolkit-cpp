@@ -459,7 +459,7 @@ void  sub_control_fluct::check_recomended(void) const
 
 void sub_control_fluct::before_send(void) const
 {
-  const_cast<sub_control_fluct*>(this)->datetime = mtk::dtNowLocal();    
+
 }
 
 

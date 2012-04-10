@@ -552,7 +552,6 @@ void delete_cells(QTableWidget* table_widget)
 
 void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_level& level, QTableDeph* table_widget, const mtk::msg::sub_product_code& product_code)
 {
-    mtk::dtDateTime  now  = mtk::dtNowLocal();
     if (level.quantity.GetIntCode() != 0)
     {
         QTableWidgetItem*  item_price = table_widget->item(row, price_col);

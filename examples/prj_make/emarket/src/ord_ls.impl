@@ -886,6 +886,7 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                         ci->sig_cli_cf_ex.emit(ex);
                         mtk::trd::msg::CF_EXLK   exlk(ex, ex.executed_pos);
                         exlk.invariant.product_code.product = MTK_SS("LK_" <<  exlk.invariant.product_code.product);
+                        exlk.req_id.session_id = std::string("lk_") + exlk.req_id.session_id;
                         if(exlk.invariant.side == mtk::trd::msg::buy)
                             exlk.invariant.side = mtk::trd::msg::sell;
                         else
@@ -920,6 +921,7 @@ void market::mkt_cf_ex ( const mtk::trd::msg::CF_EX_LS&   ex            )
                         ci->sig_cli_cf_ex.emit(ex);
                         mtk::trd::msg::CF_EXLK   exlk(ex, ex.executed_pos);
                         exlk.invariant.product_code.product = MTK_SS("LK_" <<  exlk.invariant.product_code.product);
+                        exlk.req_id.session_id = std::string("lk_") + exlk.req_id.session_id;
                         if(exlk.invariant.side == mtk::trd::msg::buy)
                             exlk.invariant.side = mtk::trd::msg::sell;
                         else

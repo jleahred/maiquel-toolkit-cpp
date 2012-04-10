@@ -225,7 +225,6 @@ void QExecsTable::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_info, co
 {
     mtk::trd::hist::order_exec_item  oei { confirm_info, exec  };
     execs2add_online.push_back(oei);
-    execs_all.push_back(oei);
 }
 
 
@@ -275,7 +274,7 @@ QExecsTable_ALL_execs::QExecsTable_ALL_execs(QWidget *parent) :
         QExecsTable(parent),
         mediaObject (Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("../data/execution.wav"))))
 {
-    MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_execution(), on_new_execution);
+    MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_execution_RT(), on_new_execution);
     //setContentsMargins(0,0,0,0);
 }
 
@@ -293,8 +292,12 @@ void  QExecsTable_ALL_execs::slot_show_all_execs(void)
     if(execs2add_loading.size()!=0)
         execs2add_loading.clear();
 
-    for(auto it = execs_all.begin();  it != execs_all.end(); ++it)
-        execs2add_loading.push_back(*it);
+    mtk::list<mtk::trd::msg::CF_EXLK>  list_all_execs = mtk::trd::trd_cli_ord_book::get_all_execs();
+    for(auto it=list_all_execs.begin(); it!=list_all_execs.end(); ++it)
+    {
+        mtk::trd::hist::order_exec_item  oei { *it, it->executed_pos  };
+        execs2add_loading.push_back(oei);
+    }
 }
 
 
