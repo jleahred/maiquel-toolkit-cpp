@@ -57,6 +57,8 @@ signals:
 
 private slots:
     void request_cancel(void);
+    void request_cancel_CURRENT_FILTER(void);
+    void request_cancel___ALL(void);
     void request_modif (void);
     void slot_apply_filter(const filter_data& fd);
     void slot_live_orders(void);

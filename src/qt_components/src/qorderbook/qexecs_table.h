@@ -73,6 +73,7 @@ signals:
 private slots:
     void  slot_clean_execs(void);
     void  slot_show_all_execs(void);
+    void  slot_copy_all_execs(void);
 
 
 private:

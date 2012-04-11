@@ -347,6 +347,7 @@ public:
     virtual void   update_item_rem_quantity        ()=0;
     virtual void   update_item_order_type          ()=0;
 
+    virtual bool  in_market(void) const  =0;
 };
 
 
@@ -390,6 +391,7 @@ public:
     ~order_in_qbook_xx() {
     }
 
+    bool  in_market(void) const  {  return inner_order->in_market(); }
 
     QColor  get_default_background_color(void)
     {
@@ -1048,6 +1050,94 @@ void qorder_table::request_cancel(void)
     delegate_paint->keep_focus_paint(false);
 }
 
+void qorder_table::request_cancel_CURRENT_FILTER(void)
+{
+    delegate_paint->keep_focus_paint(true);
+    try
+    {
+        //  ask for cancelation
+        if(QMessageBox::warning(this, QLatin1String("eCimd"), tr("Do you want to cancel orders for CURRENT FILTER?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+        {
+            for(auto it=orders->begin(); it!=orders->end(); ++it)
+            {
+                if(it->second->in_market())
+                {
+                    const mtk::trd::msg::sub_order_id   ord_id {it->first};
+                    auto  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
+                    if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+                        mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+                    else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+                        mtk::trd::trd_cli_ord_book::rq_cc_mk(ord_id);
+                    else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_stop_market)
+                        mtk::trd::trd_cli_ord_book::rq_cc_sm(ord_id);
+                    else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_stop_limit)
+                        mtk::trd::trd_cli_ord_book::rq_cc_sl(ord_id);
+                    else throw mtk::Alarm(MTK_HERE, "qorderbook", MTK_SS("unknown order type " << ord_id << "  type:"  << mtk::trd::trd_cli_ord_book::get_order_type(ord_id)), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+                }
+            }
+        }
+    }
+    catch(...)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", "controling focus paint on error managing request", mtk::alPriorError));
+        delegate_paint->keep_focus_paint(false);
+        throw;
+    }
+    delegate_paint->keep_focus_paint(false);
+}
+
+
+
+void qorder_table::request_cancel___ALL(void)
+{
+    delegate_paint->keep_focus_paint(true);
+    try
+    {
+        //  ask for cancelation
+        if(QMessageBox::warning(this, QLatin1String("eCimd"), tr("Do you want to cancel ALL orders?"), QMessageBox::Ok, QMessageBox::Cancel)==QMessageBox::Ok)
+        {
+            mtk::list<mtk::trd::msg::sub_order_id>   list_ords_id = mtk::trd::trd_cli_ord_book::get_all_order_ids();
+            for(auto it=list_ords_id.begin(); it!=list_ords_id.end(); ++it)
+            {
+                mtk::trd::msg::sub_order_id  ord_id = *it;
+                auto  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
+                if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
+                {
+                    mtk::CountPtr<mtk::trd::trd_cli_ls>     order = mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
+                    if(order->in_market())
+                        mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
+                }
+                else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
+                {
+                    mtk::CountPtr<mtk::trd::trd_cli_mk>     order = mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
+                    if(order->in_market())
+                        mtk::trd::trd_cli_ord_book::rq_cc_mk(ord_id);
+                }
+                else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_stop_market)
+                {
+                    mtk::CountPtr<mtk::trd::trd_cli_sm>     order = mtk::trd::trd_cli_ord_book::get_order_sm(ord_id);
+                    if(order->in_market())
+                    mtk::trd::trd_cli_ord_book::rq_cc_sm(ord_id);
+                }
+                else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_stop_limit)
+                {
+                    mtk::CountPtr<mtk::trd::trd_cli_sl>     order = mtk::trd::trd_cli_ord_book::get_order_sl(ord_id);
+                    if(order->in_market())
+                    mtk::trd::trd_cli_ord_book::rq_cc_sl(ord_id);
+                }
+                else throw mtk::Alarm(MTK_HERE, "qorderbook", MTK_SS("unknown order type " << ord_id << "  type:"  << mtk::trd::trd_cli_ord_book::get_order_type(ord_id)), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+            }
+        }
+    }
+    catch(...)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", "controling focus paint on error managing request", mtk::alPriorError));
+        delegate_paint->keep_focus_paint(false);
+        throw;
+    }
+    delegate_paint->keep_focus_paint(false);
+}
+
 
 bool multicheck_string (const std::string& value, const std::string& multifilter)
 {
@@ -1342,6 +1432,19 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         else
             action->setEnabled(false);
     }
+    menu.addSeparator();
+    {
+        QAction* action = new QAction(tr("cancel current_filter"), &menu);
+        connect(action, SIGNAL(triggered()), this, SLOT(request_cancel_CURRENT_FILTER()));
+        action->setEnabled(true);
+        menu.addAction(action);
+    }
+    {
+        QAction* action = new QAction(tr("cancel ALL"), &menu);
+        connect(action, SIGNAL(triggered()), this, SLOT(request_cancel___ALL()));
+        action->setEnabled(true);
+        menu.addAction(action);
+    }
     menu.exec(this->mapToGlobal(e->pos()));
 }
 
@@ -1427,6 +1530,7 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qorder_table& qot)
                     out << YAML::Key  << "client_code" << YAML::Value << qot.current_filter.client_code.toStdString();
                     out << YAML::Key  << "market" << YAML::Value << qot.current_filter.market.toStdString();
                     out << YAML::Key  << "name" << YAML::Value << qot.current_filter.name.toStdString();
+                    out << YAML::Key  << "cli_ref" << YAML::Value << qot.current_filter.cli_ref.toStdString();
             out << YAML::EndMap;
 
 
@@ -1472,24 +1576,28 @@ void     operator>> (const YAML::Node & node   , qorder_table& qot)
         std::string  client_code;
         std::string  market;
         std::string  name;
+        std::string  cli_ref;
 
 
         node["order_table"]["filter"]["account"] >> account;
         node["order_table"]["filter"]["client_code"] >> client_code;
         node["order_table"]["filter"]["market"] >> market;
         node["order_table"]["filter"]["name"] >> name;
-
+        if(node["order_table"]["filter"].FindValue("cli_ref"))
+            node["order_table"]["filter"]["cli_ref"] >> cli_ref;
 
         if(account=="~")        account = "";
         if(client_code=="~")    client_code = "";
         if(market=="~")         market = "";
         if(name=="~")           name = "";
+        if(cli_ref=="~")        cli_ref = "";
 
 
         qot.current_filter.account =  QLatin1String(account.c_str());
         qot.current_filter.client_code =  QLatin1String(client_code.c_str());
         qot.current_filter.market =  QLatin1String(market.c_str());
         qot.current_filter.name =  QLatin1String(name.c_str());
+        qot.current_filter.cli_ref =  QLatin1String(cli_ref.c_str());
 
         Q_EMIT(qot.signal_named_changed(QLatin1String(name.c_str())));
         Q_EMIT(qot.signal_filter_changed());

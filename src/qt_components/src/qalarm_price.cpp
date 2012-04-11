@@ -13,6 +13,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
+#include <Phonon/MediaObject>
 
 
 #include <iostream>
@@ -270,7 +271,7 @@ void marginal_in_table_alarm::normalize_last_price_cofigured(double price)
 
 
 marginal_in_table_alarm::marginal_in_table_alarm(QTableWidget* _table_widget, const mtk::msg::sub_product_code& product_code, double price, const QString& description, int row)
-    : status(non_initialized), id(++alarm_counter), table_widget(_table_widget),  configured_price(mtk::Double::InvalidValue()), first_maket__configured_last_sign(0), alarm_is_checked(false)
+    : status(non_initialized), id(++alarm_counter), table_widget(_table_widget),  configured_price(mtk::Double::InvalidValue()), first_maket__bigger__configured_last(false), alarm_is_checked(false)
 {
     tw_product          = new QTableWidgetItemProduct(product_code, this->id);
     tw_last_configured  = new QTableWidgetItem();
@@ -324,7 +325,7 @@ void  marginal_in_table_alarm::set_non_initialized(void)
     foreground.setColor(Qt::darkGray);
     tw_product->setForeground(foreground);
     configured_price = mtk::Double::InvalidValue();
-    first_maket__configured_last_sign = 0;
+    first_maket__bigger__configured_last = false;
 
     tw_description->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
     tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
@@ -344,7 +345,7 @@ void  marginal_in_table_alarm::set_ready_to_activate(void)
 
     if(status == activated)
     {
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::deactivated"), MTK_SS("product:"  <<  tw_product->text().toStdString() << "  sign:" << first_maket__configured_last_sign  <<  "  price:"  <<  configured_price
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::deactivated"), MTK_SS("product:"  <<  tw_product->text().toStdString() << "  sign:" << int(first_maket__bigger__configured_last)  <<  "  price:"  <<  configured_price
                                                                             << "  market_price:" << price_manager->get_last_mk_execs_ticker().Get().last_price), mtk::alPriorWarning));
     }
 
@@ -355,7 +356,7 @@ void  marginal_in_table_alarm::set_ready_to_activate(void)
     else
     {
         configured_price = mtk::Double::InvalidValue();
-        first_maket__configured_last_sign = 0;
+        first_maket__bigger__configured_last = false;
         alarm_is_checked = false;
     }
 
@@ -422,9 +423,9 @@ void  marginal_in_table_alarm::set_activated(void)
 
 
     if(price_manager->get_last_mk_execs_ticker().Get().last_price.GetDouble() - configured_price  <= mtk::Double(0.))
-        first_maket__configured_last_sign = -1;
+        first_maket__bigger__configured_last = false;
     else
-        first_maket__configured_last_sign = 1;
+        first_maket__bigger__configured_last = true;
 
     alarm_is_checked= true;
 
@@ -434,14 +435,14 @@ void  marginal_in_table_alarm::set_activated(void)
     tw_last_configured->setFlags(0);
     status = activated;
 
-    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::activated"), MTK_SS("product:"  <<  tw_product->text().toStdString()  << "  sign:" << first_maket__configured_last_sign  <<  "  price:"  <<  configured_price
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::activated"), MTK_SS("product:"  <<  tw_product->text().toStdString()  << "  sign:" <<  int(first_maket__bigger__configured_last)  <<  "  price:"  <<  configured_price
                                                                         << "  market_price:" << price_manager->get_last_mk_execs_ticker().Get().last_price), mtk::alPriorWarning));
 
 }
 
 void  marginal_in_table_alarm::set_ended (void)
 {
-    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::triggered"), MTK_SS("product:"  <<  tw_product->text().toStdString() << "  sign:" << first_maket__configured_last_sign  <<  "  price:"  <<  configured_price
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, MTK_SS("auto::alarm::" << id << "::triggered"), MTK_SS("product:"  <<  tw_product->text().toStdString() << "  sign:" << int(first_maket__bigger__configured_last)  <<  "  price:"  <<  configured_price
                                                                         << "  market_price:" << price_manager->get_last_mk_execs_ticker().Get().last_price), mtk::alPriorWarning));
     tw_last_configured->setBackgroundColor(Qt::red);
     tw_description->setBackgroundColor(Qt::red);
@@ -450,9 +451,12 @@ void  marginal_in_table_alarm::set_ended (void)
     tw_last_configured->setForeground(foreground);
     tw_description->setForeground(foreground);
     configured_price = mtk::Double::InvalidValue();
-    first_maket__configured_last_sign = 0;
+    first_maket__bigger__configured_last = false;
     alarm_is_checked = true;
     wUserMessage::show_message(tw_description->text() + QLatin1String(MTK_SS("  alarm product:" << tw_product << "  price:"  << tw_last_configured).c_str()));
+
+    static  Phonon::MediaObject* mediaObject = Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("../data/alarm.wav")));
+    mediaObject->play();
 
     status = ended;
 }
@@ -607,9 +611,9 @@ void marginal_in_table_alarm::on_last_mk_execs_ticker_msg(const mtk::msg::sub_pr
         case  ready_to_activate:
             break;
         case  activated:
-            if     (last_mk_execs_ticker.max_last_price.GetDouble() - configured_price  <= mtk::Double(0.)  &&  first_maket__configured_last_sign>0)
+            if     (first_maket__bigger__configured_last==false  &&  last_mk_execs_ticker.max_last_price.GetDouble() - configured_price  >= mtk::Double(0.))
                 this->set_status(ended);
-            else if(last_mk_execs_ticker.min_last_price.GetDouble() - configured_price  >= mtk::Double(0.)  &&  first_maket__configured_last_sign<0)
+            else if(first_maket__bigger__configured_last==true   &&  last_mk_execs_ticker.min_last_price.GetDouble() - configured_price  <= mtk::Double(0.))
                 this->set_status(ended);
             /*
             else

@@ -40,8 +40,6 @@ namespace {
     {
         mtk::admin::register_command("__GLOBAL__",    "ver",   "")->connect(command_version);
         mtk::admin::register_command("__GLOBAL__",    "modifs","")->connect(command_modifications);
-        mtk::admin::register_command("pp",  "get_min_time",   "get min time between changes")->connect(command_get_min_time_between_changes);
-        mtk::admin::register_command("pp",  "set_min_time",   "set min time between changes", true)->connect(command_set_min_time_between_changes);
     }
     MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
 
@@ -69,6 +67,18 @@ namespace publ {
 
 
 
+void  register_publication_commands(void)
+{
+    static bool first = true;
+
+    if(first)
+    {
+        mtk::admin::register_command("pp",  "get_min_time",   "get min time between changes")->connect(command_get_min_time_between_changes);
+        mtk::admin::register_command("pp",  "set_min_time",   "set min time between changes", true)->connect(command_set_min_time_between_changes);
+        first = false;
+    }
+}
+
 
 
 
@@ -76,6 +86,8 @@ namespace publ {
 mtk::CountPtr<mtk::dtTimeQuantity>   min_time_between_changes;
 void  gen_min_time_between_changes(void)
 {
+    register_publication_commands();
+
     std::string  smin_time_between_changes  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.min_time_between_changes");
     mtk::tuple<mtk::dtTimeQuantity, bool>  convert = mtk::s_TRY_stotq(smin_time_between_changes, mtk::dtSeconds(0));
     if(convert._1 == true)
@@ -92,7 +104,7 @@ public:
             product_code{_product_code},
             info_last_sent{mtk::prices::msg::__internal_get_default((T_INFO_TO_SEND*)0)},
             info_to_send{_info_to_send},
-            last_sent(mtk::dtNowLocal() - mtk::dtHours(1)), queued(false), cancel_send(false)
+            last_sent(mtk::dtNowLocal() - mtk::dtHours(1)), queued(false), cancel_send(true)
     {
     }
 
@@ -135,15 +147,24 @@ bool  merge__and_return_if_has_to_be_queued(mtk::CountPtr<item<mtk::prices::msg:
 
 bool  merge__and_return_if_has_to_be_queued(mtk::CountPtr<item<mtk::prices::msg::sub_last_mk_execs_ticker> >  origin, const  mtk::prices::msg::sub_last_mk_execs_ticker&  received)
 {
-    origin->cancel_send = false;
     origin->info_to_send.last_price       = received.last_price;
     origin->info_to_send.last_quantity    = received.last_quantity;
     origin->info_to_send.opened_price     = received.opened_price;
 
-    if (origin->info_to_send.min_last_price   > received.min_last_price)
+    if(origin->cancel_send == true)     //  it isn't queued
+    {
         origin->info_to_send.min_last_price   = received.min_last_price;
-    if (origin->info_to_send.max_last_price   < received.max_last_price)
         origin->info_to_send.max_last_price   = received.max_last_price;
+    }
+    else    //  it's queued
+    {
+        if (origin->info_to_send.min_last_price   > received.min_last_price)
+            origin->info_to_send.min_last_price   = received.min_last_price;
+        if (origin->info_to_send.max_last_price   < received.max_last_price)
+            origin->info_to_send.max_last_price   = received.max_last_price;
+    }
+
+    origin->cancel_send = false;
 
 
     if(origin->queued == false)
@@ -262,7 +283,7 @@ void prepare_and_send_message(const mtk::msg::sub_product_code&  product_code,  
 
         mtk::CountPtr<item<mtk::prices::msg::sub_last_mk_execs_ticker> >
         item = get_contention_queue<mtk::prices::msg::sub_last_mk_execs_ticker>()->get_item(product_code);
-        if(item.isValid()  &&  item->info_last_sent != item->info_to_send  &&  item->cancel_send==false)
+        if(item.isValid()  &&  item->cancel_send==false)
         {
             compacted_data = compacted_prices(best_prices, item->info_to_send);
             item->info_last_sent = item->info_to_send;

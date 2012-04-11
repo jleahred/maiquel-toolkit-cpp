@@ -5,6 +5,8 @@
 #include <QAction>
 #include <QHBoxLayout>
 #include <QMenu>
+#include <QApplication>
+#include <QClipboard>
 
 
 
@@ -140,6 +142,7 @@ public:
     void update_item_exec_id (void)
     {
         QTableWidgetItem* item = items[col_exec_id];
+        //item->setText(QLatin1String(exec_item.exec_info.exec_id.c_str()));
         item->setText(QLatin1String(exec_item.exec_info.exec_id.c_str()));
         item->setBackgroundColor(get_default_color());
     }
@@ -300,6 +303,56 @@ void  QExecsTable_ALL_execs::slot_show_all_execs(void)
     }
 }
 
+void  QExecsTable_ALL_execs::slot_copy_all_execs(void)
+{
+    mtk::list<mtk::trd::msg::CF_EXLK>  list_all_execs = mtk::trd::trd_cli_ord_book::get_all_execs();
+
+    QString  result;
+    result += QLatin1String("MARKET");     result += QLatin1String("\t");
+    result += QLatin1String("PRODUCT");    result += QLatin1String("\t");
+    result += QLatin1String("SIDE");       result += QLatin1String("\t");
+    result += QLatin1String("QUANTITY");   result += QLatin1String("\t");
+    result += QLatin1String("PRICE");      result += QLatin1String("\t");
+    result += QLatin1String("TIME");       result += QLatin1String("\t");
+    result += QLatin1String("EXEC_ID");    result += QLatin1String("\t");
+    result += QLatin1String("REMARKS");
+    result += QLatin1String("\n");
+
+    for(auto it=list_all_execs.begin(); it!=list_all_execs.end(); ++it)
+    {
+        mtk::trd::hist::order_exec_item  exec_item { *it, it->executed_pos  };
+        result += QLatin1String(exec_item.confirm_info.invariant.product_code.market.c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(exec_item.confirm_info.invariant.product_code.product.c_str());
+        result += QLatin1String("\t");
+
+        if (exec_item.confirm_info.invariant.side == mtk::trd::msg::buy)
+            result += QObject::tr("buy");
+        else
+            result += QObject::tr("sell");
+        result += QLatin1String("\t");
+
+        result += qtmisc::fn_as_QString(exec_item.exec_info.quantity);
+        result += QLatin1String("\t");
+
+        result += qtmisc::fn_as_QString(exec_item.exec_info.price);
+        result += QLatin1String("\t");
+
+        result += QLatin1String(MTK_SS(exec_item.confirm_info.orig_control_fluct.datetime).substr(11, 8).c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(exec_item.exec_info.exec_id.c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(QLatin1String(exec_item.confirm_info.description.c_str()));
+
+        result += QLatin1String("\n");
+    }
+
+    QApplication::clipboard()->setText(result);
+}
+
 
 void QExecsTable_ALL_execs::contextMenuEvent(QContextMenuEvent *e)
 {
@@ -312,6 +365,11 @@ void QExecsTable_ALL_execs::contextMenuEvent(QContextMenuEvent *e)
     {
         QAction* action = new QAction(tr("show all execs"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_show_all_execs()));
+        menu.addAction(action);
+    }
+    {
+        QAction* action = new QAction(tr("copy all execs"), this);
+        connect(action, SIGNAL(triggered()), this, SLOT(slot_copy_all_execs()));
         menu.addAction(action);
     }
     menu.exec(this->mapToGlobal(e->pos()));

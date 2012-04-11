@@ -107,7 +107,7 @@ private:
     static int  alarm_counter;
 
     mtk::Double           configured_price;
-    int                   first_maket__configured_last_sign;
+    bool                  first_maket__bigger__configured_last;
 
     bool                  alarm_is_checked;
 
