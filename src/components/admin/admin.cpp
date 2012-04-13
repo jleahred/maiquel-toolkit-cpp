@@ -283,7 +283,7 @@ namespace {
         if(role=="server")
             mtk::stop_timer();
         else if(role=="client")
-            exit(-1);
+            return;
         else
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", "invalid role trying to close the application", mtk::alPriorCritic, mtk::alTypeNoPermisions));
     }

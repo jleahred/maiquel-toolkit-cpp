@@ -379,6 +379,7 @@ void QExecsTable_ALL_execs::on_new_execution(const mtk::trd::msg::CF_XX&  confir
 {
     QExecsTable::on_new_execution(confirm_info, exec);
     MTK_EXEC_MAX_FREC(mtk::dtSeconds(1))
+        mediaObject->stop();
         mediaObject->play();
     MTK_END_EXEC_MAX_FREC
 }

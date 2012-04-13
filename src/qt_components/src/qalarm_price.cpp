@@ -456,6 +456,7 @@ void  marginal_in_table_alarm::set_ended (void)
     wUserMessage::show_message(tw_description->text() + QLatin1String(MTK_SS("  alarm product:" << tw_product << "  price:"  << tw_last_configured).c_str()));
 
     static  Phonon::MediaObject* mediaObject = Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("../data/alarm.wav")));
+    mediaObject->stop();
     mediaObject->play();
 
     status = ended;
