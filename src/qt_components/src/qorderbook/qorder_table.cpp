@@ -1434,7 +1434,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
     }
     menu.addSeparator();
     {
-        QAction* action = new QAction(tr("cancel current_filter"), &menu);
+        QAction* action = new QAction(tr("cancel orders current filter"), &menu);
         connect(action, SIGNAL(triggered()), this, SLOT(request_cancel_CURRENT_FILTER()));
         action->setEnabled(true);
         menu.addAction(action);

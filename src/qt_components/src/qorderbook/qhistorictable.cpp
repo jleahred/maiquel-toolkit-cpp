@@ -160,7 +160,8 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
     this->item(row, col_market_code)->setText(QLatin1String(MTK_SS(item.market_code).c_str()));
     this->item(row, col_request_id)->setText(QLatin1String(MTK_SS(item.request_id).c_str()));
 
-    this->item(row, col_remarks)->setText(QLatin1String(MTK_SS(item.confirmation_delay << "  " << item.remarks).c_str()));
+    if(mtk::admin::get_process_info().location.broker_code == "CIMD")
+        this->item(row, col_remarks)->setText(QLatin1String(MTK_SS(item.confirmation_delay << "  " << item.remarks).c_str()));
 
     for (int column=0; column<count_items; ++column)
     {
