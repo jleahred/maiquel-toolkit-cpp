@@ -10,12 +10,12 @@
 #include <fstream>
 
 
-namespace accmgr { 
+namespace accmgr {
 namespace db {
 
     std::string  db_file_name;
-    
-    
+
+
 
     mtk::CountPtr<mtk::list<std::string> >   get_list_markets(void)
     {
@@ -24,7 +24,7 @@ namespace db {
             result = mtk::make_cptr(new  mtk::list<std::string>);
         return result;
     }
-    
+
 
     mtk::CountPtr<mtk::map<std::string  /*user_name*/, msg::sub_user_info> >   get_map_user_info(void)
     {
@@ -42,9 +42,9 @@ namespace db {
         return result;
     }
 
-    
-    
-    
+
+
+
     void command_stats(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_lock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_unlock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
@@ -74,7 +74,7 @@ namespace db {
     void command_get_raw_client_grants_yaml(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
     void command_get_all_raw_grants(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
-    
+
     void register_global_commands (void)
     {
         //mtk::admin::register_command("__GLOBAL__",  "ver",   "")->connect(command_version);
@@ -82,19 +82,19 @@ namespace db {
         mtk::admin::register_command("sessions",  "stats",     "")->connect(command_stats);
         //mtk::admin::register_command("emr",  "lock_all",     "lock all requests", true)->connect(command_lock);
         //mtk::admin::register_command("emr",  "unlock_all",   "unlock all requests", true)->connect(command_unlock);
-        
+
         mtk::admin::register_command("accmgr",  "add_market",  "<market_name>", true)->connect(command_add_market);
         mtk::admin::register_command("accmgr",  "del_market",  "<market_name>", true)->connect(command_del_market);
 
         mtk::admin::register_command("accmgr",  "add_account",  "<account-name> <cli-code>")->connect(command_add_account);
         mtk::admin::register_command("accmgr",  "del_account",  "<account-name> <cli-code>")->connect(command_del_account);
-        
+
         mtk::admin::register_command("accmgr",  "add_user",     "<user_name> <client-code>")->connect(command_add_user);
         mtk::admin::register_command("accmgr",  "del_user",     "<user_name> <client-code>")->connect(command_del_user);
 
         mtk::admin::register_command("accmgr",  "grant",        "<market> <user_name>  <cli-code-reg-expr> <account-name-reg-expr>  <grant_type__F|C|V>")->connect(command_grant);
         mtk::admin::register_command("accmgr",  "revoke",       "<market> <user_name>  <cli-code-reg-expr> <account-name-reg-expr>  <grant_type__F|C|V>")->connect(command_revoke);
-        
+
         mtk::admin::register_command("accmgr",  "load",        "DANGEROUS delete current accounts and load from file", true)->connect(command_load);
         mtk::admin::register_command("accmgr",  "save",        "save accounts configuration to file", true)->connect(command_save);
         mtk::admin::register_command("accmgr",  "purge",       "remove all deleted grants", true)->connect(command_purge);
@@ -111,16 +111,16 @@ namespace db {
         mtk::admin::register_command("accmgr",  "get_raw_client_grants.yaml",      "<client_code-re-pattern>")->connect(command_get_raw_client_grants_yaml);
         mtk::admin::register_command("accmgr",  "get_all_raw_grants",      "depreciated", true)->connect(command_get_all_raw_grants);
     }
-    
-    
 
 
-    
+
+
+
     void init(const std::string& _db_file_name)
-    {   
-        register_global_commands(); 
-        db_file_name  =  _db_file_name;   
-        load(); 
+    {
+        register_global_commands();
+        db_file_name  =  _db_file_name;
+        load();
     }
 
     mtk::list<std::string>                              get_market_list(void)
@@ -152,27 +152,27 @@ namespace db {
 
     std::string     __get_grant_type(const std::string& market, const msg::sub_user_info& user_info, const mtk::trd::msg::sub_account_info& account_info);
     std::string     get_grant_type (    const mtk::msg::sub_request_id          rid,
-                                        const std::string&                      market, 
+                                        const std::string&                      market,
                                         const mtk::trd::msg::sub_account_info&  account_info)
     {
         mtk::acs::msg::res_login::IC_session_info  session_info = mtk::acs_server::synchr::get_session_info_for_session_id(rid.session_id);
         std::string  user_name = session_info.user_name;
-        
+
         if(session_info.client_code != "CIMD"   &&   session_info.client_code != account_info.client_code)
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "looking grants", MTK_SS("request with account client code "<< account_info.client_code 
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "looking grants", MTK_SS("request with account client code "<< account_info.client_code
                                                     << "for session with client code... " << session_info.client_code), mtk::alPriorError, mtk::alTypeLogicError));
             return "";
         }
-        
+
         mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator  it_user_info = get_map_user_info()->find(mtk::s_toUpper(user_name));
         if(it_user_info != get_map_user_info()->end())
             return __get_grant_type(market, it_user_info->second, account_info);
         else
             return "";
     }
-    
-    
+
+
 
     void command_stats(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
@@ -228,7 +228,7 @@ namespace db {
     {
         mtk::vector<std::string>  vparams;
         if(check_and_split_params__converting2upper(params, response_lines, 1, vparams)  == false)     return;
-        
+
         response_lines.push_back(MTK_SS("before adding ... " << get_list_markets()->size()));
         std::string result = try_add_market(vparams[0]);
         response_lines.push_back(result);
@@ -263,7 +263,7 @@ namespace db {
 
     std::string  try_add_account(const mtk::trd::msg::sub_account_info& account)
     {
-        std::string result; 
+        std::string result;
         //  check format fields
         //  check if previusly exists
 
@@ -282,10 +282,10 @@ namespace db {
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "accmgr", message, mtk::alPriorError, mtk::alTypeLogicError));
             return message;
         }
-        
-        
-        
-        
+
+
+
+
         //  check if previusly exists
         mtk::CountPtr<mtk::map<std::string, mtk::trd::msg::sub_account_info> > map_accounts = get_map_registered_accounts();
         result += MTK_SS("before adding account... " << map_accounts->size());
@@ -297,9 +297,9 @@ namespace db {
             return   message;
         }
         map_accounts->insert(std::make_pair(account.name, account));
-        
+
         result += MTK_SS("   after adding  account... " << map_accounts->size());
-        result += MTK_SS("   Account added ok."); 
+        result += MTK_SS("   Account added ok.");
         return result;
     }
     void command_add_account(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
@@ -311,10 +311,10 @@ namespace db {
         std::string result = try_add_account(account);
         response_lines.push_back(result);
     }
-    
+
     std::string  try_del_account(const mtk::trd::msg::sub_account_info& account)
     {
-        std::string result; 
+        std::string result;
         //  check if previusly exists
         mtk::CountPtr<mtk::map<std::string, mtk::trd::msg::sub_account_info> > map_accounts = get_map_registered_accounts();
         result += MTK_SS("before removing account... " << map_accounts->size());
@@ -326,9 +326,9 @@ namespace db {
             return   message;
         }
         map_accounts->erase(account.name);
-        
+
         //result += MTK_SS("   after removing account... " << map_accounts->size());
-        result += MTK_SS("   Account deleted ok."); 
+        result += MTK_SS("   Account deleted ok.");
         return result;
     }
     void command_del_account(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
@@ -340,10 +340,10 @@ namespace db {
         std::string result = try_del_account(account);
         response_lines.push_back(result);
     }
-    
+
     std::string  try_add_user(const std::string& user_name, const std::string& client_code)
     {
-        std::string result; 
+        std::string result;
         //  check format fields
         if (check_user_name(user_name) == false)
         {
@@ -369,9 +369,9 @@ namespace db {
         }
         msg::sub_user_info user_info(user_name, mtk::dtNowLocal(), client_code, mtk::list<mtk::trd::account::msg::sub_grant>());
         map_users->insert(std::make_pair(user_name, user_info));
-        
+
         result += MTK_SS("   after adding user... " << map_users->size());
-        result += MTK_SS("   User added ok."); 
+        result += MTK_SS("   User added ok.");
         return result;
     }
     void command_add_user(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
@@ -382,11 +382,11 @@ namespace db {
         std::string result = try_add_user(mtk::s_toUpper(vparams[0]), mtk::s_toUpper(vparams[1]));
         response_lines.push_back(result);
     }
-    
+
 
     std::string  try_del_user(const std::string& user_name, const std::string& /*client_code*/)
     {
-        std::string result; 
+        std::string result;
         //  check if previusly exists
         mtk::CountPtr<mtk::map<std::string, msg::sub_user_info> > map_users = get_map_user_info();
         result += MTK_SS("before deleting user... " << map_users->size());
@@ -398,9 +398,9 @@ namespace db {
             return   message;
         }
         map_users->erase(user_name);
-        
+
         result += MTK_SS("   after deleting user... " << map_users->size());
-        result += MTK_SS("   User deleted ok."); 
+        result += MTK_SS("   User deleted ok.");
         return result;
     }
     void command_del_user(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
@@ -411,18 +411,18 @@ namespace db {
         std::string result = try_del_user(mtk::s_toUpper(vparams[0]), mtk::s_toUpper(vparams[1]));
         response_lines.push_back(result);
     }
-    
+
     void command_grant(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string>  vparams;
         if(check_and_split_params__converting2upper(params, response_lines, 5, vparams)  == false)     return;
-        
+
         std::string market = mtk::s_toUpper(vparams[0]);
         std::string user_name = mtk::s_toUpper(vparams[1]);
         std::string client_code = mtk::s_toUpper(vparams[2]);
         std::string account_name = mtk::s_toUpper(vparams[3]);
         std::string grant_type = mtk::s_toUpper(vparams[4]);
-        
+
         {
             //  check if market exists
             bool blocated=false;
@@ -439,11 +439,11 @@ namespace db {
                 return;
             }
         }
-        
+
         //  mtk::admin::register_command("accmgr",  "grant",        "<user_name>  <cli-code-reg-expr> <account-name-reg-expr>  <grant_type__F|C|V>")->connect(command_grant);
         mtk::CountPtr<mtk::map<std::string  /*user_name*/, msg::sub_user_info> >   map_user_info = get_map_user_info();
         mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator located = map_user_info->find(user_name);
-        
+
         if(located == map_user_info->end())
         {
             std::string  message = MTK_SS("user doesn't exists " << user_name);
@@ -451,7 +451,7 @@ namespace db {
             response_lines.push_back(message);
             return;
         }
-        
+
         //  mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >   get_map_registered_accounts(void)
 //        if(get_map_registered_accounts()->find(account_name) == get_map_registered_accounts()->end())
 //        {
@@ -487,18 +487,18 @@ namespace db {
             response_lines.push_back(message);
             return;
         }
-        
+
         response_lines.push_back(MTK_SS("before grant... " << user_info.grant_list.size()));
         user_info.grant_list.push_back(grant);
         response_lines.push_back(MTK_SS(grant));
         response_lines.push_back(MTK_SS("after grant... " << user_info.grant_list.size()));
     }
-    
+
     void command_revoke(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string>  vparams;
         if(check_and_split_params__converting2upper(params, response_lines, 5, vparams)  == false)     return;
-        
+
         std::string market = mtk::s_toUpper(vparams[0]);
         std::string user_name = mtk::s_toUpper(vparams[1]);
         std::string client_code = mtk::s_toUpper(vparams[2]);
@@ -506,7 +506,7 @@ namespace db {
         std::string grant_type = mtk::s_toUpper(vparams[4]);
         mtk::CountPtr<mtk::map<std::string  /*user_name*/, msg::sub_user_info> >   map_user_info = get_map_user_info();
         mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator located = map_user_info->find(user_name);
-        
+
         if(located == map_user_info->end())
         {
             std::string  message = MTK_SS("user doesn't exists " << user_name);
@@ -514,7 +514,7 @@ namespace db {
             response_lines.push_back(message);
             return;
         }
-        
+
         mtk::trd::msg::sub_account_info account(account_name, client_code);
         msg::sub_user_info& user_info = located->second;
         mtk::trd::account::msg::sub_grant::IC_key grant_key(market, account);
@@ -538,11 +538,11 @@ namespace db {
         response_lines.push_back(MTK_SS("#deleted: " << deleted));
         //response_lines.push_back(MTK_SS("after revoke... " << user_info.grant_list.size()));
     }
-    
-    
-   
 
-    
+
+
+
+
     void load(void)
     {
         get_list_markets()->clear();
@@ -566,7 +566,7 @@ namespace db {
         }
         MTK_CATCH_CALLFUNCION(mtk::AlarmMsg, "accmgr_db", "error loading db")
     }
-    
+
     void save(void)
     {
         std::ofstream file;
@@ -598,7 +598,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 //  [grant_list](gl)    : mtk::trd::account::msg::sub_grant
@@ -614,7 +614,7 @@ namespace db {
             }
         }
     }
-    
+
     void command_load(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines)
     {
         response_lines.push_back("loading...");
@@ -632,9 +632,9 @@ namespace db {
         purge();
         response_lines.push_back("purged db");
     }
-    
-    
-    
+
+
+
     bool is_less_or_equal_restrictive(char first, char second)
     {
         if(first == 'F')
@@ -648,9 +648,9 @@ namespace db {
             else
                 return true;
         }
-        
+
     }
-    
+
     std::string     __get_grant_type(const std::string& market, const msg::sub_user_info& user_info, const mtk::trd::msg::sub_account_info& account_info)
     {
         std::string  result;
@@ -663,7 +663,7 @@ namespace db {
                 std::string pattern_account;
                 if(user_info.client_code == "CIMD")
                 {
-                    pattern_client_code = account_info.client_code;
+                    pattern_client_code = it->key.account.client_code;
                 }
                 else
                 {
@@ -677,7 +677,7 @@ namespace db {
                 if(market == it->key.market)
                 {
                     mtk::RegExp re_client_code ("^" + pattern_client_code + "$");
-                    if(re_client_code.Match(it->key.account.client_code))
+                    if(re_client_code.Match(account_info.client_code))
                     {
                         std::string grant_type = it->type;
                         mtk::RegExp re_account_name ("^" + it->key.account.name + "$");
@@ -705,9 +705,9 @@ namespace db {
             return "<deleted>";
         return result;
     }
-    
-    
-    
+
+
+
     void command_get_effective_user_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string>  vparams;
@@ -717,7 +717,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 if(mtk::RegExp(filter_user).Match(it_user_info->second.name))
@@ -741,8 +741,8 @@ namespace db {
         }
         response_lines.push_back(MTK_SS(std::endl << "<<<  end of command  " << command));
     }
-    
-    
+
+
     void   fill_yaml_with_user_info  (YAML::Emitter&  yo,  const  msg::sub_user_info&  user_info, const std::string& market)
     {
         yo << YAML::BeginMap;
@@ -768,7 +768,7 @@ namespace db {
             yo << YAML::EndSeq;
         yo << YAML::EndMap;
     }
-    
+
     void command_get_effective_user_grants_yaml(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string>  vparams;
@@ -781,7 +781,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 if(mtk::RegExp(filter_user).Match(it_user_info->second.name))
@@ -791,7 +791,7 @@ namespace db {
         yo << YAML::EndSeq;
         response_lines.push_back(yo.c_str());
     }
-    
+
 
 
     void command_get_effective_client_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
@@ -803,7 +803,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 //if(it_user_info->second.client_code == filter_client)
@@ -839,7 +839,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 if(mtk::RegExp(filter_client).Match(it_user_info->second.client_code))
@@ -850,7 +850,7 @@ namespace db {
         response_lines.push_back(yo.c_str());
     }
 
-    
+
     void command_get_all_effective_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string>  vparams;
@@ -859,7 +859,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 response_lines.push_back("");
@@ -890,7 +890,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 if(mtk::RegExp(filter_user).Match(it_user_info->second.name))
@@ -901,7 +901,7 @@ namespace db {
                     response_lines.push_back(it_user_info->second.name);
                     response_lines.push_back(MTK_SS(it_user_info->second.client_code << "  "  <<  market));
                     response_lines.push_back("--------------------------------");
-                    
+
                     for(auto it_grant = it_user_info->second.grant_list.begin(); it_grant != it_user_info->second.grant_list.end(); ++it_grant)
                     {
                         if(it_grant->key.market == market)
@@ -920,12 +920,12 @@ namespace db {
 
         YAML::Emitter yo;
         yo << YAML::BeginSeq;
-        
+
         std::string filter_user = vparams[0];
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 if(mtk::RegExp(filter_user).Match(it_user_info->second.name))
@@ -935,7 +935,7 @@ namespace db {
         yo << YAML::EndSeq;
         response_lines.push_back(yo.c_str());
     }
-    
+
     void command_get_raw_client_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string>  vparams;
@@ -945,7 +945,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 //if(it_user_info->second.client_code == filter_client)
@@ -976,7 +976,7 @@ namespace db {
         yo << YAML::BeginSeq;
 
         std::string filter_client = vparams[0];
-        for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+        for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                             it_user_info != get_map_user_info()->end(); ++it_user_info)
         {
             if(mtk::RegExp(filter_client).Match(it_user_info->second.client_code))
@@ -985,7 +985,7 @@ namespace db {
         yo << YAML::EndSeq;
         response_lines.push_back(yo.c_str());
     }
-    
+
     void command_get_all_raw_grants(const std::string& command, const std::string& params, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string>  vparams;
@@ -994,7 +994,7 @@ namespace db {
         for(mtk::list<std::string>::const_iterator it_markets=get_list_markets()->begin(); it_markets != get_list_markets()->end(); ++it_markets)
         {
             std::string market = *it_markets;
-            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin(); 
+            for(mtk::map<std::string  /*user_name*/, msg::sub_user_info>::iterator it_user_info = get_map_user_info()->begin();
                                 it_user_info != get_map_user_info()->end(); ++it_user_info)
             {
                 response_lines.push_back("");
@@ -1015,8 +1015,8 @@ namespace db {
 
 
 
-    
-    
+
+
     mtk::list<mtk::trd::account::msg::sub_grant>        get_user_grants(const std::string& user_name, const std::string& client_code)
     {
         mtk::list<mtk::trd::account::msg::sub_grant>   result;
@@ -1028,11 +1028,11 @@ namespace db {
                 std::string market = *it_markets;
                 if(it_user_info->second.client_code != client_code)
                 {
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "accmgr", MTK_SS("received client code doesn't macth with user client code " 
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "accmgr", MTK_SS("received client code doesn't macth with user client code "
                                 << client_code << it_user_info->second), mtk::alPriorError, mtk::alTypeLogicError));
                     return result;
                 }
-                
+
                 mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >  map_accounts = get_map_registered_accounts();
                 for(mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info >::iterator it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
                 {
@@ -1056,8 +1056,8 @@ namespace db {
         }
         return result;
     }
-    
-    
-    
+
+
+
 };  //  namespace db {
-};  //  namespace accmgr { 
+};  //  namespace accmgr {

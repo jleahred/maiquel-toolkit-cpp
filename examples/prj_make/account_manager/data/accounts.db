@@ -3,19 +3,8 @@ markets:
   - MARKET
   - KK
 accounts:
-  - name: AC1@CLIENT
-    client_code: CLIENT
-  - name: JOSE2@DESARR
+  - name: 0@DESARR
     client_code: CIMD
-  - name: JOSE@DESARR
-    client_code: CIMD
-  - name: JOSE@PRU
-    client_code: CIMD
-  - name: KKK
-    client_code: KKK
-  - name: LALALA
-    client_code: KKK
-
   - name: 1@DESARR
     client_code: CIMD
   - name: 2@DESARR
@@ -34,12 +23,16 @@ accounts:
     client_code: CIMD
   - name: 9@DESARR
     client_code: CIMD
-  - name: 0@DESARR
-    client_code: CIMD
   - name: A@DESARR
     client_code: CIMD
+  - name: AA@PRUEBA
+    client_code: PRUEBA
+  - name: AC1@CLIENT
+    client_code: CLIENT
   - name: B@DESARR
     client_code: CIMD
+  - name: BB@PRUEBA
+    client_code: PRUEBA
   - name: C@DESARR
     client_code: CIMD
   - name: D@DESARR
@@ -52,6 +45,16 @@ accounts:
     client_code: CIMD
   - name: H@DESARR
     client_code: CIMD
+  - name: JOSE2@DESARR
+    client_code: CIMD
+  - name: JOSE@DESARR
+    client_code: CIMD
+  - name: JOSE@PRU
+    client_code: CIMD
+  - name: KKK
+    client_code: KKK
+  - name: LALALA
+    client_code: KKK
 user_info:
   - name: JOSELUIS.ESTEBAN@DESARROLLO
     created: 2011-06-02 11:30:51.720
@@ -61,20 +64,8 @@ user_info:
           market: MARKET
           account:
             name: .*@.*
-            client_code: CLIENT
+            client_code: .*
         type: F
-      - key:
-          market: MARKET
-          account:
-            name: .*@.*
-            client_code: CIMD
-        type: F
-      - key:
-          market: MARKET
-          account:
-            name: LALALA
-            client_code: KKK
-        type: V
   - name: PR
     created: 2011-06-02 11:30:51.720
     client_code: CIMD
