@@ -1,6 +1,6 @@
 #
 # Output...
-OUT = bin/ct__test_republic_prices
+OUT = bin/ct__republic_prices
 #
 #
 # Directories with source code

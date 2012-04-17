@@ -19,14 +19,15 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_ACCOUNT_MANAGER";
-    const char*   APP_VER           = "2012-04-02 e";
+    const char*   APP_VER           = "2012-04-14 f";
     const char*   APP_DESCRIPTION   = "I can do two things\n"
                                       "I can send check all order request from client in order to verify the user is logged and account is valid, \n"
                                       "filling the reject_description if necessary and sending the request to order flow control\n"
                                       "\n"
                                       "I can also receive and response to request accounts\n"
                                       "Generally I will work with one of the possibilities. I will be configured with both, only in case of problems\n"
-                                      "\n";
+                                      "\n"
+                                      "Allow regex patterns on grant info for client_code\n";
 
     const char*   APP_MODIFICATIONS =   "           2011-05-30     first version\n"
                                         "           2012-04-02     stop limit orders\n"
