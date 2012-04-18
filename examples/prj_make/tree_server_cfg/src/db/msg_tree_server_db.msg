@@ -8,14 +8,19 @@ END_INIT
 
 
 //---------------------------------------------------------------------
-//        
+//
 //
 //---------------------------------------------------------------------
 
 
-sub_path_grants [< KEY:re_path >]
+sub_path_grants [< KEY:paths >]
 {
-    re_path                (path)  :       string       //  regular expresion
+
+    paths [<  LessOP:1 >]
+    {
+        re_path                (path)  :       string       //  regular expresion
+        re_child               (child) :       string       //  regular expresion
+    }
 
     [users]                (users) :       string       //  regular expresion
 }

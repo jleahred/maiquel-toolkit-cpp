@@ -39,12 +39,66 @@ public:
     //  inner classes
 
     
+    //-------------------------------
+    //      IC_paths
+    //-------------------------------    
+    class IC_paths     
+    {
+    public:
+        //  inner classes
+    
+        
+        // constructor
+        explicit IC_paths (    const std::string&  _re_path,   const std::string&  _re_child );
+        explicit IC_paths ( const qpid::types::Variant::Map&  mv );
+        virtual ~IC_paths (){};
+        virtual std::string get_message_type_as_string       (void) const  { return "IC_paths"; };
+        static  std::string static_get_message_type_as_string(void)        { return "IC_paths"; };
+        
+        
+    
+        
+    
+        
+        
+        
+        
+    
+        // fields
+        std::string                               re_path; 
+        std::string                               re_child; 
+    
+    
+    
+        //  ADDRESS info
+    
+    
+    
+        //  subject info
+        
+    
+        
+        
+        
+        
+        void        before_send(void) const;
+        
+        void check_recomended(void) const;
+    };
+    
+    
+    
+    
     // constructor
-    explicit sub_path_grants (    const std::string&  _re_path,   const mtk::list<std::string >&  _users );
-    explicit sub_path_grants ( const qpid::messaging::Message& message );
+    explicit sub_path_grants (    const IC_paths&  _paths,   const mtk::list<std::string >&  _users );
+    explicit sub_path_grants ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_path_grants (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_path_grants"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_path_grants"; };
+    
+    
+
+    
 
     
     
@@ -52,28 +106,32 @@ public:
     
 
     // fields
-    std::string                               re_path; 
+    IC_paths                                  paths; 
     mtk::list<std::string >                   users; 
 
 
 
 
     //   KEY INFO
-        typedef decltype(re_path) key_type;
-        key_type    get_key(void) const  {   return  re_path;  }
+        typedef decltype(paths) key_type;
+        key_type    get_key(void) const  {   return  paths;  }
     //   KEY INFO
+
+
+    //  ADDRESS info
+
 
 
     //  subject info
     
+
     
     
     
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -86,15 +144,33 @@ private:
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_path_grants & c);
    void           operator >> (const YAML::Node& n,       sub_path_grants & c);
 
+bool operator== (const sub_path_grants::IC_paths& a, const sub_path_grants::IC_paths& b);
+bool operator!= (const sub_path_grants::IC_paths& a, const sub_path_grants::IC_paths& b);
+
+
 bool operator== (const sub_path_grants& a, const sub_path_grants& b);
 bool operator!= (const sub_path_grants& a, const sub_path_grants& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_path_grants& a);
+    std::ostream& operator<< (std::ostream& o, const sub_path_grants::IC_paths & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_path_grants::IC_paths & c);
+   void           operator >> (const YAML::Node& n,       sub_path_grants::IC_paths & c);
+
+bool operator== (const sub_path_grants::IC_paths& a, const sub_path_grants::IC_paths& b);
+bool operator!= (const sub_path_grants::IC_paths& a, const sub_path_grants::IC_paths& b);
+
+
+    bool operator< (const sub_path_grants::IC_paths& a, const sub_path_grants::IC_paths& b);
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_path_grants& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_path_grants>& a, const std::string& field);
 void copy (sub_path_grants& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_path_grants::IC_paths& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_path_grants::IC_paths>& a, const std::string& field);
+void copy (sub_path_grants::IC_paths& a, const qpid::types::Variant& map);
 
     sub_path_grants  __internal_get_default(sub_path_grants *);
+    
+    sub_path_grants::IC_paths  __internal_get_default(sub_path_grants::IC_paths *);
     
 
 };   //namespace tree_server2 {

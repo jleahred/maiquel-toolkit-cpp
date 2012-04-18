@@ -2,4 +2,5 @@ version: 1
 grants:
   - re_path: .*
     users:
-      - .*
+      - ^(?!(JOSE)).*$
+      - ^JOSE.*$

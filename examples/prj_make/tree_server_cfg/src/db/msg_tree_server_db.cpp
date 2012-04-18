@@ -338,12 +338,6 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     }
 
 
-    template<typename T>
-    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
-    {
-        if (n.HasValue())
-            __internal_add2map(map, n.Get(), key);
-    }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::DateTime& a, const std::string& key)
     {
@@ -378,6 +372,13 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     }
 
 
+    template<typename T>
+    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
+    {
+        if (n.HasValue())
+            __internal_add2map(map, n.Get(), key);
+    }
+
     //  for composed types
     template<typename T>
     void  __internal_add2map(qpid::types::Variant::Map& map, const T& t, const std::string& key)
@@ -396,23 +397,17 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-sub_path_grants::sub_path_grants (   const std::string&  _re_path,   const mtk::list<std::string >&  _users)
-    :     re_path(_re_path),   users(_users) 
+sub_path_grants::sub_path_grants (   const IC_paths&  _paths,   const mtk::list<std::string >&  _users)
+    :     paths(_paths),   users(_users) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_path_grants::check_recomended(void) const
+void  sub_path_grants::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_path_grants::before_send(void) const
@@ -422,12 +417,54 @@ void sub_path_grants::before_send(void) const
 
 
 
+
+sub_path_grants::IC_paths::IC_paths (   const std::string&  _re_path,   const std::string&  _re_child)
+    :     re_path(_re_path),   re_child(_re_child) 
+       
+    {  
+    }
+
+
+
+void  sub_path_grants::IC_paths::check_recomended(void) const
+{
+
+}
+
+void sub_path_grants::IC_paths::before_send(void) const
+{
+
+}
+
+
+
+std::ostream& operator<< (std::ostream& o, const sub_path_grants::IC_paths & c)
+{
+    o << "{ "
+
+        << "re_path:"<<   c.re_path << "  "        << "re_child:"<<   c.re_child << "  "
+        << " }";
+    return o;
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_path_grants & c)
 {
     o << "{ "
 
-        << "re_path:"<<   c.re_path << "  "        << "users:"<<   c.users << "  "
+        << "paths:"<< c.paths<<"  "        << "users:"<<   c.users << "  "
         << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_path_grants::IC_paths & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "re_path"  << YAML::Value <<   c.re_path        << YAML::Key << "re_child"  << YAML::Value <<   c.re_child
+        << YAML::EndMap;
     return o;
 };
 
@@ -437,9 +474,21 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_path_grants & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "re_path"  << YAML::Value <<   c.re_path        << YAML::Key << "users"  << YAML::Value <<   c.users
+        << YAML::Key << "paths"   << YAML::Value << c.paths        << YAML::Key << "users"  << YAML::Value <<   c.users
         << YAML::EndMap;
     return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_path_grants::IC_paths & c)
+{
+
+
+        node["re_path"]  >> c.re_path;
+        node["re_child"]  >> c.re_child;
+
+
 };
 
 
@@ -448,16 +497,42 @@ void  operator >> (const YAML::Node& node, sub_path_grants & c)
 {
 
 
-        node["re_path"]  >> c.re_path;
+            node["paths"]   >> c.paths;
         node["users"]  >> c.users;
 
 
 };
 
 
+bool operator< (const sub_path_grants::IC_paths& a, const sub_path_grants::IC_paths& b)
+{
+    if (false)   return true;
+    else if (true)
+    {
+        auto ca = mtk::make_tuple( 0          , a.re_path       , a.re_child );
+        auto cb = mtk::make_tuple( 0          , b.re_path       , b.re_child );
+        return ca < cb;
+    }
+    else
+        return false;
+};
+
+
+bool operator== (const sub_path_grants::IC_paths& a, const sub_path_grants::IC_paths& b)
+{
+    return (          a.re_path ==  b.re_path  &&          a.re_child ==  b.re_child  &&   true  );
+};
+
+bool operator!= (const sub_path_grants::IC_paths& a, const sub_path_grants::IC_paths& b)
+{
+    return !(a==b);
+};
+
+
+
 bool operator== (const sub_path_grants& a, const sub_path_grants& b)
 {
-    return (          a.re_path ==  b.re_path  &&          a.users ==  b.users  &&   true  );
+    return (          a.paths ==  b.paths  &&          a.users ==  b.users  &&   true  );
 };
 
 bool operator!= (const sub_path_grants& a, const sub_path_grants& b)
@@ -468,20 +543,15 @@ bool operator!= (const sub_path_grants& a, const sub_path_grants& b)
 
 
 
-//void  __internal_qpid_fill (sub_path_grants& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_path_grants& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
+//   IN_MSG
 
-                    it = mv.find("path");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field re_path on message sub_path_grants::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.re_path, it->second);
-                        //c.re_path = it->second;
+                copy(c.paths, mv);
+                //__internal_qpid_fill(c.paths, mv);
 //   field_type
 
                     it = mv.find("users");
@@ -491,6 +561,7 @@ void  copy (sub_path_grants& c, const qpid::types::Variant& v)
                         copy(c.users, it->second);
                         //c.users = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -498,10 +569,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_path_grants& 
 {
 
     a.before_send();
+    a.check_recomended();
 
-
-//  field_type
-        __internal_add2map(map, a.re_path, std::string("path"));
+//  IN_MSG
+        __internal_add2map(map, a.paths);
 //  field_type
         __internal_add2map(map, a.users, std::string("users"));
 
@@ -517,35 +588,99 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+
+
+void  copy (sub_path_grants::IC_paths& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("path");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field re_path on message sub_path_grants::IC_paths::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.re_path, it->second);
+                        //c.re_path = it->second;
+//   field_type
+
+                    it = mv.find("child");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field re_child on message sub_path_grants::IC_paths::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.re_child, it->second);
+                        //c.re_child = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_path_grants::IC_paths& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  field_type
+        __internal_add2map(map, a.re_path, std::string("path"));
+//  field_type
+        __internal_add2map(map, a.re_child, std::string("child"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_path_grants::IC_paths>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
     sub_path_grants  __internal_get_default(sub_path_grants*)
     {
         return sub_path_grants(
-//   field_type
-   __internal_get_default ((std::string*)0),
+//   IN_MSG
+   __internal_get_default((sub_path_grants::IC_paths*)0),
 //   field_type
    __internal_get_default ((mtk::list<std::string >*)0)
             );
     }
     
-
-sub_path_grants::sub_path_grants (const qpid::messaging::Message& msg)
-    :  //   field_type
-   re_path(__internal_get_default((std::string*)0)),
+    sub_path_grants::IC_paths  __internal_get_default(sub_path_grants::IC_paths*)
+    {
+        return sub_path_grants::IC_paths(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+sub_path_grants::sub_path_grants (const qpid::types::Variant::Map&  mv)
+    :  //   IN_MSG
+   paths(__internal_get_default((sub_path_grants::IC_paths*)0)),
 //   field_type
    users(__internal_get_default((mtk::list<std::string >*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        copy(*this, mv);
+        check_recomended ();  
     }
 
+sub_path_grants::IC_paths::IC_paths (const qpid::types::Variant::Map&  mv)
+    :  //   field_type
+   re_path(__internal_get_default((std::string*)0)),
+//   field_type
+   re_child(__internal_get_default((std::string*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
 
 
 };   //namespace tree_server2 {
