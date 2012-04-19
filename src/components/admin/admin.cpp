@@ -216,6 +216,8 @@ namespace {
             void command_realtime           (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_infoapp            (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_config             (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_set_config_property(const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
+            void command_del_config_property(const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_ping               (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_date_time          (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
             void command_set_machine_code   (const std::string& command, const std::string& param,  mtk::list<std::string>&  response_lines);
@@ -436,36 +438,38 @@ namespace {
 
 
         //register_command("ADMIN", "help", "")->connect(this, &CLASS_NAME::command_help);
-        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "help",         ""),                                                command_help)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "help",                 ""),                                                command_help)
 
-        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "ver",          ""),                                                command_version_app)
-        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "ver",          ""),                                                command_version)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "ver",          ""),                                                command_version)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "ver",                  ""),                                                command_version_app)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "ver",                  ""),                                                command_version)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "ver",                  ""),                                                command_version)
 
-        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "modifs",       "brief information about modifications"),           command_modifications_app)
-        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "modifs",       "brief information about modifications"),           command_modifications)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "modifs",       ""),                                                command_modifications)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "modifs",               "brief information about modifications"),           command_modifications_app)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "modifs",               "brief information about modifications"),           command_modifications)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "modifs",               ""),                                                command_modifications)
 
-        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "stats",        "some stats"),                                      command_stats)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_stats)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "stats",                "some stats"),                                      command_stats)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",                "some stats"),                                      command_stats)
 
-        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "infoapp",      "info about the application"),                      command_infoapp)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "config",       "config information"),                              command_config)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "date_time",    "returns de local current time on the machine"),    command_date_time)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "ping",         "returns a pong"),                                  command_ping)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "rqclose",      "request close application (confirmation requiered)"
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "infoapp",              "info about the application"),                      command_infoapp)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "config",               "config information"),                              command_config)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "set_config_property",  "modif property on config file" , true),            command_set_config_property)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "del_config_property",  "delete property on config file", true),            command_del_config_property)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "date_time",            "returns de local current time on the machine"),    command_date_time)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "ping",                 "returns a pong"),                                  command_ping)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "rqclose",              "request close application (confirmation requiered)"
                                         " on clients will produce a non ordered close", true),                                  command_rqclose)
 
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "realtime",     "some realtime stats"),                             command_realtime)
-        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "stats",        "some stats"),                                      command_realtime)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",        "some stats"),                                      command_realtime)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "realtime",             "some realtime stats"),                             command_realtime)
+        MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "stats",                "some stats"),                                      command_realtime)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",                "some stats"),                                      command_realtime)
 
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "set_machine_code",        "write a machine code on config file"),  command_set_machine_code)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "set_machine_code",     "<path> <value< write a machine code on config file"),  command_set_machine_code)
 
-        register_command("ADMIN",         "autoclose.show",        "Shows autoclose configured time" )->connect(&command_autoclose_show);
-        register_command("ADMIN",         "autoclose.cancel",      "cancel autoclose",      true     )->connect(&command_autoclose_cancel);
-        register_command("ADMIN",         "autoclose.reactivate",  "reactivate autoclose",  true     )->connect(&command_autoclose_reactivate);
-        register_command("ADMIN",         "resynchr",              "DANGEROUS.  resynchr monotonic clock with system clock",  true     )->connect(&command_resynchr_monotonic);
+        register_command("ADMIN",                           "autoclose.show",       "Shows autoclose configured time" )->connect(&command_autoclose_show);
+        register_command("ADMIN",                           "autoclose.cancel",     "cancel autoclose",      true     )->connect(&command_autoclose_cancel);
+        register_command("ADMIN",                           "autoclose.reactivate", "reactivate autoclose",  true     )->connect(&command_autoclose_reactivate);
+        register_command("ADMIN",                           "resynchr",             "DANGEROUS.  resynchr monotonic clock with system clock",  true     )->connect(&command_resynchr_monotonic);
 
         MTK_TIMER_1SF(timer_check_auto_close);
         MTK_TIMER_1SF(timer_check_resynchr_monotonic);
@@ -961,6 +965,63 @@ namespace {
         mtk::vector<std::string> lines = mtk::s_split(config_file.GetStringConfigFileLines(), "\n");
         for(unsigned j=0; j<lines.size(); ++j)
             response_lines.push_back(lines[j]);
+    }
+
+    bool  check_and_split_params(const std::string& params, mtk::list<std::string>&  response_lines, int number_of_params, mtk::vector<std::string>& vparams)
+    {
+        mtk::vector<std::string> temp_vparams = mtk::s_split(mtk::s_trim(params, ' '), " ");
+        //  remove empty params
+        vparams.clear();
+        for(unsigned i=0; i<temp_vparams.size(); ++i)
+        {
+            std::string param = mtk::s_trim(temp_vparams[i], ' ');
+            if(param != "")
+                vparams.push_back(param);
+        }
+        if(vparams.size() != unsigned(number_of_params))
+        {
+            response_lines.push_back(MTK_SS("invalid number of params. There is needed "  <<  number_of_params  <<  "  params:   "  << params));
+            return  false;
+        }
+        return true;
+    }
+    void admin_status::command_set_config_property(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+    {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params(params, response_lines, 2, vparams)  == false)     return;
+        std::string  key(vparams[0]);
+        std::string  value(vparams[1]);
+
+        try
+        {
+            config_file.ModifOrCreate(key, value);
+            config_file.SaveToFile();
+            response_lines.push_back("mofied and saved");
+        }
+        catch (mtk::Alarm& __alarm__)
+        {
+            response_lines.push_back(MTK_SS(__alarm__));
+            mtk::AlarmMsg(__alarm__);
+        }
+    }
+
+    void admin_status::command_del_config_property(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+    {
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params(params, response_lines, 1, vparams)  == false)     return;
+        std::string  key(vparams[0]);
+
+        try
+        {
+            config_file.Delete(key);
+            config_file.SaveToFile();
+            response_lines.push_back("deleted");
+        }
+        catch (mtk::Alarm& __alarm__)
+        {
+            response_lines.push_back(MTK_SS(__alarm__));
+            mtk::AlarmMsg(__alarm__);
+        }
     }
 
     void admin_status::command_ping(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
