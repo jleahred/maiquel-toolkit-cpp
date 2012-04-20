@@ -591,9 +591,31 @@ namespace {
     {
         //if(alarm.priority == mtk::alPriorCritic  ||  alarm.priority == mtk::alPriorError)
         //    std::cout << alarm << std::endl;
+
+        if(alarm.message.size() > 2048)
+        {
+            MTK_EXEC_MAX_FREC(mtk::dtSeconds(30))
+                mtk::AlarmMsg(mtk::Alarm("admin::__direct_NotifyAlarm", "admin", MTK_SS("message too long, truncating  " << alarm.message.substr(0,100)), mtk::alPriorError, mtk::alTypeOverflow));
+            MTK_END_EXEC_MAX_FREC
+        }
+
+        if(alarm.subject.size() > 2048)
+        {
+            MTK_EXEC_MAX_FREC(mtk::dtSeconds(30))
+                mtk::AlarmMsg(mtk::Alarm("admin::__direct_NotifyAlarm", "admin", MTK_SS("subject too long, truncating  " << alarm.subject.substr(0,100)), mtk::alPriorError, mtk::alTypeOverflow));
+            MTK_END_EXEC_MAX_FREC
+        }
+
+        if(alarm.codeSource.size() > 2048)
+        {
+            MTK_EXEC_MAX_FREC(mtk::dtSeconds(30))
+                mtk::AlarmMsg(mtk::Alarm("admin::__direct_NotifyAlarm", "admin", MTK_SS("codeSource too long, truncating  " << alarm.codeSource.substr(0,100)), mtk::alPriorError, mtk::alTypeOverflow));
+            MTK_END_EXEC_MAX_FREC
+        }
+
         int16_t alarm_id = int16_t(alarm.alarmID);
         {
-            mtk::admin::msg::pub_alarm alarm_msg(mon_subject_role, get_process_info(), alarm.codeSource, alarm.subject, alarm.message, alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
+            mtk::admin::msg::pub_alarm alarm_msg(mon_subject_role, get_process_info(), alarm.codeSource.substr(0,2048), alarm.subject.substr(0,2048), alarm.message.substr(0,2048), alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
             mtk_send_message("admin", alarm_msg);
         }
         {
