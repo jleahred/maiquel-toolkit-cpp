@@ -955,6 +955,7 @@ void RowImpl::SetValue(int varnum, IITYPE ivType, const void* value, int userlen
 			{
 				std::string* svalue = (std::string*)value;
 				len = (int16_t)svalue->length();
+                if (len <0)  len = 32000;
 				if (len > var->sqllen) len = var->sqllen;
 				*(int16_t*)var->sqldata = (int16_t)len;
 				strncpy(var->sqldata+2, svalue->c_str(), len);
