@@ -50,6 +50,15 @@ struct  order_exec_item
     const mtk::trd::msg::sub_exec_conf      exec_info;
 };
 
+struct  order_exec_item_acc_by_price
+{
+    mtk::trd::msg::sub_invariant_order_info     invariant;
+
+    mtk::FixedNumber                            price;
+    mtk::FixedNumber                            quantity;
+};
+
+
 
 
 
@@ -83,16 +92,21 @@ class  order_EXECS_historic_dangerous_not_signal_warped
     mtk::non_copyable nc;
 public:
 
-    void                                                add_item(const order_exec_item&  item);
-    mtk::CountPtr<mtk::list<order_exec_item> >          get_items_list(void) const   { return list_execs_item;  };
+    void                                                        add_item(const order_exec_item&  item);
+    //mtk::CountPtr<mtk::list<order_exec_item> >          get_items_list(void) const   { return list_execs_item;  };
+    mtk::CountPtr<mtk::list<order_exec_item_acc_by_price> >     get_items_list_acc_by_price(void) const   {  return   list_execs_item_acc_by_price;    }
 
-    mtk::Signal<const order_exec_item&>                 signal_new_item_added;
+    //mtk::Signal<const order_exec_item&>                 signal_new_item_added;
+    mtk::Signal<const order_exec_item_acc_by_price&>            signal_new_item_added_acc_by_price;
+    mtk::Signal<int, const order_exec_item_acc_by_price&>       signal_modif_item_acc_by_price;
+
 
 
     order_EXECS_historic_dangerous_not_signal_warped(void);
 
 private:
-    mtk::CountPtr<mtk::list<order_exec_item> >          list_execs_item;
+    //mtk::CountPtr<mtk::list<order_exec_item> >                  list_execs_item;
+    mtk::CountPtr<mtk::list<order_exec_item_acc_by_price> >     list_execs_item_acc_by_price;
 
 };
 
@@ -142,10 +156,14 @@ class  order_EXECS_historic
     mtk::non_copyable nc;
 public:
 
-    void                                                add_item(const order_exec_item&  item)      {  return   ptr->add_item(item);      }
-    mtk::CountPtr<mtk::list<order_exec_item> >          get_items_list(void) const                  {  return   ptr->get_items_list();    }
+    void                                                            add_item(const order_exec_item&  item)      {  return   ptr->add_item(item);      }
+    //mtk::CountPtr<mtk::list<order_exec_item> >          get_items_list(void) const                  {  return   ptr->get_items_list();    }
+    mtk::CountPtr<mtk::list<order_exec_item_acc_by_price> >         get_items_list_acc_by_price(void) const                  {  return   ptr->get_items_list_acc_by_price();    }
 
-    mtk::Signal<const order_exec_item&>                 signal_new_item_added;
+    //mtk::Signal<const order_exec_item&>                 signal_new_item_added;
+    mtk::Signal<const order_exec_item_acc_by_price&>                signal_new_item_added_acc_by_price;
+    mtk::Signal<int, const order_exec_item_acc_by_price&>           signal_modif_item_acc_by_price;
+
 
 
 
@@ -153,7 +171,9 @@ public:
     {
         try
         {
-            ptr->signal_new_item_added.connect(&signal_new_item_added);
+            ptr->signal_new_item_added_acc_by_price.connect(&signal_new_item_added_acc_by_price);
+            ptr->signal_modif_item_acc_by_price.connect(&signal_modif_item_acc_by_price);
+            //ptr->signal_new_item_added.connect(&signal_new_item_added);
         } MTK_CATCH_RETHROW("order_EXECS_historic","connecting signals")
     }
 

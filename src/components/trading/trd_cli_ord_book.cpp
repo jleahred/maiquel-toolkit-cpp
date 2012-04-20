@@ -354,7 +354,7 @@ s_status& get_status_ref(void)
     if (deleted)    throw mtk::Alarm(MTK_HERE, "trd_cli_ord_book", "on deleted module", mtk::alPriorWarning, mtk::alTypeNoPermisions);
     if (__internal_ptr_status==0)
     {
-        
+
         __internal_ptr_status = new s_status();
         MTK_TIMER_1SF(check_orphans);
 
@@ -493,10 +493,10 @@ int   get_sum_execs_orders(const MAP_ORDERS& map_orders)
         for(auto it=map_orders.begin(); it!=map_orders.end(); ++it)
         {
             mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>  execs = it->second->executions();
-            mtk::CountPtr<mtk::list<mtk::trd::hist::order_exec_item> > list_execs = execs->get_items_list();
+            mtk::CountPtr<mtk::list<mtk::trd::hist::order_exec_item_acc_by_price> > list_execs = execs->get_items_list_acc_by_price();
             for(auto it2=list_execs->begin(); it2!=list_execs->end(); ++it2)
             {
-                sum_execs_orders_quantity += it2->exec_info.quantity.GetIntCode();
+                sum_execs_orders_quantity += it2->quantity.GetIntCode();
             }
         }
     }
@@ -514,7 +514,7 @@ void check_orphans(void)
                 ++it;
         }
     MTK_END_EXEC_MAX_FREC
-    
+
     MTK_EXEC_MAX_FREC_NO_FIRST_S(mtk::dtMinutes(3))
         if (get_status_ref().map_orphan_execs.size() >0)
         {
@@ -531,7 +531,7 @@ void check_orphans(void)
                 sum_execs_quantity += it->second.executed_pos.quantity.GetIntCode();
             }
         }
-        
+
         int sum_execs_orders_quantity=0;
         sum_execs_orders_quantity += get_sum_execs_orders(get_status_ref().ls_orders);
         sum_execs_orders_quantity += get_sum_execs_orders(get_status_ref().mk_orders);
@@ -698,7 +698,7 @@ mtk::list<mtk::trd::msg::CF_EXLK>           get_all_execs           (void)
 {
     mtk::list<mtk::trd::msg::CF_EXLK>  result;
     if(__internal_ptr_status == 0)        return result;
-    
+
     for(auto it=__internal_ptr_status->list_execs_time_order.begin(); it!=__internal_ptr_status->list_execs_time_order.end(); ++it)
     {
         auto it_map_exec = __internal_ptr_status->map_execs.find(*it);
@@ -707,7 +707,7 @@ mtk::list<mtk::trd::msg::CF_EXLK>           get_all_execs           (void)
         else
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "trd_cli_ord_book", MTK_SS("exec in list_execs_time_order not in map_execs  " << *it), mtk::alPriorCritic));
     }
-    
+
     return result;
 }
 
@@ -1137,7 +1137,7 @@ void cf_tr_sl(const mtk::trd::msg::CF_TR_SL& tr)
 
 bool  register_exec_in_order(const msg::CF_EXLK& cf_exlk)
 {
-    
+
     if(get_status_ref().ls_orders.find(cf_exlk.invariant.order_id) !=  get_status_ref().ls_orders.end())
     {
         auto  order = get_order_ls(cf_exlk.invariant.order_id);
@@ -1150,7 +1150,7 @@ bool  register_exec_in_order(const msg::CF_EXLK& cf_exlk)
     }
     else
         return false;
-        
+
     return true;
 }
 

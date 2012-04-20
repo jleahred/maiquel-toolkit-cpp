@@ -202,13 +202,26 @@ std::string   order_historic_dangerous_not_signal_warped::get_lasttr_descr (void
 
 order_EXECS_historic_dangerous_not_signal_warped::order_EXECS_historic_dangerous_not_signal_warped(void)
 {
-    list_execs_item = mtk::make_cptr(new mtk::list<order_exec_item>);
+    list_execs_item_acc_by_price = mtk::make_cptr(new mtk::list<order_exec_item_acc_by_price>);
 }
 
 void   order_EXECS_historic_dangerous_not_signal_warped::add_item(const order_exec_item& item)
 {
-    list_execs_item->push_back(item);
-    signal_new_item_added.emit(item);
+    int pos =0;
+    for(auto it=list_execs_item_acc_by_price->begin(); it!=list_execs_item_acc_by_price->end(); ++it, ++pos)
+    {
+        if(it->invariant == item.confirm_info.invariant    &&   it->price == item.exec_info.price)
+        {
+            it->quantity.SetDouble(it->quantity.GetDouble() + item.exec_info.quantity.GetDouble());
+            signal_modif_item_acc_by_price(pos, *it);
+            return;
+        }
+    }
+    order_exec_item_acc_by_price  item_acc_by_price{item.confirm_info.invariant, item.exec_info.price, item.exec_info.quantity};
+    list_execs_item_acc_by_price->push_back(item_acc_by_price);
+    signal_new_item_added_acc_by_price.emit(item_acc_by_price);
+    //list_execs_item->push_back(item);
+    //signal_new_item_added.emit(item);
 }
 
 

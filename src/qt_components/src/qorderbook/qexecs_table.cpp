@@ -286,7 +286,7 @@ QExecsTable_ALL_execs::QExecsTable_ALL_execs(QWidget *parent) :
 void  QExecsTable_ALL_execs::slot_clean_execs(void)
 {
     table_widget->setRowCount(0);
-    exec_in_table->clear();
+    exec_in_table->clear();    
 }
 
 void  QExecsTable_ALL_execs::slot_show_all_execs(void)
@@ -386,7 +386,7 @@ void QExecsTable_ALL_execs::on_new_execution(const mtk::trd::msg::CF_XX&  confir
 
 
 
-
+/*
 QExecsTable_one_order::QExecsTable_one_order(QWidget *parent) :
         QExecsTable(parent)
 {
@@ -412,3 +412,4 @@ void   QExecsTable_one_order::set_executions(mtk::CountPtr<mtk::trd::hist::order
 
     execs_history = _execs_history;
 }
+*/

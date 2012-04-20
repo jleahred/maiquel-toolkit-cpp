@@ -156,7 +156,7 @@ QLabel#exec_price, QLabel#exec_quantity
         <number>0</number>
        </property>
        <item>
-        <widget class="QExecsTable_one_order" name="executions"/>
+        <widget class="QExecsTable_acc" name="executions"/>
        </item>
       </layout>
      </widget>
@@ -198,9 +198,9 @@ QLabel#exec_price, QLabel#exec_quantity
    <header>qorderbook/qhistorictable.h</header>
   </customwidget>
   <customwidget>
-   <class>QExecsTable_one_order</class>
+   <class>QExecsTable_acc</class>
    <extends>QTableWidget</extends>
-   <header>qorderbook/qexecs_table.h</header>
+   <header>qorderbook/qexecs_table_acc.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

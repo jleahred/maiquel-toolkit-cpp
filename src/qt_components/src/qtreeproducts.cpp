@@ -200,7 +200,7 @@ void qTreeProducts::request_root_items(void)
 {
     if(mtk::admin::get_session_id() == "")      return;
 
-    MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtSeconds(10))
+    MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtSeconds(25))
     {
         if(this->topLevelItemCount() == 0)
         {

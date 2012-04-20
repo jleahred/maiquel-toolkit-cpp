@@ -31,7 +31,7 @@ class QExecsTable : public QWidget , public mtk::SignalReceptor
 
 public:
     explicit QExecsTable(QWidget *parent = 0);
-    ~QExecsTable() {  delete  exec_in_table; };
+    ~QExecsTable() {  delete  exec_in_table; }
 
     void update_sizes();
 
@@ -90,7 +90,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 //      QExecsTable_one_order
-
+/*
 class QExecsTable_one_order : public QExecsTable //, public mtk::SignalReceptor     father has it
 {
     Q_OBJECT
@@ -112,6 +112,9 @@ private:
     void on_new_item(const mtk::trd::hist::order_exec_item&  exec_item);
 
 };
+*/
+
+
 
 
 
