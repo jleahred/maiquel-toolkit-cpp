@@ -15,6 +15,8 @@
 #include "components/trading/trd_cli_support.h"
 #include "components/trading/trd_cli_historic.h"
 
+extern  void  show_execs_report_window(void);
+
 
 
 
@@ -368,6 +370,12 @@ void QExecsTable_ALL_execs::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
     }
     {
+        QAction* action = new QAction(tr("show execs report"), &menu);
+        connect(action, SIGNAL(triggered()), this, SLOT(slot_show_execs_report()));
+        menu.addAction(action);
+        action->setEnabled(true);
+    }
+    {
         QAction* action = new QAction(tr("copy all execs"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_copy_all_execs()));
         menu.addAction(action);
@@ -413,3 +421,8 @@ void   QExecsTable_one_order::set_executions(mtk::CountPtr<mtk::trd::hist::order
     execs_history = _execs_history;
 }
 */
+
+void  QExecsTable_ALL_execs::slot_show_execs_report(void)
+{
+    show_execs_report_window();
+}

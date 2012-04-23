@@ -12,9 +12,12 @@
 #include "qorder_table.h"
 #include "qexecs_table.h"
 #include "whistoric_order.h"
+#include "wexecsreport.h"
 
 #include <QMainWindow>
 
+
+extern  void  show_execs_report_window(void);
 
 
 QDialog*   get_cimdtrade_window();
@@ -292,6 +295,7 @@ qorder_table* QOrderBook::create_new_tab(void)
     connect(order_table, SIGNAL(signal_double_click(QModelIndex)), this, SLOT(slot_order_table_double_clicked(QModelIndex)));
     connect(order_table, SIGNAL(signal_cell_changed(int, int, int, int)), this, SLOT(slot_order_table_cell_changed(int,int,int,int)));
     connect(order_table, SIGNAL(signal_request_show_historic()), SLOT(slot_show_historic()));
+    connect(order_table, SIGNAL(signal_request_show_exec_reports()), SLOT(slot_show_execs_report()));
     connect(order_table, SIGNAL(signal_request_hide_historic()), SLOT(slot_hide_historic()));
     connect(order_table, SIGNAL(signal_sectionResized(int,int,int)), this, SLOT(slot_sectionResized(int,int,int)));
     connect(order_table, SIGNAL(signal_columnMoved(qorder_table*, int,int,int)), this, SLOT(slot_columnMoved(qorder_table*, int,int,int)));
@@ -370,6 +374,12 @@ void QOrderBook::init_historic(void)
             }
         }
     }
+}
+
+
+void QOrderBook::slot_show_execs_report(void)
+{
+    show_execs_report_window();
 }
 
 

@@ -13,7 +13,7 @@ test:
 	make -C trading_db this
 	make -C quantity_filter this
 	make -C prodinfo_grant this
-	make -C test_republic_prices this
+	make -C republic_prices this
 
 
 .PHONY: this
@@ -30,7 +30,7 @@ this:
 	make -C trading_db this
 	make -C quantity_filter this
 	make -C prodinfo_grant this
-	make -C test_republic_prices this
+	make -C republic_prices this
 
 .PHONY: clean
 clean:
@@ -46,7 +46,7 @@ clean:
 	make -C trading_db clean
 	make -C quantity_filter clean
 	make -C prodinfo_grant clean
-	make -C test_republic_prices clean
+	make -C republic_prices clean
 	find . -name 'ct__*' | xargs rm
 
 
@@ -64,4 +64,4 @@ doc:
 	make -C trading_db doc
 	make -C quantity_filter doc
 	make -C prodinfo_grant doc
-	make -C test_republic_prices doc
+	make -C republic_prices doc

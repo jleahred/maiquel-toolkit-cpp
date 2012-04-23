@@ -1076,6 +1076,7 @@ void cf_exlk(const mtk::trd::msg::CF_EXLK& exlk)
     {
         if(!register_exec_in_order(exlk))
             save_orphan_exec(exlk);
+        get_status_ref().sig_execution_NON_RT.emit(exlk, exlk.executed_pos);
     }
 }
 

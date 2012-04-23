@@ -51,6 +51,7 @@ signals:
     void signal_double_click(QModelIndex);
     void signal_cell_changed(int, int, int, int);
     void signal_request_show_historic(void);
+    void signal_request_show_exec_reports(void);
     void signal_request_hide_historic(void);
     void signal_sectionResized(int, int, int);
     void signal_columnMoved(qorder_table*, int, int, int);

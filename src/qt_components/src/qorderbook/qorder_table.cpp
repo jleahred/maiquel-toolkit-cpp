@@ -1432,6 +1432,12 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
         else
             action->setEnabled(false);
     }
+    {
+        QAction* action = new QAction(tr("show execs report"), &menu);
+        connect(action, SIGNAL(triggered()), this, SIGNAL(signal_request_show_exec_reports()));
+        menu.addAction(action);
+        action->setEnabled(true);
+    }
     menu.addSeparator();
     {
         QAction* action = new QAction(tr("cancel orders current filter"), &menu);

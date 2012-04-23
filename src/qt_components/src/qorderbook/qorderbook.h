@@ -49,6 +49,7 @@ private slots:
     void slot_order_table_double_clicked(QModelIndex mode);
     void slot_show_historic(void);
     void slot_hide_historic(void);
+    void slot_show_execs_report(void);
 
 private:
     QTabWidget              *tab_widget;
