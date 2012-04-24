@@ -453,7 +453,7 @@ void  marginal_in_table_alarm::set_ended (void)
     configured_price = mtk::Double::InvalidValue();
     first_maket__bigger__configured_last = false;
     alarm_is_checked = true;
-    wUserMessage::show_message(tw_description->text() + QLatin1String(MTK_SS("  alarm product:" << tw_product << "  price:"  << tw_last_configured).c_str()));
+    wUserMessage::show_message(tw_description->text() + QLatin1String(MTK_SS("  alarm product:" << tw_product->text().toStdString() << "  price:"  << tw_last_configured->text().toStdString()).c_str()));
 
     static  Phonon::MediaObject* mediaObject = Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("../data/alarm.wav")));
     mediaObject->stop();
