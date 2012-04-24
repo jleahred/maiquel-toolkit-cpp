@@ -476,7 +476,7 @@ void  sub_account_info::check_recomended(void) const
 
 void sub_account_info::before_send(void) const
 {
-
+    const_cast<sub_account_info*>(this)->name = mtk::s_toUpper(name);  const_cast<sub_account_info*>(this)->client_code = mtk::s_toUpper(client_code);    
 }
 
 

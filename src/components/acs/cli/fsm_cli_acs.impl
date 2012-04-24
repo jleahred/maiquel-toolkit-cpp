@@ -661,7 +661,7 @@ void logout::user_rq_login ( const std::string&   _user_name , const std::string
     
 	static const char* method_name = "logout::user_rq_login";
 
-      ci->set_user_name(_user_name);  
+      ci->set_user_name(mtk::s_toUpper(_user_name));  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -938,7 +938,7 @@ void w_key::user_rq_login ( const std::string&   _user_name , const std::string&
     
 	static const char* method_name = "w_key::user_rq_login";
 
-      ci->set_user_name(_user_name);  
+      ci->set_user_name(mtk::s_toUpper(_user_name));  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1218,7 +1218,7 @@ void w_login::user_rq_login ( const std::string&   _user_name , const std::strin
     
 	static const char* method_name = "w_login::user_rq_login";
 
-      ci->set_user_name(_user_name);  
+      ci->set_user_name(mtk::s_toUpper(_user_name));  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1510,7 +1510,7 @@ void login_ok::user_rq_login ( const std::string&   _user_name , const std::stri
     
 	static const char* method_name = "login_ok::user_rq_login";
 
-      ci->set_user_name(_user_name);  
+      ci->set_user_name(mtk::s_toUpper(_user_name));  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -1837,7 +1837,7 @@ void w_k_chp::user_rq_login ( const std::string&   _user_name , const std::strin
     
 	static const char* method_name = "w_k_chp::user_rq_login";
 
-      ci->set_user_name(_user_name);  
+      ci->set_user_name(mtk::s_toUpper(_user_name));  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    
@@ -2164,7 +2164,7 @@ void w_chpwd::user_rq_login ( const std::string&   _user_name , const std::strin
     
 	static const char* method_name = "w_chpwd::user_rq_login";
 
-      ci->set_user_name(_user_name);  
+      ci->set_user_name(mtk::s_toUpper(_user_name));  
 
     mtk::CountPtr<abstract_status> new_status;
     ci->signal_keep_temp_status();    

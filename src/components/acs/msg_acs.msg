@@ -34,6 +34,8 @@ req_login_key [< QE:ALL_GS, RT:1, SUBJ:GS.${request_info.process_info.location.b
     request_info    (rqi)        :   mtk::msg::sub_request_info
 
     user_name       (un)         :   string
+
+#send [{  const_cast<req_login_key*>(this)->user_name = mtk::s_toUpper(user_name);    }]
 }
 
 res_login_key [< QE:ALL_GS, RT:0, SUBJ:CLI.${response_info.request_info.process_info.location.broker_code}.${response_info.request_info.process_info.location.machine}.${response_info.request_info.process_info.process_uuid}.${response_info.request_info.req_id.session_id}.${response_info.request_info.req_id.req_code}.RSK >]
@@ -50,6 +52,8 @@ req_login [< QE:ALL_GS, RT:1, SUBJ:GS.${request_info.process_info.location.broke
     user_name       (un)        :   string
     key             (k)         :   string
     coded_pass      (cpw)       :   string
+
+#send [{  const_cast<req_login*>(this)->user_name = mtk::s_toUpper(user_name);    }]
 }
 
 
@@ -63,6 +67,8 @@ res_login   [< QE:ALL_GS, RT:0, SUBJ:CLI.${response_info.request_info.process_in
         user_name      (un)     :   string      //  empty if login rejected
         client_code    (cc)     :   string
         session_id     (sid)    :   string
+
+    #send [{  const_cast<IC_session_info*>(this)->user_name = mtk::s_toUpper(user_name);    }]
     }
 }
 
@@ -99,6 +105,8 @@ req_change_password [< QE:ALL_GS, RT:1, SUBJ:GS.${request_info.process_info.loca
     key             (k)         :   string
     old_password    (opw)       :   string
     [new_password]  (npw)       :   int32
+
+    #send [{  const_cast<req_change_password*>(this)->user_name = mtk::s_toUpper(user_name);    }]
 }
 
 

@@ -10,7 +10,7 @@
 ::INPUTS::
 
     user_rq_login       (_user_name  :   std::string,  _password  : std::string )
-    [{  ci->set_user_name(_user_name);  }]
+    [{  ci->set_user_name(mtk::s_toUpper(_user_name));  }]
 
     user_rq_logout      ()
     [{  std::string description =    "requested by user";  }]

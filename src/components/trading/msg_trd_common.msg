@@ -41,6 +41,8 @@ sub_account_info [< LessOP:1, KEY:name >]
 {
     name                (nm)    :   string
     client_code         (cc)    :   string
+
+#send [{    const_cast<sub_account_info*>(this)->name = mtk::s_toUpper(name);  const_cast<sub_account_info*>(this)->client_code = mtk::s_toUpper(client_code);    }]
 }
 
 

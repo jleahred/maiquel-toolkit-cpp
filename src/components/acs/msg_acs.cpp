@@ -413,7 +413,7 @@ void  req_login_key::check_recomended(void) const
 
 void req_login_key::before_send(void) const
 {
-
+  const_cast<req_login_key*>(this)->user_name = mtk::s_toUpper(user_name);    
 }
 
 
@@ -455,7 +455,7 @@ void  req_login::check_recomended(void) const
 
 void req_login::before_send(void) const
 {
-
+  const_cast<req_login*>(this)->user_name = mtk::s_toUpper(user_name);    
 }
 
 
@@ -497,7 +497,7 @@ void  res_login::IC_session_info::check_recomended(void) const
 
 void res_login::IC_session_info::before_send(void) const
 {
-
+  const_cast<IC_session_info*>(this)->user_name = mtk::s_toUpper(user_name);    
 }
 
 
@@ -560,7 +560,7 @@ void  req_change_password::check_recomended(void) const
 
 void req_change_password::before_send(void) const
 {
-
+  const_cast<req_change_password*>(this)->user_name = mtk::s_toUpper(user_name);    
 }
 
 
