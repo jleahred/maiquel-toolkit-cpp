@@ -17,11 +17,13 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_PRODUCTINFO_GRANT";
-    const char*   APP_VER           = "2011-08-10";
+    const char*   APP_VER           = "2012-04-24";
     const char*   APP_DESCRIPTION   = "Checking grants for productinfo request\n";
 
 
     const char*   APP_MODIFICATIONS =   "           2011-08-10     first version\n"
+                                        "           2012-04-24     Non case sensitive user check\n"
+                                        ;
                                         ;
 }
 

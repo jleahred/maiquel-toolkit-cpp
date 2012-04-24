@@ -466,8 +466,8 @@ bool has_grants(const mtk::prices::msg::req_product_info&  pi_request)
 {
     mtk::acs::msg::res_login::IC_session_info  sessinfo = mtk::acs_server::synchr::get_session_info_for_session_id(pi_request.request_info.req_id.session_id);
 
-    std::string  user_name = sessinfo.user_name;
-    std::string  client_code = sessinfo.client_code;
+    std::string  user_name   = mtk::s_toUpper(sessinfo.user_name);
+    std::string  client_code = mtk::s_toUpper(sessinfo.client_code);
 
 
 
