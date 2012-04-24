@@ -425,6 +425,18 @@ void internal_orders_book::oms_RQ_NW_SM(const mtk::trd::msg::oms_RQ_NW_SM& rq)
         cf_tr_sm.req_id.req_code = MTK_SS(++counter);
         cf_tr_sm.req_id.session_id = "MK:TR";
         mtk_send_message("client", cf_tr_sm);
+
+
+        static int ex_counter=0;
+        mtk::trd::msg::sub_exec_conf    exec_conf(MTK_SS("ex:" << ex_counter), rq.request_pos.stop_price, rq.request_pos.quantity);
+        mtk::trd::msg::sub_position_mk  sub_position_mk(rq.request_pos.quantity, rq.request_pos.cli_ref);
+        mtk::trd::msg::CF_XX_MK         cf_xx_mk (cf_xx, sub_position_mk);
+        cf_xx_mk.req_id.session_id = "MK:EX";
+        cf_xx_mk.total_execs.acc_quantity = rq.request_pos.quantity;
+        cf_xx_mk.total_execs.remaining_qty.SetIntCode(0);
+        cf_xx_mk.total_execs.sum_price_by_qty = exec_conf.price.GetDouble() * exec_conf.quantity.GetDouble();
+        mtk::trd::msg::CF_EX_MK         cf_ex_mk (cf_xx_mk, exec_conf);
+        mtk_send_message("client", cf_ex_mk);
     }
 }
 void internal_orders_book::oms_RQ_MD_SM(const mtk::trd::msg::oms_RQ_MD_SM& rq)
@@ -444,6 +456,19 @@ void internal_orders_book::oms_RQ_MD_SM(const mtk::trd::msg::oms_RQ_MD_SM& rq)
         cf_tr_sm.req_id.req_code = MTK_SS(++counter);
         cf_tr_sm.req_id.session_id = "MK:TR";
         mtk_send_message("client", cf_tr_sm);
+
+
+
+        static int ex_counter=0;
+        mtk::trd::msg::sub_exec_conf    exec_conf(MTK_SS("exm:" << ex_counter), rq.request_pos.stop_price, rq.request_pos.quantity);
+        mtk::trd::msg::sub_position_mk  sub_position_mk(rq.request_pos.quantity, rq.request_pos.cli_ref);
+        mtk::trd::msg::CF_XX_MK         cf_xx_mk (cf_xx, sub_position_mk);
+        cf_xx_mk.req_id.session_id = "MK:EX";
+        cf_xx_mk.total_execs.acc_quantity = rq.request_pos.quantity;
+        cf_xx_mk.total_execs.remaining_qty.SetIntCode(0);
+        cf_xx_mk.total_execs.sum_price_by_qty = exec_conf.price.GetDouble() * exec_conf.quantity.GetDouble();
+        mtk::trd::msg::CF_EX_MK         cf_ex_mk (cf_xx_mk, exec_conf);
+        mtk_send_message("client", cf_ex_mk);
     }
 
 }
