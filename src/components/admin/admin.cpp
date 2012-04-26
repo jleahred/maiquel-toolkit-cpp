@@ -47,6 +47,7 @@ namespace {
 
 
     mtk::Signal<>*           signal_admin_ready  = 0;
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //          class admin_status
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +82,7 @@ namespace {
                                                         const std::string& app_modifications);
 
             void                  close_application   ( const std::string& reason );
-
+            void                  close_delayed       ( const std::string& reason );
 
 
             mtk::ConfigFile&      get_config_file     (void)    { return config_file;  };
@@ -267,21 +268,32 @@ namespace {
         delete admin_status_instance;
         admin_status_instance = 0;
     }
+
+
+    void  admin_status::close_delayed(const std::string& reason)
+    {
+        static bool  exit_message_sent = false;
+        if(exit_message_sent==false)
+        {
+            __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, "admin.app_exit", MTK_SS("Exiting application  (in 20 secs)" << reason), mtk::alPriorDebug, mtk::alTypeUnknown));
+            __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, "admin.app_exit_stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
+            mtk::admin::get_signal_admin_close_delayed()->emit();
+        }
+        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(20), reason, close_application)
+    }
+
     void  admin_status::close_application(const std::string& reason)
     {
         static bool  exit_message_sent = false;
         if(exit_message_sent==false)
         {
-            __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, "admin.app_exit_stats", get_stats_simulating_command(), mtk::alPriorDebug, mtk::alTypeUnknown));
-            __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, "admin.app_exit", MTK_SS("Exiting application  " << reason), mtk::alPriorDebug, mtk::alTypeUnknown));
-
-
             //  send exit message
             mtk::admin::msg::pub_exit exit_msg(mon_subject_role, admin_status_instance->get_process_info(), reason);
             //std::cout << exit_msg << std::endl;
             mtk_send_message("admin", exit_msg);
             exit_message_sent = true;
         }
+        mtk::admin::get_signal_admin_close()->emit();
         if(role=="server")
             mtk::stop_timer();
         else if(role=="client")
@@ -1054,6 +1066,7 @@ namespace {
     void admin_status::command_rqclose(const std::string& /*command*/, const std::string& /*param*/, mtk::list<std::string>&  response_lines)
     {
         response_lines.push_back("closing as you demand...");
+        __direct_NotifyAlarm(mtk::Alarm(MTK_HERE, "command_rqclose", MTK_SS("Exiting application  requested by command"), mtk::alPriorError, mtk::alTypeUnknown));
         close_application("requested by interactive admin command");
     }
 
@@ -1192,6 +1205,19 @@ namespace {
 
 namespace mtk {
 namespace admin {
+
+
+mtk::Signal<>*           get_signal_admin_close(void)
+{
+    static mtk::Signal<>*  result = new mtk::Signal<>;
+    return result;
+}
+
+mtk::Signal<>*           get_signal_admin_close_delayed(void)
+{
+    static mtk::Signal<>*  result = new mtk::Signal<>;
+    return result;
+}
 
 
 void init(const std::string& config_file_name, const std::string& app_name,
@@ -1461,8 +1487,8 @@ namespace {
             MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
                 AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("autoclose:   CANCELED BY COMMAND    "),
                                                             mtk::alPriorWarning, mtk::alTypeUnknown));
-                return;
             MTK_END_EXEC_MAX_FREC
+            return;
         }
 
         MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(1))
@@ -1493,7 +1519,7 @@ namespace {
 
             mtk::dtDateTime  now = mtk::dtNowLocal();
             if(now > auto_close_on)
-                admin_status::i()->close_application(MTK_SS("autoclose   configured to close at   "  << auto_close_on   <<  "   in "  << (auto_close_on - mtk::dtNowLocal())));
+                admin_status::i()->close_delayed(MTK_SS("autoclose   configured to close at   "  << auto_close_on   <<  "   in "  << (auto_close_on - mtk::dtNowLocal())));
             else if(now > (auto_close_on - mtk::dtMinutes(30)))
             {
                 MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(5), A)

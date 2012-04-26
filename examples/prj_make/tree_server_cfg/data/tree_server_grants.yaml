@@ -1,6 +1,8 @@
 version: 1
 grants:
-  - re_path: .*
+  - paths:
+      re_path: .*
+      re_child: .*
     users:
       - ^(?!(JOSE)).*$
       - ^JOSE.*$

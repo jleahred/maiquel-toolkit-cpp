@@ -85,6 +85,8 @@ namespace mtk {
 
 
         mtk::Signal<>*           get_signal_admin_ready(void);
+        mtk::Signal<>*           get_signal_admin_close(void);
+        mtk::Signal<>*           get_signal_admin_close_delayed(void);      //  it will be closed on some seconds
 
         mtk::msg::sub_control_fluct     get_control_fluct_info(void);
         void  check_control_fluct(const mtk::msg::sub_control_fluct&  cf);
