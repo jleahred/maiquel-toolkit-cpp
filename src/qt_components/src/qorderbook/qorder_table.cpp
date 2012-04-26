@@ -120,8 +120,11 @@ namespace {
                 else
                     ++it;
             }
-            if(located==true)
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("adding new order in sequence, exist a previus one" << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+            //if(located==true)     removed 26-04-2012
+            //    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qordertable", MTK_SS("adding new order in sequence, exist a previus one" << order_id), mtk::alPriorError, mtk::alTypeNoPermisions));
+                //  a stop order is notified as new when triggered
+                //  to mantein this check, would be necessary to verify that the order wasn't previously a stop one
+
             __do_not_use_it_directly_orders_in_sequence.push_back(order_id);
         }
     }
