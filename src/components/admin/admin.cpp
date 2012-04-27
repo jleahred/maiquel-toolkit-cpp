@@ -887,9 +887,9 @@ namespace {
                 {
                     if(splitted_lines[ii].size() > 600)
                     {
-                        auto truncated_line = splitted_lines[ii].substr(0, 200);
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in command response" << truncated_line  << " >600 " <<  " truncating"), mtk::alPriorError));
-                        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii].substr(0, 200) << std::endl << " truncated line... " << std::endl)));
+                        auto truncated_line = splitted_lines[ii].substr(0, 600);
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in command response" << splitted_lines[ii].substr(0, 200)  << " >600 " <<  " truncating"), mtk::alPriorError));
+                        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii].substr(0, 600) << std::endl << " truncated line... " << std::endl)));
                     }
                     else
                         data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii] << std::endl)));
