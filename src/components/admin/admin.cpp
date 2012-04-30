@@ -465,8 +465,8 @@ namespace {
 
         MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "infoapp",              "info about the application"),                      command_infoapp)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "config",               "config information"),                              command_config)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "set_config_property",  "modif property on config file" , true),            command_set_config_property)
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "del_config_property",  "delete property on config file", true),            command_del_config_property)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "set_config_property",  "<path> <value> modif property on config file" , true), command_set_config_property)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "del_config_property",  "<path> delete property on config file", true),         command_del_config_property)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "date_time",            "returns de local current time on the machine"),    command_date_time)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "ping",                 "returns a pong"),                                  command_ping)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "rqclose",              "request close application (confirmation requiered)"
@@ -476,7 +476,7 @@ namespace {
         MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "stats",                "some stats"),                                      command_realtime)
         MTK_CONNECT_THIS(*register_command("ADMIN",         "stats",                "some stats"),                                      command_realtime)
 
-        MTK_CONNECT_THIS(*register_command("ADMIN",         "set_machine_code",     "<path> <value< write a machine code on config file"),  command_set_machine_code)
+        MTK_CONNECT_THIS(*register_command("ADMIN",         "set_machine_code",     "write a machine code on config file", true),       command_set_machine_code)
 
         register_command("ADMIN",                           "autoclose.show",       "Shows autoclose configured time" )->connect(&command_autoclose_show);
         register_command("ADMIN",                           "autoclose.cancel",     "cancel autoclose",      true     )->connect(&command_autoclose_cancel);

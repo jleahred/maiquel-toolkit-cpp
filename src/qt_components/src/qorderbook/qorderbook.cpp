@@ -68,7 +68,7 @@ void on_request_with_user_check_ls(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled, 
 
 void on_request_with_user_check_mk(mtk::trd::msg::RQ_XX_MK& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq, agressive);
+    QEditOrder eo(rq, agressive, get_cimdtrade_window());
     if (eo.exec())
     {
         rq = eo.get_request_mk();
@@ -78,7 +78,7 @@ void on_request_with_user_check_mk(mtk::trd::msg::RQ_XX_MK& rq, bool& canceled, 
 
 void on_request_with_user_check_sm(mtk::trd::msg::RQ_XX_SM& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq, agressive);
+    QEditOrder eo(rq, agressive, get_cimdtrade_window());
     if (eo.exec())
     {
         rq = eo.get_request_sm();
@@ -89,7 +89,7 @@ void on_request_with_user_check_sm(mtk::trd::msg::RQ_XX_SM& rq, bool& canceled, 
 
 void on_request_with_user_check_sl(mtk::trd::msg::RQ_XX_SL& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq, agressive);
+    QEditOrder eo(rq, agressive, get_cimdtrade_window());
     if (eo.exec())
     {
         rq = eo.get_request_sl();

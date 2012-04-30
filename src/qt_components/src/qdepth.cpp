@@ -21,7 +21,7 @@
 #include "qt_components/src/qmtk_misc.h"
 #include "components/trading/accounts/account_manager_cli.h"
 #include "yaml/yaml.h"
-
+#include "ecimd_config.h"
 
 
 
@@ -197,6 +197,9 @@ void QTableDeph::check_blinking(void)
 
 void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  prices)
 {
+    if(config::blinking()  == false)
+        return;
+
     mtk::DateTime  now = mtk::dtNowLocal();
     //  marginals
     #define BLINKING_MARGINALS(__BID_ASK__, __ROW__, __COL__)     \
@@ -474,10 +477,12 @@ QDepth::QDepth(QWidget *parent) :
     action_buy_market = new QAction(tr("market buy"), this);
     connect(action_buy_market, SIGNAL(triggered()), this, SLOT(request_buy_market()));
     this->addAction(action_buy_market);
+    action_buy_market->setShortcut(Qt::Key_F8);
 
     action_sell_market = new QAction(tr("market sell"), this);
     connect(action_sell_market, SIGNAL(triggered()), this, SLOT(request_sell_market()));
     this->addAction(action_sell_market);
+    action_sell_market->setShortcut(Qt::Key_F9);
 
 
     action_buy_stop_market = new QAction(tr("stop market buy"), this);
@@ -681,6 +686,9 @@ void QDepth::update_last_mk_execs_ticker(const mtk::nullable<mtk::prices::msg::s
 
 void QDepth::request_side(mtk::trd::msg::enBuySell bs)
 {
+    if(mtk::accmgrcli::get_grant_less_restrictive(price_manager->get_product_code().market) !="F")
+        return;
+
     //  proposed price
     if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue()==false)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
@@ -719,6 +727,9 @@ void QDepth::request_sell(void)
 
 void QDepth::request_side_market(mtk::trd::msg::enBuySell bs)
 {
+    if(mtk::accmgrcli::get_grant_less_restrictive(price_manager->get_product_code().market) !="F")
+        return;
+
     if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue()==false)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
     else
@@ -754,6 +765,9 @@ void QDepth::request_sell_market(void)
 
 void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
 {
+    if(mtk::accmgrcli::get_grant_less_restrictive(price_manager->get_product_code().market) !="F")
+        return;
+
     //  proposed price
     if(price_manager.isValid() == false   ||   price_manager->get_best_prices().HasValue()==false)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "marginal", "marginal not located", mtk::alPriorError));
@@ -801,6 +815,9 @@ void QDepth::request_lift_the_offer(void)
 
 void QDepth::request_side_stop_market(mtk::trd::msg::enBuySell bs)
 {
+    if(mtk::accmgrcli::get_grant_less_restrictive(price_manager->get_product_code().market) !="F")
+        return;
+
     //  proposed price
     if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue() == false)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
@@ -839,6 +856,9 @@ void QDepth::request_sell_stop_market(void)
 
 void QDepth::request_side_stop_limit(mtk::trd::msg::enBuySell bs)
 {
+    if(mtk::accmgrcli::get_grant_less_restrictive(price_manager->get_product_code().market) !="F")
+        return;
+
     //  proposed price
     if(price_manager.isValid() == false  ||  price_manager->get_best_prices().HasValue() == false)
         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "qdepth", "marginal not located", mtk::alPriorError));
@@ -956,13 +976,14 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     mtk::msg::sub_product_code product_code (price_manager->get_product_code());
     if(product_code.market == "EU"  ||  product_code.market == "MARKET")
     {
-        menu.addSeparator();
-        if(mtk::admin::is_production() == false)
+
+        if(config::market_orders())
         {
+            menu.addSeparator();
             menu.addAction(action_buy_market);
             menu.addAction(action_sell_market);
-
         }
+        menu.addSeparator();
         menu.addAction(action_buy_stop_market);
         menu.addAction(action_sell_stop_market);
     }
@@ -1081,13 +1102,29 @@ void QDepth::enable_trading_actions(void)
         action_sell->setEnabled(true);
         action_hit_the_bid->setEnabled(true);
         action_lift_the_offer->setEnabled(true);
-        action_buy_market->setEnabled(true);
-        action_sell_market->setEnabled(true);
-        action_buy_stop_market->setEnabled(true);
-        action_sell_stop_market->setEnabled(true);
-        action_buy_stop_limit->setEnabled(true);
-        action_sell_stop_limit->setEnabled(true);
-        //action_delete_component->setEnabled(true);
+
+
+        mtk::msg::sub_product_code product_code (price_manager->get_product_code());
+        if(product_code.market == "EU"  ||  product_code.market == "MARKET")
+        {
+
+            if(config::market_orders())
+            {
+                action_buy_market->setEnabled(true);
+                action_sell_market->setEnabled(true);
+            }
+            action_buy_stop_market->setEnabled(true);
+            action_sell_stop_market->setEnabled(true);
+        }
+
+        if(product_code.market == "M3"  ||  product_code.market == "MARKET")
+        {
+            if(mtk::admin::is_production() == false)
+            {
+                action_buy_stop_limit->setEnabled(true);
+                action_sell_stop_limit->setEnabled(true);
+            }
+        }
     }
 }
 

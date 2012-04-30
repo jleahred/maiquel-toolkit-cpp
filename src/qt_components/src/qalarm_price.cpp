@@ -23,12 +23,12 @@
 #include "qt_components/src/qmtk_misc.h"
 #include "qt_components/src/qcommontabledelegate.h"
 #include "qt_components/src/qlocaledoublespinbox.h"
+#include "qt_components/src/wusermessage.h"
 #include "components/trading/accounts/account_manager_cli.h"
 
 #include "support/vector.hpp"
 #include "yaml/yaml.h"
 
-#include "wusermessage.h"
 
 
 

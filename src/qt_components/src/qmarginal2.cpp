@@ -23,6 +23,7 @@
 #include "qt_components/src/qcommontabledelegate.h"
 #include "components/trading/accounts/account_manager_cli.h"
 #include "qt_components/src/qmtk_misc.h"
+#include "ecimd_config.h"
 
 #include "support/vector.hpp"
 #include "yaml/yaml.h"
@@ -537,10 +538,12 @@ QTableMarginal2::QTableMarginal2(QWidget *parent)
     action_buy_market = new QAction(tr("market buy"), this);
     connect(action_buy_market, SIGNAL(triggered()), this, SLOT(request_buy_market()));
     this->addAction(action_buy_market);
+    action_buy_market->setShortcut(Qt::Key_F8);
 
     action_sell_market = new QAction(tr("market sell"), this);
     connect(action_sell_market, SIGNAL(triggered()), this, SLOT(request_sell_market()));
     this->addAction(action_sell_market);
+    action_sell_market->setShortcut(Qt::Key_F9);
 
 
     action_buy_stop_market = new QAction(tr("stop market buy"), this);
@@ -750,9 +753,12 @@ void marginal_in_table2::check_for_pending_screen_update(void)
 
 void marginal_in_table2::add_blinking(int col, const mtk::DateTime&  till)
 {
-    if(till > last_blinking)
-        last_blinking = till;
-    v_blinking[col] = till;
+    if(config::blinking())
+    {
+        if(till > last_blinking)
+            last_blinking = till;
+        v_blinking[col] = till;
+    }
 }
 
 
@@ -890,13 +896,14 @@ void QTableMarginal2::contextMenuEvent ( QContextMenuEvent * event )
 
     if(product_code.market == "EU"  ||  product_code.market == "MARKET")
     {
-        menu.addSeparator();
-        if(mtk::admin::is_production() == false)
+        if(config::market_orders())
         {
+            menu.addSeparator();
             menu.addAction(action_buy_market);
             menu.addAction(action_sell_market);
 
         }
+        menu.addSeparator();
         menu.addAction(action_buy_stop_market);
         menu.addAction(action_sell_stop_market);
     }
@@ -932,8 +939,12 @@ void QTableMarginal2::contextMenuEvent ( QContextMenuEvent * event )
 
 void QTableMarginal2::request_side(mtk::trd::msg::enBuySell bs)
 {
-    mtk::msg::sub_product_code product_code = this->get_current_product_code();
+    mtk::msg::sub_product_code product_code (get_current_product_code());
     if (mtk::msg::is_valid(product_code)==false)      return;
+
+    if(mtk::accmgrcli::get_grant_less_restrictive(product_code.market)!="F")
+        return;
+
 
     //  proposed price
     mtk::nullable<mtk::prices::msg::sub_best_prices>   n_best_prices = this->marginal_table_model->get_marginal(this->currentIndex().row())->best_prices;
@@ -977,6 +988,9 @@ void QTableMarginal2::request_aggression(mtk::trd::msg::enBuySell bs)
 {
     mtk::msg::sub_product_code product_code = this->get_current_product_code();
     if (mtk::msg::is_valid(product_code)==false)      return;
+
+    if(mtk::accmgrcli::get_grant_less_restrictive(product_code.market)!="F")
+        return;
 
 
     //  proposed price
@@ -1029,6 +1043,9 @@ void QTableMarginal2::request_side_market(mtk::trd::msg::enBuySell bs)
     mtk::msg::sub_product_code product_code = this->get_current_product_code();
     if (mtk::msg::is_valid(product_code)==false)      return;
 
+    if(mtk::accmgrcli::get_grant_less_restrictive(product_code.market)!="F")
+        return;
+
 
     //  proposed price
     mtk::nullable<mtk::prices::msg::sub_best_prices>   n_best_prices = this->marginal_table_model->get_marginal(this->currentIndex().row())->best_prices;
@@ -1067,6 +1084,9 @@ void QTableMarginal2::request_side_stop_market(mtk::trd::msg::enBuySell bs)
 {
     mtk::msg::sub_product_code product_code = this->get_current_product_code();
     if (mtk::msg::is_valid(product_code)==false)      return;
+
+    if(mtk::accmgrcli::get_grant_less_restrictive(product_code.market)!="F")
+        return;
 
     //  proposed price
     mtk::nullable<mtk::prices::msg::sub_best_prices>   n_best_prices = this->marginal_table_model->get_marginal(this->currentIndex().row())->best_prices;
@@ -1111,6 +1131,10 @@ void QTableMarginal2::request_side_stop_limit(mtk::trd::msg::enBuySell bs)
 {
     mtk::msg::sub_product_code product_code = this->get_current_product_code();
     if (mtk::msg::is_valid(product_code)==false)      return;
+
+    if(mtk::accmgrcli::get_grant_less_restrictive(product_code.market)!="F")
+        return;
+
 
     //  proposed price
     mtk::nullable<mtk::prices::msg::sub_best_prices>   n_best_prices = this->marginal_table_model->get_marginal(this->currentIndex().row())->best_prices;

@@ -1332,7 +1332,8 @@ bool qorder_table::is_filter_visible(void)
     return filterf->isVisible();
 }
 
-void qorder_table::contextMenuEvent(QContextMenuEvent *e)
+
+mtk::tuple<bool, bool>   can_cancel_or_modif(QTableWidget* table_widget)
 {
     bool enabled_cancel=false;
     bool enabled_modif = false;
@@ -1371,6 +1372,16 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
             }
         }
     }
+    return  mtk::make_tuple(enabled_cancel, enabled_modif);
+}
+
+
+void qorder_table::contextMenuEvent(QContextMenuEvent *e)
+{
+    bool enabled_cancel=false;
+    bool enabled_modif = false;
+    can_cancel_or_modif(table_widget).assign(enabled_cancel, enabled_modif);
+
     QMenu  menu;
     {
         QAction* action = new QAction(tr("cancel"), &menu);
@@ -1493,28 +1504,8 @@ void qorder_table::keyPressEvent(QKeyEvent *e)
 {
     bool enabled_cancel=false;
     bool enabled_modif = false;
-    int row = table_widget->currentRow();
-    if (row==-1)
-    {
-        enabled_cancel = false;
-        enabled_modif = false;
-    }
-    else
-    {
-        mtk::trd::msg::sub_order_id   ord_id(get_order_id_from_row(table_widget, row));
 
-
-        if(is_canceled(ord_id)  ||  is_full_executed(ord_id))
-        {
-            enabled_cancel = false;
-            enabled_modif = false;
-        }
-        else
-        {
-            enabled_cancel = true;
-            enabled_modif = true;
-        }
-    }
+    can_cancel_or_modif(this->table_widget).assign(enabled_cancel, enabled_modif);
 
     if(enabled_modif  &&  (e->key() == Qt::Key_Enter  ||  e->key() == Qt::Key_Return))
         request_modif();
