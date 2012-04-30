@@ -29,6 +29,9 @@
       <property name="text">
        <string>_</string>
       </property>
+      <property name="textAlignment">
+       <set>AlignLeft|AlignVCenter</set>
+      </property>
      </column>
      <column>
       <property name="text">
@@ -64,7 +67,10 @@
      </column>
      <column>
       <property name="text">
-       <string>a</string>
+       <string>qty.dif.</string>
+      </property>
+      <property name="textAlignment">
+       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
       </property>
      </column>
     </widget>

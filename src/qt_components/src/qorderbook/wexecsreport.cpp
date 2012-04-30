@@ -85,6 +85,13 @@ mtk::FixedNumber  add_fixed_numbers(const mtk::FixedNumber& val1, const mtk::Fix
     return result;
 }
 
+mtk::FixedNumber  subs_fixed_numbers(const mtk::FixedNumber& val1, const mtk::FixedNumber& val2)
+{
+    mtk::FixedNumber  result = val2;
+    result.SetDouble(val1.GetDouble() - val2.GetDouble());
+    return result;
+}
+
 
 class QTreeWidgetItem_exec : public  QTreeWidgetItem
 {
@@ -121,6 +128,22 @@ public:
 
         this->setText(index_quantity, qtmisc::fn_as_QString(*quantity));
         this->setText(index_price,    QLocale::system().toString((*price_by_quantity / quantity->GetDouble()).get2(), 'f', 4));
+
+        mtk::FixedNumber  diff_quantity = subs_fixed_numbers(buy_quantity, sell_quantity);
+        this->setText(5,    QLocale::system().toString(diff_quantity.GetDouble().get2(), 'f', 0));
+
+        QBrush  bbuy(qtmisc::mtk_color_buy_cell);
+        bbuy.setStyle(Qt::SolidPattern);
+        QBrush  bsell(qtmisc::mtk_color_sell_cell);
+        bsell.setStyle(Qt::SolidPattern);
+        QBrush  bnone(Qt::white);
+        bnone.setStyle(Qt::SolidPattern);
+        if(diff_quantity.GetIntCode() == 0)
+            this->setBackground(5, QBrush());
+        else if(diff_quantity.GetIntCode() < 0)
+            this->setBackground(5, bsell);
+        else
+            this->setBackground(5, bbuy);
     }
 
 
@@ -145,6 +168,7 @@ public:
         this->setTextAlignment(2, Qt::AlignHCenter|Qt::AlignVCenter|Qt::AlignCenter);
         this->setTextAlignment(3, Qt::AlignHCenter|Qt::AlignVCenter|Qt::AlignCenter);
         this->setTextAlignment(4, Qt::AlignHCenter|Qt::AlignVCenter|Qt::AlignCenter);
+        this->setTextAlignment(5, Qt::AlignHCenter|Qt::AlignVCenter|Qt::AlignCenter);
 
         QFont  font = this->font(0);
         font.setBold(bold);
@@ -152,6 +176,7 @@ public:
         this->setFont(2, font);
         this->setFont(3, font);
         this->setFont(4, font);
+        this->setFont(5, font);
 
         add_exec(buy_sell, _price, _quantity);
     }
