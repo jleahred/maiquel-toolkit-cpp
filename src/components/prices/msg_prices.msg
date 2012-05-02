@@ -113,6 +113,21 @@ pub_last_mk_execs_ticker [< QE:PRICES.${product_code.market}, RT:0, SUBJ:EXTK.${
 
 
 
+//---------------------------------------------------------------------
+//    pub_additional_info
+//---------------------------------------------------------------------
+pub_additional_info [< QE:PRICES.${product_code.market}, RT:0, SUBJ:ADDI.${product_code.product}  >]
+{
+    product_code         (pc)    :   mtk::msg::sub_product_code
+
+
+    additional_info      (ainf)  :   sub_additional_info
+
+    orig_control_fluct   (ocf)   :   mtk::msg::sub_control_fluct
+}
+
+
+
 
 
 

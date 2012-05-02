@@ -864,7 +864,7 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
                 ps_conf_full_product_info_init(mtk::prices::msg::ps_conf_full_product_info_init("MARKET", mtk::admin::get_process_info()));
     mtk_send_message("server", ps_conf_full_product_info_init);
 
-    mtk::prices::msg::sub_additional_info       additional_info ("GROUP", mtk::nullable<mtk::DateTime>(), mtk::nullable<mtk::DateTime>(), 0, mtk::nullable<mtk::DateTime>(), "");
+    mtk::prices::msg::sub_additional_info       additional_info ("GROUP", mtk::nullable<mtk::DateTime>(), mtk::nullable<mtk::DateTime>(), 0.5, mtk::nullable<mtk::DateTime>(), "");
     mtk::prices::msg::sub_last_mk_execs_ticker  mk_execs_full_info(
                                                                 get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
                                                                 get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),

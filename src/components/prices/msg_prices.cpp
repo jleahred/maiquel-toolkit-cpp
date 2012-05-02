@@ -566,6 +566,27 @@ void pub_last_mk_execs_ticker::before_send(void) const
 
 
 
+pub_additional_info::pub_additional_info (   const mtk::msg::sub_product_code&  _product_code,   const sub_additional_info&  _additional_info,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     product_code(_product_code),   additional_info(_additional_info),   orig_control_fluct(_orig_control_fluct) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  pub_additional_info::check_recomended(void) const
+{
+
+}
+
+void pub_additional_info::before_send(void) const
+{
+
+}
+
+
+
+
 sub_full_product_info::sub_full_product_info (   const mtk::msg::sub_product_code&  _product_code,   const sub_best_prices&  _best_prices,   const sub_additional_info&  _additional_info,   const mtk::nullable<sub_last_mk_execs_ticker>&  _last_mk_execs_ticker)
     :     product_code(_product_code),   best_prices(_best_prices),   additional_info(_additional_info),   last_mk_execs_ticker(_last_mk_execs_ticker) 
        
@@ -971,6 +992,40 @@ void  operator >> (const YAML::Node& node, pub_last_mk_execs_ticker & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const pub_additional_info & c)
+{
+    o << "{ "
+
+        << "product_code:"<< c.product_code<<"  "        << "additional_info:"<< c.additional_info<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_additional_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "additional_info"  << YAML::Value << c.additional_info        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, pub_additional_info & c)
+{
+
+
+        node["product_code"]  >> c.product_code;
+        node["additional_info"]  >> c.additional_info;
+        node["orig_control_fluct"]  >> c.orig_control_fluct;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_full_product_info & c)
 {
     o << "{ "
@@ -1266,6 +1321,18 @@ bool operator== (const pub_last_mk_execs_ticker& a, const pub_last_mk_execs_tick
 };
 
 bool operator!= (const pub_last_mk_execs_ticker& a, const pub_last_mk_execs_ticker& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const pub_additional_info& a, const pub_additional_info& b)
+{
+    return (          a.product_code ==  b.product_code  &&          a.additional_info ==  b.additional_info  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
+};
+
+bool operator!= (const pub_additional_info& a, const pub_additional_info& b)
 {
     return !(a==b);
 };
@@ -1860,6 +1927,67 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
+void  copy (pub_additional_info& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("pc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_code on message pub_additional_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.product_code, it->second);
+                        //__internal_qpid_fill(c.product_code, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("ainf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field additional_info on message pub_additional_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.additional_info, it->second);
+                        //__internal_qpid_fill(c.additional_info, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("ocf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field orig_control_fluct on message pub_additional_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.orig_control_fluct, it->second);
+                        //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_additional_info& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  sub_msg_type
+        __internal_add2map(map, a.product_code, std::string("pc"));
+//  sub_msg_type
+        __internal_add2map(map, a.additional_info, std::string("ainf"));
+//  sub_msg_type
+        __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_additional_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
 void  copy (sub_full_product_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -2245,6 +2373,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ppc
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::types::Variant::Map   pub_best_prices::qpidmsg_codded_as_qpid_map (void) const
 {
@@ -2299,6 +2428,30 @@ qpid::types::Variant::Map   pub_last_mk_execs_ticker::qpidmsg_codded_as_qpid_map
 //  sub_msg_type
 //        content["lme"] =  qpidmsg_coded_as_qpid_Map(this->last_mk_execs_ticker);
         __internal_add2map(content, this->last_mk_execs_ticker, std::string("lme"));
+//  sub_msg_type
+//        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
+        __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
+
+
+
+    
+    return content;
+};
+
+
+
+
+qpid::types::Variant::Map   pub_additional_info::qpidmsg_codded_as_qpid_map (void) const
+{
+    qpid::types::Variant::Map   content;
+
+
+//  sub_msg_type
+//        content["pc"] =  qpidmsg_coded_as_qpid_Map(this->product_code);
+        __internal_add2map(content, this->product_code, std::string("pc"));
+//  sub_msg_type
+//        content["ainf"] =  qpidmsg_coded_as_qpid_Map(this->additional_info);
+        __internal_add2map(content, this->additional_info, std::string("ainf"));
 //  sub_msg_type
 //        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
         __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
@@ -2486,6 +2639,18 @@ qpid::types::Variant::Map   ppc::qpidmsg_codded_as_qpid_map (void) const
             );
     }
     
+    pub_additional_info  __internal_get_default(pub_additional_info*)
+    {
+        return pub_additional_info(
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_product_code*)0),
+//   sub_msg_type
+   __internal_get_default((sub_additional_info*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_control_fluct*)0)
+            );
+    }
+    
     sub_full_product_info  __internal_get_default(sub_full_product_info*)
     {
         return sub_full_product_info(
@@ -2656,6 +2821,18 @@ pub_last_mk_execs_ticker::pub_last_mk_execs_ticker (const qpid::types::Variant::
         check_recomended ();  
     }
 
+pub_additional_info::pub_additional_info (const qpid::types::Variant::Map&  mv)
+    :  //   sub_msg_type
+   product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
+//   sub_msg_type
+   additional_info(__internal_get_default((sub_additional_info*)0)),
+//   sub_msg_type
+   orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
 sub_full_product_info::sub_full_product_info (const qpid::types::Variant::Map&  mv)
     :  //   sub_msg_type
    product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
@@ -2766,6 +2943,22 @@ mtk::t_qpid_filter  pub_best_prices::get_in_subject (const std::string& product_
         return mtk::t_qpid_address(MTK_SS("PRICES." << product_code_market << ""));
     }
     mtk::t_qpid_address  pub_last_mk_execs_ticker::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << this->product_code.market << ""));
+    }
+    mtk::t_qpid_filter  pub_additional_info::get_in_subject (const std::string& product_code_product)
+    {
+        return mtk::t_qpid_filter(MTK_SS("ADDI." << product_code_product << ""));
+    }
+    mtk::t_qpid_filter  pub_additional_info::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("ADDI." << this->product_code.product << ""));
+    }
+    /*static*/  mtk::t_qpid_address  pub_additional_info::static_get_qpid_address (const std::string& product_code_market)
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << product_code_market << ""));
+    }
+    mtk::t_qpid_address  pub_additional_info::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("PRICES." << this->product_code.market << ""));
     }

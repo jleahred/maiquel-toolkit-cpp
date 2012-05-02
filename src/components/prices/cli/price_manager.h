@@ -2,7 +2,9 @@
 #define PRICE_MANAGER_H
 
 
-/*      request for load prices
+/*      A better name would be product_manager
+ *
+ *      request for load prices
  *      signal modifications
  *      receive invalidation of market or product
  *
@@ -77,12 +79,15 @@ public:
     mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>                                           get_last_mk_execs_ticker (void);
     mtk::Signal<const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_last_mk_execs_ticker&>   signal_last_mk_execs_ticker;
 
+    mtk::nullable<mtk::prices::msg::sub_additional_info>                                                get_additional_info (void);
+    mtk::Signal<const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_additional_info&>        signal_additional_info_update;
+
 private:
     mtk::CountPtr<internal_price_manager__factory>  ptr;
 
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >            handle_best_prices_suscrp;
-    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >            handle_last_mk_execs_ticker;
-
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >                    handle_best_prices_suscrp;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> >                    handle_last_mk_execs_ticker;
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_additional_info> >    handle_addtional_info;
 };
 
 
@@ -116,6 +121,10 @@ public:
     mtk::Signal<const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_last_mk_execs_ticker&>   signal_last_mk_execs_ticker;
 
 
+    mtk::nullable<mtk::prices::msg::sub_additional_info>                                                get_additional_info (void);
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_additional_info> >        get_addtional_info_suscrp_handle(void);
+    mtk::Signal<const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_additional_info&>        signal_additional_info_update;
+
 
 private:
     const mtk::msg::sub_product_code                    product_code;
@@ -131,6 +140,10 @@ private:
     //mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_last_mk_execs_ticker> > h_last_mk_execs_ticker;
     mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::ppc> > h_last_mk_execs_ticker;
     void on_last_mk_execs_ticker_update(const mtk::prices::msg::ppc& msg);
+
+
+    mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::pub_additional_info> > h_additional_info;
+    void on_addtional_info_update(const mtk::prices::msg::pub_additional_info& msg);
 
 
     void on_res_product_info(const mtk::list<mtk::prices::msg::res_product_info>& res_pi);

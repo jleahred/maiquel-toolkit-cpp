@@ -15,6 +15,7 @@
 #include "qt_components/src/qdepth.h"
 #include "qt_components/src/qmarginal2.h"
 #include "qt_components/src/qalarm_price.h"
+#include "qt_components/src/qprod_info.h"
 
 
 #include "support/string_codec.h"
@@ -77,6 +78,19 @@ QAlarmPrice*    qContainer::insert_qalarm_price     (void)
     return compo;
 }
 
+QProd_info*    qContainer::insert_qproduct_info     (void)
+{
+    QProd_info* compo= new QProd_info(this->widget());
+    connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    ++counter_insertions;
+    counter_insertions %= 6;
+    compo->show();
+    compo->setFocus();
+
+    return compo;
+}
+
 
 
 
@@ -128,6 +142,21 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qContainer& m)
 
 
 
+
+        out << YAML::Key  << "produtct_info"  << YAML::Value
+                                                << YAML::BeginSeq;
+
+        for(int i=0; i<m.widget()->children().count(); ++i)
+        {
+            QProd_info* compo = dynamic_cast<QProd_info*>(m.widget()->children().at(i));
+            if(compo!=0)
+                out << *compo;
+        }
+        out << YAML::EndSeq;
+
+
+
+
     out << YAML::EndMap;
     return out;
 }
@@ -171,6 +200,17 @@ void     operator>> (const YAML::Node & node   , qContainer& c)
             node["alarm_tables"][i] >>  *d;
         }
     }
+
+    if(node.FindValue("produtct_info"))
+    {
+        for(unsigned i=0; i<node["produtct_info"].size(); ++i)
+        {
+            QProd_info* d = c.insert_qproduct_info();
+            node["produtct_info"][i] >>  *d;
+        }
+    }
+
+
     c.slot_widget_moved_or_deleted();
 }
 

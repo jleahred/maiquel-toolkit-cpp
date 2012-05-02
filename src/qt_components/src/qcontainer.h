@@ -8,6 +8,7 @@ namespace YAML { class Emitter;  class Node;  };
 class  QMarginal2;
 class  QDepth;
 class  QAlarmPrice;
+class  QProd_info;
 
 
 
@@ -20,6 +21,7 @@ public:
     QMarginal2*     insert_qmarginal2       (void);
     QDepth*         insert_qdepth           (void);
     QAlarmPrice*    insert_qalarm_price     (void);
+    QProd_info*     insert_qproduct_info    (void);
 
 
     friend YAML::Emitter& operator << (YAML::Emitter   & out , const qContainer& m);
