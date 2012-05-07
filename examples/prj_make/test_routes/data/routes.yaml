@@ -1,0 +1,32 @@
+vers: 1
+routes:
+    - {dest: IP_MARKET, origin: IP_GS1, qe_name: ALL_GS, subject: ALL.GS1.testing}
+    - {dest: IP_MARKET, origin: IP_GS2, qe_name: ALL_GS, subject: ALL.GS2.testing}
+    - {dest: IP_MARKET, origin: IP_GS1, qe_name: ALL_GS, subject: SYS.GS1.testing}
+    - {dest: IP_MARKET, origin: IP_GS2, qe_name: ALL_GS, subject: SYS.GS2.testing}
+    - {dest: IP_MARKET, origin: IP_GS1, qe_name: ALL_GS, subject: MK.MARKET.testing}
+    - {dest: IP_MARKET, origin: IP_GS2, qe_name: ALL_GS, subject: MK.MARKET.testing}
+    - {dest: IP_MARKET, origin: IP_TS, qe_name: CLI_MK, subject: MK.testing.MARKET.testing}
+    - {dest: IP_MARKET, origin: IP_TS, qe_name: CLI_MK, subject: MK.testing.ALL.testing}
+    - {dest: IP_GS1, origin: IP_GS2, qe_name: ALL_GS, subject: ALL.GS2.testing}
+    - {dest: IP_GS1, origin: IP_GS2, qe_name: ALL_GS, subject: SYS.GS2.testing}
+    - {dest: IP_GS1, origin: IP_MARKET, qe_name: ALL_GS, subject: GS.testing}
+    - {dest: IP_GS1, origin: IP_TS, qe_name: ALL_GS, subject: GS.testing}
+    - {dest: IP_GS1, origin: IP_MARKET, qe_name: CLI_MK, subject: CLI.testing}
+    - {dest: IP_GS1, origin: IP_MARKET, qe_name: CLI_MK, subject: MK.testing}
+    - {dest: IP_GS1, origin: IP_MARKET, qe_name: CLI_MK, subject: MK.testing.ALL.testing}
+    - {dest: IP_GS1, origin: IP_MARKET, qe_name: PRICES.MARKET, subject: testing}
+    - {dest: IP_GS2, origin: IP_GS1, qe_name: ALL_GS, subject: ALL.GS1.testing}
+    - {dest: IP_GS2, origin: IP_GS1, qe_name: ALL_GS, subject: SYS.GS1.testing}
+    - {dest: IP_GS2, origin: IP_MARKET, qe_name: ALL_GS, subject: GS.testing}
+    - {dest: IP_GS2, origin: IP_TS, qe_name: ALL_GS, subject: GS.testing}
+    - {dest: IP_GS2, origin: IP_MARKET, qe_name: CLI_MK, subject: CLI.testing}
+    - {dest: IP_GS2, origin: IP_MARKET, qe_name: CLI_MK, subject: MK.testing}
+    - {dest: IP_GS2, origin: IP_MARKET, qe_name: CLI_MK, subject: MK.testing.ALL.testing}
+    - {dest: IP_GS2, origin: IP_MARKET, qe_name: PRICES.MARKET, subject: testing}
+    - {dest: IP_TS, origin: IP_GS1, qe_name: ALL_GS, subject: ALL.GS1.testing}
+    - {dest: IP_TS, origin: IP_GS2, qe_name: ALL_GS, subject: ALL.GS2.testing}
+    - {dest: IP_TS, origin: IP_GS1, qe_name: ALL_GS, subject: CLI.testing}
+    - {dest: IP_TS, origin: IP_GS2, qe_name: ALL_GS, subject: CLI.testing}
+    - {dest: IP_TS, origin: IP_MARKET, qe_name: CLI_MK, subject: CLI.testing}
+    - {dest: IP_TS, origin: IP_MARKET, qe_name: PRICES.MARKET, subject: testing}

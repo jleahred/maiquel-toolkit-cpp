@@ -1,0 +1,48 @@
+MAIN
+
+MAIN     ::=  ROUTE*    ##transf2->vers: 1$(__endl__)routes:$(__endl__)$(ROUTE*)
+
+
+ROUTE  ::=   __  qpid-route  __   _d  __  route    __  add  __  IP_DEST    __  IP_ORIGIN  __  QE_NAME  __   SUBJECT __  endl    ##transf2->$(__space__)   - {dest: $(IP_DEST), origin: $(IP_ORIGIN), qe_name: $(QE_NAME), subject: $(SUBJECT)}$(__endl__)
+ROUTE  ::=   __  qpid-route  __   _d  __  dynamic  __  add  __  IP_DEST    __  IP_ORIGIN  __  QE_NAME  __               endl    ##transf2->$(__space__)   - {dest: $(IP_DEST), origin: $(IP_ORIGIN), qe_name: $(QE_NAME), subject: testing}$(__endl__)
+ROUTE  ::=   __  qpid-route  __   _s  __  route    __  add  __  IP_DEST    __  IP_ORIGIN  __  QE_NAME  __   SUBJECT __  endl    ##transf2->$(__space__)   - {dest: $(IP_DEST), origin: $(IP_ORIGIN), qe_name: $(QE_NAME), subject: $(SUBJECT)}$(__endl__)
+
+
+
+IP_DEST    ::=  TOKEN_VAR
+IP_ORIGIN  ::=  TOKEN_VAR
+QE_NAME    ::=  TOKEN
+TOKEN      ::=     !space_or_endl*
+TOKEN_VAR  ::=  $(  !space_or_end_no_close*  )    ##transf2->$(!space_or_end_no_close*)
+
+
+//MK.*.ALL.#
+SUBJECT            ::=  '_  TOKEN_SUBJECT  '_                             ##transf2->$(TOKEN_SUBJECT)
+SUBJECT            ::=  '_  TOKEN_SUBJECT   DOT_TOKEN_SUBJECT*  '_        ##transf2->$(TOKEN_SUBJECT)$(DOT_TOKEN_SUBJECT*)
+DOT_TOKEN_SUBJECT  ::=  .   TOKEN_SUBJECT
+TOKEN_SUBJECT      ::=  #
+TOKEN_SUBJECT      ::=  star
+TOKEN_SUBJECT      ::=  letter_digit*
+letter_digit       ::=  ([A-Za-z0-9_])
+#                  ::=  '#'                       ##transf2->testing
+star               ::=  '*'                       ##transf2->testing
+
+
+
+qpid-route   ::= 'qpid-route'                
+route        ::= 'route'
+dynamic      ::= 'dynamic'
+add          ::= 'add'
+_d           ::= (\-d|)
+_s           ::= '-s'
+$(           ::= '$('
+)            ::= ')'
+.            ::= '.'
+'            ::= (\')
+'_           ::= ([\'|])
+
+__                      ::=  ([ ]*)
+endl                    ::=  __endl__  
+!space_or_endl          ::=  !([ \n\r])
+!space_or_endl_no'      ::=  !([ \n\r\'])
+!space_or_end_no_close  ::=  !([ \n\r\)])

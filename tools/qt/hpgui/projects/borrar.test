@@ -1,41 +1,106 @@
-
-ADMIN
-{
-  pr1: esto es una prueba
- pr2:esto es oooootraaaaa prueba 2
-
-            #comentario de lÃÂ­nea completa    
- EstaSeBorra:Antes ponÃÂ­a...
-
-ADMIN11{
-  pr11: prrrrrrr
-  ADMIN111{
-    pr111:11111111111111  
-
-       pr112:2222222222222      # comentario...
-
-}
-	pr4:44444444444444444
-}
-pr3:3333333333333
-ADMIN33 {
-  ppp:3p3p3p3p3p
-}
-
-  var2expand: se expande
-}
-
-
-ADMIN2
-{
-  pr2: estaaaaaaa es otra prueba
-
-  #  aquÃÂ­ tenemos una propiedad que tiene una variable
-  pr_con_var: esto $(ADMIN.var2expand) bien
-
-  lista:[elemento1
-   elemento2
-elemento3
-               ultimo
-  ]
-}
+        qpid-route  -d  route add  $(IP_EU)  $(IP_GS1)  ALL_GS   'ALL._GS1.#'
+        qpid-route  -d  route add  $(IP_EU)  $(IP_GS2)  ALL_GS   'ALL._GS2.#'
+        qpid-route  -d  route add  $(IP_EU)  $(IP_GS1)  ALL_GS   'SYS._GS1.#'
+        qpid-route  -d  route add  $(IP_EU)  $(IP_GS2)  ALL_GS   'SYS._GS2.#'
+        qpid-route  -d  route add  $(IP_EU)  $(IP_GS1)  ALL_GS   'MK.EU.#'
+        qpid-route  -d  route add  $(IP_EU)  $(IP_GS2)  ALL_GS   'MK.EU.#'
+        qpid-route  -d  route add  $(IP_EU)      $(IP_TS1)  CLI_MK   'MK.*.EU.#'
+        qpid-route  -d  route add  $(IP_EU)      $(IP_TS2)  CLI_MK   'MK.*.EU.#'
+        qpid-route  -d  route add  $(IP_EU)      $(IP_TS1)  CLI_MK   'MK.*.ALL.#'
+        qpid-route  -d  route add  $(IP_EU)      $(IP_TS2)  CLI_MK   'MK.*.ALL.#'
+        qpid-route  -d  route add  $(IP_GS1) $(IP_GS2)  ALL_GS   'ALL._GS2.#'
+        qpid-route  -d  route add  $(IP_GS1) $(IP_GS2)  ALL_GS   'SYS._GS2.#'
+        qpid-route  -d  route add  $(IP_GS1)  $(IP_GS2) ALL_GS   'GS._GS2.#'
+        qpid-route  -d  route add  $(IP_GS1)  $(IP_M3)  ALL_GS   'GS.#'
+        qpid-route  -d  route add  $(IP_GS1)  $(IP_EU)  ALL_GS   'GS.#'
+        qpid-route  -d  route add  $(IP_GS1)  $(IP_TS1) ALL_GS   'GS.#'
+        qpid-route  -d  route add  $(IP_GS1)  $(IP_TS2) ALL_GS   'GS.#'
+        qpid-route  -d  route add  $(IP_GS1)  $(IP_M3)   CLI_MK   'CLI.#'
+        qpid-route  -d  route add  $(IP_GS1)  $(IP_EU)   CLI_MK   'CLI.#'
+        qpid-route  -d  route add  $(IP_GS1)     $(IP_M3)   CLI_MK   'MK.#'
+        qpid-route  -d  route add  $(IP_GS1)     $(IP_EU)   CLI_MK   'MK.#'
+        qpid-route  -d  route add  $(IP_GS1)     $(IP_M3)   CLI_MK   'MK.*.ALL.#'
+        qpid-route  -d  route add  $(IP_GS1)     $(IP_EU)   CLI_MK   'MK.*.ALL.#'
+        qpid-route  -d  dynamic add $(IP_GS1)    $(IP_M3)   PRICES.M3
+        qpid-route  -d  dynamic add $(IP_GS1)    $(IP_EU)   PRICES.EU
+        qpid-route    route add  $(IP_TS1)   $(IP_GS1)  ALL_GS   'ALL._GS1.#'
+        qpid-route    route add  $(IP_TS1)   $(IP_GS2)  ALL_GS   'ALL._GS2.#'
+        qpid-route    route add  $(IP_TS1)    $(IP_GS1)  ALL_GS   'CLI.#'
+        qpid-route    route add  $(IP_TS1)    $(IP_GS2)  ALL_GS   'CLI.#'
+        qpid-route    route add  $(IP_TS1)   $(IP_M3)   CLI_MK   'CLI.#'
+        qpid-route    route add  $(IP_TS1)   $(IP_EU)   CLI_MK   'CLI.#'
+        qpid-route    dynamic add $(IP_TS1)     $(IP_M3)   PRICES.M3
+        qpid-route    dynamic add $(IP_TS1)     $(IP_EU)   PRICES.EU
+        qpid-route     route add  $(IP_GS2)   $(IP_GS1)  ALL_GS   'ALL._GS1.#'
+        qpid-route     route add  $(IP_GS2) $(IP_GS1)  ALL_GS   'SYS._GS1.#'
+        qpid-route     route add  $(IP_GS2)  $(IP_GS1) ALL_GS   'GS._GS1.#'
+        qpid-route     route add  $(IP_GS2)  $(IP_M3)  ALL_GS   'GS.#'
+        qpid-route     route add  $(IP_GS2)  $(IP_EU)  ALL_GS   'GS.#'
+        qpid-route     route add  $(IP_GS2)  $(IP_TS1) ALL_GS   'GS.#'
+        qpid-route     route add  $(IP_GS2)  $(IP_TS2) ALL_GS   'GS.#'
+        qpid-route     route add  $(IP_GS2)  $(IP_M3)   CLI_MK   'CLI.#'
+        qpid-route     route add  $(IP_GS2)  $(IP_EU)   CLI_MK   'CLI.#'
+        qpid-route     route add  $(IP_GS2)     $(IP_M3)   CLI_MK   'MK.#'
+        qpid-route     route add  $(IP_GS2)     $(IP_EU)   CLI_MK   'MK.#'
+        qpid-route     route add  $(IP_GS2)     $(IP_M3)   CLI_MK   'MK.*.ALL.#'
+        qpid-route     route add  $(IP_GS2)     $(IP_EU)   CLI_MK   'MK.*.ALL.#'
+        qpid-route     dynamic add $(IP_GS2)    $(IP_M3)   PRICES.M3
+        qpid-route     dynamic add $(IP_GS2)    $(IP_EU)   PRICES.EU
+        qpid-route    route add  $(IP_CANDORRA)   $(IP_TS_LOCAL)      ALL_GS   'ALL._GS1.#'
+        qpid-route    route add  $(IP_CANDORRA)   $(IP_TS_LOCAL)      ALL_GS   'ALL._GS2.#'
+        qpid-route    route add  $(IP_CANDORRA)    $(IP_TS_LOCAL)     ALL_GS   'CLI.CANDORRA.#'
+        qpid-route    route add  $(IP_CANDORRA)   $(IP_TS_LOCAL)      CLI_MK   'CLI.CANDORRA.#'
+        qpid-route    dynamic add $(IP_CANDORRA)     $(IP_TS_LOCAL)   PRICES.M3
+        qpid-route    dynamic add $(IP_CANDORRA)     $(IP_TS_LOCAL)   PRICES.EU
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CANDORRA)      ALL_GS   'GS.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CANDORRA)      CLI_MK   'MK.CANDORRA.M3.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CANDORRA)      CLI_MK   'MK.CANDORRA.EU.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CANDORRA)      CLI_MK   'MK.CANDORRA.ALL.#'
+        qpid-route    route add      $(IP_CI2)  $(IP_TS_LOCAL)      ALL_GS   'ALL._GS1.#'
+        qpid-route    route add      $(IP_CI2)  $(IP_TS_LOCAL)      ALL_GS   'ALL._GS2.#'
+        qpid-route    route add      $(IP_CI2)  $(IP_TS_LOCAL)      ALL_GS   'CLI.CI2.#'
+        qpid-route    route add      $(IP_CI2)  $(IP_TS_LOCAL)      CLI_MK   'CLI.CI2.#'
+        qpid-route    dynamic add    $(IP_CI2)  $(IP_TS_LOCAL)      PRICES.M3
+        qpid-route    dynamic add    $(IP_CI2)  $(IP_TS_LOCAL)      PRICES.EU
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CI2)      ALL_GS   'GS.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CI2)      CLI_MK   'MK.CI2.M3.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CI2)      CLI_MK   'MK.CI2.EU.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CI2)      CLI_MK   'MK.CI2.ALL.#'
+        qpid-route    route add  $(IP_M3)    $(IP_GS1)  ALL_GS   'ALL._GS1.#'
+        qpid-route    route add  $(IP_M3)    $(IP_GS2)  ALL_GS   'ALL._GS2.#'
+        qpid-route    route add  $(IP_M3)  $(IP_GS1)  ALL_GS   'SYS._GS1.#'
+        qpid-route    route add  $(IP_M3)  $(IP_GS2)  ALL_GS   'SYS._GS2.#'
+        qpid-route    route add  $(IP_M3)  $(IP_GS1)  ALL_GS   'MK.M3.#'
+        qpid-route    route add  $(IP_M3)  $(IP_GS2)  ALL_GS   'MK.M3.#'
+        qpid-route    route add  $(IP_M3)  $(IP_TS1)      CLI_MK   'MK.*.M3.#'
+        qpid-route    route add  $(IP_M3)  $(IP_TS2)      CLI_MK   'MK.*.M3.#'
+        qpid-route    route add  $(IP_M3)  $(IP_TS1)      CLI_MK   'MK.*.ALL.#'
+        qpid-route    route add  $(IP_M3)  $(IP_TS2)      CLI_MK   'MK.*.ALL.#'
+        qpid-route    route add  $(IP_TS2)   $(IP_GS1)  ALL_GS   'ALL._GS1.#'
+        qpid-route    route add  $(IP_TS2)   $(IP_GS2)  ALL_GS   'ALL._GS2.#'
+        qpid-route    route add  $(IP_TS2)    $(IP_GS1)  ALL_GS   'CLI.#'
+        qpid-route    route add  $(IP_TS2)    $(IP_GS2)  ALL_GS   'CLI.#'
+        qpid-route    route add  $(IP_TS2)   $(IP_M3)   CLI_MK   'CLI.#'
+        qpid-route    route add  $(IP_TS2)   $(IP_EU)   CLI_MK   'CLI.#'
+        qpid-route    dynamic add $(IP_TS2)     $(IP_M3)   PRICES.M3
+        qpid-route    dynamic add $(IP_TS2)     $(IP_EU)   PRICES.EU
+        qpid-route    route add  $(IP_CANDORRA)   $(IP_TS_LOCAL)      ALL_GS   'ALL._GS1.#'
+        qpid-route    route add  $(IP_CANDORRA)   $(IP_TS_LOCAL)      ALL_GS   'ALL._GS2.#'
+        qpid-route    route add  $(IP_CANDORRA)    $(IP_TS_LOCAL)     ALL_GS   'CLI.CANDORRA.#'
+        qpid-route    route add  $(IP_CANDORRA)   $(IP_TS_LOCAL)      CLI_MK   'CLI.CANDORRA.#'
+        qpid-route    dynamic add $(IP_CANDORRA)     $(IP_TS_LOCAL)   PRICES.M3
+        qpid-route    dynamic add $(IP_CANDORRA)     $(IP_TS_LOCAL)   PRICES.EU
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CANDORRA)      ALL_GS   'GS.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CANDORRA)      CLI_MK   'MK.CANDORRA.M3.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CANDORRA)      CLI_MK   'MK.CANDORRA.EU.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CANDORRA)      CLI_MK   'MK.CANDORRA.ALL.#'
+        qpid-route    route add      $(IP_CI2)  $(IP_TS_LOCAL)      ALL_GS   'ALL._GS1.#'
+        qpid-route    route add      $(IP_CI2)  $(IP_TS_LOCAL)      ALL_GS   'ALL._GS2.#'
+        qpid-route    route add      $(IP_CI2)  $(IP_TS_LOCAL)      ALL_GS   'CLI.CI2.#'
+        qpid-route    route add      $(IP_CI2)  $(IP_TS_LOCAL)      CLI_MK   'CLI.CI2.#'
+        qpid-route    dynamic add    $(IP_CI2)  $(IP_TS_LOCAL)      PRICES.M3
+        qpid-route    dynamic add    $(IP_CI2)  $(IP_TS_LOCAL)      PRICES.EU
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CI2)      ALL_GS   'GS.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CI2)      CLI_MK   'MK.CI2.M3.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CI2)      CLI_MK   'MK.CI2.EU.#'
+        qpid-route    -s  route add  $(IP_TS_LOCAL)  $(IP_CI2)      CLI_MK   'MK.CI2.ALL.#'

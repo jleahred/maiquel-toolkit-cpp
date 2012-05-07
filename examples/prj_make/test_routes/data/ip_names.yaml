@@ -1,0 +1,10 @@
+version: 1
+ip_names:
+  - name: IP_MARKET
+    ip: 127.0.0.1:5682
+  - name: IP_GS1
+    ip: 127.0.0.1:5683
+  - name: IP_GS2
+    ip: 127.0.0.1:5684
+  - name: IP_TS
+    ip: 127.0.0.1:5685

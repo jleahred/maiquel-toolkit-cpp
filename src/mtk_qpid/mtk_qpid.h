@@ -599,9 +599,10 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
                                 std::string("exception processing message"),
                                 alPriorCritic
                         );
-                    qpid::types::Variant::Map mv;
-                    qpid::messaging::decode(message, mv);
-                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    //qpid::types::Variant::Map mv;
+                    //qpid::messaging::decode(message, mv);
+                    //qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << message.getContent()), mtk::alPriorCritic));
                     qpid_error.Add(alError);
                     mtk::AlarmMsg(qpid_error);
                 }
@@ -609,17 +610,19 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
                     Alarm  qpid_error(MTK_HERE, "handle_qpid_exchange_receiver",
                                 MTK_SS (" SUBJ>" << message.getSubject() << "  " << e.what()),
                                 alPriorCritic);
-                    qpid::types::Variant::Map mv;
-                    qpid::messaging::decode(message, mv);
-                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    //qpid::types::Variant::Map mv;
+                    //qpid::messaging::decode(message, mv);
+                    //qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << message.getContent()), mtk::alPriorCritic));
                     mtk::AlarmMsg(qpid_error);
                 } catch (...) {
                     Alarm  qpid_error(MTK_HERE, "handle_qpid_exchange_receiver",
                                 MTK_SS (" SUBJ>" << message.getSubject() << "  ... unkown exception"),
                                 alPriorCritic);
-                    qpid::types::Variant::Map mv;
-                    qpid::messaging::decode(message, mv);
-                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    //qpid::types::Variant::Map mv;
+                    //qpid::messaging::decode(message, mv);
+                    //qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << mv), mtk::alPriorCritic));
+                    qpid_error.Add(mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiver", MTK_SS("msg>  " << message.getContent()), mtk::alPriorCritic));
                     mtk::AlarmMsg(qpid_error);
                 }
 
