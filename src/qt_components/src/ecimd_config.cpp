@@ -9,6 +9,7 @@ namespace
     {
         bool blinking;
         bool market_orders;
+        bool historic_execs;
     };
 
 
@@ -19,7 +20,7 @@ namespace
 
         if(__config == 0)
         {
-            __config = new config{true, false};
+            __config = new config{true, false, false};
 
             if(mtk::admin::get_process_info().location.broker_code ==  "CANDORRA")
             {
@@ -33,6 +34,8 @@ namespace
                 {
                     __config->market_orders         = true;
                 }
+
+                __config->historic_execs        = true;
             }
 
         }
@@ -51,15 +54,16 @@ namespace  config
 
 
 
-bool blinking(void)
-{
-    return get_config()->blinking;
-}
+#define  IMPLEMENT_CONFIG(__CONFIG_NAME__)  \
+    bool __CONFIG_NAME__(void)  \
+    {  \
+        return get_config()->__CONFIG_NAME__;  \
+    }
 
-bool market_orders(void)
-{
-    return get_config()->market_orders;
-}
+
+IMPLEMENT_CONFIG(blinking)
+IMPLEMENT_CONFIG(market_orders)
+IMPLEMENT_CONFIG(historic_execs)
 
 
 

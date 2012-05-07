@@ -8,8 +8,7 @@ namespace  config
 
     bool blinking           (void);
     bool market_orders      (void);
-
-
+    bool historic_execs     (void);
 
 }
 

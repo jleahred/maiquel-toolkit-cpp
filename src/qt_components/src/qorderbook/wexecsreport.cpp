@@ -80,6 +80,7 @@ WExecsReport::~WExecsReport()
 }
 
 
+namespace {
 mtk::FixedNumber  add_fixed_numbers(const mtk::FixedNumber& val1, const mtk::FixedNumber& val2)
 {
     mtk::FixedNumber  result = val2;
@@ -221,7 +222,7 @@ class QTreeWidgetItem_exec__Product  : public  QTreeWidgetItem_exec,   public  m
 {
     typedef  QTreeWidgetItem_exec__Product     CLASS_NAME;
 
-    void local_add_exec(mtk::trd::msg::enBuySell buy_sell, const mtk::FixedNumber& _price, const mtk::FixedNumber& _quantity)
+    void local_add_exec(mtk::trd::msg::enBuySell /*buy_sell*/, const mtk::FixedNumber& /*_price*/, const mtk::FixedNumber& /*_quantity*/)
     {
         mtk::FixedNumber  diff_quantity = subs_fixed_numbers(buy_quantity, sell_quantity);
 
@@ -385,6 +386,8 @@ QTreeWidgetItem_exec__Product*  getn_key_item_exec__Product(QTreeWidgetItem* tre
     result->setText(0, key);
     return result;
 }
+};   //  namespace {
+
 
 void WExecsReport::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_info, const mtk::trd::msg::sub_exec_conf& exec)
 {
