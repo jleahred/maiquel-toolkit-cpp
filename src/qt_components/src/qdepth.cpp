@@ -1096,6 +1096,9 @@ void QDepth::disable_trading_actions(void)
 
 void QDepth::enable_trading_actions(void)
 {
+    if(price_manager.isValid() == false)
+        return;
+
     if(action_buy)
     {
         action_buy->setEnabled(true);
