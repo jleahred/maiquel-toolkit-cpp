@@ -600,7 +600,7 @@ void  sub_full_product_info::check_recomended(void) const
 
     if (last_mk_execs_ticker.HasValue() == false)
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", "sub_full_product_info::check_recomended  missing recomended field **last_mk_execs_ticker** on sub_full_product_info", mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", MTK_SS("sub_full_product_info::check_recomended  missing recomended field **last_mk_execs_ticker** on sub_full_product_info  " << *this), mtk::alPriorError));
         MTK_END_EXEC_MAX_FREC
 
 }

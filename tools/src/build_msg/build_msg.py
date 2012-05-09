@@ -328,7 +328,7 @@ $SEND_CODE
                 CHECK_RECOMENDED += Template("""
     if (${FIELD_NAME}.HasValue() == false)
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", "sub_full_product_info::check_recomended  missing recomended field **$FIELD_NAME** on $class_name", mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", MTK_SS("sub_full_product_info::check_recomended  missing recomended field **$FIELD_NAME** on $class_name  " << *this), mtk::alPriorError));
         MTK_END_EXEC_MAX_FREC
 """).substitute(
                                                     FIELD_NAME = field['FIELD_NAME'],
