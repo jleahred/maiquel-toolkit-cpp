@@ -15,7 +15,7 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_PRODUCT_LOADER";
-    const char*   APP_VER           = "2012-04-02 d";
+    const char*   APP_VER           = "2012-05-10 f";
     const char*   APP_DESCRIPTION   = "I will keep prices and other product information on memory and I will serve it to clients or other proceses\n"
                                       "I will receive this information listening as a client";
 
@@ -25,6 +25,7 @@ namespace
                                         "           2012-01-19     reduce exponentially no activity message\n"
                                         "           2012-01-30     recover activity only when frecuency > 0\n"
                                         "           2012-04-02     price compactation and cli_serv moved from msg_admin\n"
+                                        "           2012-05-10     deleting prices at 4h\n"
                                         ;
 
 }
@@ -117,6 +118,7 @@ namespace
 void on_request_load_prices      (const mtk::prices::msg::ps_req_product_info& req);
 void on_price_update__or_last    (const mtk::prices::msg::ppc& msg_update_price__or_last_ex_ticker);
 void check_inactivity            (void);
+void check_end_of_day            (void);
 void init_map_market_info        (void);
 
 
@@ -156,6 +158,7 @@ int main(int argc, char ** argv)
 
 
         MTK_TIMER_1CF(check_inactivity)
+        MTK_TIMER_1CF(check_end_of_day)
 
         mtk::start_timer_wait_till_end();
 
@@ -580,8 +583,8 @@ void check_inactivity(void)
             MTK_EXEC_MAX_FREC_S_A(mtk::dtMinutes(1), A)
                 if(it->second.ends <  mtk::dtToday_0Time())
                 {
-                    init_map_market_info();
                     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_inactivity", "possible change of day, calling  init_map_market_info", mtk::alPriorWarning));
+                    init_map_market_info();
                     return;
                 }
             MTK_END_EXEC_MAX_FREC
@@ -636,6 +639,7 @@ void check_inactivity(void)
 
 void init_map_market_info()
 {
+    map_market_info.clear();
     mtk::list<std::string>  nodes = mtk::admin::get_config_nodes("MARKETS");
     for(mtk::list<std::string>::iterator it = nodes.begin(); it!= nodes.end(); ++it)
     {
@@ -670,4 +674,30 @@ void init_map_market_info()
 
         map_market_info.insert(std::make_pair(*it, market_info(*it, interval, starts_today, ends_today)));
     }
+}
+
+
+void  check_end_of_day(void)
+{
+    //  At this moment, it is not configurable the time to do it
+    //  in the future (if would be necessary), we could add the time on configuration file, or even use a market message
+    MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(1))
+        static  mtk::DateTime  time_delete_end_of_day  = mtk::dtToday_0Time() + mtk::dtHours(4);
+        mtk::dtDateTime  now = mtk::dtNowLocal();
+        if(now > time_delete_end_of_day)
+        {
+            auto  next_time_delete_end_of_day  =  time_delete_end_of_day + mtk::dtDays(1);
+
+            if(map_products.isValid())
+            {
+                int size = map_products->size();
+                map_products->clear();
+
+                AlarmMsg(mtk::Alarm(MTK_HERE, "product_loader", MTK_SS("deleted product info...   next deletion:"  <<  next_time_delete_end_of_day <<
+                                    "  #products_deleted:"  << size), mtk::alPriorWarning, mtk::alTypeUnknown));
+                time_delete_end_of_day  = next_time_delete_end_of_day;
+                send_req_init_prod_info_to_markets__to_publisher();
+            }
+        }
+    MTK_END_EXEC_MAX_FREC
 }
