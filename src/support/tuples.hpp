@@ -194,6 +194,60 @@ std::ostream& operator<< (std::ostream& o, const tuple <T0, T1, T2, T3>& t)
 
 
 
+template <typename T0, typename T1, typename T2, typename T3, typename T4>
+class tuple <T0, T1, T2, T3, T4,
+        null_type, null_type, null_type, null_type, null_type> {
+public:
+    T0  _0;
+    T1  _1;
+    T2  _2;
+    T3  _3;
+    T4  _4;
+
+    tuple() {};
+    tuple(const T0& v0, const T1& v1, const T2& v2, const T3& v3, const T4& v4)
+        : _0(v0), _1(v1), _2(v2), _3(v3), _4(v4) {};
+
+    void assign (T0& r0, T1& r1, T2& r2, T3& r3, T4& r4) {
+        r0 = _0;
+        r1 = _1;
+        r2 = _2;
+        r3 = _3;
+        r4 = _4;
+    };
+};
+
+template<typename T0, typename T1, typename T2, typename T3, typename T4 >
+tuple<T0, T1, T2, T3, T4> make_tuple(const T0& v0, const T1& v1, const T2& v2, const T3& v3, const T4& v4)
+{
+    return tuple<T0, T1, T2, T3, T4>(v0, v1, v2, v3, v4);
+};
+
+template <typename T0, typename T1, typename T2, typename T3, typename T4>
+bool operator<(const tuple <T0, T1, T2, T3, T4>& t0, const tuple <T0, T1, T2, T3, T4>& t1)
+{
+    if (t0._0 < t1._0)
+        return true;
+    else if (t0._0 == t1._0  &&  t0._1 < t1._1)
+        return true;
+    else if (t0._0 == t1._0  &&  t0._1 == t1._1  &&  t0._2 < t1._2)
+        return true;
+    else if (t0._0 == t1._0  &&  t0._1 == t1._1  &&  t0._2 == t1._2  &&  t0._3 < t1._3)
+        return true;
+    else if (t0._0 == t1._0  &&  t0._1 == t1._1  &&  t0._2 == t1._2  &&  t0._3 == t1._3  &&  t0._4 < t1._4)
+        return true;
+    else
+        return false;
+};
+
+template <typename T0, typename T1, typename T2, typename T3, typename T4>
+std::ostream& operator<< (std::ostream& o, const tuple <T0, T1, T2, T3, T4>& t)
+{
+    o << std::string("(") << t._0 << ", " << t._1 << ", " << t._2 << ", " << t._3 << ", " << t._4 << ")";
+    return o;
+};
+
+
 
 };  //  namespace mtk {
 

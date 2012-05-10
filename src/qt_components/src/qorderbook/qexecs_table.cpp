@@ -356,6 +356,79 @@ void  QExecsTable_ALL_execs::slot_copy_all_execs(void)
 }
 
 
+
+
+
+void  QExecsTable_ALL_execs::slot_copy_execs_group_by_ordprice(void)
+{
+    mtk::list<mtk::trd::msg::CF_EXLK>  list_all_execs = mtk::trd::trd_cli_ord_book::get_all_execs();
+
+    QString  result;
+    result += QLatin1String("CLI_CODE");   result += QLatin1String("\t");
+    result += QLatin1String("ACCOUNT");    result += QLatin1String("\t");
+    result += QLatin1String("MARKET");     result += QLatin1String("\t");
+    result += QLatin1String("PRODUCT");    result += QLatin1String("\t");
+    result += QLatin1String("SIDE");       result += QLatin1String("\t");
+    result += QLatin1String("QUANTITY");   result += QLatin1String("\t");
+    result += QLatin1String("PRICE");      result += QLatin1String("\t");
+    result += QLatin1String("\n");
+
+
+
+    typedef  mtk::tuple<
+            mtk::trd::msg::sub_order_id,
+            mtk::trd::msg::sub_account_info,
+            mtk::msg::sub_product_code,
+            mtk::trd::msg::enBuySell,
+            mtk::FixedNumber                   //  price
+            >  t_exec_key;
+
+    mtk::map<t_exec_key, mtk::Double>   map_execs_grouped;
+
+
+    for(auto it=list_all_execs.begin(); it!=list_all_execs.end(); ++it)
+    {
+        mtk::trd::msg::sub_invariant_order_info  invariant = it->invariant;
+        t_exec_key   key = mtk::make_tuple(invariant.order_id, invariant.account, invariant.product_code, invariant.side, it->executed_pos.price);
+
+        auto find_exec_grouped = map_execs_grouped.find(key);
+        if(find_exec_grouped == map_execs_grouped.end())
+            map_execs_grouped.insert(std::make_pair(key, mtk::Double(0.)));
+        else
+            find_exec_grouped->second =  find_exec_grouped->second + it->executed_pos.quantity.GetDouble();
+    }
+
+    for(auto it=map_execs_grouped.begin(); it!=map_execs_grouped.end(); ++it)
+    {
+        result += QLatin1String(it->first._1.client_code.c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(it->first._1.name.c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(it->first._2.market.c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(it->first._2.product.c_str());
+        result += QLatin1String("\t");
+
+        result += qtmisc::side_as_text(it->first._3);
+        result += QLatin1String("\t");
+
+
+        result += QLocale::system().toString(it->second.get2(), 'f', 3);
+        result += QLatin1String("\t");
+
+
+        result += qtmisc::fn_as_QString(it->first._4);
+
+        result += QLatin1String("\n");
+    }
+
+    QApplication::clipboard()->setText(result);
+}
+
+
 void QExecsTable_ALL_execs::contextMenuEvent(QContextMenuEvent *e)
 {
     QMenu  menu;
@@ -375,11 +448,18 @@ void QExecsTable_ALL_execs::contextMenuEvent(QContextMenuEvent *e)
         menu.addAction(action);
         action->setEnabled(true);
     }
+    menu.addSeparator();
     {
         QAction* action = new QAction(tr("copy all execs"), this);
         connect(action, SIGNAL(triggered()), this, SLOT(slot_copy_all_execs()));
         menu.addAction(action);
     }
+    {
+        QAction* action = new QAction(tr("copy execs group by ord/price"), this);
+        connect(action, SIGNAL(triggered()), this, SLOT(slot_copy_execs_group_by_ordprice()));
+        menu.addAction(action);
+    }
+
     menu.exec(this->mapToGlobal(e->pos()));
 }
 

@@ -1437,7 +1437,7 @@ void qorder_table::contextMenuEvent(QContextMenuEvent *e)
     }
     menu.addSeparator();
     {
-        QAction* action = new QAction(tr("show historic"), &menu);
+        QAction* action = new QAction(tr("show execs-detail/historic"), &menu);
         connect(action, SIGNAL(triggered()), this, SIGNAL(signal_request_show_historic()));
         action->setShortcut(Qt::Key_Space);
         menu.addAction(action);
