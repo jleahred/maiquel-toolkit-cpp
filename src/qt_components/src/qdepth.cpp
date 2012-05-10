@@ -197,7 +197,7 @@ void QTableDeph::check_blinking(void)
 
 void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  prices)
 {
-    if(config::blinking()  == false)
+    if(ecimd_config::blinking()  == false)
         return;
 
     mtk::DateTime  now = mtk::dtNowLocal();
@@ -977,7 +977,7 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     if(product_code.market == "EU"  ||  product_code.market == "MARKET")
     {
 
-        if(config::market_orders())
+        if(ecimd_config::market_orders())
         {
             menu.addSeparator();
             menu.addAction(action_buy_market);
@@ -1111,7 +1111,7 @@ void QDepth::enable_trading_actions(void)
         if(product_code.market == "EU"  ||  product_code.market == "MARKET")
         {
 
-            if(config::market_orders())
+            if(ecimd_config::market_orders())
             {
                 action_buy_market->setEnabled(true);
                 action_sell_market->setEnabled(true);

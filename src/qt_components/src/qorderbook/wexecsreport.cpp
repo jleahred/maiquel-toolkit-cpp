@@ -5,6 +5,8 @@
 #include "components/trading/trd_cli_ord_book.h"
 #include "components/prices/cli/price_manager.h"
 
+#include "ecimd_config.h"
+
 
 
 /*      testing
@@ -32,6 +34,12 @@ WExecsReport::WExecsReport(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->treeWidget->header()->resizeSection(0, 200);
+
+    if(ecimd_config::loss_win() == false)
+    {
+        ui->treeWidget->header()->setSectionHidden(6, true);
+        ui->treeWidget->header()->setSectionHidden(7, true);
+    }
 
     /*      testing
     {
@@ -70,6 +78,7 @@ WExecsReport::WExecsReport(QWidget *parent) :
     {
         on_new_execution(*it, it->executed_pos);
     }
+
     MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_execution_RT(),        on_new_execution);
     MTK_CONNECT_THIS(mtk::trd::trd_cli_ord_book::get_sig_execution_NON_RT(),    on_new_execution);
 }
@@ -278,13 +287,16 @@ public:
         this->setFont(5, font);
         this->setFont(6, font);
 
-        MTK_CONNECT_THIS(price_manager->signal_additional_info_update, on_message_addtional_info);
-        MTK_CONNECT_THIS(price_manager->signal_last_mk_execs_ticker,   on_message_last_mk_execs_ticker);
+        if(ecimd_config::loss_win() == true)
+        {
+            MTK_CONNECT_THIS(price_manager->signal_additional_info_update, on_message_addtional_info);
+            MTK_CONNECT_THIS(price_manager->signal_last_mk_execs_ticker,   on_message_last_mk_execs_ticker);
 
-        if(price_manager->get_additional_info().HasValue())
-            on_message_addtional_info(_product_code, price_manager->get_additional_info().Get());
-        if(price_manager->get_last_mk_execs_ticker().HasValue())
-            on_message_last_mk_execs_ticker(_product_code, price_manager->get_last_mk_execs_ticker().Get());
+            if(price_manager->get_additional_info().HasValue())
+                on_message_addtional_info(_product_code, price_manager->get_additional_info().Get());
+            if(price_manager->get_last_mk_execs_ticker().HasValue())
+                on_message_last_mk_execs_ticker(_product_code, price_manager->get_last_mk_execs_ticker().Get());
+        }
 
         local_add_exec(buy_sell, _price, _quantity);
         update_win_loss();

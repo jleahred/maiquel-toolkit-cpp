@@ -753,7 +753,7 @@ void marginal_in_table2::check_for_pending_screen_update(void)
 
 void marginal_in_table2::add_blinking(int col, const mtk::DateTime&  till)
 {
-    if(config::blinking())
+    if(ecimd_config::blinking())
     {
         if(till > last_blinking)
             last_blinking = till;
@@ -896,7 +896,7 @@ void QTableMarginal2::contextMenuEvent ( QContextMenuEvent * event )
 
     if(product_code.market == "EU"  ||  product_code.market == "MARKET")
     {
-        if(config::market_orders())
+        if(ecimd_config::market_orders())
         {
             menu.addSeparator();
             menu.addAction(action_buy_market);
