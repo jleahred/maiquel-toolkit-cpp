@@ -42,6 +42,7 @@ public:
     mtk::CountPtr<mtk::prices::price_manager>                       price_manager;
 
     mtk::msg::sub_product_code                                      product_code;
+    QString                                                         alias;
     mtk::nullable<mtk::prices::msg::sub_best_prices>                best_prices;     //  for blinking  and update
     mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>       last_mk_execs_ticker;
     QString                                                         var;
@@ -80,6 +81,10 @@ public:
 };
 
 
+
+/////////////////////////////////////////////////////////////////////////////////
+//      qmarginal_table_model
+/////////////////////////////////////////////////////////////////////////////////
 
 class qmarginal_table_model  : public  QAbstractTableModel,   public  mtk::SignalReceptor
 {
@@ -143,6 +148,9 @@ private:
 };
 
 
+/////////////////////////////////////////////////////////////////////////////////
+//      QTableMarginal2
+/////////////////////////////////////////////////////////////////////////////////
 
 class QTableMarginal2 : public QTableView,   public  mtk::SignalReceptor
 {
@@ -193,6 +201,7 @@ private slots:
 
 
     void slot_remove_current_row(void);
+    void slot_aliases_product(void);
     void slot_sectionMoved ( int logicalIndex, int oldVisualIndex, int newVisualIndex );
 
 private:
@@ -201,6 +210,7 @@ private:
     void start_drag(void);
 
     void insert_marginal(const mtk::msg::sub_product_code& product_code, int row);
+    void set_alias(int row, QString  alias);
 
     void remove_row(int id);
 
@@ -211,13 +221,14 @@ private:
     QAction* action_sell;
     QAction* action_hit_the_bid;
     QAction* action_lift_the_offer;
-    QAction* action_remove_product;
     QAction* action_buy_market;
     QAction* action_sell_market;
     QAction* action_buy_stop_market;
     QAction* action_sell_stop_market;
     QAction* action_buy_stop_limit;
     QAction* action_sell_stop_limit;
+    QAction* action_aliases_product;
+    QAction* action_remove_product;
 
     QCommonTableDelegate_view* paint_delegate;
     bool showing_menu;

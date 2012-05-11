@@ -13,7 +13,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSignalMapper>
-//#include <QTableWidgetItem>
+#include <QInputDialog>
 
 #include <iostream>
 #include <iomanip>
@@ -175,7 +175,7 @@ QVariant  qmarginal_table_model::data(const QModelIndex &index, int role) const
             switch (index.column())
             {
             case 0:
-                return QLatin1String(MTK_SS(mt.product_code.market << "." << mt.product_code.product).c_str());
+                return  mt.alias;
             case 1:
                 if(mt.best_prices.HasValue())
                 {
@@ -474,10 +474,12 @@ QMarginal2::~QMarginal2()
 
 QTableMarginal2::QTableMarginal2(QWidget *parent)
     : QTableView(parent), startPos(-1,-1),
-      action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0), action_remove_product(0),
+      action_buy(0), action_sell(0), action_hit_the_bid(0), action_lift_the_offer(0),
       action_buy_market(0), action_sell_market(0),
       action_buy_stop_market(0), action_sell_stop_market(0),
       action_buy_stop_limit (0), action_sell_stop_limit (0),
+      action_aliases_product(0),
+      action_remove_product(0),
       paint_delegate(new QCommonTableDelegate_view(this)),
       showing_menu(false),
       marginal_table_model(new qmarginal_table_model(this))
@@ -565,20 +567,32 @@ QTableMarginal2::QTableMarginal2(QWidget *parent)
 
 
 
+    action_aliases_product = new QAction(tr("aliases product"), this);
+    connect(action_aliases_product, SIGNAL(triggered()), this, SLOT(slot_aliases_product()));
+    this->addAction(action_aliases_product);
+
 
     action_remove_product = new QAction(tr("remove product"), this);
     action_remove_product->setShortcut(Qt::Key_Delete);
     connect(action_remove_product, SIGNAL(triggered()), this, SLOT(slot_remove_current_row()));
     this->addAction(action_remove_product);
+
+
     this->disable_actions();
     this->slot_sectionMoved(0,0,0);
 }
 
 
 
+QString   get_default_alias(const mtk::msg::sub_product_code& product_code)
+{
+    return QLatin1String(MTK_SS(product_code.market << "." << product_code.product).c_str());
+}
+
 marginal_in_table2::marginal_in_table2(const mtk::msg::sub_product_code& _product_code)
     :   id(++counter),
         product_code(_product_code),
+        alias(get_default_alias(_product_code)),
         last_updated(mtk::dtNowLocal() - mtk::dtHours(1)),
         pending_screen_update(true),
         last_blinking(mtk::dtNowLocal()-mtk::dtDays(300))
@@ -768,6 +782,11 @@ void QTableMarginal2::insert_marginal(const mtk::msg::sub_product_code& product_
     marginal_table_model->insert(product_code, row);
 }
 
+void QTableMarginal2::set_alias(int row, QString  alias)
+{
+    marginal_table_model->get_marginal(row)->alias = alias;
+}
+
 
 void QTableMarginal2::dragEnterEvent(QDragEnterEvent *event)
 {
@@ -919,6 +938,7 @@ void QTableMarginal2::contextMenuEvent ( QContextMenuEvent * event )
     }
 
     menu.addSeparator();
+    menu.addAction(action_aliases_product);
     menu.addAction(action_remove_product);
 
     //  permisions
@@ -1182,6 +1202,7 @@ void QTableMarginal2::disable_actions(void)
         if(action_buy)
         {
             disable_trading_actions();
+            action_aliases_product->setEnabled(false);
             action_remove_product->setEnabled(false);
         }
     }
@@ -1192,6 +1213,7 @@ void QTableMarginal2::enable_actions(void)
     if(action_remove_product)
     {
         enable_trading_actions();
+        action_aliases_product->setEnabled(true);
         action_remove_product->setEnabled(true);
     }
 }
@@ -1212,7 +1234,6 @@ void QTableMarginal2::disable_trading_actions(void)
             action_sell_stop_market->setEnabled(false);
             action_buy_stop_limit->setEnabled(false);
             action_sell_stop_limit->setEnabled(false);
-            action_remove_product->setEnabled(false);
         }
     }
 }
@@ -1231,7 +1252,6 @@ void QTableMarginal2::enable_trading_actions(void)
         action_sell_stop_market->setEnabled(true);
         action_buy_stop_limit->setEnabled(true);
         action_sell_stop_limit->setEnabled(true);
-        action_remove_product->setEnabled(true);
     }
 }
 
@@ -1286,6 +1306,22 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal2& m)
     out << YAML::EndSeq;
     //  end products
 
+    //  writing  alias
+    out << YAML::Key   <<  "alias"
+        << YAML::Value << YAML::BeginSeq;
+
+        for(int i=0; i<m.marginal_table_model->row_count(); ++i)
+        {
+            if(get_default_alias(m.marginal_table_model->get_marginal(i)->product_code) != m.marginal_table_model->get_marginal(i)->alias)
+                out << m.marginal_table_model->get_marginal(i)->alias.toStdString();
+            else
+                out << "~";
+        }
+    out << YAML::EndSeq;
+    //  end alias
+
+
+
     //  writing sections sizes
     out << YAML::Key   <<  "sect_sizes"
             << YAML::Value << YAML::Flow  << YAML::BeginSeq;
@@ -1309,6 +1345,18 @@ void             operator >> (const YAML::Node&   node,        QTableMarginal2& 
         node["products"][i] >> pc;
         m.insert_marginal(pc, -1);
     }
+
+    if(node.FindValue("alias"))
+    {
+        for(unsigned i=0; i< node["alias"].size(); ++i)
+        {
+            std::string  alias;
+            node["alias"][i] >> alias;
+            if(alias !="~")
+                m.set_alias(i, QLatin1String(alias.c_str()));
+        }
+    }
+
     for(unsigned i=0; i< node["sect_sizes"].size(); ++i)
     {
         int sect_size;
@@ -1376,3 +1424,17 @@ void QTableMarginal2::focusInEvent (QFocusEvent *e)
 }
 
 
+void QTableMarginal2::slot_aliases_product(void)
+{
+    bool ok=false;
+    QString real_product_code = get_default_alias(this->get_current_product_code());
+    QString text = QInputDialog::getText(this, tr("New aliases for ") + real_product_code,
+                                         tr("Emtpy to put back the code %1\nNew alias: ").arg(real_product_code), QLineEdit::Normal,
+                                         marginal_table_model->get_marginal(this->currentIndex().row())->alias,
+                                         &ok);
+    if (ok && !text.isEmpty())
+        marginal_table_model->get_marginal(this->currentIndex().row())->alias = text;
+    else
+        marginal_table_model->get_marginal(this->currentIndex().row())->alias = real_product_code;
+
+}

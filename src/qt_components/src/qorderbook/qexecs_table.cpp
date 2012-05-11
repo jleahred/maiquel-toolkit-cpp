@@ -393,7 +393,7 @@ void  QExecsTable_ALL_execs::slot_copy_execs_group_by_ordprice(void)
 
         auto find_exec_grouped = map_execs_grouped.find(key);
         if(find_exec_grouped == map_execs_grouped.end())
-            map_execs_grouped.insert(std::make_pair(key, mtk::Double(0.)));
+            map_execs_grouped.insert(std::make_pair(key, it->executed_pos.quantity.GetDouble()));
         else
             find_exec_grouped->second =  find_exec_grouped->second + it->executed_pos.quantity.GetDouble();
     }
