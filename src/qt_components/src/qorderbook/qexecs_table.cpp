@@ -376,20 +376,32 @@ void  QExecsTable_ALL_execs::slot_copy_execs_group_by_ordprice(void)
 
 
     typedef  mtk::tuple<
-            mtk::trd::msg::sub_order_id,
+            std::string,                                    //  order by
             mtk::trd::msg::sub_account_info,
             mtk::msg::sub_product_code,
             mtk::trd::msg::enBuySell,
             mtk::FixedNumber                   //  price
             >  t_exec_key;
 
-    mtk::map<t_exec_key, mtk::Double>   map_execs_grouped;
+    mtk::map<t_exec_key, mtk::Double>                       map_execs_grouped;
+    mtk::map<mtk::trd::msg::sub_order_id, mtk::DateTime>    map_first_exec_per_order;
 
 
     for(auto it=list_all_execs.begin(); it!=list_all_execs.end(); ++it)
     {
         mtk::trd::msg::sub_invariant_order_info  invariant = it->invariant;
-        t_exec_key   key = mtk::make_tuple(invariant.order_id, invariant.account, invariant.product_code, invariant.side, it->executed_pos.price);
+
+
+        auto it_first_exec = map_first_exec_per_order.find(invariant.order_id);
+        if(it_first_exec==map_first_exec_per_order.end())
+            it_first_exec = map_first_exec_per_order.insert(std::make_pair(invariant.order_id, it->orig_control_fluct.datetime)).first;
+
+
+        t_exec_key   key = mtk::make_tuple(     MTK_SS(it_first_exec->second <<  invariant.order_id),
+                                                invariant.account,
+                                                invariant.product_code,
+                                                invariant.side,
+                                                it->executed_pos.price);
 
         auto find_exec_grouped = map_execs_grouped.find(key);
         if(find_exec_grouped == map_execs_grouped.end())

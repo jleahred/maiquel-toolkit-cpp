@@ -71,6 +71,19 @@ namespace mtk {
             return result;
         }
 
+        mtk::list<mtk::trd::account::msg::sub_grant>                                    get_grant_list(void)
+        {
+            mtk::list<mtk::trd::account::msg::sub_grant>  result;
+            mtk::CountPtr<mtk::map <mtk::trd::account::msg::sub_grant::IC_key,   mtk::trd::account::msg::sub_grant > >  grant_map = get_grants_map();
+            for(mtk::map <mtk::trd::account::msg::sub_grant::IC_key,   mtk::trd::account::msg::sub_grant >::iterator it = grant_map->begin();
+                                it != grant_map->end(); ++it)
+            {
+                    result.push_back(it->second);
+            }
+
+            return result;
+        }
+
         mtk::list<mtk::trd::account::msg::sub_grant>                                    get_grant_list(const std::string& market)
         {
             mtk::list<mtk::trd::account::msg::sub_grant>  result;

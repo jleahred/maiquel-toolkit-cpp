@@ -47,6 +47,7 @@ QString qLocaleDoubleSpinBox::textFromValue(double val) const
         return QLatin1String("");
     else if(this->text() != QLatin1String("+")  &&   this->text() != QLatin1String("-"))
         return QDoubleSpinBox::textFromValue(val);
+        //return this->locale().toString(val);
     else
         return this->text();
 }
