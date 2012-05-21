@@ -80,7 +80,6 @@ public:
 
     void  set_status(en_status  _status);
 
-    void throw_alarm    (void);
 
 
 public slots:

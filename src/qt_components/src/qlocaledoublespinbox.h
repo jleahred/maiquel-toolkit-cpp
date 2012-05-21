@@ -17,7 +17,9 @@ public:
     bool  is_empty(void) const  {  return _is_empty;  }
 
 private:
-    bool  _is_empty;
+    bool                _is_empty;
+    mutable QString     previous_input;
+    mutable int         previous_pos;
 
     void keyPressEvent(QKeyEvent *event);
     QString textFromValue(double val) const;
