@@ -17,7 +17,8 @@ public:
 
 
     static  void init(QWidget* parent);
-    static  void show_message(const QString& message);
+    static  void show_message       (const QString& message);
+    static  void show_message_hard  (const QString& message);
 
 
 protected:

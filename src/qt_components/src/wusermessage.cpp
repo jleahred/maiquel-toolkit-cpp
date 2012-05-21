@@ -16,6 +16,10 @@ wUserMessage::wUserMessage(QWidget *_parent) :
     ui->setupUi(this);
     this->setWindowOpacity(0.75);
 
+    Qt::WindowFlags flags = this->windowFlags();
+    this->setWindowFlags(flags | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+    //this->show();
+
     createTrayIcon();
 }
 
@@ -48,13 +52,16 @@ void wUserMessage::show_message(const QString& message)
     user_message_window->trayIcon->showMessage(QLatin1String("eCimd"), doc.toPlainText(), QSystemTrayIcon::Warning, 300000);
 
     mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "wusermessage", message.toStdString(), mtk::alPriorWarning));
+
 }
+
 
 void wUserMessage::on_pushButton_clicked()
 {
     ui->message->clear();
     this->hide();
     trayIcon->showMessage(QLatin1String(""), QLatin1String(""), QSystemTrayIcon::NoIcon, 0);
+    parent->showMaximized();
 }
 
 void wUserMessage::init(QWidget* parent)
