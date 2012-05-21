@@ -38,6 +38,7 @@ namespace
             {
                 __config->blinking              = false;
                 __config->market_orders         = true;
+                __config->historic_execs        = true;
                 __config->loss_win              = true;
             }
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>936</width>
+    <width>955</width>
     <height>416</height>
    </rect>
   </property>
@@ -83,7 +83,7 @@
      </column>
      <column>
       <property name="text">
-       <string>alarms</string>
+       <string>alarm</string>
       </property>
       <property name="textAlignment">
        <set>AlignHCenter|AlignVCenter|AlignCenter</set>
