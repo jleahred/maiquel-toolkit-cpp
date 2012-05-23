@@ -1,5 +1,14 @@
 #include "admin.h"
 
+
+#if MTK_PLATFORM == MTK_LINUX_PLATFORM
+
+    #include <unistd.h>
+
+#endif
+
+
+
 #include "support/configfile.h"
 #include "support/alarm.h"
 #include "support/list.hpp"
@@ -334,6 +343,16 @@ namespace {
             process_priority = ppNormal;
         else
         {
+            #if MTK_PLATFORM == MTK_LINUX_PLATFORM
+
+                if(daemon(1,0) == -1)
+                {
+                    perror("error daemon call");
+                    exit(1);
+                }
+
+            #endif
+
             app_name = get_config_mandatory_property("ADMIN.server_name");
             std::string priority = get_config_mandatory_property("ADMIN.priority");
             if(priority=="very_low")
