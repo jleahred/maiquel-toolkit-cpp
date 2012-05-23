@@ -249,7 +249,7 @@ QEditOrder::QEditOrder(const mtk::trd::msg::RQ_XX_SL& rq, bool /*agressive*/, QW
     ui->stop_price->setEnabled(true);
     ui->label_stop_price->setVisible(false);
     ui->label_stop_price->setVisible(true);
-    ui->label_price->setVisible(false);
+    ui->label_price->setVisible(true);
 
     ui->stop_price->setDecimals(rq.request_pos.stop_price.GetExt().GetDec());
     ui->stop_price->setSingleStep(1./pow(10.,rq.request_pos.stop_price.GetExt().GetDec())*rq.request_pos.stop_price.GetExt().GetInc());
@@ -535,6 +535,7 @@ bool QEditOrder::eventFilter(QObject *object, QEvent *event)
 
 void QEditOrder::register_event_filters(void)
 {
+    ui->price->installEventFilter(this);
     ui->quantity->installEventFilter(this);
     ui->cliref->installEventFilter(this);
     ui->buttonBox->installEventFilter(this);

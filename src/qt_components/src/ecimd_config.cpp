@@ -11,6 +11,7 @@ namespace
         bool market_orders;
         bool historic_execs;
         bool loss_win;
+        bool new_order_and;
     };
 
 
@@ -32,7 +33,7 @@ namespace
 
         if(__config == 0)
         {
-            __config = new config{true, false, false, false};
+            __config = new config{true, false, false, false, false};
 
             if(mtk::admin::get_process_info().location.broker_code ==  "CANDORRA")
             {
@@ -40,17 +41,24 @@ namespace
                 __config->market_orders         = true;
                 __config->historic_execs        = true;
                 __config->loss_win              = true;
+                __config->new_order_and         = true;
             }
 
             else if(mtk::admin::get_process_info().location.broker_code ==  "CIMD")
             {
-                if(mtk::admin::is_production() == false)
-                {
-                    __config->market_orders     = true;
-                }
-
+                __config->blinking              = true;
+                __config->market_orders         =   mtk::admin::is_production() ? false : true;
                 __config->historic_execs        = true;
                 __config->loss_win              = true;
+                __config->new_order_and         = false;
+            }
+            else
+            {
+                __config->blinking              = true;
+                __config->market_orders         = false;
+                __config->historic_execs        = false;
+                __config->loss_win              = false;
+                __config->new_order_and         = false;
             }
 
             MTK_TIMER_1SF(timer_send_ecimd_config)
@@ -70,7 +78,8 @@ namespace
                        "blingkin:      "  <<  int(_config->blinking)        << std::endl
                     << "market_orders: "  <<  int(_config->market_orders)   << std::endl
                     << "historic_execs:"  <<  int(_config->historic_execs)  << std::endl
-                    << "loss_win:      "  <<  int(_config->loss_win)
+                    << "loss_win:      "  <<  int(_config->loss_win)        << std::endl
+                    << "new_order_and: "  <<  int(_config->new_order_and)
 
             );
 
@@ -125,7 +134,7 @@ IMPLEMENT_CONFIG(blinking)
 IMPLEMENT_CONFIG(market_orders)
 IMPLEMENT_CONFIG(historic_execs)
 IMPLEMENT_CONFIG(loss_win)
-
+IMPLEMENT_CONFIG(new_order_and)
 
 
 }

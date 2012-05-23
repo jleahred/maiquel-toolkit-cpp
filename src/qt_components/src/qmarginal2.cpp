@@ -23,6 +23,7 @@
 #include "qt_components/src/qcommontabledelegate.h"
 #include "components/trading/accounts/account_manager_cli.h"
 #include "qt_components/src/qmtk_misc.h"
+#include "qt_components/src/qeditorder_and.h"
 #include "ecimd_config.h"
 
 #include "support/vector.hpp"
@@ -33,6 +34,9 @@
 
 
 
+
+
+QDialog*   get_cimdtrade_window();
 
 
 
@@ -982,7 +986,12 @@ void QTableMarginal2::request_side(mtk::trd::msg::enBuySell bs)
         if(quantity.GetIntCode() != 0)    quantity.SetIntCode(-1);        //  means, default quantity
         else                              quantity.SetIntCode(-2);        //  means, no price, default quantity
         mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
-        mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos);
+
+
+        if(ecimd_config::new_order_and() == false)
+            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos);
+        else
+            QEditOrder_and::new_order(product_code, bs, pos, false, get_cimdtrade_window());
     }
 }
 
@@ -1030,7 +1039,12 @@ void QTableMarginal2::request_aggression(mtk::trd::msg::enBuySell bs)
         {
             quantity.SetIntCode(-1);        //  means, default quantity
             mtk::trd::msg::sub_position_ls     pos(price, quantity, "" /*cli ref*/);
-            mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, true);
+
+
+            if(ecimd_config::new_order_and() == false)
+                mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(product_code, bs, pos, true);
+            else
+                QEditOrder_and::new_order(product_code, bs, pos, true, get_cimdtrade_window());
         }
         else
         {

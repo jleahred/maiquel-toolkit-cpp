@@ -14,6 +14,8 @@ namespace  ecimd_config
     bool market_orders      (void);
     bool historic_execs     (void);
     bool loss_win           (void);
+
+    bool new_order_and      (void);
 }
 
 
