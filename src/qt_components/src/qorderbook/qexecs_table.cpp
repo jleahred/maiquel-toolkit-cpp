@@ -364,13 +364,14 @@ void  QExecsTable_ALL_execs::slot_copy_execs_group_by_ordprice(void)
     mtk::list<mtk::trd::msg::CF_EXLK>  list_all_execs = mtk::trd::trd_cli_ord_book::get_all_execs();
 
     QString  result;
-    result += QLatin1String("CLI_CODE");   result += QLatin1String("\t");
-    result += QLatin1String("ACCOUNT");    result += QLatin1String("\t");
-    result += QLatin1String("MARKET");     result += QLatin1String("\t");
-    result += QLatin1String("PRODUCT");    result += QLatin1String("\t");
-    result += QLatin1String("SIDE");       result += QLatin1String("\t");
-    result += QLatin1String("QUANTITY");   result += QLatin1String("\t");
-    result += QLatin1String("PRICE");      result += QLatin1String("\t");
+    result += tr("ORDER");   result += QLatin1String("\t");
+    result += tr("CLI_CODE");   result += QLatin1String("\t");
+    result += tr("ACCOUNT");    result += QLatin1String("\t");
+    result += tr("MARKET");     result += QLatin1String("\t");
+    result += tr("PRODUCT");    result += QLatin1String("\t");
+    result += tr("SIDE");       result += QLatin1String("\t");
+    result += tr("QUANTITY");   result += QLatin1String("\t");
+    result += tr("PRICE");      result += QLatin1String("\t");
     result += QLatin1String("\n");
 
 
@@ -382,8 +383,9 @@ void  QExecsTable_ALL_execs::slot_copy_execs_group_by_ordprice(void)
             mtk::trd::msg::enBuySell,
             mtk::FixedNumber                   //  price
             >  t_exec_key;
+    typedef mtk::tuple< mtk::Double, mtk::trd::msg::sub_order_id>   t_data;
 
-    mtk::map<t_exec_key, mtk::Double>                       map_execs_grouped;
+    mtk::map<t_exec_key, t_data>                            map_execs_grouped;
     mtk::map<mtk::trd::msg::sub_order_id, mtk::DateTime>    map_first_exec_per_order;
 
 
@@ -405,13 +407,21 @@ void  QExecsTable_ALL_execs::slot_copy_execs_group_by_ordprice(void)
 
         auto find_exec_grouped = map_execs_grouped.find(key);
         if(find_exec_grouped == map_execs_grouped.end())
-            map_execs_grouped.insert(std::make_pair(key, it->executed_pos.quantity.GetDouble()));
+            map_execs_grouped.insert(std::make_pair(key,   mtk::make_tuple(it->executed_pos.quantity.GetDouble(), invariant.order_id)));
         else
-            find_exec_grouped->second =  find_exec_grouped->second + it->executed_pos.quantity.GetDouble();
+            find_exec_grouped->second._0 =  find_exec_grouped->second._0 + it->executed_pos.quantity.GetDouble();
     }
 
+    int counter=0;
+    mtk::trd::msg::sub_order_id  prev_ord_id(mtk::msg::sub_request_id("", ""));
     for(auto it=map_execs_grouped.begin(); it!=map_execs_grouped.end(); ++it)
     {
+        if(prev_ord_id != it->second._1)
+            ++counter;
+        prev_ord_id = it->second._1;
+        result += QString::number(counter);
+        result += QLatin1String("\t");
+
         result += QLatin1String(it->first._1.client_code.c_str());
         result += QLatin1String("\t");
 
@@ -428,7 +438,7 @@ void  QExecsTable_ALL_execs::slot_copy_execs_group_by_ordprice(void)
         result += QLatin1String("\t");
 
 
-        result += QLocale::system().toString(it->second.get2(), 'f', 3);
+        result += QLocale::system().toString(it->second._0.get2(), 'f', 3);
         result += QLatin1String("\t");
 
 
