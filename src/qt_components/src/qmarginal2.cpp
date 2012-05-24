@@ -339,11 +339,11 @@ void qmarginal_table_model::insert(const mtk::msg::sub_product_code &product_cod
 void qmarginal_table_model::remove_row(int id)
 {
     int located_row = -1;
-    for(unsigned i=0; i<marginals.size()-1; ++i)
+    for(unsigned i=0; i<marginals.size(); ++i)
     {
         if(marginals[i]->id == id)
             located_row = int(i);
-        if(located_row > -1)
+        if(located_row > -1  &&  i<marginals.size()-1)
             marginals[i] = marginals[i+1];
     }
     marginals.pop_back();
@@ -872,6 +872,7 @@ void QTableMarginal2::mouseMoveEvent(QMouseEvent *event)
 void QTableMarginal2::start_drag(void)
 {
     QMimeData* mimeData = new QMimeData;
+    this->selectRow(this->rowAt(startPos.y()));
     mimeData->setText(qtmisc::dragProductText(this->get_current_product_code()));
     QDrag* drag = new QDrag(this);
     drag->setMimeData(mimeData);
