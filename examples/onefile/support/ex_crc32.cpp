@@ -21,3 +21,17 @@ int main(int /*argc*/, char **/*argv*/)
     
     return 0;
 }
+
+
+//---------------------------------------------------------------------------
+
+//  RECEPTOR ALARMAS SALIDA GENERAL
+
+//---------------------------------------------------------------------------
+
+void mtk::AlarmMsg (const Alarm& alarma)
+{
+        std::cout << "\n\r";
+        std::cout << std::endl << "ALARMA SALIDA..." << std::endl ;
+        std::cout << alarma << std::endl ;
+}

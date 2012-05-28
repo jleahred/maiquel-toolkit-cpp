@@ -3,7 +3,7 @@ INCLUDES = -I../../../src
 
 
 # library paths
-LIBS = -L../../../external/lib/linux -L../../../lib  -lmtksupport  -lyaml
+LIBS = -L../../../external/lib/linux -L../../../lib  -lmtksupport  -lyaml -lrt
 
 
 
@@ -23,8 +23,6 @@ default: $(EXECS)
 	make -C debug
 	make -C hp
 	#make -C fb
-	#make -C components
-	#make -C clicompo
 	echo "FIN"
 
 

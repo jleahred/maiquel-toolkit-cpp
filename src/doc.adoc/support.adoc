@@ -760,6 +760,32 @@ include::../../examples/onefile/support/test_resources_signal_slot.cpp[]
 
 
 
+=== Asyncrhonous signaling
+  support/asynch_signal.hpp
+
+* +async_signal_xx+ receive a signal on constructor
+* +async_signal_xx+ will connect this signal to receive all events
+* This events will be rethrown later asynchronously
+* You can configure the maximum time to receive the events
+
+--
+async_signal_last::
+* It will throw last signal
+
+
+async_signal_all::
+* It will rethrow all signals with the maximum speed configured on constructor
+--
+
+.Example ex_asynch_signal
+[source,{cpp}]
+----
+include::../../examples/onefile/support/ex_asynch_signal.cpp[]
+----
+
+
+
+
 
 === mtk_string
   support/mtk_string.h

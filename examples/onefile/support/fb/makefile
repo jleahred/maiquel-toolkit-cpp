@@ -1,13 +1,13 @@
 # include directories
-INCLUDES = -I../../../src
+INCLUDES = -I../../../../src
 
 
 # library paths
-LIBS = -L../../../external/lib/linux -L../../../lib  -lidtfirebird -lfbclient64 -lidtsoporte
+LIBS = -L../../../external/lib/linux -L../../../../lib  -lmtkfirebird  -lfbclient -lmtksupport
 
 
 # compiler options
-include ../../../compopt_make
+include ../../../../compopt_make
 
 
 

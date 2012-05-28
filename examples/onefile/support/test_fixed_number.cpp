@@ -74,8 +74,21 @@ int main(void)
     }
     std::cout << "OK" << std::endl;
 
-    return -1;
+    return 0;
 }
 
 
+
+//---------------------------------------------------------------------------
+
+//  RECEPTOR ALARMAS SALIDA GENERAL
+
+//---------------------------------------------------------------------------
+
+void mtk::AlarmMsg (const Alarm& alarma)
+{
+        std::cout << "\n\r";
+        std::cout << std::endl << "ALARMA SALIDA..." << alarma <<  std::endl ;
+        std::cout << alarma << std::endl ;
+}
 

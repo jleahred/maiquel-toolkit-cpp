@@ -19,3 +19,10 @@ int main(int /*argc*/, char **/*argv*/)
     
     return 0;
 }
+
+
+void mtk::AlarmMsg(const mtk::Alarm& al)
+{
+    std::cout << "ouch...: "  << al << std::endl;
+
+}

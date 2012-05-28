@@ -2,6 +2,7 @@
 
 #include "support/timer.h"
 #include "support/exec_max_frec.h"
+#include "support/alarm.h"
 
 
 //---------------------------------------------------------------------------
@@ -112,7 +113,7 @@ int main(int /*argc*/, char** /*argv[]*/)
 void mtk::AlarmMsg (const Alarm& alarma)
 {
         std::cout << "\n\r";
-        std::cout << std::endl << "ALARMA SALIDA..." << std::endl ;
+        std::cout << std::endl << "ALARMA SALIDA..." << alarma <<  std::endl ;
         std::cout << alarma << std::endl ;
 }
 

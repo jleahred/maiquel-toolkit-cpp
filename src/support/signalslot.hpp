@@ -8,28 +8,6 @@
 
 #undef emit    //   esto es una chapu necesaria para compilar con qt que en el resto no molesta
 
-//	JLE  23/07/2008
-
-
-/**
-	Pendiente...
-
-	Hacer pruebas
-	Documentar
-	Ejemplos
-	Revisar y probar la gestión de la memoria (codeguard y valgrid)
-
-	No permitir bucles con signal o sólo permitirlo para 100 vueltas
-	¿Prioridades?
-	Que se devuelva al emitir la señal el número de receptores suscritos que la han recibido
-
-	¿Permitir y/o avisar en caso de una doble conexión?
-	Es decir que un método recibirá dos llamadas por un mismo signal
-
-	SignalReceptor tiene que ser copiable
-
-
-*/
 
 
 #include <list>

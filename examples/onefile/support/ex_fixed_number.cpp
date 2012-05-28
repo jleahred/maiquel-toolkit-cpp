@@ -1,4 +1,4 @@
- 
+
 #include <assert.h>
 
 
@@ -91,7 +91,7 @@ assert  (
                 mtk::fnInc      (1                  )
             )
             ==
-            mtk::fn(        //  nombre abreviado
+            mtk::FixedNumber(
                 mtk::fnDouble   (3.1415926535        ,
                                  mtk::fnRoundCeil   ),
                 mtk::fnDec      (4                  ),
@@ -180,7 +180,7 @@ assert  (
 
     //  lectura
     assert  (
-                mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
+                mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
                 .GetDouble()
                 > 3.14
                 //  == 3.15
@@ -188,7 +188,7 @@ assert  (
 
 
     {
-    mtk::fn fn1 (mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5));
+    mtk::FixedNumber fn1 (mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5));
 
     assert (    fn1.GetExt().GetDec()       ==  2              );
     assert (    fn1.GetDouble()             >   3.14           );
@@ -207,7 +207,7 @@ assert  (
     assert (    fn1.GetDouble ()            >   0.39);
 
 
-    mtk::fn fn2 =  fn1;
+    mtk::FixedNumber  fn2 =  fn1;
     assert (    fn1.SetDouble(3.10)         ==  fn2.SetIntCode(310)  );
 
 
@@ -257,35 +257,35 @@ assert  (
 
         //  relacionales
 assert  (
-            mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
             >=
-            mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
             &&
-            mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
             >
-            mtk::fn(mtk::fnDouble(3.0) , mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.0) , mtk::fnDec(2), mtk::fnInc(5))
             &&
-            mtk::fn(mtk::fnDouble(3.0) , mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.0) , mtk::fnDec(2), mtk::fnInc(5))
             !=
-            mtk::fn(mtk::fnDouble(3.14) , mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.14) , mtk::fnDec(2), mtk::fnInc(5))
             &&
-            mtk::fn(mtk::fnDouble(3.14) , mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.14) , mtk::fnDec(2), mtk::fnInc(5))
             <
-            mtk::fn(mtk::fnDouble(20.0) , mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(20.0) , mtk::fnDec(2), mtk::fnInc(5))
         );
 
 
             //  error en tiempo de ejecución, no son comparables
 /*
 assert  (
-            mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(1))
+            mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(1))
             >=
-            mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
         );
 assert  (
-            mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(1), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(1), mtk::fnInc(5))
             >=
-            mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
+            mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(5))
         );
 */
 
@@ -295,28 +295,28 @@ assert  (
 
         //  aritméticos
 
-mtk::fn fna (mtk::fnDouble(3.20), mtk::fnDec(2), mtk::fnInc(1));
+mtk::FixedNumber fna (mtk::fnDouble(3.20), mtk::fnDec(2), mtk::fnInc(1));
 assert  (
-            ++mtk::fn(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(1))
+            ++mtk::FixedNumber(mtk::fnDouble(3.14), mtk::fnDec(2), mtk::fnInc(1))
             ==
-            mtk::fn  (mtk::fnDouble(3.15), mtk::fnDec(2), mtk::fnInc(1))
+            mtk::FixedNumber  (mtk::fnDouble(3.15), mtk::fnDec(2), mtk::fnInc(1))
 
             &&
 
-            mtk::fn  (mtk::fnDouble(3.15), mtk::fnDec(2), mtk::fnInc(1))
+            mtk::FixedNumber  (mtk::fnDouble(3.15), mtk::fnDec(2), mtk::fnInc(1))
             ==
-            --mtk::fn(mtk::fnDouble(3.16), mtk::fnDec(2), mtk::fnInc(1))
+            --mtk::FixedNumber(mtk::fnDouble(3.16), mtk::fnDec(2), mtk::fnInc(1))
 
             &&
 
-            --mtk::fn(mtk::fnDouble(3.16), mtk::fnDec(2), mtk::fnInc(1))
+            --mtk::FixedNumber(mtk::fnDouble(3.16), mtk::fnDec(2), mtk::fnInc(1))
             ==
-            mtk::fn  (mtk::fnDouble(3.10), mtk::fnDec(2), mtk::fnInc(1))
+            mtk::FixedNumber  (mtk::fnDouble(3.10), mtk::fnDec(2), mtk::fnInc(1))
             +mtk::fnTicks(5)
 
             &&
 
-            mtk::fn  (mtk::fnDouble(3.10), mtk::fnDec(2), mtk::fnInc(1))
+            mtk::FixedNumber  (mtk::fnDouble(3.10), mtk::fnDec(2), mtk::fnInc(1))
             +mtk::fnTicks(5)
             ==
             (fna-=mtk::fnTicks(5))
@@ -328,16 +328,16 @@ assert  (
 
 
 {
-    mtk::fn         fn1(mtk::fnIntCode(0),   mtk::fnDec(3), mtk::fnInc(5) );
+    mtk::FixedNumber         fn1(mtk::fnIntCode(0),   mtk::fnDec(3), mtk::fnInc(5) );
     fn1.SetDouble(3.14);
-    mtk::fn         fn2(mtk::fnDouble(3.14), mtk::fnDec(3), mtk::fnInc(5) );
-    mtk::fn         fn3(mtk::fnIntCode(0),   mtk::fnDec(3), mtk::fnInc(5) );
+    mtk::FixedNumber         fn2(mtk::fnDouble(3.14), mtk::fnDec(3), mtk::fnInc(5) );
+    mtk::FixedNumber         fn3(mtk::fnIntCode(0),   mtk::fnDec(3), mtk::fnInc(5) );
     fn3.SetIntCode(3140);
 
     assert          (fn1 == fn2    &&    fn2 == fn3);
     assert          (   fn3
                         ==
-                        mtk::fn(
+                        mtk::FixedNumber(
                                 mtk::fnIntCode(0),
                                 mtk::fnDec(3),
                                 mtk::fnInc(5)

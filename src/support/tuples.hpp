@@ -44,6 +44,48 @@ class tuple;
 
 
 
+
+template <typename T0>
+class tuple <T0,
+        null_type, null_type, null_type, null_type, null_type, null_type,
+        null_type, null_type, null_type > {
+public:
+    T0  _0;
+
+    tuple() {};
+    tuple(const T0& v0) : _0(v0) {};
+
+    void assign (T0& r0) {
+        r0 = _0;
+    };
+
+};
+
+template<typename T0>
+tuple<T0> make_tuple(const T0& v0)
+{
+    return tuple<T0>(v0);
+};
+
+template<typename T0>
+bool operator<(const tuple <T0>& t0, const tuple <T0>& t1)
+{
+    if (t0._0 < t1._0)
+        return true;
+    else
+        return false;
+};
+
+template<typename T0>
+std::ostream& operator<< (std::ostream& o, const tuple <T0>& t)
+{
+    o << "(" << t._0  <<  ")";
+    return o;
+};
+
+
+
+
 template <typename T0, typename T1>
 class tuple <T0, T1,
         null_type, null_type, null_type, null_type, null_type,

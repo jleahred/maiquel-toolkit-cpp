@@ -28,7 +28,7 @@ int main()
 
             int  id=0;
             std::string idServidor;
-            idt::nullable<idt::DateTime> dt;
+            mtk::nullable<mtk::DateTime> dt;
 
             IBPP::Statement st = IBPP::StatementFactory(db, tr);
             st->Execute("SELECT FIRST 10 * FROM EVENTO");
@@ -82,7 +82,7 @@ int main()
                 "INSERT INTO EVENTO (FECHA, ID_MERCADO, ID_SERVIDOR, ID_TIPO_EVENTO, ORIGEN_COD, DESCRIPCION)"
                 "VALUES ( ?, ?, ?, ?, ?, ? )"
            );
-           st->Set(1, idt::dtNowLocal());
+           st->Set(1, mtk::dtNowLocal());
            st->Set(2, "PP");
            st->Set(3, "NO_SERVER");
            st->Set(4, "1");
@@ -100,7 +100,7 @@ int main()
     /*
       El control de excepciones debería ser así, pero lo dejamos al mínimo para este ejemplo
 
-    } catch(const idt::Alarma& error) {
+    } catch(const mtk::Alarma& error) {
         std::cout << error;
         return -1;
     } catch (std::exception& e) {
@@ -114,7 +114,7 @@ int main()
 
 
 
-    #include "soporte/release_on_exit.hpp"
+    #include "support/release_on_exit.hpp"
     return 0;
 }
 
@@ -125,7 +125,7 @@ int main()
 
 //---------------------------------------------------------------------------
 
-void idt::AlarmaMsg (const Alarma& alarma)
+void mtk::AlarmMsg (const Alarm& alarma)
 {
         std::cout << "\n\r";
         std::cout << std::endl << "ALARMA SALIDA..." << std::endl ;

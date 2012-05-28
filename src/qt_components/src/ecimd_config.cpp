@@ -75,7 +75,7 @@ namespace
     {
         config*  _config = get_config();
         return  MTK_SS(
-                       "blingkin:      "  <<  int(_config->blinking)        << std::endl
+                       "blinking:      "  <<  int(_config->blinking)        << std::endl
                     << "market_orders: "  <<  int(_config->market_orders)   << std::endl
                     << "historic_execs:"  <<  int(_config->historic_execs)  << std::endl
                     << "loss_win:      "  <<  int(_config->loss_win)        << std::endl
