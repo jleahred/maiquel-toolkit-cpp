@@ -49,7 +49,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -103,7 +103,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -157,7 +157,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -264,7 +264,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -318,7 +318,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -373,7 +373,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -426,7 +426,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -532,7 +532,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     

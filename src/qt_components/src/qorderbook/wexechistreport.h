@@ -2,8 +2,10 @@
 #define WEXECSHISTREPORT_H
 
 #include <QDialog>
+#include <QDate>
 
 #include "components/trading/trd_cli_support.h"
+#include "components/msg_common.h"
 #include "support/signalslot.hpp"
 
 
@@ -27,8 +29,11 @@ private:
     Ui::WExecsHistReport *ui;
 
     void  reactivate_request_button(const int&);
+    void  subscribe_response(const mtk::msg::sub_request_id&  request_id);
+    void  on_cf_ex_hist(const mtk::trd::msg::CF_EX_HIST&  ex_hist);
 
 private slots:
+    void on_dateEdit_dateChanged(QDate date);
     void on_pb_request_clicked();
 };
 

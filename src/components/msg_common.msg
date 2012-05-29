@@ -91,10 +91,17 @@ sub_r_response [< >]
 
 //  it will be used in generic responses subject
 //  letting to send "responses" or confirmations not requested
-sub_gen_response_location [< >]
+sub_gen_response_location [<  >]        //  not recommended from 2012-05-28
 {
     session_id      (sid) :     string
     broker_code     (bc)  :     string      //  on clients, it will be the client code used on filter
+}
+
+
+sub_gen_response_location2 [< >]
+{
+    req_id          (rqid)  :     sub_request_id
+    broker_code     (bc)    :     string                //  on clients, it will be the client code used on filter
 }
 
 

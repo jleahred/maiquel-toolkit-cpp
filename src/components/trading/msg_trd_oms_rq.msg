@@ -104,3 +104,18 @@ oms_RQ_ORDERS_STATUS  [< I:RQ_ORDERS_STATUS,  RT:0, QE:CLI_MK,  SUBJ:MK.OMS.${ma
     reject_description   (rjd)  :  string   //  empty means ok
     from                 (from) :  string   //  id from process who sends the message
 }
+
+
+
+
+//---------------------------------------------------------------------
+//	REQUEST EXECS HISTORIC
+//  One request, multiple independent responses
+
+oms_RQ_EXECS_HISTORIC  [< I:RQ_EXECS_HISTORIC, QE:ALL_GS, RT:2, SUBJ:GS.omsRQEXHIST >]
+{
+    market              (mk)            :   string
+    date                (date)          :   date_time
+
+    [list_accounts]     (lacc)          :   mtk::trd::msg::sub_account_info
+}

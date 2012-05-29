@@ -182,15 +182,14 @@ $ADDRESS_METHODS
     CONSTRUCTOR_PARAMS_DEBUG_DECL = get_constructor_params(class_name, class_info, class_properties, send_code)[:-1]
 
     #   depreciated configuration
-    if class_properties.has_key('QE'):
+    if class_properties.has_key('QE') :
         if class_properties.has_key('DEPRECIATED')  :
             DEPRECIATED_ON_RETURN = 'mtk::make_nullable(mtk::s_TRY_stodt("'  + class_properties['DEPRECIATED']  +  '", mtk::dtNowLocal()- mtk::dtDays(500))._0)'
         else :
             DEPRECIATED_ON_RETURN = 'mtk::nullable<mtk::DateTime>{}'
         DEPRECIATED_ON = \
-            Template('static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return ${DEPRECIATED_ON_RETURN}; };')  \
+            Template('static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = ${DEPRECIATED_ON_RETURN};  return result; };')  \
             .substitute(DEPRECIATED_ON_RETURN=DEPRECIATED_ON_RETURN)
-
 
     #   member definitions
     for field in class_info:

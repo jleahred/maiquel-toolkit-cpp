@@ -670,6 +670,27 @@ void oms_RQ_ORDERS_STATUS::before_send(void) const
 
 
 
+
+oms_RQ_EXECS_HISTORIC::oms_RQ_EXECS_HISTORIC ( const RQ_EXECS_HISTORIC&  parent,   const std::string&  _market,   const mtk::DateTime&  _date,   const mtk::list<mtk::trd::msg::sub_account_info >&  _list_accounts)
+    :  RQ_EXECS_HISTORIC(parent),   market(_market),   date(_date),   list_accounts(_list_accounts) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  oms_RQ_EXECS_HISTORIC::check_recomended(void) const
+{
+
+}
+
+void oms_RQ_EXECS_HISTORIC::before_send(void) const
+{
+
+}
+
+
+
 std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_LS & c)
 {
     o << "{ "
@@ -1112,6 +1133,41 @@ void  operator >> (const YAML::Node& node, oms_RQ_ORDERS_STATUS & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const oms_RQ_EXECS_HISTORIC & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const RQ_EXECS_HISTORIC&>(c)  << ")" 
+        << "market:"<<   c.market << "  "        << "date:"<<   c.date << "  "        << "list_accounts:"<< c.list_accounts<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_EXECS_HISTORIC & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "RQ_EXECS_HISTORIC" <<  YAML::Value << static_cast<const RQ_EXECS_HISTORIC&>(c)  
+        << YAML::Key << "market"  << YAML::Value <<   c.market        << YAML::Key << "date"  << YAML::Value <<   c.date        << YAML::Key << "list_accounts"  << YAML::Value << c.list_accounts
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, oms_RQ_EXECS_HISTORIC & c)
+{
+
+    node["RQ_EXECS_HISTORIC"]   >>   static_cast<RQ_EXECS_HISTORIC&>(c)  ;
+
+        node["market"]  >> c.market;
+        node["date"]  >> c.date;
+        node["list_accounts"]  >> c.list_accounts;
+
+
+};
+
+
 bool operator== (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b)
 {
     return ( (static_cast<const RQ_NW_LS&>(a)   ==  static_cast<const RQ_NW_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
@@ -1262,6 +1318,18 @@ bool operator== (const oms_RQ_ORDERS_STATUS& a, const oms_RQ_ORDERS_STATUS& b)
 };
 
 bool operator!= (const oms_RQ_ORDERS_STATUS& a, const oms_RQ_ORDERS_STATUS& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const oms_RQ_EXECS_HISTORIC& a, const oms_RQ_EXECS_HISTORIC& b)
+{
+    return ( (static_cast<const RQ_EXECS_HISTORIC&>(a)   ==  static_cast<const RQ_EXECS_HISTORIC&>(b))  &&           a.market ==  b.market  &&          a.date ==  b.date  &&          a.list_accounts ==  b.list_accounts  &&   true  );
+};
+
+bool operator!= (const oms_RQ_EXECS_HISTORIC& a, const oms_RQ_EXECS_HISTORIC& b)
 {
     return !(a==b);
 };
@@ -1956,6 +2024,70 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 
+
+
+void  copy (oms_RQ_EXECS_HISTORIC& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<RQ_EXECS_HISTORIC&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("mk");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market on message oms_RQ_EXECS_HISTORIC::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.market, it->second);
+                        //c.market = it->second;
+//   field_type
+
+                    it = mv.find("date");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field date on message oms_RQ_EXECS_HISTORIC::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.date, it->second);
+                        //c.date = it->second;
+//   sub_msg_type
+
+                    it = mv.find("lacc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field list_accounts on message oms_RQ_EXECS_HISTORIC::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.list_accounts, it->second);
+                        //__internal_qpid_fill(c.list_accounts, it->second.asMap());
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_EXECS_HISTORIC& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+//  parent
+__internal_add2map(map, static_cast<const RQ_EXECS_HISTORIC&>(a));
+
+//  field_type
+        __internal_add2map(map, a.market, std::string("mk"));
+//  field_type
+        __internal_add2map(map, a.date, std::string("date"));
+//  sub_msg_type
+        __internal_add2map(map, a.list_accounts, std::string("lacc"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_EXECS_HISTORIC>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -2269,6 +2401,32 @@ __internal_add2map(content, static_cast<const RQ_ORDERS_STATUS&>(*this));
 
 
 
+qpid::types::Variant::Map   oms_RQ_EXECS_HISTORIC::qpidmsg_codded_as_qpid_map (void) const
+{
+    qpid::types::Variant::Map   content;
+
+//  parent
+__internal_add2map(content, static_cast<const RQ_EXECS_HISTORIC&>(*this));
+
+//  field_type
+//        content["mk"] = this->market;
+        __internal_add2map(content, this->market, std::string("mk"));
+//  field_type
+//        content["date"] = this->date;
+        __internal_add2map(content, this->date, std::string("date"));
+//  sub_msg_type
+//        content["lacc"] =  qpidmsg_coded_as_qpid_Map(this->list_accounts);
+        __internal_add2map(content, this->list_accounts, std::string("lacc"));
+
+
+
+    
+    return content;
+};
+
+
+
+
     oms_RQ_NW_LS  __internal_get_default(oms_RQ_NW_LS*)
     {
         return oms_RQ_NW_LS(
@@ -2399,6 +2557,18 @@ __internal_get_default((RQ_ORDERS_STATUS*)0), //   field_type
             );
     }
     
+    oms_RQ_EXECS_HISTORIC  __internal_get_default(oms_RQ_EXECS_HISTORIC*)
+    {
+        return oms_RQ_EXECS_HISTORIC(
+__internal_get_default((RQ_EXECS_HISTORIC*)0), //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::list<mtk::trd::msg::sub_account_info >*)0)
+            );
+    }
+    
 oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_NW_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
@@ -2524,6 +2694,18 @@ oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::types::Variant::Map&  mv
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
+oms_RQ_EXECS_HISTORIC::oms_RQ_EXECS_HISTORIC (const qpid::types::Variant::Map&  mv)
+    :  RQ_EXECS_HISTORIC(mv), //   field_type
+   market(__internal_get_default((std::string*)0)),
+//   field_type
+   date(__internal_get_default((mtk::DateTime*)0)),
+//   sub_msg_type
+   list_accounts(__internal_get_default((mtk::list<mtk::trd::msg::sub_account_info >*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2735,6 +2917,22 @@ mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_p
     mtk::t_qpid_address  oms_RQ_ORDERS_STATUS::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_filter  oms_RQ_EXECS_HISTORIC::get_in_subject ()
+    {
+        return mtk::t_qpid_filter(MTK_SS("GS.omsRQEXHIST"));
+    }
+    mtk::t_qpid_filter  oms_RQ_EXECS_HISTORIC::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("GS.omsRQEXHIST"));
+    }
+    /*static*/  mtk::t_qpid_address  oms_RQ_EXECS_HISTORIC::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  oms_RQ_EXECS_HISTORIC::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     
 

@@ -607,6 +607,48 @@ void CF_ST_EX::before_send(void) const
 
 
 
+
+RQ_EXECS_HISTORIC::RQ_EXECS_HISTORIC (   const mtk::msg::sub_request_info&  _request_info,   const mtk::DateTime&  _date)
+    :     request_info(_request_info),   date(_date) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  RQ_EXECS_HISTORIC::check_recomended(void) const
+{
+
+}
+
+void RQ_EXECS_HISTORIC::before_send(void) const
+{
+
+}
+
+
+
+
+CF_EX_HIST::CF_EX_HIST ( const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location2&  _gen_response_location2)
+    :  CF_EXLK(parent),   gen_response_location2(_gen_response_location2) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  CF_EX_HIST::check_recomended(void) const
+{
+
+}
+
+void CF_EX_HIST::before_send(void) const
+{
+
+}
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_order_id & c)
 {
     o << "{ "
@@ -948,6 +990,72 @@ void  operator >> (const YAML::Node& node, CF_ST_EX & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const RQ_EXECS_HISTORIC & c)
+{
+    o << "{ "
+
+        << "request_info:"<< c.request_info<<"  "        << "date:"<<   c.date << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const RQ_EXECS_HISTORIC & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "request_info"  << YAML::Value << c.request_info        << YAML::Key << "date"  << YAML::Value <<   c.date
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, RQ_EXECS_HISTORIC & c)
+{
+
+
+        node["request_info"]  >> c.request_info;
+        node["date"]  >> c.date;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const CF_EX_HIST & c)
+{
+    o << "{ "
+    << "("  <<  static_cast<const CF_EXLK&>(c)  << ")" 
+        << "gen_response_location2:"<< c.gen_response_location2<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const CF_EX_HIST & c)
+{
+    o << YAML::BeginMap
+    << YAML::Key << "CF_EXLK" <<  YAML::Value << static_cast<const CF_EXLK&>(c)  
+        << YAML::Key << "gen_response_location2"  << YAML::Value << c.gen_response_location2
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, CF_EX_HIST & c)
+{
+
+    node["CF_EXLK"]   >>   static_cast<CF_EXLK&>(c)  ;
+
+        node["gen_response_location2"]  >> c.gen_response_location2;
+
+
+};
+
+
 bool operator< (const sub_account_info& a, const sub_account_info& b)
 {
     if (false)   return true;
@@ -1076,6 +1184,30 @@ bool operator== (const CF_ST_EX& a, const CF_ST_EX& b)
 };
 
 bool operator!= (const CF_ST_EX& a, const CF_ST_EX& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const RQ_EXECS_HISTORIC& a, const RQ_EXECS_HISTORIC& b)
+{
+    return (          a.request_info ==  b.request_info  &&          a.date ==  b.date  &&   true  );
+};
+
+bool operator!= (const RQ_EXECS_HISTORIC& a, const RQ_EXECS_HISTORIC& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const CF_EX_HIST& a, const CF_EX_HIST& b)
+{
+    return ( (static_cast<const CF_EXLK&>(a)   ==  static_cast<const CF_EXLK&>(b))  &&           a.gen_response_location2 ==  b.gen_response_location2  &&   true  );
+};
+
+bool operator!= (const CF_EX_HIST& a, const CF_EX_HIST& b)
 {
     return !(a==b);
 };
@@ -1677,6 +1809,102 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_
 
 
 
+
+
+void  copy (RQ_EXECS_HISTORIC& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("rqi");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field request_info on message RQ_EXECS_HISTORIC::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.request_info, it->second);
+                        //__internal_qpid_fill(c.request_info, it->second.asMap());
+//   field_type
+
+                    it = mv.find("date");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field date on message RQ_EXECS_HISTORIC::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.date, it->second);
+                        //c.date = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_EXECS_HISTORIC& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  sub_msg_type
+        __internal_add2map(map, a.request_info, std::string("rqi"));
+//  field_type
+        __internal_add2map(map, a.date, std::string("date"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_EXECS_HISTORIC>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+void  copy (CF_EX_HIST& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+copy(static_cast<CF_EXLK&>(c), v);
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("grl2");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field gen_response_location2 on message CF_EX_HIST::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.gen_response_location2, it->second);
+                        //__internal_qpid_fill(c.gen_response_location2, it->second.asMap());
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_HIST& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+//  parent
+__internal_add2map(map, static_cast<const CF_EXLK&>(a));
+
+//  sub_msg_type
+        __internal_add2map(map, a.gen_response_location2, std::string("grl2"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EX_HIST>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1742,6 +1970,47 @@ __internal_add2map(content, static_cast<const CF_EXLK&>(*this));
 //  sub_msg_type
 //        content["grl"] =  qpidmsg_coded_as_qpid_Map(this->gen_response_location);
         __internal_add2map(content, this->gen_response_location, std::string("grl"));
+
+
+
+    
+    return content;
+};
+
+
+
+
+qpid::types::Variant::Map   RQ_EXECS_HISTORIC::qpidmsg_codded_as_qpid_map (void) const
+{
+    qpid::types::Variant::Map   content;
+
+
+//  sub_msg_type
+//        content["rqi"] =  qpidmsg_coded_as_qpid_Map(this->request_info);
+        __internal_add2map(content, this->request_info, std::string("rqi"));
+//  field_type
+//        content["date"] = this->date;
+        __internal_add2map(content, this->date, std::string("date"));
+
+
+
+    
+    return content;
+};
+
+
+
+
+qpid::types::Variant::Map   CF_EX_HIST::qpidmsg_codded_as_qpid_map (void) const
+{
+    qpid::types::Variant::Map   content;
+
+//  parent
+__internal_add2map(content, static_cast<const CF_EXLK&>(*this));
+
+//  sub_msg_type
+//        content["grl2"] =  qpidmsg_coded_as_qpid_Map(this->gen_response_location2);
+        __internal_add2map(content, this->gen_response_location2, std::string("grl2"));
 
 
 
@@ -1869,6 +2138,24 @@ __internal_get_default((CF_EXLK*)0), //   sub_msg_type
             );
     }
     
+    RQ_EXECS_HISTORIC  __internal_get_default(RQ_EXECS_HISTORIC*)
+    {
+        return RQ_EXECS_HISTORIC(
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_request_info*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0)
+            );
+    }
+    
+    CF_EX_HIST  __internal_get_default(CF_EX_HIST*)
+    {
+        return CF_EX_HIST(
+__internal_get_default((CF_EXLK*)0), //   sub_msg_type
+   __internal_get_default((mtk::msg::sub_gen_response_location2*)0)
+            );
+    }
+    
 sub_order_id::sub_order_id (const qpid::types::Variant::Map&  mv)
     :  mtk::msg::sub_request_id(mv) 
     {
@@ -1985,6 +2272,24 @@ CF_ST_EX::CF_ST_EX (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+RQ_EXECS_HISTORIC::RQ_EXECS_HISTORIC (const qpid::types::Variant::Map&  mv)
+    :  //   sub_msg_type
+   request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
+//   field_type
+   date(__internal_get_default((mtk::DateTime*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
+CF_EX_HIST::CF_EX_HIST (const qpid::types::Variant::Map&  mv)
+    :  CF_EXLK(mv), //   sub_msg_type
+   gen_response_location2(__internal_get_default((mtk::msg::sub_gen_response_location2*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
 mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_in_subject (const std::string& account_client_code,const std::string& market)
     {
         return mtk::t_qpid_filter(MTK_SS("MK." << account_client_code << "." << market << ".RQORDST"));
@@ -2030,6 +2335,38 @@ mtk::t_qpid_filter  RQ_ORDERS_STATUS::get_in_subject (const std::string& account
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_address  CF_ST_EX::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_filter  RQ_EXECS_HISTORIC::get_in_subject (const std::string& request_info_process_info_location_broker_code)
+    {
+        return mtk::t_qpid_filter(MTK_SS("MK." << request_info_process_info_location_broker_code << ".ALL.RQEXHIST"));
+    }
+    mtk::t_qpid_filter  RQ_EXECS_HISTORIC::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("MK." << this->request_info.process_info.location.broker_code << ".ALL.RQEXHIST"));
+    }
+    /*static*/  mtk::t_qpid_address  RQ_EXECS_HISTORIC::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_address  RQ_EXECS_HISTORIC::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("CLI_MK"));
+    }
+    mtk::t_qpid_filter  CF_EX_HIST::get_in_subject (const std::string& gen_response_location2_broker_code,const std::string& gen_response_location2_req_id_session_id,const std::string& gen_response_location2_req_id_req_code)
+    {
+        return mtk::t_qpid_filter(MTK_SS("CLI." << gen_response_location2_broker_code << "." << gen_response_location2_req_id_session_id << "." << gen_response_location2_req_id_req_code << ".HIST_EX"));
+    }
+    mtk::t_qpid_filter  CF_EX_HIST::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("CLI." << this->gen_response_location2.broker_code << "." << this->gen_response_location2.req_id.session_id << "." << this->gen_response_location2.req_id.req_code << ".HIST_EX"));
+    }
+    /*static*/  mtk::t_qpid_address  CF_EX_HIST::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  CF_EX_HIST::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }

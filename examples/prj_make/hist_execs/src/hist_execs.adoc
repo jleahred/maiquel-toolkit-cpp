@@ -1,0 +1,90 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= Historic execs
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2012-05-28
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+
+* This process will receive request filtered and filled by +account_loaders+ requesting execs orders from a client
+
+
+
+* Configuration file
++
+.etc/config.cfg
+[source,{cpp}]
+----
+include::../etc/config.cfg[]
+----
+
+
+== Diagram
+
+
+.Communication diagram
+["graphviz", "communication.png"]
+-----------
+digraph recovery {
+ rankdir=TB;
+
+ // Nodos
+ node [fontsize=14, shape=circle width=1 style = transparent color = black] cli;
+
+ // Conectores
+ edge [fontsize=12];
+
+
+  subgraph cluster_mkx {
+     node [fontsize=14, shape=circle width=1  style=filled color=lightgray] hist_execs;
+     node [fontsize=14, shape=circle width=1 style = transparent color = black] acc_load_eu  acc_load_m3  acc_load_n;
+     node [shape=circle, width=0.1, label="" style = transparent color = black] c1;
+  }
+
+
+
+  cli -> c1 [label = "RQ_EXECS_HISTORIC"  color=red fontcolor=red];
+
+  c1 ->  acc_load_eu
+  c1 ->  acc_load_m3
+  c1 ->  acc_load_n
+
+  acc_load_eu -> hist_execs [label = "oms_RQ_EXECS_HISTORIC"];
+  acc_load_m3 -> hist_execs [label = "oms_RQ_EXECS_HISTORIC"];
+  acc_load_n  -> hist_execs [label = "oms_RQ_EXECS_HISTORIC"];
+
+  hist_execs ->  cli  [label = "CF_EX_HIST"];
+}
+-----
+
+
+
+== Document modifications
+* Non aply

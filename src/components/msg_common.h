@@ -387,6 +387,56 @@ public:
 
 
 //-------------------------------
+//      sub_gen_response_location2
+//-------------------------------    
+class sub_gen_response_location2     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_gen_response_location2 (    const sub_request_id&  _req_id,   const std::string&  _broker_code );
+    explicit sub_gen_response_location2 ( const qpid::types::Variant::Map&  mv );
+    virtual ~sub_gen_response_location2 (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_gen_response_location2"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_gen_response_location2"; };
+    
+    
+
+    
+
+    
+    
+    
+    
+
+    // fields
+    sub_request_id                            req_id; 
+    std::string                               broker_code; 
+
+
+
+    //  ADDRESS info
+
+
+
+    //  subject info
+    
+
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
 //      sub_product_code
 //-------------------------------    
 class sub_product_code     
@@ -491,6 +541,13 @@ bool operator!= (const sub_r_response& a, const sub_r_response& b);
 bool operator== (const sub_gen_response_location& a, const sub_gen_response_location& b);
 bool operator!= (const sub_gen_response_location& a, const sub_gen_response_location& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_gen_response_location2 & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_gen_response_location2 & c);
+   void           operator >> (const YAML::Node& n,       sub_gen_response_location2 & c);
+
+bool operator== (const sub_gen_response_location2& a, const sub_gen_response_location2& b);
+bool operator!= (const sub_gen_response_location2& a, const sub_gen_response_location2& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_product_code & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_product_code & c);
    void           operator >> (const YAML::Node& n,       sub_product_code & c);
@@ -519,6 +576,9 @@ void copy (sub_r_response& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_gen_response_location& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_gen_response_location>& a, const std::string& field);
 void copy (sub_gen_response_location& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_gen_response_location2& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_gen_response_location2>& a, const std::string& field);
+void copy (sub_gen_response_location2& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_code& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_code>& a, const std::string& field);
 void copy (sub_product_code& a, const qpid::types::Variant& map);
@@ -536,6 +596,8 @@ void copy (sub_product_code& a, const qpid::types::Variant& map);
     sub_r_response  __internal_get_default(sub_r_response *);
     
     sub_gen_response_location  __internal_get_default(sub_gen_response_location *);
+    
+    sub_gen_response_location2  __internal_get_default(sub_gen_response_location2 *);
     
     sub_product_code  __internal_get_default(sub_product_code *);
     

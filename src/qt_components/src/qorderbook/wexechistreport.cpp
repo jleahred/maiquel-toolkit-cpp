@@ -328,19 +328,69 @@ void WExecsHistReport::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_inf
 void  WExecsHistReport::reactivate_request_button(const int&)
 {
     ui->pb_request->setEnabled(true);
+    ui->dateEdit->setEnabled(true);
 }
+
+
+
+
 
 void WExecsHistReport::on_pb_request_clicked()
 {
     ui->treeWidget->clear();
 
     //  testing
+    /*
     mtk::list<mtk::trd::msg::CF_EXLK>  list_all_execs = mtk::trd::trd_cli_ord_book::get_all_execs();
     for(auto it=list_all_execs.begin(); it!=list_all_execs.end(); ++it)
         on_new_execution(*it, it->executed_pos);
+        */
     //  testing
 
 
     ui->pb_request->setEnabled(false);
-    MTK_CALL_LATER1S_THIS(mtk::dtSeconds(5), 0, reactivate_request_button);
+    ui->dateEdit->setEnabled(false);
+    MTK_CALL_LATER1S_THIS(mtk::dtSeconds(10), 0, reactivate_request_button);
+
+    mtk::msg::sub_request_info              request_info        (mtk::admin::get_request_info());
+    mtk::trd::msg::RQ_EXECS_HISTORIC        rq_execs_historic   (request_info, qtmisc::QDate_as_mtk_DateTime(ui->dateEdit->date()));
+    mtk_send_message("client", rq_execs_historic);
+
+    subscribe_response(request_info.req_id);
+}
+
+
+void  WExecsHistReport::subscribe_response(const mtk::msg::sub_request_id&  request_id)
+{
+    static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::CF_EX_HIST> >    handle;
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            handle,
+                            mtk::admin::get_url("client"),
+                            mtk::trd::msg::CF_EX_HIST::get_in_subject(mtk::admin::get_process_info().location.broker_code, mtk::admin::get_session_id(), request_id.req_code),
+                            mtk::trd::msg::CF_EX_HIST,
+                            on_cf_ex_hist)
+}
+
+
+void  WExecsHistReport::on_cf_ex_hist(const mtk::trd::msg::CF_EX_HIST&  ex_hist)
+{
+    on_new_execution(ex_hist, ex_hist.executed_pos);
+}
+
+void WExecsHistReport::on_dateEdit_dateChanged(QDate date)
+{
+    mtk::DateTime   selected_date = qtmisc::QDate_as_mtk_DateTime(date);
+    if(selected_date < (mtk::dtNowLocal()-mtk::dtDays(60)) )
+        ui->message->setText(tr("invalid date. Date too far"));
+    else if(selected_date > mtk::dtNowLocal())
+        ui->message->setText(tr("invalid date. Future date"));
+    else if(selected_date == mtk::dtToday_0Time())
+        ui->message->setText(tr("invalid date."));
+    else
+        ui->message->setText(QLatin1String(""));
+
+    if(ui->message->text() == QLatin1String("")  ||  ui->message->text() == QLatin1String("_"))
+        ui->pb_request->setEnabled(true);
+    else
+        ui->pb_request->setEnabled(false);
 }

@@ -345,10 +345,13 @@ namespace {
         {
             #if MTK_PLATFORM == MTK_LINUX_PLATFORM
 
-                if(daemon(1,0) == -1)
+                if(mtk::admin::is_production())
                 {
-                    perror("error daemon call");
-                    exit(1);
+                    if(daemon(1,0) == -1)
+                    {
+                        perror("error daemon call");
+                        exit(1);
+                    }
                 }
 
             #endif

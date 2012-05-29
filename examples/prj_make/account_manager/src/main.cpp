@@ -19,7 +19,7 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_ACCOUNT_MANAGER";
-    const char*   APP_VER           = "2012-04-14 f";
+    const char*   APP_VER           = "2012-05-28 f";
     const char*   APP_DESCRIPTION   = "I can do two things\n"
                                       "I can send check all order request from client in order to verify the user is logged and account is valid, \n"
                                       "filling the reject_description if necessary and sending the request to order flow control\n"
@@ -31,6 +31,7 @@ namespace
 
     const char*   APP_MODIFICATIONS =   "           2011-05-30     first version\n"
                                         "           2012-04-02     stop limit orders\n"
+                                        "           2012-05-28     rq historic execs\n"
                                         ;
 
 
@@ -47,6 +48,7 @@ namespace
 
 
     void susbcribe_request_accounts(void);
+    void susbcribe_request_exec_hist(void);
     void suscribe_recovery_subject(void);
     void suscribe_order_request(void);      //  included orders status
 }
@@ -75,6 +77,7 @@ int main(int argc, char ** argv)
             mtk::acs_server::synchr::get_signal_received_user_list()->connect(suscribe_recovery_subject);
             mtk::acs_server::synchr::init();
             susbcribe_request_accounts();
+            susbcribe_request_exec_hist();
         }
 
         if(mtk::admin::get_config_property("MISC.account_filter").Get() == "true")
@@ -204,6 +207,74 @@ namespace
                                 on_request_accounts)
 
     }
+
+
+    void on_request_execs_historic(const  mtk::trd::msg::RQ_EXECS_HISTORIC&  rq)
+    {
+        mtk::msg::sub_location      location    =   rq.request_info.process_info.location;
+        std::string                 session_id  =   rq.request_info.req_id.session_id;
+
+        mtk::acs::msg::res_login::IC_session_info  session_info =  mtk::acs_server::synchr::get_session_info_for_session_id(session_id);
+        std::string                 user_name   =  mtk::s_toUpper(session_info.user_name);
+        if(rq.request_info.process_info.location.broker_code  != "CIMD")
+        {
+            if(rq.request_info.process_info.location.broker_code  !=  session_info.client_code)
+                throw mtk::Alarm(MTK_HERE, "accmgr", MTK_SS("Received account doesn't match with session_info account " <<
+                                            rq << "   " << session_info), mtk::alPriorCritic, mtk::alTypeLogicError);
+        }
+        mtk::list<mtk::trd::account::msg::sub_grant>    grants = accmgr::db::get_user_grants(user_name, location.broker_code);
+
+        mtk::list<mtk::trd::msg::sub_account_info>  list_accounts;
+        std::string   market;
+        std::string   client_code;
+        for(auto it = grants.begin(); it!= grants.end(); ++it)
+        {
+            mtk::trd::account::msg::sub_grant&  it_grant = *it;     //  I know it's dangerous
+
+            if(market=="")
+                market = it_grant.key.market;
+            else if (market != it_grant.key.market)
+            {
+                //  send message previous accounts and continue
+                mtk::trd::msg::oms_RQ_EXECS_HISTORIC  rq_execs_historic(rq, market, rq.date, list_accounts);
+                mtk_send_message("server", rq_execs_historic);
+
+                market = it_grant.key.market;
+                list_accounts.clear();
+            }
+
+            if(client_code=="")
+                client_code = it_grant.key.account.client_code;
+            else if (client_code != it_grant.key.account.client_code)
+            {
+                if(session_info.client_code != "CIMD")
+                    throw  mtk::Alarm(MTK_HERE, "on_request_execs_historic", MTK_SS("No CIMD (" <<  session_info.client_code  << ") requesting on client " <<  it_grant.key.account.client_code), mtk::alPriorError, mtk::alTypeNoPermisions);
+                client_code = it_grant.key.account.client_code;
+            }
+
+            std::string  account_name = it_grant.key.account.name;
+            client_code  = it_grant.key.account.client_code;
+            list_accounts.push_back(mtk::trd::msg::sub_account_info(account_name, client_code));
+        }
+        if(list_accounts.size() > 0)
+        {
+            mtk::trd::msg::oms_RQ_EXECS_HISTORIC  rq_execs_historic(rq, market, rq.date, list_accounts);
+            mtk_send_message("server", rq_execs_historic);
+        }
+    }
+
+    void susbcribe_request_exec_hist(void)
+    {
+        //  suscription to request key
+        static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::trd::msg::RQ_EXECS_HISTORIC> >    handle;
+        MTK_QPID_RECEIVER_CONNECT_F(
+                                handle,
+                                mtk::admin::get_url("client"),
+                                mtk::trd::msg::RQ_EXECS_HISTORIC::get_in_subject("*"),
+                                mtk::trd::msg::RQ_EXECS_HISTORIC,
+                                on_request_execs_historic)
+    }
+
 
 
 

@@ -549,6 +549,27 @@ void sub_gen_response_location::before_send(void) const
 
 
 
+sub_gen_response_location2::sub_gen_response_location2 (   const sub_request_id&  _req_id,   const std::string&  _broker_code)
+    :     req_id(_req_id),   broker_code(_broker_code) 
+       
+    {  
+    }
+
+
+
+void  sub_gen_response_location2::check_recomended(void) const
+{
+
+}
+
+void sub_gen_response_location2::before_send(void) const
+{
+
+}
+
+
+
+
 sub_product_code::sub_product_code (   const std::string&  _market,   const std::string&  _product)
     :     market(_market),   product(_product) 
        
@@ -805,6 +826,39 @@ void  operator >> (const YAML::Node& node, sub_gen_response_location & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const sub_gen_response_location2 & c)
+{
+    o << "{ "
+
+        << "req_id:"<< c.req_id<<"  "        << "broker_code:"<<   c.broker_code << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_gen_response_location2 & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "req_id"  << YAML::Value << c.req_id        << YAML::Key << "broker_code"  << YAML::Value <<   c.broker_code
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_gen_response_location2 & c)
+{
+
+
+        node["req_id"]  >> c.req_id;
+        node["broker_code"]  >> c.broker_code;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_product_code & c)
 {
     o << "{ "
@@ -930,6 +984,18 @@ bool operator== (const sub_gen_response_location& a, const sub_gen_response_loca
 };
 
 bool operator!= (const sub_gen_response_location& a, const sub_gen_response_location& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const sub_gen_response_location2& a, const sub_gen_response_location2& b)
+{
+    return (          a.req_id ==  b.req_id  &&          a.broker_code ==  b.broker_code  &&   true  );
+};
+
+bool operator!= (const sub_gen_response_location2& a, const sub_gen_response_location2& b)
 {
     return !(a==b);
 };
@@ -1355,6 +1421,57 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+void  copy (sub_gen_response_location2& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("rqid");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field req_id on message sub_gen_response_location2::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.req_id, it->second);
+                        //__internal_qpid_fill(c.req_id, it->second.asMap());
+//   field_type
+
+                    it = mv.find("bc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field broker_code on message sub_gen_response_location2::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.broker_code, it->second);
+                        //c.broker_code = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_gen_response_location2& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  sub_msg_type
+        __internal_add2map(map, a.req_id, std::string("rqid"));
+//  field_type
+        __internal_add2map(map, a.broker_code, std::string("bc"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_gen_response_location2>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
 void  copy (sub_product_code& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -1404,6 +1521,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1493,6 +1611,16 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
             );
     }
     
+    sub_gen_response_location2  __internal_get_default(sub_gen_response_location2*)
+    {
+        return sub_gen_response_location2(
+//   sub_msg_type
+   __internal_get_default((sub_request_id*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
     sub_product_code  __internal_get_default(sub_product_code*)
     {
         return sub_product_code(
@@ -1574,6 +1702,16 @@ sub_r_response::sub_r_response (const qpid::types::Variant::Map&  mv)
 sub_gen_response_location::sub_gen_response_location (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    session_id(__internal_get_default((std::string*)0)),
+//   field_type
+   broker_code(__internal_get_default((std::string*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
+sub_gen_response_location2::sub_gen_response_location2 (const qpid::types::Variant::Map&  mv)
+    :  //   sub_msg_type
+   req_id(__internal_get_default((sub_request_id*)0)),
 //   field_type
    broker_code(__internal_get_default((std::string*)0)) 
     {

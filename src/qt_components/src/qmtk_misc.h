@@ -7,6 +7,7 @@
 
 #include <QDropEvent>
 #include <QColor>
+#include <QDate>
 
 #include "components/msg_common.h"
 
@@ -25,6 +26,8 @@ namespace qtmisc {
 QString     fn_as_QString(const mtk::FixedNumber& fn);
 QString     nullable_fn_as_QString(const mtk::nullable<mtk::FixedNumber>& fn);
 QString     side_as_text(mtk::trd::msg::enBuySell side);
+
+mtk::dtDateTime   QDate_as_mtk_DateTime(const  QDate&  qdate);
 
 
 QString                             dragProductText         (const mtk::msg::sub_product_code& product);

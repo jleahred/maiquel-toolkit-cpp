@@ -179,6 +179,11 @@ QString   side_as_text(mtk::trd::msg::enBuySell side)
 }
 
 
+mtk::dtDateTime   QDate_as_mtk_DateTime(const  QDate&  qdate)
+{
+    return  mtk::DateTime(mtk::dtYear(qdate.year()),  mtk::dtMonth(qdate.month()), mtk::dtDay(qdate.day()));
+}
+
 
 
 };      //      namespace qtmisc {

@@ -54,7 +54,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -108,7 +108,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -162,7 +162,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -216,7 +216,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -270,7 +270,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -324,7 +324,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -378,7 +378,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -432,7 +432,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -486,7 +486,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -540,7 +540,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -594,7 +594,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -648,7 +648,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -702,7 +702,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -723,6 +723,61 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& market,const std::string& from);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      oms_RQ_EXECS_HISTORIC
+//-------------------------------    
+class oms_RQ_EXECS_HISTORIC        :  public  RQ_EXECS_HISTORIC
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit oms_RQ_EXECS_HISTORIC (  const RQ_EXECS_HISTORIC&  parent,   const std::string&  _market,   const mtk::DateTime&  _date,   const mtk::list<mtk::trd::msg::sub_account_info >&  _list_accounts );
+    explicit oms_RQ_EXECS_HISTORIC ( const qpid::types::Variant::Map&  mv );
+    virtual ~oms_RQ_EXECS_HISTORIC (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "oms_RQ_EXECS_HISTORIC"; };
+    static  std::string static_get_message_type_as_string(void)        { return "oms_RQ_EXECS_HISTORIC"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    std::string                               market; 
+    mtk::DateTime                             date; 
+    mtk::list<mtk::trd::msg::sub_account_info >  list_accounts; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject ();
     virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -832,6 +887,13 @@ bool operator!= (const oms_RQ_CC_SL& a, const oms_RQ_CC_SL& b);
 bool operator== (const oms_RQ_ORDERS_STATUS& a, const oms_RQ_ORDERS_STATUS& b);
 bool operator!= (const oms_RQ_ORDERS_STATUS& a, const oms_RQ_ORDERS_STATUS& b);
 
+    std::ostream& operator<< (std::ostream& o, const oms_RQ_EXECS_HISTORIC & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const oms_RQ_EXECS_HISTORIC & c);
+   void           operator >> (const YAML::Node& n,       oms_RQ_EXECS_HISTORIC & c);
+
+bool operator== (const oms_RQ_EXECS_HISTORIC& a, const oms_RQ_EXECS_HISTORIC& b);
+bool operator!= (const oms_RQ_EXECS_HISTORIC& a, const oms_RQ_EXECS_HISTORIC& b);
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_LS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_LS>& a, const std::string& field);
 void copy (oms_RQ_NW_LS& a, const qpid::types::Variant& map);
@@ -871,6 +933,9 @@ void copy (oms_RQ_CC_SL& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_ORDERS_STATUS& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_ORDERS_STATUS>& a, const std::string& field);
 void copy (oms_RQ_ORDERS_STATUS& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_EXECS_HISTORIC& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_EXECS_HISTORIC>& a, const std::string& field);
+void copy (oms_RQ_EXECS_HISTORIC& a, const qpid::types::Variant& map);
 
     oms_RQ_NW_LS  __internal_get_default(oms_RQ_NW_LS *);
     
@@ -897,6 +962,8 @@ void copy (oms_RQ_ORDERS_STATUS& a, const qpid::types::Variant& map);
     oms_RQ_CC_SL  __internal_get_default(oms_RQ_CC_SL *);
     
     oms_RQ_ORDERS_STATUS  __internal_get_default(oms_RQ_ORDERS_STATUS *);
+    
+    oms_RQ_EXECS_HISTORIC  __internal_get_default(oms_RQ_EXECS_HISTORIC *);
     
 
 };   //namespace mtk {
@@ -925,6 +992,7 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_NW_SL)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_MD_SL)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_CC_SL)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_ORDERS_STATUS)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::oms_RQ_EXECS_HISTORIC)
 
 
 

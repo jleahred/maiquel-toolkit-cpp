@@ -15,6 +15,7 @@ TOOLS_PATH = './tools/'
 
 NAME_TAG = {}
 TAG_NAME = {}
+NAME_TYPE = {}
 MSG_FIELDS = {}
 MSG_FIELDS__NAMES_WITHOUT_NAMESPACES = {}
 MSG_NAMES = {}
@@ -50,6 +51,31 @@ def fill_tag_field_name():
             if NAME_TAG[field_name].has_key(tag) == False:
                 NAME_TAG[field_name][tag] = 0
             NAME_TAG[field_name][tag] = NAME_TAG[field_name][tag]+1
+
+
+def fill_tag_field_type():
+    for class_name, class_info, __class_properties, send_code  in MESSAGES:
+        for ci in class_info :
+            tag = ''
+            field_type = ''
+            if ci.has_key('FIELD_NAME')  and  ci.has_key('field_type') :
+                tag = ci['FIELD_NAME']
+                field_type = ci['field_type']
+            elif ci.has_key('FIELD_NAME')  and  ci.has_key('sub_msg_type') :
+                tag = ci['FIELD_NAME']
+                field_type = re.search(r"(.*::|)(.*)", ci['sub_msg_type']).group(2)
+            elif ci.has_key('IN_SUB_MSG'):
+                tag = ''
+                field_type = 'IC_' + class_name
+            else:
+                print ci, 
+                tag = '???'
+                
+            if NAME_TYPE.has_key(tag) == False:
+                NAME_TYPE[tag] = {field_type: 0}
+            if NAME_TYPE[tag].has_key(field_type) == False:
+                NAME_TYPE[tag][field_type] = 0
+            NAME_TYPE[tag][field_type] = NAME_TYPE[tag][field_type]+1
 
 
 
@@ -320,6 +346,7 @@ for file in sys.argv[1:] :
 
 
     fill_tag_field_name();
+    fill_tag_field_type();
     fill_msg_fields();
     fill_msg_names();
     
@@ -346,6 +373,11 @@ print
 print '=== FIELD_NAME -> TAG'
 print_map(NAME_TAG)
 print
+
+print '=== FIELD_NAME -> TYPE'
+print_map(NAME_TYPE)
+print
+
 
 print '=== NAMES'
 print_map(MSG_NAMES)

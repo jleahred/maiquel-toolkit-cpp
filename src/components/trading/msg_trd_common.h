@@ -417,7 +417,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 2; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -472,7 +472,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 2; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -525,7 +525,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 2; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::nullable<mtk::DateTime>{}; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -545,6 +545,113 @@ public:
 
     //  subject info
     static mtk::t_qpid_filter  get_in_subject (const std::string& gen_response_location_broker_code,const std::string& gen_response_location_session_id);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      RQ_EXECS_HISTORIC
+//-------------------------------    
+class RQ_EXECS_HISTORIC     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit RQ_EXECS_HISTORIC (    const mtk::msg::sub_request_info&  _request_info,   const mtk::DateTime&  _date );
+    explicit RQ_EXECS_HISTORIC ( const qpid::types::Variant::Map&  mv );
+    virtual ~RQ_EXECS_HISTORIC (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "RQ_EXECS_HISTORIC"; };
+    static  std::string static_get_message_type_as_string(void)        { return "RQ_EXECS_HISTORIC"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    mtk::msg::sub_request_info                request_info; 
+    mtk::DateTime                             date; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& request_info_process_info_location_broker_code);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      CF_EX_HIST
+//-------------------------------    
+class CF_EX_HIST        :  public  CF_EXLK
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit CF_EX_HIST (  const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location2&  _gen_response_location2 );
+    explicit CF_EX_HIST ( const qpid::types::Variant::Map&  mv );
+    virtual ~CF_EX_HIST (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_HIST"; };
+    static  std::string static_get_message_type_as_string(void)        { return "CF_EX_HIST"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    mtk::msg::sub_gen_response_location2      gen_response_location2; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& gen_response_location2_broker_code,const std::string& gen_response_location2_req_id_session_id,const std::string& gen_response_location2_req_id_req_code);
     virtual mtk::t_qpid_filter  get_out_subject (void) const;
 
 
@@ -636,6 +743,20 @@ bool operator!= (const CF_EXLK& a, const CF_EXLK& b);
 bool operator== (const CF_ST_EX& a, const CF_ST_EX& b);
 bool operator!= (const CF_ST_EX& a, const CF_ST_EX& b);
 
+    std::ostream& operator<< (std::ostream& o, const RQ_EXECS_HISTORIC & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_EXECS_HISTORIC & c);
+   void           operator >> (const YAML::Node& n,       RQ_EXECS_HISTORIC & c);
+
+bool operator== (const RQ_EXECS_HISTORIC& a, const RQ_EXECS_HISTORIC& b);
+bool operator!= (const RQ_EXECS_HISTORIC& a, const RQ_EXECS_HISTORIC& b);
+
+    std::ostream& operator<< (std::ostream& o, const CF_EX_HIST & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const CF_EX_HIST & c);
+   void           operator >> (const YAML::Node& n,       CF_EX_HIST & c);
+
+bool operator== (const CF_EX_HIST& a, const CF_EX_HIST& b);
+bool operator!= (const CF_EX_HIST& a, const CF_EX_HIST& b);
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_id>& a, const std::string& field);
 void copy (sub_order_id& a, const qpid::types::Variant& map);
@@ -666,6 +787,12 @@ void copy (CF_EXLK& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const CF_ST_EX& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_ST_EX>& a, const std::string& field);
 void copy (CF_ST_EX& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_EXECS_HISTORIC& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_EXECS_HISTORIC>& a, const std::string& field);
+void copy (RQ_EXECS_HISTORIC& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_HIST& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EX_HIST>& a, const std::string& field);
+void copy (CF_EX_HIST& a, const qpid::types::Variant& map);
 
     sub_order_id  __internal_get_default(sub_order_id *);
     
@@ -687,6 +814,10 @@ void copy (CF_ST_EX& a, const qpid::types::Variant& map);
     
     CF_ST_EX  __internal_get_default(CF_ST_EX *);
     
+    RQ_EXECS_HISTORIC  __internal_get_default(RQ_EXECS_HISTORIC *);
+    
+    CF_EX_HIST  __internal_get_default(CF_EX_HIST *);
+    
 
 };   //namespace mtk {
 };   //namespace trd {
@@ -704,6 +835,8 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_ORDERS_STATUS)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EXLK)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_ST_EX)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_EXECS_HISTORIC)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EX_HIST)
 
 
 
