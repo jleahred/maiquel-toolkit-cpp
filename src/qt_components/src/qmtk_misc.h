@@ -62,6 +62,8 @@ int  get_base_font_size(void);
 void set_base_font_size(int new_size);
 
 
+void  copy_execs_clipboard(const mtk::list<mtk::trd::msg::CF_EXLK>&  execs);
+
 
 
 

@@ -5,6 +5,8 @@
 #include "support/string_codec.h"
 
 #include <QLocale>
+#include <QApplication>
+#include <QClipboard>
 
 #include "components/trading/trd_cli_ord_book.h"
 
@@ -184,6 +186,96 @@ mtk::dtDateTime   QDate_as_mtk_DateTime(const  QDate&  qdate)
     return  mtk::DateTime(mtk::dtYear(qdate.year()),  mtk::dtMonth(qdate.month()), mtk::dtDay(qdate.day()));
 }
 
+
+
+void  copy_execs_clipboard(const mtk::list<mtk::trd::msg::CF_EXLK>&  execs)
+{
+    QString  result;
+    result += QObject::tr("ORDER");     result += QLatin1String("\t");
+    result += QObject::tr("CLI_CODE");  result += QLatin1String("\t");
+    result += QObject::tr("ACCOUNT");   result += QLatin1String("\t");
+    result += QObject::tr("MARKET");    result += QLatin1String("\t");
+    result += QObject::tr("PRODUCT");   result += QLatin1String("\t");
+    result += QObject::tr("SIDE");      result += QLatin1String("\t");
+    result += QObject::tr("QUANTITY");  result += QLatin1String("\t");
+    result += QObject::tr("PRICE");     result += QLatin1String("\t");
+    result += QLatin1String("\n");
+
+
+
+    typedef  mtk::tuple<
+            std::string,                                    //  order by
+            mtk::trd::msg::sub_account_info,
+            mtk::msg::sub_product_code,
+            mtk::trd::msg::enBuySell,
+            mtk::FixedNumber                   //  price
+            >  t_exec_key;
+    typedef mtk::tuple< mtk::Double, mtk::trd::msg::sub_order_id>   t_data;
+
+    mtk::map<t_exec_key, t_data>                            map_execs_grouped;
+    mtk::map<mtk::trd::msg::sub_order_id, mtk::DateTime>    map_first_exec_per_order;
+
+
+    for(auto it=execs.begin(); it!=execs.end(); ++it)
+    {
+        mtk::trd::msg::sub_invariant_order_info  invariant = it->invariant;
+
+
+        auto it_first_exec = map_first_exec_per_order.find(invariant.order_id);
+        if(it_first_exec==map_first_exec_per_order.end())
+            it_first_exec = map_first_exec_per_order.insert(std::make_pair(invariant.order_id, it->orig_control_fluct.datetime)).first;
+
+
+        t_exec_key   key = mtk::make_tuple(     MTK_SS(it_first_exec->second <<  invariant.order_id),
+                                                invariant.account,
+                                                invariant.product_code,
+                                                invariant.side,
+                                                it->executed_pos.price);
+
+        auto find_exec_grouped = map_execs_grouped.find(key);
+        if(find_exec_grouped == map_execs_grouped.end())
+            map_execs_grouped.insert(std::make_pair(key,   mtk::make_tuple(it->executed_pos.quantity.GetDouble(), invariant.order_id)));
+        else
+            find_exec_grouped->second._0 =  find_exec_grouped->second._0 + it->executed_pos.quantity.GetDouble();
+    }
+
+    int counter=0;
+    mtk::trd::msg::sub_order_id  prev_ord_id(mtk::msg::sub_request_id("", ""));
+    for(auto it=map_execs_grouped.begin(); it!=map_execs_grouped.end(); ++it)
+    {
+        if(prev_ord_id != it->second._1)
+            ++counter;
+        prev_ord_id = it->second._1;
+        result += QString::number(counter);
+        result += QLatin1String("\t");
+
+        result += QLatin1String(it->first._1.client_code.c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(it->first._1.name.c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(it->first._2.market.c_str());
+        result += QLatin1String("\t");
+
+        result += QLatin1String(it->first._2.product.c_str());
+        result += QLatin1String("\t");
+
+        result += qtmisc::side_as_text(it->first._3);
+        result += QLatin1String("\t");
+
+
+        result += QLocale::system().toString(it->second._0.get2(), 'f', 3);
+        result += QLatin1String("\t");
+
+
+        result += qtmisc::fn_as_QString(it->first._4);
+
+        result += QLatin1String("\n");
+    }
+
+    QApplication::clipboard()->setText(result);
+}
 
 
 };      //      namespace qtmisc {

@@ -24,6 +24,31 @@
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="filter_product">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="editable">
+        <bool>true</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>all</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pb_copy">
+       <property name="text">
+        <string>copy</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="message">
        <property name="text">
         <string>_</string>
@@ -47,6 +72,9 @@
       <widget class="QPushButton" name="pb_request">
        <property name="text">
         <string>request</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

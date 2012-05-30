@@ -308,7 +308,7 @@ QString  get_second_text_key(const mtk::trd::msg::CF_XX&  confirm_info, const mt
 
 
 
-void WExecsHistReport::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_info, const mtk::trd::msg::sub_exec_conf& exec)
+void WExecsHistReport::process_execution(const mtk::trd::msg::CF_XX&  confirm_info, const mtk::trd::msg::sub_exec_conf& exec)
 {
     //auto client_item   = get0_key_item                  (ui->treeWidget, QLatin1String(confirm_info.invariant.account.client_code.c_str()));
     //auto account_item  = getn_key_item                  (client_item,    QLatin1String(confirm_info.invariant.account.name.c_str()));
@@ -316,8 +316,27 @@ void WExecsHistReport::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_inf
     //auto product_item  = getn_key_item_exec__Product    (market_item,    QLatin1String(confirm_info.invariant.product_code.product.c_str()),     confirm_info, exec, confirm_info.invariant.product_code);
     //auto order_item    = getn_key_item_exec             (product_item,   get_order_id(confirm_info.invariant.order_id),                          confirm_info, exec);
     //auto order_item    =
-    QTreeWidgetItem_exec*  order_item    =  get0_key_item_exec               (ui->treeWidget,   get_main_text_key  (confirm_info, exec),                     confirm_info, exec);
-                                            get1_key_item_exec_by_price      (order_item,       get_second_text_key(confirm_info, exec),                     confirm_info, exec, order_item->cf_xx);
+
+    std::string  filter_product_name = ui->filter_product->currentText().toStdString();
+    std::string  product_name = confirm_info.invariant.product_code.product;
+    {
+        bool located=false;
+        for(int i=0; i<ui->filter_product->count(); ++i)
+        {
+            if(ui->filter_product->itemText(i).toStdString() ==  product_name)
+            {
+                located = true;
+                break;
+            }
+        }
+        if(!located)
+            ui->filter_product->addItem(QLatin1String(product_name.c_str()));
+    }
+    if(confirm_info.invariant.product_code.product.find(filter_product_name.c_str()) <1000  ||  filter_product_name == tr("all").toStdString())
+    {
+        QTreeWidgetItem_exec*  order_item    =  get0_key_item_exec               (ui->treeWidget,   get_main_text_key  (confirm_info, exec),                     confirm_info, exec);
+                                                get1_key_item_exec_by_price      (order_item,       get_second_text_key(confirm_info, exec),                     confirm_info, exec, order_item->cf_xx);
+    }
 
                          //getn_key_item_exec               (order_item,       qtmisc::fn_as_QString(exec.price),                                 confirm_info, exec);
     //new QTreeWidgetItem_exec(ui->treeWidget, confirm_info, exec);
@@ -338,6 +357,9 @@ void  WExecsHistReport::reactivate_request_button(const int&)
 void WExecsHistReport::on_pb_request_clicked()
 {
     ui->treeWidget->clear();
+    list_execs.clear();
+    ui->filter_product->clear();
+    ui->filter_product->addItem(tr("all"));
 
     //  testing
     /*
@@ -374,11 +396,14 @@ void  WExecsHistReport::subscribe_response(const mtk::msg::sub_request_id&  requ
 
 void  WExecsHistReport::on_cf_ex_hist(const mtk::trd::msg::CF_EX_HIST&  ex_hist)
 {
-    on_new_execution(ex_hist, ex_hist.executed_pos);
+    list_execs.push_back(mtk::trd::msg::CF_EXLK(ex_hist));
+    process_execution(ex_hist, ex_hist.executed_pos);
 }
 
 void WExecsHistReport::on_dateEdit_dateChanged(QDate date)
 {
+    ui->treeWidget->clear();
+
     mtk::DateTime   selected_date = qtmisc::QDate_as_mtk_DateTime(date);
     if(selected_date < (mtk::dtNowLocal()-mtk::dtDays(60)) )
         ui->message->setText(tr("invalid date. Date too far"));
@@ -393,4 +418,20 @@ void WExecsHistReport::on_dateEdit_dateChanged(QDate date)
         ui->pb_request->setEnabled(true);
     else
         ui->pb_request->setEnabled(false);
+}
+
+
+void WExecsHistReport::on_filter_product_currentIndexChanged(QString /*value*/)
+{
+    ui->treeWidget->clear();
+    for(auto it= list_execs.begin(); it!=list_execs.end(); ++it)
+    {
+        mtk::trd::msg::CF_EXLK& item= *it;      //  I know it's dangerous
+        process_execution(item, item.executed_pos);
+    }
+}
+
+void WExecsHistReport::on_pb_copy_clicked()
+{
+    qtmisc::copy_execs_clipboard(list_execs);
 }
