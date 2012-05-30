@@ -17,7 +17,7 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_TREESERVER2";
-    const char*   APP_VER           = "2012-05-16";
+    const char*   APP_VER           = "2012-05-28";
     const char*   APP_DESCRIPTION   = "This process will send, the markets and groups.\n"
                                       "It also check the permisions\n"
                                       "It doesn't have the full information, there are others specific THREESERVERS cooperating.";
@@ -25,7 +25,21 @@ namespace
     const char*   APP_MODIFICATIONS =   "           2011-03-16     first version\n"
                                         "           2011-08-10     working with grants and bypass (cfg on separated yaml file)\n"
                                         "           2012-05-16     updated grants file and policy\n"
+                                        "           2012-05-28     commands to colapse branch and load struct file\n"
                                         ;
+
+
+
+    void command_colapse_branch(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+
+
+    void register_global_commands (void)
+    {
+        mtk::admin::register_command("ts",  "colapse_branch",  "send a message to clients to colapse a branch (ROOT to full colapse)",  true)->connect(command_colapse_branch);
+    }
+
+
+    MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
 }
 
 
@@ -89,4 +103,20 @@ void on_request_tree_received(const mtk::gen::msg::req_tree_items& tree_request)
                                     mtk::admin::get_url("client"),
                                     tree_request.request_info,
                                     data_list)
-    }
+}
+
+
+
+
+namespace {
+
+void command_colapse_branch(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+{
+    mtk::gen::msg::pub_tree_colapse_branch  msg  (mtk::admin::get_process_info().location.broker_code, mtk::s_trim(params, ' '));
+    mtk_send_message("client", msg);
+
+    response_lines.push_back(MTK_SS("colapse branch for " <<  mtk::s_trim(params, ' ')  << " sent"));
+}
+
+
+};      //  namespace {

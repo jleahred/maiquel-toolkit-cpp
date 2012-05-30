@@ -138,8 +138,47 @@ qTreeProducts::qTreeProducts(QWidget *parent) :
     MTK_TIMER_1S(request_root_items);
 
     connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), SLOT(on_itemDoubleClicked(QTreeWidgetItem*,int)));
+
+
+    static mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::gen::msg::pub_tree_colapse_branch> >  handle;
+    MTK_QPID_RECEIVER_CONNECT_THIS(
+                            handle,
+                            mtk::admin::get_url("client"),
+                            mtk::gen::msg::pub_tree_colapse_branch::get_in_subject("*"),
+                            mtk::gen::msg::pub_tree_colapse_branch,
+                            on_colapse_branch_received)
+
 }
 
+
+void qTreeProducts::on_colapse_branch_received(const mtk::gen::msg::pub_tree_colapse_branch&  msg)
+{
+    if(msg.branch == "ROOT")
+    {
+        this->clear();
+        MTK_TIMER_1S(request_root_items);
+        return;
+    }
+    else
+    {
+        try
+        {
+            QStringList full_path_branch = QString(QLatin1String(MTK_SS(msg.branch << ".none").c_str())).split(QLatin1String("."));
+            QString next_branch_name =  full_path_branch.front();
+            full_path_branch.pop_front();
+            QTreeWidgetItem* start_item = dynamic_cast<QTreeWidgetItem*>(this->invisibleRootItem());
+            if(start_item==0)
+                throw mtk::Alarm(MTK_HERE, "qtreepreducts", "invalid start item", mtk::alPriorError, mtk::alTypeNoPermisions);
+            QTreeWidgetItem*  item = get_item_from_branck(next_branch_name, full_path_branch, start_item);
+            if(item!=0  &&  item->text(0)!= QLatin1String(""))
+            {
+                for(int i=item->childCount()-1; i>=0; --i)
+                    item->removeChild(item->child(i));
+            }
+        }
+        catch(...){};
+    }
+}
 
 
 
@@ -200,7 +239,7 @@ void qTreeProducts::request_root_items(void)
 {
     if(mtk::admin::get_session_id() == "")      return;
 
-    MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtSeconds(25))
+    MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtSeconds(mtk::rand()%15+10))
     {
         if(this->topLevelItemCount() == 0)
         {

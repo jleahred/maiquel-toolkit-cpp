@@ -55,6 +55,8 @@ void command_find_grant_user(const std::string& /*command*/, const std::string& 
 void command_load(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 void command_save(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
+void command_load_tree(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
+
 
 void command_check(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  response_lines);
 
@@ -76,7 +78,8 @@ void register_global_commands (void)
     mtk::admin::register_command("db",  "grant.find.user", "<reg-expr>")->connect(command_find_grant_user);
 
 
-    mtk::admin::register_command("db",  "load",        "DANGEROUS delete current info and load from file", true)->connect(command_load);
+    mtk::admin::register_command("db",  "load",        "DANGEROUS delete current info and load from file (just grants) ", true)->connect(command_load);
+    mtk::admin::register_command("db",  "load.tree",   "load tree info", true)->connect(command_load_tree);
     mtk::admin::register_command("db",  "save",        "save filters to db", true)->connect(command_save);
 
     mtk::admin::register_command("db",  "check",        "it will look for inconsistent info configured in db", true)->connect(command_check);
@@ -247,10 +250,22 @@ void command_load(const std::string& /*command*/, const std::string& params, mtk
         mtk::vector<std::string>  vparams;
         if(check_and_split_params__converting2upper(params, response_lines, 0, vparams)  == false)     return;
 
-        response_lines.push_back("loading...");
+        response_lines.push_back("loading grants...");
         load();
         command_stats("", "", response_lines);
 }
+
+void command_load_tree(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
+{
+        mtk::vector<std::string>  vparams;
+        if(check_and_split_params__converting2upper(params, response_lines, 0, vparams)  == false)     return;
+
+        response_lines.push_back("loading tree...");
+        data_tree = mtk::make_cptr(new mtk::ConfigFile(data_tree->GetFileName_current()));
+        response_lines.push_back("loaded");
+        response_lines.push_back("remember, it doesn't send a colapse message. Do it yourselft");
+}
+
 
 void command_save(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
 {

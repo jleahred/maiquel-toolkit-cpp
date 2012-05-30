@@ -34,3 +34,10 @@ res_tree_items [< QE:ALL_GS, RT:2, SUBJ:CLI.${response_info.request_info.process
     response_info   (rsi)   :   mtk::msg::sub_r_response
     item            (it)    :   sub_tree_item
 }
+
+
+pub_tree_colapse_branch [< QE:ALL_GS, RT:2, SUBJ:ALL.${broker_code}.COLAPSE_BRANCH  >]
+{
+    broker_code       (bc)    :   string          //  of sending process
+    branch            (br)    :   string
+}

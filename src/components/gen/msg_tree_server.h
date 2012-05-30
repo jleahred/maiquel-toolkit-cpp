@@ -197,6 +197,60 @@ public:
 
 
 
+
+//-------------------------------
+//      pub_tree_colapse_branch
+//-------------------------------    
+class pub_tree_colapse_branch     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit pub_tree_colapse_branch (    const std::string&  _broker_code,   const std::string&  _branch );
+    explicit pub_tree_colapse_branch ( const qpid::types::Variant::Map&  mv );
+    virtual ~pub_tree_colapse_branch (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_tree_colapse_branch"; };
+    static  std::string static_get_message_type_as_string(void)        { return "pub_tree_colapse_branch"; };
+    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    std::string                               broker_code; 
+    std::string                               branch; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address ();
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& broker_code);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
     
     
     
@@ -222,6 +276,13 @@ bool operator!= (const req_tree_items& a, const req_tree_items& b);
 bool operator== (const res_tree_items& a, const res_tree_items& b);
 bool operator!= (const res_tree_items& a, const res_tree_items& b);
 
+    std::ostream& operator<< (std::ostream& o, const pub_tree_colapse_branch & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const pub_tree_colapse_branch & c);
+   void           operator >> (const YAML::Node& n,       pub_tree_colapse_branch & c);
+
+bool operator== (const pub_tree_colapse_branch& a, const pub_tree_colapse_branch& b);
+bool operator!= (const pub_tree_colapse_branch& a, const pub_tree_colapse_branch& b);
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_tree_item>& a, const std::string& field);
 void copy (sub_tree_item& a, const qpid::types::Variant& map);
@@ -231,12 +292,17 @@ void copy (req_tree_items& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_tree_items>& a, const std::string& field);
 void copy (res_tree_items& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_tree_colapse_branch& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_tree_colapse_branch>& a, const std::string& field);
+void copy (pub_tree_colapse_branch& a, const qpid::types::Variant& map);
 
     sub_tree_item  __internal_get_default(sub_tree_item *);
     
     req_tree_items  __internal_get_default(req_tree_items *);
     
     res_tree_items  __internal_get_default(res_tree_items *);
+    
+    pub_tree_colapse_branch  __internal_get_default(pub_tree_colapse_branch *);
     
 
 };   //namespace mtk {
@@ -254,6 +320,7 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::req_tree_items)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::res_tree_items)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::gen::msg::pub_tree_colapse_branch)
 
 
 

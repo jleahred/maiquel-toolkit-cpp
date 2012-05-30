@@ -68,7 +68,6 @@ def fill_tag_field_type():
                 tag = ''
                 field_type = 'IC_' + class_name
             else:
-                print ci, 
                 tag = '???'
                 
             if NAME_TYPE.has_key(tag) == False:

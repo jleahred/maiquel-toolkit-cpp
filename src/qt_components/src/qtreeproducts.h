@@ -24,6 +24,7 @@ protected:
 
 private:
     void on_response_request_tree(const mtk::list<mtk::gen::msg::res_tree_items>& list_items);
+    void on_colapse_branch_received(const mtk::gen::msg::pub_tree_colapse_branch&  msg);
 
 
     QPoint startPos;

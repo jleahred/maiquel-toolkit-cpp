@@ -460,6 +460,27 @@ void res_tree_items::before_send(void) const
 
 
 
+
+pub_tree_colapse_branch::pub_tree_colapse_branch (   const std::string&  _broker_code,   const std::string&  _branch)
+    :     broker_code(_broker_code),   branch(_branch) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  pub_tree_colapse_branch::check_recomended(void) const
+{
+
+}
+
+void pub_tree_colapse_branch::before_send(void) const
+{
+
+}
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_tree_item & c)
 {
     o << "{ "
@@ -560,6 +581,39 @@ void  operator >> (const YAML::Node& node, res_tree_items & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const pub_tree_colapse_branch & c)
+{
+    o << "{ "
+
+        << "broker_code:"<<   c.broker_code << "  "        << "branch:"<<   c.branch << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_tree_colapse_branch & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "broker_code"  << YAML::Value <<   c.broker_code        << YAML::Key << "branch"  << YAML::Value <<   c.branch
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, pub_tree_colapse_branch & c)
+{
+
+
+        node["broker_code"]  >> c.broker_code;
+        node["branch"]  >> c.branch;
+
+
+};
+
+
 bool operator== (const sub_tree_item& a, const sub_tree_item& b)
 {
     return (          a.branch ==  b.branch  &&          a.description ==  b.description  &&          a.product_code ==  b.product_code  &&   true  );
@@ -590,6 +644,18 @@ bool operator== (const res_tree_items& a, const res_tree_items& b)
 };
 
 bool operator!= (const res_tree_items& a, const res_tree_items& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const pub_tree_colapse_branch& a, const pub_tree_colapse_branch& b)
+{
+    return (          a.broker_code ==  b.broker_code  &&          a.branch ==  b.branch  &&   true  );
+};
+
+bool operator!= (const pub_tree_colapse_branch& a, const pub_tree_colapse_branch& b)
 {
     return !(a==b);
 };
@@ -757,6 +823,58 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 
+
+
+void  copy (pub_tree_colapse_branch& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("bc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field broker_code on message pub_tree_colapse_branch::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.broker_code, it->second);
+                        //c.broker_code = it->second;
+//   field_type
+
+                    it = mv.find("br");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field branch on message pub_tree_colapse_branch::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.branch, it->second);
+                        //c.branch = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_tree_colapse_branch& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  field_type
+        __internal_add2map(map, a.broker_code, std::string("bc"));
+//  field_type
+        __internal_add2map(map, a.branch, std::string("br"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_tree_colapse_branch>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -803,6 +921,27 @@ qpid::types::Variant::Map   res_tree_items::qpidmsg_codded_as_qpid_map (void) co
 
 
 
+qpid::types::Variant::Map   pub_tree_colapse_branch::qpidmsg_codded_as_qpid_map (void) const
+{
+    qpid::types::Variant::Map   content;
+
+
+//  field_type
+//        content["bc"] = this->broker_code;
+        __internal_add2map(content, this->broker_code, std::string("bc"));
+//  field_type
+//        content["br"] = this->branch;
+        __internal_add2map(content, this->branch, std::string("br"));
+
+
+
+    
+    return content;
+};
+
+
+
+
     sub_tree_item  __internal_get_default(sub_tree_item*)
     {
         return sub_tree_item(
@@ -835,6 +974,16 @@ qpid::types::Variant::Map   res_tree_items::qpidmsg_codded_as_qpid_map (void) co
             );
     }
     
+    pub_tree_colapse_branch  __internal_get_default(pub_tree_colapse_branch*)
+    {
+        return pub_tree_colapse_branch(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
 sub_tree_item::sub_tree_item (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    branch(__internal_get_default((std::string*)0)),
@@ -860,6 +1009,16 @@ res_tree_items::res_tree_items (const qpid::types::Variant::Map&  mv)
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   sub_msg_type
    item(__internal_get_default((sub_tree_item*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
+pub_tree_colapse_branch::pub_tree_colapse_branch (const qpid::types::Variant::Map&  mv)
+    :  //   field_type
+   broker_code(__internal_get_default((std::string*)0)),
+//   field_type
+   branch(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -893,6 +1052,22 @@ mtk::t_qpid_filter  req_tree_items::get_in_subject (const std::string& request_i
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
     mtk::t_qpid_address  res_tree_items::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_filter  pub_tree_colapse_branch::get_in_subject (const std::string& broker_code)
+    {
+        return mtk::t_qpid_filter(MTK_SS("ALL." << broker_code << ".COLAPSE_BRANCH"));
+    }
+    mtk::t_qpid_filter  pub_tree_colapse_branch::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("ALL." << this->broker_code << ".COLAPSE_BRANCH"));
+    }
+    /*static*/  mtk::t_qpid_address  pub_tree_colapse_branch::static_get_qpid_address ()
+    {
+        return mtk::t_qpid_address(MTK_SS("ALL_GS"));
+    }
+    mtk::t_qpid_address  pub_tree_colapse_branch::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("ALL_GS"));
     }
