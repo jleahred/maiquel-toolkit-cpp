@@ -360,6 +360,7 @@ void WExecsHistReport::on_pb_request_clicked()
     list_execs.clear();
     ui->filter_product->clear();
     ui->filter_product->addItem(tr("all"));
+    ui->message->clear();
 
     //  testing
     /*
@@ -379,6 +380,8 @@ void WExecsHistReport::on_pb_request_clicked()
     mtk_send_message("client", rq_execs_historic);
 
     subscribe_response(request_info.req_id);
+
+    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "request_execs_hist", MTK_SS("date " << qtmisc::QDate_as_mtk_DateTime(ui->dateEdit->date())), mtk::alPriorDebug));
 }
 
 
@@ -398,6 +401,8 @@ void  WExecsHistReport::on_cf_ex_hist(const mtk::trd::msg::CF_EX_HIST&  ex_hist)
 {
     list_execs.push_back(mtk::trd::msg::CF_EXLK(ex_hist));
     process_execution(ex_hist, ex_hist.executed_pos);
+    if(ex_hist.truncated_response)
+        ui->message->setText(tr("Too many execs. Truncated response."));
 }
 
 void WExecsHistReport::on_dateEdit_dateChanged(QDate date)

@@ -181,8 +181,17 @@ void  send_execs(const std::string&  sql, const  mtk::trd::msg::oms_RQ_EXECS_HIS
 
             IBPP::Statement st = IBPP::StatementFactory(db, tr);
             st->Execute(sql);
+            int counter = 0;
             while (st->Fetch())
             {
+                bool  truncating=false;
+                ++counter;
+                if(counter > 500-10)
+                {
+                    counter = 0;
+                    truncating = true;
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "sending execs hist", "too many execs to send. some will not be sent", mtk::alPriorError, mtk::alTypeOverflow));
+                }
                 std::string                                 exec_id                 (get_string(st, "EXCF_EXEC_ID"));
                 mtk::FixedNumber                            exec_price              (get_fixed_number(st, "EXCF_POS_PRICE", "EXCF_POS_PRICE_DEC", "EXCF_POS_PRICE_INC"));
                 mtk::FixedNumber                            exec_quantity           (get_fixed_number(st, "EXCF_POS_QUANTITY", "EXCF_POS_QUANTITY_DEC", "EXCF_POS_QUANTITY_INC"));
@@ -215,7 +224,7 @@ void  send_execs(const std::string&  sql, const  mtk::trd::msg::oms_RQ_EXECS_HIS
                 mtk::trd::msg::sub_exec_conf                executed_pos            (exec_id, exec_price, exec_quantity);
                 mtk::trd::msg::CF_EXLK                      cf_exlk                 (cf_xx, executed_pos);
                 mtk::msg::sub_gen_response_location2        gen_response_location2  (rq.request_info.req_id, rq.request_info.process_info.location.broker_code);
-                mtk::trd::msg::CF_EX_HIST                   cf_ex_hist              (cf_exlk, gen_response_location2);
+                mtk::trd::msg::CF_EX_HIST                   cf_ex_hist              (cf_exlk, gen_response_location2, truncating);
 
                 if(rq.request_info.process_info.location.broker_code != "CIMD")
                 {

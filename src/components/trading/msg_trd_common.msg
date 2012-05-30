@@ -162,4 +162,5 @@ RQ_EXECS_HISTORIC  [< QE:CLI_MK, RT:2, SUBJ:MK.${request_info.process_info.locat
 CF_EX_HIST  [< I:CF_EXLK,  QE:ALL_GS, RT:2, SUBJ:CLI.${gen_response_location2.broker_code}.${gen_response_location2.req_id.session_id}.${gen_response_location2.req_id.req_code}.HIST_EX  >]
 {
     gen_response_location2   (grl2)    :     mtk::msg::sub_gen_response_location2
+    truncated_response       (trr)     :     bool
 }

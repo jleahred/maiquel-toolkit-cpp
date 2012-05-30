@@ -227,6 +227,7 @@ QEditOrder_and::QEditOrder_and( const mtk::msg::sub_product_code&       _pc,
 
     //if(agression)
     //    ui->best_oposite->setChecked(true);
+    ui->best_oposite->setChecked(true);
 }
 
 
@@ -507,7 +508,7 @@ bool QEditOrder_and::eventFilter(QObject *object, QEvent *event)
             ui->price->stepDown();
             return true;
         }
-        else if((key_event->key() == Qt::Key_Enter ||  key_event->key() == Qt::Key_Return)  &&  ui->best_oposite->isChecked() == false)
+        else if((key_event->key() == Qt::Key_Enter ||  key_event->key() == Qt::Key_Return)  /*&&  ui->best_oposite->isChecked() == false*/)
         {
             on_pb_main_clicked();
         }

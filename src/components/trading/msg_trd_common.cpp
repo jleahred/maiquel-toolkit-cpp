@@ -629,8 +629,8 @@ void RQ_EXECS_HISTORIC::before_send(void) const
 
 
 
-CF_EX_HIST::CF_EX_HIST ( const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location2&  _gen_response_location2)
-    :  CF_EXLK(parent),   gen_response_location2(_gen_response_location2) 
+CF_EX_HIST::CF_EX_HIST ( const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location2&  _gen_response_location2,   const bool&  _truncated_response)
+    :  CF_EXLK(parent),   gen_response_location2(_gen_response_location2),   truncated_response(_truncated_response) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -1027,7 +1027,7 @@ std::ostream& operator<< (std::ostream& o, const CF_EX_HIST & c)
 {
     o << "{ "
     << "("  <<  static_cast<const CF_EXLK&>(c)  << ")" 
-        << "gen_response_location2:"<< c.gen_response_location2<<"  "
+        << "gen_response_location2:"<< c.gen_response_location2<<"  "        << "truncated_response:"<< c.truncated_response<<"  "
         << " }";
     return o;
 };
@@ -1038,7 +1038,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const CF_EX_HIST & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "CF_EXLK" <<  YAML::Value << static_cast<const CF_EXLK&>(c)  
-        << YAML::Key << "gen_response_location2"  << YAML::Value << c.gen_response_location2
+        << YAML::Key << "gen_response_location2"  << YAML::Value << c.gen_response_location2        << YAML::Key << "truncated_response"  << YAML::Value << c.truncated_response
         << YAML::EndMap;
     return o;
 };
@@ -1051,6 +1051,7 @@ void  operator >> (const YAML::Node& node, CF_EX_HIST & c)
     node["CF_EXLK"]   >>   static_cast<CF_EXLK&>(c)  ;
 
         node["gen_response_location2"]  >> c.gen_response_location2;
+        node["truncated_response"]  >> c.truncated_response;
 
 
 };
@@ -1204,7 +1205,7 @@ bool operator!= (const RQ_EXECS_HISTORIC& a, const RQ_EXECS_HISTORIC& b)
 
 bool operator== (const CF_EX_HIST& a, const CF_EX_HIST& b)
 {
-    return ( (static_cast<const CF_EXLK&>(a)   ==  static_cast<const CF_EXLK&>(b))  &&           a.gen_response_location2 ==  b.gen_response_location2  &&   true  );
+    return ( (static_cast<const CF_EXLK&>(a)   ==  static_cast<const CF_EXLK&>(b))  &&           a.gen_response_location2 ==  b.gen_response_location2  &&          a.truncated_response ==  b.truncated_response  &&   true  );
 };
 
 bool operator!= (const CF_EX_HIST& a, const CF_EX_HIST& b)
@@ -1875,6 +1876,14 @@ copy(static_cast<CF_EXLK&>(c), v);
                     else
                         copy(c.gen_response_location2, it->second);
                         //__internal_qpid_fill(c.gen_response_location2, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("trr");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field truncated_response on message CF_EX_HIST::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.truncated_response, it->second);
+                        //__internal_qpid_fill(c.truncated_response, it->second.asMap());
 
         c.check_recomended ();
     }
@@ -1890,6 +1899,8 @@ __internal_add2map(map, static_cast<const CF_EXLK&>(a));
 
 //  sub_msg_type
         __internal_add2map(map, a.gen_response_location2, std::string("grl2"));
+//  sub_msg_type
+        __internal_add2map(map, a.truncated_response, std::string("trr"));
 
 
 };
@@ -2011,6 +2022,9 @@ __internal_add2map(content, static_cast<const CF_EXLK&>(*this));
 //  sub_msg_type
 //        content["grl2"] =  qpidmsg_coded_as_qpid_Map(this->gen_response_location2);
         __internal_add2map(content, this->gen_response_location2, std::string("grl2"));
+//  sub_msg_type
+//        content["trr"] =  qpidmsg_coded_as_qpid_Map(this->truncated_response);
+        __internal_add2map(content, this->truncated_response, std::string("trr"));
 
 
 
@@ -2152,7 +2166,9 @@ __internal_get_default((CF_EXLK*)0), //   sub_msg_type
     {
         return CF_EX_HIST(
 __internal_get_default((CF_EXLK*)0), //   sub_msg_type
-   __internal_get_default((mtk::msg::sub_gen_response_location2*)0)
+   __internal_get_default((mtk::msg::sub_gen_response_location2*)0),
+//   sub_msg_type
+   __internal_get_default((bool*)0)
             );
     }
     
@@ -2285,7 +2301,9 @@ RQ_EXECS_HISTORIC::RQ_EXECS_HISTORIC (const qpid::types::Variant::Map&  mv)
 
 CF_EX_HIST::CF_EX_HIST (const qpid::types::Variant::Map&  mv)
     :  CF_EXLK(mv), //   sub_msg_type
-   gen_response_location2(__internal_get_default((mtk::msg::sub_gen_response_location2*)0)) 
+   gen_response_location2(__internal_get_default((mtk::msg::sub_gen_response_location2*)0)),
+//   sub_msg_type
+   truncated_response(__internal_get_default((bool*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  

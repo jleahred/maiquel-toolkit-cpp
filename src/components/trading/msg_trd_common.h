@@ -624,7 +624,7 @@ public:
 
     
     // constructor
-    explicit CF_EX_HIST (  const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location2&  _gen_response_location2 );
+    explicit CF_EX_HIST (  const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location2&  _gen_response_location2,   const bool&  _truncated_response );
     explicit CF_EX_HIST ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_EX_HIST (){};
     virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_HIST"; };
@@ -641,6 +641,7 @@ public:
 
     // fields
     mtk::msg::sub_gen_response_location2      gen_response_location2; 
+    bool                                      truncated_response; 
 
 
 
