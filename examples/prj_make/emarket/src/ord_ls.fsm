@@ -263,6 +263,7 @@ executed --   mkt_cf_ex                    /   LE                             ''
                                                                     <<  "  last confirmed: " << last_confirmation()),
                                                                     mtk::alPriorError);
                         lc.description = MTK_SS("pr:" << last_request());
+                        lc.orig_control_fluct = mtk::msg::sub_control_fluct("EMARKET.TRD", mtk::dtNowLocal());
                         ci->set_last_confirmation(mtk::make_nullable(lc));
                     }
                     else

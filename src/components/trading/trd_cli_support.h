@@ -17,6 +17,93 @@ namespace mtk{namespace trd{
 
 
     template<typename CF_EX_XX>
+    t_exec_key  get_exec_key(const CF_EX_XX&  cf_ex_xx);
+
+
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    mtk::msg::sub_product_code   get_product_code(const ORDER_TYPE& order);
+
+
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    mtk::trd::msg::sub_account_info   get_account(const ORDER_TYPE& order);
+
+
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    mtk::trd::msg::sub_order_id  get_order_id(const ORDER_TYPE& order);
+
+
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    std::string   get_cli_ref(const ORDER_TYPE& order);
+
+
+    /**
+     *      It will return the description of last transaction
+     */
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    std::string    get_lasttr_descr  (const ORDER_TYPE& order);
+
+
+
+    /**
+     *      If last transition is a reject, it will return true
+     */
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    bool     is_last_tr_rj  (const ORDER_TYPE& order);
+
+
+
+
+
+
+
+    namespace  msg
+    {
+            template<typename RQ_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS
+            mtk::tuple<int, std::string> check_request(const RQ_TYPE& rq);
+
+            template<typename RQ_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS
+            mtk::tuple<int, std::string> check_request_request(const RQ_TYPE& rq, const mtk::nullable<RQ_TYPE>& last_request);
+
+            template<typename RQ_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS
+            mtk::tuple<int, std::string, bool> check_request_last_confirm(const RQ_TYPE& rq, const mtk::nullable<CONF_TYPE>& last_conf);
+
+            template<typename RQ_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS
+            mtk::tuple<int, std::string> check_request_not_modifying(const RQ_TYPE& rq, const mtk::nullable<RQ_TYPE>& last_request, const mtk::nullable<CONF_TYPE>& last_conf);
+
+            template<typename CONF_TYPE>      //  ex:   mtk::trd::msg::CF_XX_LS
+            mtk::tuple<int, std::string> check_confirm(const CONF_TYPE& cf);
+
+            template<typename RQ_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::RQ_XX_LS
+            mtk::tuple<int, std::string> check_confirm_request(const CONF_TYPE& cf, const mtk::nullable<RQ_TYPE>& last_request);
+
+            template<typename CONF_TYPE>      //  ex:   mtk::trd::msg::CF_XX_LS
+            mtk::tuple<int, std::string> check_confirm__last_confirm(const CONF_TYPE& cf, const mtk::nullable<CONF_TYPE>& last_conf);
+
+            template<typename CONF_TYPE, typename RQ_TYPE>      //  ex:   mtk::trd::msg::CF_XX_LS
+            mtk::tuple<int, std::string> check_reject_request(const CONF_TYPE& rj, const mtk::nullable<RQ_TYPE>& last_request);
+
+            template<typename CONF_TYPE>      //  ex:   mtk::trd::msg::CF_XX_LS
+            mtk::tuple<int, std::string> check_reject__last_confirm(const CONF_TYPE& rj, const mtk::nullable<CONF_TYPE>& last_conf);
+
+            template<typename EXEC_TYPE, typename CONF_TYPE>      //  ex:   mtk::trd::msg::CF_XX_LS
+            mtk::tuple<int, std::string>  check_exec__last_confirm(const EXEC_TYPE& ex, const mtk::nullable<CONF_TYPE>& last_conf);
+        }       //      namespace  msg
+
+
+
+
+
+
+
+
+    //***********************************************************************************************
+    //  IMPLEMENTATION
+
+
+
+
+
+    template<typename CF_EX_XX>
     t_exec_key  get_exec_key(const CF_EX_XX&  cf_ex_xx)
     {
         return mtk::trd::t_exec_key   {cf_ex_xx.invariant.order_id, cf_ex_xx.req_id, cf_ex_xx.market_order_id, cf_ex_xx.executed_pos.exec_id};
@@ -31,6 +118,17 @@ namespace mtk{namespace trd{
             return order.last_request().Get().invariant.product_code;
         else if (order.last_confirmation().HasValue())
             return order.last_confirmation().Get().invariant.product_code;
+        else
+            throw mtk::Alarm(MTK_HERE, "trd_cli_support", MTK_SS("no request no confirmation on order"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
+    }
+
+    template<typename ORDER_TYPE>       //  mtk::trd::trd_cli_ls
+    mtk::trd::msg::sub_order_id  get_order_id(const ORDER_TYPE& order)
+    {
+        if(order.last_request().HasValue())
+            return order.last_request().Get().invariant.order_id;
+        else if (order.last_confirmation().HasValue())
+            return order.last_confirmation().Get().invariant.order_id;
         else
             throw mtk::Alarm(MTK_HERE, "trd_cli_support", MTK_SS("no request no confirmation on order"), mtk::alPriorCritic, mtk::alTypeNoPermisions);
     }

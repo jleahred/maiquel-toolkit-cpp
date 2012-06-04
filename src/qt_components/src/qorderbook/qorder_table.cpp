@@ -350,7 +350,7 @@ public:
     virtual void   update_item_rem_quantity        ()=0;
     virtual void   update_item_order_type          ()=0;
 
-    virtual bool  in_market(void) const  =0;
+    virtual bool  in_market_no_pend(void) const  =0;
 };
 
 
@@ -394,15 +394,15 @@ public:
     ~order_in_qbook_xx() {
     }
 
-    bool  in_market(void) const  {  return inner_order->in_market(); }
+    bool  in_market_no_pend(void) const  {  return inner_order->in_market_no_pend(); }
 
     QColor  get_default_background_color(void)
     {
         if      (inner_order->serrors() != "")
             return qtmisc::mtk_color_problem;
-        else if (is_last_tr_rj(*inner_order)   &&  inner_order->in_market()==false)
+        else if (is_last_tr_rj(*inner_order)   &&  inner_order->in_market_no_pend()==false)
             return qtmisc::mtk_color_rejected;
-        else if (inner_order->in_market())
+        else if (inner_order->in_market_no_pend())
             return Qt::white;
         else if (inner_order->is_canceled())
         {
@@ -421,9 +421,9 @@ public:
     {
         if      (inner_order->serrors() != "")
             return Qt::white;
-        //else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market()==false)
+        //else if (get_lasttr_rjdescr(*inner_order) != ""  &&  inner_order->in_market_no_pend()==false)
         //    return Qt::white;
-        else if (is_last_tr_rj(*inner_order)   &&  inner_order->in_market()==false)
+        else if (is_last_tr_rj(*inner_order)   &&  inner_order->in_market_no_pend()==false)
             return Qt::white;
         else
             return Qt::black;
@@ -1063,7 +1063,7 @@ void qorder_table::request_cancel_CURRENT_FILTER(void)
         {
             for(auto it=orders->begin(); it!=orders->end(); ++it)
             {
-                if(it->second->in_market())
+                if(it->second->in_market_no_pend())
                 {
                     const mtk::trd::msg::sub_order_id   ord_id {it->first};
                     auto  order_type = mtk::trd::trd_cli_ord_book::get_order_type(ord_id);
@@ -1107,25 +1107,25 @@ void qorder_table::request_cancel___ALL(void)
                 if(order_type ==  mtk::trd::trd_cli_ord_book::ot_limit)
                 {
                     mtk::CountPtr<mtk::trd::trd_cli_ls>     order = mtk::trd::trd_cli_ord_book::get_order_ls(ord_id);
-                    if(order->in_market())
+                    if(order->in_market_no_pend())
                         mtk::trd::trd_cli_ord_book::rq_cc_ls(ord_id);
                 }
                 else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_market)
                 {
                     mtk::CountPtr<mtk::trd::trd_cli_mk>     order = mtk::trd::trd_cli_ord_book::get_order_mk(ord_id);
-                    if(order->in_market())
+                    if(order->in_market_no_pend())
                         mtk::trd::trd_cli_ord_book::rq_cc_mk(ord_id);
                 }
                 else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_stop_market)
                 {
                     mtk::CountPtr<mtk::trd::trd_cli_sm>     order = mtk::trd::trd_cli_ord_book::get_order_sm(ord_id);
-                    if(order->in_market())
+                    if(order->in_market_no_pend())
                     mtk::trd::trd_cli_ord_book::rq_cc_sm(ord_id);
                 }
                 else if(order_type ==  mtk::trd::trd_cli_ord_book::ot_stop_limit)
                 {
                     mtk::CountPtr<mtk::trd::trd_cli_sl>     order = mtk::trd::trd_cli_ord_book::get_order_sl(ord_id);
-                    if(order->in_market())
+                    if(order->in_market_no_pend())
                     mtk::trd::trd_cli_ord_book::rq_cc_sl(ord_id);
                 }
                 else throw mtk::Alarm(MTK_HERE, "qorderbook", MTK_SS("unknown order type " << ord_id << "  type:"  << mtk::trd::trd_cli_ord_book::get_order_type(ord_id)), mtk::alPriorCritic, mtk::alTypeNoPermisions);

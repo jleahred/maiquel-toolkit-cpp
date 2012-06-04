@@ -82,9 +82,10 @@ public:
     const mtk::nullable<mtk::trd::msg::CF_XX_SM>           &  last_confirmation () const;
     const mtk::nullable<mtk::trd::msg::RQ_XX_SM>           &  last_request () const;
     const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   &  history () const;
-    const bool                                             &  in_market () const;
+    const bool                                             &  in_market_no_pend () const;
     const bool                                             &  is_canceled () const;
     const bool                                             &  is_triggered () const;
+    const bool                                             &  is_alive () const;
     const bool                                             &  has_pending_rq () const;
     const std::string                                      &  serrors () const;
 
@@ -154,9 +155,10 @@ public:
     const mtk::nullable<mtk::trd::msg::CF_XX_SM>           &  last_confirmation () const;
     const mtk::nullable<mtk::trd::msg::RQ_XX_SM>           &  last_request () const;
     const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   &  history () const;
-    const bool                                             &  in_market () const;
+    const bool                                             &  in_market_no_pend () const;
     const bool                                             &  is_canceled () const;
     const bool                                             &  is_triggered () const;
+    const bool                                             &  is_alive () const;
     const bool                                             &  has_pending_rq () const;
     const std::string                                      &  serrors () const;
 

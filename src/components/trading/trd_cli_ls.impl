@@ -541,12 +541,14 @@ struct  status_common_info
     mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>   __executions;
     virtual const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>  &  executions() const {  return __executions; };
     virtual void set_executions(const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>  &  _prop) {  __executions = _prop;  };
-    virtual const bool                                             &  in_market() const {  static bool                                             result(false);   return result; };
-    virtual void set_in_market(const bool                                            & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
+    virtual const bool                                             &  in_market_no_pend() const {  static bool                                             result(false);   return result; };
+    virtual void set_in_market_no_pend(const bool                                            & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
     virtual const bool                                             &  is_canceled() const {  static bool                                             result(false);   return result; };
     virtual void set_is_canceled(const bool                                            & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
     virtual const bool                                             &  is_full_executed() const {  static bool                                             result(false);   return result; };
     virtual void set_is_full_executed(const bool                                            & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
+    virtual const bool                                             &  is_alive() const {  static bool                                             result(true );   return result; };
+    virtual void set_is_alive(const bool                                            & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
     virtual const bool                                             &  has_pending_rq() const {  static bool                                             result(false);   return result; };
     virtual void set_has_pending_rq(const bool                                            & ) {  throw mtk::Alarm(MTK_HERE, "fsm_gen.set_property", "property not valid in current status", mtk::alPriorError);  };
     std::string                                      __serrors;
@@ -618,9 +620,10 @@ public:
     virtual const mtk::nullable<mtk::trd::msg::RQ_XX_LS>           &  last_request (void) const { return ci->last_request(); }; 
     virtual const mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >   &  history (void) const { return ci->history(); }; 
     virtual const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_warped>   &  executions (void) const { return ci->executions(); }; 
-    virtual const bool                                             &  in_market (void) const { return ci->in_market(); }; 
+    virtual const bool                                             &  in_market_no_pend (void) const { return ci->in_market_no_pend(); }; 
     virtual const bool                                             &  is_canceled (void) const { return ci->is_canceled(); }; 
     virtual const bool                                             &  is_full_executed (void) const { return ci->is_full_executed(); }; 
+    virtual const bool                                             &  is_alive (void) const { return ci->is_alive(); }; 
     virtual const bool                                             &  has_pending_rq (void) const { return ci->has_pending_rq(); }; 
     virtual const std::string                                      &  serrors (void) const { return ci->serrors(); }; 
 
@@ -643,14 +646,17 @@ class init  :   public  abstract_status
 public:
     init (mtk::CountPtr<status_common_info> _ci)
         : 
-        abstract_status(_ci)
-
+        abstract_status(_ci),
+        __is_alive(false)
         {  };
     
     std::string  GetStatusName()  {  return "init"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    bool                                         __is_alive;
+    virtual const bool                                        &  is_alive() const {  return __is_alive; };
+    virtual void set_is_alive(const bool                                        &  _prop) {  __is_alive = _prop;  };
 
 
     //  INPUTS
@@ -740,16 +746,16 @@ public:
     market (mtk::CountPtr<status_common_info> _ci)
         : 
         abstract_status(_ci),
-        __in_market(true)
+        __in_market_no_pend(true)
         {  };
     
     std::string  GetStatusName()  {  return "market"; }
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
-    bool                                         __in_market;
-    virtual const bool                                        &  in_market() const {  return __in_market; };
-    virtual void set_in_market(const bool                                        &  _prop) {  __in_market = _prop;  };
+    bool                                         __in_market_no_pend;
+    virtual const bool                                        &  in_market_no_pend() const {  return __in_market_no_pend; };
+    virtual void set_in_market_no_pend(const bool                                        &  _prop) {  __in_market_no_pend = _prop;  };
 
 
     //  INPUTS
@@ -1055,7 +1061,8 @@ public:
     canceled (mtk::CountPtr<status_common_info> _ci)
         : 
         abstract_status(_ci),
-        __is_canceled(true)
+        __is_canceled(true),
+        __is_alive(false)
         {  };
     
     std::string  GetStatusName()  {  return "canceled"; }
@@ -1065,6 +1072,9 @@ public:
     bool                                         __is_canceled;
     virtual const bool                                        &  is_canceled() const {  return __is_canceled; };
     virtual void set_is_canceled(const bool                                        &  _prop) {  __is_canceled = _prop;  };
+    bool                                         __is_alive;
+    virtual const bool                                        &  is_alive() const {  return __is_alive; };
+    virtual void set_is_alive(const bool                                        &  _prop) {  __is_alive = _prop;  };
 
 
     //  INPUTS
@@ -1100,7 +1110,8 @@ public:
     executed (mtk::CountPtr<status_common_info> _ci)
         : 
         abstract_status(_ci),
-        __is_full_executed(true)
+        __is_full_executed(true),
+        __is_alive(false)
         {  };
     
     std::string  GetStatusName()  {  return "executed"; }
@@ -1110,6 +1121,9 @@ public:
     bool                                         __is_full_executed;
     virtual const bool                                        &  is_full_executed() const {  return __is_full_executed; };
     virtual void set_is_full_executed(const bool                                        &  _prop) {  __is_full_executed = _prop;  };
+    bool                                         __is_alive;
+    virtual const bool                                        &  is_alive() const {  return __is_alive; };
+    virtual void set_is_alive(const bool                                        &  _prop) {  __is_alive = _prop;  };
 
 
     //  INPUTS
@@ -1145,6 +1159,7 @@ public:
     error (mtk::CountPtr<status_common_info> _ci,  const std::string                                      & _description)
         : 
         abstract_status(_ci),
+        __is_alive(false),
         __description(_description)
         { 
             try
@@ -1160,6 +1175,9 @@ public:
 
 //private:   visibility ignored here
     //  specific properties (good for RAII)
+    bool                                         __is_alive;
+    virtual const bool                                        &  is_alive() const {  return __is_alive; };
+    virtual void set_is_alive(const bool                                        &  _prop) {  __is_alive = _prop;  };
     std::string                                       __description;
     virtual const std::string                                      &  description() const {  return __description; };
     virtual void set_description(const std::string                                      &  _prop) {  __description = _prop;  };
@@ -8539,9 +8557,9 @@ const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_wa
 {
     return current_status->executions();
 }
-const bool                                             & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::in_market (void) const
+const bool                                             & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::in_market_no_pend (void) const
 {
-    return current_status->in_market();
+    return current_status->in_market_no_pend();
 }
 const bool                                             & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::is_canceled (void) const
 {
@@ -8550,6 +8568,10 @@ const bool                                             & mtk::trd::trd_cli_ls_da
 const bool                                             & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::is_full_executed (void) const
 {
     return current_status->is_full_executed();
+}
+const bool                                             & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::is_alive (void) const
+{
+    return current_status->is_alive();
 }
 const bool                                             & mtk::trd::trd_cli_ls_dangerous_signals_not_warped::has_pending_rq (void) const
 {
@@ -8687,9 +8709,9 @@ const mtk::CountPtr<mtk::trd::hist::order_EXECS_historic_dangerous_not_signal_wa
 {
     return  ptr->executions();
 }
-const bool                                             & mtk::trd::trd_cli_ls::in_market (void) const
+const bool                                             & mtk::trd::trd_cli_ls::in_market_no_pend (void) const
 {
-    return  ptr->in_market();
+    return  ptr->in_market_no_pend();
 }
 const bool                                             & mtk::trd::trd_cli_ls::is_canceled (void) const
 {
@@ -8698,6 +8720,10 @@ const bool                                             & mtk::trd::trd_cli_ls::i
 const bool                                             & mtk::trd::trd_cli_ls::is_full_executed (void) const
 {
     return  ptr->is_full_executed();
+}
+const bool                                             & mtk::trd::trd_cli_ls::is_alive (void) const
+{
+    return  ptr->is_alive();
 }
 const bool                                             & mtk::trd::trd_cli_ls::has_pending_rq (void) const
 {

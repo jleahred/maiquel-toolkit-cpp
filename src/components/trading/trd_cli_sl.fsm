@@ -69,15 +69,17 @@
       last_confirmation  :  mtk::nullable<mtk::trd::msg::CF_XX_SL>          ({ mtk::nullable<mtk::trd::msg::CF_XX_SL>() })
       last_request       :  mtk::nullable<mtk::trd::msg::RQ_XX_SL>          ({ mtk::nullable<mtk::trd::msg::RQ_XX_SL>() })
       history            :  mtk::CountPtr<mtk::trd::hist::order_historic_dangerous_not_signal_warped      >  ({ mtk::make_cptr(new mtk::trd::hist::order_historic_dangerous_not_signal_warped)       })
-      in_market          :  bool                                            ({false})                                           phony
+      in_market_no_pend  :  bool                                            ({false})                                           phony
       is_canceled        :  bool                                            ({false})                                           phony
       is_triggered       :  bool                                            ({false})                                           phony
+      is_alive           :  bool                                            ({true })                                           phony
       has_pending_rq     :  bool                                            ({false})                                           phony
       serrors            :  std::string                                     ({""})
 
 
 
 ::STATUS::init
+      is_alive                :  bool                                        ({false})
 
 ::STATUS::w_cfnw
       check_time_out          :  mtk::dtTimeQuantity                         ({_})
@@ -85,7 +87,7 @@
       [{  if(check_time_out() > mtk::dtSeconds(0))        MTK_CALL_LATER1S_THIS(mtk::dtSeconds(2), 0, time_out);   }]
 
 ::STATUS::market
-      in_market               :  bool                                        ({true})
+      in_market_no_pend       :  bool                                        ({true})
 
 ::STATUS::w_cfmd
       check_time_out          :  mtk::dtTimeQuantity                         ({_})
@@ -114,12 +116,15 @@
 
 ::STATUS::canceled
       is_canceled             :  bool                                        ({true})
+      is_alive                :  bool                                        ({false})
 
 ::STATUS::triggered
       is_triggered            :  bool                                        ({true})
+      is_alive                :  bool                                        ({false})
 
 
 ::STATUS::error
+      is_alive                :  bool                                        ({false})
       description        :  std::string                                      ({_})
       [{
             ci->__serrors += std::string(", ") + description();
