@@ -445,6 +445,19 @@ QDepth::QDepth(QWidget *parent) :
                 table_widget->setItem(row, col, item);
             }
         }
+
+        for (int row=0; row<table_widget->rowCount(); row++)
+        {
+            int col = row < table_widget->rowCount()/2  ?  0  :  2;
+            QTableWidgetItem* item = this->table_widget->item(row, col);
+            if(row < table_widget->rowCount()/2)
+                item->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
+            else
+                item->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+
+
+            item->setForeground(QColor(255,255,0));
+        }
     }
 
 
@@ -515,6 +528,9 @@ QDepth::QDepth(QWidget *parent) :
     this->disable_actions();
     remove_focus();
 
+    MTK_CONNECT_THIS(mtk::trd::cli_pos_prod::get_sig_product_updated(), on_product_pos_updated);
+    if(price_manager.isValid())
+        own_levels = mtk::trd::cli_pos_prod::get_product_levels(price_manager->get_product_code());
 
     MTK_TIMER_1D(check_for_pending_screen_update);
 }
@@ -522,6 +538,18 @@ QDepth::QDepth(QWidget *parent) :
 QDepth::~QDepth()
 {
 }
+
+
+void  QDepth::on_product_pos_updated(const mtk::msg::sub_product_code& product_code, const mtk::list<mtk::trd::cli_pos_prod::level>&  levels)
+{
+    if(price_manager.isValid()  &&  price_manager->get_product_code() == product_code)
+    {
+        pending_screen_update = true;
+        own_levels = levels;
+    }
+}
+
+
 
 /*
 void QDepth::slot_delete_component(void)
@@ -558,17 +586,32 @@ void delete_cells(QTableWidget* table_widget)
 }
 
 
-void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_level& level, QTableDeph* table_widget, const mtk::msg::sub_product_code& product_code)
+
+QString   get_own_pos (const mtk::FixedNumber&  price,   const mtk::list<mtk::trd::cli_pos_prod::level>&  levels)
+{
+    for(auto it=levels.begin(); it!=levels.end(); ++it)
+    {
+        if(it->price == price)
+            return  qtmisc::fn_as_QString(it->quantity);
+    }
+    return QLatin1String("");
+}
+
+void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_level& level, QTableDeph* table_widget, const mtk::msg::sub_product_code& product_code,  int  own_position,
+                        const mtk::list<mtk::trd::cli_pos_prod::level>&  own_levels)
 {
     if (level.quantity.GetIntCode() != 0)
     {
         QTableWidgetItem*  item_price = table_widget->item(row, price_col);
         QTableWidgetItem*  item_quantity = table_widget->item(row, 1);
+        QTableWidgetItem*  item_pos = table_widget->item(row, own_position);
+
         QString  new_price = qtmisc::fn_as_QString(level.price);
         QString  new_quantity = qtmisc::fn_as_QString(level.quantity);
 
         item_price->setText(new_price);
         item_quantity->setText(new_quantity);
+        item_pos->setText(get_own_pos(level.price, own_levels));
     }
     else if(level.quantity.GetIntCode() == 0  &&   level.price.GetIntCode()!=0)
     {
@@ -579,6 +622,7 @@ void write_in_cell(int row, int price_col, const mtk::prices::msg::sub_price_lev
     {
         table_widget->item(row, price_col)->setText(QLatin1String(""));
         table_widget->item(row, 1)->setText(QLatin1String(""));
+        table_widget->item(row, own_position)->setText(QLatin1String(""));
     }
 }
 
@@ -597,7 +641,7 @@ void QDepth::on_message_last_mk_execs_ticker(const mtk::msg::sub_product_code&, 
 
 void QDepth::check_for_pending_screen_update(void)
 {
-    if(pending_screen_update   &&   price_manager.get2())
+    if(pending_screen_update   &&   price_manager.isValid())
     {
         //MTK_EXEC_MAX_FREC(mtk::dtMilliseconds(200))
             update_prices               (price_manager->get_best_prices());
@@ -619,17 +663,17 @@ void QDepth::update_prices(const mtk::prices::msg::sub_best_prices&   best_price
 
 
         auto  product_code = price_manager->get_product_code();
-        write_in_cell(9, 0, best_prices.bids.level4, table_widget, product_code);
-        write_in_cell(8, 0, best_prices.bids.level3, table_widget, product_code);
-        write_in_cell(7, 0, best_prices.bids.level2, table_widget, product_code);
-        write_in_cell(6, 0, best_prices.bids.level1, table_widget, product_code);
-        write_in_cell(5, 0, best_prices.bids.level0, table_widget, product_code);
+        write_in_cell(9, 0, best_prices.bids.level4, table_widget, product_code,   2/*position*/, own_levels);
+        write_in_cell(8, 0, best_prices.bids.level3, table_widget, product_code,   2/*position*/, own_levels);
+        write_in_cell(7, 0, best_prices.bids.level2, table_widget, product_code,   2/*position*/, own_levels);
+        write_in_cell(6, 0, best_prices.bids.level1, table_widget, product_code,   2/*position*/, own_levels);
+        write_in_cell(5, 0, best_prices.bids.level0, table_widget, product_code,   2/*position*/, own_levels);
 
-        write_in_cell(4, 2, best_prices.asks.level0, table_widget, product_code);
-        write_in_cell(3, 2, best_prices.asks.level1, table_widget, product_code);
-        write_in_cell(2, 2, best_prices.asks.level2, table_widget, product_code);
-        write_in_cell(1, 2, best_prices.asks.level3, table_widget, product_code);
-        write_in_cell(0, 2, best_prices.asks.level4, table_widget, product_code);
+        write_in_cell(4, 2, best_prices.asks.level0, table_widget, product_code,   0/*position*/, own_levels);
+        write_in_cell(3, 2, best_prices.asks.level1, table_widget, product_code,   0/*position*/, own_levels);
+        write_in_cell(2, 2, best_prices.asks.level2, table_widget, product_code,   0/*position*/, own_levels);
+        write_in_cell(1, 2, best_prices.asks.level3, table_widget, product_code,   0/*position*/, own_levels);
+        write_in_cell(0, 2, best_prices.asks.level4, table_widget, product_code,   0/*position*/, own_levels);
 
         if(table_widget->styleSheet() == style_sheet_null)
             table_widget->setStyleSheet(style_sheet_normal);
@@ -924,16 +968,21 @@ void QDepth::dropEvent(QDropEvent *event)
     this->setFocus();
 }
 
+
+
 void QDepth::subscribe_to (const mtk::msg::sub_product_code& _product_code)
 {
     price_manager = mtk::make_cptr(new mtk::prices::price_manager(_product_code));
     MTK_CONNECT_THIS(price_manager->signal_best_prices_update, on_message_best_prices);
     MTK_CONNECT_THIS(price_manager->signal_last_mk_execs_ticker, on_message_last_mk_execs_ticker);
 
+    own_levels = mtk::trd::cli_pos_prod::get_product_levels(price_manager->get_product_code());
+
     //  this will make a permanent suscription  for this prices_manager instance
     update_prices               (price_manager->get_best_prices());
     update_last_mk_execs_ticker (price_manager->get_last_mk_execs_ticker());
     title->setText(QLatin1String(MTK_SS(price_manager->get_product_code().market << "."<< price_manager->get_product_code().product).c_str()));
+
 }
 
 

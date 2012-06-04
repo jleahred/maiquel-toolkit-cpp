@@ -9,6 +9,7 @@
 #include "components/prices/msg_prices.h"
 #include "components/prices/cli/price_manager.h"
 #include "components/trading/msg_trd_common_support.h"
+#include "components/trading/trd_cli_prod_pos.h"
 
 
 
@@ -105,6 +106,9 @@ private:
 
     bool          pending_screen_update;
     mtk::CountPtr<mtk::prices::price_manager>       price_manager;
+
+    mtk::list<mtk::trd::cli_pos_prod::level>        own_levels;
+
     void check_for_pending_screen_update(void);
 
 
@@ -112,6 +116,7 @@ private:
     void update_prices(const mtk::nullable<mtk::prices::msg::sub_best_prices>&   n_best_prices);
     void upate_null_prices(void);
     void on_message_best_prices(const mtk::msg::sub_product_code&, const mtk::prices::msg::sub_best_prices& msg);
+    void on_product_pos_updated(const mtk::msg::sub_product_code& product_code, const mtk::list<mtk::trd::cli_pos_prod::level>&  levels);
 
     void update_last_mk_execs_ticker(const mtk::prices::msg::sub_last_mk_execs_ticker&);
     void update_last_mk_execs_ticker(const mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker>&);
