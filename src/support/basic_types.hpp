@@ -24,6 +24,18 @@ struct null_type{};
 
 
 
+
+
+template<typename T> struct remove_const_and_reference              { typedef T type; };
+template<typename T> struct remove_const_and_reference<T&>          { typedef T type; };
+template<typename T> struct remove_const_and_reference<const T >    { typedef T type; };
+template<typename T> struct remove_const_and_reference<const T&>    { typedef T type; };
+
+
+
+
+
+
 //--------------------------------------------------------------------
 //  Template IF for types   //  esto se debería pasar al fichero de tipos básicos
 //--------------------------------------------------------------------
