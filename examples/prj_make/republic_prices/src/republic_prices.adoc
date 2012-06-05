@@ -34,8 +34,8 @@
 
 
 * This is a very simple and small process
-* This process will receive prices from a source and it will republish using price contention
-* Prices contention has to be configured to send messages to other place in order to avoid conficts with original publications
+* This process will receive prices compressed from a source and it will republish using plain messages
+* Prices contention has to be configured to send messages to other place in order to avoid conflicts with original publications
 +
 
 * The full source code of this process is...

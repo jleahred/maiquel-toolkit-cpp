@@ -14,7 +14,7 @@
 namespace
 {
 
-    const char*   APP_NAME          = "TEST_REPUBLIC_PRICES";
+    const char*   APP_NAME          = "REPUBLIC_PRICES";
     const char*   APP_VER           = "2012-04-02 d";
     const char*   APP_DESCRIPTION   = "receive compacted prices and publish on old non compacted\n"
                                         ;
