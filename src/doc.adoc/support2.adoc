@@ -1,6 +1,29 @@
 :cpp: {basebackend@docbook:c++:cpp}
 
 
+
+=== exec_command
+    support/exec_command.h
+
+* It runs a command asynchronously
+* It will throw signals to inform new lines and command finished
+* You can stop command calling stop method
++
+.exec_command.h
+[source,{cpp}]
+----
+include::../../src/support/exec_command.h[]
+----
++
+.Example exec_command.h
+[source,{cpp}]
+----
+include::../../examples/onefile/support/ex_exec_command.cpp[]
+----
+
+
+
+
 === Factory
 * This is a tool to create repositories of shared objects in diferent parts of program
 * You will request with a +key+

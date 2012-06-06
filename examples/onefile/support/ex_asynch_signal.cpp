@@ -34,11 +34,9 @@ int main()
 {
     try {
 
-        mtk::Signal<>   signal0;
+        mtk::async_signal_last<>  signal0(mtk::dtSeconds(10));
 
-        mtk::async_signal_last<>  re_signal_10s(signal0, mtk::dtSeconds(10));
-
-        re_signal_10s.signal.connect(&called);
+        signal0.signal.connect(&called);
 
         signal0.emit();
         signal0.emit();
@@ -47,9 +45,8 @@ int main()
         signal0.emit();
 
 
-        mtk::Signal<int&>                signal1;
-        mtk::async_signal_last<int&>    re_signal1_10s(signal1, mtk::dtSeconds(10));
-        re_signal1_10s.signal.connect(&called1);
+        mtk::async_signal_last<int&>    signal1(mtk::dtSeconds(10));
+        signal1.signal.connect(&called1);
         int counter=0;
         signal1.emit(++counter);
         signal1.emit(++counter);
@@ -63,9 +60,8 @@ int main()
 
 
 
-        mtk::Signal<int&>                signal1a;
-        mtk::async_signal_all<int&>    re_signal1_2sall(signal1a, mtk::dtSeconds(2));
-        re_signal1_2sall.signal.connect(&called1);
+        mtk::async_signal_all<int&>    signal1a(mtk::dtSeconds(2));
+        signal1a.signal.connect(&called1);
         counter=0;
         signal1a.emit(++counter);
         signal1a.emit(++counter);
@@ -113,3 +109,4 @@ void mtk::AlarmMsg (const Alarm& alarma)
         std::cout << std::endl << "ALARMA SALIDA..." << std::endl ;
         std::cout << alarma << std::endl ;
 }
+
