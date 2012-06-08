@@ -26,7 +26,18 @@ void qLocaleDoubleSpinBox::keyPressEvent(QKeyEvent *event)
         if(this->text() == QLatin1String("+")  ||  this->text()== QLatin1String("-"))
             return;
     }
+    if(lineEdit()->text().indexOf(QLocale::system().decimalPoint()) < lineEdit()->cursorPosition()  &&  event->key()== Qt::Key_Left)
+        lineEdit()->setCursorPosition(lineEdit()->cursorPosition() - 1);
     QDoubleSpinBox::keyPressEvent(event);
+    if(lineEdit()->text().indexOf(QLocale::system().decimalPoint()) < lineEdit()->cursorPosition()  &&  event->key()==Qt::Key_Backspace)
+        lineEdit()->setCursorPosition(lineEdit()->cursorPosition() - 1);
+
+    if(event->key()==Qt::Key_Backspace && lineEdit()->text()[0]==QLatin1Char('-')  &&  lineEdit()->text()[1]==QLatin1Char('0')  &&  (lineEdit()->cursorPosition() == 1  ||  lineEdit()->cursorPosition() == 2))
+    {
+        int oldpos = lineEdit()->cursorPosition();
+        lineEdit()->setText(lineEdit()->text().mid(1));
+        lineEdit()->setCursorPosition(oldpos-1);
+    }
     if(this->text() == QLatin1String(""))   _is_empty = true;
     else                                    _is_empty = false;
     Q_EMIT(this->valueChanged(this->text()));
@@ -61,9 +72,8 @@ QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) con
         input[after_sign] =  QLatin1Char(' ');
     if(input.size()==1  &&  this->decimals()>0  &&  input.count(QLocale::system().decimalPoint())==0)
         input += QString(QLocale::system().decimalPoint());
-
     bool select_zero_left = true;
-    if(mtk::Double(0.) != mtk::Double(input.toDouble()))
+    if(0 != int(input.toDouble()))
         select_zero_left = false;
     if(input.count(QString(QLocale::system().decimalPoint()) + QString(QLocale::system().decimalPoint())) >0)
     {
@@ -105,10 +115,26 @@ QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) con
     pos += input.count(QLocale::system().groupSeparator()) - g_separators;
     pos += input.count(QLocale::system().decimalPoint())   - d_separators;
 
-    if(negative == false  &&  select_zero_left  &&  input[0] == QLatin1Char('0')  &&  pos == 1)
+    //if(negative == false  &&  select_zero_left  &&  input[0] == QLatin1Char('0')  &&  pos == 1)
+    //if(negative == false  &&  select_zero_left  &&  input[0] == QLatin1Char('0')  &&  lineEdit()->cursorPosition()==1)
+    if(negative == false  &&  select_zero_left  &&  input[0] == QLatin1Char('0')  &&  (lineEdit()->cursorPosition()==0  ||  lineEdit()->cursorPosition()==1) )
         this->lineEdit()->setSelection(0, 1);
-    else if(negative == true  &&  select_zero_left  &&  input[1] == QLatin1Char('0')  &&  pos == 2)
+    else if(negative == true  &&  select_zero_left  &&  input[1] == QLatin1Char('0')  &&  (lineEdit()->cursorPosition()==1  ||  lineEdit()->cursorPosition()==2) )
         this->lineEdit()->setSelection(1, 1);
+    else
+    {
+        if(lineEdit()->text().indexOf(QLocale::system().decimalPoint())  <  lineEdit()->cursorPosition()  &&  lineEdit()->selectedText().size() <=1)
+        {
+            if(lineEdit()->cursorPosition() < lineEdit()->text().size())
+                this->lineEdit()->setSelection(lineEdit()->cursorPosition(), 1);
+            else
+            {
+                this->lineEdit()->setCursorPosition(lineEdit()->cursorPosition()-1);
+                this->lineEdit()->setSelection(lineEdit()->cursorPosition(), 1);
+            }
+        }
+    }
+
 
     previous_input = input;
     if(pos!=0)
