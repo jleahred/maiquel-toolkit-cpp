@@ -1,0 +1,58 @@
+:cpp: {basebackend@docbook:c++:cpp}
+= Email
+
+
+
+
+
+== Document info
+
+
+[width="75%", cols="1, 2" , options=""]
+|==========================================================
+| version |  0.1
+
+| Writter   |   José Luis Esteban
+
+| Creation date |   2012-06-07
+
+| Generated |   {docdate} {doctime}
+
+| Doc name | {docname}
+
+| Doc dir | {docdir}
+
+| Doc file | {docfile}
+
+
+|========================================================
+
+
+
+
+== Process description
+
+* This process will receive qpid messages with info to send an email
+
+
+
+
+== Messages
+
+.mtk/src/components/gen/msg_email.msg
+[source,{cpp}]
+----
+include::../../../../src/components/gen/msg_email.msg[]
+----
+
+
+
+
+== Pending
+
+* .
+
+
+== Document modifications
+* Non aply
+
