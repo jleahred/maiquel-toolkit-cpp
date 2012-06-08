@@ -486,7 +486,7 @@ void on_client_keep_alive_received(const mtk::admin::msg::pub_keep_alive_cli&  c
             {
                 if(it->keep_alive_client_info.login_confirmation.session_id ==  client_keep_alive.login_confirmation.session_id)
                 {
-                    if(it->keep_alive_client_info.login_confirmation.user_name !=  client_keep_alive.login_confirmation.user_name)
+                    if(mtk::s_toUpper(it->keep_alive_client_info.login_confirmation.user_name) !=  mtk::s_toUpper(client_keep_alive.login_confirmation.user_name))
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"clikeepaliverec", MTK_SS("user doesn't match on keep alive (user/ka) " << it->keep_alive_client_info  << "  /  " << client_keep_alive),
                                         mtk::alPriorCritic));
                     else

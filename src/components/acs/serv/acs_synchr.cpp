@@ -135,7 +135,7 @@ namespace   //anonymous
         mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info>::const_iterator  it =  map_session_id__session_info->find(session_info.session_id);
         if(it != map_session_id__session_info->end())
         {
-            if(it->second.user_name != session_info.user_name   ||  it->second.client_code != session_info.client_code)
+            if(mtk::s_toUpper(it->second.user_name) != mtk::s_toUpper(session_info.user_name)   ||  it->second.client_code != session_info.client_code)
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acssynchr", MTK_SS("adding> received session id already registered with a diferent user or client_code  rec/reg "
                                 << session_info << " / " << it->second), mtk::alPriorError, mtk::alTypeLogicError));
         }
@@ -151,7 +151,7 @@ namespace   //anonymous
         mtk::map<std::string/*session_id*/, mtk::acs::msg::res_login::IC_session_info>::iterator  it =  map_session_id__session_info->find(session_info.session_id);
         if(it != map_session_id__session_info->end())
         {
-            if(it->second.user_name != session_info.user_name   ||  it->second.client_code != session_info.client_code)
+            if(mtk::s_toUpper(it->second.user_name) != mtk::s_toUpper(session_info.user_name)   ||  it->second.client_code != session_info.client_code)
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "acssynchr", MTK_SS("deleting> received session id already registered with a diferent user or client_code  rec/reg "
                                 << session_info << " / " << it->second), mtk::alPriorError, mtk::alTypeLogicError));
             else
