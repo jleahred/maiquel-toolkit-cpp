@@ -74,7 +74,7 @@ public:
         else
             throw Alarm (
                     MTK_HERE,
-                    "nullable", 
+                    "nullable",
                     "Have NO Value",
                     alPriorCritic, alTypeNoPermisions
             );
@@ -226,7 +226,7 @@ public:
             :  value(_value), hasValue(true)
     {}
     Nullable(void)
-            :  hasValue(false)
+            :  value{},  hasValue(false)
     {}
 
 
@@ -245,7 +245,7 @@ public:
             //MMA
             throw Alarm (
                     MTK_HERE,
-                    "Nullable", 
+                    "Nullable",
                     "Have NO Value",
                     alPriorCritic, alTypeNoPermisions
             );
