@@ -277,8 +277,8 @@ subgraph cluster_cimd {
 ------------
 
 
-SYS.<broker_code>#;;
-* Messages generated on +GS+ or servers to +SYS+
+SYS.<broker_code>.#;;
+* Messages generated on +GS+ or servers to +SYS+ (only one jump)
 +
 ["graphviz", "queue_topology_all_gs__sys.png"]
 -----------
@@ -292,7 +292,8 @@ subgraph cluster_cimd {
            label = "system";
            MK GS1 GS2
 
-          MK -- { GS1, GS2 }    [dir=back];
+          MK -- { GS1, GS2 }    [dir=back, style=dotted];
+          MK -- { GS1, GS2 }    [dir=forward, style=dotted];
           GS1 -- GS2   [dir=back, style=dotted];
           GS2 -- GS1   [dir=back, style=dotted];
    }
