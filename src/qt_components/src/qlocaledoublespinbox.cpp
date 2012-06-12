@@ -123,7 +123,8 @@ QValidator::State   qLocaleDoubleSpinBox::validate(QString &input, int &pos) con
         this->lineEdit()->setSelection(1, 1);
     else
     {
-        if(lineEdit()->text().indexOf(QLocale::system().decimalPoint())  <  lineEdit()->cursorPosition()  &&  lineEdit()->selectedText().size() <=1)
+        int decpoint_pos = lineEdit()->text().indexOf(QLocale::system().decimalPoint());
+        if(decpoint_pos >=0  && decpoint_pos  <  lineEdit()->cursorPosition()  &&  lineEdit()->selectedText().size() <=1)
         {
             if(lineEdit()->cursorPosition() < lineEdit()->text().size())
                 this->lineEdit()->setSelection(lineEdit()->cursorPosition(), 1);

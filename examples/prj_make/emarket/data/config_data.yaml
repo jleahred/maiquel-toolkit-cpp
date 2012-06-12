@@ -14,3 +14,8 @@ product_config:
     group: GRP3
     group_user_name: GROUP 3
     price_fnext: [2, 5]
+  - product_name: PRD4
+    product_user_name: PRODUCT 4
+    group: GRP4
+    group_user_name: GROUP 4
+    price_fnext: [0, 1]
