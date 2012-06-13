@@ -20,9 +20,9 @@ mtk::prices::msg::sub_full_product_info   get_full_product_info_from_optional(co
         throw mtk::Alarm(MTK_HERE, "prices_support", MTK_SS("get_full_product_info_from_optional  with no  aditional info   " << pio),
                                         mtk::alPriorCritic, mtk::alTypeLogicError);
 
-    if(pio.last_mk_execs_ticker.HasValue() == false)
-        throw mtk::Alarm(MTK_HERE, "prices_support", MTK_SS("get_full_product_info_from_optional  with no  last_mk_execs  " << pio),
-                                        mtk::alPriorCritic, mtk::alTypeLogicError);
+//    if(pio.last_mk_execs_ticker.HasValue() == false)      fixed 2012-06-13   check get_full_product_info_from_optional with no last_mk_execs alarm
+//        throw mtk::Alarm(MTK_HERE, "prices_support", MTK_SS("get_full_product_info_from_optional  with no  last_mk_execs  " << pio),
+//                                        mtk::alPriorCritic, mtk::alTypeLogicError);
 
     return  mtk::prices::msg::sub_full_product_info (pio.product_code, pio.best_prices.Get(), pio.additional_info.Get(), pio.last_mk_execs_ticker);
 }
