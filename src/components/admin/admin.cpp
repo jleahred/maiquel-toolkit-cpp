@@ -897,7 +897,7 @@ namespace {
         }
         mtk::list<mtk::admin::msg::sub_command_rd>  data_list;
         mtk::list<std::string>::iterator it2 = response_lines.begin();
-        int max_lines_to_respond = 300;
+        int max_lines_to_respond = 600;
         while(it2 != response_lines.end())
         {
             if(it2->size() > 500)

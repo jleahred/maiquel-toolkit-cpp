@@ -892,7 +892,7 @@ std::string ConfigFile::GetStringConfigFileLines(void) const
 
         WriteNode(out, astConfigFile, 0);
 
-        return out.str().substr(0,1000);
+        return out.str().substr(0,5000);
     } MTK_CATCH_RETHROW("CF_GetStringConfigFileLines", MTK_SS("on file " << filename))
 }
 
