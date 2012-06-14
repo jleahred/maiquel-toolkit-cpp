@@ -33,6 +33,7 @@
 #include "support/timer.h"
 #include "support/factory.hpp"
 #include "msg_control_fields.h"
+#include "support/exec_max_frec.h"
 
 
 #include "mtk_qpid_stats.h"
@@ -215,20 +216,50 @@ namespace mtk{
     void check_control_fields_flucts    (const std::string&  key, const mtk::DateTime&  dt);
 
 
+mtk::Signal<bool>&    get_signal_connection_status(void);
 
 
 
 struct mtkqpid_session
 {
+private:
     qpid::messaging::Connection         connection;
+
+public:
     const t_qpid_url                    url;
     qpid::messaging::Session&           qpid_session(void)
     {
+        if(connection.isOpen()==false)
+        {
+            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
+                get_signal_connection_status().emit(false);
+            MTK_END_EXEC_MAX_FREC
+            static mtk::DateTime  last_try_reconnect = mtk::dtNowLocal() - mtk::dtSeconds(10);
+            if(last_try_reconnect + mtk::dtSeconds(2) < mtk::dtNowLocal())
+            {
+                std::cout << "error, trying to reconnect" << std::endl;
+                last_try_reconnect = mtk::dtNowLocal();
+                //connection.open();
+                connection   = qpid::messaging::Connection(url.WarningDontDoThisGetInternal());
+                connection.setOption("tcp-nodelay", true);
+                connection.open();
+                if(connection.isOpen())
+                {
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "mtk_qpid", "reconnected!!!", mtk::alPriorCritic));
+                    get_signal_connection_status().emit(true);
+                }
+            }
+            else
+                throw mtk::Alarm(MTK_HERE, "QPID", "connection down", mtk::alPriorCritic);
+        }
+
         if(_qpid_session.hasError())
         {
             _qpid_session  = connection.createSession();
             ++mtk_qpid_stats::num_restored_sessions();
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "restoring session", "invalid session", mtk::alPriorCritic));
+            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10))
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "restoring session", "invalid session", mtk::alPriorCritic));
+            MTK_END_EXEC_MAX_FREC
             try
             {
                 _qpid_session.checkError();
@@ -244,8 +275,9 @@ struct mtkqpid_session
         :    connection   (_url.WarningDontDoThisGetInternal())
            , url          (_url)
     {
-            connection.open();
+            //connection.setOption("reconnect", true);
             connection.setOption("tcp-nodelay", true);
+            connection.open();
             _qpid_session = connection.createSession();
             ++mtk_qpid_stats::num_created_sessions();
     }
@@ -276,7 +308,9 @@ struct mtkqpid_sender2
         {
             if(session->qpid_session().hasError()==false)
             {
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "mtkqpid_sender2", "reseting sender", mtk::alPriorError));
+                MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10))
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "mtkqpid_sender2", "reseting sender", mtk::alPriorError));
+                MTK_END_EXEC_MAX_FREC
                 create_sender();
             }
             else
@@ -333,7 +367,9 @@ struct mtkqpid_receiver
         {
             if(session->qpid_session().hasError()==false)
             {
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "mtkqpid_receiver", "reseting sender", mtk::alPriorError));
+                MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10))
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "mtkqpid_receiver", "reseting sender", mtk::alPriorError));
+                MTK_END_EXEC_MAX_FREC
                 create_receiver();
             }
             else
@@ -541,19 +577,26 @@ inline void handle_qpid_exchange_receiver::check_queue(void)
         {
              local_receiver = receiver->qpid_receiver();
         }
-        catch(mtk::Alarm alarm)
-        {
-            MTK_TIMER_1C_STOP(check_queue);
-            mtk::AlarmMsg(alarm.Add(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  on address  " << receiver->address), mtk::alPriorCritic)));
-        }
-        catch(const std::exception& e)
-        {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  on address  " << receiver->address << "  "  << e.what()), mtk::alPriorCritic));
-        }
         catch(...)
         {
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  (...) on address  " << receiver->address), mtk::alPriorCritic));
+            MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10))
+                throw;
+            MTK_END_EXEC_MAX_FREC
+            return;
         }
+//        catch(mtk::Alarm alarm)
+//        {
+//            MTK_TIMER_1C_STOP(check_queue);
+//            mtk::AlarmMsg(alarm.Add(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  on address  " << receiver->address), mtk::alPriorCritic)));
+//        }
+//        catch(const std::exception& e)
+//        {
+//            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  on address  " << receiver->address << "  "  << e.what()), mtk::alPriorCritic));
+//        }
+//        catch(...)
+//        {
+//            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  (...) on address  " << receiver->address), mtk::alPriorCritic));
+//        }
 
         //  this is to protect in case of  handle_qpid_exchange_receiver is out of scope when is processing a message
 

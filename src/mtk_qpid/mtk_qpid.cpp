@@ -7,6 +7,7 @@
 
 namespace {
 
+
     struct  delayed_message_to_send_info
     {
         mtk::CountPtr< mtk::mtkqpid_sender2 >   sender;
@@ -60,6 +61,12 @@ namespace {
 
 namespace mtk{
 
+
+mtk::Signal<bool>&    get_signal_connection_status(void)
+{
+    static  mtk::Signal<bool>  result;
+    return result;
+}
 
 
 void    __internal_send_qpid_message___dont_use_it_directly(     mtk::CountPtr< mtk::mtkqpid_sender2 >      sender,
@@ -121,7 +128,16 @@ void    send_qpid_message_NOW(  delayed_message_to_send_info&  msg_info  )
     qpid::messaging::Message msg;
     qpid::messaging::encode(msg_info.content, msg);
     msg.setSubject(MTK_SS(msg_info.subject));
-    msg_info.sender->qpid_sender().send(msg);
+
+    try {
+        msg_info.sender->qpid_sender().send(msg);
+    } catch(...)
+    {
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10))
+            throw;
+        MTK_END_EXEC_MAX_FREC
+        return;
+    }
 
 }
 
