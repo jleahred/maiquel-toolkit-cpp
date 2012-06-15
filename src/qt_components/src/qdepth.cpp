@@ -1053,11 +1053,8 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     if(product_code.market == "M3"  ||  product_code.market == "MARKET")
     {
         menu.addSeparator();
-        if(mtk::admin::is_production() == false)
-        {
-            menu.addAction(action_buy_stop_limit);
-            menu.addAction(action_sell_stop_limit);
-        }
+        menu.addAction(action_buy_stop_limit);
+        menu.addAction(action_sell_stop_limit);
     }
 
     //menu.addSeparator();
