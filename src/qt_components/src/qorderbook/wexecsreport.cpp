@@ -646,8 +646,10 @@ QTreeWidgetItem_exec__Product*  getn_key_item_exec__Product(QTreeWidgetItem* tre
 
 void WExecsReport::on_new_execution(const mtk::trd::msg::CF_XX&  confirm_info, const mtk::trd::msg::sub_exec_conf& exec)
 {
-    if( (confirm_info.invariant.product_code.market == "EU"  ||  confirm_info.invariant.product_code.market == "M3"  ||  confirm_info.invariant.product_code.market == "LF")
-       &&  confirm_info.invariant.product_code.product[0] != 'F')       //  it isn't a calendar spread
+    //  NO CALENDAR SPREAD
+    if( confirm_info.invariant.product_code.market == "M3"     &&  confirm_info.invariant.product_code.product[0] != 'F')
+        return;
+    if( confirm_info.invariant.product_code.market == "EU"     &&  confirm_info.invariant.product_code.product.find('-') != std::string::npos)
         return;
 
     if( mtk::admin::is_production() == false  &&   confirm_info.invariant.product_code.market=="MARKET"  &&  confirm_info.invariant.product_code.product[0] == 'L')
