@@ -693,8 +693,15 @@ void on_server_pub_partial_user_list_serv2acs(const mtk::acs_server::msg::pub_pa
         for(mtk::list<sessions_login_info>::iterator it2 = list_sessions_login_info->begin(); it2!=list_sessions_login_info->end(); ++it2)
         {
             if(it2->keep_alive_client_info.login_confirmation.session_id == session_info.session_id  &&  it2->keep_alive_client_info.login_confirmation.user_name == session_info.user_name)
+            {
                 located = true;
+                break;
+            }
+            if(it2->keep_alive_client_info.login_confirmation.session_id == session_info.session_id)
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE,"acs_user_list_serv2acs", MTK_SS("ERROR. session_id matches  but not user name \n" << it2->keep_alive_client_info.login_confirmation  << "\n"
+                                                    << session_info), mtk::alPriorError, mtk::alTypeNoPermisions));
         }
+
         if(!located)
         {
             mtk::acs_server::msg::pub_del_user msg_del_user(mtk::admin::get_process_info().location.broker_code, session_info);
