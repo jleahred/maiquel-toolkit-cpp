@@ -39,17 +39,20 @@ HOLA
   
   lista : 
   [
-  
-  	item
+  	item[asdfasdf]aa]]
   	otro item
   	item 1,2,3
-  	
+	asdfasdf]
+        ]asdfasdf
   ]
   
-  listavaciaono :[        ~    ]
+  listavaciaono :
+		[        
+		]
   
   mevanaborrar : 
-  		[	1elemento
+  		[	
+       1elemento
   	]
   
 }

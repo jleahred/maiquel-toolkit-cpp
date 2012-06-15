@@ -1,64 +1,66 @@
 MAIN
 
-
-MAIN     ::=  SECTION*   
-
-
-SECTION  ::=  sep NAME sep { sep  INFO_SECTION*  sep }  sep       ##transf2->  $(NAME) 
+MAIN     ::=  SECTION*
 
 
-INFO_SECTION ::=  PROPERTY    endl 
-INFO_SECTION ::=  PROPERTY    endl 
-INFO_SECTION ::=  COMMENT     endl 
-INFO_SECTION ::=  BLANK_LINE  endl 
-INFO_SECTION ::=  SECTION        
+SECTION  ::=  sep NAME sep { sep  INFO_SECTION*  sep }  sep       ##transf2->  $(NAME)
 
 
-PROPERTY ::= _ NAME _ : _ LIST  COMMENT 
-PROPERTY ::= _ NAME _ : _ LIST _   
-
-PROPERTY ::= _ NAME _ : _ VALUE  COMMENT 
-PROPERTY ::= _ NAME _ : _ VALUE _   
-
-
-VALUE  ::= !endl_or_#*   
+INFO_SECTION ::=  PROPERTY    endl
+INFO_SECTION ::=  PROPERTY    endl
+INFO_SECTION ::=  COMMENT     endl
+INFO_SECTION ::=  BLANK_LINE  endl
+INFO_SECTION ::=  SECTION     
 
 
-LIST ::= sep [ sep LIST_ITEM* sep ] 
+PROPERTY ::= _ NAME _ : _ LIST  COMMENT
+PROPERTY ::= _ NAME _ : _ LIST _
+
+PROPERTY ::= _ NAME _ : _ VALUE  COMMENT
+PROPERTY ::= _ NAME _ : _ VALUE _
 
 
-LIST_ITEM ::= _ !endl_or_] !endl_or_]* endl   ##transf2->$(!endl_or_])$(!endl_or_]*) 
-LIST_ITEM ::= _ !endl_or_] !endl_or_]*        ##transf2->$(!endl_or_])$(!endl_or_]*) 
+VALUE  ::= !endl_or_#*
 
 
-BLANK_LINE  ::=  _   
+LIST ::= sep [ sep LIST_ITEM* sep ]
 
 
-NAME ::= id   
-id        ::=  ([a-zA-Z0-9\-_]+)   
+LIST_ITEM ::= _ ]          !endl   !endl* endl   ##transf2->$(])$(!endl)$(!endl*)
+LIST_ITEM ::= _ !endl_or_] !endl*  endl          ##transf2->$(!endl_or_])$(!endl*)
 
 
 
-COMMENT   ::=   _ # TILL_ENDL 
+BLANK_LINE  ::=  _
+
+
+NAME ::= id
+id        ::=  ([a-zA-Z0-9\-_]+)
 
 
 
-TILL_ENDL ::=  !endl*   
+COMMENT   ::=   _ # TILL_ENDL
 
 
 
-{   ::= '{'   
-}   ::= '}'   
-:   ::= ':'   
-#   ::= '#'   
-_   ::= ([ \t]*)   
-[   ::= '[' 
-]   ::= ']' 
-sep ::= __isspace*__   
+TILL_ENDL ::=  !endl*
 
 
-space           ::= __isspace__   
-!endl_or_#       ::=  !([\n\r#])   
-endl            ::=  __endl__   
-!endl            ::=  !([\n\r])   
-!endl_or_]       ::=  !([\n\r\]])   
+
+{   ::= '{'
+}   ::= '}'
+:   ::= ':'
+#   ::= '#'
+_   ::= ([ \t]*)
+[   ::= '['
+]   ::= ']'
+sep ::= __isspace*__
+
+
+space           ::= __isspace__
+!endl_or_#      ::=  !([\n\r#])
+endl            ::=  __endl__
+!endl           ::=  !([\n\r])
+!endl_or_]      ::=  !([\n\r\]])
+//!]              ::=  !(\])
+
