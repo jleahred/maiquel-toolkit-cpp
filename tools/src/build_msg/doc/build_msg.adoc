@@ -58,7 +58,7 @@ BEGIN_NAMESPACE and END_NAMESPACE
 * The script accepts multiple files (you can use it with find and xargs, ie)
 * It will generate a +.h+ and a +.cpp+ files with class definition an implementations on same folder that original one
 * All messages sent with +mtk+ will have +controlFields+ as defined bellow
-** Here we will have information about the version, datetime to control flucts, messagetype...
+** Here we will have information about the version, datetime to control flucts, message-type...
 ** This fields will be filled and used by +mtk+
 +
 ----
@@ -85,7 +85,7 @@ include::examples/ex1/test_messages.msg[]
 ----
 <1> Here we can define some initializations as the namespace for generated structs
 <2> First message declaration (indicating the message version)
-<3> Each message property, has a name, code (small please, it will travel on the network), type, and options or atributes
+<3> Each message property, has a name, code (small please, it will travel on the network), type, and options or attributes
 <4> Specifying subject
 <5> We can use other messages as field of our messages, +submessages+
 <6> We can also add fields at same +wired+ level

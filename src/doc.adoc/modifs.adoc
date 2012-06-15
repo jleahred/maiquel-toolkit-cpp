@@ -68,7 +68,7 @@ New;;
 
 Modif interfaz;;
 * msg_build with keys
-* yaml with key and writting/reading maps as list (to avoid duplicated info)
+* yaml with key and writing/reading maps as list (to avoid duplicated info)
 
 Other;;
 * Removed MTK_FOR_EACH macro
@@ -178,7 +178,7 @@ Fixed errors;;
 * +fsm_generator+
 ** changing status from inside
 ** working with multiple files
-** deactivaded modification anotations
+** deactivated modification annotations
 * deleting handler when processing a message
 * +build_msg.py+ working with list (fixed template)
 * +config_file+, removed extra +endl+ saving files (accumulative)

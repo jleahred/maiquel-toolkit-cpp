@@ -5,7 +5,7 @@
 
 === mtk integration with Qt (with example)
 
-* You have a minimun example at +examples/qt/ex_min_qt/+
+* You have a minimum example at +examples/qt/ex_min_qt/+
 * It's necesary to add some lines on main.cpp and mainwindow.cpp and mainwindow.h
 * Here you have a +.pro+ file example
 +
@@ -38,7 +38,7 @@ include::../../examples/qt/ex_min_qt/src/mainwindow.h[]
 -----
 <1> This class will call +mtk::timer+ and will control exceptions and alarm notifications
 <2> Exceptions and alarm notifications will be signaled with it
-<3> +MainWindow+ will receive signals (almos the exception and notifications configured previously and on +main.cpp+)
+<3> +MainWindow+ will receive signals (almost the exception and notifications configured previously and on +main.cpp+)
 <4> Connecting the alarm signal
 +
 * And prepareng mtk on +mainwindow.cpp+

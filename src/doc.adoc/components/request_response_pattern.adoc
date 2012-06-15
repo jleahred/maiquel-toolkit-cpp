@@ -10,14 +10,14 @@ This is a one2one communication
 
 
 * Secuence
-.. Multiresponse suscription
+.. Multiresponse subscription
 .. Send request
-.. Receiving responses (with secuence number)
+.. Receiving responses (with sequence number)
 .. Last response or timeout received
 
 * The request will be sent _slowly_
 * The reception will let 40 seconds for first response and 20 seconds for consecutive responses
-* In case of not receiving the next response (timeout) or we will receive an incorrect partial response (bad secuence number), the system will cancel the listener to the response and will emit an alarm
+* In case of not receiving the next response (timeout) or we will receive an incorrect partial response (bad sequence number), the system will cancel the listener to the response and will emit an alarm
 
 
 * Request response submessages are defined on...
@@ -46,8 +46,8 @@ include::../../../examples/onefile/components/support/ex_request_response.cpp[]
     Look that there are no objects to care about their scope
 <3> Here we fill a list with the full response information
 <4> Now we tell the system to send all responses +
-    They will be sent asyncronously and not very fast
+    They will be sent asynchronously and not very fast
 +
-* In case of no response, the system will remove the resources (suscription and object)
-* The system will also check the secuences on multiresponses
+* In case of no response, the system will remove the resources (subscription and object)
+* The system will also check the sequences on multiresponses
 * This example requires the +admin+ component

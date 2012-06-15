@@ -97,22 +97,22 @@ include::/tmp/adoc/mtk_support_depend.dot[]
 
 === Critical applications
 * C++ is not a language oriented to critical applications
-* Soft realtime applications, are applications that has to work fast and estable
+* Soft realtime applications, are applications that has to work fast and stable
 * A good way to deal with it, is processing messages
-** Every message has to be procesed fast
+** Every message has to be processed fast
 ** If there is a problem processing a message, the system has to stop processing it and get next message
 * Typical software fails:
-.. Exceptions throwed
+.. Exceptions raised
 .. Invalid memory access due to wrong pointers
 .. Memory leaks
 .. Infinite loops
 .. Consuming all resources
 .. Integer zero division
-* Fails controled by library
+* Fails managed by library
 .. The system will catch and control +mtk::Alarm+ , +std::exception+ and any kind of +exception+ +
    The library will add information, rethrow, notify and process next message
-.. Using ++mtk::CountPtr++ is dificult to have invalid memory access and pointer errors
-.. Using ++mtk::Singal++ simplify the resource managment
+.. Using ++mtk::CountPtr++ is difficult to have invalid memory access and pointer errors
+.. Using ++mtk::Singal++ simplify the resource management
 .. The library, have some macros to manage the integer zero division +
    In messages loop, the system will trap this error and will continue with next message
 * Don't use raw pointers
@@ -125,14 +125,14 @@ include::/tmp/adoc/mtk_support_depend.dot[]
 ** +mtk::CountPtr+ help
 *** There is not pointer arithmetic
 *** If you try to access to a _null_ pointer, the system will throw an exception instead to stop the hole program
-*** It's dificult to have a +mtk::CountPtr+ pointing to invalid address or not initilized memory
+*** It's dificult to have a +mtk::CountPtr+ pointing to invalid address or not initialized memory
 *** RIIA. The memory will be deleted when nothing is pointing to it
 ** Iterators are not pointers but looks very similar
 *** Iterator arithmetic
 *** Null iterators
 *** Random iterators
 *** Invalid iterators
-** There are +mtk+ containers with checked iterators (very stricts checks, more than necessary) <<mtk_containers>>
+** There are +mtk+ containers with checked iterators (very strict checks, more than necessary) <<mtk_containers>>
 * In general, +mtk+ library will try to replace _aborts_ by  _exceptions_
 
 
@@ -149,7 +149,7 @@ include::/tmp/adoc/mtk_support_depend.dot[]
 Compile options::
 +
 * The makefiles get compilation options from +compopt_make+ file
-* Some librarys need diferent options like (firebird or yaml) +
+* Some libraries need different options like (firebird or yaml) +
   In those cases, their makefiles will be adapted
 * The options to compile are very strict
 +
@@ -246,9 +246,9 @@ make compress
 This command will generate a file compressed with zip with name +copy.zip+ and will give instructions to decompress
 +
 . We will copy this file to target machine
-. Decompress the file (with command previusly provieded)
+. Decompress the file (with command previously supplied)
 . Execute +make all+ +
-  This command will compile de library and your program
+  This command will compile the library and your program
 . Adjustments...
 ** Could be necessary to change libraries from 64bits to 32bits +
 *** Edit +project.mak+
@@ -276,19 +276,19 @@ To compile in windows with +make+, you will have to use +msys+ or similar
 
 === Concurrency
 * The +mtk+ library is not designed to work with threads
-* +mtk+ is oriented to work with several proceses integrated with a middleware
-* Therefore, the concurrency model will be based on message comunication
-* Concurrency systems based on shared memory, are not scalable and very dificult maintenance
+* +mtk+ is oriented to work with several processes integrated with a middleware
+* Therefore, the concurrency model will be based on message communication
+* Concurrency systems based on shared memory, are not scalable and very difficult maintenance
 
 
 === Examples and regresion test
 
 * On folder +examples+
-* Most of them will write on standard output lines will be used as regresion test
-* Output not valid for regresion test, will start with +NO_REGRESION+ (as time intervals, current dates, etc...)
-* If there are any problem executing the example, it will return a code diferent to 0
+* Most of them will write on standard output lines will be used as regression test
+* Output not valid for regression test, will start with +NO_REGRESION+ (as time intervals, current dates, etc...)
+* If there are any problem executing the example, it will return a code different to 0
 * The library is verified with +valgrind+ +
-  fbclient doesn't dealocate all the memory, therefore, examples and applications using it, will have a valgrind report with issues
+  fbclient doesn't deallocate all the memory, therefore, examples and applications using it, will have a valgrind report with issues
 
 
 

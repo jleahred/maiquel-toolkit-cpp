@@ -29,12 +29,12 @@ digraph socket_levels
 }
 -------------
 +
-* Diferent levels can be combined "al gusto"
+* Different levels can be combined "al gusto"
 * They are not precombined in order to avoid a combinatory explosion
 
 === Sockets low level
 --
-* On this level we have the SO interfaz
+* On this level we have the SO interface
 * Here we can choose:
 ** Locking or not locking
 ** With signals
@@ -70,8 +70,8 @@ tcp_pnbytes_size::
 
 === Combining sockets levels
 * We could need a non locked socket for a client, with messages as text with a delimiter
-* Or perhaps a server mono-conextion with locking write using binary messages with size indicator
-* Or a socket for text with delimiter, server one connextion managed with so signals
+* Or perhaps a server mono-connection with locking write using binary messages with size indicator
+* Or a socket for text with delimiter, server one connection managed with so signals
 * Or even other combinations
 * As you can see on next image, the combinations possibilities 
 +
@@ -101,8 +101,8 @@ digraph socket_levels
 ** It will generate interfaces partially used
 ** Complex implementation
 ** More dificult to use
-* With this kind of clasification, we could have handreds or thousands of classes to combine all options
-* Instead of creating all options before using it, the proposal is to pick funcionalities on each level, and create your own class with this combination of funcionalities
+* With this kind of clasification, we could have hundreds or thousands of classes to combine all options
+* Instead of creating all options before using it, the proposal is to pick functionalities on each level, and create your own class with this combination of functionalities
 * On next example, we have a combination of ++ string_separator, client, base_socket+
 +
 [source,{cpp}]
@@ -132,7 +132,7 @@ tcp_servermono_stringseparator(const std::string& separator)
 };
 -----
 +
-* This model lets us reuse code creating classes when we need it with the specific funcionality (combination of levels) avoiding the problem of super_complex_classes or combinatory explosion
+* This model lets us reuse code creating classes when we need it with the specific functionality (combination of levels) avoiding the problem of super_complex_classes or combinatory explosion
 * The syntax to create our socket instance could be better +
   We could try to simplify using macros (but it doesn't look necessary and practical)
 

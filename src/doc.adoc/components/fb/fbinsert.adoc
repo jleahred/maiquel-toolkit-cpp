@@ -7,7 +7,7 @@
 * Many params configurable
 * Commands to check status, read and write params configuration 
 
-* The interfaz is...
+* The interface is...
 +
 .components/fb/fbinsert.h
 [source,{cpp}]

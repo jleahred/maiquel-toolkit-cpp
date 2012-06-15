@@ -12,7 +12,7 @@
 
 * This component has been generated with +fsm_gen+ from +trd_cli_ls.fsm+
 * It will control the flow and keep historic per limit simple order
-* It's allowed to request consecutive modifications and consecutive cancelations
+* It's allowed to request consecutive modifications and consecutive cancellations
 +
 .Orders LS status diagram
 ["graphviz", "components_trading_o_ls.png"]
@@ -51,7 +51,7 @@ include::../../../../examples/onefile/components/trading/test_trd_cli_ls.cpp[]
 
 * This component has been generated with +fsm_gen+ from +trd_cli_mk.fsm+
 * It will control the flow and keep historic per limit simple order
-* It's allowed to request consecutive modifications and consecutive cancelations
+* It's allowed to request consecutive modifications and consecutive cancellations
 +
 .Orders MK status diagram
 ["graphviz", "components_trading_o_mk.png"]
@@ -90,4 +90,4 @@ include::../../../components/trading/trd_cli_mk.fsm[]
 include::../../../components/trading/trd_cli_ord_book.h[]
 ----
 +
-* Look the return reference on +get_sig_new_order_ls_created(void)+. It means, you have to use it inmediatly, never save the reference for a future use in a diferent part of program
+* Look the return reference on +get_sig_new_order_ls_created(void)+. It means, you have to use it inmediatly, never save the reference for a future use in a different part of program

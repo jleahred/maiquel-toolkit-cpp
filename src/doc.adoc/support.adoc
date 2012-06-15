@@ -37,7 +37,7 @@ include::../../src/support/platform.hpp[]
 === misc
   support/misc.h  support/misc.cpp
 
-* Here we have some functions of general purpouse
+* Here we have some functions of general purpose
 * A simple rand function, GetMachineCode, Sleep, div0 control...
 * You don't need to initialize the random function before calling mtk::rand
 +
@@ -63,7 +63,7 @@ include::../../examples/onefile/support/test_base35.cpp[]
 === Int Div0 control
   support/misc.h  support/misc.cpp
 
-* In C/C++ es frecuent an anormal program stop due to a integer division by 0
+* In C/C++ es frequent an abnormal program stop due to a integer division by 0
 * With float number is not a problem because return +#inf+ or +#nan+
 * Macros  MTK_HANDLE_DIV0_INIT and MTK_HANDLE_DIV0_END will trap the int div zero and will throw +std::runtime_error("SIGNAL FPE probably int div0");+
 * It's necessary to avoid int div zero, but in case of, the library will try continues working
@@ -101,7 +101,7 @@ include::../../src/support/release_on_exit.hpp[]
  support/crc32.h
 
 * Two small and easy functions to calculate +crc32+
-* Very usefull as non reversible function
+* Very useful as non reversible function
 * In the future, I'll add other functions like +md5+
 +
 .Example crc32
@@ -133,8 +133,8 @@ include::../../src/support/basic_types.hpp[]
 === CountPtr
   support/count_ptr.hpp
 
-* This is a template to work with pointers without pointers inconvenients and +RAII+
-* An important diference with solutions like _boost_ or _c++0x_ is...
+* This is a template to work with pointers without pointers disadvantages and +RAII+
+* An important difference with solutions like _boost_ or _c++0x_ is...
 ** If you try to access the pointer and it is not valid (not initialized or already deleted), the library will throw a exception
 * This exception will be of type std::exception or any son on std
 * It's not good idea to throw an mtk::Alarm exception as +CountPtr+ is a very basic part of library
@@ -151,10 +151,10 @@ include::../../examples/onefile/support/ex_count_ptr.cpp[]
 === Bool
   support/bool.hpp
 
-* Here is declared a boolean type with autoinitialization
+* Here is declared a boolean type with auto-initialization
 * I wrote this when I needed it.
 * At the end it wasn't necessary but I keep it just in case
-* Probably never will be usefull
+* Probably never will be useful
 +
 .mtk_bool.hpp
 [source,{cpp}]
@@ -174,7 +174,7 @@ include::../../examples/onefile/support/ex_bool.cpp[]
 
 * Small and easy tuples
 * Don't forget +make_tuple+
-* Elements inside tuples has to be copiables
+* Elements inside tuples has to be copyable
 * You can use +<+ and +<<+ operator if elements support them
 +
 .Example Tuples
@@ -189,11 +189,11 @@ include::../../examples/onefile/support/ex_tuples.cpp[]
 
 * A template to warp types that cannot represent no value or invalid value (+int+, +mtk::DateTime+, ...)
 * Using this warper, you can represent this situation and you can also use them in all +std+ and +mtk+ containers
-* There are two warpers
+* There are two wrapper
 nullable::
 Requieres copy constructor and copy assignation operator
 Nullable::
-This one is more eficient, but requieres empty constructor
+This one is more eficient, but requires empty constructor
 
 * Example
 +
@@ -210,9 +210,9 @@ include::../../examples/onefile/support/ex_nullable.cpp[]
   support/mtk_double.h
 
 * This is a small class to work as a double except...
-** It's easy to represent not valid value for all plattforms
-** Comparation operators can be used. +
-   If diference between doubles are very small, +mtk::double+ will identify as equal
+** It's easy to represent not valid value for all platforms
+** Comparision operators can be used. +
+   If difference between doubles are very small, +mtk::double+ will identify as equal
 * The performance compared with native double is very low, use with caution
 * To initialize a +mtk::Double+ with no value, you have to use +mtk::Double::InvalidValue+
 +
@@ -226,7 +226,7 @@ include::../../src/support/mtk_double.h[]
 === DateTime
   support/date_time.h
 
-* All classes and functions has de prefix +dt+
+* All classes and functions has the prefix +dt+
 * There are two classes here to manage dates and times
 DateTime::
 ** This class is used to represent a specific moment on time
@@ -237,17 +237,17 @@ TimeQuantity::
 ** This one is used to deal with time intervals
 ** Composed by days, hour, minuts, seconds, milliseconds
 ** Internally coded in a double
-* Adding and substrating
-** You can substract two +DateTime+ and you will get a +TimeQuantity+
+* Adding and subtracting
+** You can subtract two +DateTime+ and you will get a +TimeQuantity+
 ** You cannot add two +DateTime+ (it's not logical)
 ** You can add or substact two +TimeQuantity+ and you will get another +TimeQuantity+
-* To avoid problems with params order, instead of using +int+, it's defined +dtMonth+, +dtHour+, ...
+* To avoid problems with parameters order, instead of using +int+, it's defined +dtMonth+, +dtHour+, ...
 * You can write in stream with << operator (therefore, you can also write to string with +MTK_SS+ macro)
 * On +mtk_string+ you have functions to convert from string to +DateTime+ or +TimeQuantity+
 * dtMachineGetTotalMillisecs
 ** Return the milliseconds since machine is on
 ** On windows, this function is not sensitive to time modifications by user or any program
-** This funcion uses a trick in order to work with 64bits and remove the problem of 49.7 days limit on 32bits
+** This function uses a trick in order to work with 64bits and remove the problem of 49.7 days limit on 32bits
 * Examples
 +
 .Example DateTime1
@@ -280,7 +280,7 @@ include::../../examples/onefile/support/test_dtMachineGetTotalMillisecs.cpp[]
 === exec_max_frec
   support/exec_max_frec.h
 
-* Here we have a set of macros to control the max frecuence execution of a block of code
+* Here we have a set of macros to control the max frequency execution of a block of code
 MTK_EXEC_MAX_FREC::
 ** This is the most common used macro
 ** Use it inside object methods
@@ -292,11 +292,11 @@ MTK_EXEC_MAX_FREC_OBJ::
 ** This one lets you use a contol for several blocks of code
 [WARNING]
 You can write +MTK_EXEC_MAX_FREC_S+ inside a object method +
-If so, probably the program doesn't work as you spected and will be dificult to detect this issue
+If so, probably the program doesn't work as you expected and will be difficult to detect this issue
 
-* There is a family +MTK_EXEC_MAX_FREC_NO_FIRST+ with same behaviour except (as the name says) the first call, will not be executed
+* There is a family +MTK_EXEC_MAX_FREC_NO_FIRST+ with same behavior except (as the name says) the first call, will not be executed
 * You can nest them using the family +MTK_EXEC_MAX_FREC_A+
-* This macros are very usefull to avoid excesive messages on motinoring or logs
+* This macros are very useful to avoid excessive messages on monitoring or logs
 +
 .Example ex_exec_max_frec.cpp
 [source,{cpp}]
@@ -338,9 +338,9 @@ include::../../examples/onefile/support/ex_alarm.cpp[]
 ** list
 ** set
 * At the moment there is no implementation of adapters
-* This warper is almost compatible with STL
+* This wrapper is almost compatible with STL
 ** Most of code can be adapted to mtk::containers just modifying std::list for mkt::list (or the specific container type)
-* There is not fully implemented all the STL interfaz
+* There is not fully implemented all the STL interface
 * Iterators aren't in STL hierarchy, therefore, it's not possible to use STL algorithms
 * There are not iterators on mtk::vectors (at the moment)
 STL iterators::
@@ -349,21 +349,21 @@ STL iterators::
 *** They can point to no place
 *** They can point to wrong place
 *** There haven't any kind of check
-** This is not good for critical aplications [red]#pending link#
+** This is not good for critical applications [red]#pending link#
 ** There are not verification on _deref_
 ** The value could be gone
 *** Cleared container
 *** Container out of scope
-** Iterartor end() doen't check anything and you can get a beatifull verse
+** Iterator end() doen't check anything and you can get a beatiful verse
 ** You can do ++end()
-** How to change beatifull verses using iterators by execptions?
+** How to change beatiful verses using iterators by exceptions?
 *** When a iterator is created, it will save a reference to the container, a reference to the last iterator and a reference code of last modification on container (not modification of values)
 *** Before increment an iterator, it checks is a valid iterator and is not an end iterator
 *** Before desref an iterator, it checks is valid and not end
-*** An iterator is not valid when timestamp last cointainer modification is diferent to timestamp saved on iterator
+*** An iterator is not valid when timestamp last container modification is different to timestamp saved on iterator
 ** Risk managed
 *** Get a value from a not initialized iterator
-*** Next iterator with not initilized iterator
+*** Next iterator with not initialized iterator
 *** Get value from iterator of empty container
 *** Get value iterator of deleted container
 *** Next iterator of deleted container
@@ -382,10 +382,10 @@ include::../../examples/onefile/support/test_containers.cpp[]
   support/fixednumber.h
 
 * Fix precision numbers
-* Safe comparation
+* Safe comparision
 * Save operations
-* +fnExt+ is a support class wich manage number of decimals and increment
-* You can add or substract ticks to a +FixedNumber+
+* +fnExt+ is a support class witch manage number of decimals and increment
+* You can add or subtract ticks to a +FixedNumber+
 +
 .Creating and comparing +fnExt+
 [source,{cpp}]
@@ -591,7 +591,7 @@ include::../../examples/onefile/support/test_containers.cpp[]
                     fnp2.SetIntCode (31416);
 ----
 +
-* Relational and arithmetics operators
+* Relational and arithmetic operators
 +
 .operators
 [source,{cpp}]
@@ -697,9 +697,9 @@ include::../../src/support/property.h[]
 
 * At the moment it's supported till 4 parameters
 * It's allowed to connect one signal to one slot several times
-** Calling disconect will disconnect only one of them
+** Calling disconnect will disconnect only one of them
 ** It's possible to remove this behavior in the future
-* It's very frecuent to connect a signal with a method on current object. You can do it using +MTK_CONNECT_THIS+  see <<ex_mtk_connect_this, ex_mtk_connect_this>>
+* It's very frequent to connect a signal with a method on current object. You can do it using +MTK_CONNECT_THIS+  see <<ex_mtk_connect_this, ex_mtk_connect_this>>
 * You can connect one signal to another signal see <<ex_signal2signal,ex_signal2signal>>
 * You can also connect one signal to a function <<ex_signal2function, ex_signal2function>>
 * It's possible to disconnect a slot while processing a signal on this slot
@@ -774,7 +774,7 @@ async_signal_last::
 
 
 async_signal_all::
-* It will rethrow all signals with the maximum speed configured on constructor
+* It will re-throw all signals with the maximum speed configured on constructor
 --
 
 .Example ex_asynch_signal
@@ -793,12 +793,12 @@ include::../../examples/onefile/support/ex_asynch_signal.cpp[]
 [[MTK_SS,MTK_SS]]
 Concatenating  MTK_SS::
 * Using operator + to concatenate string is a bad idea
-** ++"concatenating" + var++ will work if var is +std::string+, but you will get wrong results (even beatifull verses) if var is a number or char* or any other pointer
+** ++"concatenating" + var++ will work if var is +std::string+, but you will get wrong results (even beatiful verses) if var is a number or char* or any other pointer
 * The proposal is to write... +MTK_SS("concatenating" << var)+
-* It will work allways as spected without problems or surprises
+* It will work always as expected without problems or surprises
 
 Converting to string  MTK_SS::
-* Having several functions to convert to string is not confortable and tedius
+* Having several functions to convert to string is not comfortable and tedious
 * The proposal is to use... +
   +std::string s2 = MTK_SS("this is a const char*);+ +
   +std::string s2 = MTK_SS(8);+ +
@@ -807,10 +807,10 @@ Converting to string  MTK_SS::
 Converting to string and concatenating  MTK_SS::
   +std::string s1 = MTK_SS("const char*" << std::string("std::string") << 88 << 99.8 << std::endl);+  +
 
-* To work with +MTK_SS+ is necessary to work with types with operator +<<+ overloaded for std streaming (not very dificult requerement)
+* To work with +MTK_SS+ is necessary to work with types with operator +<<+ overloaded for std streaming (not very difficult requirement)
 +
 [WARNING]
-If +MTK_SS+ is used recursivily, you have to add a literal param in order to remove a gcc warning +
+If +MTK_SS+ is used recursivily, you have to add a literal parameter in order to remove a gcc warning +
 +MTK_SS(5 << "lkjlkj" << MTK_SS("hkjhkjh" << std::endl, A))+
 
 
@@ -819,14 +819,14 @@ Converting from std::string to datatype  s_try_stoxxx::
 * You will provide a default value en case the conversion fail
 * The function will return a +tuple+ of two elements
 ** If conversion fail, first element will have the default value and second false
-** If conversion works, first elemente will be converted and second element true
+** If conversion works, first element will be converted and second element true
 
 Utilities::
 * +s_trim+
 ** You will give the string to remove chars, and the char to remove or a set of chars to remove +
   First option has a better performance
 * +s_split+
-** This function will return a +vector<string>+ spliting the string with the specified char
+** This function will return a +vector<string>+ splitting the string with the specified char
 * +s_toLower  s_toUpper+
 * +s_AlignLeft s_AlignRight+
 * +s_normalizeUTF8+
@@ -928,25 +928,25 @@ It uses +hp+ and +re+  [red]#link pending#
 
 IMPORTANT::
 *Configuration files has to be small* +
-* This is not to save large datas
-* The parser doesn't work in stream mode, it will load all the file, will create de AST, will cut branches...
+* This is not to save large data
+* The parser doesn't work in stream mode, it will load all the file, will create the AST, will cut branches...
 * To save huge datas, use a database or +yaml+ [red]#link pending#
-* Access to config files has not been frecuent
+* Access to config files has not been frequent
 
 AIM::
 * Saving couple property value in a file
 * There is also supported list
 * Hierarchy structure
 * Easy and direct access to a value to read or write without knowing the full document structure
-* Keep the manual coments and carry returns
+* Keep the manual comments and carry returns
 * Keep +nodes+ and +properties+ order
 * On save, the system will format the file
-** Brakes alone in one line and properly idented
+** Brakes alone in one line and properly indented
 ** It will remove spaces between properties and values
 * This class works only with strings
-* Reading will retrurn +nullable+ type to make a diference between is emtpy and there is no value
+* Reading will return +nullable+ type to make a difference between is empty and there is no value
 * There is supported substitution
-** A susbtitution is defined by +$(<property_to_replace>)+
+** A substitution is defined by +$(<property_to_replace>)+
 ** The system will look for +property_to_replace+ on same config file to replace in value string (see example below)
 
 File structure::
@@ -957,27 +957,27 @@ File structure::
 * Nodes (sections) will have property-values and/or other nodes
 * Node content is limited by brackets +{ }+
 * Node name and node property has to match... ++^([a-zA-Z0-9\\-\\.]+)$++
-** leters +a-z+ upper or lower case
+** letters +a-z+ upper or lower case
 ** Numbers
 ** +-+  (minus)
 ** +_+  (underscore)
 * Values cannot have carry return (+\n+ or +\r+) neither +' #'+ (look there is a space before # symbol)
 * Symbol '~' means no value +
   In this case, the system will return a empty string
-* If a property is writted empty, this property will be deleted
+* If a property is written empty, this property will be deleted
 * If a property doesn't exist, a null nullable will be returned
 * *Variables*
-** When the value of a property has a text closed by +$( )+, this text will be replaced by the value of the property writted inside
-** If it's not possible, an exception will be throwed
+** When the value of a property has a text closed by +$( )+, this text will be replaced by the value of the property written inside
+** If it's not possible, an exception will be raised
 ** A property can have several variables to expand
 ** There is not supported nested variables
 ** Variables expansion is limited in order to avoid infinite loops
 
 * *LISTS*
-** A list is a property but values are closed with +[ ]+ and each element is in a diferent line
+** A list is a property but values are closed with +[ ]+ and each element is in a different line
 ** Inside a list, you cannot write line comments neither end of line comments
 ** Empty lines are part of list (empty element)
-** List elements will not have spaces at the beginig (all left spaces are removed on reading)
+** List elements will not have spaces at the beginning (all left spaces are removed on reading)
 
 File example::
 +
@@ -1053,7 +1053,7 @@ ControlFluctuacionesSingle::
 ControlFLuctuacionesMulti::
 * +CheckFluctuation (T id, dtTimeQuantity tqSender);+
 --
-* It will check fluctuations between two consecutive messages and five minuts interval (with dinamyc adjustment)
+* It will check fluctuations between two consecutive messages and five minutes interval (with dynamic adjustment)
 * Check fluctuation will return a tuple with both kind fluctuations
 --
 Header::
@@ -1079,9 +1079,9 @@ include::../../examples/onefile/support/ex_controlfluctuaciones.cpp[]
   support/timer.cpp
 
 --
-* There are three timers with diferent frecuencies (10, 100, 1000 milliseconds)
+* There are three timers with different frequencies (10, 100, 1000 milliseconds)
 * Each one will emit a signal
-* You can connect your funcion or method to the apropiate signal
+* You can connect your function or method to the appropriate signal
 * If you need the execution of a method each 6 seconds for example, you will connect timer on second and you will write +MTK_EXEC_MAX_FREC(dtSeconds(6))+
 * If a exception hapen processing a timer, the library will catch it and will call to +mtk::AlarmMesssage+
 --
@@ -1150,15 +1150,15 @@ Macros::
   support/call_later.h
 
 --
-* Used to program a call to a method or function afetr x time
+* Used to program a call to a method or function after x time
 * It will produce only one call
-* You can specify the frecuency and precission of the call
-* You don't have to use it to produce asyncronous calls, for that, try with +AsyncDelayedCall+
+* You can specify the frequency and precision of the call
+* You don't have to use it to produce asynchronous calls, for that, try with +AsyncDelayedCall+
 * The function/method called 
 ** Has to return a void
-** Has to receive a param as a const reference +
+** Has to receive a parameter as a const reference +
    If you don't need it, declare a +int+ param and configure with 0
-** The param type, has to be copiable
+** The parameter type, has to be copyable
 --
 
 Macro name description::
@@ -1228,27 +1228,27 @@ include::../../examples/onefile/support/ex_call_later.cpp[]
   support/async_delayed_call.h
 
 --
-* It converts a method or function to work in asyncronous and delayed way 
+* It converts a method or function to work in asynchronous and delayed way 
 * The method to transform has to:
 ** Return a void
 ** Receive only one parameter
-** The param, has to be copiable
+** The param, has to be copyable
 ** If you need to receive more params, try with tuples
-* The transformed method, will return inmediatly without doing his job at this moment (syncronous vs asyncronous)
+* The transformed method, will return immediately without doing his job at this moment (synchronous vs asynchronous)
 * The pendings work will be done at configured speed
 * Obiously, exceptions cannot be catched by caller
 * Instead of, those exceptions will be sent to mtk::AlarmMsg
-* On field +sourceCode+ from +mtk::Alarm+ will be writted the method converted name
+* On field +sourceCode+ from +mtk::Alarm+ will be written the method converted name
 * All will be executed on same thread
-* It uses +mtk::Timer+ with precission of 100 miliseconds
+* It uses +mtk::Timer+ with precision of 100 milliseconds
 * It could be applied in...
-** Writting on db
+** Writing on db
 ** Sending alarms by network
 ** Sending responses to monitoring system
-** Writting in log
-** In general, in any case when is not critical an inmediate response and we don't want to stop others activities more criticals
-* There are macros to combine declaration and implementation or doing it separatly
-** If you split declaration and implementation and parameters doesn't match, it will not compile (and I'm not resposible of error messages from compiler)
+** Writing in log
+** In general, in any case when is not critical an immediate response and we don't want to stop others activities more critical
+* There are macros to combine declaration and implementation or doing it separately
+** If you split declaration and implementation and parameters doesn't match, it will not compile (and I'm not responsible of error messages from compiler)
 --
 Params::
 +
@@ -1257,12 +1257,12 @@ ASYNC_DELAYED_CALL_DI(METHOD_NAME, PARAM_TYPE, QTY, TIME_INTERVAL, MAX_QUEUE_SIZ
 -----
 
 TODO::
-* Having a way to request for descarted or error messages, exceptions, overflows
-* Configure a maximun frecuency of error notifications. This speed has to bee lower than processing messages and it will help to avoid infinites loops
-* The call created by macro (wicth will be call asynchronously to do the work) would have to be constant. +
+* Having a way to request for discarded or error messages, exceptions, overflows
+* Configure a maximum frequency of error notifications. This speed has to bee lower than processing messages and it will help to avoid infinite loops
+* The call created by macro (witch will be call asynchronously to do the work) would have to be constant. +
   For that, +mtk::SignalSlot+ has to work with +const+ methods
-* Extend the macros to support funcions
-* Checking parameters to detect an cancel too agresives ones
+* Extend the macros to support functions
+* Checking parameters to detect an cancel too aggressives ones
 
 Restrictions::
 * It's not possible to use types with commas (templates i.e.)
@@ -1274,13 +1274,13 @@ Restrictions::
 ----
 +
 * Params on methods, cannot be constants references
-* The param type has to be copiable
+* The parameter type has to be copyable
 
 
 ==== Examples
 * Transforming a program
 
-Original syncronous program::
+Original synchronous program::
 +
 [source,{cpp}]
 ----
@@ -1331,11 +1331,11 @@ include::../../examples/onefile/support/ex_asyn_call_delay.cpp[]
 <2> This class will receive signals
 <3> +CLASS_NAME+ definition for some macros
 <4> This method will trap async errors
-<5> Here is protetted the original or normal method name (as documentation)
+<5> Here is protected the original or normal method name (as documentation)
 <6> Here is the same transformed to work asynchronously
 <7> End implementation of async method
 <8> Here we call several times very fast +
-    Look that we call more than maximun configured
+    Look that we call more than maximum configured
 
 
 Separating implementation and definition::

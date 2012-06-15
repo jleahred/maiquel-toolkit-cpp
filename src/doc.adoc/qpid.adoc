@@ -2,8 +2,8 @@
 
 == mtk_qpid
 
-* +qpid+ is a implementation from redhat and apache fundation of +AMQP+
-* On +mtk+ we have a small warper to work with it
+* +qpid+ is a implementation from redhat and apache foundation of +AMQP+
+* On +mtk+ we have a small wrapper to work with it
 * Messages generated with +mtk build messages+ can be used with +qpid+ easily
 ** They can define the working subject for each message
 
@@ -45,8 +45,8 @@ include::../../examples/onefile/qpid/ex_qpid_direct_msg.cpp[]
 include::../../examples/onefile/qpid/ex_qpid_msg_parsing.cpp[]
 -----
 <1> Header file with message definition. It was created with +build_message+
-<2> Normal suscription, parsing and considereing message type
-<3> Manual suscription no parsing
+<2> Normal subscription, parsing and considering message type
+<3> Manual subscription no parsing
 
 Look we are making a double subscription with two messages types on same address, therefore, we will receive messages twice
 

@@ -2,18 +2,18 @@
 === Admin
 
 * This component will work with client and servers
-* It has an internal singleton on implementation (.cpp) but the interfaz has no objetcs, only "functions" call, grouped by namespaces.
+* It has an internal singleton on implementation (.cpp) but the interface has no objetcs, only "functions" call, grouped by namespaces.
 * It will...
 ** Send the keep alive
 ** Send the enter and exit messages
 ** Check the received keep alive
-** Check local fluctuacions
+** Check local fluctuations
 ** Get the +AlarmMsg+ to write in log and send by network
 ** Manage the configuration file
 *** The process will access to the configuration file using this component
 ** Manage commands and responses
 ** etc...
-* That's the interfaz
+* That's the interface
 +
 .components/admin/admin.h
 [source,{cpp}]
@@ -60,6 +60,6 @@ include::../../../examples/prj_make/houselight/src/main.cpp[]
 
 [NOTE]
 On servers, the +app_name+ will be readed from config file. +
-This will let run one process several times (with diferent name)
+This will let run one process several times (with different name)
 
 

@@ -1,6 +1,6 @@
 
-* Separation of interfaz and implementation on generated messages (.h and .cpp)
-* Isolate global support funcions
-* Limit the number of request cancelations per order, or almost, the frecuency
+* Separation of interface and implementation on generated messages (.h and .cpp)
+* Isolate global support functions
+* Limit the number of request cancellations per order, or almost, the frequency
 * Other orders types
-** Request response has to provide a mecanism to remove obsoletes request or responses (optimization)
+** Request response has to provide a mechanism to remove obsoletes request or responses (optimization)

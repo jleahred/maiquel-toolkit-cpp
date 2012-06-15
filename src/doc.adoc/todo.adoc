@@ -33,9 +33,9 @@ Medium::
 * +MTK_CATCHxxx+ could have an extra param to indicate the alarm priority
 * +ConfigFile+ with out of section comments
 * Sockets with async connection (non locking)
-* +Call later+ with bigger precission
+* +Call later+ with bigger precision
 * +Call later+ checking pending calls. Warning on 50, stop con 500
-* Attention to signal/slot and excetions breaking the program flow. Now, when it happends, pending signals will not be call
+* Attention to signal/slot and exceptions breaking the program flow. Now, when it happends, pending signals will not be call
 
 Low::
 * There are +cout+ con library. Could be better to use +cerr+

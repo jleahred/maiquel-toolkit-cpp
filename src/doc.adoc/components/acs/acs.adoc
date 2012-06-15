@@ -52,8 +52,8 @@ include::../../../../examples/onefile/components/acs/config.cfg[]
 
 ==== SERVER
 
-* +acs_syncrh+ will be sinchronized with acs sessions list
-* You have a very small and easy interfaz to work with it
+* +acs_syncrh+ will be synchronized with acs sessions list
+* You have a very small and easy interface to work with it
 +
 .acs_synchr
 [source,{cpp}]

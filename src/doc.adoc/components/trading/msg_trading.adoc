@@ -23,4 +23,4 @@ include::../../../components/trading/msg_trd_oms_rq.msg[]
 -------------
 
 * +oms+ messages are an extension on +msg_trd_cli_xx+ adding the field +reject_descr+
-* This messages will be received by +oms+ after a possible check of permisions and other validity verifications
+* This messages will be received by +oms+ after a possible check of permissions and other validity verifications
