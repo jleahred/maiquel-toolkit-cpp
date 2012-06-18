@@ -79,8 +79,8 @@ namespace {
 
 mtk::list<mtk::gen::msg::pub_email>&   get_pending_emails(void)
 {
-    static  mtk::list<mtk::gen::msg::pub_email>  result;
-    return  result;
+    static  auto   result = mtk::make_cptr(new mtk::list<mtk::gen::msg::pub_email>{});
+    return  *result;
 }
 
 

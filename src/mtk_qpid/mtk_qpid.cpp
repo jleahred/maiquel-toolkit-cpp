@@ -64,8 +64,8 @@ namespace mtk{
 
 mtk::Signal<bool>&    get_signal_connection_status(void)
 {
-    static  mtk::Signal<bool>  result;
-    return result;
+    static  auto  result = mtk::make_cptr(new mtk::Signal<bool>{});
+    return *result;
 }
 
 

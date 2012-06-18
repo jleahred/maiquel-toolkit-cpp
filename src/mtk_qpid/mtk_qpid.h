@@ -241,7 +241,9 @@ public:
                 last_try_reconnect = mtk::dtNowLocal();
                 //connection.open();
                 connection   = qpid::messaging::Connection(url.WarningDontDoThisGetInternal());
-                connection.setOption("tcp-nodelay", true);
+                #if  MTK_PLATFORM  ==  MTK_LINUX_PLATFORM
+                    connection.setOption("tcp-nodelay", true);
+                #endif
                 connection.open();
                 if(connection.isOpen())
                 {
@@ -276,7 +278,9 @@ public:
            , url          (_url)
     {
             //connection.setOption("reconnect", true);
-            connection.setOption("tcp-nodelay", true);
+            #if  MTK_PLATFORM  ==  MTK_LINUX_PLATFORM
+                connection.setOption("tcp-nodelay", true);
+            #endif
             connection.open();
             _qpid_session = connection.createSession();
             ++mtk_qpid_stats::num_created_sessions();

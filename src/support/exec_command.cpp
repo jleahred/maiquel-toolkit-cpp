@@ -1,3 +1,8 @@
+#include "platform.hpp"
+#if MTK_PLATFORM == MTK_LINUX_PLATFORM
+
+
+
 #include "exec_command.h"
 
 
@@ -347,3 +352,6 @@ std::string        exec_command::get_error_last_lines_as_string  (void)  const
 
 
 };      //  namespace  mtk {
+
+
+#endif      //  mtk__exec__command__h

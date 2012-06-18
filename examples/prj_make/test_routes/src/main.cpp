@@ -48,14 +48,14 @@ namespace
 
 mtk::list<tr::sub_route>&   get_list_routes_to_test(void)
 {
-    static  mtk::list<tr::sub_route>   result;
-    return result;
+    static  auto    result = mtk::make_cptr(new mtk::list<tr::sub_route>{});
+    return  *result;
 }
 
 mtk::map<tr::sub_ip_names::key_type, tr::sub_ip_names>&   get_map_name_ip(void)
 {
-    static  mtk::map<tr::sub_ip_names::key_type, tr::sub_ip_names>   result;
-    return result;
+    static  auto    result = mtk::make_cptr(new mtk::map<tr::sub_ip_names::key_type, tr::sub_ip_names>{});
+    return *result;
 }
 
 
@@ -151,8 +151,8 @@ namespace  testing_route
 
     mtk::list<std::string>&   get_detail_tested(void)
     {
-        static  mtk::list<std::string>   result;
-        return  result;
+        static  auto   result = make_cptr(new mtk::list<std::string>{});
+        return  *result;
     }
 
     tr::sub_route&  get_current_route(void)

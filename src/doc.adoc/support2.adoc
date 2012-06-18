@@ -5,6 +5,10 @@
 === exec_command
     support/exec_command.h
 
+[WARNING]
+Only for **LINUX**
+
+
 * It runs a command asynchronously
 * It will throw signals to inform new lines and command finished
 * You can stop command calling stop method

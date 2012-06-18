@@ -20,11 +20,13 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_ACS";
-    const char*   APP_VER           = "2011-05-24";
+    const char*   APP_VER           = "2012-06-15";
     const char*   APP_DESCRIPTION   = "Access Control Server";
 
     const char*   APP_MODIFICATIONS = "           2011-03-25     first version\n"
-                                      "           2011-05-24     servers synchronization\n";
+                                      "           2011-05-24     servers synchronization\n"
+                                      "           2012-06-15     adding monitoring info on servers synchronization\n"
+                                      ;
 
 
 

@@ -3,6 +3,12 @@
 
 
 
+#include "platform.hpp"
+#if MTK_PLATFORM == MTK_LINUX_PLATFORM
+
+
+
+
 #include "support/signalslot.hpp"
 #include "support/date_time.h"
 #include "support/asynch_signal.hpp"
@@ -86,6 +92,9 @@ private:
 
 
 };      //      namespace mtk
+
+
+#endif  //  MTK_LINUX_PLATFORM
 
 
 #endif      //  mtk__exec__command__h

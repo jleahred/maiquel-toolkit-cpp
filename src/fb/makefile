@@ -25,7 +25,7 @@ include ../../compopt_make
 
 
 # compiler flags (-g -O2 -Wall)
-CXXFLAGS = -O2 -Wall
+CXXFLAGS = -O2 -Wall  -std=gnu++0x
 
 # linker flags
 LDFLAGS = -O2

@@ -109,7 +109,7 @@ alldebugO2: clean mtk_debugO2 this
 .PHONY : prepare
 prepare: 
 	mkdir -p bin
-	cp $(OUT) $(OUT).old
+	cp $(OUT) $(OUT).old  ||  true
 	mkdir -p temp
 
 
