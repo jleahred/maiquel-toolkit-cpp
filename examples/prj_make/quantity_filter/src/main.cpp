@@ -114,7 +114,7 @@ namespace
                 std::string description = rq.reject_description;   \
                 if(description =="")    \
                     description = check_request_quantity_filter(rq);   \
-                mtk::trd::msg::__MESSAGE_TYPE__ msg (rq, description, oms_current);   \
+                mtk::trd::msg::__MESSAGE_TYPE__ msg (rq, description, oms_current, rq.oms_additional_info);   \
                 mtk_send_message("server", msg);    \
             }
 

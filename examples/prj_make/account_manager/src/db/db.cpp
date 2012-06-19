@@ -34,13 +34,20 @@ namespace db {
         return result;
     }
 
-    mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >   get_map_registered_accounts(void)
+//    mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >   get_map_registered_accounts(void)
+//    {
+//        static mtk::CountPtr<mtk::map<std::string, mtk::trd::msg::sub_account_info >  > result;
+//        if(result.isValid() == false)
+//            result = mtk::make_cptr(new  mtk::map<std::string, mtk::trd::msg::sub_account_info >);
+//        return result;
+//    }
+
+    mtk::CountPtr<mtk::map<mtk::trd::msg::sub_account_info, accmgr::msg::sub_oms_account_info> >   get_map_registered_accounts2(void)
     {
-        static mtk::CountPtr<mtk::map<std::string, mtk::trd::msg::sub_account_info >  > result;
-        if(result.isValid() == false)
-            result = mtk::make_cptr(new  mtk::map<std::string, mtk::trd::msg::sub_account_info >);
+        static auto result = mtk::make_cptr(new mtk::map<mtk::trd::msg::sub_account_info, accmgr::msg::sub_oms_account_info>{});
         return result;
     }
+
 
 
 
@@ -86,7 +93,7 @@ namespace db {
         mtk::admin::register_command("accmgr",  "add_market",  "<market_name>", true)->connect(command_add_market);
         mtk::admin::register_command("accmgr",  "del_market",  "<market_name>", true)->connect(command_del_market);
 
-        mtk::admin::register_command("accmgr",  "add_account",  "<account-name> <cli-code>")->connect(command_add_account);
+        mtk::admin::register_command("accmgr",  "add_account",  "<account-name> <cli-code>  <oms-additional-info>")->connect(command_add_account);
         mtk::admin::register_command("accmgr",  "del_account",  "<account-name> <cli-code>")->connect(command_del_account);
 
         mtk::admin::register_command("accmgr",  "add_user",     "<user_name> <client-code>")->connect(command_add_user);
@@ -172,6 +179,17 @@ namespace db {
             return "";
     }
 
+    std::string     get_account_oms_additional_info (const mtk::trd::msg::sub_account_info&  account_info)
+    {
+        mtk::CountPtr<mtk::map<mtk::trd::msg::sub_account_info, accmgr::msg::sub_oms_account_info> >   account_maps = get_map_registered_accounts2();
+        auto it = account_maps->find(account_info);
+        if(it == account_maps->end())
+            throw mtk::Alarm(MTK_HERE, "account_manager", MTK_SS("Account not found... " << account_info), mtk::alPriorError);
+
+        const accmgr::msg::sub_oms_account_info&  oms_account_info{it->second};       //  I know it's dangerous
+        return oms_account_info.oms_additional_info;
+    }
+
 
 
     void command_stats(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
@@ -181,7 +199,7 @@ namespace db {
 
         response_lines.push_back(MTK_SS("[account_manager] ________________________________ " << get_map_user_info()->size()));
         response_lines.push_back(MTK_SS("#users: " << get_map_user_info()->size()));
-        response_lines.push_back(MTK_SS("#accounts: " << get_map_registered_accounts()->size()));
+        response_lines.push_back(MTK_SS("#accounts: " << get_map_registered_accounts2()->size()));
     }
 
     void command_lock(const std::string& /*command*/, const std::string& /*params*/, mtk::list<std::string>&  /*response_lines*/)
@@ -261,7 +279,7 @@ namespace db {
     }
 
 
-    std::string  try_add_account(const mtk::trd::msg::sub_account_info& account)
+    std::string  try_add_account(const mtk::trd::msg::sub_account_info& account, const std::string&   oms_aditional_info)
     {
         std::string result;
         //  check format fields
@@ -287,16 +305,16 @@ namespace db {
 
 
         //  check if previusly exists
-        mtk::CountPtr<mtk::map<std::string, mtk::trd::msg::sub_account_info> > map_accounts = get_map_registered_accounts();
+        auto  map_accounts = get_map_registered_accounts2();
         result += MTK_SS("before adding account... " << map_accounts->size());
-        mtk::map<std::string, mtk::trd::msg::sub_account_info>::iterator it = map_accounts->find(account.name);
+        auto  it = map_accounts->find(account);
         if(it!=map_accounts->end())
         {
             std::string  message = MTK_SS("account name already registered " << account);
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "accmgr", message, mtk::alPriorError, mtk::alTypeLogicError));
             return   message;
         }
-        map_accounts->insert(std::make_pair(account.name, account));
+        map_accounts->insert(std::make_pair(account,accmgr::msg::sub_oms_account_info(account, oms_aditional_info)));
 
         result += MTK_SS("   after adding  account... " << map_accounts->size());
         result += MTK_SS("   Account added ok.");
@@ -305,10 +323,10 @@ namespace db {
     void command_add_account(const std::string& /*command*/, const std::string& params, mtk::list<std::string>&  response_lines)
     {
         mtk::vector<std::string>  vparams;
-        if(check_and_split_params__converting2upper(params, response_lines, 2, vparams)  == false)     return;
+        if(check_and_split_params__converting2upper(params, response_lines, 3, vparams)  == false)     return;
 
         mtk::trd::msg::sub_account_info account(mtk::s_toUpper(vparams[0]), mtk::s_toUpper(vparams[1]));
-        std::string result = try_add_account(account);
+        std::string result = try_add_account(account, vparams[2]);
         response_lines.push_back(result);
     }
 
@@ -316,16 +334,16 @@ namespace db {
     {
         std::string result;
         //  check if previusly exists
-        mtk::CountPtr<mtk::map<std::string, mtk::trd::msg::sub_account_info> > map_accounts = get_map_registered_accounts();
+        auto  map_accounts = get_map_registered_accounts2();
         result += MTK_SS("before removing account... " << map_accounts->size());
-        mtk::map<std::string, mtk::trd::msg::sub_account_info>::iterator it = map_accounts->find(account.name);
+        auto  it = map_accounts->find(account);
         if(it==map_accounts->end())
         {
             std::string  message = MTK_SS("account doesn't exists " << account);
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "accmgr", message, mtk::alPriorError, mtk::alTypeLogicError));
             return   message;
         }
-        map_accounts->erase(account.name);
+        map_accounts->erase(account);
 
         //result += MTK_SS("   after removing account... " << map_accounts->size());
         result += MTK_SS("   Account deleted ok.");
@@ -546,7 +564,7 @@ namespace db {
     void load(void)
     {
         get_list_markets()->clear();
-        get_map_registered_accounts()->clear();
+        get_map_registered_accounts2()->clear();
         get_map_user_info()->clear();
 
         std::ifstream file(db_file_name.c_str());
@@ -559,7 +577,8 @@ namespace db {
             //std::string config_version;
 
             doc["markets"] >> *get_list_markets();
-            doc["accounts"] >> *get_map_registered_accounts();
+            //doc["accounts"] >> *get_map_registered_accounts();
+            doc["accounts2"] >> *get_map_registered_accounts2();
             doc["user_info"] >> *get_map_user_info();
 
             file.close();
@@ -582,7 +601,8 @@ namespace db {
 
             out  << YAML::Key << "markets"   <<  YAML::Value  <<  *get_list_markets();
 
-            out  << YAML::Key << "accounts"  <<  YAML::Value  <<  *get_map_registered_accounts();
+            //out  << YAML::Key << "accounts"  <<  YAML::Value  <<  *get_map_registered_accounts();
+            out  << YAML::Key << "accounts2"  <<  YAML::Value  <<  *get_map_registered_accounts2();
 
             out  << YAML::Key << "user_info" <<  YAML::Value  <<  *get_map_user_info();
 
@@ -728,10 +748,10 @@ namespace db {
                     response_lines.push_back(it_user_info->second.name);
                     response_lines.push_back(MTK_SS(it_user_info->second.client_code << "  "  <<  market));
                     response_lines.push_back("--------------------------------");
-                    mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >  map_accounts = get_map_registered_accounts();
-                    for(mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info >::iterator it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
+                    auto  map_accounts = get_map_registered_accounts2();
+                    for(auto it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
                     {
-                        auto  account_info = it_accounts->second;
+                        auto  account_info = it_accounts->first;
                         std::string  grants = __get_grant_type(market, it_user_info->second, account_info);
                         if(grants != "")
                             response_lines.push_back(MTK_SS(account_info  << " ["  << grants << "]"));
@@ -751,11 +771,11 @@ namespace db {
             yo << YAML::Key << "market"  <<  YAML::Value <<  market;
 
             yo << YAML::Key << "accounts"  <<  YAML::Value;
-            mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >  map_accounts = get_map_registered_accounts();
+            auto  map_accounts = get_map_registered_accounts2();
             yo << YAML::BeginSeq;
-            for(mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info >::iterator it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
+            for(auto  it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
             {
-                auto  account_info = it_accounts->second;
+                auto  account_info = it_accounts->first;
                 std::string  grants = __get_grant_type(market, user_info, account_info);
                 if(grants != "")
                 {
@@ -814,10 +834,10 @@ namespace db {
                     response_lines.push_back(it_user_info->second.name);
                     response_lines.push_back(MTK_SS(it_user_info->second.client_code << "  "  <<  market));
                     response_lines.push_back("--------------------------------");
-                    mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >  map_accounts = get_map_registered_accounts();
-                    for(mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info >::iterator it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
+                    auto  map_accounts = get_map_registered_accounts2();
+                    for(auto it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
                     {
-                        std::string  grants = __get_grant_type(market, it_user_info->second, it_accounts->second);
+                        std::string  grants = __get_grant_type(market, it_user_info->second, it_accounts->first);
                         if(grants != "")
                             response_lines.push_back(MTK_SS(it_accounts->second  << " ["  << grants << "]"));
                     }
@@ -867,10 +887,10 @@ namespace db {
                 response_lines.push_back(it_user_info->second.name);
                 response_lines.push_back(MTK_SS(it_user_info->second.client_code << "  "  <<  market));
                 response_lines.push_back("--------------------------------");
-                mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >  map_accounts = get_map_registered_accounts();
-                for(mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info >::iterator it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
+                auto  map_accounts = get_map_registered_accounts2();
+                for(auto it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
                 {
-                    std::string  grants = __get_grant_type(market, it_user_info->second, it_accounts->second);
+                    std::string  grants = __get_grant_type(market, it_user_info->second, it_accounts->first);
                     if(grants != "")
                         response_lines.push_back(MTK_SS(it_accounts->second  << " ["  << grants << "]"));
                 }
@@ -1033,13 +1053,13 @@ namespace db {
                     return result;
                 }
 
-                mtk::CountPtr<mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info > >  map_accounts = get_map_registered_accounts();
-                for(mtk::map<std::string  /*acc_name*/, mtk::trd::msg::sub_account_info >::iterator it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
+                auto  map_accounts = get_map_registered_accounts2();
+                for(auto it_accounts= map_accounts->begin(); it_accounts != map_accounts->end(); ++it_accounts)
                 {
-                    std::string  grants = __get_grant_type(market, it_user_info->second, it_accounts->second);
+                    std::string  grants = __get_grant_type(market, it_user_info->second, it_accounts->first);
                     if(grants != "")
                     {
-                        mtk::trd::account::msg::sub_grant::IC_key grant_key(market, it_accounts->second);
+                        mtk::trd::account::msg::sub_grant::IC_key grant_key(market, it_accounts->first);
                         if(grants != "<deleted>")
                         {
                             mtk::trd::account::msg::sub_grant  grant (grant_key, MTK_SS(grants[0]));

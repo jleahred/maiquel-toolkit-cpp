@@ -398,8 +398,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-oms_RQ_NW_LS::oms_RQ_NW_LS ( const RQ_NW_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_NW_LS(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_NW_LS::oms_RQ_NW_LS ( const RQ_NW_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_NW_LS(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -419,8 +419,8 @@ void oms_RQ_NW_LS::before_send(void) const
 
 
 
-oms_RQ_MD_LS::oms_RQ_MD_LS ( const RQ_MD_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_MD_LS(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_MD_LS::oms_RQ_MD_LS ( const RQ_MD_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_MD_LS(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -440,8 +440,8 @@ void oms_RQ_MD_LS::before_send(void) const
 
 
 
-oms_RQ_CC_LS::oms_RQ_CC_LS ( const RQ_CC_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_CC_LS(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_CC_LS::oms_RQ_CC_LS ( const RQ_CC_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_CC_LS(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -461,8 +461,8 @@ void oms_RQ_CC_LS::before_send(void) const
 
 
 
-oms_RQ_NW_MK::oms_RQ_NW_MK ( const RQ_NW_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_NW_MK(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_NW_MK::oms_RQ_NW_MK ( const RQ_NW_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_NW_MK(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -482,8 +482,8 @@ void oms_RQ_NW_MK::before_send(void) const
 
 
 
-oms_RQ_MD_MK::oms_RQ_MD_MK ( const RQ_MD_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_MD_MK(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_MD_MK::oms_RQ_MD_MK ( const RQ_MD_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_MD_MK(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -503,8 +503,8 @@ void oms_RQ_MD_MK::before_send(void) const
 
 
 
-oms_RQ_CC_MK::oms_RQ_CC_MK ( const RQ_CC_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_CC_MK(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_CC_MK::oms_RQ_CC_MK ( const RQ_CC_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_CC_MK(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -524,8 +524,8 @@ void oms_RQ_CC_MK::before_send(void) const
 
 
 
-oms_RQ_NW_SM::oms_RQ_NW_SM ( const RQ_NW_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_NW_SM(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_NW_SM::oms_RQ_NW_SM ( const RQ_NW_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_NW_SM(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -545,8 +545,8 @@ void oms_RQ_NW_SM::before_send(void) const
 
 
 
-oms_RQ_MD_SM::oms_RQ_MD_SM ( const RQ_MD_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_MD_SM(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_MD_SM::oms_RQ_MD_SM ( const RQ_MD_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_MD_SM(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -566,8 +566,8 @@ void oms_RQ_MD_SM::before_send(void) const
 
 
 
-oms_RQ_CC_SM::oms_RQ_CC_SM ( const RQ_CC_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_CC_SM(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_CC_SM::oms_RQ_CC_SM ( const RQ_CC_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_CC_SM(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -587,8 +587,8 @@ void oms_RQ_CC_SM::before_send(void) const
 
 
 
-oms_RQ_NW_SL::oms_RQ_NW_SL ( const RQ_NW_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_NW_SL(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_NW_SL::oms_RQ_NW_SL ( const RQ_NW_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_NW_SL(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -608,8 +608,8 @@ void oms_RQ_NW_SL::before_send(void) const
 
 
 
-oms_RQ_MD_SL::oms_RQ_MD_SL ( const RQ_MD_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_MD_SL(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_MD_SL::oms_RQ_MD_SL ( const RQ_MD_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_MD_SL(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -629,8 +629,8 @@ void oms_RQ_MD_SL::before_send(void) const
 
 
 
-oms_RQ_CC_SL::oms_RQ_CC_SL ( const RQ_CC_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from)
-    :  RQ_CC_SL(parent),   reject_description(_reject_description),   from(_from) 
+oms_RQ_CC_SL::oms_RQ_CC_SL ( const RQ_CC_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+    :  RQ_CC_SL(parent),   reject_description(_reject_description),   from(_from),   oms_additional_info(_oms_additional_info) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -695,7 +695,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_LS & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_NW_LS&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -706,7 +706,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_LS & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_NW_LS" <<  YAML::Value << static_cast<const RQ_NW_LS&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -720,6 +720,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_NW_LS & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -729,7 +730,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_LS & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_MD_LS&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -740,7 +741,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_LS & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_MD_LS" <<  YAML::Value << static_cast<const RQ_MD_LS&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -754,6 +755,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_MD_LS & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -763,7 +765,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_LS & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_CC_LS&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -774,7 +776,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_LS & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_CC_LS" <<  YAML::Value << static_cast<const RQ_CC_LS&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -788,6 +790,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_CC_LS & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -797,7 +800,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_MK & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_NW_MK&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -808,7 +811,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_MK & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_NW_MK" <<  YAML::Value << static_cast<const RQ_NW_MK&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -822,6 +825,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_NW_MK & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -831,7 +835,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_MK & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_MD_MK&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -842,7 +846,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_MK & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_MD_MK" <<  YAML::Value << static_cast<const RQ_MD_MK&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -856,6 +860,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_MD_MK & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -865,7 +870,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_MK & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_CC_MK&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -876,7 +881,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_MK & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_CC_MK" <<  YAML::Value << static_cast<const RQ_CC_MK&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -890,6 +895,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_CC_MK & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -899,7 +905,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_SM & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_NW_SM&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -910,7 +916,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_SM & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_NW_SM" <<  YAML::Value << static_cast<const RQ_NW_SM&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -924,6 +930,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_NW_SM & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -933,7 +940,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_SM & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_MD_SM&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -944,7 +951,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_SM & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_MD_SM" <<  YAML::Value << static_cast<const RQ_MD_SM&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -958,6 +965,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_MD_SM & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -967,7 +975,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_SM & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_CC_SM&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -978,7 +986,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_SM & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_CC_SM" <<  YAML::Value << static_cast<const RQ_CC_SM&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -992,6 +1000,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_CC_SM & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -1001,7 +1010,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_SL & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_NW_SL&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -1012,7 +1021,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_NW_SL & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_NW_SL" <<  YAML::Value << static_cast<const RQ_NW_SL&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -1026,6 +1035,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_NW_SL & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -1035,7 +1045,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_MD_SL & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_MD_SL&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -1046,7 +1056,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_MD_SL & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_MD_SL" <<  YAML::Value << static_cast<const RQ_MD_SL&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -1060,6 +1070,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_MD_SL & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -1069,7 +1080,7 @@ std::ostream& operator<< (std::ostream& o, const oms_RQ_CC_SL & c)
 {
     o << "{ "
     << "("  <<  static_cast<const RQ_CC_SL&>(c)  << ")" 
-        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "
+        << "reject_description:"<<   c.reject_description << "  "        << "from:"<<   c.from << "  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
         << " }";
     return o;
 };
@@ -1080,7 +1091,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const oms_RQ_CC_SL & c)
 {
     o << YAML::BeginMap
     << YAML::Key << "RQ_CC_SL" <<  YAML::Value << static_cast<const RQ_CC_SL&>(c)  
-        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from
+        << YAML::Key << "reject_description"  << YAML::Value <<   c.reject_description        << YAML::Key << "from"  << YAML::Value <<   c.from        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
         << YAML::EndMap;
     return o;
 };
@@ -1094,6 +1105,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_CC_SL & c)
 
         node["reject_description"]  >> c.reject_description;
         node["from"]  >> c.from;
+        node["oms_additional_info"]  >> c.oms_additional_info;
 
 
 };
@@ -1170,7 +1182,7 @@ void  operator >> (const YAML::Node& node, oms_RQ_EXECS_HISTORIC & c)
 
 bool operator== (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b)
 {
-    return ( (static_cast<const RQ_NW_LS&>(a)   ==  static_cast<const RQ_NW_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_NW_LS&>(a)   ==  static_cast<const RQ_NW_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b)
@@ -1182,7 +1194,7 @@ bool operator!= (const oms_RQ_NW_LS& a, const oms_RQ_NW_LS& b)
 
 bool operator== (const oms_RQ_MD_LS& a, const oms_RQ_MD_LS& b)
 {
-    return ( (static_cast<const RQ_MD_LS&>(a)   ==  static_cast<const RQ_MD_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_MD_LS&>(a)   ==  static_cast<const RQ_MD_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_MD_LS& a, const oms_RQ_MD_LS& b)
@@ -1194,7 +1206,7 @@ bool operator!= (const oms_RQ_MD_LS& a, const oms_RQ_MD_LS& b)
 
 bool operator== (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b)
 {
-    return ( (static_cast<const RQ_CC_LS&>(a)   ==  static_cast<const RQ_CC_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_CC_LS&>(a)   ==  static_cast<const RQ_CC_LS&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b)
@@ -1206,7 +1218,7 @@ bool operator!= (const oms_RQ_CC_LS& a, const oms_RQ_CC_LS& b)
 
 bool operator== (const oms_RQ_NW_MK& a, const oms_RQ_NW_MK& b)
 {
-    return ( (static_cast<const RQ_NW_MK&>(a)   ==  static_cast<const RQ_NW_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_NW_MK&>(a)   ==  static_cast<const RQ_NW_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_NW_MK& a, const oms_RQ_NW_MK& b)
@@ -1218,7 +1230,7 @@ bool operator!= (const oms_RQ_NW_MK& a, const oms_RQ_NW_MK& b)
 
 bool operator== (const oms_RQ_MD_MK& a, const oms_RQ_MD_MK& b)
 {
-    return ( (static_cast<const RQ_MD_MK&>(a)   ==  static_cast<const RQ_MD_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_MD_MK&>(a)   ==  static_cast<const RQ_MD_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_MD_MK& a, const oms_RQ_MD_MK& b)
@@ -1230,7 +1242,7 @@ bool operator!= (const oms_RQ_MD_MK& a, const oms_RQ_MD_MK& b)
 
 bool operator== (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b)
 {
-    return ( (static_cast<const RQ_CC_MK&>(a)   ==  static_cast<const RQ_CC_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_CC_MK&>(a)   ==  static_cast<const RQ_CC_MK&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b)
@@ -1242,7 +1254,7 @@ bool operator!= (const oms_RQ_CC_MK& a, const oms_RQ_CC_MK& b)
 
 bool operator== (const oms_RQ_NW_SM& a, const oms_RQ_NW_SM& b)
 {
-    return ( (static_cast<const RQ_NW_SM&>(a)   ==  static_cast<const RQ_NW_SM&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_NW_SM&>(a)   ==  static_cast<const RQ_NW_SM&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_NW_SM& a, const oms_RQ_NW_SM& b)
@@ -1254,7 +1266,7 @@ bool operator!= (const oms_RQ_NW_SM& a, const oms_RQ_NW_SM& b)
 
 bool operator== (const oms_RQ_MD_SM& a, const oms_RQ_MD_SM& b)
 {
-    return ( (static_cast<const RQ_MD_SM&>(a)   ==  static_cast<const RQ_MD_SM&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_MD_SM&>(a)   ==  static_cast<const RQ_MD_SM&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_MD_SM& a, const oms_RQ_MD_SM& b)
@@ -1266,7 +1278,7 @@ bool operator!= (const oms_RQ_MD_SM& a, const oms_RQ_MD_SM& b)
 
 bool operator== (const oms_RQ_CC_SM& a, const oms_RQ_CC_SM& b)
 {
-    return ( (static_cast<const RQ_CC_SM&>(a)   ==  static_cast<const RQ_CC_SM&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_CC_SM&>(a)   ==  static_cast<const RQ_CC_SM&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_CC_SM& a, const oms_RQ_CC_SM& b)
@@ -1278,7 +1290,7 @@ bool operator!= (const oms_RQ_CC_SM& a, const oms_RQ_CC_SM& b)
 
 bool operator== (const oms_RQ_NW_SL& a, const oms_RQ_NW_SL& b)
 {
-    return ( (static_cast<const RQ_NW_SL&>(a)   ==  static_cast<const RQ_NW_SL&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_NW_SL&>(a)   ==  static_cast<const RQ_NW_SL&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_NW_SL& a, const oms_RQ_NW_SL& b)
@@ -1290,7 +1302,7 @@ bool operator!= (const oms_RQ_NW_SL& a, const oms_RQ_NW_SL& b)
 
 bool operator== (const oms_RQ_MD_SL& a, const oms_RQ_MD_SL& b)
 {
-    return ( (static_cast<const RQ_MD_SL&>(a)   ==  static_cast<const RQ_MD_SL&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_MD_SL&>(a)   ==  static_cast<const RQ_MD_SL&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_MD_SL& a, const oms_RQ_MD_SL& b)
@@ -1302,7 +1314,7 @@ bool operator!= (const oms_RQ_MD_SL& a, const oms_RQ_MD_SL& b)
 
 bool operator== (const oms_RQ_CC_SL& a, const oms_RQ_CC_SL& b)
 {
-    return ( (static_cast<const RQ_CC_SL&>(a)   ==  static_cast<const RQ_CC_SL&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&   true  );
+    return ( (static_cast<const RQ_CC_SL&>(a)   ==  static_cast<const RQ_CC_SL&>(b))  &&           a.reject_description ==  b.reject_description  &&          a.from ==  b.from  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
 };
 
 bool operator!= (const oms_RQ_CC_SL& a, const oms_RQ_CC_SL& b)
@@ -1358,6 +1370,14 @@ copy(static_cast<RQ_NW_LS&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_NW_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1375,6 +1395,8 @@ __internal_add2map(map, static_cast<const RQ_NW_LS&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1411,6 +1433,14 @@ copy(static_cast<RQ_MD_LS&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_MD_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1428,6 +1458,8 @@ __internal_add2map(map, static_cast<const RQ_MD_LS&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1464,6 +1496,14 @@ copy(static_cast<RQ_CC_LS&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_CC_LS::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1481,6 +1521,8 @@ __internal_add2map(map, static_cast<const RQ_CC_LS&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1517,6 +1559,14 @@ copy(static_cast<RQ_NW_MK&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_NW_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1534,6 +1584,8 @@ __internal_add2map(map, static_cast<const RQ_NW_MK&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1570,6 +1622,14 @@ copy(static_cast<RQ_MD_MK&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_MD_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1587,6 +1647,8 @@ __internal_add2map(map, static_cast<const RQ_MD_MK&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1623,6 +1685,14 @@ copy(static_cast<RQ_CC_MK&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_CC_MK::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1640,6 +1710,8 @@ __internal_add2map(map, static_cast<const RQ_CC_MK&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1676,6 +1748,14 @@ copy(static_cast<RQ_NW_SM&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_NW_SM::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1693,6 +1773,8 @@ __internal_add2map(map, static_cast<const RQ_NW_SM&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1729,6 +1811,14 @@ copy(static_cast<RQ_MD_SM&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_MD_SM::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1746,6 +1836,8 @@ __internal_add2map(map, static_cast<const RQ_MD_SM&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1782,6 +1874,14 @@ copy(static_cast<RQ_CC_SM&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_CC_SM::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1799,6 +1899,8 @@ __internal_add2map(map, static_cast<const RQ_CC_SM&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1835,6 +1937,14 @@ copy(static_cast<RQ_NW_SL&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_NW_SL::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1852,6 +1962,8 @@ __internal_add2map(map, static_cast<const RQ_NW_SL&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1888,6 +2000,14 @@ copy(static_cast<RQ_MD_SL&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_MD_SL::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1905,6 +2025,8 @@ __internal_add2map(map, static_cast<const RQ_MD_SL&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -1941,6 +2063,14 @@ copy(static_cast<RQ_CC_SL&>(c), v);
                     else
                         copy(c.from, it->second);
                         //c.from = it->second;
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message oms_RQ_CC_SL::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
 
         c.check_recomended ();
     }
@@ -1958,6 +2088,8 @@ __internal_add2map(map, static_cast<const RQ_CC_SL&>(a));
         __internal_add2map(map, a.reject_description, std::string("rjd"));
 //  field_type
         __internal_add2map(map, a.from, std::string("from"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
 
 
 };
@@ -2115,6 +2247,9 @@ __internal_add2map(content, static_cast<const RQ_NW_LS&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2138,6 +2273,9 @@ __internal_add2map(content, static_cast<const RQ_MD_LS&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2161,6 +2299,9 @@ __internal_add2map(content, static_cast<const RQ_CC_LS&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2184,6 +2325,9 @@ __internal_add2map(content, static_cast<const RQ_NW_MK&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2207,6 +2351,9 @@ __internal_add2map(content, static_cast<const RQ_MD_MK&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2230,6 +2377,9 @@ __internal_add2map(content, static_cast<const RQ_CC_MK&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2253,6 +2403,9 @@ __internal_add2map(content, static_cast<const RQ_NW_SM&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2276,6 +2429,9 @@ __internal_add2map(content, static_cast<const RQ_MD_SM&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2299,6 +2455,9 @@ __internal_add2map(content, static_cast<const RQ_CC_SM&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2322,6 +2481,9 @@ __internal_add2map(content, static_cast<const RQ_NW_SL&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2345,6 +2507,9 @@ __internal_add2map(content, static_cast<const RQ_MD_SL&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2368,6 +2533,9 @@ __internal_add2map(content, static_cast<const RQ_CC_SL&>(*this));
 //  field_type
 //        content["from"] = this->from;
         __internal_add2map(content, this->from, std::string("from"));
+//  field_type
+//        content["oai"] = this->oms_additional_info;
+        __internal_add2map(content, this->oms_additional_info, std::string("oai"));
 
 
 
@@ -2433,6 +2601,8 @@ __internal_add2map(content, static_cast<const RQ_EXECS_HISTORIC&>(*this));
 __internal_get_default((RQ_NW_LS*)0), //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0)
             );
     }
@@ -2441,6 +2611,8 @@ __internal_get_default((RQ_NW_LS*)0), //   field_type
     {
         return oms_RQ_MD_LS(
 __internal_get_default((RQ_MD_LS*)0), //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
@@ -2453,6 +2625,8 @@ __internal_get_default((RQ_MD_LS*)0), //   field_type
 __internal_get_default((RQ_CC_LS*)0), //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0)
             );
     }
@@ -2461,6 +2635,8 @@ __internal_get_default((RQ_CC_LS*)0), //   field_type
     {
         return oms_RQ_NW_MK(
 __internal_get_default((RQ_NW_MK*)0), //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
@@ -2473,6 +2649,8 @@ __internal_get_default((RQ_NW_MK*)0), //   field_type
 __internal_get_default((RQ_MD_MK*)0), //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0)
             );
     }
@@ -2481,6 +2659,8 @@ __internal_get_default((RQ_MD_MK*)0), //   field_type
     {
         return oms_RQ_CC_MK(
 __internal_get_default((RQ_CC_MK*)0), //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
@@ -2493,6 +2673,8 @@ __internal_get_default((RQ_CC_MK*)0), //   field_type
 __internal_get_default((RQ_NW_SM*)0), //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0)
             );
     }
@@ -2501,6 +2683,8 @@ __internal_get_default((RQ_NW_SM*)0), //   field_type
     {
         return oms_RQ_MD_SM(
 __internal_get_default((RQ_MD_SM*)0), //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
@@ -2513,6 +2697,8 @@ __internal_get_default((RQ_MD_SM*)0), //   field_type
 __internal_get_default((RQ_CC_SM*)0), //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0)
             );
     }
@@ -2521,6 +2707,8 @@ __internal_get_default((RQ_CC_SM*)0), //   field_type
     {
         return oms_RQ_NW_SL(
 __internal_get_default((RQ_NW_SL*)0), //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
@@ -2533,6 +2721,8 @@ __internal_get_default((RQ_NW_SL*)0), //   field_type
 __internal_get_default((RQ_MD_SL*)0), //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0)
             );
     }
@@ -2541,6 +2731,8 @@ __internal_get_default((RQ_MD_SL*)0), //   field_type
     {
         return oms_RQ_CC_SL(
 __internal_get_default((RQ_CC_SL*)0), //   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
    __internal_get_default ((std::string*)0)
@@ -2573,7 +2765,9 @@ oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_NW_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2583,7 +2777,9 @@ oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_MD_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2593,7 +2789,9 @@ oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::types::Variant::Map&  mv)
     :  RQ_CC_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2603,7 +2801,9 @@ oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::types::Variant::Map&  mv)
     :  RQ_NW_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2613,7 +2813,9 @@ oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::types::Variant::Map&  mv)
     :  RQ_MD_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2623,7 +2825,9 @@ oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::types::Variant::Map&  mv)
     :  RQ_CC_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2633,7 +2837,9 @@ oms_RQ_NW_SM::oms_RQ_NW_SM (const qpid::types::Variant::Map&  mv)
     :  RQ_NW_SM(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2643,7 +2849,9 @@ oms_RQ_MD_SM::oms_RQ_MD_SM (const qpid::types::Variant::Map&  mv)
     :  RQ_MD_SM(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2653,7 +2861,9 @@ oms_RQ_CC_SM::oms_RQ_CC_SM (const qpid::types::Variant::Map&  mv)
     :  RQ_CC_SM(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2663,7 +2873,9 @@ oms_RQ_NW_SL::oms_RQ_NW_SL (const qpid::types::Variant::Map&  mv)
     :  RQ_NW_SL(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2673,7 +2885,9 @@ oms_RQ_MD_SL::oms_RQ_MD_SL (const qpid::types::Variant::Map&  mv)
     :  RQ_MD_SL(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
@@ -2683,7 +2897,9 @@ oms_RQ_CC_SL::oms_RQ_CC_SL (const qpid::types::Variant::Map&  mv)
     :  RQ_CC_SL(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
-   from(__internal_get_default((std::string*)0)) 
+   from(__internal_get_default((std::string*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  

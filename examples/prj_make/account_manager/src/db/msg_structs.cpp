@@ -338,12 +338,6 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     }
 
 
-    template<typename T>
-    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
-    {
-        if (n.HasValue())
-            __internal_add2map(map, n.Get(), key);
-    }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::DateTime& a, const std::string& key)
     {
@@ -378,6 +372,13 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     }
 
 
+    template<typename T>
+    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
+    {
+        if (n.HasValue())
+            __internal_add2map(map, n.Get(), key);
+    }
+
     //  for composed types
     template<typename T>
     void  __internal_add2map(qpid::types::Variant::Map& map, const T& t, const std::string& key)
@@ -400,22 +401,37 @@ sub_user_info::sub_user_info (   const std::string&  _name,   const mtk::DateTim
     :     name(_name),   created(_created),   client_code(_client_code),   grant_list(_grant_list) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_user_info::check_recomended(void) const
+void  sub_user_info::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_user_info::before_send(void) const
+{
+
+}
+
+
+
+
+sub_oms_account_info::sub_oms_account_info (   const mtk::trd::msg::sub_account_info&  _account,   const std::string&  _oms_additional_info)
+    :     account(_account),   oms_additional_info(_oms_additional_info) 
+       
+    {  
+    }
+
+
+
+void  sub_oms_account_info::check_recomended(void) const
+{
+
+}
+
+void sub_oms_account_info::before_send(void) const
 {
 
 }
@@ -457,6 +473,39 @@ void  operator >> (const YAML::Node& node, sub_user_info & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const sub_oms_account_info & c)
+{
+    o << "{ "
+
+        << "account:"<< c.account<<"  "        << "oms_additional_info:"<<   c.oms_additional_info << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_oms_account_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "account"  << YAML::Value << c.account        << YAML::Key << "oms_additional_info"  << YAML::Value <<   c.oms_additional_info
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_oms_account_info & c)
+{
+
+
+        node["account"]  >> c.account;
+        node["oms_additional_info"]  >> c.oms_additional_info;
+
+
+};
+
+
 bool operator== (const sub_user_info& a, const sub_user_info& b)
 {
     return (          a.name ==  b.name  &&          a.created ==  b.created  &&          a.client_code ==  b.client_code  &&          a.grant_list ==  b.grant_list  &&   true  );
@@ -469,8 +518,19 @@ bool operator!= (const sub_user_info& a, const sub_user_info& b)
 
 
 
+bool operator== (const sub_oms_account_info& a, const sub_oms_account_info& b)
+{
+    return (          a.account ==  b.account  &&          a.oms_additional_info ==  b.oms_additional_info  &&   true  );
+};
 
-//void  __internal_qpid_fill (sub_user_info& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
+bool operator!= (const sub_oms_account_info& a, const sub_oms_account_info& b)
+{
+    return !(a==b);
+};
+
+
+
+
 void  copy (sub_user_info& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -509,6 +569,7 @@ void  copy (sub_user_info& c, const qpid::types::Variant& v)
                         copy(c.grant_list, it->second);
                         //__internal_qpid_fill(c.grant_list, it->second.asMap());
 
+        c.check_recomended ();
     }
 
 
@@ -516,7 +577,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_user_info& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.name, std::string("nm"));
@@ -539,6 +600,58 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 
+
+
+void  copy (sub_oms_account_info& c, const qpid::types::Variant& v)
+    {  
+        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("acc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field account on message sub_oms_account_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.account, it->second);
+                        //__internal_qpid_fill(c.account, it->second.asMap());
+//   field_type
+
+                    it = mv.find("oai");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field oms_additional_info on message sub_oms_account_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.oms_additional_info, it->second);
+                        //c.oms_additional_info = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_oms_account_info& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  sub_msg_type
+        __internal_add2map(map, a.account, std::string("acc"));
+//  field_type
+        __internal_add2map(map, a.oms_additional_info, std::string("oai"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_oms_account_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
     sub_user_info  __internal_get_default(sub_user_info*)
@@ -555,8 +668,17 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
             );
     }
     
-
-sub_user_info::sub_user_info (const qpid::messaging::Message& msg)
+    sub_oms_account_info  __internal_get_default(sub_oms_account_info*)
+    {
+        return sub_oms_account_info(
+//   sub_msg_type
+   __internal_get_default((mtk::trd::msg::sub_account_info*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
+sub_user_info::sub_user_info (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    name(__internal_get_default((std::string*)0)),
 //   field_type
@@ -566,16 +688,19 @@ sub_user_info::sub_user_info (const qpid::messaging::Message& msg)
 //   sub_msg_type
    grant_list(__internal_get_default((mtk::list<mtk::trd::account::msg::sub_grant >*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        copy(*this, mv);
+        check_recomended ();  
     }
 
+sub_oms_account_info::sub_oms_account_info (const qpid::types::Variant::Map&  mv)
+    :  //   sub_msg_type
+   account(__internal_get_default((mtk::trd::msg::sub_account_info*)0)),
+//   field_type
+   oms_additional_info(__internal_get_default((std::string*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
 
 
 };   //namespace accmgr {

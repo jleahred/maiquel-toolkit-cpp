@@ -19,6 +19,34 @@ ROOT
                 description:GROUP 1
                 market:~
                 
+                AUD01
+                {
+                    description:AUD01
+                    market:MARKET
+                }
+                ROU1
+                {
+                    description:ROU1
+                    market:MARKET
+                }
+                ROU2
+                {
+                    description:ROU2
+                    market:MARKET
+                }
+                BAR11
+                {
+                    description:BAR11
+                    market:MARKET
+                }
+                BAN1
+                {
+                    description:BAN1
+                    market:MARKET
+                }
+
+
+
                 PRD1
                 {
                     description:PRODUCT 1

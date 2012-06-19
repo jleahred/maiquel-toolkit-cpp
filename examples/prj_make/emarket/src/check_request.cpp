@@ -253,21 +253,21 @@ void check_request::oms_RQ_CC_LS(const mtk::trd::msg::oms_RQ_CC_LS& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_cc_ls.emit(mtk::trd::msg::oms_RQ_CC_LS(rq, reject_reason, ""));
+    sig_oms_rq_cc_ls.emit(mtk::trd::msg::oms_RQ_CC_LS(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 void check_request::oms_RQ_MD_LS(const mtk::trd::msg::oms_RQ_MD_LS& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_md_ls.emit(mtk::trd::msg::oms_RQ_MD_LS(rq, reject_reason, ""));
+    sig_oms_rq_md_ls.emit(mtk::trd::msg::oms_RQ_MD_LS(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 void check_request::oms_RQ_NW_LS(const mtk::trd::msg::oms_RQ_NW_LS& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_nw_ls.emit(mtk::trd::msg::oms_RQ_NW_LS(rq, reject_reason, ""));
+    sig_oms_rq_nw_ls.emit(mtk::trd::msg::oms_RQ_NW_LS(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 
@@ -275,7 +275,7 @@ void check_request::oms_RQ_NW_MK(const mtk::trd::msg::oms_RQ_NW_MK& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_nw_mk.emit(mtk::trd::msg::oms_RQ_NW_MK(rq, reject_reason, ""));
+    sig_oms_rq_nw_mk.emit(mtk::trd::msg::oms_RQ_NW_MK(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 
@@ -284,21 +284,21 @@ void check_request::oms_RQ_CC_SM(const mtk::trd::msg::oms_RQ_CC_SM& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_cc_sm.emit(mtk::trd::msg::oms_RQ_CC_SM(rq, reject_reason, ""));
+    sig_oms_rq_cc_sm.emit(mtk::trd::msg::oms_RQ_CC_SM(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 void check_request::oms_RQ_MD_SM(const mtk::trd::msg::oms_RQ_MD_SM& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_md_sm.emit(mtk::trd::msg::oms_RQ_MD_SM(rq, reject_reason, ""));
+    sig_oms_rq_md_sm.emit(mtk::trd::msg::oms_RQ_MD_SM(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 void check_request::oms_RQ_NW_SM(const mtk::trd::msg::oms_RQ_NW_SM& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_nw_sm.emit(mtk::trd::msg::oms_RQ_NW_SM(rq, reject_reason, ""));
+    sig_oms_rq_nw_sm.emit(mtk::trd::msg::oms_RQ_NW_SM(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 
@@ -307,19 +307,19 @@ void check_request::oms_RQ_CC_SL(const mtk::trd::msg::oms_RQ_CC_SL& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_cc_sl.emit(mtk::trd::msg::oms_RQ_CC_SL(rq, reject_reason, ""));
+    sig_oms_rq_cc_sl.emit(mtk::trd::msg::oms_RQ_CC_SL(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 void check_request::oms_RQ_MD_SL(const mtk::trd::msg::oms_RQ_MD_SL& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_md_sl.emit(mtk::trd::msg::oms_RQ_MD_SL(rq, reject_reason, ""));
+    sig_oms_rq_md_sl.emit(mtk::trd::msg::oms_RQ_MD_SL(rq, reject_reason, "", rq.oms_additional_info));
 }
 
 void check_request::oms_RQ_NW_SL(const mtk::trd::msg::oms_RQ_NW_SL& rq)
 {
     std::cout << mtk::dtNowLocal() << "  received... " << __FUNCTION__ << std::endl;
     std::string reject_reason = verif_is_valid_request(rq);
-    sig_oms_rq_nw_sl.emit(mtk::trd::msg::oms_RQ_NW_SL(rq, reject_reason, ""));
+    sig_oms_rq_nw_sl.emit(mtk::trd::msg::oms_RQ_NW_SL(rq, reject_reason, "", rq.oms_additional_info));
 }

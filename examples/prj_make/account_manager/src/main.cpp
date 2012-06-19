@@ -19,7 +19,7 @@ namespace
 {
 
     const char*   APP_NAME          = "GEN_ACCOUNT_MANAGER";
-    const char*   APP_VER           = "2012-05-28 f";
+    const char*   APP_VER           = "2012-06-16 f";
     const char*   APP_DESCRIPTION   = "I can do two things\n"
                                       "I can send check all order request from client in order to verify the user is logged and account is valid, \n"
                                       "filling the reject_description if necessary and sending the request to order flow control\n"
@@ -32,6 +32,7 @@ namespace
     const char*   APP_MODIFICATIONS =   "           2011-05-30     first version\n"
                                         "           2012-04-02     stop limit orders\n"
                                         "           2012-05-28     rq historic execs\n"
+                                        "           2012-06-18     oms additional info\n"
                                         ;
 
 
@@ -308,6 +309,11 @@ namespace
         return  accmgr::db::get_grant_type(rq.request_info.req_id, rq.market, rq.account);
     }
 
+    std::string   get_account_oms_additional_info(const mtk::trd::msg::RQ_XX&  rq)
+    {
+        return  accmgr::db::get_account_oms_additional_info(rq.invariant.account);
+    }
+
     #define ON_RQ_XX_XX(__MESSAGE_TYPE__, __GRANT_TYPE__) \
             void on_##__MESSAGE_TYPE__(const mtk::trd::msg::__MESSAGE_TYPE__& rq)   \
             {   \
@@ -315,13 +321,15 @@ namespace
                    \
                 std::string description;   \
                 bool granted=false;   \
-                if(get_order_grant_type(rq) == "F")   \
+                std::string  grant_type = get_order_grant_type(rq);  \
+                std::string  account_oms_additional_info = get_account_oms_additional_info(rq);   \
+                if(grant_type == "F")   \
                     granted = true;   \
-                else if (get_order_grant_type(rq) == "C"  &&  std::string(__GRANT_TYPE__) == std::string("C"))   \
+                else if (grant_type == "C"  &&  std::string(__GRANT_TYPE__) == std::string("C"))   \
                     granted = true;   \
                 if(!granted)   \
                     description = "account not granted";   \
-                mtk::trd::msg::oms_##__MESSAGE_TYPE__ msg (rq, description, oms_current);   \
+                mtk::trd::msg::oms_##__MESSAGE_TYPE__ msg (rq, description, oms_current, account_oms_additional_info);   \
                 mtk_send_message("server", msg);        \
             }
 

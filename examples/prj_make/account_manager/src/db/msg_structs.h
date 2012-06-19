@@ -43,10 +43,14 @@ public:
     
     // constructor
     explicit sub_user_info (    const std::string&  _name,   const mtk::DateTime&  _created,   const std::string&  _client_code,   const mtk::list<mtk::trd::account::msg::sub_grant >&  _grant_list );
-    explicit sub_user_info ( const qpid::messaging::Message& message );
+    explicit sub_user_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_user_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_user_info"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_user_info"; };
+    
+    
+
+    
 
     
     
@@ -61,23 +65,84 @@ public:
 
 
 
+
     //   KEY INFO
         typedef decltype(name) key_type;
         key_type    get_key(void) const  {   return  name;  }
     //   KEY INFO
 
 
+    //  ADDRESS info
+
+
 
     //  subject info
     
+
     
     
     
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
+};
+
+
+
+
+//-------------------------------
+//      sub_oms_account_info
+//-------------------------------    
+class sub_oms_account_info     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_oms_account_info (    const mtk::trd::msg::sub_account_info&  _account,   const std::string&  _oms_additional_info );
+    explicit sub_oms_account_info ( const qpid::types::Variant::Map&  mv );
+    virtual ~sub_oms_account_info (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_oms_account_info"; };
+    static  std::string static_get_message_type_as_string(void)        { return "sub_oms_account_info"; };
+    
+    
+
+    
+
+    
+    
+    
+    
+
+    // fields
+    mtk::trd::msg::sub_account_info           account; 
+    std::string                               oms_additional_info; 
+
+
+
+
+    //   KEY INFO
+        typedef decltype(account) key_type;
+        key_type    get_key(void) const  {   return  account;  }
+    //   KEY INFO
+
+
+    //  ADDRESS info
+
+
+
+    //  subject info
+    
+
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
 };
 
 
@@ -93,12 +158,23 @@ private:
 bool operator== (const sub_user_info& a, const sub_user_info& b);
 bool operator!= (const sub_user_info& a, const sub_user_info& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_user_info& a);
+    std::ostream& operator<< (std::ostream& o, const sub_oms_account_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_oms_account_info & c);
+   void           operator >> (const YAML::Node& n,       sub_oms_account_info & c);
+
+bool operator== (const sub_oms_account_info& a, const sub_oms_account_info& b);
+bool operator!= (const sub_oms_account_info& a, const sub_oms_account_info& b);
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_user_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_user_info>& a, const std::string& field);
 void copy (sub_user_info& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_oms_account_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_oms_account_info>& a, const std::string& field);
+void copy (sub_oms_account_info& a, const qpid::types::Variant& map);
 
     sub_user_info  __internal_get_default(sub_user_info *);
+    
+    sub_oms_account_info  __internal_get_default(sub_oms_account_info *);
     
 
 };   //namespace accmgr {
