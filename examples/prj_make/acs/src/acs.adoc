@@ -32,13 +32,13 @@
 
 == Process description
 
-* This process will control de login and logout from clients
+* This process will control the login and logout from clients
 * Keeping the valid login sessions
 * Checking the keepalive for active sessions
 * Informing login and logout to other processes
 * Sending partial list of login sessions
 * Receiving and checking partial list from processes with their active sessions
-* On start, during 4 minutes, it will add to session list, the received keep alives (in order to let a hot start)
+* On start, during 4 minutes, it will add to session list, the received keep alive (in order to let a hot start)
 
 
 == Context DFD
@@ -103,14 +103,14 @@ include::../mtk/src/components/acs/msg_acs.msg[]
 
 == Server side messages
 
-* Servers will send +pub_partial_user_list_serv2acs+ frecuently in order to detect invalid users registered on one server
+* Servers will send +pub_partial_user_list_serv2acs+ frequently in order to detect invalid users registered on one server
 ** If +acs+ receives an invalid session info on +pub_partial_user_list_serv2acs+, it will generate a +pub_del_user+ message
 * If a server receives a request on an invalid +session_id+, it will...
 .. Ask for this +session_id+ with +req_session_id_conf+
 .. Notify as +error+ with an +alarm+
 .. Reject the request
 .. If the +session_id+ is valid, +acs_server+ will publish +pub_partial_user_list_acs2serv+ for next requests
-.. +acs_server+ will notify this with an error message (it could be a concurrence behaviour)
+.. +acs_server+ will notify this with an error message (it could be a concurrence behavior)
 
 [source,{cpp}]
 ----
@@ -125,5 +125,5 @@ include::../mtk/src/components/acs/serv/msg_acs_server.msg[]
 
 
 == Document modifications
-* Non aply
+* Non apply
 

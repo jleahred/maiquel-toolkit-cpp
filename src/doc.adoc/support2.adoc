@@ -61,6 +61,32 @@ Getting references with factory is not cheap (it uses a map inside). +
 You must avoid to use it on intensive executed code
 
 
+
+
+=== Synchr  and threads
+  support/syncr.h
+
+* Working with threads.
+* We could need to manage more than one thread using libraries as QuickFIX
+* An small and efficient solution, is to use the macro +MTK_SYNCHR+ at the beginning of all callbacks produced on a different thread.
++
+Example::
++
+[source,{cpp}]
+----
+#include "support/synchr.h"
+
+void callback(message ...)
+{
+MTK_SYNCHR
+
+//    this is a callback called from a different thread
+
+}
+----
+
+
+
 === HumbleParser
   support/hp/*
 

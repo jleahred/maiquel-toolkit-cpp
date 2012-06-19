@@ -2,6 +2,7 @@
 
 #include "support/exec_max_frec.h"
 #include "misc.h"
+#include "synchr.h"
 
 
 
@@ -37,8 +38,12 @@ void __internal_check_timers(void)
 
 void start_timer_wait_till_end(void)
 {
+    static  mtk::CountPtr<Mutex>  mtk_mutex = mtk::get_mtk_mutex();
+    mtk_mutex->lock();
     while (stopping == false) {
-        mtk::sleep( dtMilliseconds(10) );
+        mtk_mutex->unlock();
+            mtk::sleep( dtMilliseconds(10) );
+        mtk_mutex->lock();
         try
         {
             __internal_check_timers();

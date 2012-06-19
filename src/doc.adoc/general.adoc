@@ -279,6 +279,7 @@ To compile in windows with +make+, you will have to use +msys+ or similar
 * +mtk+ is oriented to work with several processes integrated with a middleware
 * Therefore, the concurrency model will be based on message communication
 * Concurrency systems based on shared memory, are not scalable and very difficult maintenance
+* When working with a lib with threads, we can use +MTK_SYNCHR+  as an easy and efficient solution (look on +support.synchr+)
 
 
 === Examples and regresion test

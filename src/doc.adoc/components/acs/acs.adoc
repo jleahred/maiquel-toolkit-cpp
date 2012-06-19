@@ -17,7 +17,7 @@
 include::../../../components/acs/cli/fsm_cli_acs.dot[]
 ------------
 +
-* The interfaz is...
+* The interface is...
 +
 .fsm_cli_acs.h
 [source,{cpp}]
