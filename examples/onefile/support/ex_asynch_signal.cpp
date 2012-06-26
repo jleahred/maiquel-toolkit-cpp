@@ -76,11 +76,6 @@ int main()
 
         MTK_CALL_LATER1S_F(mtk::dtSeconds(30), 0, stop)
 
-        mtk::start_timer_wait_till_end();
-
-
-
-
 
 
         mtk::start_timer_wait_till_end();

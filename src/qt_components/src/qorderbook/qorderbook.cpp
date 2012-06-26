@@ -17,10 +17,9 @@
 #include <QMainWindow>
 
 
-extern  void  show_execs_report_window(void);
 
 
-QDialog*   get_cimdtrade_window();
+QDialog*   get_main_window();
 
 
 namespace {
@@ -56,9 +55,21 @@ namespace {
 
 
 
+void  show_execs_report_window(void)
+{
+    static WExecsReport*           execs_report_window = 0;
+    if(get_main_window() &&  execs_report_window==0)
+    {
+        execs_report_window = new WExecsReport(get_main_window());
+    }
+    execs_report_window->show();
+}
+
+
+
 void on_request_with_user_check_ls(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq, agressive, get_cimdtrade_window());
+    QEditOrder eo(rq, agressive, get_main_window());
     if (eo.exec())
     {
         rq = eo.get_request_ls();
@@ -68,7 +79,7 @@ void on_request_with_user_check_ls(mtk::trd::msg::RQ_XX_LS& rq, bool& canceled, 
 
 void on_request_with_user_check_mk(mtk::trd::msg::RQ_XX_MK& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq, agressive, get_cimdtrade_window());
+    QEditOrder eo(rq, agressive, get_main_window());
     if (eo.exec())
     {
         rq = eo.get_request_mk();
@@ -78,7 +89,7 @@ void on_request_with_user_check_mk(mtk::trd::msg::RQ_XX_MK& rq, bool& canceled, 
 
 void on_request_with_user_check_sm(mtk::trd::msg::RQ_XX_SM& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq, agressive, get_cimdtrade_window());
+    QEditOrder eo(rq, agressive, get_main_window());
     if (eo.exec())
     {
         rq = eo.get_request_sm();
@@ -89,7 +100,7 @@ void on_request_with_user_check_sm(mtk::trd::msg::RQ_XX_SM& rq, bool& canceled, 
 
 void on_request_with_user_check_sl(mtk::trd::msg::RQ_XX_SL& rq, bool& canceled, bool agressive)
 {
-    QEditOrder eo(rq, agressive, get_cimdtrade_window());
+    QEditOrder eo(rq, agressive, get_main_window());
     if (eo.exec())
     {
         rq = eo.get_request_sl();

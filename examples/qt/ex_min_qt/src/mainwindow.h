@@ -10,7 +10,7 @@
 //-------------------------------------------------------------------------------
 #include "support/signalslot.hpp"
 #include "support/alarm.h"
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 class MTK_Qt_timer_and_AlarmMsg : public QObject, public mtk::SignalReceptor    // <1>
     {

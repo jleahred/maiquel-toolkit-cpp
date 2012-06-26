@@ -17,7 +17,7 @@ LimitPosition   [< >]      // <2>
 
 
 
-RQ_NW_LS  [< DEPRECIATED:2012-02-05,  SUBJ:hola.pajaarito, QE:testing >]   // <4>
+RQ_NW_LS  [< DEPRECIATED:2012-02-05,  RT:2, SUBJ:hola.pajaarito, QE:testing >]   // <4>
 {
    //  single fields
    order_id (oid)  :  string       [mandatory]
@@ -53,7 +53,7 @@ RQ_NW_LS  [< DEPRECIATED:2012-02-05,  SUBJ:hola.pajaarito, QE:testing >]   // <4
 
 
 
-LimitPositionChild   [< I:LimitPosition >]      // <12>
+LimitPositionChild   [< I:LimitPosition, RT:2,  >]      // <12>
 {
    new_field   (nf)  : string
 

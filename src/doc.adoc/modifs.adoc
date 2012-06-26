@@ -4,6 +4,86 @@ include::../../VERSION[]
 
 
 
+0.58  2012-06-26::
+
+Fixed errors;;
+* FixedNumber with negative values
+* Counter on ACS to generate session_id
+* Merge product_info didn't change the initialized flag
+* FixedNumber  writes value wrong on windows
+* eCimd  error  iterator++  reordering orders
+* Orders loading problems with sm and market
+* Crash saving  strings bigger than 100Kb on database
+
+
+
+New;;
+* Support
+** Base35 fuctions
+** g++4.6 compilation compatibility
+** get on Double
+** bandwith stats
+** best prices compacted
+** Prices publication  contention
+** asynch_signal
+** exec_command
+** email server
+
+* Admin/monitoring
+** Production flag
+** Autoclose
+** Depreciated messages
+** Admin with process names under 3 chars
+** Commands to manage config files
+
+
+* fbInsert diary autoreconnect
+
+* eCimd  
+** added execs history
+** Time out on orders
+** added fields on marginals table
+** qalarm_price
+** win/loss
+
+* Linked executions
+** date_time
+** mtk  MODIF   date_time with monotonic time
+** GetMillisecsDay
+** dtNowLocal   dtNowUTC  micro adjustments on time change
+** adjustment date now  monotonic
+
+* QPID
+** Autorestore qpid session
+** Automatic reconnection
+** threads synchronization
+
+* Trading
+** Stop Market orders
+** Stop limit orders
+** Execs_loader process
+** oms_additional_info  added
+
+
+Modif interfaz;;
+* FSM coverage stats
+* mtk  CI  modif  added process_info in all responses
+
+Other;;
+* Compilation on production with debug symbols
+* Rules on monitor
+* All commands are sent to monitor
+* Allow rejects on finalized status
+alarms size limitted
+upper case in user and client automatic on messages
+qlocaledoublespinbox  numeric input with thousands separator
+new order window for Andorra
+input numbers improved
+compiling  make this  makes a copy of previous binary
+
+
+
+
 0.56  2011-11-11::
 
 Fixed errors;;

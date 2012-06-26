@@ -1,6 +1,6 @@
 #include <iostream>
 #include "support/alarm.h"
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 #include "support/timer.h"
 #include "support/call_later.h"
 #include "support/alarm.h"
@@ -8,11 +8,36 @@
 #include <qpid/messaging/Message.h>
 
 
+void mtk::AlarmMsg(const mtk::Alarm& error)
+{
+    std::cout << error << std::endl;
+}
+
+namespace  mtk {
+std::string  get_cli_srv(void)
+{
+    return "SRV";
+}
+
+void check_control_fields_flucts(const std::string &, const mtk::DateTime&)
+{
+}
+};      //  namespace  mtk {
+
+
+
+
+
+
+
+
 #include "test_messages.h"    // <1>
 
 
 // trick to maintain a single file. Only valid for onefile examples
 #include "test_messages.impl"
+
+
 
 
 const   mtk::t_qpid_url      g_url      ("amqp:tcp:127.0.0.1:5672");
@@ -127,16 +152,3 @@ int main(int /*argc*/, char** /*argv*/)
     return -1;
 }
 
-
-
-
-
-
-void mtk::AlarmMsg(const mtk::Alarm& error)
-{
-    std::cout << error << std::endl;
-}
-
-void mtk::check_control_flields_flucts(const std::string &, const mtk::DateTime&)
-{
-}

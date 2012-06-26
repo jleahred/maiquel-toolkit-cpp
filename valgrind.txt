@@ -1,66 +1,219 @@
 ex_alarm.exec   lost:-----------------------------------
+==25730==    definitely lost: 0 bytes in 0 blocks
+==25730==    indirectly lost: 0 bytes in 0 blocks
+==25730==      possibly lost: 0 bytes in 0 blocks
+==25730== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_asyn_call_delay.exec   lost:-----------------------------------
+==25741==    definitely lost: 0 bytes in 0 blocks
+==25741==    indirectly lost: 0 bytes in 0 blocks
+==25741==      possibly lost: 0 bytes in 0 blocks
+==25741== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+ex_asynch_signal.exec   lost:-----------------------------------
+==25752==    definitely lost: 0 bytes in 0 blocks
+==25752==    indirectly lost: 0 bytes in 0 blocks
+==25752==      possibly lost: 0 bytes in 0 blocks
+==25752== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_bool.exec   lost:-----------------------------------
+==25763== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_call_later.exec   lost:-----------------------------------
+==25774==    definitely lost: 0 bytes in 0 blocks
+==25774==    indirectly lost: 0 bytes in 0 blocks
+==25774==      possibly lost: 0 bytes in 0 blocks
+==25774== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_configfile.exec   lost:-----------------------------------
+==25785== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_configini.exec   lost:-----------------------------------
+==25796== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_controlfluctuaciones.exec   lost:-----------------------------------
+==25807==    definitely lost: 0 bytes in 0 blocks
+==25807==    indirectly lost: 0 bytes in 0 blocks
+==25807==      possibly lost: 0 bytes in 0 blocks
+==25807== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_count_ptr.exec   lost:-----------------------------------
+==25818== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_crc32.exec   lost:-----------------------------------
+==25829== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_date_time2.exec   lost:-----------------------------------
+==25840== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_date_time.exec   lost:-----------------------------------
+==25851== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+ex_exec_command.exec   lost:-----------------------------------
+==25862==    definitely lost: 0 bytes in 0 blocks
+==25862==    indirectly lost: 0 bytes in 0 blocks
+==25862==      possibly lost: 0 bytes in 0 blocks
+==25862== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_exec_max_frec.exec   lost:-----------------------------------
+==25885==    definitely lost: 0 bytes in 0 blocks
+==25885==    indirectly lost: 0 bytes in 0 blocks
+==25885==      possibly lost: 0 bytes in 0 blocks
+==25885== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_factory.exec   lost:-----------------------------------
+==25896==    definitely lost: 0 bytes in 0 blocks
+==25896==    indirectly lost: 0 bytes in 0 blocks
+==25896==      possibly lost: 0 bytes in 0 blocks
+==25896== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_fixed_number2.exec   lost:-----------------------------------
+==25907== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_fixed_number.exec   lost:-----------------------------------
+==25918== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_mtk_connect_this.exec   lost:-----------------------------------
+==25929== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_nullable.exec   lost:-----------------------------------
+==25940== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_signal2function.exec   lost:-----------------------------------
+==25951== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_signal2signal.exec   lost:-----------------------------------
+==25962== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_signal_slot.exec   lost:-----------------------------------
+==25973== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_string_codec.exec   lost:-----------------------------------
+==25984== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_string_try.exec   lost:-----------------------------------
+==25995== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_timer.exec   lost:-----------------------------------
+==26006==    definitely lost: 0 bytes in 0 blocks
+==26006==    indirectly lost: 0 bytes in 0 blocks
+==26006==      possibly lost: 0 bytes in 0 blocks
+==26006== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_tuples.exec   lost:-----------------------------------
+==26021== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+test_base35.exec   lost:-----------------------------------
+==26032== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 test_configfile.exec   lost:-----------------------------------
+==26044==    definitely lost: 0 bytes in 0 blocks
+==26044==    indirectly lost: 0 bytes in 0 blocks
+==26044==      possibly lost: 0 bytes in 0 blocks
+==26044== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 test_containers.exec   lost:-----------------------------------
+==26055==    definitely lost: 0 bytes in 0 blocks
+==26055==    indirectly lost: 0 bytes in 0 blocks
+==26055==      possibly lost: 0 bytes in 0 blocks
+==26055== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 test_div0_control.exec   lost:-----------------------------------
+==26066== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 test_dtMachineGetTotalMillisecs.exec   lost:-----------------------------------
+==26077== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+test_fixed_number.exec   lost:-----------------------------------
+==26088== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
+test_integer_compactor.exec   lost:-----------------------------------
+==26141==    definitely lost: 0 bytes in 0 blocks
+==26141==    indirectly lost: 0 bytes in 0 blocks
+==26141==      possibly lost: 0 bytes in 0 blocks
+==26141== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 test_performance_signal_slot.exec   lost:-----------------------------------
+==26153==    definitely lost: 0 bytes in 0 blocks
+==26153==    indirectly lost: 0 bytes in 0 blocks
+==26153==      possibly lost: 0 bytes in 0 blocks
+==26153== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 test_resources_signal_slot.exec   lost:-----------------------------------
+==26167==    definitely lost: 0 bytes in 0 blocks
+==26167==    indirectly lost: 0 bytes in 0 blocks
+==26167==      possibly lost: 0 bytes in 0 blocks
+==26167== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 test_signal_slot.exec   lost:-----------------------------------
+==26178== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 test_string_trim.exec   lost:-----------------------------------
+==26189== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_check_scope_time.exec   lost:-----------------------------------
+==26201== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 first_gram_math_expr.exec   lost:-----------------------------------
+==26213== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 left_asociative_gram_ast.exec   lost:-----------------------------------
+==26224== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 left_asociative_gram.exec   lost:-----------------------------------
+==26235== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 prog_transf_math_expr.exec   lost:-----------------------------------
+==26246== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 prog_trans_from_file.exec   lost:-----------------------------------
+==26257== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 testing_parser_program.exec   lost:-----------------------------------
+==26268== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_tcp_socket1.exec   lost:-----------------------------------
+==26284==    definitely lost: 0 bytes in 0 blocks
+==26284==    indirectly lost: 0 bytes in 0 blocks
+==26284==      possibly lost: 0 bytes in 0 blocks
+==26284== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_tcp_socket2.exec   lost:-----------------------------------
+==26295==    definitely lost: 0 bytes in 0 blocks
+==26295==    indirectly lost: 0 bytes in 0 blocks
+==26295==      possibly lost: 0 bytes in 0 blocks
+==26295== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_tcp_socket3.exec   lost:-----------------------------------
+==26306==    definitely lost: 0 bytes in 0 blocks
+==26306==    indirectly lost: 0 bytes in 0 blocks
+==26306==      possibly lost: 0 bytes in 0 blocks
+==26306== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_udp_socket.exec   lost:-----------------------------------
+==26317==    definitely lost: 0 bytes in 0 blocks
+==26317==    indirectly lost: 0 bytes in 0 blocks
+==26317==      possibly lost: 0 bytes in 0 blocks
+==26317== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_yaml.exec   lost:-----------------------------------
+==26333== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)
 ex_fb.exec   lost:-----------------------------------
-==15461==    definitely lost: 60 bytes in 1 blocks
-==15461==    indirectly lost: 240 bytes in 10 blocks
-==15461==      possibly lost: 0 bytes in 0 blocks
+==26347==    definitely lost: 60 bytes in 1 blocks
+==26347==    indirectly lost: 240 bytes in 10 blocks
+==26347==      possibly lost: 0 bytes in 0 blocks
+==26347== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 4 from 4)
 ex_qpid1.exec   lost:-----------------------------------
+==26366==    definitely lost: 0 bytes in 0 blocks
+==26366==    indirectly lost: 0 bytes in 0 blocks
+==26366==      possibly lost: 12,160 bytes in 44 blocks
+==26366== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 63 from 9)
 ex_qpid2.exec   lost:-----------------------------------
+==26378==    definitely lost: 0 bytes in 0 blocks
+==26378==    indirectly lost: 0 bytes in 0 blocks
+==26378==      possibly lost: 12,160 bytes in 44 blocks
+==26378== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 63 from 9)
 ex_qpid_direct_msg.exec   lost:-----------------------------------
+==26390==    definitely lost: 0 bytes in 0 blocks
+==26390==    indirectly lost: 0 bytes in 0 blocks
+==26390==      possibly lost: 12,160 bytes in 44 blocks
+==26390== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 63 from 9)
 ex_qpid_msg_parsing.exec   lost:-----------------------------------
+==26402==    definitely lost: 0 bytes in 0 blocks
+==26402==    indirectly lost: 0 bytes in 0 blocks
+==26402==      possibly lost: 12,160 bytes in 44 blocks
+==26402== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 63 from 9)
 ex_request_response.exec   lost:-----------------------------------
+==26418==    definitely lost: 0 bytes in 0 blocks
+==26418==    indirectly lost: 0 bytes in 0 blocks
+==26418==      possibly lost: 12,160 bytes in 44 blocks
+==26418== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 63 from 9)
 ex_admin.exec   lost:-----------------------------------
-==15555==    definitely lost: 512 bytes in 2 blocks
-==15555==    indirectly lost: 15,856 bytes in 283 blocks
-==15555==      possibly lost: 205 bytes in 5 blocks
+==26434==    definitely lost: 512 bytes in 2 blocks
+==26434==    indirectly lost: 21,869 bytes in 297 blocks
+==26434==      possibly lost: 12,357 bytes in 49 blocks
+==26434== ERROR SUMMARY: 15 errors from 15 contexts (suppressed: 63 from 9)
 test_trd_cli_ls.exec   lost:-----------------------------------
+==26450==    definitely lost: 0 bytes in 0 blocks
+==26450==    indirectly lost: 0 bytes in 0 blocks
+==26450==      possibly lost: 12,160 bytes in 44 blocks
+==26450== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 63 from 9)
 ex_acs_cli.exec   lost:-----------------------------------
+==26466==    definitely lost: 0 bytes in 0 blocks
+==26466==    indirectly lost: 0 bytes in 0 blocks
+==26466==      possibly lost: 12,160 bytes in 44 blocks
+==26466== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 63 from 9)
 ex_acs_serv.exec   lost:-----------------------------------
+==26478==    definitely lost: 0 bytes in 0 blocks
+==26478==    indirectly lost: 0 bytes in 0 blocks
+==26478==      possibly lost: 12,160 bytes in 44 blocks
+==26478== ERROR SUMMARY: 9 errors from 9 contexts (suppressed: 63 from 9)
 ex_msg_yaml.exec   lost:-----------------------------------
+==26494== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 6 from 6)
 ex_fbinsert.exec   lost:-----------------------------------
-==15673==    definitely lost: 60 bytes in 1 blocks
-==15673==    indirectly lost: 240 bytes in 10 blocks
-==15673==      possibly lost: 0 bytes in 0 blocks
+==26509==    definitely lost: 60 bytes in 1 blocks
+==26509==    indirectly lost: 240 bytes in 10 blocks
+==26509==      possibly lost: 0 bytes in 0 blocks
+==26509== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 63 from 9)
+test_prices_compactation.exec   lost:-----------------------------------
+==26526==    definitely lost: 0 bytes in 0 blocks
+==26526==    indirectly lost: 0 bytes in 0 blocks
+==26526==      possibly lost: 0 bytes in 0 blocks
+==26526== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 6 from 6)
 asocmem0.exec   lost:-----------------------------------
+==26576==    definitely lost: 0 bytes in 0 blocks
+==26576==    indirectly lost: 0 bytes in 0 blocks
+==26576==      possibly lost: 0 bytes in 0 blocks
+==26576== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 4 from 4)

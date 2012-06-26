@@ -10,7 +10,7 @@ DIR_SRC_CXX = src
 
 
 # library paths
-LIBS = -L../../../lib -lmtksupport -lyaml
+LIBS = -L../../../lib -lmtksupport -lyaml  -lrt
 
 
 # include directories

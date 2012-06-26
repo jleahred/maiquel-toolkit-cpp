@@ -289,6 +289,7 @@ public:
     {
         try{
             _qpid_session.close();
+            connection.close();
             ++mtk_qpid_stats::num_deleted_sessions();
         } catch(...){
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "exception on destructor", "catched exception on destructor", mtk::alPriorError));

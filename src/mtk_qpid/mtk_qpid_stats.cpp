@@ -27,30 +27,6 @@ namespace mtk_qpid_stats {
 
 
 //  stats info
-long __num_messages_received=0;
-long __num_messages_sent=0;
-
-long __num_messages_received_today=0;
-long __num_messages_sent_today=0;
-
-long __num_created_suscriptions=0;
-long __num_deleted_suscriptions=0;
-
-long __num_created_suscriptions_no_parsing=0;
-long __num_deleted_suscriptions_no_parsing=0;
-
-
-long __num_created_sessions=0;
-long __num_deleted_sessions=0;
-
-long __num_created_senders=0;
-long __num_deleted_senders=0;
-
-long __num_created_receivers=0;
-long __num_deleted_receivers=0;
-
-long  __num_restored_sessions=0;
-
 
 long& num_messages_received(void)
 {

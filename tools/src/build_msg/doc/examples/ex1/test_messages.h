@@ -197,9 +197,9 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "RQ_NW_LS"; };
     static  std::string static_get_message_type_as_string(void)        { return "RQ_NW_LS"; };
     
-    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return mtk::make_nullable(mtk::s_TRY_stodt("2012-02-05", mtk::dtNowLocal()- mtk::dtDays(500))._0); };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::make_nullable(mtk::s_TRY_stodt("2012-02-05", mtk::dtNowLocal()- mtk::dtDays(500))._0);  return result; };
 
     
     
@@ -257,7 +257,7 @@ public:
     virtual std::string get_message_type_as_string       (void) const  { return "LimitPositionChild"; };
     static  std::string static_get_message_type_as_string(void)        { return "LimitPositionChild"; };
     
-    
+    static  int         static_return_message_RT_priority(void)        { return 2; };
 
     
 

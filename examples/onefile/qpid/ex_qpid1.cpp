@@ -1,8 +1,27 @@
 #include <iostream>
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 #include "support/timer.h"
 #include "support/call_later.h"
 #include "support/alarm.h"
+
+
+namespace  mtk {
+std::string  get_cli_srv(void)
+{
+    return "SRV";
+}
+};      //  namespace  mtk {
+
+void mtk::AlarmMsg(const mtk::Alarm& error)
+{
+    std::cout << error << std::endl;
+}
+
+
+
+
+
+
 
 
 const   mtk::t_qpid_url      g_url      ("amqp:tcp:127.0.0.1:5672");
@@ -26,7 +45,7 @@ void send_message(void)
     msg.setSubject("hola.pajarito");
 
     static auto sender = mtk::get_from_factory< mtk::mtkqpid_sender2 > (mtk::make_tuple(g_url, g_address));
-    sender->qpid_sender.send(msg);
+    sender->qpid_sender().send(msg);
 
 }
 
@@ -73,12 +92,3 @@ int main(int /*argc*/, char** /*argv*/)
 
 
 
-
-
-
-
-
-void mtk::AlarmMsg(const mtk::Alarm& error)
-{
-    std::cout << error << std::endl;
-}

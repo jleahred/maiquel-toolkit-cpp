@@ -16,12 +16,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
         mainwindow.cpp \
+    ../../../../src/components/prices/cli/price_manager.cpp     #  this is necessary for win loss on qorder_book
     #../../../../src/qt_components/src/*.cpp \  #  for debug
     #../../../../src/mtk_qpid/*.cpp \  #  for debug
     #../../../../src/components/*.cpp \  #  for debug
     #../../../../src/components/trading/*.cpp \  #  for debug
 
 HEADERS  += mainwindow.h \
+    ../../../../src/components/prices/cli/price_manager.h     #  this is necessary for win loss on qorder_book
     #../../../../src/qt_components/src/*.h  \  # for debug
     #../../../../src/mtk_qpid/*.h \  #  for debug
     #../../../../src/components/*.h   \  # for debug

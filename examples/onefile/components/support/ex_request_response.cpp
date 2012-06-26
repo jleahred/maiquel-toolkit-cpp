@@ -44,7 +44,9 @@ void init_request_response(const int&)
     MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command,
                                     mtk::admin::msg::sub_command_rd,
                                     mtk::admin::get_url("client"),
-                                    mtk::admin::msg::res_command::get_in_subject(request_info.process_info.process_uuid, request_info.req_id.req_code),
+                                    mtk::admin::msg::res_command::get_in_subject(   request_info.process_info.location.broker_code,
+                                                                                    request_info.process_info.process_uuid,
+                                                                                    request_info.req_id.req_code),
                                     on_res_command,
 				    "testing_req_resp")
 
@@ -76,7 +78,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command_srv>      >   hqpid_response;
 
-        MTK_CALL_LATER1S_F(mtk::dtSeconds(7), 0, stop);
+        MTK_CALL_LATER1S_F(mtk::dtSeconds(40), 0, stop);
         MTK_CALL_LATER1S_F(mtk::dtSeconds(1), 0, init_request_response);
         mtk::start_timer_wait_till_end();
 

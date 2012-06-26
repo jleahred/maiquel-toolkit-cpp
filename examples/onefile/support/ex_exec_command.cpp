@@ -14,7 +14,7 @@ void  force_stop_command(mtk::exec_command* const&  ec)
 
 void  terminated_command(bool ok, const std::string& desc, const mtk::dtDateTime& started, const mtk::dtTimeQuantity& exec_time)
 {
-    std::cout << "__NR__  terminated_command: "
+    std::cout << "__NR__:  terminated_command: "
             <<  "  "  << std::boolalpha  << ok
             <<  "  "  << desc
             <<  "  "  << started
@@ -29,7 +29,7 @@ void  terminated_command(bool ok, const std::string& desc, const mtk::dtDateTime
 void on_new_messages(const mtk::list<std::string>& lines)
 {
     for(auto it=lines.begin(); it!=lines.end(); ++it)
-        std::cout << "__NR__   ~" << *it << std::endl;
+        std::cout << "__NR__:   ~" << *it << std::endl;
 }
 
 

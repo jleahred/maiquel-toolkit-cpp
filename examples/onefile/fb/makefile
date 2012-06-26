@@ -3,7 +3,7 @@ INCLUDES = -I../../../src
 
 
 # library paths
-LIBS = -L../../../external/lib/linux -L../../../lib  -lmtkfirebird -lfbclient64  -lmtksupport -lyaml
+LIBS = -L../../../external/lib/linux -L../../../lib  -lmtkfirebird -lfbclient64  -lmtksupport -lyaml  -lrt
 
 
 

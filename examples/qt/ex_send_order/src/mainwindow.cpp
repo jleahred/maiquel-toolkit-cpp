@@ -126,7 +126,7 @@ void MainWindow::on_pbPrepareNewRequest_clicked()
 
 mtk::msg::sub_process_info   MainWindow::get_process_info(void)
 {
-    return mtk::msg::sub_process_info(mtk::msg::sub_location(ui->leReqInfo_CliCode->text().toStdString(), "I"), "ex_send_order", "ex_send_orderAA", "0");
+    return mtk::msg::sub_process_info(mtk::msg::sub_location(ui->leReqInfo_CliCode->text().toStdString(), "I"), "ex_send_order", "ex_send_orderAA", "0", mtk::make_nullable(std::string("CLI")));
 }
 
 
@@ -147,11 +147,12 @@ mtk::trd::msg::RQ_XX_LS MainWindow::get_xx_request(void)
                                                 ui->leReqInfo_RequestCode->text().toStdString()),
                                                 get_process_info());
     mtk::trd::msg::sub_account_info  account("cli_code", "account");
-    mtk::trd::msg::sub_invariant_order_info invariant(ord_id, pc, side, account);
+    mtk::trd::msg::sub_invariant_order_info invariant(ord_id, pc, side, account, "DAY", false);
     mtk::trd::msg::sub_position_ls  request_pos(
               mtk::FixedNumber(mtk::fnDouble(ui->lePrice->text().toDouble()),  mtk::fnDec(2),  mtk::fnInc(1))
-            , mtk::FixedNumber(mtk::fnDouble(ui->leQuantity->text().toDouble())     ,  mtk::fnDec(0),  mtk::fnInc(1)));
-    mtk::trd::msg::RQ_XX  rqxx(invariant, req_info, ui->leCliRef->text().toStdString(), mtk::msg::sub_control_fluct("exsendorder", mtk::dtNowLocal()));
+            , mtk::FixedNumber(mtk::fnDouble(ui->leQuantity->text().toDouble())     ,  mtk::fnDec(0),  mtk::fnInc(1))
+            , "CLI");
+    mtk::trd::msg::RQ_XX  rqxx(invariant, req_info, mtk::msg::sub_control_fluct("exsendorder", mtk::dtNowLocal()));
     return mtk::trd::msg::RQ_XX_LS(rqxx, request_pos);
 }
 
@@ -195,7 +196,7 @@ void MainWindow::on_pbNewOrderFromOrderBook_clicked()
         side = mtk::trd::msg::buy;
     else
         side = mtk::trd::msg::sell;
-    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(rq.invariant.product_code, side, rq.request_pos, rq.cli_ref);
+    mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(rq.invariant.product_code, side, rq.request_pos, false);
 }
 void MainWindow::on_pushButton_clicked()
 {

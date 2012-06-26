@@ -44,6 +44,14 @@ namespace
         }
         mtk::Signal<const mtk::Alarm&>     signalOnAlarm;
     };
+
+
+    QMainWindow*  main_window = 0;
+    QMainWindow*   get_main_window()
+    {
+        return main_window;
+    }
+
 //-------------------------------------------------------------------------------
 //      P R E P A R I N G     M T K
 //-------------------------------------------------------------------------------
@@ -64,6 +72,7 @@ int main(int argc, char *argv[])
 
         MTK_Qt_ExceptionCatcher a(argc, argv);                  // <3>
         MainWindow w;
+        main_window = &w;
         a.signalOnAlarm.connect(&w, &MainWindow::OnAlarm);      // <4>
         w.show();
         return a.exec();

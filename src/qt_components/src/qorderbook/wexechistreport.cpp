@@ -12,7 +12,7 @@
 
 
 
-QDialog*   get_cimdtrade_window();
+QDialog*   get_main_window();
 
 
 
@@ -20,7 +20,7 @@ namespace execs_hist_report
 {
     void show(void)
     {
-        static WExecsHistReport*  execs_hist_report = new WExecsHistReport(get_cimdtrade_window());
+        static WExecsHistReport*  execs_hist_report = new WExecsHistReport(get_main_window());
 
         execs_hist_report->show();
     }

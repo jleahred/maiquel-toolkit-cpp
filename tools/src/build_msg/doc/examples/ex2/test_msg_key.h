@@ -19,7 +19,7 @@
 #include <qpid/messaging/Message.h>
 #include "mtk_qpid/msg_control_fields.h"
 
-#include "mtk_qpid/mtk_qpid.hpp"
+#include "mtk_qpid/mtk_qpid.h"
 
 
 
@@ -44,6 +44,8 @@ public:
     virtual ~sub_test_key (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_test_key"; };
     static  std::string static_get_message_type_as_string(void)        { return "sub_test_key"; };
+    
+    
 
     
 
@@ -80,8 +82,7 @@ public:
     
     void        before_send(void) const;
     
-private:
-    std::string check_recomended(void) const;
+    void check_recomended(void) const;
 };
 
 
@@ -97,7 +98,6 @@ private:
 bool operator== (const sub_test_key& a, const sub_test_key& b);
 bool operator!= (const sub_test_key& a, const sub_test_key& b);
 
-qpid::messaging::Message      qpidmsg_codded_as_qpid_message (const sub_test_key& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_test_key& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_test_key>& a, const std::string& field);
 void copy (sub_test_key& a, const qpid::types::Variant& map);

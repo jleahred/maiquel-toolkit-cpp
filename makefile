@@ -23,7 +23,7 @@ allall:  libs qtlibs tools clean doc check_files
 #  conviene pasar también el test con valgrind  
 #  time (make clean; make libsdebug; make qtlibs; make testdebug 2> temp.txt)
 #  if no errors on execution, continue
-#  cat temp.txt | grep 'lost:' > valgrind.txt
+#  cat temp.txt | grep '\(lost:\|ERROR SUMMARY\)' > valgrind.txt
 #  revisar cat valgrind.txt
 #  rm temp.txt
 
@@ -38,7 +38,7 @@ allall:  libs qtlibs tools clean doc check_files
 # actualizar modificaciones documento adoc
 # editar fichero VERSION
 
-# make allall  compilará todo de nuevo en versión release y generará la documentación
+# time make allall  compilará todo de nuevo en versión release y generará la documentación
 
 
 # al final se ejecuta checkfiles y tiene que volver sin error y escribir un 0 (provisionalmente está escribiendo un 1)

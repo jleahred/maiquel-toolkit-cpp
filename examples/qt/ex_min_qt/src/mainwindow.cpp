@@ -10,6 +10,9 @@
 #include <QTimer>
 #include "support/timer.h"
 
+namespace mtk {
+    std::string  get_cli_srv(void)   { return  "CLI";  }
+};
 
 mtk::Signal<const mtk::Alarm&>  sig_alarm_msg;
 void mtk::AlarmMsg (const Alarm& alarm)
@@ -92,7 +95,7 @@ void MainWindow::on_pbSendMessage_clicked()
     mtk::CountPtr< mtk::mtkqpid_sender2 > sender = mtk::get_from_factory< mtk::mtkqpid_sender2 >(mtk::make_tuple(mtk::t_qpid_url(ui->lblUrl->text().toStdString()), mtk::t_qpid_address(ui->leAddress->text().toStdString())));
     qpid::messaging::Message msg(MTK_SS("sending message " << ++counter));
     msg.setSubject(ui->leSendingSubject->text().toStdString());
-    sender->qpid_sender.send(msg);
+    sender->qpid_sender().send(msg);
 }
 
 void MainWindow::Write(const QString value)

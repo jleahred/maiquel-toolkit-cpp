@@ -1,5 +1,6 @@
 ex_alarm.exec   lost:-----------------------------------
 ex_asyn_call_delay.exec   lost:-----------------------------------
+ex_asynch_signal.exec   lost:-----------------------------------
 ex_bool.exec   lost:-----------------------------------
 ex_call_later.exec   lost:-----------------------------------
 ex_configfile.exec   lost:-----------------------------------
@@ -9,6 +10,7 @@ ex_count_ptr.exec   lost:-----------------------------------
 ex_crc32.exec   lost:-----------------------------------
 ex_date_time2.exec   lost:-----------------------------------
 ex_date_time.exec   lost:-----------------------------------
+ex_exec_command.exec   lost:-----------------------------------
 ex_exec_max_frec.exec   lost:-----------------------------------
 ex_factory.exec   lost:-----------------------------------
 ex_fixed_number2.exec   lost:-----------------------------------
@@ -22,10 +24,13 @@ ex_string_codec.exec   lost:-----------------------------------
 ex_string_try.exec   lost:-----------------------------------
 ex_timer.exec   lost:-----------------------------------
 ex_tuples.exec   lost:-----------------------------------
+test_base35.exec   lost:-----------------------------------
 test_configfile.exec   lost:-----------------------------------
 test_containers.exec   lost:-----------------------------------
 test_div0_control.exec   lost:-----------------------------------
 test_dtMachineGetTotalMillisecs.exec   lost:-----------------------------------
+test_fixed_number.exec   lost:-----------------------------------
+test_integer_compactor.exec   lost:-----------------------------------
 test_performance_signal_slot.exec   lost:-----------------------------------
 test_resources_signal_slot.exec   lost:-----------------------------------
 test_signal_slot.exec   lost:-----------------------------------
@@ -44,39 +49,50 @@ ex_udp_socket.exec   lost:-----------------------------------
 ex_yaml.exec   lost:-----------------------------------
 ex_fb.exec   lost:-----------------------------------
 ex_qpid1.exec   lost:-----------------------------------
-2011-11-11 12:27:35 warning Connection [127.0.0.1:51221-127.0.0.1:5672] closed
+2012-06-25 19:38:07 warning Connection [127.0.0.1:57774-127.0.0.1:5672] closed
 ex_qpid2.exec   lost:-----------------------------------
-2011-11-11 12:27:44 warning Connection [127.0.0.1:51222-127.0.0.1:5672] closed
+2012-06-25 19:38:16 warning Connection [127.0.0.1:57775-127.0.0.1:5672] closed
 ex_qpid_direct_msg.exec   lost:-----------------------------------
-2011-11-11 12:27:52 warning Connection [127.0.0.1:51223-127.0.0.1:5672] closed
+2012-06-25 19:38:25 warning Connection [127.0.0.1:57776-127.0.0.1:5672] closed
 ex_qpid_msg_parsing.exec   lost:-----------------------------------
-2011-11-11 12:28:04 warning Connection [127.0.0.1:51224-127.0.0.1:5672] closed
+2012-06-25 19:38:37 warning Connection [127.0.0.1:57777-127.0.0.1:5672] closed
 ex_request_response.exec   lost:-----------------------------------
-2011-11-11 12:28:16 warning Connection [127.0.0.1:49771-127.0.0.1:5683] closed
+2012-06-25 19:39:24 warning Connection [127.0.0.1:54308-127.0.0.1:5683] closed
 ex_admin.exec   lost:-----------------------------------
-2011-11-11 12:28:31 warning Connection [127.0.0.1:32950-127.0.0.1:5685] closed
+2012-06-25 19:39:41 warning Connection [127.0.0.1:52420-127.0.0.1:5685] closed
 test_trd_cli_ls.exec   lost:-----------------------------------
-2011-11-11 12:28:35 warning Connection [127.0.0.1:33410-127.0.0.1:5683] closed
+2012-06-25 19:39:46 warning Connection [127.0.0.1:54310-127.0.0.1:5683] closed
 ex_acs_cli.exec   lost:-----------------------------------
-2011-11-11 12:28:48 warning Connection [127.0.0.1:46967-127.0.0.1:5685] closed
+2012-06-25 19:39:59 warning Connection [127.0.0.1:52422-127.0.0.1:5685] closed
 ex_acs_serv.exec   lost:-----------------------------------
-2011-11-11 12:30:50 warning Connection [127.0.0.1:33412-127.0.0.1:5683] closed
+2012-06-25 19:42:02 warning Connection [127.0.0.1:54312-127.0.0.1:5683] closed
 ex_msg_yaml.exec   lost:-----------------------------------
 ex_fbinsert.exec   lost:-----------------------------------
-2011-11-11 12:31:04 warning Connection [127.0.0.1:33413-127.0.0.1:5683] closed
+19:42:05.832 Warn  Unkown # num adjustments: 0 >clock adjustments @void mtk::__internal_check_clock_adjustment(bool, mtk::dtDateTime, uint64_t)(date_time.cpp:1279)
+2012-06-25 19:42:16 warning Connection [127.0.0.1:48237-127.0.0.1:5683] closed
+test_prices_compactation.exec   lost:-----------------------------------
 asocmem0.exec   lost:-----------------------------------
+Warning: name layoutWidget is already used
+WARNING: Phonon needs QCoreApplication::applicationName to be set to export audio output names through the DBUS interface 
+(19725): couldn't create slave: "Unable to create io-slave:
+klauncher said: Unknown protocol ''.
+" 
 QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
 QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
 Bus::open: Can not get ibus-daemon's address. 
 IBusInputContext::createInputContext: no connection to ibus-daemon 
-2011-11-11 12:33:51 warning Connection [127.0.0.1:38480-127.0.0.1:5672] closed
+2012-06-26 09:00:38 warning Connection [192.168.7.1:45216-192.168.7.2:5683] closed
+QInotifyFileSystemWatcherEngine::addPaths: inotify_add_watch failed: No such file or directory
+QFileSystemWatcher: failed to add paths: /home/maiquel/.config/ibus/bus
+Bus::open: Can not get ibus-daemon's address. 
+IBusInputContext::createInputContext: no connection to ibus-daemon 
+2012-06-26 09:00:53 warning Connection [127.0.0.1:54578-127.0.0.1:5672] closed
 WARNING: Phonon needs QCoreApplication::applicationName to be set to export audio output names through the DBUS interface 
-(13954): couldn't create slave: "Unable to create io-slave:
+(21283): couldn't create slave: "Unable to create io-slave:
 klauncher said: Unknown protocol ''.
 " 
-2011-11-11 12:34:02 warning Connection [127.0.0.1:57726-127.0.0.1:5685] closed
-2011-11-11 12:34:42 warning Connection [127.0.0.1:44656-127.0.0.1:5683] closed
+2012-06-26 09:01:20 warning Connection [127.0.0.1:56128-127.0.0.1:5685] closed
 
-real	11m8.318s
-user	5m30.580s
-sys	0m18.860s
+real	809m2.166s
+user	153m39.900s
+sys	25m12.800s

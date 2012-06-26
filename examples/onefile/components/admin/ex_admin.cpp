@@ -72,7 +72,9 @@ void request_command(const std::string& command)
     MTK_RECEIVE_MULTI_RESPONSE_F(   mtk::admin::msg::res_command,
                                     mtk::admin::msg::sub_command_rd,
                                     mtk::admin::get_url("client"),
-                                    mtk::admin::msg::res_command::get_in_subject(request_info.process_info.process_uuid, request_info.req_id.req_code),
+                                    mtk::admin::msg::res_command::get_in_subject(   request_info.process_info.location.broker_code,
+                                                                                    request_info.process_info.process_uuid,
+                                                                                    request_info.req_id.req_code),
                                     on_command_response,
 				    "ex_admin_req_res")
 
@@ -100,7 +102,7 @@ int main(int /*argc*/, char ** /*argv*/)
 
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::admin::msg::req_command_srv>      >   hqpid_response;
 
-        MTK_CALL_LATER1S_F(mtk::dtSeconds(10), 0, stop);
+        MTK_CALL_LATER1S_F(mtk::dtSeconds(30), 0, stop);
         MTK_CALL_LATER1S_F(mtk::dtSeconds(1),  std::string("help"),  request_command);
         MTK_CALL_LATER1S_F(mtk::dtSeconds(3),  std::string("hello"), request_command);
 

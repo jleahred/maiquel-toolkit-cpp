@@ -400,19 +400,13 @@ sub_test_key::sub_test_key (   const std::string&  _name,   const std::string&  
     :     name(_name),   address(_address),   telephone(_telephone),   email(_email) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_test_key::check_recomended(void) const
+void  sub_test_key::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_test_key::before_send(void) const
@@ -470,7 +464,6 @@ bool operator!= (const sub_test_key& a, const sub_test_key& b)
 
 
 
-//void  __internal_qpid_fill (sub_test_key& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_test_key& c, const qpid::types::Variant& v)
     {  
         const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
@@ -509,6 +502,7 @@ void  copy (sub_test_key& c, const qpid::types::Variant& v)
                         copy(c.email, it->second);
                         //c.email = it->second;
 
+        c.check_recomended ();
     }
 
 
@@ -516,7 +510,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_test_key& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.name, std::string("nm"));
@@ -555,7 +549,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
             );
     }
     
-
 sub_test_key::sub_test_key (const qpid::types::Variant::Map&  mv)
     :  //   field_type
    name(__internal_get_default((std::string*)0)),
@@ -567,12 +560,8 @@ sub_test_key::sub_test_key (const qpid::types::Variant::Map&  mv)
    email(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        check_recomended ();  
     }
-
 
 
 };   //namespace test {

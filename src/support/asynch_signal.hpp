@@ -115,6 +115,12 @@ public:
         else
         {   MTK_TIMER_1S(on_timer);     }
     }
+    ~async_signal_last(void)
+    {
+        if(params2send != 0)
+            delete params2send;
+        params2send = 0;
+    }
 
     void    emit(TP0 value0)
     {

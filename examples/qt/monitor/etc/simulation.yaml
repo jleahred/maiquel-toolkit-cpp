@@ -1,0 +1,11 @@
+version: 1
+amqp_url: amqp:tcp:192.168.7.2:5683
+gs_code: _GS1
+rules__error2warning:
+  - description: description
+    re_rule: __just__example__
+    n_received: 0
+    last_notified: 2011-12-15 10:20:26.210
+    frequency: " 5s"
+    start_time: 0s
+    end_time: 1d

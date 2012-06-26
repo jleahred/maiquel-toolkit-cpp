@@ -25,7 +25,7 @@
 #include "qt_components/src/qeditorder_and.h"
 
 
-QDialog*   get_cimdtrade_window();
+QDialog*   get_main_window();
 
 
 
@@ -756,7 +756,7 @@ void QDepth::request_side(mtk::trd::msg::enBuySell bs)
         if(ecimd_config::new_order_and() == false)
             mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos);
         else
-            QEditOrder_and::new_order(price_manager->get_product_code(), bs, pos, false, get_cimdtrade_window());
+            QEditOrder_and::new_order(price_manager->get_product_code(), bs, pos, false, get_main_window());
     }
 }
 
@@ -840,7 +840,7 @@ void QDepth::request_aggression(mtk::trd::msg::enBuySell bs)
             if(ecimd_config::new_order_and() == false)
                 mtk::trd::trd_cli_ord_book::rq_nw_ls_manual(price_manager->get_product_code(), bs, pos, true);
             else
-                QEditOrder_and::new_order(price_manager->get_product_code(), bs, pos, true, get_cimdtrade_window());
+                QEditOrder_and::new_order(price_manager->get_product_code(), bs, pos, true, get_main_window());
 
         }
         else
