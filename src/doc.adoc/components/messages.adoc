@@ -927,13 +927,13 @@ node [shape=box width=1.7] CLIENT;
 node [shape=circle, width=1.5] prodinfo_grants product_loader;
 
 CLIENT ->  prodinfo_grants  [label = req_prod_info ]
-prodinfo_grants ->  product_loader  [label = req_prod_info ]
+prodinfo_grants ->  product_loader  [label = ps_req_prod_info ]
 product_loader ->  CLIENT  [label = res_prod_info ]
 
 }
 -----
 
-=== DFD0
+=== DFD
 
 .DFD
 ["graphviz", "tree_items_dfd0a.png"]
@@ -964,8 +964,8 @@ digraph dfd0_graph {
 
  tree_server -> CLIENT [label = "res_tree_items" ];
  tree_server -> CLIENT [label = "pub_tree_colapse_branch" ];
- tree_server -> product_loader  [label = "req_init_prod_info" color=red];
- prodinfo_grants -> product_loader [label = "req_prod_info\n(cli)" ];
+ tree_server -> product_loader  [label = "ps_req_init_prod_info\n__to_publisher" color=red];
+ prodinfo_grants -> product_loader [label = "ps_req_prod_info\n(cli)" ];
 
  product_loader -> tree_server   [label = "ps_pub_prod_info_mtk_ready" color=red];
  product_loader -> tree_server   [label = "ps_conf_full_product_info_init\nps_conf_full_product_info" color=red];
@@ -974,14 +974,14 @@ digraph dfd0_graph {
 
  product_loader -> MARKET  [label = "ps_req_init_prod_info" ];
 
- MARKET  ->  product_loader   [label = "ps_pub_prod_info_mtk_ready_fp" ];
+ MARKET  ->  product_loader   [label = "ps_pub_prod_info_mtk_ready\n__from_publisher" ];
 
- MARKET  ->  product_loader   [label = "ps_conf_full_product_info_init_fp\nps_conf_full_product_info_fp" ];
+ MARKET  ->  product_loader   [label = "ps_conf_full_product_info_init\n__from_publisher\n\nps_conf_full_product_info_init\n__from_publisher" ];
 
  MARKET  ->  conect_market_2_all   [label = "(cli) pub_(marg,depth,trades...)" ];
- MARKET  ->  conect_market_2_all   [label = "(cli) pub_product_stopped" ];
- MARKET  ->  conect_market_2_all   [label = "(cli) pub_market_stopped" ];
- MARKET  ->  conect_market_2_all   [label = "(cli) pub_new_products" ];
+ MARKET  ->  conect_market_2_all   [label = "(cli) pub_product_stopped" color=red];
+ MARKET  ->  conect_market_2_all   [label = "(cli) pub_market_stopped"color=red ];
+ MARKET  ->  conect_market_2_all   [label = "(cli) pub_new_products" color=red];
 
 }
 -----
@@ -1004,11 +1004,11 @@ digraph dfd0_graph {
     all  [label ="all" shape=circle height=1];
 
 
-    prod_load0 ->  none0  [label = req_init_prod_info];
+    prod_load0 ->  none0  [label = ps_req_init_prod_info__to_publisher];
     none0  ->  market0 ;
-    market0 -> prod_load1 [label = pub_market_loader_ready];
-    prod_load1 ->  market1  [label = req_init_prod_info];
-    market1  -> all [label = "pub_full_product_info\npub_(*)"];
+    market0 -> prod_load1 [label = ps_pub_prod_info_mtk_ready__from_publisher];
+    prod_load1 ->  market1  [label = ps_req_init_prod_info__to_publisher];
+    market1  -> all [label = "ps_conf_full_product_info_init__from_publisher\nps_conf_full_product_info__from_publisher*"];
 }
 -----------
 * Same initialization between +product_loader+ and +tree_server+
