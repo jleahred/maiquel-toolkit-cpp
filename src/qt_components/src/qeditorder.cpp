@@ -431,6 +431,8 @@ mtk::trd::msg::RQ_XX_SL   QEditOrder::get_request_sl(void)
 void QEditOrder::on_account_currentIndexChanged(QString )
 {
     check_if_order_can_be_sent();
+    ui->quantity->setFocus();
+    ui->quantity->selectAll();
 }
 
 void QEditOrder::on_price_valueChanged(QString )

@@ -419,6 +419,8 @@ bool QEditOrder_and::check_if_order_can_be_sent(void)
 void QEditOrder_and::on_account_currentIndexChanged(QString )
 {
     check_if_order_can_be_sent();
+    ui->quantity->setFocus();
+    ui->quantity->selectAll();
 }
 
 void QEditOrder_and::on_price_valueChanged(QString )
