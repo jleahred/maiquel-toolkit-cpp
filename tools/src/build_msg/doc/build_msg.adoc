@@ -14,7 +14,7 @@
 
 | Creation Date  |   2010-11-29
 
-| Revision Date |   
+| Revision Date |   2012-06-29
 
 | Generated |   {docdate} {doctime}
 
@@ -30,6 +30,8 @@
 [cols="1,6", options="header"]
 |====================================================================
 | Date | Desciption
+
+| 2011-10-13 | Added support for dynamic messages
 
 | 2011-10-13 | Removed version info. +
                Added Queue/Exchange for qpid
@@ -106,7 +108,7 @@ include::examples/ex1/test_messages.msg[]
 include::examples/ex1/main.cpp[]
 ----
 +
-* This is the generated code...
+* Here is the generated interface...
 +
 .ex1/test_messages.h
 [source,{cpp}]
@@ -174,6 +176,31 @@ sub_grant  [< >]
     type        (ty)    : string        //  F   C  V   (Full  Cancel  View)
 }
 ------
+
+
+
+== Example 4. Working with dynamic messages
+
+* Message definition
++
+.examples/prj_make/dyn_msgs/src/msg_dynamic.msg
+[source,{cpp}]
+----
+include::../../../../examples/prj_make/dyn_msgs/src/msg_dynamic.msg[]
+----
++
+* The code using it
++
+.examples/prj_make/dyn_msgs/src/main.cpp
+[source,{cpp}]
+----
+include::../../../../examples/prj_make/dyn_msgs/src/main.cpp[]
+----
+
+
+
+
+
 
 == FAQ
 
