@@ -461,7 +461,7 @@ void req_login::before_send(void) const
 
 
 
-res_login::res_login (   const mtk::msg::sub_r_response&  _response_info,   const IC_session_info&  _session_info)
+res_login::res_login (   const mtk::msg::sub_r_response&  _response_info,   const res_login::IC_session_info&  _session_info)
     :     response_info(_response_info),   session_info(_session_info) 
        , __internal_warning_control_fields(0)
     {  
@@ -566,7 +566,7 @@ void req_change_password::before_send(void) const
 
 
 
-res_change_password::res_change_password (   const mtk::msg::sub_r_response&  _response_info,   const IC_change_password_info&  _change_password_info)
+res_change_password::res_change_password (   const mtk::msg::sub_r_response&  _response_info,   const res_change_password::IC_change_password_info&  _change_password_info)
     :     response_info(_response_info),   change_password_info(_change_password_info) 
        , __internal_warning_control_fields(0)
     {  
@@ -606,6 +606,123 @@ void res_change_password::IC_change_password_info::before_send(void) const
 }
 
 
+
+    //    generate_class_qpid_variant_in_impl
+    
+req_login_key__qpid_map::req_login_key__qpid_map (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name)
+      :  m_static( 
+   _request_info,
+   _user_name) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   req_login_key__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+res_login_key__qpid_map::res_login_key__qpid_map (   const mtk::msg::sub_r_response&  _response_info,   const std::string&  _key)
+      :  m_static( 
+   _response_info,
+   _key) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   res_login_key__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+req_login__qpid_map::req_login__qpid_map (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _coded_pass)
+      :  m_static( 
+   _request_info,
+   _user_name,
+   _key,
+   _coded_pass) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   req_login__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+res_login__qpid_map::res_login__qpid_map (   const mtk::msg::sub_r_response&  _response_info,   const res_login::IC_session_info&  _session_info)
+      :  m_static( 
+   _response_info,
+   _session_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   res_login__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+conf_logout__qpid_map::conf_logout__qpid_map (   const mtk::msg::sub_location&  _location,   const std::string&  _session_id,   const std::string&  _description)
+      :  m_static( 
+   _location,
+   _session_id,
+   _description) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   conf_logout__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+req_logout__qpid_map::req_logout__qpid_map (   const mtk::msg::sub_request_info&  _request_info)
+      :  m_static( 
+   _request_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   req_logout__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+req_change_password__qpid_map::req_change_password__qpid_map (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _user_name,   const std::string&  _key,   const std::string&  _old_password,   const mtk::list<int32_t >&  _new_password)
+      :  m_static( 
+   _request_info,
+   _user_name,
+   _key,
+   _old_password,
+   _new_password) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   req_change_password__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+res_change_password__qpid_map::res_change_password__qpid_map (   const mtk::msg::sub_r_response&  _response_info,   const res_change_password::IC_change_password_info&  _change_password_info)
+      :  m_static( 
+   _response_info,
+   _change_password_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   res_change_password__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
 
 std::ostream& operator<< (std::ostream& o, const req_login_key & c)
 {
@@ -1064,8 +1181,8 @@ bool operator!= (const res_change_password& a, const res_change_password& b)
 
 
 void  copy (req_login_key& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1089,6 +1206,12 @@ void  copy (req_login_key& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (req_login_key__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const req_login_key& a)
 {
 
@@ -1104,7 +1227,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_login_key& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const req_login_key__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_login_key>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_login_key__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1115,8 +1254,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 void  copy (res_login_key& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1140,6 +1279,12 @@ void  copy (res_login_key& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (res_login_key__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login_key& a)
 {
 
@@ -1155,7 +1300,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login_key& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const res_login_key__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login_key>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login_key__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1166,8 +1327,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 void  copy (req_login& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1207,6 +1368,12 @@ void  copy (req_login& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (req_login__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const req_login& a)
 {
 
@@ -1226,7 +1393,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_login& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const req_login__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_login>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_login__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1237,8 +1420,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 void  copy (res_login& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1262,6 +1445,12 @@ void  copy (res_login& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (res_login__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a)
 {
 
@@ -1278,7 +1467,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const res_login__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1289,8 +1494,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 void  copy (res_login::IC_session_info& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1339,19 +1544,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_login::IC_ses
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_login::IC_session_info>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
 
 void  copy (conf_logout& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1383,6 +1579,12 @@ void  copy (conf_logout& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (conf_logout__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout& a)
 {
 
@@ -1400,7 +1602,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const conf_logout__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<conf_logout>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<conf_logout__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1411,8 +1629,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<con
 
 
 void  copy (req_logout& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1428,6 +1646,12 @@ void  copy (req_logout& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (req_logout__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const req_logout& a)
 {
 
@@ -1441,7 +1665,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_logout& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const req_logout__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_logout>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_logout__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1452,8 +1692,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 void  copy (req_change_password& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1501,6 +1741,12 @@ void  copy (req_change_password& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (req_change_password__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const req_change_password& a)
 {
 
@@ -1522,7 +1768,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_change_passwo
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const req_change_password__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_change_password>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_change_password__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1533,8 +1795,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 void  copy (res_change_password& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1558,6 +1820,12 @@ void  copy (res_change_password& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (res_change_password__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const res_change_password& a)
 {
 
@@ -1574,7 +1842,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_change_passwo
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const res_change_password__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_change_password>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_change_password__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1585,8 +1869,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 void  copy (res_change_password::IC_change_password_info& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1613,15 +1897,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_change_passwo
 
 
 };
-
-
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_change_password::IC_change_password_info>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
 
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -1928,7 +2203,7 @@ qpid::types::Variant::Map   res_change_password::qpidmsg_codded_as_qpid_map (voi
     }
     
 req_login_key::req_login_key (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
    user_name(__internal_get_default((std::string*)0)) 
@@ -1937,8 +2212,15 @@ req_login_key::req_login_key (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+req_login_key__qpid_map::req_login_key__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 res_login_key::res_login_key (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   field_type
    key(__internal_get_default((std::string*)0)) 
@@ -1947,8 +2229,15 @@ res_login_key::res_login_key (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+res_login_key__qpid_map::res_login_key__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 req_login::req_login (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
    user_name(__internal_get_default((std::string*)0)),
@@ -1961,8 +2250,15 @@ req_login::req_login (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+req_login__qpid_map::req_login__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 res_login::res_login (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   IN_SUB_MSG
    session_info(__internal_get_default((res_login::IC_session_info*)0)) 
@@ -1971,8 +2267,15 @@ res_login::res_login (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+res_login__qpid_map::res_login__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 res_login::IC_session_info::IC_session_info (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    user_name(__internal_get_default((std::string*)0)),
 //   field_type
    client_code(__internal_get_default((std::string*)0)),
@@ -1983,8 +2286,9 @@ res_login::IC_session_info::IC_session_info (const qpid::types::Variant::Map&  m
         check_recomended ();  
     }
 
+
 conf_logout::conf_logout (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    location(__internal_get_default((mtk::msg::sub_location*)0)),
 //   field_type
    session_id(__internal_get_default((std::string*)0)),
@@ -1995,16 +2299,30 @@ conf_logout::conf_logout (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+conf_logout__qpid_map::conf_logout__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 req_logout::req_logout (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
     }
 
+
+req_logout__qpid_map::req_logout__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 req_change_password::req_change_password (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
    user_name(__internal_get_default((std::string*)0)),
@@ -2019,8 +2337,15 @@ req_change_password::req_change_password (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+req_change_password__qpid_map::req_change_password__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 res_change_password::res_change_password (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   IN_SUB_MSG
    change_password_info(__internal_get_default((res_change_password::IC_change_password_info*)0)) 
@@ -2029,13 +2354,21 @@ res_change_password::res_change_password (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+res_change_password__qpid_map::res_change_password__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 res_change_password::IC_change_password_info::IC_change_password_info (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    accepted(__internal_get_default((bool*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
     }
+
 mtk::t_qpid_filter  req_login_key::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
         return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_broker_code << ".ACS.RQK"));

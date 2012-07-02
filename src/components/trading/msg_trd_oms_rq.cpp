@@ -691,6 +691,229 @@ void oms_RQ_EXECS_HISTORIC::before_send(void) const
 
 
 
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_NW_LS__qpid_map::oms_RQ_NW_LS__qpid_map ( const RQ_NW_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_NW_LS__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_MD_LS__qpid_map::oms_RQ_MD_LS__qpid_map ( const RQ_MD_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_MD_LS__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_CC_LS__qpid_map::oms_RQ_CC_LS__qpid_map ( const RQ_CC_LS&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_CC_LS__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_NW_MK__qpid_map::oms_RQ_NW_MK__qpid_map ( const RQ_NW_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_NW_MK__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_MD_MK__qpid_map::oms_RQ_MD_MK__qpid_map ( const RQ_MD_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_MD_MK__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_CC_MK__qpid_map::oms_RQ_CC_MK__qpid_map ( const RQ_CC_MK&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_CC_MK__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_NW_SM__qpid_map::oms_RQ_NW_SM__qpid_map ( const RQ_NW_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_NW_SM__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_MD_SM__qpid_map::oms_RQ_MD_SM__qpid_map ( const RQ_MD_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_MD_SM__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_CC_SM__qpid_map::oms_RQ_CC_SM__qpid_map ( const RQ_CC_SM&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_CC_SM__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_NW_SL__qpid_map::oms_RQ_NW_SL__qpid_map ( const RQ_NW_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_NW_SL__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_MD_SL__qpid_map::oms_RQ_MD_SL__qpid_map ( const RQ_MD_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_MD_SL__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_CC_SL__qpid_map::oms_RQ_CC_SL__qpid_map ( const RQ_CC_SL&  parent,   const std::string&  _reject_description,   const std::string&  _from,   const std::string&  _oms_additional_info)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from,
+   _oms_additional_info) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_CC_SL__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_ORDERS_STATUS__qpid_map::oms_RQ_ORDERS_STATUS__qpid_map ( const RQ_ORDERS_STATUS&  parent,   const std::string&  _reject_description,   const std::string&  _from)
+      :  m_static( 
+parent,
+   _reject_description,
+   _from) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_ORDERS_STATUS__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+oms_RQ_EXECS_HISTORIC__qpid_map::oms_RQ_EXECS_HISTORIC__qpid_map ( const RQ_EXECS_HISTORIC&  parent,   const std::string&  _market,   const mtk::DateTime&  _date,   const mtk::list<mtk::trd::msg::sub_account_info >&  _list_accounts)
+      :  m_static( 
+parent,
+   _market,
+   _date,
+   _list_accounts) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   oms_RQ_EXECS_HISTORIC__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
 std::ostream& operator<< (std::ostream& o, const oms_RQ_NW_LS & c)
 {
     o << "{ "
@@ -1350,8 +1573,8 @@ bool operator!= (const oms_RQ_EXECS_HISTORIC& a, const oms_RQ_EXECS_HISTORIC& b)
 
 
 void  copy (oms_RQ_NW_LS& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_NW_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1383,6 +1606,12 @@ copy(static_cast<RQ_NW_LS&>(c), v);
     }
 
 
+void  copy (oms_RQ_NW_LS__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_LS& a)
 {
 
@@ -1402,7 +1631,23 @@ __internal_add2map(map, static_cast<const RQ_NW_LS&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_LS__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_LS__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1413,8 +1658,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_MD_LS& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_MD_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1446,6 +1691,12 @@ copy(static_cast<RQ_MD_LS&>(c), v);
     }
 
 
+void  copy (oms_RQ_MD_LS__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_LS& a)
 {
 
@@ -1465,7 +1716,23 @@ __internal_add2map(map, static_cast<const RQ_MD_LS&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_LS__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_LS__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1476,8 +1743,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_CC_LS& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_CC_LS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1509,6 +1776,12 @@ copy(static_cast<RQ_CC_LS&>(c), v);
     }
 
 
+void  copy (oms_RQ_CC_LS__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_LS& a)
 {
 
@@ -1528,7 +1801,23 @@ __internal_add2map(map, static_cast<const RQ_CC_LS&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_LS__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_LS__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1539,8 +1828,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_NW_MK& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_NW_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1572,6 +1861,12 @@ copy(static_cast<RQ_NW_MK&>(c), v);
     }
 
 
+void  copy (oms_RQ_NW_MK__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_MK& a)
 {
 
@@ -1591,7 +1886,23 @@ __internal_add2map(map, static_cast<const RQ_NW_MK&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_MK__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_MK>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_MK__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1602,8 +1913,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_MD_MK& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_MD_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1635,6 +1946,12 @@ copy(static_cast<RQ_MD_MK&>(c), v);
     }
 
 
+void  copy (oms_RQ_MD_MK__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_MK& a)
 {
 
@@ -1654,7 +1971,23 @@ __internal_add2map(map, static_cast<const RQ_MD_MK&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_MK__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_MK>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_MK__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1665,8 +1998,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_CC_MK& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_CC_MK&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1698,6 +2031,12 @@ copy(static_cast<RQ_CC_MK&>(c), v);
     }
 
 
+void  copy (oms_RQ_CC_MK__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_MK& a)
 {
 
@@ -1717,7 +2056,23 @@ __internal_add2map(map, static_cast<const RQ_CC_MK&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_MK__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_MK>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_MK__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1728,8 +2083,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_NW_SM& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_NW_SM&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1761,6 +2116,12 @@ copy(static_cast<RQ_NW_SM&>(c), v);
     }
 
 
+void  copy (oms_RQ_NW_SM__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_SM& a)
 {
 
@@ -1780,7 +2141,23 @@ __internal_add2map(map, static_cast<const RQ_NW_SM&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_SM__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_SM>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_SM__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1791,8 +2168,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_MD_SM& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_MD_SM&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1824,6 +2201,12 @@ copy(static_cast<RQ_MD_SM&>(c), v);
     }
 
 
+void  copy (oms_RQ_MD_SM__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_SM& a)
 {
 
@@ -1843,7 +2226,23 @@ __internal_add2map(map, static_cast<const RQ_MD_SM&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_SM__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_SM>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_SM__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1854,8 +2253,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_CC_SM& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_CC_SM&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1887,6 +2286,12 @@ copy(static_cast<RQ_CC_SM&>(c), v);
     }
 
 
+void  copy (oms_RQ_CC_SM__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_SM& a)
 {
 
@@ -1906,7 +2311,23 @@ __internal_add2map(map, static_cast<const RQ_CC_SM&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_SM__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_SM>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_SM__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1917,8 +2338,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_NW_SL& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_NW_SL&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1950,6 +2371,12 @@ copy(static_cast<RQ_NW_SL&>(c), v);
     }
 
 
+void  copy (oms_RQ_NW_SL__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_SL& a)
 {
 
@@ -1969,7 +2396,23 @@ __internal_add2map(map, static_cast<const RQ_NW_SL&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_NW_SL__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_SL>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_NW_SL__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1980,8 +2423,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_MD_SL& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_MD_SL&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -2013,6 +2456,12 @@ copy(static_cast<RQ_MD_SL&>(c), v);
     }
 
 
+void  copy (oms_RQ_MD_SL__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_SL& a)
 {
 
@@ -2032,7 +2481,23 @@ __internal_add2map(map, static_cast<const RQ_MD_SL&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_MD_SL__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_SL>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_MD_SL__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -2043,8 +2508,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_CC_SL& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_CC_SL&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -2076,6 +2541,12 @@ copy(static_cast<RQ_CC_SL&>(c), v);
     }
 
 
+void  copy (oms_RQ_CC_SL__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_SL& a)
 {
 
@@ -2095,7 +2566,23 @@ __internal_add2map(map, static_cast<const RQ_CC_SL&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_CC_SL__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_SL>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_CC_SL__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -2106,8 +2593,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_ORDERS_STATUS& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_ORDERS_STATUS&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -2131,6 +2618,12 @@ copy(static_cast<RQ_ORDERS_STATUS&>(c), v);
     }
 
 
+void  copy (oms_RQ_ORDERS_STATUS__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_ORDERS_STATUS& a)
 {
 
@@ -2148,7 +2641,23 @@ __internal_add2map(map, static_cast<const RQ_ORDERS_STATUS&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_ORDERS_STATUS__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_ORDERS_STATUS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_ORDERS_STATUS__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -2159,8 +2668,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms
 
 
 void  copy (oms_RQ_EXECS_HISTORIC& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<RQ_EXECS_HISTORIC&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -2192,6 +2701,12 @@ copy(static_cast<RQ_EXECS_HISTORIC&>(c), v);
     }
 
 
+void  copy (oms_RQ_EXECS_HISTORIC__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_EXECS_HISTORIC& a)
 {
 
@@ -2211,7 +2726,23 @@ __internal_add2map(map, static_cast<const RQ_EXECS_HISTORIC&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const oms_RQ_EXECS_HISTORIC__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_EXECS_HISTORIC>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<oms_RQ_EXECS_HISTORIC__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -2762,7 +3293,7 @@ __internal_get_default((RQ_EXECS_HISTORIC*)0), //   field_type
     }
     
 oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::types::Variant::Map&  mv)
-    :  RQ_NW_LS(mv), //   field_type
+     : RQ_NW_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2772,9 +3303,16 @@ oms_RQ_NW_LS::oms_RQ_NW_LS (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_NW_LS__qpid_map::oms_RQ_NW_LS__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::types::Variant::Map&  mv)
-    :  RQ_MD_LS(mv), //   field_type
+     : RQ_MD_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2784,9 +3322,16 @@ oms_RQ_MD_LS::oms_RQ_MD_LS (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_MD_LS__qpid_map::oms_RQ_MD_LS__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::types::Variant::Map&  mv)
-    :  RQ_CC_LS(mv), //   field_type
+     : RQ_CC_LS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2796,9 +3341,16 @@ oms_RQ_CC_LS::oms_RQ_CC_LS (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_CC_LS__qpid_map::oms_RQ_CC_LS__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::types::Variant::Map&  mv)
-    :  RQ_NW_MK(mv), //   field_type
+     : RQ_NW_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2808,9 +3360,16 @@ oms_RQ_NW_MK::oms_RQ_NW_MK (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_NW_MK__qpid_map::oms_RQ_NW_MK__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::types::Variant::Map&  mv)
-    :  RQ_MD_MK(mv), //   field_type
+     : RQ_MD_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2820,9 +3379,16 @@ oms_RQ_MD_MK::oms_RQ_MD_MK (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_MD_MK__qpid_map::oms_RQ_MD_MK__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::types::Variant::Map&  mv)
-    :  RQ_CC_MK(mv), //   field_type
+     : RQ_CC_MK(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2832,9 +3398,16 @@ oms_RQ_CC_MK::oms_RQ_CC_MK (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_CC_MK__qpid_map::oms_RQ_CC_MK__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_NW_SM::oms_RQ_NW_SM (const qpid::types::Variant::Map&  mv)
-    :  RQ_NW_SM(mv), //   field_type
+     : RQ_NW_SM(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2844,9 +3417,16 @@ oms_RQ_NW_SM::oms_RQ_NW_SM (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_NW_SM__qpid_map::oms_RQ_NW_SM__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_MD_SM::oms_RQ_MD_SM (const qpid::types::Variant::Map&  mv)
-    :  RQ_MD_SM(mv), //   field_type
+     : RQ_MD_SM(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2856,9 +3436,16 @@ oms_RQ_MD_SM::oms_RQ_MD_SM (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_MD_SM__qpid_map::oms_RQ_MD_SM__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_CC_SM::oms_RQ_CC_SM (const qpid::types::Variant::Map&  mv)
-    :  RQ_CC_SM(mv), //   field_type
+     : RQ_CC_SM(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2868,9 +3455,16 @@ oms_RQ_CC_SM::oms_RQ_CC_SM (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_CC_SM__qpid_map::oms_RQ_CC_SM__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_NW_SL::oms_RQ_NW_SL (const qpid::types::Variant::Map&  mv)
-    :  RQ_NW_SL(mv), //   field_type
+     : RQ_NW_SL(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2880,9 +3474,16 @@ oms_RQ_NW_SL::oms_RQ_NW_SL (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_NW_SL__qpid_map::oms_RQ_NW_SL__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_MD_SL::oms_RQ_MD_SL (const qpid::types::Variant::Map&  mv)
-    :  RQ_MD_SL(mv), //   field_type
+     : RQ_MD_SL(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2892,9 +3493,16 @@ oms_RQ_MD_SL::oms_RQ_MD_SL (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_MD_SL__qpid_map::oms_RQ_MD_SL__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 oms_RQ_CC_SL::oms_RQ_CC_SL (const qpid::types::Variant::Map&  mv)
-    :  RQ_CC_SL(mv), //   field_type
+     : RQ_CC_SL(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)),
@@ -2905,8 +3513,15 @@ oms_RQ_CC_SL::oms_RQ_CC_SL (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+oms_RQ_CC_SL__qpid_map::oms_RQ_CC_SL__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::types::Variant::Map&  mv)
-    :  RQ_ORDERS_STATUS(mv), //   field_type
+     : RQ_ORDERS_STATUS(mv), //   field_type
    reject_description(__internal_get_default((std::string*)0)),
 //   field_type
    from(__internal_get_default((std::string*)0)) 
@@ -2915,8 +3530,15 @@ oms_RQ_ORDERS_STATUS::oms_RQ_ORDERS_STATUS (const qpid::types::Variant::Map&  mv
         check_recomended ();  
     }
 
+
+oms_RQ_ORDERS_STATUS__qpid_map::oms_RQ_ORDERS_STATUS__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 oms_RQ_EXECS_HISTORIC::oms_RQ_EXECS_HISTORIC (const qpid::types::Variant::Map&  mv)
-    :  RQ_EXECS_HISTORIC(mv), //   field_type
+     : RQ_EXECS_HISTORIC(mv), //   field_type
    market(__internal_get_default((std::string*)0)),
 //   field_type
    date(__internal_get_default((mtk::DateTime*)0)),
@@ -2926,6 +3548,13 @@ oms_RQ_EXECS_HISTORIC::oms_RQ_EXECS_HISTORIC (const qpid::types::Variant::Map&  
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+oms_RQ_EXECS_HISTORIC__qpid_map::oms_RQ_EXECS_HISTORIC__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 mtk::t_qpid_filter  oms_RQ_NW_LS::get_in_subject (const std::string& invariant_product_code_market,const std::string& invariant_product_code_product,const std::string& from)
     {
         return mtk::t_qpid_filter(MTK_SS("MK.OMS." << invariant_product_code_market << "." << invariant_product_code_product << "." << from << ".TRD"));

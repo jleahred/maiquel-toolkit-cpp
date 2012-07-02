@@ -52,10 +52,10 @@ pub_best_prices [< QE:PRICES.${product_code.market}, RT:0, SUBJ:BP.${product_cod
 
 
 
-//pub_new_products [< QE:CLI_MK, RT:2, SUBJ:CLI.ALL.${market}.NP  >]
-//{
-//    market              (mk)    :   string
-//}
+pub_new_products [< QE:CLI_MK, RT:2, SUBJ:CLI.ALL.${market}.NP  >]
+{
+    market              (mk)    :   string
+}
 
 
 

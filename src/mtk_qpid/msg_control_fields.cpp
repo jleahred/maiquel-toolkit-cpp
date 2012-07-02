@@ -417,6 +417,19 @@ void sub_control_fields::before_send(void) const
 
 
 
+    //    generate_class_qpid_variant_in_impl
+    
+sub_control_fields__qpid_map::sub_control_fields__qpid_map (   const std::string&  _message_type,   const std::string&  _control_fluct_key,   const mtk::DateTime&  _sent_date_time)
+      :  m_static( 
+   _message_type,
+   _control_fluct_key,
+   _sent_date_time,
+   mtk::nullable<mtk::DateTime> {}) 
+    {  
+    }
+
+
+
 std::ostream& operator<< (std::ostream& o, const sub_control_fields & c)
 {
     o << "{ "
@@ -466,8 +479,8 @@ bool operator!= (const sub_control_fields& a, const sub_control_fields& b)
 
 
 void  copy (sub_control_fields& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -505,6 +518,12 @@ void  copy (sub_control_fields& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (sub_control_fields__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fields& a)
 {
 
@@ -525,7 +544,23 @@ if (a.depreciated_on.HasValue())
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_control_fields__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_control_fields>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_control_fields__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -550,7 +585,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
     }
     
 sub_control_fields::sub_control_fields (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    message_type(__internal_get_default((std::string*)0)),
 //   field_type
    control_fluct_key(__internal_get_default((std::string*)0)),
@@ -560,6 +595,13 @@ sub_control_fields::sub_control_fields (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+sub_control_fields__qpid_map::sub_control_fields__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 
 };   //namespace mtk {

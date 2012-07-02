@@ -481,6 +481,60 @@ void pub_tree_colapse_branch::before_send(void) const
 
 
 
+    //    generate_class_qpid_variant_in_impl
+    
+sub_tree_item__qpid_map::sub_tree_item__qpid_map (   const std::string&  _branch,   const std::string&  _description)
+      :  m_static( 
+   _branch,
+   _description,
+   mtk::nullable<mtk::msg::sub_product_code> {}) 
+    {  
+    }
+
+
+
+    //    generate_class_qpid_variant_in_impl
+    
+req_tree_items__qpid_map::req_tree_items__qpid_map (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _branch)
+      :  m_static( 
+   _request_info,
+   _branch) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   req_tree_items__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+res_tree_items__qpid_map::res_tree_items__qpid_map (   const mtk::msg::sub_r_response&  _response_info,   const sub_tree_item&  _item)
+      :  m_static( 
+   _response_info,
+   _item) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   res_tree_items__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+pub_tree_colapse_branch__qpid_map::pub_tree_colapse_branch__qpid_map (   const std::string&  _broker_code,   const std::string&  _branch)
+      :  m_static( 
+   _broker_code,
+   _branch) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_tree_colapse_branch__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
 std::ostream& operator<< (std::ostream& o, const sub_tree_item & c)
 {
     o << "{ "
@@ -664,8 +718,8 @@ bool operator!= (const pub_tree_colapse_branch& a, const pub_tree_colapse_branch
 
 
 void  copy (sub_tree_item& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -695,6 +749,12 @@ void  copy (sub_tree_item& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (sub_tree_item__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item& a)
 {
 
@@ -713,7 +773,23 @@ if (a.product_code.HasValue())
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_tree_item__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_tree_item>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_tree_item__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -724,8 +800,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 void  copy (req_tree_items& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -749,6 +825,12 @@ void  copy (req_tree_items& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (req_tree_items__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items& a)
 {
 
@@ -764,7 +846,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items& a
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const req_tree_items__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_tree_items>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_tree_items__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -775,8 +873,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 void  copy (res_tree_items& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -800,6 +898,12 @@ void  copy (res_tree_items& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (res_tree_items__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a)
 {
 
@@ -815,7 +919,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items& a
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const res_tree_items__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_tree_items>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_tree_items__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -826,8 +946,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 void  copy (pub_tree_colapse_branch& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -851,6 +971,12 @@ void  copy (pub_tree_colapse_branch& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (pub_tree_colapse_branch__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_tree_colapse_branch& a)
 {
 
@@ -866,7 +992,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_tree_colapse_
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_tree_colapse_branch__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_tree_colapse_branch>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_tree_colapse_branch__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -985,7 +1127,7 @@ qpid::types::Variant::Map   pub_tree_colapse_branch::qpidmsg_codded_as_qpid_map 
     }
     
 sub_tree_item::sub_tree_item (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    branch(__internal_get_default((std::string*)0)),
 //   field_type
    description(__internal_get_default((std::string*)0)) 
@@ -994,8 +1136,15 @@ sub_tree_item::sub_tree_item (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+sub_tree_item__qpid_map::sub_tree_item__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 req_tree_items::req_tree_items (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
    branch(__internal_get_default((std::string*)0)) 
@@ -1004,8 +1153,15 @@ req_tree_items::req_tree_items (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+req_tree_items__qpid_map::req_tree_items__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 res_tree_items::res_tree_items (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   sub_msg_type
    item(__internal_get_default((sub_tree_item*)0)) 
@@ -1014,8 +1170,15 @@ res_tree_items::res_tree_items (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+res_tree_items__qpid_map::res_tree_items__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 pub_tree_colapse_branch::pub_tree_colapse_branch (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    broker_code(__internal_get_default((std::string*)0)),
 //   field_type
    branch(__internal_get_default((std::string*)0)) 
@@ -1023,6 +1186,13 @@ pub_tree_colapse_branch::pub_tree_colapse_branch (const qpid::types::Variant::Ma
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+pub_tree_colapse_branch__qpid_map::pub_tree_colapse_branch__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 mtk::t_qpid_filter  req_tree_items::get_in_subject (const std::string& request_info_process_info_location_broker_code)
     {
         return mtk::t_qpid_filter(MTK_SS("GS." << request_info_process_info_location_broker_code << ".TREE.REQ"));

@@ -46,8 +46,8 @@ public:
     explicit sub_order_id (  const mtk::msg::sub_request_id&  parent );
     explicit sub_order_id ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_order_id (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_order_id"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_order_id"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_order_id"; }
+    static  std::string static_get_message_type_as_string(void)        { return "sub_order_id"; }
     
     
 
@@ -80,6 +80,26 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class sub_order_id__qpid_map
+        {
+        public:
+            explicit  sub_order_id__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  sub_order_id__qpid_map ( const sub_order_id&  c ) : m_static(c) {}
+            explicit  sub_order_id__qpid_map (  const mtk::msg::sub_request_id&  parent );
+            ~sub_order_id__qpid_map() {};
+            
+
+            sub_order_id                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      sub_exec_conf
@@ -94,8 +114,8 @@ public:
     explicit sub_exec_conf (    const std::string&  _exec_id,   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity );
     explicit sub_exec_conf ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_exec_conf (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_exec_conf"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_exec_conf"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_exec_conf"; }
+    static  std::string static_get_message_type_as_string(void)        { return "sub_exec_conf"; }
     
     
 
@@ -131,6 +151,26 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class sub_exec_conf__qpid_map
+        {
+        public:
+            explicit  sub_exec_conf__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  sub_exec_conf__qpid_map ( const sub_exec_conf&  c ) : m_static(c) {}
+            explicit  sub_exec_conf__qpid_map (    const std::string&  _exec_id,   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity );
+            ~sub_exec_conf__qpid_map() {};
+            
+
+            sub_exec_conf                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      sub_total_executions
@@ -145,8 +185,8 @@ public:
     explicit sub_total_executions (    const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _acc_quantity,   const mtk::FixedNumber&  _remaining_qty );
     explicit sub_total_executions ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_total_executions (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_total_executions"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_total_executions"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_total_executions"; }
+    static  std::string static_get_message_type_as_string(void)        { return "sub_total_executions"; }
     
     
 
@@ -182,6 +222,26 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class sub_total_executions__qpid_map
+        {
+        public:
+            explicit  sub_total_executions__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  sub_total_executions__qpid_map ( const sub_total_executions&  c ) : m_static(c) {}
+            explicit  sub_total_executions__qpid_map (    const mtk::Double&  _sum_price_by_qty,   const mtk::FixedNumber&  _acc_quantity,   const mtk::FixedNumber&  _remaining_qty );
+            ~sub_total_executions__qpid_map() {};
+            
+
+            sub_total_executions                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      sub_account_info
@@ -196,8 +256,8 @@ public:
     explicit sub_account_info (    const std::string&  _name,   const std::string&  _client_code );
     explicit sub_account_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_account_info (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_account_info"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_account_info"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_account_info"; }
+    static  std::string static_get_message_type_as_string(void)        { return "sub_account_info"; }
     
     
 
@@ -239,6 +299,26 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class sub_account_info__qpid_map
+        {
+        public:
+            explicit  sub_account_info__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  sub_account_info__qpid_map ( const sub_account_info&  c ) : m_static(c) {}
+            explicit  sub_account_info__qpid_map (    const std::string&  _name,   const std::string&  _client_code );
+            ~sub_account_info__qpid_map() {};
+            
+
+            sub_account_info                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      sub_invariant_order_info
@@ -253,8 +333,8 @@ public:
     explicit sub_invariant_order_info (    const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account,   const std::string&  _time_in_force,   const bool&  _automatic );
     explicit sub_invariant_order_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_invariant_order_info (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_invariant_order_info"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_invariant_order_info"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_invariant_order_info"; }
+    static  std::string static_get_message_type_as_string(void)        { return "sub_invariant_order_info"; }
     
     
 
@@ -293,6 +373,26 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class sub_invariant_order_info__qpid_map
+        {
+        public:
+            explicit  sub_invariant_order_info__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  sub_invariant_order_info__qpid_map ( const sub_invariant_order_info&  c ) : m_static(c) {}
+            explicit  sub_invariant_order_info__qpid_map (    const sub_order_id&  _order_id,   const mtk::msg::sub_product_code&  _product_code,   const enBuySell&  _side,   const sub_account_info&  _account,   const std::string&  _time_in_force,   const bool&  _automatic );
+            ~sub_invariant_order_info__qpid_map() {};
+            
+
+            sub_invariant_order_info                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      RQ_XX
@@ -307,8 +407,8 @@ public:
     explicit RQ_XX (    const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit RQ_XX ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_XX (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX"; };
-    static  std::string static_get_message_type_as_string(void)        { return "RQ_XX"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "RQ_XX"; }
+    static  std::string static_get_message_type_as_string(void)        { return "RQ_XX"; }
     
     
 
@@ -344,6 +444,26 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class RQ_XX__qpid_map
+        {
+        public:
+            explicit  RQ_XX__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  RQ_XX__qpid_map ( const RQ_XX&  c ) : m_static(c) {}
+            explicit  RQ_XX__qpid_map (    const sub_invariant_order_info&  _invariant,   const mtk::msg::sub_request_info&  _request_info,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+            ~RQ_XX__qpid_map() {};
+            
+
+            RQ_XX                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      CF_XX
@@ -358,8 +478,8 @@ public:
     explicit CF_XX (    const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const sub_total_executions&  _total_execs,   const std::string&  _description,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
     explicit CF_XX ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_XX (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; };
-    static  std::string static_get_message_type_as_string(void)        { return "CF_XX"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "CF_XX"; }
+    static  std::string static_get_message_type_as_string(void)        { return "CF_XX"; }
     
     
 
@@ -398,6 +518,26 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class CF_XX__qpid_map
+        {
+        public:
+            explicit  CF_XX__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  CF_XX__qpid_map ( const CF_XX&  c ) : m_static(c) {}
+            explicit  CF_XX__qpid_map (    const sub_invariant_order_info&  _invariant,   const std::string&  _market_order_id,   const mtk::msg::sub_request_id&  _req_id,   const sub_total_executions&  _total_execs,   const std::string&  _description,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+            ~CF_XX__qpid_map() {};
+            
+
+            CF_XX                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      RQ_ORDERS_STATUS
@@ -412,8 +552,8 @@ public:
     explicit RQ_ORDERS_STATUS (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _market,   const sub_account_info&  _account );
     explicit RQ_ORDERS_STATUS ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_ORDERS_STATUS (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "RQ_ORDERS_STATUS"; };
-    static  std::string static_get_message_type_as_string(void)        { return "RQ_ORDERS_STATUS"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "RQ_ORDERS_STATUS"; }
+    static  std::string static_get_message_type_as_string(void)        { return "RQ_ORDERS_STATUS"; }
     
     static  int         static_return_message_RT_priority(void)        { return 2; };
 
@@ -453,6 +593,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class RQ_ORDERS_STATUS__qpid_map
+        {
+        public:
+            explicit  RQ_ORDERS_STATUS__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  RQ_ORDERS_STATUS__qpid_map ( const RQ_ORDERS_STATUS&  c ) : m_static(c) {}
+            explicit  RQ_ORDERS_STATUS__qpid_map (    const mtk::msg::sub_request_info&  _request_info,   const std::string&  _market,   const sub_account_info&  _account );
+            ~RQ_ORDERS_STATUS__qpid_map() {};
+            
+
+            RQ_ORDERS_STATUS                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  RQ_ORDERS_STATUS::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  RQ_ORDERS_STATUS::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  RQ_ORDERS_STATUS::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  RQ_ORDERS_STATUS::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      CF_EXLK
@@ -467,8 +640,8 @@ public:
     explicit CF_EXLK (  const CF_XX&  parent,   const sub_exec_conf&  _executed_pos );
     explicit CF_EXLK ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_EXLK (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "CF_EXLK"; };
-    static  std::string static_get_message_type_as_string(void)        { return "CF_EXLK"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "CF_EXLK"; }
+    static  std::string static_get_message_type_as_string(void)        { return "CF_EXLK"; }
     
     static  int         static_return_message_RT_priority(void)        { return 2; };
 
@@ -506,6 +679,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class CF_EXLK__qpid_map
+        {
+        public:
+            explicit  CF_EXLK__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  CF_EXLK__qpid_map ( const CF_EXLK&  c ) : m_static(c) {}
+            explicit  CF_EXLK__qpid_map (  const CF_XX&  parent,   const sub_exec_conf&  _executed_pos );
+            ~CF_EXLK__qpid_map() {};
+            
+
+            CF_EXLK                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  CF_EXLK::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  CF_EXLK::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  CF_EXLK::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  CF_EXLK::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      CF_ST_EX
@@ -520,8 +726,8 @@ public:
     explicit CF_ST_EX (  const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location&  _gen_response_location );
     explicit CF_ST_EX ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_ST_EX (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "CF_ST_EX"; };
-    static  std::string static_get_message_type_as_string(void)        { return "CF_ST_EX"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "CF_ST_EX"; }
+    static  std::string static_get_message_type_as_string(void)        { return "CF_ST_EX"; }
     
     static  int         static_return_message_RT_priority(void)        { return 2; };
 
@@ -559,6 +765,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class CF_ST_EX__qpid_map
+        {
+        public:
+            explicit  CF_ST_EX__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  CF_ST_EX__qpid_map ( const CF_ST_EX&  c ) : m_static(c) {}
+            explicit  CF_ST_EX__qpid_map (  const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location&  _gen_response_location );
+            ~CF_ST_EX__qpid_map() {};
+            
+
+            CF_ST_EX                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  CF_ST_EX::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  CF_ST_EX::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  CF_ST_EX::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  CF_ST_EX::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      RQ_EXECS_HISTORIC
@@ -573,8 +812,8 @@ public:
     explicit RQ_EXECS_HISTORIC (    const mtk::msg::sub_request_info&  _request_info,   const mtk::DateTime&  _date );
     explicit RQ_EXECS_HISTORIC ( const qpid::types::Variant::Map&  mv );
     virtual ~RQ_EXECS_HISTORIC (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "RQ_EXECS_HISTORIC"; };
-    static  std::string static_get_message_type_as_string(void)        { return "RQ_EXECS_HISTORIC"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "RQ_EXECS_HISTORIC"; }
+    static  std::string static_get_message_type_as_string(void)        { return "RQ_EXECS_HISTORIC"; }
     
     static  int         static_return_message_RT_priority(void)        { return 2; };
 
@@ -613,6 +852,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class RQ_EXECS_HISTORIC__qpid_map
+        {
+        public:
+            explicit  RQ_EXECS_HISTORIC__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  RQ_EXECS_HISTORIC__qpid_map ( const RQ_EXECS_HISTORIC&  c ) : m_static(c) {}
+            explicit  RQ_EXECS_HISTORIC__qpid_map (    const mtk::msg::sub_request_info&  _request_info,   const mtk::DateTime&  _date );
+            ~RQ_EXECS_HISTORIC__qpid_map() {};
+            
+
+            RQ_EXECS_HISTORIC                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  RQ_EXECS_HISTORIC::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  RQ_EXECS_HISTORIC::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  RQ_EXECS_HISTORIC::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  RQ_EXECS_HISTORIC::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      CF_EX_HIST
@@ -627,8 +899,8 @@ public:
     explicit CF_EX_HIST (  const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location2&  _gen_response_location2,   const bool&  _truncated_response );
     explicit CF_EX_HIST ( const qpid::types::Variant::Map&  mv );
     virtual ~CF_EX_HIST (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_HIST"; };
-    static  std::string static_get_message_type_as_string(void)        { return "CF_EX_HIST"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "CF_EX_HIST"; }
+    static  std::string static_get_message_type_as_string(void)        { return "CF_EX_HIST"; }
     
     static  int         static_return_message_RT_priority(void)        { return 2; };
 
@@ -667,6 +939,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class CF_EX_HIST__qpid_map
+        {
+        public:
+            explicit  CF_EX_HIST__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  CF_EX_HIST__qpid_map ( const CF_EX_HIST&  c ) : m_static(c) {}
+            explicit  CF_EX_HIST__qpid_map (  const CF_EXLK&  parent,   const mtk::msg::sub_gen_response_location2&  _gen_response_location2,   const bool&  _truncated_response );
+            ~CF_EX_HIST__qpid_map() {};
+            
+
+            CF_EX_HIST                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  CF_EX_HIST::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  CF_EX_HIST::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  CF_EX_HIST::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  CF_EX_HIST::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
     
     
     
@@ -795,30 +1100,180 @@ void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_HIST& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EX_HIST>& a, const std::string& field);
 void copy (CF_EX_HIST& a, const qpid::types::Variant& map);
 
+    
+    
+    
+//  fordward declarations  dynamic--------------------------------------------------------
+
+
+inline std::ostream& operator<< (std::ostream& o, const sub_order_id__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_order_id__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       sub_order_id__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const sub_order_id__qpid_map& a, const sub_order_id__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const sub_order_id__qpid_map& a, const sub_order_id__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_order_id__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_order_id__qpid_map>& a, const std::string& field);
+void copy (sub_order_id__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const sub_exec_conf__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_exec_conf__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       sub_exec_conf__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const sub_exec_conf__qpid_map& a, const sub_exec_conf__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const sub_exec_conf__qpid_map& a, const sub_exec_conf__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_exec_conf__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_exec_conf__qpid_map>& a, const std::string& field);
+void copy (sub_exec_conf__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const sub_total_executions__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_total_executions__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       sub_total_executions__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const sub_total_executions__qpid_map& a, const sub_total_executions__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const sub_total_executions__qpid_map& a, const sub_total_executions__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_total_executions__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_total_executions__qpid_map>& a, const std::string& field);
+void copy (sub_total_executions__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const sub_account_info__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_account_info__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       sub_account_info__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const sub_account_info__qpid_map& a, const sub_account_info__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const sub_account_info__qpid_map& a, const sub_account_info__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_account_info__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_account_info__qpid_map>& a, const std::string& field);
+void copy (sub_account_info__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const sub_invariant_order_info__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_invariant_order_info__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       sub_invariant_order_info__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const sub_invariant_order_info__qpid_map& a, const sub_invariant_order_info__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const sub_invariant_order_info__qpid_map& a, const sub_invariant_order_info__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_invariant_order_info__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_invariant_order_info__qpid_map>& a, const std::string& field);
+void copy (sub_invariant_order_info__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const RQ_XX__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_XX__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       RQ_XX__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const RQ_XX__qpid_map& a, const RQ_XX__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const RQ_XX__qpid_map& a, const RQ_XX__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_XX__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_XX__qpid_map>& a, const std::string& field);
+void copy (RQ_XX__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const CF_XX__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const CF_XX__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       CF_XX__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const CF_XX__qpid_map& a, const CF_XX__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const CF_XX__qpid_map& a, const CF_XX__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_XX__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_XX__qpid_map>& a, const std::string& field);
+void copy (CF_XX__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const RQ_ORDERS_STATUS__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_ORDERS_STATUS__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       RQ_ORDERS_STATUS__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const RQ_ORDERS_STATUS__qpid_map& a, const RQ_ORDERS_STATUS__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const RQ_ORDERS_STATUS__qpid_map& a, const RQ_ORDERS_STATUS__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_ORDERS_STATUS__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_ORDERS_STATUS__qpid_map>& a, const std::string& field);
+void copy (RQ_ORDERS_STATUS__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const CF_EXLK__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const CF_EXLK__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       CF_EXLK__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const CF_EXLK__qpid_map& a, const CF_EXLK__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const CF_EXLK__qpid_map& a, const CF_EXLK__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_EXLK__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EXLK__qpid_map>& a, const std::string& field);
+void copy (CF_EXLK__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const CF_ST_EX__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const CF_ST_EX__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       CF_ST_EX__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const CF_ST_EX__qpid_map& a, const CF_ST_EX__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const CF_ST_EX__qpid_map& a, const CF_ST_EX__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_ST_EX__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_ST_EX__qpid_map>& a, const std::string& field);
+void copy (CF_ST_EX__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const RQ_EXECS_HISTORIC__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const RQ_EXECS_HISTORIC__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       RQ_EXECS_HISTORIC__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const RQ_EXECS_HISTORIC__qpid_map& a, const RQ_EXECS_HISTORIC__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const RQ_EXECS_HISTORIC__qpid_map& a, const RQ_EXECS_HISTORIC__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_EXECS_HISTORIC__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_EXECS_HISTORIC__qpid_map>& a, const std::string& field);
+void copy (RQ_EXECS_HISTORIC__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const CF_EX_HIST__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const CF_EX_HIST__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       CF_EX_HIST__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const CF_EX_HIST__qpid_map& a, const CF_EX_HIST__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const CF_EX_HIST__qpid_map& a, const CF_EX_HIST__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const CF_EX_HIST__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<CF_EX_HIST__qpid_map>& a, const std::string& field);
+void copy (CF_EX_HIST__qpid_map& a, const qpid::types::Variant& map);
+
     sub_order_id  __internal_get_default(sub_order_id *);
     
+        inline sub_order_id__qpid_map  __internal_get_default(sub_order_id__qpid_map *) { return  sub_order_id__qpid_map(__internal_get_default((sub_order_id*)0));  }
+
     sub_exec_conf  __internal_get_default(sub_exec_conf *);
     
+        inline sub_exec_conf__qpid_map  __internal_get_default(sub_exec_conf__qpid_map *) { return  sub_exec_conf__qpid_map(__internal_get_default((sub_exec_conf*)0));  }
+
     sub_total_executions  __internal_get_default(sub_total_executions *);
     
+        inline sub_total_executions__qpid_map  __internal_get_default(sub_total_executions__qpid_map *) { return  sub_total_executions__qpid_map(__internal_get_default((sub_total_executions*)0));  }
+
     sub_account_info  __internal_get_default(sub_account_info *);
     
+        inline sub_account_info__qpid_map  __internal_get_default(sub_account_info__qpid_map *) { return  sub_account_info__qpid_map(__internal_get_default((sub_account_info*)0));  }
+
     sub_invariant_order_info  __internal_get_default(sub_invariant_order_info *);
     
+        inline sub_invariant_order_info__qpid_map  __internal_get_default(sub_invariant_order_info__qpid_map *) { return  sub_invariant_order_info__qpid_map(__internal_get_default((sub_invariant_order_info*)0));  }
+
     RQ_XX  __internal_get_default(RQ_XX *);
     
+        inline RQ_XX__qpid_map  __internal_get_default(RQ_XX__qpid_map *) { return  RQ_XX__qpid_map(__internal_get_default((RQ_XX*)0));  }
+
     CF_XX  __internal_get_default(CF_XX *);
     
+        inline CF_XX__qpid_map  __internal_get_default(CF_XX__qpid_map *) { return  CF_XX__qpid_map(__internal_get_default((CF_XX*)0));  }
+
     RQ_ORDERS_STATUS  __internal_get_default(RQ_ORDERS_STATUS *);
     
+        inline RQ_ORDERS_STATUS__qpid_map  __internal_get_default(RQ_ORDERS_STATUS__qpid_map *) { return  RQ_ORDERS_STATUS__qpid_map(__internal_get_default((RQ_ORDERS_STATUS*)0));  }
+
     CF_EXLK  __internal_get_default(CF_EXLK *);
     
+        inline CF_EXLK__qpid_map  __internal_get_default(CF_EXLK__qpid_map *) { return  CF_EXLK__qpid_map(__internal_get_default((CF_EXLK*)0));  }
+
     CF_ST_EX  __internal_get_default(CF_ST_EX *);
     
+        inline CF_ST_EX__qpid_map  __internal_get_default(CF_ST_EX__qpid_map *) { return  CF_ST_EX__qpid_map(__internal_get_default((CF_ST_EX*)0));  }
+
     RQ_EXECS_HISTORIC  __internal_get_default(RQ_EXECS_HISTORIC *);
     
+        inline RQ_EXECS_HISTORIC__qpid_map  __internal_get_default(RQ_EXECS_HISTORIC__qpid_map *) { return  RQ_EXECS_HISTORIC__qpid_map(__internal_get_default((RQ_EXECS_HISTORIC*)0));  }
+
     CF_EX_HIST  __internal_get_default(CF_EX_HIST *);
     
+        inline CF_EX_HIST__qpid_map  __internal_get_default(CF_EX_HIST__qpid_map *) { return  CF_EX_HIST__qpid_map(__internal_get_default((CF_EX_HIST*)0));  }
+
 
 };   //namespace mtk {
 };   //namespace trd {
@@ -834,10 +1289,15 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_ORDERS_STATUS)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_ORDERS_STATUS__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EXLK)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EXLK__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_ST_EX)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_ST_EX__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_EXECS_HISTORIC)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::RQ_EXECS_HISTORIC__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EX_HIST)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::trd::msg::CF_EX_HIST__qpid_map)
 
 
 

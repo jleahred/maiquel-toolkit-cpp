@@ -115,6 +115,28 @@ namespace  mtk
     static const t_qpid_exch_sender_conf   QUEUE__DEFAULT_SENDER_CONFIG   {  "{assert:always, node:{type:topic} }"  };
 
 
+
+    inline  void merge__keep_destination(qpid::types::Variant::Map&  destination,  const qpid::types::Variant::Map&  source)
+    {
+        for(auto it_field_source = source.begin(); it_field_source != source.end(); ++it_field_source)
+        {
+            qpid::types::Variant  ref_field_source = it_field_source->second;
+            auto it_field_destination = destination.find(it_field_source->first);
+            if(it_field_destination == destination.end())
+                destination.insert(std::make_pair(it_field_source->first, it_field_source->second));
+            else
+            {
+                qpid::types::Variant  ref_field_destination = it_field_destination->second;
+                if(ref_field_destination.getType()  !=  ref_field_source.getType())
+                    throw mtk::Alarm(MTK_HERE, "merge__keep_destination", MTK_SS("type mismach on destination and source fields " << ref_field_destination << "  " << ref_field_source), mtk::alPriorError);
+
+                if(ref_field_destination.getType() == qpid::types::VAR_MAP)
+                    merge__keep_destination(ref_field_destination.asMap(), ref_field_source.asMap());
+            }
+
+        }
+    }
+
 };
 
 

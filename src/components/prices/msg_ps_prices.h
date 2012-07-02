@@ -46,8 +46,8 @@ public:
     explicit ps_req_product_info (  const req_product_info&  parent,   const std::string&  _from );
     explicit ps_req_product_info ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_req_product_info (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_req_product_info"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_req_product_info"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_req_product_info"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_req_product_info"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -85,6 +85,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_req_product_info__qpid_map
+        {
+        public:
+            explicit  ps_req_product_info__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_req_product_info__qpid_map ( const ps_req_product_info&  c ) : m_static(c) {}
+            explicit  ps_req_product_info__qpid_map (  const req_product_info&  parent,   const std::string&  _from );
+            ~ps_req_product_info__qpid_map() {};
+            
+
+            ps_req_product_info                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_req_product_info::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_req_product_info::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_req_product_info::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_req_product_info::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      ps_pub_prod_info_mtk_ready
@@ -99,8 +132,8 @@ public:
     explicit ps_pub_prod_info_mtk_ready (    const std::string&  _market );
     explicit ps_pub_prod_info_mtk_ready ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_pub_prod_info_mtk_ready (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -138,6 +171,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_pub_prod_info_mtk_ready__qpid_map
+        {
+        public:
+            explicit  ps_pub_prod_info_mtk_ready__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_pub_prod_info_mtk_ready__qpid_map ( const ps_pub_prod_info_mtk_ready&  c ) : m_static(c) {}
+            explicit  ps_pub_prod_info_mtk_ready__qpid_map (    const std::string&  _market );
+            ~ps_pub_prod_info_mtk_ready__qpid_map() {};
+            
+
+            ps_pub_prod_info_mtk_ready                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_pub_prod_info_mtk_ready::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_pub_prod_info_mtk_ready::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_pub_prod_info_mtk_ready::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_pub_prod_info_mtk_ready::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      ps_req_init_prod_info
@@ -152,8 +218,8 @@ public:
     explicit ps_req_init_prod_info (    const std::string&  _market,   const mtk::msg::sub_process_info&  _process_info );
     explicit ps_req_init_prod_info ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_req_init_prod_info (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -192,6 +258,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_req_init_prod_info__qpid_map
+        {
+        public:
+            explicit  ps_req_init_prod_info__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_req_init_prod_info__qpid_map ( const ps_req_init_prod_info&  c ) : m_static(c) {}
+            explicit  ps_req_init_prod_info__qpid_map (    const std::string&  _market,   const mtk::msg::sub_process_info&  _process_info );
+            ~ps_req_init_prod_info__qpid_map() {};
+            
+
+            ps_req_init_prod_info                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_req_init_prod_info::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_req_init_prod_info::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_req_init_prod_info::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_req_init_prod_info::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      ps_conf_full_product_info_init
@@ -206,8 +305,8 @@ public:
     explicit ps_conf_full_product_info_init (    const std::string&  _market,   const mtk::msg::sub_process_info&  _to_process_info );
     explicit ps_conf_full_product_info_init ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_conf_full_product_info_init (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -246,6 +345,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_conf_full_product_info_init__qpid_map
+        {
+        public:
+            explicit  ps_conf_full_product_info_init__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_conf_full_product_info_init__qpid_map ( const ps_conf_full_product_info_init&  c ) : m_static(c) {}
+            explicit  ps_conf_full_product_info_init__qpid_map (    const std::string&  _market,   const mtk::msg::sub_process_info&  _to_process_info );
+            ~ps_conf_full_product_info_init__qpid_map() {};
+            
+
+            ps_conf_full_product_info_init                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_conf_full_product_info_init::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_conf_full_product_info_init::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_conf_full_product_info_init::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_conf_full_product_info_init::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      ps_conf_full_product_info
@@ -260,8 +392,8 @@ public:
     explicit ps_conf_full_product_info (    const sub_full_product_info&  _full_prod_info,   const mtk::msg::sub_process_info&  _to_process_info,   const int&  _seq_number );
     explicit ps_conf_full_product_info ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_conf_full_product_info (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -301,6 +433,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_conf_full_product_info__qpid_map
+        {
+        public:
+            explicit  ps_conf_full_product_info__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_conf_full_product_info__qpid_map ( const ps_conf_full_product_info&  c ) : m_static(c) {}
+            explicit  ps_conf_full_product_info__qpid_map (    const sub_full_product_info&  _full_prod_info,   const mtk::msg::sub_process_info&  _to_process_info,   const int&  _seq_number );
+            ~ps_conf_full_product_info__qpid_map() {};
+            
+
+            ps_conf_full_product_info                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_conf_full_product_info::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_conf_full_product_info::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_conf_full_product_info::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_conf_full_product_info::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      ps_pub_prod_info_mtk_ready__from_publisher
@@ -315,8 +480,8 @@ public:
     explicit ps_pub_prod_info_mtk_ready__from_publisher (  const ps_pub_prod_info_mtk_ready&  parent );
     explicit ps_pub_prod_info_mtk_ready__from_publisher ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_pub_prod_info_mtk_ready__from_publisher (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready__from_publisher"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_pub_prod_info_mtk_ready__from_publisher"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_pub_prod_info_mtk_ready__from_publisher"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -353,6 +518,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_pub_prod_info_mtk_ready__from_publisher__qpid_map
+        {
+        public:
+            explicit  ps_pub_prod_info_mtk_ready__from_publisher__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_pub_prod_info_mtk_ready__from_publisher__qpid_map ( const ps_pub_prod_info_mtk_ready__from_publisher&  c ) : m_static(c) {}
+            explicit  ps_pub_prod_info_mtk_ready__from_publisher__qpid_map (  const ps_pub_prod_info_mtk_ready&  parent );
+            ~ps_pub_prod_info_mtk_ready__from_publisher__qpid_map() {};
+            
+
+            ps_pub_prod_info_mtk_ready__from_publisher                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_pub_prod_info_mtk_ready__from_publisher::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_pub_prod_info_mtk_ready__from_publisher::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_pub_prod_info_mtk_ready__from_publisher::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_pub_prod_info_mtk_ready__from_publisher::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      ps_req_init_prod_info__to_publisher
@@ -367,8 +565,8 @@ public:
     explicit ps_req_init_prod_info__to_publisher (  const ps_req_init_prod_info&  parent );
     explicit ps_req_init_prod_info__to_publisher ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_req_init_prod_info__to_publisher (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info__to_publisher"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info__to_publisher"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_req_init_prod_info__to_publisher"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_req_init_prod_info__to_publisher"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -405,6 +603,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_req_init_prod_info__to_publisher__qpid_map
+        {
+        public:
+            explicit  ps_req_init_prod_info__to_publisher__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_req_init_prod_info__to_publisher__qpid_map ( const ps_req_init_prod_info__to_publisher&  c ) : m_static(c) {}
+            explicit  ps_req_init_prod_info__to_publisher__qpid_map (  const ps_req_init_prod_info&  parent );
+            ~ps_req_init_prod_info__to_publisher__qpid_map() {};
+            
+
+            ps_req_init_prod_info__to_publisher                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_req_init_prod_info__to_publisher::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_req_init_prod_info__to_publisher::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_req_init_prod_info__to_publisher::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_req_init_prod_info__to_publisher::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      ps_conf_full_product_info_init__from_publisher
@@ -419,8 +650,8 @@ public:
     explicit ps_conf_full_product_info_init__from_publisher (  const ps_conf_full_product_info_init&  parent );
     explicit ps_conf_full_product_info_init__from_publisher ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_conf_full_product_info_init__from_publisher (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init__from_publisher"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init__from_publisher"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info_init__from_publisher"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info_init__from_publisher"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -457,6 +688,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_conf_full_product_info_init__from_publisher__qpid_map
+        {
+        public:
+            explicit  ps_conf_full_product_info_init__from_publisher__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_conf_full_product_info_init__from_publisher__qpid_map ( const ps_conf_full_product_info_init__from_publisher&  c ) : m_static(c) {}
+            explicit  ps_conf_full_product_info_init__from_publisher__qpid_map (  const ps_conf_full_product_info_init&  parent );
+            ~ps_conf_full_product_info_init__from_publisher__qpid_map() {};
+            
+
+            ps_conf_full_product_info_init__from_publisher                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_conf_full_product_info_init__from_publisher::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_conf_full_product_info_init__from_publisher::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_conf_full_product_info_init__from_publisher::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_conf_full_product_info_init__from_publisher::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
 
 //-------------------------------
 //      ps_conf_full_product_info__from_publisher
@@ -471,8 +735,8 @@ public:
     explicit ps_conf_full_product_info__from_publisher (  const ps_conf_full_product_info&  parent );
     explicit ps_conf_full_product_info__from_publisher ( const qpid::types::Variant::Map&  mv );
     virtual ~ps_conf_full_product_info__from_publisher (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info__from_publisher"; };
-    static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info__from_publisher"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "ps_conf_full_product_info__from_publisher"; }
+    static  std::string static_get_message_type_as_string(void)        { return "ps_conf_full_product_info__from_publisher"; }
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
@@ -509,6 +773,39 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class ps_conf_full_product_info__from_publisher__qpid_map
+        {
+        public:
+            explicit  ps_conf_full_product_info__from_publisher__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ps_conf_full_product_info__from_publisher__qpid_map ( const ps_conf_full_product_info__from_publisher&  c ) : m_static(c) {}
+            explicit  ps_conf_full_product_info__from_publisher__qpid_map (  const ps_conf_full_product_info&  parent );
+            ~ps_conf_full_product_info__from_publisher__qpid_map() {};
+            
+
+            ps_conf_full_product_info__from_publisher                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address ()  {  return  ps_conf_full_product_info__from_publisher::static_get_qpid_address();  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ps_conf_full_product_info__from_publisher::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  ps_conf_full_product_info__from_publisher::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ps_conf_full_product_info__from_publisher::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
     
     
     
@@ -604,24 +901,138 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_prod
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_conf_full_product_info__from_publisher>& a, const std::string& field);
 void copy (ps_conf_full_product_info__from_publisher& a, const qpid::types::Variant& map);
 
+    
+    
+    
+//  fordward declarations  dynamic--------------------------------------------------------
+
+
+inline std::ostream& operator<< (std::ostream& o, const ps_req_product_info__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_req_product_info__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_req_product_info__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_req_product_info__qpid_map& a, const ps_req_product_info__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_req_product_info__qpid_map& a, const ps_req_product_info__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_req_product_info__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_req_product_info__qpid_map>& a, const std::string& field);
+void copy (ps_req_product_info__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const ps_pub_prod_info_mtk_ready__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_pub_prod_info_mtk_ready__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_pub_prod_info_mtk_ready__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_pub_prod_info_mtk_ready__qpid_map& a, const ps_pub_prod_info_mtk_ready__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_pub_prod_info_mtk_ready__qpid_map& a, const ps_pub_prod_info_mtk_ready__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_pub_prod_info_mtk_ready__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_pub_prod_info_mtk_ready__qpid_map>& a, const std::string& field);
+void copy (ps_pub_prod_info_mtk_ready__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const ps_req_init_prod_info__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_req_init_prod_info__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_req_init_prod_info__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_req_init_prod_info__qpid_map& a, const ps_req_init_prod_info__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_req_init_prod_info__qpid_map& a, const ps_req_init_prod_info__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_req_init_prod_info__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_req_init_prod_info__qpid_map>& a, const std::string& field);
+void copy (ps_req_init_prod_info__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const ps_conf_full_product_info_init__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_conf_full_product_info_init__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_conf_full_product_info_init__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_conf_full_product_info_init__qpid_map& a, const ps_conf_full_product_info_init__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_conf_full_product_info_init__qpid_map& a, const ps_conf_full_product_info_init__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_product_info_init__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_conf_full_product_info_init__qpid_map>& a, const std::string& field);
+void copy (ps_conf_full_product_info_init__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const ps_conf_full_product_info__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_conf_full_product_info__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_conf_full_product_info__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_conf_full_product_info__qpid_map& a, const ps_conf_full_product_info__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_conf_full_product_info__qpid_map& a, const ps_conf_full_product_info__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_product_info__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_conf_full_product_info__qpid_map>& a, const std::string& field);
+void copy (ps_conf_full_product_info__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const ps_pub_prod_info_mtk_ready__from_publisher__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_pub_prod_info_mtk_ready__from_publisher__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_pub_prod_info_mtk_ready__from_publisher__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_pub_prod_info_mtk_ready__from_publisher__qpid_map& a, const ps_pub_prod_info_mtk_ready__from_publisher__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_pub_prod_info_mtk_ready__from_publisher__qpid_map& a, const ps_pub_prod_info_mtk_ready__from_publisher__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_pub_prod_info_mtk_ready__from_publisher__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_pub_prod_info_mtk_ready__from_publisher__qpid_map>& a, const std::string& field);
+void copy (ps_pub_prod_info_mtk_ready__from_publisher__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const ps_req_init_prod_info__to_publisher__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_req_init_prod_info__to_publisher__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_req_init_prod_info__to_publisher__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_req_init_prod_info__to_publisher__qpid_map& a, const ps_req_init_prod_info__to_publisher__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_req_init_prod_info__to_publisher__qpid_map& a, const ps_req_init_prod_info__to_publisher__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_req_init_prod_info__to_publisher__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_req_init_prod_info__to_publisher__qpid_map>& a, const std::string& field);
+void copy (ps_req_init_prod_info__to_publisher__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const ps_conf_full_product_info_init__from_publisher__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_conf_full_product_info_init__from_publisher__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_conf_full_product_info_init__from_publisher__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_conf_full_product_info_init__from_publisher__qpid_map& a, const ps_conf_full_product_info_init__from_publisher__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_conf_full_product_info_init__from_publisher__qpid_map& a, const ps_conf_full_product_info_init__from_publisher__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_product_info_init__from_publisher__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_conf_full_product_info_init__from_publisher__qpid_map>& a, const std::string& field);
+void copy (ps_conf_full_product_info_init__from_publisher__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const ps_conf_full_product_info__from_publisher__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ps_conf_full_product_info__from_publisher__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ps_conf_full_product_info__from_publisher__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ps_conf_full_product_info__from_publisher__qpid_map& a, const ps_conf_full_product_info__from_publisher__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ps_conf_full_product_info__from_publisher__qpid_map& a, const ps_conf_full_product_info__from_publisher__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const ps_conf_full_product_info__from_publisher__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ps_conf_full_product_info__from_publisher__qpid_map>& a, const std::string& field);
+void copy (ps_conf_full_product_info__from_publisher__qpid_map& a, const qpid::types::Variant& map);
+
     ps_req_product_info  __internal_get_default(ps_req_product_info *);
     
+        inline ps_req_product_info__qpid_map  __internal_get_default(ps_req_product_info__qpid_map *) { return  ps_req_product_info__qpid_map(__internal_get_default((ps_req_product_info*)0));  }
+
     ps_pub_prod_info_mtk_ready  __internal_get_default(ps_pub_prod_info_mtk_ready *);
     
+        inline ps_pub_prod_info_mtk_ready__qpid_map  __internal_get_default(ps_pub_prod_info_mtk_ready__qpid_map *) { return  ps_pub_prod_info_mtk_ready__qpid_map(__internal_get_default((ps_pub_prod_info_mtk_ready*)0));  }
+
     ps_req_init_prod_info  __internal_get_default(ps_req_init_prod_info *);
     
+        inline ps_req_init_prod_info__qpid_map  __internal_get_default(ps_req_init_prod_info__qpid_map *) { return  ps_req_init_prod_info__qpid_map(__internal_get_default((ps_req_init_prod_info*)0));  }
+
     ps_conf_full_product_info_init  __internal_get_default(ps_conf_full_product_info_init *);
     
+        inline ps_conf_full_product_info_init__qpid_map  __internal_get_default(ps_conf_full_product_info_init__qpid_map *) { return  ps_conf_full_product_info_init__qpid_map(__internal_get_default((ps_conf_full_product_info_init*)0));  }
+
     ps_conf_full_product_info  __internal_get_default(ps_conf_full_product_info *);
     
+        inline ps_conf_full_product_info__qpid_map  __internal_get_default(ps_conf_full_product_info__qpid_map *) { return  ps_conf_full_product_info__qpid_map(__internal_get_default((ps_conf_full_product_info*)0));  }
+
     ps_pub_prod_info_mtk_ready__from_publisher  __internal_get_default(ps_pub_prod_info_mtk_ready__from_publisher *);
     
+        inline ps_pub_prod_info_mtk_ready__from_publisher__qpid_map  __internal_get_default(ps_pub_prod_info_mtk_ready__from_publisher__qpid_map *) { return  ps_pub_prod_info_mtk_ready__from_publisher__qpid_map(__internal_get_default((ps_pub_prod_info_mtk_ready__from_publisher*)0));  }
+
     ps_req_init_prod_info__to_publisher  __internal_get_default(ps_req_init_prod_info__to_publisher *);
     
+        inline ps_req_init_prod_info__to_publisher__qpid_map  __internal_get_default(ps_req_init_prod_info__to_publisher__qpid_map *) { return  ps_req_init_prod_info__to_publisher__qpid_map(__internal_get_default((ps_req_init_prod_info__to_publisher*)0));  }
+
     ps_conf_full_product_info_init__from_publisher  __internal_get_default(ps_conf_full_product_info_init__from_publisher *);
     
+        inline ps_conf_full_product_info_init__from_publisher__qpid_map  __internal_get_default(ps_conf_full_product_info_init__from_publisher__qpid_map *) { return  ps_conf_full_product_info_init__from_publisher__qpid_map(__internal_get_default((ps_conf_full_product_info_init__from_publisher*)0));  }
+
     ps_conf_full_product_info__from_publisher  __internal_get_default(ps_conf_full_product_info__from_publisher *);
     
+        inline ps_conf_full_product_info__from_publisher__qpid_map  __internal_get_default(ps_conf_full_product_info__from_publisher__qpid_map *) { return  ps_conf_full_product_info__from_publisher__qpid_map(__internal_get_default((ps_conf_full_product_info__from_publisher*)0));  }
+
 
 };   //namespace mtk {
 };   //namespace prices {
@@ -637,14 +1048,23 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
 
 
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_req_product_info)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_req_product_info__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_pub_prod_info_mtk_ready)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_pub_prod_info_mtk_ready__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_req_init_prod_info)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_req_init_prod_info__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_conf_full_product_info_init)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_conf_full_product_info_init__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_conf_full_product_info)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_conf_full_product_info__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_pub_prod_info_mtk_ready__from_publisher__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_req_init_prod_info__to_publisher)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_req_init_prod_info__to_publisher__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_conf_full_product_info_init__from_publisher)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_conf_full_product_info_init__from_publisher__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_conf_full_product_info__from_publisher)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ps_conf_full_product_info__from_publisher__qpid_map)
 
 
 

@@ -628,6 +628,166 @@ void pub_central_keep_alive::before_send(void) const
 
 
 
+    //    generate_class_qpid_variant_in_impl
+    
+pub_enter__qpid_map::pub_enter__qpid_map (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+      :  m_static( 
+   _cli_srv,
+   _process_info,
+   _ka_interval_send,
+   _ka_interval_check) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_enter__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+pub_keep_alive_srv__qpid_map::pub_keep_alive_srv__qpid_map (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+      :  m_static( 
+   _process_info,
+   _ka_interval_send,
+   _ka_interval_check) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_keep_alive_srv__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+pub_keep_alive_cli__qpid_map::pub_keep_alive_cli__qpid_map ( const pub_keep_alive_srv&  parent,   const mtk::acs::msg::res_login::IC_session_info&  _login_confirmation)
+      :  m_static( 
+parent,
+   _login_confirmation) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_keep_alive_cli__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+pub_exit__qpid_map::pub_exit__qpid_map (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason)
+      :  m_static( 
+   _cli_srv,
+   _process_info,
+   _reason) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_exit__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+pub_alarm__qpid_map::pub_alarm__qpid_map (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id)
+      :  m_static( 
+   _cli_srv,
+   _process_info,
+   _code_source,
+   _subject,
+   _message,
+   _priority,
+   _type,
+   _dateTime_generated,
+   _alarm_id) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_alarm__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+req_command2__qpid_map::req_command2__qpid_map (   const mtk::msg::sub_request_info&  _request_info,   const std::string&  _broker_code,   const mtk::msg::sub_process_info&  _proc_info__destination,   const std::string&  _command_line)
+      :  m_static( 
+   _request_info,
+   _broker_code,
+   _proc_info__destination,
+   _command_line) 
+    {  
+    }
+
+
+
+    //    generate_class_qpid_variant_in_impl
+    
+req_command_srv__qpid_map::req_command_srv__qpid_map ( const req_command2&  parent)
+      :  m_static( 
+parent) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   req_command_srv__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+req_command_cli__qpid_map::req_command_cli__qpid_map ( const req_command2&  parent)
+      :  m_static( 
+parent) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   req_command_cli__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+sub_command_rd__qpid_map::sub_command_rd__qpid_map (   const std::string&  _text)
+      :  m_static( 
+   _text) 
+    {  
+    }
+
+
+
+    //    generate_class_qpid_variant_in_impl
+    
+res_command__qpid_map::res_command__qpid_map (   const mtk::msg::sub_r_response&  _response_info,   const sub_command_rd&  _response_data)
+      :  m_static( 
+   _response_info,
+   _response_data) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   res_command__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+pub_central_keep_alive__qpid_map::pub_central_keep_alive__qpid_map (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check,   const bool&  _is_production)
+      :  m_static( 
+   _process_info,
+   _ka_interval_send,
+   _ka_interval_check,
+   _is_production) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_central_keep_alive__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
 std::ostream& operator<< (std::ostream& o, const pub_enter & c)
 {
     o << "{ "
@@ -1137,8 +1297,8 @@ bool operator!= (const pub_central_keep_alive& a, const pub_central_keep_alive& 
 
 
 void  copy (pub_enter& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1178,6 +1338,12 @@ void  copy (pub_enter& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (pub_enter__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a)
 {
 
@@ -1197,7 +1363,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_enter>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_enter__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1208,8 +1390,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 void  copy (pub_keep_alive_srv& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1241,6 +1423,12 @@ void  copy (pub_keep_alive_srv& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (pub_keep_alive_srv__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_srv& a)
 {
 
@@ -1258,7 +1446,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_sr
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_srv__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_srv>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_srv__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1269,8 +1473,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 void  copy (pub_keep_alive_cli& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<pub_keep_alive_srv&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1285,6 +1489,12 @@ copy(static_cast<pub_keep_alive_srv&>(c), v);
         c.check_recomended ();
     }
 
+
+void  copy (pub_keep_alive_cli__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
 
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_cli& a)
 {
@@ -1301,7 +1511,23 @@ __internal_add2map(map, static_cast<const pub_keep_alive_srv&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_keep_alive_cli__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_cli>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_keep_alive_cli__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1312,8 +1538,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 void  copy (pub_exit& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1345,6 +1571,12 @@ void  copy (pub_exit& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (pub_exit__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit& a)
 {
 
@@ -1362,7 +1594,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_exit>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_exit__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1373,8 +1621,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 void  copy (pub_alarm& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1454,6 +1702,12 @@ void  copy (pub_alarm& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (pub_alarm__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a)
 {
 
@@ -1483,7 +1737,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_alarm>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_alarm__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1494,8 +1764,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 void  copy (req_command2& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1535,6 +1805,12 @@ void  copy (req_command2& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (req_command2__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const req_command2& a)
 {
 
@@ -1554,7 +1830,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const req_command2& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command2__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command2>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command2__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1565,14 +1857,20 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 void  copy (req_command_srv& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<req_command2&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
         c.check_recomended ();
     }
 
+
+void  copy (req_command_srv__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_command_srv& a)
 {
@@ -1587,7 +1885,23 @@ __internal_add2map(map, static_cast<const req_command2&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command_srv__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_srv>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_srv__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1598,14 +1912,20 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 void  copy (req_command_cli& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<req_command2&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 
         c.check_recomended ();
     }
 
+
+void  copy (req_command_cli__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
 
 void __internal_add2map (qpid::types::Variant::Map& map, const req_command_cli& a)
 {
@@ -1620,7 +1940,23 @@ __internal_add2map(map, static_cast<const req_command2&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const req_command_cli__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_cli>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req_command_cli__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1631,8 +1967,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<req
 
 
 void  copy (sub_command_rd& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1648,6 +1984,12 @@ void  copy (sub_command_rd& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (sub_command_rd__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a)
 {
 
@@ -1661,7 +2003,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd& a
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_command_rd__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_command_rd>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_command_rd__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1672,8 +2030,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 
 
 void  copy (res_command& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1697,6 +2055,12 @@ void  copy (res_command& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (res_command__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const res_command& a)
 {
 
@@ -1712,7 +2076,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const res_command& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const res_command__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_command>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res_command__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1723,8 +2103,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<res
 
 
 void  copy (pub_central_keep_alive& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   sub_msg_type
@@ -1764,6 +2144,12 @@ void  copy (pub_central_keep_alive& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (pub_central_keep_alive__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_alive& a)
 {
 
@@ -1783,7 +2169,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_central_keep_alive__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_central_keep_alive>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_central_keep_alive__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -2153,7 +2555,7 @@ __internal_get_default((req_command2*)0)
     }
     
 pub_enter::pub_enter (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    cli_srv(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
@@ -2166,8 +2568,15 @@ pub_enter::pub_enter (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+pub_enter__qpid_map::pub_enter__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 pub_keep_alive_srv::pub_keep_alive_srv (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
@@ -2178,16 +2587,30 @@ pub_keep_alive_srv::pub_keep_alive_srv (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+pub_keep_alive_srv__qpid_map::pub_keep_alive_srv__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 pub_keep_alive_cli::pub_keep_alive_cli (const qpid::types::Variant::Map&  mv)
-    :  pub_keep_alive_srv(mv), //   sub_msg_type
+     : pub_keep_alive_srv(mv), //   sub_msg_type
    login_confirmation(__internal_get_default((mtk::acs::msg::res_login::IC_session_info*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
     }
 
+
+pub_keep_alive_cli__qpid_map::pub_keep_alive_cli__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 pub_exit::pub_exit (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    cli_srv(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
@@ -2198,8 +2621,15 @@ pub_exit::pub_exit (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+pub_exit__qpid_map::pub_exit__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 pub_alarm::pub_alarm (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    cli_srv(__internal_get_default((std::string*)0)),
 //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
@@ -2222,8 +2652,15 @@ pub_alarm::pub_alarm (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+pub_alarm__qpid_map::pub_alarm__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 req_command2::req_command2 (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    request_info(__internal_get_default((mtk::msg::sub_request_info*)0)),
 //   field_type
    broker_code(__internal_get_default((std::string*)0)),
@@ -2236,30 +2673,58 @@ req_command2::req_command2 (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+req_command2__qpid_map::req_command2__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 req_command_srv::req_command_srv (const qpid::types::Variant::Map&  mv)
-    :  req_command2(mv) 
+     : req_command2(mv) 
     {
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+req_command_srv__qpid_map::req_command_srv__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 req_command_cli::req_command_cli (const qpid::types::Variant::Map&  mv)
-    :  req_command2(mv) 
+     : req_command2(mv) 
     {
         copy(*this, mv);
         check_recomended ();  
     }
 
+
+req_command_cli__qpid_map::req_command_cli__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 sub_command_rd::sub_command_rd (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    text(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
     }
 
+
+sub_command_rd__qpid_map::sub_command_rd__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 res_command::res_command (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    response_info(__internal_get_default((mtk::msg::sub_r_response*)0)),
 //   sub_msg_type
    response_data(__internal_get_default((sub_command_rd*)0)) 
@@ -2268,8 +2733,15 @@ res_command::res_command (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+res_command__qpid_map::res_command__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 pub_central_keep_alive::pub_central_keep_alive (const qpid::types::Variant::Map&  mv)
-    :  //   sub_msg_type
+     : //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
@@ -2281,6 +2753,13 @@ pub_central_keep_alive::pub_central_keep_alive (const qpid::types::Variant::Map&
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+pub_central_keep_alive__qpid_map::pub_central_keep_alive__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 mtk::t_qpid_filter  pub_enter::get_in_subject (const std::string& process_info_location_broker_code,const std::string& process_info_cli_srv)
     {
         return mtk::t_qpid_filter(MTK_SS("GS." << process_info_location_broker_code << ".MON." << process_info_cli_srv << ".ENTER"));

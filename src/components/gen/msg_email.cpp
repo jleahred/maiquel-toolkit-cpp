@@ -418,6 +418,21 @@ void pub_email::before_send(void) const
 
 
 
+    //    generate_class_qpid_variant_in_impl
+    
+pub_email__qpid_map::pub_email__qpid_map (   const std::string&  _eto,   const std::string&  _esubject,   const std::string&  _emessage)
+      :  m_static( 
+   _eto,
+   _esubject,
+   _emessage) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_email__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
 std::ostream& operator<< (std::ostream& o, const pub_email & c)
 {
     o << "{ "
@@ -466,8 +481,8 @@ bool operator!= (const pub_email& a, const pub_email& b)
 
 
 void  copy (pub_email& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -499,6 +514,12 @@ void  copy (pub_email& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (pub_email__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const pub_email& a)
 {
 
@@ -516,7 +537,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_email& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_email__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_email>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_email__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -563,7 +600,7 @@ qpid::types::Variant::Map   pub_email::qpidmsg_codded_as_qpid_map (void) const
     }
     
 pub_email::pub_email (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    eto(__internal_get_default((std::string*)0)),
 //   field_type
    esubject(__internal_get_default((std::string*)0)),
@@ -573,6 +610,13 @@ pub_email::pub_email (const qpid::types::Variant::Map&  mv)
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+pub_email__qpid_map::pub_email__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 mtk::t_qpid_filter  pub_email::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("GS.EMAIL"));
