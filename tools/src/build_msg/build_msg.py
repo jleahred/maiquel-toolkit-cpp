@@ -47,7 +47,7 @@ def is_message_not_submessage(class_properties) :
 
 
 
-def get_constructor_params(class_name, class_info, class_properties, send_code) :
+def get_constructor_params(class_name, class_info, class_properties, send_code, remove_optionals=False) :
     CONSTRUCTOR_PARAMS_DEBUG_DECL = ''
     
     if class_properties.has_key('I'):
@@ -56,7 +56,8 @@ def get_constructor_params(class_name, class_info, class_properties, send_code) 
     for field in class_info:
         if field.has_key('field_type'):
             if field['OPTIONS'].count('optional') > 0  or  field['OPTIONS'].count('recomended') > 0:
-                CONSTRUCTOR_PARAMS_DEBUG_DECL += Template("   const mtk::nullable<$FIELD_TYPE>&  _$FIELD_NAME,").substitute(
+                if remove_optionals == False:
+                    CONSTRUCTOR_PARAMS_DEBUG_DECL += Template("   const mtk::nullable<$FIELD_TYPE>&  _$FIELD_NAME,").substitute(
                                                         FIELD_TYPE = field['field_type'],
                                                         FIELD_NAME = field['FIELD_NAME']
                                                         )
@@ -67,7 +68,8 @@ def get_constructor_params(class_name, class_info, class_properties, send_code) 
                                                         )
         elif field.has_key('sub_msg_type') :
             if field['OPTIONS'].count('optional') > 0  or  field['OPTIONS'].count('recomended') > 0 :
-                CONSTRUCTOR_PARAMS_DEBUG_DECL += Template("   const mtk::nullable<$FIELD_TYPE>&  _$FIELD_NAME,").substitute(
+                if remove_optionals == False:
+                    CONSTRUCTOR_PARAMS_DEBUG_DECL += Template("   const mtk::nullable<$FIELD_TYPE>&  _$FIELD_NAME,").substitute(
                                                         FIELD_TYPE = field['sub_msg_type'],
                                                         FIELD_NAME = field['FIELD_NAME']
                                                         )
@@ -83,12 +85,12 @@ def get_constructor_params(class_name, class_info, class_properties, send_code) 
                                                         )
         elif field.has_key('IN_MSG'):
             CONSTRUCTOR_PARAMS_DEBUG_DECL += Template("   const $FIELD_TYPE&  _$FIELD_NAME,").substitute(
-                                                        FIELD_TYPE = 'IC_' + field['IN_MSG'][0],
+                                                        FIELD_TYPE = class_name + '::IC_' + field['IN_MSG'][0],
                                                         FIELD_NAME = field['IN_MSG'][0]
                                                         )
         elif field.has_key('IN_SUB_MSG'):
             CONSTRUCTOR_PARAMS_DEBUG_DECL += Template("   const $FIELD_TYPE&  _$FIELD_NAME,").substitute(
-                                                        FIELD_TYPE = 'IC_' + field['IN_SUB_MSG'][0],
+                                                        FIELD_TYPE = class_name + '::IC_' + field['IN_SUB_MSG'][0],
                                                         FIELD_NAME = field['IN_SUB_MSG'][0]
                                                         )
         else:
@@ -143,8 +145,8 @@ $INNER_CLASSES
     explicit ${CLASS_NAME} ( $CONSTRUCTOR_PARAMS_DEBUG_DECL );
     explicit ${CLASS_NAME} ( const qpid::types::Variant::Map&  mv );
     virtual ~${CLASS_NAME} (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; };
-    static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "${CLASS_NAME}"; }
+    static  std::string static_get_message_type_as_string(void)        { return "${CLASS_NAME}"; }
     
     ${REAL_TIME_PRIORITY}
 
@@ -350,6 +352,122 @@ $SEND_CODE
         )
 
 
+
+def generate_class_qpid_variant_in_impl(class_name, class_info, class_properties, send_code):
+    if class_name != class_name.split('::')[-1]:
+        return ''
+
+    CONSTRUCTOR_PARAMS_DEBUG_INIT = ''
+    CONSTRUCTOR_PARAMS_DEBUG_DECL = ''
+    CLASS_NAME_NOT_NESTED = class_name.split('::')[-1]
+    IMPL_TEMPLATE = """
+    //    generate_class_qpid_variant_in_impl
+    
+${CLASS_NAME}__qpid_map::${CLASS_NAME_NOT_NESTED}__qpid_map ($CONSTRUCTOR_PARAMS_DEBUG_DECL)
+    $CONSTRUCTOR_PARAMS_DEBUG_INIT 
+    {  
+    }
+
+
+"""
+    if class_properties.has_key('SUBJ'):
+        IMPL_TEMPLATE+= """
+    qpid::types::Variant::Map   ${CLASS_NAME}__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+"""
+
+
+    CONSTRUCTOR_PARAMS_DEBUG_DECL = get_constructor_params (class_name, class_info, class_properties, send_code, True)
+    CONSTRUCTOR_PARAMS_DEBUG_DECL = CONSTRUCTOR_PARAMS_DEBUG_DECL[:-1]
+
+    #CONSTRUCTOR_PARAMS_DEBUG_INIT
+    CONSTRUCTOR_PARAMS_DEBUG_INIT = '\n'
+    if class_properties.has_key('I'):
+        CONSTRUCTOR_PARAMS_DEBUG_INIT += 'parent,\n'
+    for field in class_info:
+        if field.has_key('field_type'):
+            if field.has_key('OPTIONS')  and  field['OPTIONS'].count('optional') == 0  and  field['OPTIONS'].count('recomended') == 0:
+                CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   _$FIELD_NAME,\n").substitute(
+                                                        FIELD_TYPE = field['field_type'],
+                                                        FIELD_NAME = field['FIELD_NAME']
+                                                        )
+            else:
+                CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   mtk::nullable<${FIELD_TYPE}> {},\n").substitute(
+                                                        FIELD_TYPE = field['field_type']
+                                                        )
+                
+        elif field.has_key('sub_msg_type'):
+            FIELD_TYPE = field['sub_msg_type']
+            if field.has_key('OPTIONS')  and  field['OPTIONS'].count('optional') == 0  and  field['OPTIONS'].count('recomended') == 0:
+                CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   _$FIELD_NAME,\n").substitute(
+                                                        FIELD_TYPE = FIELD_TYPE,
+                                                        FIELD_NAME = field['FIELD_NAME']
+                                                        )
+            else:
+                CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   mtk::nullable<${FIELD_TYPE}> {},\n").substitute(
+                                                        FIELD_TYPE = FIELD_TYPE
+                                                        )
+        elif field.has_key('sub_msg_type_not_nested'):
+            FIELD_TYPE = field['sub_msg_type_not_nested']
+            if field.has_key('OPTIONS')  and  field['OPTIONS'].count('optional') == 0  and  field['OPTIONS'].count('recomended') == 0:
+                CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   _$FIELD_NAME,\n").substitute(
+                                                        FIELD_TYPE = FIELD_TYPE,
+                                                        FIELD_NAME = field['FIELD_NAME']
+                                                        )
+            else:
+                CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   mtk::nullable<${FIELD_TYPE}> {},\n").substitute(
+                                                        FIELD_TYPE = FIELD_TYPE
+                                                        )
+        elif field.has_key('IN_MSG'):
+            FIELD_TYPE = class_name + '::IC_' + field['IN_MSG'][0]
+            CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   _$FIELD_NAME,\n").substitute(
+                                                    FIELD_TYPE = FIELD_TYPE,
+                                                    FIELD_NAME = field['IN_MSG'][0]
+                                                    )
+        elif field.has_key('IN_SUB_MSG'):
+            FIELD_TYPE = class_name + '::IC_' + field['IN_SUB_MSG'][0]
+            CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   _$FIELD_NAME,\n").substitute(
+                                                    FIELD_TYPE = FIELD_TYPE,
+                                                    FIELD_NAME = field['IN_SUB_MSG'][0]
+                                                    )
+        else:
+            print "error 4--------------------------------\n" +  str(field)
+            
+    CONSTRUCTOR_PARAMS_DEBUG_INIT = CONSTRUCTOR_PARAMS_DEBUG_INIT[:-2]
+    if CONSTRUCTOR_PARAMS_DEBUG_INIT.strip() != "":
+        CONSTRUCTOR_PARAMS_DEBUG_INIT = '  :  m_static( ' + CONSTRUCTOR_PARAMS_DEBUG_INIT + ')'
+
+    CHECK_RECOMENDED = ''
+    # CHECK_RECOMENDED
+    for field in class_info:
+        if field.has_key('OPTIONS'):
+            if field['OPTIONS'].count('recomended') > 0:
+                CHECK_RECOMENDED += Template("""
+    if (${FIELD_NAME}.HasValue() == false)
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", MTK_SS("sub_full_product_info::check_recomended  missing recomended field **$FIELD_NAME** on $class_name  " << *this), mtk::alPriorError));
+        MTK_END_EXEC_MAX_FREC
+""").substitute(
+                                                    FIELD_NAME = field['FIELD_NAME'],
+                                                    class_name = class_name
+                                                    )
+
+    control_field_initializer = ''
+    if is_message_not_submessage(class_properties):
+        control_field_initializer = ', __internal_warning_control_fields(0)'
+    
+
+    return Template(IMPL_TEMPLATE).substitute(
+            CLASS_NAME = class_name, 
+            CONSTRUCTOR_PARAMS_DEBUG_INIT = CONSTRUCTOR_PARAMS_DEBUG_INIT,
+            CHECK_RECOMENDED = CHECK_RECOMENDED,
+            CONSTRUCTOR_PARAMS_DEBUG_DECL = CONSTRUCTOR_PARAMS_DEBUG_DECL,
+            CLASS_NAME_NOT_NESTED = CLASS_NAME_NOT_NESTED,
+            CONTROL_FIELD_INITIALIZER = control_field_initializer,
+            SEND_CODE = send_code
+        )
+
+
 def look_for_type(type):
     for class_name, class_info, class_properties, send_code in ALL_MESSAGES:
         if class_name == type:
@@ -464,11 +582,21 @@ def ctor_conversion_from_qpid_msg(class_name, class_info, class_properties, send
     CLASS_NAME_NOT_NESTED = class_name.split('::')[-1]
     IMPL_TEMPLATE = """
 ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} (const qpid::types::Variant::Map&  mv)
-    :  $CONSTRUCTOR_PARAMS_DEBUG_INIT 
+    $CONSTRUCTOR_PARAMS_DEBUG_INIT 
     {
         copy(*this, mv);
         check_recomended ();  
     }
+
+"""
+    
+    if class_name.find("::IC_") == -1 :     #  at the moment is not supported submessages defined inside other messages
+        IMPL_TEMPLATE += """
+${CLASS_NAME}__qpid_map::${CLASS_NAME}__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 """
 
     if class_properties.has_key('I'):
@@ -516,6 +644,8 @@ ${CLASS_NAME}::${CLASS_NAME_NOT_NESTED} (const qpid::types::Variant::Map&  mv)
                 print "error 4--------------------------------\n" +  str(field)
             
     CONSTRUCTOR_PARAMS_DEBUG_INIT = CONSTRUCTOR_PARAMS_DEBUG_INIT[:-2]
+    if CONSTRUCTOR_PARAMS_DEBUG_INIT.strip() != "":
+        CONSTRUCTOR_PARAMS_DEBUG_INIT = " : " + CONSTRUCTOR_PARAMS_DEBUG_INIT
     
     
     return Template(IMPL_TEMPLATE).substitute(
@@ -540,14 +670,23 @@ def generate__internal_qpid_fill(class_name, class_info, class_properties, send_
     IMPL_TEMPLATE = """
 
 void  copy (${CLASS_NAME}& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 $PARENT
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 $FILL_FIELDS
         c.check_recomended ();
     }
 
+"""
+
+    if class_name.find("::IC_") == -1 :     #  at the moment is not supported submessages defined inside other messages
+        IMPL_TEMPLATE += """
+void  copy (${CLASS_NAME}__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
 """
     
     FILL_FIELDS = ''
@@ -955,6 +1094,7 @@ def generate_qpid_coding___fill_qpid_Map (class_name, class_info, class_properti
     RECURSION_OUTPUT = ''
     OUTPUT_PARENT = ''
 
+
     METHOD = """
 void __internal_add2map (qpid::types::Variant::Map& map, const $class_name& a)
 {
@@ -966,8 +1106,28 @@ $OUPUT_PER_FIELD
 
 };
 
+"""
+
+
+    if class_name.find("::IC_") == -1 :     #  at the moment is not supported submessages defined inside other messages
+        METHOD += """
+void __internal_add2map (qpid::types::Variant::Map& map, const ${class_name}__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
 
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$class_name>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<${class_name}__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1280,7 +1440,65 @@ $NOT_CONTROL_FIELDS
     for class_name, class_info, class_properties, send_code in MESSAGES:
         content_file_h += generate_class(class_name, class_info, class_properties, send_code)
         
+        # qpid_variant wrapper for dynamic
+        derived_info = ""
+        qpidmsg_get_address_params = []
+        qpidmsg_get_address_params_names = []
+        if class_properties.has_key('QE'):
+            derived_info += """
 
+            //  DERIVED INFO
+"""        
+            for p in re.findall('[^\$\{]*\$\{([^\}]*)', class_properties["QE"]):
+                param_name = p.replace('.', '_').replace('(','').replace(')','')
+                qpidmsg_get_address_params.append("const std::string& "+ param_name)
+                qpidmsg_get_address_params_names.append(param_name)
+
+            if class_properties.has_key('QE'):
+                derived_info += Template("""
+            static mtk::t_qpid_address  static_get_qpid_address ($PARAMS)  {  return  ${class_name}::static_get_qpid_address($PARAM_NAMES);  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }\n
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  ${class_name}::static_get_message_type_as_string();  }\n""").substitute(
+                                        class_name=class_name, 
+                                        PARAMS=','.join(qpidmsg_get_address_params),
+                                        PARAM_NAMES=','.join(qpidmsg_get_address_params_names)
+                                        )
+            if class_properties.has_key('SUBJ'):
+                derived_info += """            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }\n"""
+                derived_info += """            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }\n"""
+
+            if class_properties.has_key('RT'):
+                derived_info += Template("""            static  int         static_return_message_RT_priority(void)        { return  ${class_name}::static_return_message_RT_priority(); }\n""").substitute(class_name=class_name)
+                
+            derived_info += Template("""            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  ${class_name}::static_get_depreciated_on(); }\n""").substitute(class_name=class_name)
+
+
+        CONSTRUCTOR_PARAMS_DEBUG_DECL = get_constructor_params(class_name, class_info, class_properties, send_code, True)[:-1]
+        content_file_h += Template("""
+        //  qpid_variant wrapper for dynamic
+        class ${class_name}__qpid_map
+        {
+        public:
+            explicit  ${class_name}__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  ${class_name}__qpid_map ( const ${class_name}&  c ) : m_static(c) {}
+            explicit  ${class_name}__qpid_map ( $CONSTRUCTOR_PARAMS_DEBUG_DECL );
+            ~${class_name}__qpid_map() {};
+            
+
+            ${class_name}                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            ${derived_info}
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        """).substitute(class_name=class_name, derived_info=derived_info, CONSTRUCTOR_PARAMS_DEBUG_DECL=CONSTRUCTOR_PARAMS_DEBUG_DECL)
+
+
+  
     # public forward declarations
     content_file_h += """
     
@@ -1300,9 +1518,35 @@ $NOT_CONTROL_FIELDS
         content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<$class_name>& a, const std::string& field);\n""").substitute(class_name=class_name)
         content_file_h += Template("""void copy ($class_name& a, const qpid::types::Variant& map);\n""").substitute(class_name=class_name)
 
+    content_file_h += """
+    
+    
+    
+//  fordward declarations  dynamic--------------------------------------------------------\n
+"""
+
+    for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
+        if class_name.find("::IC_") == -1 : # at the moment is not supported submessages defined inside a message
+            content_file_h += Template("""
+inline std::ostream& operator<< (std::ostream& o, const ${class_name}__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const ${class_name}__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       ${class_name}__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const ${class_name}__qpid_map& a, const ${class_name}__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const ${class_name}__qpid_map& a, const ${class_name}__qpid_map& b)  {  return  a!=b;  }
+""").substitute(class_name=class_name)
+        if class_name.find("::IC_") == -1 : # at the moment is not supported submessages defined inside a message
+            content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const ${class_name}__qpid_map& a);\n""").substitute(class_name=class_name)
+            content_file_h += Template("""void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<${class_name}__qpid_map>& a, const std::string& field);\n""").substitute(class_name=class_name)
+            content_file_h += Template("""void copy (${class_name}__qpid_map& a, const qpid::types::Variant& map);\n""").substitute(class_name=class_name)
+
+
     for class_name, class_info, class_properties, send_code  in ALL_MESSAGES:
         content_file_h += qpid_generate__internal_get_default_forward(class_name, class_info, class_properties, send_code)
-
+        if class_name.find("::IC_") == -1 : # at the moment is not supported submessages defined inside a message
+            content_file_h += Template("""
+        inline ${class_name}__qpid_map  __internal_get_default(${class_name}__qpid_map *) { return  ${class_name}__qpid_map(__internal_get_default((${class_name}*)0));  }
+""").substitute(class_name=class_name)
     content_file_h +=  END_NAMESPACE 
     
     content_file_h += '\n\n'
@@ -1318,6 +1562,7 @@ void   copy(mtk::nullable<T>& result, const qpid::types::Variant& v);
         if is_message_not_submessage(class_properties):
             ##if class_name != 'sub_control_fields' :
             content_file_h += 'MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(' + '::'.join(NAMESPACES) + '::' + class_name +')\n'
+            content_file_h += 'MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(' + '::'.join(NAMESPACES) + '::' + class_name +'__qpid_map)\n'
     content_file_h += '\n\n'
 
     content_file_h +=  '\n\n#endif\n'
@@ -1747,6 +1992,9 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     
     for class_name, class_info, class_properties, send_code in ALL_MESSAGES:
         content_file_cpp += generate_class_in_impl(class_name, class_info, class_properties, send_code)
+
+    for class_name, class_info, class_properties, send_code in ALL_MESSAGES:
+        content_file_cpp += generate_class_qpid_variant_in_impl(class_name, class_info, class_properties, send_code)
 
     for class_name, class_info, class_properties, send_code  in MESSAGES:
         content_file_cpp += generate_output_stream_operator(class_name, class_info, class_properties, send_code)
