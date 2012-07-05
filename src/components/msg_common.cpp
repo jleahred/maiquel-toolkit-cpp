@@ -431,7 +431,7 @@ void  sub_process_info::check_recomended(void) const
 
     if (cli_srv.HasValue() == false)
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", MTK_SS("sub_full_product_info::check_recomended  missing recomended field **cli_srv** on sub_process_info  " << *this), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", MTK_SS("missing recomended field **cli_srv** on sub_process_info  " << *this), mtk::alPriorError));
         MTK_END_EXEC_MAX_FREC
 
 }
