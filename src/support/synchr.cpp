@@ -74,7 +74,6 @@ Mutex::Mutex()
 
 Mutex::~Mutex()
 {
-    unlock();
 }
 
 void Mutex::lock   (void)
