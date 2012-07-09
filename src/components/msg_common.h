@@ -111,7 +111,7 @@ public:
 
     
     // constructor
-    explicit sub_process_info (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const mtk::nullable<std::string>&  _cli_srv );
+    explicit sub_process_info (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const std::string&  _cli_srv );
     explicit sub_process_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_process_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_process_info"; }
@@ -131,7 +131,7 @@ public:
     std::string                               process_name; 
     std::string                               process_uuid; 
     std::string                               version; 
-    mtk::nullable<std::string>                cli_srv; 
+    std::string                               cli_srv; 
 
 
 
@@ -159,7 +159,7 @@ public:
         public:
             explicit  sub_process_info__qpid_map ( const qpid::types::Variant::Map&  mv );
             explicit  sub_process_info__qpid_map ( const sub_process_info&  c ) : m_static(c) {}
-            explicit  sub_process_info__qpid_map (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version );
+            explicit  sub_process_info__qpid_map (    const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const std::string&  _cli_srv );
             ~sub_process_info__qpid_map() {};
             
 

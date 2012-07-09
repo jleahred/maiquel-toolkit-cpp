@@ -20,7 +20,7 @@ namespace mtk{  namespace msg  {
 
 sub_process_info  get_process_info(void)
 {
-    return mtk::msg::sub_process_info(mtk::msg::sub_location("CLIENT", "MACHINE"), "PROCESS_NAME", "UUID", "0", mtk::make_nullable(std::string("CLI")));
+    return mtk::msg::sub_process_info(mtk::msg::sub_location("CLIENT", "MACHINE"), "PROCESS_NAME", "UUID", "0", "CLI");
 }
 sub_request_info   get_request_info (void)
 {

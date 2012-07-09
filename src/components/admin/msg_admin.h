@@ -44,7 +44,7 @@ public:
 
     
     // constructor
-    explicit pub_enter (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+    explicit pub_enter (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
     explicit pub_enter ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_enter (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_enter"; }
@@ -52,7 +52,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::make_nullable(mtk::s_TRY_stodt("2012-03-30", mtk::dtNowLocal()- mtk::dtDays(500))._0);  return result; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -60,7 +60,6 @@ public:
     
 
     // fields
-    std::string                               cli_srv; 
     mtk::msg::sub_process_info                process_info; 
     mtk::dtTimeQuantity                       ka_interval_send; 
     mtk::dtTimeQuantity                       ka_interval_check; 
@@ -95,7 +94,7 @@ public:
         public:
             explicit  pub_enter__qpid_map ( const qpid::types::Variant::Map&  mv );
             explicit  pub_enter__qpid_map ( const pub_enter&  c ) : m_static(c) {}
-            explicit  pub_enter__qpid_map (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
+            explicit  pub_enter__qpid_map (    const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check );
             ~pub_enter__qpid_map() {};
             
 
@@ -307,7 +306,7 @@ public:
 
     
     // constructor
-    explicit pub_exit (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
+    explicit pub_exit (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
     explicit pub_exit ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_exit (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_exit"; }
@@ -315,7 +314,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 0; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::make_nullable(mtk::s_TRY_stodt("2012-03-30", mtk::dtNowLocal()- mtk::dtDays(500))._0);  return result; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -323,7 +322,6 @@ public:
     
 
     // fields
-    std::string                               cli_srv; 
     mtk::msg::sub_process_info                process_info; 
     std::string                               reason; 
 
@@ -357,7 +355,7 @@ public:
         public:
             explicit  pub_exit__qpid_map ( const qpid::types::Variant::Map&  mv );
             explicit  pub_exit__qpid_map ( const pub_exit&  c ) : m_static(c) {}
-            explicit  pub_exit__qpid_map (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
+            explicit  pub_exit__qpid_map (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason );
             ~pub_exit__qpid_map() {};
             
 
@@ -395,7 +393,7 @@ public:
 
     
     // constructor
-    explicit pub_alarm (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
+    explicit pub_alarm (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
     explicit pub_alarm ( const qpid::types::Variant::Map&  mv );
     virtual ~pub_alarm (){};
     virtual std::string get_message_type_as_string       (void) const  { return "pub_alarm"; }
@@ -403,7 +401,7 @@ public:
     
     static  int         static_return_message_RT_priority(void)        { return 1; };
 
-    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::make_nullable(mtk::s_TRY_stodt("2012-03-30", mtk::dtNowLocal()- mtk::dtDays(500))._0);  return result; };
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
 
     
     
@@ -411,7 +409,6 @@ public:
     
 
     // fields
-    std::string                               cli_srv; 
     mtk::msg::sub_process_info                process_info; 
     std::string                               code_source; 
     std::string                               subject; 
@@ -451,7 +448,7 @@ public:
         public:
             explicit  pub_alarm__qpid_map ( const qpid::types::Variant::Map&  mv );
             explicit  pub_alarm__qpid_map ( const pub_alarm&  c ) : m_static(c) {}
-            explicit  pub_alarm__qpid_map (    const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
+            explicit  pub_alarm__qpid_map (    const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id );
             ~pub_alarm__qpid_map() {};
             
 

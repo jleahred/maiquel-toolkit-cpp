@@ -398,8 +398,8 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
 //  internal fordward declarations
 
 
-pub_enter::pub_enter (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
-    :     cli_srv(_cli_srv),   process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
+pub_enter::pub_enter (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+    :     process_info(_process_info),   ka_interval_send(_ka_interval_send),   ka_interval_check(_ka_interval_check) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -461,8 +461,8 @@ void pub_keep_alive_cli::before_send(void) const
 
 
 
-pub_exit::pub_exit (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason)
-    :     cli_srv(_cli_srv),   process_info(_process_info),   reason(_reason) 
+pub_exit::pub_exit (   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason)
+    :     process_info(_process_info),   reason(_reason) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -482,8 +482,8 @@ void pub_exit::before_send(void) const
 
 
 
-pub_alarm::pub_alarm (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id)
-    :     cli_srv(_cli_srv),   process_info(_process_info),   code_source(_code_source),   subject(_subject),   message(_message),   priority(_priority),   type(_type),   dateTime_generated(_dateTime_generated),   alarm_id(_alarm_id) 
+pub_alarm::pub_alarm (   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id)
+    :     process_info(_process_info),   code_source(_code_source),   subject(_subject),   message(_message),   priority(_priority),   type(_type),   dateTime_generated(_dateTime_generated),   alarm_id(_alarm_id) 
        , __internal_warning_control_fields(0)
     {  
     }
@@ -630,9 +630,8 @@ void pub_central_keep_alive::before_send(void) const
 
     //    generate_class_qpid_variant_in_impl
     
-pub_enter__qpid_map::pub_enter__qpid_map (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
+pub_enter__qpid_map::pub_enter__qpid_map (   const mtk::msg::sub_process_info&  _process_info,   const mtk::dtTimeQuantity&  _ka_interval_send,   const mtk::dtTimeQuantity&  _ka_interval_check)
       :  m_static( 
-   _cli_srv,
    _process_info,
    _ka_interval_send,
    _ka_interval_check) 
@@ -675,9 +674,8 @@ parent,
 
     //    generate_class_qpid_variant_in_impl
     
-pub_exit__qpid_map::pub_exit__qpid_map (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason)
+pub_exit__qpid_map::pub_exit__qpid_map (   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _reason)
       :  m_static( 
-   _cli_srv,
    _process_info,
    _reason) 
     {  
@@ -690,9 +688,8 @@ pub_exit__qpid_map::pub_exit__qpid_map (   const std::string&  _cli_srv,   const
 
     //    generate_class_qpid_variant_in_impl
     
-pub_alarm__qpid_map::pub_alarm__qpid_map (   const std::string&  _cli_srv,   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id)
+pub_alarm__qpid_map::pub_alarm__qpid_map (   const mtk::msg::sub_process_info&  _process_info,   const std::string&  _code_source,   const std::string&  _subject,   const std::string&  _message,   const mtk::alEnPriority&  _priority,   const mtk::alEnType&  _type,   const mtk::DateTime&  _dateTime_generated,   const int16_t&  _alarm_id)
       :  m_static( 
-   _cli_srv,
    _process_info,
    _code_source,
    _subject,
@@ -792,7 +789,7 @@ std::ostream& operator<< (std::ostream& o, const pub_enter & c)
 {
     o << "{ "
 
-        << "cli_srv:"<<   c.cli_srv << "  "        << "process_info:"<< c.process_info<<"  "        << "ka_interval_send:"<<   c.ka_interval_send << "  "        << "ka_interval_check:"<<   c.ka_interval_check << "  "
+        << "process_info:"<< c.process_info<<"  "        << "ka_interval_send:"<<   c.ka_interval_send << "  "        << "ka_interval_check:"<<   c.ka_interval_check << "  "
         << " }";
     return o;
 };
@@ -803,7 +800,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_enter & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "cli_srv"  << YAML::Value <<   c.cli_srv        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "ka_interval_send"  << YAML::Value <<   c.ka_interval_send        << YAML::Key << "ka_interval_check"  << YAML::Value <<   c.ka_interval_check
         << YAML::EndMap;
     return o;
 };
@@ -814,7 +811,6 @@ void  operator >> (const YAML::Node& node, pub_enter & c)
 {
 
 
-        node["cli_srv"]  >> c.cli_srv;
         node["process_info"]  >> c.process_info;
         node["ka_interval_send"]  >> c.ka_interval_send;
         node["ka_interval_check"]  >> c.ka_interval_check;
@@ -894,7 +890,7 @@ std::ostream& operator<< (std::ostream& o, const pub_exit & c)
 {
     o << "{ "
 
-        << "cli_srv:"<<   c.cli_srv << "  "        << "process_info:"<< c.process_info<<"  "        << "reason:"<<   c.reason << "  "
+        << "process_info:"<< c.process_info<<"  "        << "reason:"<<   c.reason << "  "
         << " }";
     return o;
 };
@@ -905,7 +901,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_exit & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "cli_srv"  << YAML::Value <<   c.cli_srv        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "reason"  << YAML::Value <<   c.reason
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "reason"  << YAML::Value <<   c.reason
         << YAML::EndMap;
     return o;
 };
@@ -916,7 +912,6 @@ void  operator >> (const YAML::Node& node, pub_exit & c)
 {
 
 
-        node["cli_srv"]  >> c.cli_srv;
         node["process_info"]  >> c.process_info;
         node["reason"]  >> c.reason;
 
@@ -928,7 +923,7 @@ std::ostream& operator<< (std::ostream& o, const pub_alarm & c)
 {
     o << "{ "
 
-        << "cli_srv:"<<   c.cli_srv << "  "        << "process_info:"<< c.process_info<<"  "        << "code_source:"<<   c.code_source << "  "        << "subject:"<<   c.subject << "  "        << "message:"<<   c.message << "  "        << "priority:"<< c.priority<<"  "        << "type:"<< c.type<<"  "        << "dateTime_generated:"<<   c.dateTime_generated << "  "        << "alarm_id:"<<   c.alarm_id << "  "
+        << "process_info:"<< c.process_info<<"  "        << "code_source:"<<   c.code_source << "  "        << "subject:"<<   c.subject << "  "        << "message:"<<   c.message << "  "        << "priority:"<< c.priority<<"  "        << "type:"<< c.type<<"  "        << "dateTime_generated:"<<   c.dateTime_generated << "  "        << "alarm_id:"<<   c.alarm_id << "  "
         << " }";
     return o;
 };
@@ -939,7 +934,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const pub_alarm & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "cli_srv"  << YAML::Value <<   c.cli_srv        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "code_source"  << YAML::Value <<   c.code_source        << YAML::Key << "subject"  << YAML::Value <<   c.subject        << YAML::Key << "message"  << YAML::Value <<   c.message        << YAML::Key << "priority"  << YAML::Value << c.priority        << YAML::Key << "type"  << YAML::Value << c.type        << YAML::Key << "dateTime_generated"  << YAML::Value <<   c.dateTime_generated        << YAML::Key << "alarm_id"  << YAML::Value <<   c.alarm_id
+        << YAML::Key << "process_info"  << YAML::Value << c.process_info        << YAML::Key << "code_source"  << YAML::Value <<   c.code_source        << YAML::Key << "subject"  << YAML::Value <<   c.subject        << YAML::Key << "message"  << YAML::Value <<   c.message        << YAML::Key << "priority"  << YAML::Value << c.priority        << YAML::Key << "type"  << YAML::Value << c.type        << YAML::Key << "dateTime_generated"  << YAML::Value <<   c.dateTime_generated        << YAML::Key << "alarm_id"  << YAML::Value <<   c.alarm_id
         << YAML::EndMap;
     return o;
 };
@@ -950,7 +945,6 @@ void  operator >> (const YAML::Node& node, pub_alarm & c)
 {
 
 
-        node["cli_srv"]  >> c.cli_srv;
         node["process_info"]  >> c.process_info;
         node["code_source"]  >> c.code_source;
         node["subject"]  >> c.subject;
@@ -1165,7 +1159,7 @@ void  operator >> (const YAML::Node& node, pub_central_keep_alive & c)
 
 bool operator== (const pub_enter& a, const pub_enter& b)
 {
-    return (          a.cli_srv ==  b.cli_srv  &&          a.process_info ==  b.process_info  &&          a.ka_interval_send ==  b.ka_interval_send  &&          a.ka_interval_check ==  b.ka_interval_check  &&   true  );
+    return (          a.process_info ==  b.process_info  &&          a.ka_interval_send ==  b.ka_interval_send  &&          a.ka_interval_check ==  b.ka_interval_check  &&   true  );
 };
 
 bool operator!= (const pub_enter& a, const pub_enter& b)
@@ -1201,7 +1195,7 @@ bool operator!= (const pub_keep_alive_cli& a, const pub_keep_alive_cli& b)
 
 bool operator== (const pub_exit& a, const pub_exit& b)
 {
-    return (          a.cli_srv ==  b.cli_srv  &&          a.process_info ==  b.process_info  &&          a.reason ==  b.reason  &&   true  );
+    return (          a.process_info ==  b.process_info  &&          a.reason ==  b.reason  &&   true  );
 };
 
 bool operator!= (const pub_exit& a, const pub_exit& b)
@@ -1213,7 +1207,7 @@ bool operator!= (const pub_exit& a, const pub_exit& b)
 
 bool operator== (const pub_alarm& a, const pub_alarm& b)
 {
-    return (          a.cli_srv ==  b.cli_srv  &&          a.process_info ==  b.process_info  &&          a.code_source ==  b.code_source  &&          a.subject ==  b.subject  &&          a.message ==  b.message  &&          a.priority ==  b.priority  &&          a.type ==  b.type  &&          a.dateTime_generated ==  b.dateTime_generated  &&          a.alarm_id ==  b.alarm_id  &&   true  );
+    return (          a.process_info ==  b.process_info  &&          a.code_source ==  b.code_source  &&          a.subject ==  b.subject  &&          a.message ==  b.message  &&          a.priority ==  b.priority  &&          a.type ==  b.type  &&          a.dateTime_generated ==  b.dateTime_generated  &&          a.alarm_id ==  b.alarm_id  &&   true  );
 };
 
 bool operator!= (const pub_alarm& a, const pub_alarm& b)
@@ -1301,14 +1295,6 @@ void  copy (pub_enter& c, const qpid::types::Variant& v)
         qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("c_s");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_srv on message pub_enter::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.cli_srv, it->second);
-                        //c.cli_srv = it->second;
 //   sub_msg_type
 
                     it = mv.find("pi");
@@ -1350,8 +1336,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_enter& a)
     a.before_send();
     a.check_recomended();
 
-//  field_type
-        __internal_add2map(map, a.cli_srv, std::string("c_s"));
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
@@ -1542,14 +1526,6 @@ void  copy (pub_exit& c, const qpid::types::Variant& v)
         qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("c_s");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_srv on message pub_exit::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.cli_srv, it->second);
-                        //c.cli_srv = it->second;
 //   sub_msg_type
 
                     it = mv.find("pi");
@@ -1583,8 +1559,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_exit& a)
     a.before_send();
     a.check_recomended();
 
-//  field_type
-        __internal_add2map(map, a.cli_srv, std::string("c_s"));
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
@@ -1625,14 +1599,6 @@ void  copy (pub_alarm& c, const qpid::types::Variant& v)
         qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
-//   field_type
-
-                    it = mv.find("c_s");
-                    if (it== mv.end())
-                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_srv on message pub_alarm::__internal_qpid_fill", mtk::alPriorCritic);
-                    else
-                        copy(c.cli_srv, it->second);
-                        //c.cli_srv = it->second;
 //   sub_msg_type
 
                     it = mv.find("pi");
@@ -1714,8 +1680,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const pub_alarm& a)
     a.before_send();
     a.check_recomended();
 
-//  field_type
-        __internal_add2map(map, a.cli_srv, std::string("c_s"));
 //  sub_msg_type
         __internal_add2map(map, a.process_info, std::string("pi"));
 //  field_type
@@ -2210,9 +2174,6 @@ qpid::types::Variant::Map   pub_enter::qpidmsg_codded_as_qpid_map (void) const
     qpid::types::Variant::Map   content;
 
 
-//  field_type
-//        content["c_s"] = this->cli_srv;
-        __internal_add2map(content, this->cli_srv, std::string("c_s"));
 //  sub_msg_type
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
@@ -2281,9 +2242,6 @@ qpid::types::Variant::Map   pub_exit::qpidmsg_codded_as_qpid_map (void) const
     qpid::types::Variant::Map   content;
 
 
-//  field_type
-//        content["c_s"] = this->cli_srv;
-        __internal_add2map(content, this->cli_srv, std::string("c_s"));
 //  sub_msg_type
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
@@ -2305,9 +2263,6 @@ qpid::types::Variant::Map   pub_alarm::qpidmsg_codded_as_qpid_map (void) const
     qpid::types::Variant::Map   content;
 
 
-//  field_type
-//        content["c_s"] = this->cli_srv;
-        __internal_add2map(content, this->cli_srv, std::string("c_s"));
 //  sub_msg_type
 //        content["pi"] =  qpidmsg_coded_as_qpid_Map(this->process_info);
         __internal_add2map(content, this->process_info, std::string("pi"));
@@ -2427,8 +2382,6 @@ qpid::types::Variant::Map   pub_central_keep_alive::qpidmsg_codded_as_qpid_map (
     pub_enter  __internal_get_default(pub_enter*)
     {
         return pub_enter(
-//   field_type
-   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_process_info*)0),
 //   field_type
@@ -2461,8 +2414,6 @@ __internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
     pub_exit  __internal_get_default(pub_exit*)
     {
         return pub_exit(
-//   field_type
-   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_process_info*)0),
 //   field_type
@@ -2473,8 +2424,6 @@ __internal_get_default((pub_keep_alive_srv*)0), //   sub_msg_type
     pub_alarm  __internal_get_default(pub_alarm*)
     {
         return pub_alarm(
-//   field_type
-   __internal_get_default ((std::string*)0),
 //   sub_msg_type
    __internal_get_default((mtk::msg::sub_process_info*)0),
 //   field_type
@@ -2555,9 +2504,7 @@ __internal_get_default((req_command2*)0)
     }
     
 pub_enter::pub_enter (const qpid::types::Variant::Map&  mv)
-     : //   field_type
-   cli_srv(__internal_get_default((std::string*)0)),
-//   sub_msg_type
+     : //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    ka_interval_send(__internal_get_default((mtk::dtTimeQuantity*)0)),
@@ -2610,9 +2557,7 @@ pub_keep_alive_cli__qpid_map::pub_keep_alive_cli__qpid_map (const qpid::types::V
     
 
 pub_exit::pub_exit (const qpid::types::Variant::Map&  mv)
-     : //   field_type
-   cli_srv(__internal_get_default((std::string*)0)),
-//   sub_msg_type
+     : //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    reason(__internal_get_default((std::string*)0)) 
@@ -2629,9 +2574,7 @@ pub_exit__qpid_map::pub_exit__qpid_map (const qpid::types::Variant::Map&  mv)
     
 
 pub_alarm::pub_alarm (const qpid::types::Variant::Map&  mv)
-     : //   field_type
-   cli_srv(__internal_get_default((std::string*)0)),
-//   sub_msg_type
+     : //   sub_msg_type
    process_info(__internal_get_default((mtk::msg::sub_process_info*)0)),
 //   field_type
    code_source(__internal_get_default((std::string*)0)),

@@ -418,7 +418,7 @@ void sub_location::before_send(void) const
 
 
 
-sub_process_info::sub_process_info (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const mtk::nullable<std::string>&  _cli_srv)
+sub_process_info::sub_process_info (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const std::string&  _cli_srv)
     :     location(_location),   process_name(_process_name),   process_uuid(_process_uuid),   version(_version),   cli_srv(_cli_srv) 
        
     {  
@@ -428,11 +428,6 @@ sub_process_info::sub_process_info (   const sub_location&  _location,   const s
 
 void  sub_process_info::check_recomended(void) const
 {
-
-    if (cli_srv.HasValue() == false)
-        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", MTK_SS("missing recomended field **cli_srv** on sub_process_info  " << *this), mtk::alPriorError));
-        MTK_END_EXEC_MAX_FREC
 
 }
 
@@ -603,13 +598,13 @@ sub_location__qpid_map::sub_location__qpid_map (   const std::string&  _broker_c
 
     //    generate_class_qpid_variant_in_impl
     
-sub_process_info__qpid_map::sub_process_info__qpid_map (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version)
+sub_process_info__qpid_map::sub_process_info__qpid_map (   const sub_location&  _location,   const std::string&  _process_name,   const std::string&  _process_uuid,   const std::string&  _version,   const std::string&  _cli_srv)
       :  m_static( 
    _location,
    _process_name,
    _process_uuid,
    _version,
-   mtk::nullable<std::string> {}) 
+   _cli_srv) 
     {  
     }
 
@@ -1232,7 +1227,9 @@ void  copy (sub_process_info& c, const qpid::types::Variant& v)
 //   field_type
 
                     it = mv.find("c_s");
-                    if (it!= mv.end())
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field cli_srv on message sub_process_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
                         copy(c.cli_srv, it->second);
                         //c.cli_srv = it->second;
 
@@ -1260,7 +1257,6 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_process_info&
         __internal_add2map(map, a.process_uuid, std::string("pui"));
 //  field_type
         __internal_add2map(map, a.version, std::string("ver"));
-if (a.cli_srv.HasValue())
 //  field_type
         __internal_add2map(map, a.cli_srv, std::string("c_s"));
 
@@ -1855,7 +1851,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   mtk::nullable<std::string>()
+   __internal_get_default ((std::string*)0)
             );
     }
     
@@ -1958,7 +1954,9 @@ sub_process_info::sub_process_info (const qpid::types::Variant::Map&  mv)
 //   field_type
    process_uuid(__internal_get_default((std::string*)0)),
 //   field_type
-   version(__internal_get_default((std::string*)0)) 
+   version(__internal_get_default((std::string*)0)),
+//   field_type
+   cli_srv(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  

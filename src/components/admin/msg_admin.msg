@@ -29,10 +29,8 @@ END_INIT
 
 
 
-pub_enter  [< DEPRECIATED:2012-03-30, QE:ALL_GS, RT:0, SUBJ:GS.${process_info.location.broker_code}.MON.${process_info.cli_srv}.ENTER >]
+pub_enter  [< QE:ALL_GS, RT:0, SUBJ:GS.${process_info.location.broker_code}.MON.${process_info.cli_srv}.ENTER >]
 {
-    cli_srv             (c_s)   :   string          //  "CLI"  or "SVR"         DEPRECIATED  2012-03-30  mainteined for compatibility
-
     process_info        (pi)    :   mtk::msg::sub_process_info
     ka_interval_send    (kas)   :   time_quantity
     ka_interval_check   (kac)   :   time_quantity
@@ -53,10 +51,8 @@ pub_keep_alive_cli  [< QE:ALL_GS, RT:0, I:pub_keep_alive_srv,  SUBJ:GS.${process
 }
 
 
-pub_exit  [< DEPRECIATED:2012-03-30,   QE:ALL_GS, RT:0, SUBJ:GS.${process_info.location.broker_code}.MON.${process_info.cli_srv}.EXIT >]
+pub_exit  [< QE:ALL_GS, RT:0, SUBJ:GS.${process_info.location.broker_code}.MON.${process_info.cli_srv}.EXIT >]
 {
-    cli_srv             (c_s)   :   string          //  "CLI"  or "SVR"         DEPRECIATED  2012-03-30  mainteined for compatibility
-
     process_info        (pi)    :   mtk::msg::sub_process_info
     reason              (r)     :   string
 }
@@ -72,10 +68,8 @@ pub_exit  [< DEPRECIATED:2012-03-30,   QE:ALL_GS, RT:0, SUBJ:GS.${process_info.l
 //-------------------------------------------------------------------
 
 
-pub_alarm  [< DEPRECIATED:2012-03-30,   QE:ALL_GS,  RT:1, SUBJ:GS.${process_info.location.broker_code}.MON.${process_info.cli_srv}.ALARM >]
+pub_alarm  [< QE:ALL_GS,  RT:1, SUBJ:GS.${process_info.location.broker_code}.MON.${process_info.cli_srv}.ALARM >]
 {
-    cli_srv             (c_s)   :   string          //  "CLI"  or "SVR"         DEPRECIATED  2012-03-30  mainteined for compatibility
-
     process_info        (pi)    :   mtk::msg::sub_process_info
     code_source         (cs)    :   string
     subject             (sbj)   :   string

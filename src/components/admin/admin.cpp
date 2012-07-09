@@ -126,7 +126,7 @@ namespace {
                                 signal_alarm_error_critic(new mtk::Signal<const mtk::Alarm&> ),
                                 signal_alarm_nonerror(new mtk::Signal<const mtk::Alarm&> ),
                                 process_priority(ppVeryLow),
-                                process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("", ""), "", "", "", mtk::make_nullable(std::string{}))),
+                                process_info(mtk::msg::sub_process_info(mtk::msg::sub_location("", ""), "", "", "", "")),
                                 ka_interval_send(mtk::dtSeconds(50)),
                                 ka_interval_check(mtk::dtSeconds(50)),
                                 start_date_time(mtk::dtNowLocal()),
@@ -298,7 +298,7 @@ namespace {
         if(exit_message_sent==false)
         {
             //  send exit message
-            mtk::admin::msg::pub_exit exit_msg(mon_subject_role, admin_status_instance->get_process_info(), reason);
+            mtk::admin::msg::pub_exit exit_msg(admin_status_instance->get_process_info(), reason);
             //std::cout << exit_msg << std::endl;
             mtk_send_message("admin", exit_msg);
             exit_message_sent = true;
@@ -411,7 +411,7 @@ namespace {
                                                             app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<<get_config_mandatory_property("ADMIN.CLIENT.machine_code") << "@" << mtk::GetMachineCode()<<mtk::rand())),
                                                             app_version,
-                                                            mtk::make_nullable(std::string("CLI"))));
+                                                            std::string("CLI")));
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
@@ -439,7 +439,7 @@ namespace {
                                                             mtk::GetMachineCode()), app_name,
                                                             mtk::crc32_as_string(MTK_SS(app_name<< mtk::GetMachineCode()<<mtk::rand())),
                                                             app_version,
-                                                            mtk::make_nullable(std::string("SRV"))));
+                                                            std::string("SRV")));
 
             mtk::msg::sub_process_info  temp_process_info = get_process_info();
             MTK_QPID_RECEIVER_CONNECT_THIS(
@@ -513,7 +513,7 @@ namespace {
 
     void admin_status::send_enter_and_start_keepalive(void)
     {
-        mtk::admin::msg::pub_enter enter_msg(mon_subject_role, get_process_info(), ka_interval_send, ka_interval_check);
+        mtk::admin::msg::pub_enter enter_msg(get_process_info(), ka_interval_send, ka_interval_check);
         //std::cout << enter_msg << std::endl;
         mtk_send_message("admin", enter_msg);
 
@@ -650,14 +650,14 @@ namespace {
 
         int16_t alarm_id = int16_t(alarm.alarmID);
         {
-            mtk::admin::msg::pub_alarm alarm_msg(mon_subject_role, get_process_info(), alarm.codeSource.substr(0,2048), alarm.subject.substr(0,2048), alarm.message.substr(0,2048), alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
+            mtk::admin::msg::pub_alarm alarm_msg(get_process_info(), alarm.codeSource.substr(0,2048), alarm.subject.substr(0,2048), alarm.message.substr(0,2048), alarm.priority, alarm.type, alarm.dateTime, int16_t(alarm_id));
             mtk_send_message("admin", alarm_msg);
         }
         {
             std::list<mtk::BaseAlarm>::const_iterator it = alarm.stackAlarms.begin();
             while (it != alarm.stackAlarms.end())
             {
-                mtk::admin::msg::pub_alarm   alarm_msg(mon_subject_role, get_process_info(), it->codeSource, it->subject, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
+                mtk::admin::msg::pub_alarm   alarm_msg(get_process_info(), it->codeSource, it->subject, it->message, it->priority, it->type, it->dateTime, int16_t(alarm_id));
                 mtk_send_message("admin", alarm_msg);
                 ++it;
             }
@@ -1507,7 +1507,7 @@ void  __internal_admin_nevercall_me____release_on_exit(void)
 
 std::string  get_cli_srv(void)
 {
-    return  mtk::admin::get_process_info().cli_srv.Get();
+    return  mtk::admin::get_process_info().cli_srv;
 }
 
 

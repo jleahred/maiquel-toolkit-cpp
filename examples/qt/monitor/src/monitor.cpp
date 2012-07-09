@@ -13,6 +13,7 @@
 
 #include "../../../../tools/qt/logview/src/highlighter.h"
 #include "support/mtk_string.h"
+#include "support/version.hpp"
 #include "components/admin/msg_admin.h"
 
 
@@ -169,8 +170,14 @@ Monitor::Monitor(const std::string& _config_file_name,  QWidget *parent) :
     QLabel * version = new QLabel();
     //version->setFrameShape(QFrame::Panel);
     //version->setFrameShadow(QFrame::Sunken);
-    version->setText("0.14.d");
+    version->setText("0.15.g");
     statusBar()->addWidget(version);
+
+    QLabel * mtk_version = new QLabel();
+    mtk_version->setFrameShape(QFrame::Panel);
+    mtk_version->setFrameShadow(QFrame::Sunken);
+    mtk_version->setText(mtk::MTK_VERSION);
+    statusBar()->addWidget(mtk_version);
 
 
     status_client_processes = new QLabel();

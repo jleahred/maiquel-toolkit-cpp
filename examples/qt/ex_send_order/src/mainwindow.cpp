@@ -126,7 +126,7 @@ void MainWindow::on_pbPrepareNewRequest_clicked()
 
 mtk::msg::sub_process_info   MainWindow::get_process_info(void)
 {
-    return mtk::msg::sub_process_info(mtk::msg::sub_location(ui->leReqInfo_CliCode->text().toStdString(), "I"), "ex_send_order", "ex_send_orderAA", "0", mtk::make_nullable(std::string("CLI")));
+    return mtk::msg::sub_process_info(mtk::msg::sub_location(ui->leReqInfo_CliCode->text().toStdString(), "I"), "ex_send_order", "ex_send_orderAA", "0", "CLI");
 }
 
 
