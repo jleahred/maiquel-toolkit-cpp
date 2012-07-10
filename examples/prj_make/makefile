@@ -14,6 +14,8 @@ test:
 	make -C quantity_filter this
 	make -C prodinfo_grant this
 	make -C republic_prices this
+	make -C hist_execs this
+	make -C test_routes this
 
 
 .PHONY: this
@@ -31,6 +33,8 @@ this:
 	make -C quantity_filter this
 	make -C prodinfo_grant this
 	make -C republic_prices this
+	make -C hist_execs this
+	make -C test_routes this
 
 .PHONY: clean
 clean:
@@ -47,6 +51,8 @@ clean:
 	make -C quantity_filter clean
 	make -C prodinfo_grant clean
 	make -C republic_prices clean
+	make -C hist_execs clean
+	make -C test_routes clean
 	find . -name 'ct__*' | xargs rm
 
 
@@ -65,3 +71,5 @@ doc:
 	make -C quantity_filter doc
 	make -C prodinfo_grant doc
 	make -C republic_prices doc
+	make -C hist_execs doc
+	make -C test_routes doc

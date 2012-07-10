@@ -503,8 +503,29 @@ void pub_new_products::before_send(void) const
 
 
 
-sub_additional_info::sub_additional_info (   const std::string&  _group,   const mtk::nullable<mtk::DateTime>&  _maturity,   const mtk::nullable<mtk::DateTime>&  _value_date,   const mtk::Double&  _unit_cost,   const mtk::nullable<mtk::DateTime>&  _last_trading_dt,   const std::string&  _yaml_misc)
-    :     group(_group),   maturity(_maturity),   value_date(_value_date),   unit_cost(_unit_cost),   last_trading_dt(_last_trading_dt),   yaml_misc(_yaml_misc) 
+sub_future_info::sub_future_info (   const int16_t&  _num_legs,   const mtk::DateTime&  _maturity,   const mtk::DateTime&  _last_trading_dt,   const std::string&  _underlying)
+    :     num_legs(_num_legs),   maturity(_maturity),   last_trading_dt(_last_trading_dt),   underlying(_underlying) 
+       
+    {  
+    }
+
+
+
+void  sub_future_info::check_recomended(void) const
+{
+
+}
+
+void sub_future_info::before_send(void) const
+{
+
+}
+
+
+
+
+sub_additional_info::sub_additional_info (   const std::string&  _group,   const mtk::nullable<std::string>&  _description,   const mtk::nullable<mtk::DateTime>&  _value_date,   const mtk::Double&  _unit_cost,   const mtk::nullable<sub_future_info>&  _future_info,   const std::string&  _yaml_misc)
+    :     group(_group),   description(_description),   value_date(_value_date),   unit_cost(_unit_cost),   future_info(_future_info),   yaml_misc(_yaml_misc) 
        
     {  
     }
@@ -783,13 +804,26 @@ pub_new_products__qpid_map::pub_new_products__qpid_map (   const std::string&  _
 
     //    generate_class_qpid_variant_in_impl
     
+sub_future_info__qpid_map::sub_future_info__qpid_map (   const int16_t&  _num_legs,   const mtk::DateTime&  _maturity,   const mtk::DateTime&  _last_trading_dt,   const std::string&  _underlying)
+      :  m_static( 
+   _num_legs,
+   _maturity,
+   _last_trading_dt,
+   _underlying) 
+    {  
+    }
+
+
+
+    //    generate_class_qpid_variant_in_impl
+    
 sub_additional_info__qpid_map::sub_additional_info__qpid_map (   const std::string&  _group,   const mtk::Double&  _unit_cost,   const std::string&  _yaml_misc)
       :  m_static( 
    _group,
-   mtk::nullable<mtk::DateTime> {},
+   mtk::nullable<std::string> {},
    mtk::nullable<mtk::DateTime> {},
    _unit_cost,
-   mtk::nullable<mtk::DateTime> {},
+   mtk::nullable<sub_future_info> {},
    _yaml_misc) 
     {  
     }
@@ -1080,11 +1114,46 @@ void  operator >> (const YAML::Node& node, pub_new_products & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const sub_future_info & c)
+{
+    o << "{ "
+
+        << "num_legs:"<<   c.num_legs << "  "        << "maturity:"<<   c.maturity << "  "        << "last_trading_dt:"<<   c.last_trading_dt << "  "        << "underlying:"<<   c.underlying << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_future_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "num_legs"  << YAML::Value <<   c.num_legs        << YAML::Key << "maturity"  << YAML::Value <<   c.maturity        << YAML::Key << "last_trading_dt"  << YAML::Value <<   c.last_trading_dt        << YAML::Key << "underlying"  << YAML::Value <<   c.underlying
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_future_info & c)
+{
+
+
+        node["num_legs"]  >> c.num_legs;
+        node["maturity"]  >> c.maturity;
+        node["last_trading_dt"]  >> c.last_trading_dt;
+        node["underlying"]  >> c.underlying;
+
+
+};
+
+
 std::ostream& operator<< (std::ostream& o, const sub_additional_info & c)
 {
     o << "{ "
 
-        << "group:"<<   c.group << "  "        << "maturity:"<<   c.maturity << "  "        << "value_date:"<<   c.value_date << "  "        << "unit_cost:"<<   c.unit_cost << "  "        << "last_trading_dt:"<<   c.last_trading_dt << "  "        << "yaml_misc:"<<   c.yaml_misc << "  "
+        << "group:"<<   c.group << "  "        << "description:"<<   c.description << "  "        << "value_date:"<<   c.value_date << "  "        << "unit_cost:"<<   c.unit_cost << "  "        << "future_info:"<< c.future_info<<"  "        << "yaml_misc:"<<   c.yaml_misc << "  "
         << " }";
     return o;
 };
@@ -1095,7 +1164,7 @@ YAML::Emitter& operator << (YAML::Emitter& o, const sub_additional_info & c)
 {
     o << YAML::BeginMap
 
-        << YAML::Key << "group"  << YAML::Value <<   c.group        << YAML::Key << "maturity"  << YAML::Value <<   c.maturity        << YAML::Key << "value_date"  << YAML::Value <<   c.value_date        << YAML::Key << "unit_cost"  << YAML::Value <<   c.unit_cost        << YAML::Key << "last_trading_dt"  << YAML::Value <<   c.last_trading_dt        << YAML::Key << "yaml_misc"  << YAML::Value <<   c.yaml_misc
+        << YAML::Key << "group"  << YAML::Value <<   c.group        << YAML::Key << "description"  << YAML::Value <<   c.description        << YAML::Key << "value_date"  << YAML::Value <<   c.value_date        << YAML::Key << "unit_cost"  << YAML::Value <<   c.unit_cost        << YAML::Key << "future_info"  << YAML::Value << c.future_info        << YAML::Key << "yaml_misc"  << YAML::Value <<   c.yaml_misc
         << YAML::EndMap;
     return o;
 };
@@ -1107,10 +1176,10 @@ void  operator >> (const YAML::Node& node, sub_additional_info & c)
 
 
         node["group"]  >> c.group;
-        node["maturity"]  >> c.maturity;
+        node["description"]  >> c.description;
         node["value_date"]  >> c.value_date;
         node["unit_cost"]  >> c.unit_cost;
-        node["last_trading_dt"]  >> c.last_trading_dt;
+        node["future_info"]  >> c.future_info;
         node["yaml_misc"]  >> c.yaml_misc;
 
 
@@ -1486,9 +1555,21 @@ bool operator!= (const pub_new_products& a, const pub_new_products& b)
 
 
 
+bool operator== (const sub_future_info& a, const sub_future_info& b)
+{
+    return (          a.num_legs ==  b.num_legs  &&          a.maturity ==  b.maturity  &&          a.last_trading_dt ==  b.last_trading_dt  &&          a.underlying ==  b.underlying  &&   true  );
+};
+
+bool operator!= (const sub_future_info& a, const sub_future_info& b)
+{
+    return !(a==b);
+};
+
+
+
 bool operator== (const sub_additional_info& a, const sub_additional_info& b)
 {
-    return (          a.group ==  b.group  &&          a.maturity ==  b.maturity  &&          a.value_date ==  b.value_date  &&          a.unit_cost ==  b.unit_cost  &&          a.last_trading_dt ==  b.last_trading_dt  &&          a.yaml_misc ==  b.yaml_misc  &&   true  );
+    return (          a.group ==  b.group  &&          a.description ==  b.description  &&          a.value_date ==  b.value_date  &&          a.unit_cost ==  b.unit_cost  &&          a.future_info ==  b.future_info  &&          a.yaml_misc ==  b.yaml_misc  &&   true  );
 };
 
 bool operator!= (const sub_additional_info& a, const sub_additional_info& b)
@@ -2002,6 +2083,99 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub
 
 
 
+void  copy (sub_future_info& c, const qpid::types::Variant& v)
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("nl");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field num_legs on message sub_future_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.num_legs, it->second);
+                        //c.num_legs = it->second;
+//   field_type
+
+                    it = mv.find("mat");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field maturity on message sub_future_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.maturity, it->second);
+                        //c.maturity = it->second;
+//   field_type
+
+                    it = mv.find("ltdt");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field last_trading_dt on message sub_future_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.last_trading_dt, it->second);
+                        //c.last_trading_dt = it->second;
+//   field_type
+
+                    it = mv.find("under");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field underlying on message sub_future_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.underlying, it->second);
+                        //c.underlying = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void  copy (sub_future_info__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_future_info& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  field_type
+        __internal_add2map(map, a.num_legs, std::string("nl"));
+//  field_type
+        __internal_add2map(map, a.maturity, std::string("mat"));
+//  field_type
+        __internal_add2map(map, a.last_trading_dt, std::string("ltdt"));
+//  field_type
+        __internal_add2map(map, a.underlying, std::string("under"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_future_info__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_future_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_future_info__qpid_map>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
 void  copy (sub_additional_info& c, const qpid::types::Variant& v)
     {
         qpid::types::Variant::Map  mv = v.asMap();
@@ -2017,10 +2191,10 @@ void  copy (sub_additional_info& c, const qpid::types::Variant& v)
                         //c.group = it->second;
 //   field_type
 
-                    it = mv.find("mat");
+                    it = mv.find("desc");
                     if (it!= mv.end())
-                        copy(c.maturity, it->second);
-                        //c.maturity = it->second;
+                        copy(c.description, it->second);
+                        //c.description = it->second;
 //   field_type
 
                     it = mv.find("vd");
@@ -2035,12 +2209,12 @@ void  copy (sub_additional_info& c, const qpid::types::Variant& v)
                     else
                         copy(c.unit_cost, it->second);
                         //c.unit_cost = it->second;
-//   field_type
+//   sub_msg_type
 
-                    it = mv.find("ltdt");
+                    it = mv.find("fai");
                     if (it!= mv.end())
-                        copy(c.last_trading_dt, it->second);
-                        //c.last_trading_dt = it->second;
+                        copy(c.future_info, it->second);
+                        //__internal_qpid_fill(c.future_info, it->second.asMap());
 //   field_type
 
                     it = mv.find("ym");
@@ -2068,17 +2242,17 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_additional_in
 
 //  field_type
         __internal_add2map(map, a.group, std::string("gr"));
-if (a.maturity.HasValue())
+if (a.description.HasValue())
 //  field_type
-        __internal_add2map(map, a.maturity, std::string("mat"));
+        __internal_add2map(map, a.description, std::string("desc"));
 if (a.value_date.HasValue())
 //  field_type
         __internal_add2map(map, a.value_date, std::string("vd"));
 //  field_type
         __internal_add2map(map, a.unit_cost, std::string("uc"));
-if (a.last_trading_dt.HasValue())
-//  field_type
-        __internal_add2map(map, a.last_trading_dt, std::string("ltdt"));
+if (a.future_info.HasValue())
+//  sub_msg_type
+        __internal_add2map(map, a.future_info, std::string("fai"));
 //  field_type
         __internal_add2map(map, a.yaml_misc, std::string("ym"));
 
@@ -2868,6 +3042,7 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ppc
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 
 qpid::types::Variant::Map   pub_best_prices::qpidmsg_codded_as_qpid_map (void) const
 {
@@ -3087,19 +3262,33 @@ qpid::types::Variant::Map   ppc::qpidmsg_codded_as_qpid_map (void) const
             );
     }
     
+    sub_future_info  __internal_get_default(sub_future_info*)
+    {
+        return sub_future_info(
+//   field_type
+   __internal_get_default ((int16_t*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0),
+//   field_type
+   __internal_get_default ((std::string*)0)
+            );
+    }
+    
     sub_additional_info  __internal_get_default(sub_additional_info*)
     {
         return sub_additional_info(
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
-   mtk::nullable<mtk::DateTime>(),
+   mtk::nullable<std::string>(),
 //   field_type
    mtk::nullable<mtk::DateTime>(),
 //   field_type
    __internal_get_default ((mtk::Double*)0),
-//   field_type
-   mtk::nullable<mtk::DateTime>(),
+//   sub_msg_type
+   mtk::nullable<sub_future_info>(),
 //   field_type
    __internal_get_default ((std::string*)0)
             );
@@ -3305,6 +3494,27 @@ pub_new_products::pub_new_products (const qpid::types::Variant::Map&  mv)
 
 
 pub_new_products__qpid_map::pub_new_products__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
+sub_future_info::sub_future_info (const qpid::types::Variant::Map&  mv)
+     : //   field_type
+   num_legs(__internal_get_default((int16_t*)0)),
+//   field_type
+   maturity(__internal_get_default((mtk::DateTime*)0)),
+//   field_type
+   last_trading_dt(__internal_get_default((mtk::DateTime*)0)),
+//   field_type
+   underlying(__internal_get_default((std::string*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
+
+sub_future_info__qpid_map::sub_future_info__qpid_map (const qpid::types::Variant::Map&  mv)
     :  m_static(mv), m_qpid_map(mv)
     {
     }

@@ -248,13 +248,33 @@ void QProd_info::remove_focus(void)
 
 void QProd_info::on_message_addtional_info(const mtk::msg::sub_product_code& product_code, const mtk::prices::msg::sub_additional_info&  aditional_info)
 {
+    QString  s_future_info;
+    if(aditional_info.future_info.HasValue())
+    {
+        mtk::prices::msg::sub_future_info  future_info = aditional_info.future_info.Get();
+        s_future_info =
+                    QLatin1String("\n") +
+                   QLatin1String("----------------------------\n") +
+                               tr("*FUTURE*\n")  +
+                               tr("  num legs:      ")  +  QLatin1String(MTK_SS(future_info.num_legs).c_str())  +  QLatin1String("\n") +
+                               tr("  maturity:      ")  +  QLatin1String(MTK_SS(future_info.maturity).c_str()) +  QLatin1String("\n") +
+                               tr("  last trad dt:  ")  +  QLatin1String(MTK_SS(future_info.last_trading_dt).c_str()) +  QLatin1String("\n") +
+                               tr("  underlying:    ")  +  QLatin1String(MTK_SS(future_info.underlying).c_str()) +  QLatin1String("\n") +
+                    QLatin1String("---------------------------\n\n")
+                    ;
+    }
+
     info->setPlainText(
-            tr("MARKET:       ")  +  QLatin1String(product_code.market.c_str()) +  QLatin1String("\n") +
-                    tr("PRODUCT:      ")  +  QLatin1String(product_code.product.c_str()) +  QLatin1String("\n") +
-                    tr("last_trading: ")  +  QLatin1String(MTK_SS(aditional_info.last_trading_dt).c_str()) +  QLatin1String("\n") +
-                    tr("unit cost:    ")  +  QLatin1String(MTK_SS(aditional_info.unit_cost).c_str()) +  QLatin1String("\n") +
-                    tr("value_date:   ")  +  QLatin1String(MTK_SS(aditional_info.value_date).c_str()) +  QLatin1String("\n") +
-                    tr("misc:         ")  +  QLatin1String(MTK_SS(aditional_info.yaml_misc).c_str())+  QLatin1String("\n")
+                    //tr("MARKET:          ")  +  QLatin1String(product_code.market.c_str()) +  QLatin1String("\n") +
+                    //tr("PRODUCT:         ")  +  QLatin1String(product_code.product.c_str()) +  QLatin1String("\n") +
+                    tr("group:           ")  +  QLatin1String(product_code.product.c_str()) +  QLatin1String("\n") +
+                    tr("value date:      ")  +  QLatin1String(MTK_SS(aditional_info.value_date).c_str()) +  QLatin1String("\n") +
+                    tr("unit cost:       ")  +  QLatin1String(MTK_SS(aditional_info.unit_cost).c_str()) +  QLatin1String("\n") +
+
+                    s_future_info +
+
+                    tr("description:     ")  +  QLatin1String(product_code.product.c_str()) +  QLatin1String("\n") +
+                    tr("misc:            ")  +  QLatin1String(MTK_SS(aditional_info.yaml_misc).c_str())  +  QLatin1String("\n")
             );
 }
 

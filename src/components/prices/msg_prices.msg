@@ -65,13 +65,22 @@ pub_new_products [< QE:CLI_MK, RT:2, SUBJ:CLI.ALL.${market}.NP  >]
 //    sub_additional_info
 //---------------------------------------------------------------------
 
+sub_future_info [< >]
+{
+    num_legs            (nl)        :       int16
+    maturity            (mat)       :       date_time
+    last_trading_dt     (ltdt)      :       date_time
+    underlying          (under)     :       string
+}
+
 sub_additional_info [< >]
 {
     group               (gr)        :       string
-    maturity            (mat)       :       date_time       [optional]
-    value_date          (vd)        :       date_time       [optional]
+    description         (desc)      :       string              [optional]  //  provisionally, it will be mandatory  depreciated  todo
+    value_date          (vd)        :       date_time           [optional]
     unit_cost           (uc)        :       double
-    last_trading_dt     (ltdt)      :       date_time       [optional]
+
+    future_info         (fai)       :       sub_future_info     [optional]
 
 
     yaml_misc           (ym)        :       string
