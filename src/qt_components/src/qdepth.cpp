@@ -1181,11 +1181,8 @@ void QDepth::enable_trading_actions(void)
 
         if(product_code.market == "M3"  ||  product_code.market == "MARKET")
         {
-            if(mtk::admin::is_production() == false)
-            {
-                action_buy_stop_limit->setEnabled(true);
-                action_sell_stop_limit->setEnabled(true);
-            }
+            action_buy_stop_limit->setEnabled(true);
+            action_sell_stop_limit->setEnabled(true);
         }
     }
 }
