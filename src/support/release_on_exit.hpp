@@ -20,7 +20,7 @@
 
 
 #ifdef RELEASE___internal_call_later_nevercall_me_release_on_exit
-    RELEASE___internal_call_later_nevercall_me_release_on_exit  
+    RELEASE___internal_call_later_nevercall_me_release_on_exit
 #endif
 
 
@@ -34,6 +34,9 @@
 #endif
 
 
+#ifdef RELEASE_____internal_mtk_qpid_nevercall_me_release_on_exit
+    RELEASE_____internal_mtk_qpid_nevercall_me_release_on_exit
+#endif
 
 
 
@@ -43,8 +46,8 @@
 //#endif
 
 
-//#ifdef RELEASE_____internal_sabcli_nevercall_me_release_on_exit 
-//    RELEASE_____internal_sabcli_nevercall_me_release_on_exit 
+//#ifdef RELEASE_____internal_sabcli_nevercall_me_release_on_exit
+//    RELEASE_____internal_sabcli_nevercall_me_release_on_exit
 //#endif
 
 
@@ -53,6 +56,6 @@
 //#endif
 
 
-//#ifdef RELEASE_______internal_nevercall_me_release_on_exit_request_response 
+//#ifdef RELEASE_______internal_nevercall_me_release_on_exit_request_response
 //    RELEASE_______internal_nevercall_me_release_on_exit_request_response
 //#endif
