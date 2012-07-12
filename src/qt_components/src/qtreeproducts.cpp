@@ -239,29 +239,31 @@ void qTreeProducts::request_root_items(void)
 {
     if(mtk::admin::get_session_id() == "")      return;
 
-    MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtSeconds(mtk::rand()%15+10))
-    {
-        if(this->topLevelItemCount() == 0)
+    MTK_EXEC_MAX_FREC_NO_FIRST(mtk::dtSeconds(5))
+        MTK_EXEC_MAX_FREC(mtk::dtSeconds(30))
         {
-            mtk::msg::sub_request_info   request_info = mtk::admin::get_request_info();
-            mtk::gen::msg::req_tree_items  tree_request_message(request_info, "ROOT");
+            if(this->topLevelItemCount() == 0)
+            {
+                mtk::msg::sub_request_info   request_info = mtk::admin::get_request_info();
+                mtk::gen::msg::req_tree_items  tree_request_message(request_info, "ROOT");
 
-            //  subscription to multiresponse
-            MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::res_tree_items,
-                                            mtk::gen::msg::sub_tree_item,
-                                            mtk::admin::get_url("client"),
-                                            mtk::gen::msg::res_tree_items::get_in_subject( request_info.process_info.location.broker_code,
-                                                                                                request_info.process_info.location.machine,
-                                                                                                request_info.process_info.process_uuid,
-                                                                                                request_info.req_id.session_id,
-                                                                                                request_info.req_id.req_code),
-                                            on_response_request_tree,
-                                            "tree prod ROOT")
-            mtk_send_message("client", tree_request_message);
+                //  subscription to multiresponse
+                MTK_RECEIVE_MULTI_RESPONSE_THIS(mtk::gen::msg::res_tree_items,
+                                                mtk::gen::msg::sub_tree_item,
+                                                mtk::admin::get_url("client"),
+                                                mtk::gen::msg::res_tree_items::get_in_subject( request_info.process_info.location.broker_code,
+                                                                                                    request_info.process_info.location.machine,
+                                                                                                    request_info.process_info.process_uuid,
+                                                                                                    request_info.req_id.session_id,
+                                                                                                    request_info.req_id.req_code),
+                                                on_response_request_tree,
+                                                "tree prod ROOT")
+                mtk_send_message("client", tree_request_message);
+            }
+            else
+                MTK_TIMER_1S_STOP(request_root_items)
         }
-        else
-            MTK_TIMER_1S_STOP(request_root_items)
-    }
+        MTK_END_EXEC_MAX_FREC
     MTK_END_EXEC_MAX_FREC
 }
 

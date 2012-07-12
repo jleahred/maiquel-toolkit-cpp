@@ -17,6 +17,8 @@ class qTreeProducts : public QTreeWidget, public mtk::SignalReceptor
 public:
     explicit qTreeProducts(QWidget *parent = 0);
 
+    void request_root_items(void);
+
 protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
@@ -31,7 +33,6 @@ private:
     void start_drag(void);
     void show_tree(void);
 
-    void request_root_items(void);
 
     QTreeWidgetItem*  get_item_from_branck(QString current_branck, QStringList& pending_branch, QTreeWidgetItem* current_tree_item);
 

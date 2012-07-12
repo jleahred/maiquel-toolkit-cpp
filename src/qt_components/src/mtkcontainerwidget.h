@@ -73,6 +73,32 @@ protected:
 };
 
 
+class mtk_uResizeRight : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit mtk_uResizeRight(QWidget *parent = 0);
+
+
+
+private:
+    QColor basecolor;
+    //void updateBackground(bool focus);
+
+
+signals:
+    void on_mouseMoveEvent(QMouseEvent* event);
+
+public slots:
+
+private slots:
+
+protected:
+    void mouseMoveEvent(QMouseEvent* event);
+
+};
+
+
 
 
 class mtkContainerWidget : public QWidget
@@ -93,6 +119,7 @@ private:
     QPoint  moving_offset;
     mtk_uTitle* title;
     mtk_uResize* resizer;
+    mtk_uResizeRight* resizer_right;
 
 protected:
     virtual void    resizeEvent  (QResizeEvent * event );
@@ -113,7 +140,7 @@ private slots:
     void title_mouseReleaseEvent(QMouseEvent* event);
 
     void resize_mouseMoveEvent(QMouseEvent* event);
-
+    void resize_mouseMoveEvent_right(QMouseEvent* event);
 };
 
 

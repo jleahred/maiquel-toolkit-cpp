@@ -111,6 +111,25 @@ void mtk_uResize::mouseMoveEvent(QMouseEvent* event)
 }
 
 
+
+
+mtk_uResizeRight::mtk_uResizeRight(QWidget *parent) :
+    QWidget(parent)
+{
+    basecolor = this->palette().background().color();
+    setCursor(QCursor(Qt::SizeHorCursor));
+}
+
+
+
+void mtk_uResizeRight::mouseMoveEvent(QMouseEvent* event)
+{
+    event->accept(); // do not propagate
+    QMouseEvent new_event(event->type(), mapToParent(event->pos()), event->globalPos(), event->button(), event->buttons(), event->modifiers());
+    Q_EMIT on_mouseMoveEvent(&new_event);
+}
+
+
 /*
 void mtk_uResize::mousePressEvent(QMouseEvent* event)
 {
@@ -138,6 +157,10 @@ mtkContainerWidget::mtkContainerWidget(QWidget *parent) :
 
     resizer = new mtk_uResize(this);
     connect(resizer, SIGNAL(on_mouseMoveEvent(QMouseEvent*)), this, SLOT(resize_mouseMoveEvent(QMouseEvent*)));
+
+    resizer_right = new mtk_uResizeRight(this);
+    connect(resizer_right, SIGNAL(on_mouseMoveEvent(QMouseEvent*)), this, SLOT(resize_mouseMoveEvent_right(QMouseEvent*)));
+
 
     this->setFocusPolicy(Qt::StrongFocus);
 
@@ -195,6 +218,9 @@ void	mtkContainerWidget::resizeEvent ( QResizeEvent * /*event*/ )
 {
     resizer->setGeometry(this->width()-20, this->height()-20, 20, 20);
     resizer->raise();
+
+    resizer_right->setGeometry(this->width()-10, 20, 20, this->height()-45);
+    resizer_right->raise();
 }
 
 
@@ -212,9 +238,22 @@ void mtkContainerWidget::resize_mouseMoveEvent(QMouseEvent* event)
     resize(newsize);
 }
 
+void mtkContainerWidget::resize_mouseMoveEvent_right(QMouseEvent* event)
+{
+    QPoint temppos = (event->pos());
+    QSize  newsize (temppos.x(), temppos.y());
+    if (newsize.width() < 100)
+        newsize.setWidth(100);
+    newsize = newsize/10*10;
+    newsize.setWidth(newsize.width()-2);
+    newsize.setHeight(this->height());
+    resize(newsize);
+}
+
 void mtkContainerWidget::inserting_components_ended(void)
 {
     resizer->raise();
+    resizer_right->raise();
     title->raise();
 }
 
