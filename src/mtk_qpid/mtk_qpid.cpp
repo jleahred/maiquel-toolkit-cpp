@@ -78,7 +78,6 @@ mtk::Signal<>&        __internal_get_signal_clossing_app(void)
 
 void __internal_mtk_qpid_nevercall_me_release_on_exit(void)
 {
-    std::cout << "clossing all connections" << std::endl;
     __internal_get_signal_clossing_app().emit();
 }
 
@@ -100,7 +99,7 @@ qpid::messaging::Session&           mtkqpid_session::qpid_session(void)
         static mtk::DateTime  last_try_reconnect = mtk::dtNowLocal() - mtk::dtSeconds(10);
         if(last_try_reconnect + mtk::dtSeconds(2) < mtk::dtNowLocal())
         {
-            std::cout << "error, trying to reconnect" << std::endl;
+            std::cerr << "error, trying to reconnect" << std::endl;
             last_try_reconnect = mtk::dtNowLocal();
             //connection.open();
             connection   = qpid::messaging::Connection(url.WarningDontDoThisGetInternal());

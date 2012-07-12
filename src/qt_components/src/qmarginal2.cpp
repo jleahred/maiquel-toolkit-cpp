@@ -1334,6 +1334,7 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal2& m)
 
 
 
+    /*      replaced by header status  2012-07-11
     //  writing sections sizes
     out << YAML::Key   <<  "sect_sizes"
             << YAML::Value << YAML::Flow  << YAML::BeginSeq;
@@ -1343,6 +1344,12 @@ YAML::Emitter& operator << (YAML::Emitter& out, const QTableMarginal2& m)
     }
     out << YAML::EndSeq;
     //  writing sections sizes
+    */
+
+    out << YAML::Key  << "header_status"  << YAML::Value;
+    out << m.horizontalHeader()->saveState().toHex().constData();
+
+
 
     out << YAML::EndMap;
 
@@ -1369,12 +1376,24 @@ void             operator >> (const YAML::Node&   node,        QTableMarginal2& 
         }
     }
 
-    for(unsigned i=0; i< node["sect_sizes"].size(); ++i)
+    if(node.FindValue("header_status"))
     {
-        int sect_size;
-        node["sect_sizes"][i] >> sect_size;
-        m.horizontalHeader()->resizeSection(i, sect_size);
+        std::string  header_status;
+        node["header_status"]  >> header_status;
+        m.horizontalHeader()->restoreState(QByteArray::fromHex(header_status.c_str()));
     }
+    else if(node.FindValue("sect_sizes"))
+    {
+        for(unsigned i=0; i< node["sect_sizes"].size(); ++i)
+        {
+            int sect_size;
+            node["sect_sizes"][i] >> sect_size;
+            m.horizontalHeader()->resizeSection(i, sect_size);
+        }
+    }
+
+
+
     m.slot_sectionMoved(0,0,0);
 }
 

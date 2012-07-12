@@ -252,7 +252,6 @@ public:
     }
     ~mtkqpid_session()
     {
-        std::cout << "~mtkqpid_session" << std::endl;
         try{
             _qpid_session.close();
             connection.close();
