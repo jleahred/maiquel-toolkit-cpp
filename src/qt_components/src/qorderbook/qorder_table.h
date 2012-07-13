@@ -27,7 +27,6 @@ namespace YAML { class Emitter;  class Node;  };
 class qorder_table : public QWidget , public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  qorder_table CLASS_NAME;
     friend YAML::Emitter& operator<< (YAML::Emitter    & out , const qorder_table& m);
     friend void           operator>> (const YAML::Node & i   ,       qorder_table& m);
 

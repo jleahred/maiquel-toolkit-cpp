@@ -28,8 +28,6 @@ const mtk::t_qpid_address   g_address ("testing");
 
 class ex_qpid_sender_and_receptor : public mtk::SignalReceptor
 {
-typedef ex_qpid_sender_and_receptor CLASS_NAME;
-
 public:
 
     ex_qpid_sender_and_receptor()

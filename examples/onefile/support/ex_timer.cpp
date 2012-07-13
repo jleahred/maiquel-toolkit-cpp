@@ -21,15 +21,17 @@
 
 class SoloTimer : public mtk::SignalReceptor    //<<-------------------
 {
-    typedef     SoloTimer  CLASS_NAME;  //<<-------------------
 
 private:
 
 public:
 
     SoloTimer() {
-        MTK_TIMER_1S(OnTimer1s);         //<<-------------------
-        MTK_TIMER_1C(OnTimer1c);         //<<-------------------
+        //MTK_TIMER_1S(OnTimer1s);         //<<-------------------
+        mtk::Timer::instance()->signal1s.connect(this, &std::remove_reference<decltype(*this)>::type::OnTimer1s);
+        //mtk::Timer::instance()->signal1s.connect(this, typeof(*this)::OnTimer1s);
+        //mtk::Timer::instance()->signal1s.connect(this, &SoloTimer::OnTimer1s);
+        //MTK_TIMER_1C(OnTimer1c);         //<<-------------------
     };
 
     void OnTimer1c(void) {
@@ -95,7 +97,7 @@ int main(int /*argc*/, char** /*argv[]*/)
 
         #include "support/release_on_exit.hpp"
         return 0;
-    } 
+    }
     MTK_CATCH_CALLFUNCION(std::cout << , "main", "nothing more to add")
 
     #include "support/release_on_exit.hpp"
@@ -110,12 +112,12 @@ int main(int /*argc*/, char** /*argv[]*/)
 
 //---------------------------------------------------------------------------
 
-void mtk::AlarmMsg (const Alarm& alarma)
-{
-        std::cout << "\n\r";
-        std::cout << std::endl << "ALARMA SALIDA..." << alarma <<  std::endl ;
-        std::cout << alarma << std::endl ;
-}
+//void mtk::AlarmMsg (const Alarm& alarma)
+//{
+//        std::cout << "\n\r";
+//        std::cout << std::endl << "ALARMA SALIDA..." << alarma <<  std::endl ;
+//        std::cout << alarma << std::endl ;
+//}
 
 
 

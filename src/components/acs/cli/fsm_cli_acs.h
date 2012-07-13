@@ -36,7 +36,6 @@ class fsm_cli_acs_dangerous_signals_not_warped;
 class fsm_cli_acs   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
-    typedef  fsm_cli_acs  CLASS_NAME;
 
 public:
     explicit fsm_cli_acs ();
@@ -87,7 +86,6 @@ private:
 class fsm_cli_acs_dangerous_signals_not_warped   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
-    typedef  fsm_cli_acs_dangerous_signals_not_warped  CLASS_NAME;
 
 
 public:

@@ -27,28 +27,28 @@
 
 
 #define MTK_TIMER_1S(__METHOD_NAME1__)\
-        mtk::Timer::instance()->signal1s.connect(this, &CLASS_NAME::__METHOD_NAME1__);
+        mtk::Timer::instance()->signal1s.connect(this, &std::remove_reference<decltype(*this)>::type::__METHOD_NAME1__);
 
 
 #define MTK_TIMER_1S_STOP(__METHOD_NAME1__)\
-        mtk::Timer::instance()->signal1s.disconnect(this, &CLASS_NAME::__METHOD_NAME1__);
+        mtk::Timer::instance()->signal1s.disconnect(this, &std::remove_reference<decltype(*this)>::type::__METHOD_NAME1__);
 
 
 
 
 #define MTK_TIMER_1C(__METHOD_NAME1__)\
-        mtk::Timer::instance()->signal1c.connect(this, &CLASS_NAME::__METHOD_NAME1__);
+        mtk::Timer::instance()->signal1c.connect(this, &std::remove_reference<decltype(*this)>::type::__METHOD_NAME1__);
 
 #define MTK_TIMER_1C_STOP(__METHOD_NAME1__)\
-        mtk::Timer::instance()->signal1c.disconnect(this, &CLASS_NAME::__METHOD_NAME1__);
+        mtk::Timer::instance()->signal1c.disconnect(this, &std::remove_reference<decltype(*this)>::type::__METHOD_NAME1__);
 
 
 
 #define MTK_TIMER_1D(__METHOD_NAME1__)\
-        mtk::Timer::instance()->signal1d.connect(this, &CLASS_NAME::__METHOD_NAME1__);
+        mtk::Timer::instance()->signal1d.connect(this, &std::remove_reference<decltype(*this)>::type::__METHOD_NAME1__);
 
 #define MTK_TIMER_1D_STOP(__METHOD_NAME1__)\
-        mtk::Timer::instance()->signal1d.disconnect(this, &CLASS_NAME::__METHOD_NAME1__);
+        mtk::Timer::instance()->signal1d.disconnect(this, &std::remove_reference<decltype(*this)>::type::__METHOD_NAME1__);
 
 
 
@@ -90,9 +90,8 @@ namespace mtk {
 
 
 
-class Timer : public SignalReceptor 
+class Timer : public SignalReceptor
 {
-    typedef     Timer  CLASS_NAME;       //  <<--------------------
     mtk::non_copyable nc;
 
 
@@ -115,7 +114,7 @@ public:
     };
 
 
-	
+
 
 
 public:
@@ -123,8 +122,8 @@ public:
     mtk::Signal<>   signal1c;
     mtk::Signal<>   signal1d;
     mtk::Signal<>   signal1s;
-    
-    
+
+
 
 
 

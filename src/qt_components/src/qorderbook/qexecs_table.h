@@ -27,7 +27,6 @@ namespace mtk { namespace trd { namespace hist { class  order_exec_item; }}};
 class QExecsTable : public QWidget , public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  QExecsTable CLASS_NAME;
 
 public:
     explicit QExecsTable(QWidget *parent = 0);
@@ -62,7 +61,6 @@ protected:
 class QExecsTable_ALL_execs : public QExecsTable //, public mtk::SignalReceptor     father has it
 {
     Q_OBJECT
-    typedef  QExecsTable_ALL_execs  CLASS_NAME;
 
 public:
     explicit QExecsTable_ALL_execs(QWidget *parent = 0);
@@ -96,7 +94,6 @@ private:
 class QExecsTable_one_order : public QExecsTable //, public mtk::SignalReceptor     father has it
 {
     Q_OBJECT
-    typedef  QExecsTable_one_order  CLASS_NAME;
 
 public:
     explicit QExecsTable_one_order(QWidget *parent = 0);

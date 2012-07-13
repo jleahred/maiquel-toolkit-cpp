@@ -17,7 +17,6 @@ class Exec_in_table;
 class QHistoricTable : public   QTableWidget , public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  QHistoricTable   CLASS_NAME;
 
 public:
     explicit QHistoricTable(QWidget *parent = 0);

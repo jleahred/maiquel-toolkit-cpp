@@ -28,7 +28,6 @@ namespace YAML { class Emitter;  class Node;      };
 class QDepth : public mtkContainerWidget, public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  QDepth CLASS_NAME;
     friend class QTableDeph;
     friend YAML::Emitter&   operator << (YAML::Emitter&       out, const QDepth& m);
     friend void             operator >> (const YAML::Node&   node,       QDepth& d);

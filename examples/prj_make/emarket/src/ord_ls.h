@@ -37,7 +37,6 @@ class ord_ls_dangerous_signals_not_warped;
 class ord_ls   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
-    typedef  ord_ls  CLASS_NAME;
 
 public:
     explicit ord_ls ();
@@ -99,7 +98,6 @@ private:
 class ord_ls_dangerous_signals_not_warped   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
-    typedef  ord_ls_dangerous_signals_not_warped  CLASS_NAME;
 
 
 public:

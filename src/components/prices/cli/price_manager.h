@@ -64,8 +64,6 @@ mtk::CountPtr<mtk::Signal<>  >  get_signal_too_many_subscriptions_last_ex_mk_tic
 
 class price_manager :  public mtk::SignalReceptor
 {
-    typedef  price_manager  CLASS_NAME;
-
 public:
 	price_manager(const mtk::msg::sub_product_code&  product_code);
     ~price_manager() {}
@@ -101,8 +99,6 @@ private:
 //  class internal_price_manager__factory        INTERNAL
 class internal_price_manager__factory :  public mtk::SignalReceptor
 {
-    typedef  internal_price_manager__factory  CLASS_NAME;
-
 public:
 	internal_price_manager__factory(const mtk::msg::sub_product_code&  product_code);
 	~internal_price_manager__factory();

@@ -27,7 +27,6 @@ namespace mtk { namespace trd { namespace hist { class  order_exec_item_acc_by_p
 class QExecsTable_acc : public QWidget , public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  QExecsTable_acc CLASS_NAME;
 
 public:
     explicit QExecsTable_acc(QWidget *parent = 0);

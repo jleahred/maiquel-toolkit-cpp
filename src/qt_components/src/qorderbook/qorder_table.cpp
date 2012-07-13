@@ -383,7 +383,6 @@ bool  is_full_executed(const  ORDER_TYPE&  order)
 template<typename  ORDER_TYPE>
 class order_in_qbook_xx  :    public  order_in_qbook
 {
-    typedef order_in_qbook_xx  CLASS_NAME;
 public:
     mtk::CountPtr<ORDER_TYPE>                 inner_order;
 
@@ -665,7 +664,6 @@ class order_in_qbook_XX<mtk::trd::trd_cli_ls>  :
                                             public  order_in_qbook_xx<mtk::trd::trd_cli_ls>,
                                             public mtk::SignalReceptor
 {
-    typedef order_in_qbook_XX  CLASS_NAME;
 public:
     order_in_qbook_XX(QTableWidget* table_widget, const mtk::CountPtr<mtk::trd::trd_cli_ls>& order)
         : order_in_qbook_xx<mtk::trd::trd_cli_ls>(table_widget, order)
@@ -697,7 +695,6 @@ class order_in_qbook_XX<mtk::trd::trd_cli_mk>  :
                                     public  order_in_qbook_xx<mtk::trd::trd_cli_mk>,
                                     public mtk::SignalReceptor
 {
-    typedef order_in_qbook_XX  CLASS_NAME;
 public:
     order_in_qbook_XX(QTableWidget *table_widget, const mtk::CountPtr<mtk::trd::trd_cli_mk>& order)
         : order_in_qbook_xx<mtk::trd::trd_cli_mk>(table_widget, order)
@@ -726,7 +723,6 @@ class order_in_qbook_XX<mtk::trd::trd_cli_sm>  :
                                     public  order_in_qbook_xx<mtk::trd::trd_cli_sm>,
                                     public mtk::SignalReceptor
 {
-    typedef order_in_qbook_XX  CLASS_NAME;
 public:
     order_in_qbook_XX(QTableWidget *table_widget, const mtk::CountPtr<mtk::trd::trd_cli_sm>& order)
         : order_in_qbook_xx<mtk::trd::trd_cli_sm>(table_widget, order)
@@ -756,7 +752,6 @@ class order_in_qbook_XX<mtk::trd::trd_cli_sl>  :
                                     public  order_in_qbook_xx<mtk::trd::trd_cli_sl>,
                                     public mtk::SignalReceptor
 {
-    typedef order_in_qbook_XX  CLASS_NAME;
 public:
     order_in_qbook_XX(QTableWidget *table_widget, const mtk::CountPtr<mtk::trd::trd_cli_sl>& order)
         : order_in_qbook_xx<mtk::trd::trd_cli_sl>(table_widget, order)

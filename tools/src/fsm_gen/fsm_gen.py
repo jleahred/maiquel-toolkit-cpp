@@ -185,7 +185,6 @@ class ${CLASSNAME}_dangerous_signals_not_warped;
 class ${CLASSNAME}   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
-    typedef  ${CLASSNAME}  CLASS_NAME;
 
 public:
     explicit ${CLASSNAME} ();
@@ -227,7 +226,6 @@ private:
 class ${CLASSNAME}_dangerous_signals_not_warped   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
-    typedef  ${CLASSNAME}_dangerous_signals_not_warped  CLASS_NAME;
 
 
 public:
@@ -869,7 +867,6 @@ def generate_impl_STATUS_CLASS(statusinfo):
 class $CLASS_NAME  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef $CLASS_NAME  CLASS_NAME;
 
 public:
     $CLASS_NAME ($CLASS_PARAMS)

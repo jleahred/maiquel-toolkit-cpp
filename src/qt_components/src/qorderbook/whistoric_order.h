@@ -22,7 +22,6 @@ namespace mtk { namespace trd {  namespace msg  {  class sub_order_id;  } } };
 class whistoric_order : public QDialog,  public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  whistoric_order  CLASS_NAME;
     template<typename  ORDER_TYPE>  friend void fill_from(whistoric_order*, ORDER_TYPE&);
 
 public:

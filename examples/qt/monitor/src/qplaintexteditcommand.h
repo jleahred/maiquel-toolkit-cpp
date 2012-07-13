@@ -12,7 +12,6 @@ class QListProcesses;
 class QPlainTextEditCommand : public QPlainTextEdit,  public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef QPlainTextEditCommand  CLASS_NAME;
 public:
     explicit QPlainTextEditCommand(QWidget* parent);
 

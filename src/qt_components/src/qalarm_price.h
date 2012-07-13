@@ -63,8 +63,6 @@ private:
 class marginal_in_table_alarm : public  QObject, public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  marginal_in_table_alarm CLASS_NAME;
-
 public:
     enum            en_status  {  non_initialized,  ready_to_activate,  activated,  ended  };
     en_status       status;
@@ -129,7 +127,6 @@ private:
 class QTableAlarmPrice : public QTableWidget
 {
     Q_OBJECT
-    typedef  QTableAlarmPrice CLASS_NAME;
     friend YAML::Emitter&   operator << (YAML::Emitter&       out, const  QTableAlarmPrice& m);
     friend void             operator >> (const YAML::Node&   node,        QTableAlarmPrice& m);
 
@@ -197,7 +194,6 @@ private:
 class QAlarmPrice : public mtkContainerWidget
 {
     Q_OBJECT
-    typedef  QAlarmPrice CLASS_NAME;
     friend YAML::Emitter&   operator << (YAML::Emitter&       out, const QAlarmPrice& m);
     friend void             operator >> (const YAML::Node&   node,       QAlarmPrice& m);
 

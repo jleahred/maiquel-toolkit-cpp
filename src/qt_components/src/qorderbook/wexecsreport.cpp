@@ -174,7 +174,7 @@ WExecsReport::WExecsReport(QWidget *parent) :
     {
         //      accounts
         if(ecimd_config::loss_win() == true)
-            mtk::accmgrcli::get_signal_new_grant_received()->connect(this, &CLASS_NAME::on_grant_received);
+            mtk::accmgrcli::get_signal_new_grant_received()->connect(this, &WExecsReport::on_grant_received);
         mtk::list<mtk::trd::account::msg::sub_grant>  grant_list  = mtk::accmgrcli::get_grant_list();
         for(auto it = grant_list.begin(); it!=grant_list.end(); ++it)
             on_grant_received(*it);
@@ -213,8 +213,6 @@ mtk::FixedNumber  subs_fixed_numbers(const mtk::FixedNumber& val1, const mtk::Fi
 
 class QTreeWidgetItem_alarm__account : public  QTreeWidgetItem,   public  mtk::SignalReceptor
 {
-    typedef  QTreeWidgetItem_alarm__account  CLASS_NAME;
-
 protected:
     mtk::trd::msg::sub_account_info     account;
     mtk::Double                         alarm;
@@ -445,8 +443,6 @@ mtk::Double   calculate_win_loss(                       const mtk::Double&      
 
 class QTreeWidgetItem_exec__Product  : public  QTreeWidgetItem_exec,   public  mtk::SignalReceptor
 {
-    typedef  QTreeWidgetItem_exec__Product     CLASS_NAME;
-
     void local_add_exec(const mtk::trd::msg::CF_XX&  /*confirm_info*/, const mtk::trd::msg::sub_exec_conf& /*exec*/)
     {
         mtk::FixedNumber  diff_quantity = subs_fixed_numbers(buy_quantity, sell_quantity);

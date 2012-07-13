@@ -16,7 +16,6 @@ class QListWidgetItem_ka;
 
 class QListProcesses : public QListWidget  , public mtk::SignalReceptor
 {
-    typedef  QListProcesses  CLASS_NAME;
     Q_OBJECT
 public:
     explicit QListProcesses(QWidget *parent = 0);

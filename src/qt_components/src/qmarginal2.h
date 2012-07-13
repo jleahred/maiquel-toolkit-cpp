@@ -33,8 +33,6 @@ namespace YAML { class Emitter;  class Node;      };
 
 class marginal_in_table2 : public mtk::SignalReceptor
 {
-    typedef  marginal_in_table2 CLASS_NAME;
-
 public:
     marginal_in_table2(const mtk::msg::sub_product_code& product_code);
     const int id;
@@ -89,7 +87,6 @@ public:
 class qmarginal_table_model  : public  QAbstractTableModel,   public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  qmarginal_table_model   CLASS_NAME;
 
 public:
     qmarginal_table_model(QObject* parent=0);
@@ -155,7 +152,7 @@ private:
 class QTableMarginal2 : public QTableView,   public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  QTableMarginal2 CLASS_NAME;
+
     friend YAML::Emitter&   operator << (YAML::Emitter&       out, const  QTableMarginal2& m);
     friend void             operator >> (const YAML::Node&   node,        QTableMarginal2& m);
 
@@ -253,7 +250,6 @@ private:
 class QMarginal2 : public mtkContainerWidget
 {
     Q_OBJECT
-    typedef  QMarginal2 CLASS_NAME;
     friend YAML::Emitter&   operator << (YAML::Emitter&       out, const QMarginal2& m);
     friend void             operator >> (const YAML::Node&   node,       QMarginal2& m);
 

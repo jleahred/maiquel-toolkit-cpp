@@ -15,24 +15,21 @@
 
 class Pr  : public mtk::SignalReceptor          //  <2>
 {
-    typedef     Pr    CLASS_NAME;               //  <3>
-
-
 public:
 
-    void AsyncDelayedCall_Overflow(std::string description) //  <4>
+    void AsyncDelayedCall_Overflow(std::string description) //  <3>
     {
         std::cout << description << std::endl;
     }
 
-    #if NO_COMPILAR             //  <5>
+    #if NO_COMPILAR             //  <4>
     void MandaNumero(int p)
     #endif
-    MTK_ASYNC_DELAYED_CALL_DI(MandaNumero, int, 1, mtk::dtMilliseconds(100), 200)    //  <6>
+    MTK_ASYNC_DELAYED_CALL_DI(MandaNumero, int, 1, mtk::dtMilliseconds(100), 200)    //  <5>
 
         std::cout << p << std::endl ;
 
-    MTK_ASYNC_DELAYED_CALL_END_I            //  <7>
+    MTK_ASYNC_DELAYED_CALL_END_I            //  <6>
 
 
 };
@@ -48,7 +45,7 @@ int main()
     Pr pr1;
 
 
-    for(int i=0; i<205; ++i)   //  <8>
+    for(int i=0; i<205; ++i)   //  <7>
     {
         std::cout << "Que lo mandoooo..."  << i << std::endl;
         pr1.MandaNumero(i);

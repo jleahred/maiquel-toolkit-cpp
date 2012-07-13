@@ -187,8 +187,6 @@ bool  merge__and_return_if_has_to_be_queued(mtk::CountPtr<item<mtk::prices::msg:
 template<typename T_INFO_TO_SEND>       //      i.e.  mtk::prices::msg::sub_best_prices
 class   contention_queue   :    public  mtk::SignalReceptor
 {
-    typedef  contention_queue  CLASS_NAME;
-
 public:
     contention_queue(void)
     {

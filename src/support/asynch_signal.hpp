@@ -50,7 +50,6 @@ class async_signal_last
         <null_type, null_type, null_type, null_type, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_last  CLASS_NAME;
 public:
 
     mtk::Signal<>       signal;
@@ -99,8 +98,6 @@ class async_signal_last
         <TP0, null_type, null_type, null_type, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_last  CLASS_NAME;
-
 public:
 
     mtk::Signal<TP0>       signal;
@@ -162,8 +159,6 @@ class async_signal_last
         <TP0, TP1, null_type, null_type, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_last  CLASS_NAME;
-
 public:
 
     mtk::Signal<TP0, TP1>       signal;
@@ -221,8 +216,6 @@ class async_signal_last
         <TP0, TP1, TP2, null_type, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_last  CLASS_NAME;
-
 public:
 
     mtk::Signal<TP0, TP1, TP2>       signal;
@@ -277,8 +270,6 @@ class async_signal_last
         <TP0, TP1, TP2, TP3, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_last  CLASS_NAME;
-
 public:
 
     mtk::Signal<TP0, TP1, TP2, TP3>       signal;
@@ -353,8 +344,6 @@ class async_signal_all
         <TP0, null_type, null_type, null_type, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_all  CLASS_NAME;
-
 public:
 
     mtk::Signal<TP0>       signal;
@@ -413,8 +402,6 @@ class async_signal_all
         <TP0, TP1, null_type, null_type, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_all  CLASS_NAME;
-
 public:
 
     mtk::Signal<TP0, TP1>       signal;
@@ -483,8 +470,6 @@ class async_signal_all
         <TP0, TP1, TP2, null_type, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_all  CLASS_NAME;
-
 public:
 
     mtk::Signal<TP0, TP1, TP2>       signal;
@@ -544,8 +529,6 @@ class async_signal_all
         <TP0, TP1, TP2, TP3, null_type>
         :   public SignalReceptor//,public non_copyable (implicit)
 {
-    typedef  async_signal_all  CLASS_NAME;
-
 public:
 
     mtk::Signal<TP0, TP1, TP2, TP3>       signal;

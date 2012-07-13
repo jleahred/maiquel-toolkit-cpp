@@ -41,7 +41,6 @@ public:
 class WExecsReport : public QDialog,  public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef WExecsReport  CLASS_NAME;
 
 public:
     explicit WExecsReport(QWidget *parent = 0);

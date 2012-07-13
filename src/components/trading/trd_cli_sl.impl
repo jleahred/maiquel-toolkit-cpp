@@ -568,7 +568,6 @@ public:
 class init  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef init  CLASS_NAME;
 
 public:
     init (mtk::CountPtr<status_common_info> _ci)
@@ -611,7 +610,6 @@ public:
 class w_cfnw  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_cfnw  CLASS_NAME;
 
 public:
     w_cfnw (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
@@ -663,7 +661,6 @@ public:
 class market  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef market  CLASS_NAME;
 
 public:
     market (mtk::CountPtr<status_common_info> _ci)
@@ -706,7 +703,6 @@ public:
 class w_cfmd  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_cfmd  CLASS_NAME;
 
 public:
     w_cfmd (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
@@ -758,7 +754,6 @@ public:
 class w_cfcc  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_cfcc  CLASS_NAME;
 
 public:
     w_cfcc (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
@@ -810,7 +805,6 @@ public:
 class w_cfmdcc  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_cfmdcc  CLASS_NAME;
 
 public:
     w_cfmdcc (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
@@ -862,7 +856,6 @@ public:
 class w_cfnwmd  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_cfnwmd  CLASS_NAME;
 
 public:
     w_cfnwmd (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
@@ -914,7 +907,6 @@ public:
 class w_cfnwcc  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_cfnwcc  CLASS_NAME;
 
 public:
     w_cfnwcc (mtk::CountPtr<status_common_info> _ci,  const mtk::dtTimeQuantity                         & _check_time_out)
@@ -966,7 +958,6 @@ public:
 class canceled  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef canceled  CLASS_NAME;
 
 public:
     canceled (mtk::CountPtr<status_common_info> _ci)
@@ -1013,7 +1004,6 @@ public:
 class triggered  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef triggered  CLASS_NAME;
 
 public:
     triggered (mtk::CountPtr<status_common_info> _ci)
@@ -1060,7 +1050,6 @@ public:
 class error  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef error  CLASS_NAME;
 
 public:
     error (mtk::CountPtr<status_common_info> _ci,  const std::string                                      & _description)

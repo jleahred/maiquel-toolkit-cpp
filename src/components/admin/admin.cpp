@@ -62,8 +62,6 @@ namespace {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     class admin_status   :  public  mtk::SignalReceptor
     {
-        typedef  admin_status  CLASS_NAME;
-
         struct command_info {
             mtk::non_copyable nc;
 
@@ -472,7 +470,6 @@ namespace {
         send_enter_and_start_keepalive();
 
 
-        //register_command("ADMIN", "help", "")->connect(this, &CLASS_NAME::command_help);
         MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "help",                 ""),                                                command_help)
 
         MTK_CONNECT_THIS(*register_command("__GLOBAL__",    "ver",                  ""),                                                command_version_app)

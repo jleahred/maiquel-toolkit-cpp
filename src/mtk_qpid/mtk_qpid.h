@@ -142,7 +142,7 @@
                                                                                                                                             mtk::t_qpid_address(__MSG_TYPE__::static_get_qpid_address()), \
                                                                                                                                             __FILTER__));     \
         __MTK_CHECK_NON_DEPRECIATED_THIS(__MSG_TYPE__)     \
-        __internal_handler__->signalMessage->connect(this, &CLASS_NAME::__FUNCT_RECEPTOR__);     \
+        __internal_handler__->signalMessage->connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -153,7 +153,7 @@
                                                                                                                                             mtk::t_qpid_address(__MSG_TYPE__::static_get_qpid_address()), \
                                                                                                                                             __FILTER__));     \
         __MTK_CHECK_DEPRECIATED_THIS(__MSG_TYPE__,  __DEPRECIATED_DATE__)     \
-        __internal_handler__->signalMessage->connect(this, &CLASS_NAME::__FUNCT_RECEPTOR__);     \
+        __internal_handler__->signalMessage->connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -189,7 +189,7 @@
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
                                             mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
         __MTK_CHECK_NON_DEPRECIATED_THIS(__MSG_TYPE__)     \
-        __internal_handler__->signalMessage->connect(this, &CLASS_NAME::__FUNCT_RECEPTOR__);     \
+        __internal_handler__->signalMessage->connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -198,7 +198,7 @@
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
                                             mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
         __MTK_CHECK_DEPRECIATED_THIS(__MSG_TYPE__,  __DEPRECIATED_DATE__)     \
-        __internal_handler__->signalMessage->connect(this, &CLASS_NAME::__FUNCT_RECEPTOR__);     \
+        __internal_handler__->signalMessage->connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -227,7 +227,6 @@ void __internal_mtk_qpid_nevercall_me_release_on_exit(void);
 
 struct mtkqpid_session   :  public  mtk::SignalReceptor
 {
-    typedef  mtkqpid_session  CLASS_NAME;
 
 private:
     qpid::messaging::Connection         connection;
@@ -435,7 +434,6 @@ private:
 
 class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
     mtk::non_copyable nc;
-    typedef handle_qpid_exchange_receiver CLASS_NAME;
 
     public:
         explicit handle_qpid_exchange_receiver(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
@@ -497,7 +495,6 @@ inline mtk::CountPtr< mtk::handle_qpid_exchange_receiver> create_instance_for_fa
 template<typename MESSAGE_TYPE>
 class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
     mtk::non_copyable nc;
-    typedef handle_qpid_exchange_receiverMT CLASS_NAME;
 
     public:
         explicit handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);

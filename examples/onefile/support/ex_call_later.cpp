@@ -15,8 +15,6 @@
 
 class TestCallLater : public mtk::SignalReceptor    //<<-------------------
 {
-    typedef     TestCallLater  CLASS_NAME;  //<<-------------------
-
 private:
 
 public:

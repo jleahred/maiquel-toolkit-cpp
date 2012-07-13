@@ -14,8 +14,6 @@ namespace  emarket {  class  sub_product_config;  };
 
 
 class check_request : public mtk::SignalReceptor {
-typedef check_request CLASS_NAME;
-
 public:
     void  init(void);
 

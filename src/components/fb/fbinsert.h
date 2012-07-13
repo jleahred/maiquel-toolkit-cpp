@@ -83,7 +83,6 @@ private:
 
 class fbInsert  :  public mtk::SignalReceptor
 {
-    typedef fbInsert CLASS_NAME;
     mtk::non_copyable nc;
 
 public:

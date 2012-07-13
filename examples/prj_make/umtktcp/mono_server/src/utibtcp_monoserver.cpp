@@ -24,7 +24,6 @@ class class_tcp_server
                             mtk::tcp_server_mono<mtk::tcp_base_socket> >
 {
     mtk::non_copyable noncopy;
-    typedef class_tcp_server  CLASS_NAME;
     
 public:
 

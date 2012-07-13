@@ -13,7 +13,6 @@ extern   mtk::alEnPriority  filter_alarm_priority(mtk::alEnPriority  orig_priori
 class QTableAlarms : public QTableWidget, public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef QTableAlarms  CLASS_NAME;
 
 public:
     explicit QTableAlarms(QWidget *parent = 0);

@@ -18,7 +18,6 @@ namespace Ui {
 class WExecsHistReport : public QDialog,  public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef WExecsHistReport  CLASS_NAME;
 
 public:
     explicit WExecsHistReport(QWidget *parent = 0);

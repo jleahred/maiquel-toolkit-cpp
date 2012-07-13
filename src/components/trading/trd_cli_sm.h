@@ -39,7 +39,6 @@ class trd_cli_sm_dangerous_signals_not_warped;
 class trd_cli_sm   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
-    typedef  trd_cli_sm  CLASS_NAME;
 
 public:
     explicit trd_cli_sm ();
@@ -114,7 +113,6 @@ private:
 class trd_cli_sm_dangerous_signals_not_warped   : public mtk::SignalReceptor
 {
     mtk::non_copyable nc;
-    typedef  trd_cli_sm_dangerous_signals_not_warped  CLASS_NAME;
 
 
 public:

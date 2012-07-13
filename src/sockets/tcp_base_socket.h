@@ -14,7 +14,6 @@ namespace mtk {
 
 class tcp_base_socket : public mtk::SignalReceptor
 {
-    typedef     tcp_base_socket  CLASS_NAME;
 	mtk::non_copyable non_copy;
 	
 

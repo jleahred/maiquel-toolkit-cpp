@@ -21,7 +21,7 @@
 
 
 
-#define MTK_CONNECT_THIS(CT_SIGNAL, CT_METHOD_NAME)     (CT_SIGNAL).connect(this, &CLASS_NAME::CT_METHOD_NAME);
+#define MTK_CONNECT_THIS(CT_SIGNAL, CT_METHOD_NAME)     (CT_SIGNAL).connect(this, &std::remove_reference<decltype(*this)>::type::CT_METHOD_NAME);
 
 
 

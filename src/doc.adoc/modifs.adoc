@@ -4,6 +4,22 @@ include::../../VERSION[]
 
 
 
+0.60  2012-::
+
+Fixed errors;;
+* pending
+
+New;;
+* pending
+
+Modif interfaz;;
+* +CLASS_NAME+  not needed anymore
+
+Other;;
+* pending
+
+
+
 0.58  2012-06-26::
 
 Fixed errors;;

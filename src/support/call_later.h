@@ -15,7 +15,7 @@
 
 
 #define MTK_CALL_LATER1S_THIS(__INTERVAL__, __DATA__, __METHOD__)  \
-        mtk::CallLaterFactory1S(__INTERVAL__, __DATA__).connect(this, &CLASS_NAME::__METHOD__);
+        mtk::CallLaterFactory1S(__INTERVAL__, __DATA__).connect(this, &std::remove_reference<decltype(*this)>::type::__METHOD__);
 
 #define MTK_CALL_LATER1S_F(__INTERVAL__, __DATA__, __FUNCTION__)  \
         mtk::CallLaterFactory1S(__INTERVAL__, __DATA__).connect(__FUNCTION__);
@@ -43,17 +43,17 @@ class __internal_call_later_emiter : public __internal_abstract_call_later_emite
     mtk::non_copyable nc;
 
 public:
-    __internal_call_later_emiter(mtk::DateTime _when, const T& _data) 
+    __internal_call_later_emiter(mtk::DateTime _when, const T& _data)
             : when (_when), data(_data) {}
 
     mtk::DateTime           when;
     mtk::Signal<const T&>   signal;
     T                       data;
-    virtual bool check_and_emit(void)  
-    {  
+    virtual bool check_and_emit(void)
+    {
         if (when <= mtk::dtNowLocal())
         {
-            signal.emit(data);  
+            signal.emit(data);
             return true;
         }
         else return false;

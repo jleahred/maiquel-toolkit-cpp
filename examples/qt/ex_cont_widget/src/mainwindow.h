@@ -16,7 +16,6 @@ namespace Ui {
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    typedef     MainWindow  CLASS_NAME;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

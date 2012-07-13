@@ -20,7 +20,6 @@ namespace mtk {
 
 class tcp_base_socket_writelock : public mtk::SignalReceptor
 {
-    typedef     tcp_base_socket_writelock  CLASS_NAME;
 	mtk::non_copyable non_copy;
 	
 

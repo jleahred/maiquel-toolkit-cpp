@@ -337,12 +337,6 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     }
 
 
-    template<typename T>
-    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
-    {
-        if (n.HasValue())
-            __internal_add2map(map, n.Get(), key);
-    }
 
     inline void __internal_add2map (qpid::types::Variant::Map& map, const mtk::DateTime& a, const std::string& key)
     {
@@ -377,6 +371,13 @@ void  copy (mtk::list<T>& result, const qpid::types::Variant& v)
     }
 
 
+    template<typename T>
+    void  __internal_add2map  (qpid::types::Variant::Map& map, const mtk::nullable<T>& n, const std::string& key)
+    {
+        if (n.HasValue())
+            __internal_add2map(map, n.Get(), key);
+    }
+
     //  for composed types
     template<typename T>
     void  __internal_add2map(qpid::types::Variant::Map& map, const T& t, const std::string& key)
@@ -399,25 +400,33 @@ sub_product_config::sub_product_config (   const std::string&  _product_name,   
     :     product_name(_product_name),   product_user_name(_product_user_name),   group(_group),   group_user_name(_group_user_name),   price_fnext(_price_fnext) 
        
     {  
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                    MTK_SS(cr<<*this), mtk::alPriorError));
     }
 
 
 
-std::string sub_product_config::check_recomended(void) const
+void  sub_product_config::check_recomended(void) const
 {
-    std::string result;
 
-    return result;
 }
 
 void sub_product_config::before_send(void) const
 {
 
 }
+
+
+
+    //    generate_class_qpid_variant_in_impl
+    
+sub_product_config__qpid_map::sub_product_config__qpid_map (   const std::string&  _product_name,   const std::string&  _product_user_name,   const std::string&  _group,   const std::string&  _group_user_name,   const mtk::fnExt&  _price_fnext)
+      :  m_static( 
+   _product_name,
+   _product_user_name,
+   _group,
+   _group_user_name,
+   _price_fnext) 
+    {  
+    }
 
 
 
@@ -470,10 +479,9 @@ bool operator!= (const sub_product_config& a, const sub_product_config& b)
 
 
 
-//void  __internal_qpid_fill (sub_product_config& c, std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv)
 void  copy (sub_product_config& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -517,14 +525,21 @@ void  copy (sub_product_config& c, const qpid::types::Variant& v)
                         copy(c.price_fnext, it->second);
                         //c.price_fnext = it->second;
 
+        c.check_recomended ();
     }
 
+
+void  copy (sub_product_config__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
 
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_config& a)
 {
 
     a.before_send();
-
+    a.check_recomended();
 
 //  field_type
         __internal_add2map(map, a.product_name, std::string("pn"));
@@ -541,7 +556,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_confi
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_product_config__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_config>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_product_config__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -567,9 +598,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub
             );
     }
     
-
-sub_product_config::sub_product_config (const qpid::messaging::Message& msg)
-    :  //   field_type
+sub_product_config::sub_product_config (const qpid::types::Variant::Map&  mv)
+     : //   field_type
    product_name(__internal_get_default((std::string*)0)),
 //   field_type
    product_user_name(__internal_get_default((std::string*)0)),
@@ -580,16 +610,16 @@ sub_product_config::sub_product_config (const qpid::messaging::Message& msg)
 //   field_type
    price_fnext(__internal_get_default((mtk::fnExt*)0)) 
     {
-        qpid::types::Variant::Map mv;
-        qpid::messaging::decode(msg, mv);
-        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> map = mv;
-        copy(*this, map);
-        std::string cr = check_recomended ();  
-        if (cr!= "")
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "msg_build", 
-                MTK_SS(cr<<*this), mtk::alPriorError));
+        copy(*this, mv);
+        check_recomended ();  
     }
 
+
+sub_product_config__qpid_map::sub_product_config__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 
 
 };   //namespace emarket {

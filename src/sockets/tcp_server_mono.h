@@ -36,7 +36,6 @@ namespace mtk {
 template <typename LOW_SOCKET>
 class tcp_server_mono : public LOW_SOCKET
 {
-    typedef     tcp_server_mono  CLASS_NAME;
 	mtk::non_copyable non_copy;
 
 public:

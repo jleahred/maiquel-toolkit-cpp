@@ -268,7 +268,6 @@ public:
 class logout  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef logout  CLASS_NAME;
 
 public:
     logout (mtk::CountPtr<status_common_info> _ci)
@@ -312,7 +311,6 @@ protected:
 class w_key  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_key  CLASS_NAME;
 
 public:
     w_key (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::req_login_key                                                            & _req_key, const std::string                                                                             & _password)
@@ -374,7 +372,6 @@ protected:
 class w_login  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_login  CLASS_NAME;
 
 public:
     w_login (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::req_login                                                               & _req_login)
@@ -432,7 +429,6 @@ protected:
 class login_ok  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef login_ok  CLASS_NAME;
 
 public:
     login_ok (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::res_login                                                               & _login_confirmed)
@@ -491,7 +487,6 @@ protected:
 class w_k_chp  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_k_chp  CLASS_NAME;
 
 public:
     w_k_chp (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::res_login                                                                & _login_confirmed, const mtk::acs::msg::req_login_key                                                            & _req_key, const std::string                                                                             & _old_password, const std::string                                                                             & _new_password)
@@ -575,7 +570,6 @@ protected:
 class w_chpwd  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef w_chpwd  CLASS_NAME;
 
 public:
     w_chpwd (mtk::CountPtr<status_common_info> _ci,  const mtk::acs::msg::res_login                                                                  & _login_confirmed, const mtk::acs::msg::req_change_password                                                        & _req_change_password)

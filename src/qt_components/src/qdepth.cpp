@@ -108,9 +108,6 @@ void QDepthDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option
 
 class QTableDeph : public QTableWidget, public mtk::SignalReceptor
 {
-    typedef  QTableDeph   CLASS_NAME;
-
-
 public:
     QTableDeph(QDepth* _depth)
             :   QTableWidget(_depth),

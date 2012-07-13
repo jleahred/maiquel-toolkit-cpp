@@ -42,7 +42,6 @@ namespace Ui {
 class MainWindow : public QMainWindow,   public  mtk::SignalReceptor            // <3>
 {
     Q_OBJECT
-    typedef     MainWindow  CLASS_NAME;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

@@ -19,7 +19,6 @@ namespace mtk { namespace trd {  namespace msg  {  class sub_order_id;  } } };
 class QOrderBook : public QWidget//, public mtk::SignalReceptor
 {
     Q_OBJECT
-    //typedef  QOrderBook CLASS_NAME;
     friend YAML::Emitter& operator<< (YAML::Emitter    & out , const QOrderBook& m);
     friend void           operator>> (const YAML::Node & i   ,       QOrderBook& m);
 

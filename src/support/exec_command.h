@@ -23,7 +23,6 @@ namespace mtk {
 
 class  exec_command  :    public  mtk::SignalReceptor
 {
-    typedef  exec_command  CLASS_NAME;
 public:
     //  INIT
     exec_command(const mtk::dtTimeQuantity&  time_out);

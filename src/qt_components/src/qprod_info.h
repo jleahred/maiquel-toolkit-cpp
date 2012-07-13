@@ -26,7 +26,6 @@ namespace YAML { class Emitter;  class Node;      };
 class QProd_info : public mtkContainerWidget, public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  QProd_info   CLASS_NAME;
     friend YAML::Emitter&   operator << (YAML::Emitter&       out, const QProd_info& m);
     friend void             operator >> (const YAML::Node&   node,       QProd_info& d);
     /*

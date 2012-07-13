@@ -83,7 +83,6 @@ struct   Config
 class Monitor : public QMainWindow,   public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef Monitor  CLASS_NAME;
 
 public:
     explicit Monitor(const std::string&  _config_file_name, QWidget *parent = 0);

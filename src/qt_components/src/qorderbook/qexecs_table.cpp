@@ -51,7 +51,6 @@ namespace {
 //----------------------------------------------------------------------------------------------------
 class Exec_in_table  : public mtk::SignalReceptor
 {
-    typedef Exec_in_table  CLASS_NAME;
 public:
 
     QTableWidgetItem**                  items;

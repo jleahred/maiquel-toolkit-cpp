@@ -112,8 +112,6 @@ private:
 //----------------------------------------------------------------------------------------
 class internal_orders_book : public mtk::SignalReceptor
 {
-typedef internal_orders_book  CLASS_NAME;
-
     mtk::map<mtk::trd::msg::sub_order_id, mtk::CountPtr<ord_ls> >    orders_by_id;
     mtk::map<mtk::msg::sub_product_code, orders_in_product_queue >   queue_by_product;
 

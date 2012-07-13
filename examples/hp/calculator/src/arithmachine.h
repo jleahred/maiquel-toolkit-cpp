@@ -164,8 +164,6 @@ private:
 class Functions_Basic : public mtk::SignalReceptor
 {
 public:
-    typedef Functions_Basic CLASS_NAME;
-
 
     Functions_Basic(ArithMachine& am);
 

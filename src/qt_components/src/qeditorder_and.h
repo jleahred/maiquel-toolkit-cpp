@@ -16,7 +16,6 @@ namespace Ui {
 class QEditOrder_and : public QDialog, public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef  QEditOrder_and  CLASS_NAME;
 
 public:
     static  void  new_order(    const mtk::msg::sub_product_code&       pc,

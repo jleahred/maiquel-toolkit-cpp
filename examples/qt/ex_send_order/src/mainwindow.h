@@ -47,7 +47,6 @@ class MTK_Qt_timer_and_AlarmMsg : public QObject, public mtk::SignalReceptor    
 class MainWindow : public QMainWindow,   public  mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef MainWindow CLASS_NAME;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

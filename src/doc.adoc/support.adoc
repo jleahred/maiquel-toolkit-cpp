@@ -1174,7 +1174,7 @@ Macro name description::
 (mtk::dtSeconds(5), 11, CallAfter5s)  |  1 sec precision
 
 | MTK_CALL_LATER1S_**THIS** +
-(mtk::dtSeconds(5), 11, CallAfter5s)  | calling to a object method using +CLASS_NAME*
+(mtk::dtSeconds(5), 11, CallAfter5s)  | calling to a object method
 
 | MTK_CALL_LATER1S_THIS +
 (**mtk::dtSeconds(5)**, 11, CallAfter5s)  |  Call after 5 seconds
@@ -1329,12 +1329,11 @@ include::../../examples/onefile/support/ex_asyn_call_delay.cpp[]
 ----
 <1> Header
 <2> This class will receive signals
-<3> +CLASS_NAME+ definition for some macros
-<4> This method will trap async errors
-<5> Here is protected the original or normal method name (as documentation)
-<6> Here is the same transformed to work asynchronously
-<7> End implementation of async method
-<8> Here we call several times very fast +
+<3> This method will trap async errors
+<4> Here is protected the original or normal method name (as documentation)
+<5> Here is the same transformed to work asynchronously
+<6> End implementation of async method
+<7> Here we call several times very fast +
     Look that we call more than maximum configured
 
 

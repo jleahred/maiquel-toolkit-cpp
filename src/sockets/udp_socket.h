@@ -20,7 +20,6 @@ namespace mtk {
 
 class udp_socket : public mtk::SignalReceptor
 {
-    typedef     udp_socket  CLASS_NAME;
 	mtk::non_copyable non_copy;
 	
 

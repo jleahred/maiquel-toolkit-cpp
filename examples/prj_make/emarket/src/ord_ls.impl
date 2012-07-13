@@ -194,7 +194,6 @@ public:
 class init  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef init  CLASS_NAME;
 
 public:
     init (mtk::CountPtr<status_common_info> _ci)
@@ -226,7 +225,6 @@ public:
 class market  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef market  CLASS_NAME;
 
 public:
     market (mtk::CountPtr<status_common_info> _ci)
@@ -258,7 +256,6 @@ public:
 class canceled  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef canceled  CLASS_NAME;
 
 public:
     canceled (mtk::CountPtr<status_common_info> _ci)
@@ -290,7 +287,6 @@ public:
 class executed  :   public  abstract_status
 {
     mtk::non_copyable  nc;
-    typedef executed  CLASS_NAME;
 
 public:
     executed (mtk::CountPtr<status_common_info> _ci)

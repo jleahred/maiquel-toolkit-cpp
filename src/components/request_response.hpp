@@ -35,7 +35,7 @@ namespace mtk
                     mtk::__kamikaze_receive_r<__MSG_RESPONSE__>* kamikaze_response =     \
                             new mtk::__kamikaze_receive_r<__MSG_RESPONSE__>     \
                             ( __QPID_URL__, __SUBJECT__, __REQ_CONTEXT_INFO__);     \
-                    kamikaze_response->signal_received.connect(this, &CLASS_NAME::__METHOD_CALL__);  \
+                    kamikaze_response->signal_received.connect(this, &std::remove_reference<decltype(*this)>::type::__METHOD_CALL__);  \
                 }
 
 
@@ -49,7 +49,6 @@ namespace mtk
 template<typename MSG_T, typename DATA_T>
 class __kamikaze_r_response   :   public  mtk::SignalReceptor  {
     mtk::non_copyable  nc;
-    typedef __kamikaze_r_response  CLASS_NAME;
 
 public:
 	__kamikaze_r_response(     typename mtk::list< DATA_T >&   data,
@@ -121,7 +120,6 @@ void delete_later(__kamikaze_receive_r<MSG_T>* const & ptr_to_delete)
 template<typename MSG_T>
 class __kamikaze_receive_r   :   public  mtk::SignalReceptor  {
     mtk::non_copyable  nc;
-    typedef __kamikaze_receive_r  CLASS_NAME;
     friend void delete_later<MSG_T>(__kamikaze_receive_r<MSG_T>* const & ptr_to_delete);
 
 public:

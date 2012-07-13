@@ -12,7 +12,6 @@
 class qTreeProducts : public QTreeWidget, public mtk::SignalReceptor
 {
     Q_OBJECT
-    typedef qTreeProducts CLASS_NAME;
 
 public:
     explicit qTreeProducts(QWidget *parent = 0);

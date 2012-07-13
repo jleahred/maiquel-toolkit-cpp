@@ -14,9 +14,6 @@ mtk::Signal<int>    signalOneParam;
 
 
 class PrReceptor : public mtk::SignalReceptor{
-    typedef  PrReceptor  CLASS_NAME;
-
-
 public:
     PrReceptor()
     {
