@@ -42,8 +42,8 @@ public:
     explicit sub_test_key (    const std::string&  _name,   const std::string&  _address,   const std::string&  _telephone,   const std::string&  _email );
     explicit sub_test_key ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_test_key (){};
-    virtual std::string get_message_type_as_string       (void) const  { return "sub_test_key"; };
-    static  std::string static_get_message_type_as_string(void)        { return "sub_test_key"; };
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_test_key"; }
+    static  std::string static_get_message_type_as_string(void)        { return "sub_test_key"; }
     
     
 
@@ -87,6 +87,26 @@ public:
 
 
 
+        //  qpid_variant wrapper for dynamic
+        class sub_test_key__qpid_map
+        {
+        public:
+            explicit  sub_test_key__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  sub_test_key__qpid_map ( const sub_test_key&  c ) : m_static(c) {}
+            explicit  sub_test_key__qpid_map (    const std::string&  _name,   const std::string&  _address,   const std::string&  _telephone,   const std::string&  _email );
+            ~sub_test_key__qpid_map() {};
+            
+
+            sub_test_key                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
     
     
     
@@ -102,8 +122,26 @@ void __internal_add2map (qpid::types::Variant::Map& map, const sub_test_key& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_test_key>& a, const std::string& field);
 void copy (sub_test_key& a, const qpid::types::Variant& map);
 
+    
+    
+    
+//  fordward declarations  dynamic--------------------------------------------------------
+
+
+inline std::ostream& operator<< (std::ostream& o, const sub_test_key__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_test_key__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       sub_test_key__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const sub_test_key__qpid_map& a, const sub_test_key__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const sub_test_key__qpid_map& a, const sub_test_key__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_test_key__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_test_key__qpid_map>& a, const std::string& field);
+void copy (sub_test_key__qpid_map& a, const qpid::types::Variant& map);
+
     sub_test_key  __internal_get_default(sub_test_key *);
     
+        inline sub_test_key__qpid_map  __internal_get_default(sub_test_key__qpid_map *) { return  sub_test_key__qpid_map(__internal_get_default((sub_test_key*)0));  }
+
 
 };   //namespace test {
 

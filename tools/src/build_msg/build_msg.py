@@ -415,8 +415,9 @@ ${CLASS_NAME}__qpid_map::${CLASS_NAME_NOT_NESTED}__qpid_map ($CONSTRUCTOR_PARAMS
                                                         FIELD_NAME = field['FIELD_NAME']
                                                         )
             else:
-                CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   mtk::nullable<${FIELD_TYPE}> {},\n").substitute(
-                                                        FIELD_TYPE = FIELD_TYPE
+                CONSTRUCTOR_PARAMS_DEBUG_INIT += Template("   _$FIELD_NAME,\n").substitute(
+                                                        FIELD_TYPE = FIELD_TYPE,
+                                                        FIELD_NAME = field['FIELD_NAME']
                                                         )
         elif field.has_key('IN_MSG'):
             FIELD_TYPE = class_name + '::IC_' + field['IN_MSG'][0]

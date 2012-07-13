@@ -409,7 +409,7 @@ void  LimitPosition::check_recomended(void) const
 
     if (price.HasValue() == false)
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(10)) // I know it's for all instances
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", MTK_SS("sub_full_product_info::check_recomended  missing recomended field **price** on LimitPosition  " << *this), mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_recomended", MTK_SS("missing recomended field **price** on LimitPosition  " << *this), mtk::alPriorError));
         MTK_END_EXEC_MAX_FREC
 
 }
@@ -422,7 +422,7 @@ void LimitPosition::before_send(void) const
 
 
 
-RQ_NW_LS::RQ_NW_LS (   const std::string&  _order_id,   const std::string&  _cli_ref,   const LimitPosition&  _position,   const LimitPosition&  _positionnn,   const IC_control_fields_&  _control_fields_,   const IC_product_code&  _product_code,   const mtk::list<std::string >&  _names,   const mtk::list<LimitPosition >&  _postitions)
+RQ_NW_LS::RQ_NW_LS (   const std::string&  _order_id,   const std::string&  _cli_ref,   const LimitPosition&  _position,   const LimitPosition&  _positionnn,   const RQ_NW_LS::IC_control_fields_&  _control_fields_,   const RQ_NW_LS::IC_product_code&  _product_code,   const mtk::list<std::string >&  _names,   const mtk::list<LimitPosition >&  _postitions)
     :     order_id(_order_id),   cli_ref(_cli_ref),   position(_position),   positionnn(_positionnn),   control_fields_(_control_fields_),   product_code(_product_code),   names(_names),   postitions(_postitions) 
        , __internal_warning_control_fields(0)
     {  
@@ -502,6 +502,49 @@ void LimitPositionChild::before_send(void) const
 {
   std::cout  << "#send " << this->new_field << std::endl; 
 }
+
+
+
+    //    generate_class_qpid_variant_in_impl
+    
+LimitPosition__qpid_map::LimitPosition__qpid_map (   const mtk::FixedNumber&  _quantity)
+      :  m_static( 
+   mtk::nullable<std::string> {},
+   mtk::nullable<mtk::FixedNumber> {},
+   _quantity) 
+    {  
+    }
+
+
+
+    //    generate_class_qpid_variant_in_impl
+    
+RQ_NW_LS__qpid_map::RQ_NW_LS__qpid_map (   const std::string&  _order_id,   const std::string&  _cli_ref,   const LimitPosition&  _position,   const LimitPosition&  _positionnn,   const RQ_NW_LS::IC_control_fields_&  _control_fields_,   const RQ_NW_LS::IC_product_code&  _product_code,   const mtk::list<std::string >&  _names,   const mtk::list<LimitPosition >&  _postitions)
+      :  m_static( 
+   _order_id,
+   _cli_ref,
+   _position,
+   _positionnn,
+   _control_fields_,
+   _product_code,
+   _names,
+   _postitions) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   RQ_NW_LS__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+LimitPositionChild__qpid_map::LimitPositionChild__qpid_map ( const LimitPosition&  parent,   const std::string&  _new_field)
+      :  m_static( 
+parent,
+   _new_field) 
+    {  
+    }
 
 
 
@@ -740,8 +783,8 @@ bool operator!= (const LimitPositionChild& a, const LimitPositionChild& b)
 
 
 void  copy (LimitPosition& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -769,6 +812,12 @@ void  copy (LimitPosition& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (LimitPosition__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const LimitPosition& a)
 {
 
@@ -788,7 +837,23 @@ if (a.price.HasValue())
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const LimitPosition__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPosition>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPosition__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -799,8 +864,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<Lim
 
 
 void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -864,6 +929,12 @@ void  copy (RQ_NW_LS& c, const qpid::types::Variant& v)
     }
 
 
+void  copy (RQ_NW_LS__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
 void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a)
 {
 
@@ -892,7 +963,23 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS& a)
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -903,8 +990,8 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_
 
 
 void  copy (RQ_NW_LS::IC_control_fields_& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -943,19 +1030,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_cont
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS::IC_control_fields_>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
 
 void  copy (RQ_NW_LS::IC_product_code& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1004,19 +1082,10 @@ void __internal_add2map (qpid::types::Variant::Map& map, const RQ_NW_LS::IC_prod
 };
 
 
-void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<RQ_NW_LS::IC_product_code>& a, const std::string& field)
-{
-    if(a.HasValue())
-        __internal_add2map(map, a.Get(), field);
-}
-
-
-
-
 
 void  copy (LimitPositionChild& c, const qpid::types::Variant& v)
-    {  
-        const std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant> mv = v.asMap();
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
 copy(static_cast<LimitPosition&>(c), v);
         std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
 //   field_type
@@ -1031,6 +1100,12 @@ copy(static_cast<LimitPosition&>(c), v);
         c.check_recomended ();
     }
 
+
+void  copy (LimitPositionChild__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
 
 void __internal_add2map (qpid::types::Variant::Map& map, const LimitPositionChild& a)
 {
@@ -1047,7 +1122,23 @@ __internal_add2map(map, static_cast<const LimitPosition&>(a));
 };
 
 
+void __internal_add2map (qpid::types::Variant::Map& map, const LimitPositionChild__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPositionChild>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<LimitPositionChild__qpid_map>& a, const std::string& field)
 {
     if(a.HasValue())
         __internal_add2map(map, a.Get(), field);
@@ -1163,15 +1254,22 @@ __internal_get_default((LimitPosition*)0), //   field_type
     }
     
 LimitPosition::LimitPosition (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    quantity(__internal_get_default((mtk::FixedNumber*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
     }
 
+
+LimitPosition__qpid_map::LimitPosition__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 RQ_NW_LS::RQ_NW_LS (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    order_id(__internal_get_default((std::string*)0)),
 //   field_type
    cli_ref(__internal_get_default((std::string*)0)),
@@ -1192,8 +1290,15 @@ RQ_NW_LS::RQ_NW_LS (const qpid::types::Variant::Map&  mv)
         check_recomended ();  
     }
 
+
+RQ_NW_LS__qpid_map::RQ_NW_LS__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
 RQ_NW_LS::IC_control_fields_::IC_control_fields_ (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    clock_id(__internal_get_default((mtk::DateTime*)0)),
 //   field_type
    secuence(__internal_get_default((int32_t*)0)) 
@@ -1202,8 +1307,9 @@ RQ_NW_LS::IC_control_fields_::IC_control_fields_ (const qpid::types::Variant::Ma
         check_recomended ();  
     }
 
+
 RQ_NW_LS::IC_product_code::IC_product_code (const qpid::types::Variant::Map&  mv)
-    :  //   field_type
+     : //   field_type
    market(__internal_get_default((std::string*)0)),
 //   field_type
    product_code(__internal_get_default((std::string*)0)),
@@ -1214,13 +1320,21 @@ RQ_NW_LS::IC_product_code::IC_product_code (const qpid::types::Variant::Map&  mv
         check_recomended ();  
     }
 
+
 LimitPositionChild::LimitPositionChild (const qpid::types::Variant::Map&  mv)
-    :  LimitPosition(mv), //   field_type
+     : LimitPosition(mv), //   field_type
    new_field(__internal_get_default((std::string*)0)) 
     {
         copy(*this, mv);
         check_recomended ();  
     }
+
+
+LimitPositionChild__qpid_map::LimitPositionChild__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 mtk::t_qpid_filter  RQ_NW_LS::get_in_subject ()
     {
         return mtk::t_qpid_filter(MTK_SS("hola.pajaarito"));
