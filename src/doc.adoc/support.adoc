@@ -760,7 +760,7 @@ include::../../examples/onefile/support/test_resources_signal_slot.cpp[]
 
 
 
-=== Asyncrhonous signaling
+=== Asynchronous signaling
   support/asynch_signal.hpp
 
 * It has a emit method as +mtk::Signal+
@@ -775,14 +775,23 @@ async_signal_last::
 
 async_signal_all::
 * It will re-throw all signals with the maximum speed configured on constructor
---
-
++
 .Example ex_asynch_signal
 [source,{cpp}]
 ----
 include::../../examples/onefile/support/ex_asynch_signal.cpp[]
 ----
 
+
+async_signal_all_list::
+* It will re-throw an asynchronous signal with a list with all emits accumulated
++
+.Example ex_async_signal_all_list
+[source,{cpp}]
+----
+include::../../examples/onefile/support/ex_async_signal_all_list.cpp[]
+----
+--
 
 
 

@@ -27,6 +27,9 @@ template    <       typename TP0=null_type,
 class async_signal_last;
 
 
+
+
+
 template    <       typename TP0=null_type,
                     typename TP1=null_type,
                     typename TP2=null_type,
@@ -34,6 +37,12 @@ template    <       typename TP0=null_type,
                     typename TP4=null_type
             >
 class async_signal_all;
+
+
+
+
+
+
 
 
 
@@ -364,7 +373,7 @@ public:
         if(params2send.size() > max_queued)
         {
             MTK_EXEC_MAX_FREC(mtk::dtSeconds(60))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, next will be ignored", mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, ignoring messages", mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
             return;
         }
@@ -422,7 +431,7 @@ public:
         if(params2send.size() > max_queued)
         {
             MTK_EXEC_MAX_FREC(mtk::dtSeconds(60))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, next will be ignored", mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, ignoring messages", mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
             return;
         }
@@ -444,7 +453,7 @@ private:
         if(params2send.size() > max_queued)
         {
             MTK_EXEC_MAX_FREC(mtk::dtSeconds(60))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, next will be ignored", mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, ignoring messages", mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
             return;
         }
@@ -490,7 +499,7 @@ public:
         if(params2send.size() > max_queued)
         {
             MTK_EXEC_MAX_FREC(mtk::dtSeconds(60))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, next will be ignored", mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, ignoring messages", mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
             return;
         }
@@ -549,7 +558,7 @@ public:
         if(params2send.size() > max_queued)
         {
             MTK_EXEC_MAX_FREC(mtk::dtSeconds(60))
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, next will be ignored", mtk::alPriorError));
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async all", "too many messages queued, ignoring messages", mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
             return;
         }
@@ -585,8 +594,76 @@ private:
 
 
 
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//      async_signal_all_list
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+template <typename INFO, typename TP>
+class async_signal_all_list
+        :   public SignalReceptor//,public non_copyable (implicit)
+{
+public:
+    mtk::Signal<const INFO&, const mtk::list<TP>& >       signal;
+
+    async_signal_all_list(INFO _info, const mtk::dtTimeQuantity&   _max_frec, int _max_queued=200)
+    :  info(_info), max_frec(_max_frec), max_queued(_max_queued)
+    {
+        if(max_frec < mtk::dtMilliseconds(15))
+        {   MTK_TIMER_1C(on_timer);     }
+        else if(max_frec < mtk::dtMilliseconds(150))
+        {   MTK_TIMER_1D(on_timer);     }
+        else
+        {   MTK_TIMER_1S(on_timer);     }
+    }
+
+    void    emit(const TP& value)
+    {
+        if(params2send.size() > max_queued)
+        {
+            MTK_EXEC_MAX_FREC(mtk::dtSeconds(60))
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "on_signal async_signal_all_list", "too many messages queued, ignoring messages", mtk::alPriorError));
+            MTK_END_EXEC_MAX_FREC
+            return;
+        }
+        params2send.push_back(value);
+        on_timer();
+    }
+
+
+private:
+    INFO                                            info;
+    mtk::list<typename std::remove_reference<TP>::type>      params2send;
+    const mtk::dtTimeQuantity                       max_frec;
+    const size_t                                    max_queued;
+
+    void    on_timer(void)
+    {
+        MTK_EXEC_MAX_FREC_NO_FIRST(max_frec)
+            if(params2send.size() > 0)
+            {
+                signal.emit(info, params2send);
+                params2send.clear();
+            }
+        MTK_END_EXEC_MAX_FREC
+    }
+};
+
+
+
+
 };  //  end namespace mtk {
 
 
 #endif
+
 
