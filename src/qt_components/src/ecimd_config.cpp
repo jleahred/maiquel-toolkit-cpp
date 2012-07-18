@@ -12,6 +12,7 @@ namespace
         bool historic_execs;
         bool loss_win;
         bool new_order_and;
+        bool execs_ticker;
     };
 
 
@@ -33,7 +34,7 @@ namespace
 
         if(__config == 0)
         {
-            __config = new config{true, false, false, false, false};
+            __config = new config{true, false, false, false, false, false};
 
             if(mtk::admin::get_process_info().location.broker_code ==  "CANDORRA")
             {
@@ -42,6 +43,7 @@ namespace
                 __config->historic_execs        = true;
                 __config->loss_win              = true;
                 __config->new_order_and         = true;
+                __config->execs_ticker          = true;
             }
 
             else if(mtk::admin::get_process_info().location.broker_code ==  "CIMD")
@@ -51,6 +53,7 @@ namespace
                 __config->historic_execs        = true;
                 __config->loss_win              = true;
                 __config->new_order_and         = false;
+                __config->execs_ticker          = true;
             }
             else
             {
@@ -59,6 +62,7 @@ namespace
                 __config->historic_execs        = false;
                 __config->loss_win              = false;
                 __config->new_order_and         = false;
+                __config->execs_ticker          = false;
             }
 
             MTK_TIMER_1SF(timer_send_ecimd_config)
@@ -135,6 +139,6 @@ IMPLEMENT_CONFIG(market_orders)
 IMPLEMENT_CONFIG(historic_execs)
 IMPLEMENT_CONFIG(loss_win)
 IMPLEMENT_CONFIG(new_order_and)
-
+IMPLEMENT_CONFIG(execs_ticker)
 
 }

@@ -16,6 +16,7 @@
 #include "qt_components/src/qmarginal2.h"
 #include "qt_components/src/qalarm_price.h"
 #include "qt_components/src/qprod_info.h"
+#include "qt_components/src/qticker_execs.h"
 
 
 #include "support/string_codec.h"
@@ -92,6 +93,19 @@ QProd_info*    qContainer::insert_qproduct_info     (void)
 }
 
 
+QTickerExecs*   qContainer::insert_qticker_execs    (void)
+{
+    QTickerExecs* compo= new QTickerExecs(this->widget());
+    connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    ++counter_insertions;
+    counter_insertions %= 6;
+    compo->show();
+    compo->setFocus();
+
+    return compo;
+}
+
 
 
 
@@ -156,6 +170,17 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qContainer& m)
 
 
 
+        out << YAML::Key  << "ticker_execs"  << YAML::Value  << YAML::BeginSeq;
+        for(int i=0; i<m.widget()->children().count(); ++i)
+        {
+            QTickerExecs* compo = dynamic_cast<QTickerExecs*>(m.widget()->children().at(i));
+            if(compo!=0)
+                out << *compo;
+        }
+        out << YAML::EndSeq;
+
+
+
 
     out << YAML::EndMap;
     return out;
@@ -207,6 +232,16 @@ void     operator>> (const YAML::Node & node   , qContainer& c)
         {
             QProd_info* d = c.insert_qproduct_info();
             node["produtct_info"][i] >>  *d;
+        }
+    }
+
+
+    if(node.FindValue("ticker_execs"))
+    {
+        for(unsigned i=0; i<node["ticker_execs"].size(); ++i)
+        {
+            QTickerExecs* d = c.insert_qticker_execs();
+            node["ticker_execs"][i] >>  *d;
         }
     }
 

@@ -9,6 +9,7 @@ class  QMarginal2;
 class  QDepth;
 class  QAlarmPrice;
 class  QProd_info;
+class  QTickerExecs;
 
 
 
@@ -22,6 +23,7 @@ public:
     QDepth*         insert_qdepth           (void);
     QAlarmPrice*    insert_qalarm_price     (void);
     QProd_info*     insert_qproduct_info    (void);
+    QTickerExecs*   insert_qticker_execs    (void);
 
 
     friend YAML::Emitter& operator << (YAML::Emitter   & out , const qContainer& m);

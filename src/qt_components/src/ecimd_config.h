@@ -16,6 +16,8 @@ namespace  ecimd_config
     bool loss_win           (void);
 
     bool new_order_and      (void);
+
+    bool execs_ticker       (void);
 }
 
 
