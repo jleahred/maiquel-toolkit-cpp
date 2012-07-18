@@ -29,7 +29,7 @@ void qLocaleDoubleSpinBox::keyPressEvent(QKeyEvent *event)
     if(lineEdit()->text().indexOf(QLocale::system().decimalPoint()) < lineEdit()->cursorPosition()  &&  event->key()== Qt::Key_Left)
         lineEdit()->setCursorPosition(lineEdit()->cursorPosition() - 1);
     QDoubleSpinBox::keyPressEvent(event);
-    if(lineEdit()->text().indexOf(QLocale::system().decimalPoint()) < lineEdit()->cursorPosition()  &&  event->key()==Qt::Key_Backspace)
+    if(lineEdit()->text().indexOf(QLocale::system().decimalPoint()) >= 0  &&  lineEdit()->text().indexOf(QLocale::system().decimalPoint()) < lineEdit()->cursorPosition()  &&  event->key()==Qt::Key_Backspace)
         lineEdit()->setCursorPosition(lineEdit()->cursorPosition() - 1);
 
     if(event->key()==Qt::Key_Backspace && lineEdit()->text()[0]==QLatin1Char('-')  &&  lineEdit()->text()[1]==QLatin1Char('0')  &&  (lineEdit()->cursorPosition() == 1  ||  lineEdit()->cursorPosition() == 2))
