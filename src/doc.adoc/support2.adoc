@@ -87,6 +87,29 @@ MTK_SYNCHR
 
 
 
+=== delete_later
+  support/delete_later.hpp
+
+* You can program a CountPtr a CountPtr deletion asynchronously just calling this function
+* The CountPtr will be deleted in less than two seconds
+* This is done keeping a reference to the CountPtr since then
+* Therefore, this is not a deletion, this is an additional temporary reference to CountPtr
++
+Example::
++
+[source,{cpp}]
+----
+
+    mtk::CountPtr<any>   cptr_any = get_and_remove_cptr_any();
+    delete_later(cptr_any);
+
+
+----
+
+
+
+
+
 === HumbleParser
   support/hp/*
 
