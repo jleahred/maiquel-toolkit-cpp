@@ -5,7 +5,8 @@
 
 #include "components/admin/admin.h"
 #include "support/integer_compactor.h"
-
+#include "support/asynch_signal.hpp"
+#include "support/factory.hpp"
 
 
 
@@ -46,6 +47,9 @@ namespace {
 }       //  anonymous namespace  to register "static" commnads
 
 
+
+
+
 namespace mtk {
 namespace prices {
 namespace publ {
@@ -55,8 +59,16 @@ namespace publ {
     std::string  compacted_prices(const mtk::prices::msg::sub_best_prices& best_prices);
     std::string  compacted_prices(const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker);
 
+    std::string  compacted_last_exec_list(const mtk::list<mtk::tuple<mtk::prices::msg::sub_last_exec_info>>&  sub_last_exec_info_list);
+
+
+
+
     mtk::tuple<mtk::nullable<mtk::prices::msg::sub_best_prices>, mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker> >
     decompact_prices(const std::string& compacted_prices);
+
+
+    mtk::list<mtk::prices::msg::sub_last_exec_info>   decompact_last_exec_list(const std::string&  last_execs);
 
 
 
@@ -322,6 +334,47 @@ void prepare_and_send_message(const mtk::msg::sub_product_code&  product_code,  
 
 
 
+// -------------------  contention  for all execs -------------------
+typedef  mtk::async_signal_all_list<mtk::msg::sub_product_code, mtk::tuple<mtk::prices::msg::sub_last_exec_info> >  t_product_code__last_exec_info__signal;
+void  send_last_execs_all_list(const mtk::msg::sub_product_code& product_code, const mtk::list<mtk::tuple<mtk::prices::msg::sub_last_exec_info>>&  execs_list_per_product);
+
+
+//   namespace mtk {
+//template<>
+//mtk::CountPtr<t_product_code__last_exec_info__signal> create_instance_for_factory(mtk::msg::sub_product_code& key, mtk::CountPtr<t_product_code__last_exec_info__signal> result)
+//{
+//    result =  mtk::make_cptr(new t_product_code__last_exec_info__signal(key, mtk::dtSeconds(1)));
+//    result->signal.connect(send_last_execs_all_list);
+//    return result;
+//}
+
+
+mtk::map<mtk::msg::sub_product_code, mtk::CountPtr< t_product_code__last_exec_info__signal > >&   get_map_product_code__last_exec_info__signal(void)
+{
+    static auto  result  =  mtk::make_cptr(new mtk::map<mtk::msg::sub_product_code, mtk::CountPtr< t_product_code__last_exec_info__signal > >{});
+    return  *result;
+}
+
+
+void  send_last_execs_all_list(const mtk::msg::sub_product_code& product_code, const mtk::list<mtk::tuple<mtk::prices::msg::sub_last_exec_info>>&  execs_list_per_product)
+{
+    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
+
+    std::string  compacted_data = compacted_last_exec_list(execs_list_per_product);
+
+    mtk::prices::msg::plaet  msg_to_send(product_code.market, product_code.product, compacted_data, MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal());
+    mtk_send_message(url, msg_to_send);
+}
+
+void add_exec__in_contention_all_execs(const mtk::msg::sub_product_code& product_code, const mtk::prices::msg::sub_last_exec_info&  last_exec_info)
+{
+    mtk::CountPtr< t_product_code__last_exec_info__signal > new_signal =  mtk::get_from_factory<t_product_code__last_exec_info__signal>(product_code);
+    get_map_product_code__last_exec_info__signal()[product_code] = new_signal;
+    new_signal->emit(mtk::make_tuple(last_exec_info));
+}
+
+
+
 
 
 
@@ -333,7 +386,7 @@ void  send_best_prices      (const mtk::msg::sub_product_code&  product_code,  c
 {
     get_contention_queue<mtk::prices::msg::sub_best_prices>()->update(product_code, best_prices);
 
-    //  provisional, keeped for compatibility
+    //  direct publication was...
     /*
     static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
     mtk::prices::msg::pub_best_prices_pr  msg_to_send(product_code, best_prices,
@@ -347,9 +400,11 @@ void  send_last_exec_ticker (const mtk::msg::sub_product_code&  product_code,  c
 {
     get_contention_queue<mtk::prices::msg::sub_last_mk_execs_ticker>()->update(product_code, last_mk_execs_ticker);
 
-    //  provisional, keeped for compatibility
+    add_exec__in_contention_all_execs(product_code, mtk::prices::msg::sub_last_exec_info(last_mk_execs_ticker.last_price, last_mk_execs_ticker.last_quantity, mtk::dtNowLocal()));
+
+
+    //  direct publication was...
     /*
-    static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
     static  std::string  url  =  mtk::admin::get_config_mandatory_property("PRICES_PUBLICATION.url");
     mtk::prices::msg::pub_last_mk_execs_ticker_pr  msg_to_send(product_code, last_mk_execs_ticker,
                                             mtk::msg::sub_control_fluct(MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal()));
@@ -470,6 +525,88 @@ std::string  compacted_prices(const mtk::prices::msg::sub_best_prices& best_pric
     return ic.get_buffer();
 }
 
+std::string  compacted_last_exec_list(const mtk::list<mtk::tuple<mtk::prices::msg::sub_last_exec_info> >&  last_exec_info_list)
+{
+    if(last_exec_info_list.size() == 0)
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "compacted_last_exec_list", MTK_SS("received empty list "), mtk::alPriorError));
+        return "";
+    }
+
+
+
+
+    mtk::integer_compactor  ic;
+
+    //  model  ------------
+    ic.push(0);                                                         //  means model 0
+
+    //  size   ------------
+    ic.push(int(last_exec_info_list.size()));
+
+    //  dec & inc   ------------
+    {
+        const  mtk::prices::msg::sub_last_exec_info&  ref_last_exec_info =  last_exec_info_list.front()._0;
+        ic.push(ref_last_exec_info.price.GetExt().GetDec());
+        ic.push(ref_last_exec_info.price.GetExt().GetInc());
+        ic.push(ref_last_exec_info.quantity.GetExt().GetDec());
+        ic.push(ref_last_exec_info.quantity.GetExt().GetInc());
+    }
+
+
+    //  prices   &&  quantities -----------------------------
+    {
+        auto it= last_exec_info_list.begin();
+        //  write price reference
+        int previous_price =  it->_0.price.GetIntCode();
+        ic.push(previous_price);
+        //  write quantity reference
+        int previous_quantity =  it->_0.quantity.GetIntCode();
+        ic.push(previous_quantity);
+
+        //  write days from 2010  and seconds from today for first exec
+        #define  __PP_TIMEQT_TO_TOTAL_SECONDS   (\
+                                                + decoded.hours.WarningDontDoThisGetInternal  ()      * 60 * 60 \
+                                                + decoded.minutes.WarningDontDoThisGetInternal()           * 60 \
+                                                + decoded.seconds.WarningDontDoThisGetInternal())
+
+
+        mtk::dtTimeQuantity   previous_interval =  it->_0.datetime - mtk::dtDateTime(mtk::dtYear(2010), mtk::dtMonth(1), mtk::dtDay(1));
+        {
+            dtDecodedTimeQuantity       decoded =   previous_interval.GetDecodedTimeQuantity();
+
+            ic.push(decoded.days.WarningDontDoThisGetInternal   ());
+            ic.push(__PP_TIMEQT_TO_TOTAL_SECONDS);
+        }
+
+
+        //  write prices && quantities
+        for(it = last_exec_info_list.begin(); it!=last_exec_info_list.end(); ++it)
+        {
+            const mtk::prices::msg::sub_last_exec_info&  ref_last_exec_info =  it->_0;
+
+            int  current_price = ref_last_exec_info.price.GetIntCode();
+            ic.push(current_price - previous_price);
+            previous_price = current_price;
+
+            int  current_quantity = ref_last_exec_info.quantity.GetIntCode();
+            ic.push(current_quantity - previous_quantity);
+            previous_quantity = current_quantity;
+
+
+            mtk::DateTime           current_datetime = ref_last_exec_info.datetime;
+            {
+                dtDecodedTimeQuantity   decoded =   ((current_datetime- mtk::dtDateTime(mtk::dtYear(2010), mtk::dtMonth(1), mtk::dtDay(1))) - previous_interval).GetDecodedTimeQuantity();
+                ic.push(__PP_TIMEQT_TO_TOTAL_SECONDS);
+            }
+        }
+    }
+
+    return ic.get_buffer();
+}
+
+
+
 
 
 mtk::fnExt   pop_extended(mtk::integer_DEcompactor&  iDEc)
@@ -543,12 +680,87 @@ decompact_prices(const std::string& compacted_prices)
 }
 
 
+mtk::list<mtk::prices::msg::sub_last_exec_info>   decompact_last_exec_list(const std::string&  last_execs)
+{
+    mtk::integer_DEcompactor  iDEc;
+    mtk::list<mtk::prices::msg::sub_last_exec_info>   result;
+
+
+    iDEc.set_buffer(last_execs);
+
+    //  model  ------------
+    int8_t  model = iDEc.pop_int8_t();
+    if(model != 0)
+    {
+        MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(5))
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "decompact_last_exec_list", MTK_SS("Model not supported " << model), mtk::alPriorError));
+        MTK_END_EXEC_MAX_FREC
+        return mtk::list<mtk::prices::msg::sub_last_exec_info>{};
+    }
+
+    //  size   ------------
+    int size = iDEc.pop_int16_t();
+
+    //  dec & inc   ------------
+    int __dec_price = iDEc.pop_int16_t();
+    int __inc_price = iDEc.pop_int16_t();
+    int __dec_qty   = iDEc.pop_int16_t();
+    int __inc_qty   = iDEc.pop_int16_t();
+    mtk::fnExt  ext_price   {mtk::fnDec(__dec_price), mtk::fnInc(__inc_price)};
+    mtk::fnExt  ext_quantity{mtk::fnDec(__dec_qty),   mtk::fnInc(__inc_qty)};
+
+
+    //  prices   &&  quantities  &&  datetime  -----------------------------
+    {
+        int             previous_price    = iDEc.pop_int32_t();
+        int             previous_quantity = iDEc.pop_int32_t();
+        int             days_since_2010   = iDEc.pop_int32_t();
+        mtk::DateTime   previous_datetime     = mtk::DateTime(mtk::dtYear(2010), mtk::dtMonth(1), mtk::dtDay(1)) + mtk::dtDays(days_since_2010) + mtk::dtSeconds(iDEc.pop_int32_t());
+
+        for(int i=0; i<size; ++i)
+        {
+            int                     diff_price      = iDEc.pop_int32_t();
+            int                     diff_quantity   = iDEc.pop_int32_t();
+            mtk::dtTimeQuantity     diff_time       = mtk::dtSeconds(iDEc.pop_int32_t());
+            auto price    = mtk::FixedNumber(mtk::fnIntCode(previous_price    + diff_price   ), ext_price);
+            auto quantity = mtk::FixedNumber(mtk::fnIntCode(previous_quantity + diff_quantity), ext_quantity);
+            auto datetime = previous_datetime + diff_time;
+            result.push_back(mtk::prices::msg::sub_last_exec_info(price, quantity, datetime));
+
+            previous_price    +=  diff_price;
+            previous_quantity +=  diff_quantity;
+            previous_datetime +=  diff_time;
+        }
+    }
+
+    return result;
+}
+
+
 
 };  //  namespace publ {
 };  //  namespace prices {
 };  //  namespace mtk {
 
 
+
+
+
+
+
+
+
+
+
+namespace mtk {
+template<>
+mtk::CountPtr<mtk::prices::publ::t_product_code__last_exec_info__signal> create_instance_for_factory(const mtk::msg::sub_product_code& key, mtk::CountPtr<mtk::prices::publ::t_product_code__last_exec_info__signal> result)
+{
+    result =  mtk::make_cptr(new mtk::prices::publ::t_product_code__last_exec_info__signal(key, mtk::dtSeconds(1)));
+    result->signal.connect(mtk::prices::publ::send_last_execs_all_list);
+    return result;
+}
+};  //namespace mtk {
 
 
 

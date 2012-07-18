@@ -62,8 +62,8 @@ int8_t  integer_DEcompactor::pop_int8_t(void)
 {
     int32_t  result = pop_int32_t();
 
-    if(get_size(result)+1 != 1)
-        throw mtk::Alarm(MTK_HERE, "integer_DEcompactor", MTK_SS("overflow  value is bigger than a bute " << result), mtk::alPriorCritic, mtk::alTypeOverflow);
+    if(get_size(result)+1 > 1)
+        throw mtk::Alarm(MTK_HERE, "integer_DEcompactor", MTK_SS("overflow  value is bigger than a byte " << result), mtk::alPriorCritic, mtk::alTypeOverflow);
     return int8_t(result);
 }
 
@@ -71,8 +71,8 @@ int16_t  integer_DEcompactor::pop_int16_t(void)
 {
     int32_t  result = pop_int32_t();
 
-    if(get_size(result)+1 != 2)
-        throw mtk::Alarm(MTK_HERE, "integer_DEcompactor", MTK_SS("overflow  value is bigger than a bute " << result), mtk::alPriorCritic, mtk::alTypeOverflow);
+    if(get_size(result)+1 > 2)
+        throw mtk::Alarm(MTK_HERE, "integer_DEcompactor", MTK_SS("overflow  value is bigger than two bytes " << result), mtk::alPriorCritic, mtk::alTypeOverflow);
     return int16_t(result);
 }
 

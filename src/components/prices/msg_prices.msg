@@ -213,3 +213,47 @@ ppc [< QE:PRICES.${market}, RT:0, SUBJ:PPC.${product}  >]
     key                 (k)    :  string
     datetime            (dt)   :  date_time
 }
+
+
+
+
+
+
+
+//---------------------------------------------------------------------
+
+//    ticker ALL executions, not loading
+
+//---------------------------------------------------------------------
+
+
+sub_last_exec_info [< >]
+{
+   price           (pri) : fix_num
+   quantity        (qt)  : fix_num
+
+   datetime        (dt)  : date_time
+}
+
+
+pub_last_mk__ALL__execs_ticker [< QE:PRICES.${product_code.market}, RT:0, SUBJ:ALLEX.${product_code.market}.${product_code.product}  >]
+{
+    product_code        (pc)       :       mtk::msg::sub_product_code
+
+    [last_execs]        (lexs)     :       sub_last_exec_info
+
+    orig_control_fluct  (ocf)   :   mtk::msg::sub_control_fluct
+}
+
+
+plaet [< QE:PRICES.${market}, RT:0, SUBJ:PAE.${product}  >]
+{
+    market              (mk)   :  string
+    product             (pr)   :  string
+
+    compacted_data      (cd)   :  string
+
+    //  fluct control
+    key                 (k)    :  string
+    datetime            (dt)   :  date_time
+}

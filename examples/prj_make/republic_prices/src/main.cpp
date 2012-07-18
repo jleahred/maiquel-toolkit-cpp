@@ -15,12 +15,13 @@ namespace
 {
 
     const char*   APP_NAME          = "REPUBLIC_PRICES";
-    const char*   APP_VER           = "2012-04-02 d";
+    const char*   APP_VER           = "2012-07.16g";
     const char*   APP_DESCRIPTION   = "receive compacted prices and publish on old non compacted\n"
                                         ;
 
     const char*   APP_MODIFICATIONS =   "           2012-03-22     first version\n"
                                         "           2012-04-02     now it receives compacted and republish non compacted\n"
+                                        "           2012-07-16     working with  pub_last_mk__ALL__execs_ticker\n"
                                         ;
 
 }
@@ -36,9 +37,12 @@ namespace
 
 
 
-void on_price__or__last__update             (const mtk::prices::msg::ppc&  ppc);
-void suscribe_publisher_updates  (void);
+void on_price__or__last__update         (const mtk::prices::msg::ppc&  ppc);
+void suscribe_publisher_updates         (void);
 
+
+void on_all_last_execs__update          (const mtk::prices::msg::plaet&  plaet);
+void suscribe_all_last_execs_updates    (void);
 
 
 
@@ -61,6 +65,7 @@ int main(int argc, char ** argv)
 
 
         suscribe_publisher_updates();
+        suscribe_all_last_execs_updates();
 
 
         mtk::start_timer_wait_till_end();
@@ -128,4 +133,32 @@ void on_price__or__last__update (const mtk::prices::msg::ppc&  ppc)
     }
 }
 
+
+
+void suscribe_all_last_execs_updates    (void)
+{
+    typedef  mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<mtk::prices::msg::plaet> >               type_cptrhandle;
+    static type_cptrhandle   hqpid_update_all_last_execs {};
+
+    static  std::string  MARKET = mtk::admin::get_config_mandatory_property("REPUBLIC.market");
+
+    MTK_QPID_RECEIVER_CONNECT_F__WITH_ADDRESS(
+                            hqpid_update_all_last_execs,
+                            mtk::admin::get_url("admin"),
+                            mtk::prices::msg::plaet::static_get_qpid_address(MARKET),
+                            mtk::prices::msg::plaet::get_in_subject("*"),
+                            mtk::prices::msg::plaet,
+                            on_all_last_execs__update)
+}
+
+void on_all_last_execs__update          (const mtk::prices::msg::plaet&  plaet)
+{
+    mtk::list<mtk::prices::msg::sub_last_exec_info>  decompacted = mtk::prices::publ::decompact_last_exec_list(plaet.compacted_data);
+
+    mtk::msg::sub_product_code          product_code    (plaet.market, plaet.product);
+    mtk::msg::sub_control_fluct         control_fluct   (plaet.key, plaet.datetime);
+
+    mtk::prices::msg::pub_last_mk__ALL__execs_ticker   pub_last_mk__ALL__execs_ticker(product_code, decompacted, control_fluct);
+    mtk_send_message("admin", pub_last_mk__ALL__execs_ticker);
+}
 

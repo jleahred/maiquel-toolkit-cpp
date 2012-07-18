@@ -738,6 +738,69 @@ void ppc::before_send(void) const
 
 
 
+
+sub_last_exec_info::sub_last_exec_info (   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const mtk::DateTime&  _datetime)
+    :     price(_price),   quantity(_quantity),   datetime(_datetime) 
+       
+    {  
+    }
+
+
+
+void  sub_last_exec_info::check_recomended(void) const
+{
+
+}
+
+void sub_last_exec_info::before_send(void) const
+{
+
+}
+
+
+
+
+pub_last_mk__ALL__execs_ticker::pub_last_mk__ALL__execs_ticker (   const mtk::msg::sub_product_code&  _product_code,   const mtk::list<sub_last_exec_info >&  _last_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+    :     product_code(_product_code),   last_execs(_last_execs),   orig_control_fluct(_orig_control_fluct) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  pub_last_mk__ALL__execs_ticker::check_recomended(void) const
+{
+
+}
+
+void pub_last_mk__ALL__execs_ticker::before_send(void) const
+{
+
+}
+
+
+
+
+plaet::plaet (   const std::string&  _market,   const std::string&  _product,   const std::string&  _compacted_data,   const std::string&  _key,   const mtk::DateTime&  _datetime)
+    :     market(_market),   product(_product),   compacted_data(_compacted_data),   key(_key),   datetime(_datetime) 
+       , __internal_warning_control_fields(0)
+    {  
+    }
+
+
+
+void  plaet::check_recomended(void) const
+{
+
+}
+
+void plaet::before_send(void) const
+{
+
+}
+
+
+
     //    generate_class_qpid_variant_in_impl
     
 sub_price_level__qpid_map::sub_price_level__qpid_map (   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity)
@@ -944,6 +1007,50 @@ ppc__qpid_map::ppc__qpid_map (   const std::string&  _market,   const std::strin
 
 
     qpid::types::Variant::Map   ppc__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+sub_last_exec_info__qpid_map::sub_last_exec_info__qpid_map (   const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const mtk::DateTime&  _datetime)
+      :  m_static( 
+   _price,
+   _quantity,
+   _datetime) 
+    {  
+    }
+
+
+
+    //    generate_class_qpid_variant_in_impl
+    
+pub_last_mk__ALL__execs_ticker__qpid_map::pub_last_mk__ALL__execs_ticker__qpid_map (   const mtk::msg::sub_product_code&  _product_code,   const mtk::list<sub_last_exec_info >&  _last_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct)
+      :  m_static( 
+   _product_code,
+   _last_execs,
+   _orig_control_fluct) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   pub_last_mk__ALL__execs_ticker__qpid_map::qpidmsg_codded_as_qpid_map (void) const
+    {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+
+    //    generate_class_qpid_variant_in_impl
+    
+plaet__qpid_map::plaet__qpid_map (   const std::string&  _market,   const std::string&  _product,   const std::string&  _compacted_data,   const std::string&  _key,   const mtk::DateTime&  _datetime)
+      :  m_static( 
+   _market,
+   _product,
+   _compacted_data,
+   _key,
+   _datetime) 
+    {  
+    }
+
+
+
+    qpid::types::Variant::Map   plaet__qpid_map::qpidmsg_codded_as_qpid_map (void) const
     {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
 
 std::ostream& operator<< (std::ostream& o, const sub_price_level & c)
@@ -1495,6 +1602,110 @@ void  operator >> (const YAML::Node& node, ppc & c)
 };
 
 
+std::ostream& operator<< (std::ostream& o, const sub_last_exec_info & c)
+{
+    o << "{ "
+
+        << "price:"<<   c.price << "  "        << "quantity:"<<   c.quantity << "  "        << "datetime:"<<   c.datetime << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const sub_last_exec_info & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "price"  << YAML::Value <<   c.price        << YAML::Key << "quantity"  << YAML::Value <<   c.quantity        << YAML::Key << "datetime"  << YAML::Value <<   c.datetime
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, sub_last_exec_info & c)
+{
+
+
+        node["price"]  >> c.price;
+        node["quantity"]  >> c.quantity;
+        node["datetime"]  >> c.datetime;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const pub_last_mk__ALL__execs_ticker & c)
+{
+    o << "{ "
+
+        << "product_code:"<< c.product_code<<"  "        << "last_execs:"<< c.last_execs<<"  "        << "orig_control_fluct:"<< c.orig_control_fluct<<"  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const pub_last_mk__ALL__execs_ticker & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "product_code"  << YAML::Value << c.product_code        << YAML::Key << "last_execs"  << YAML::Value << c.last_execs        << YAML::Key << "orig_control_fluct"  << YAML::Value << c.orig_control_fluct
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, pub_last_mk__ALL__execs_ticker & c)
+{
+
+
+        node["product_code"]  >> c.product_code;
+        node["last_execs"]  >> c.last_execs;
+        node["orig_control_fluct"]  >> c.orig_control_fluct;
+
+
+};
+
+
+std::ostream& operator<< (std::ostream& o, const plaet & c)
+{
+    o << "{ "
+
+        << "market:"<<   c.market << "  "        << "product:"<<   c.product << "  "        << "compacted_data:"<<   c.compacted_data << "  "        << "key:"<<   c.key << "  "        << "datetime:"<<   c.datetime << "  "
+        << " }";
+    return o;
+};
+
+
+
+YAML::Emitter& operator << (YAML::Emitter& o, const plaet & c)
+{
+    o << YAML::BeginMap
+
+        << YAML::Key << "market"  << YAML::Value <<   c.market        << YAML::Key << "product"  << YAML::Value <<   c.product        << YAML::Key << "compacted_data"  << YAML::Value <<   c.compacted_data        << YAML::Key << "key"  << YAML::Value <<   c.key        << YAML::Key << "datetime"  << YAML::Value <<   c.datetime
+        << YAML::EndMap;
+    return o;
+};
+
+
+
+void  operator >> (const YAML::Node& node, plaet & c)
+{
+
+
+        node["market"]  >> c.market;
+        node["product"]  >> c.product;
+        node["compacted_data"]  >> c.compacted_data;
+        node["key"]  >> c.key;
+        node["datetime"]  >> c.datetime;
+
+
+};
+
+
 bool operator== (const sub_price_level& a, const sub_price_level& b)
 {
     return (          a.price ==  b.price  &&          a.quantity ==  b.quantity  &&   true  );
@@ -1681,6 +1892,42 @@ bool operator== (const ppc& a, const ppc& b)
 };
 
 bool operator!= (const ppc& a, const ppc& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const sub_last_exec_info& a, const sub_last_exec_info& b)
+{
+    return (          a.price ==  b.price  &&          a.quantity ==  b.quantity  &&          a.datetime ==  b.datetime  &&   true  );
+};
+
+bool operator!= (const sub_last_exec_info& a, const sub_last_exec_info& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const pub_last_mk__ALL__execs_ticker& a, const pub_last_mk__ALL__execs_ticker& b)
+{
+    return (          a.product_code ==  b.product_code  &&          a.last_execs ==  b.last_execs  &&          a.orig_control_fluct ==  b.orig_control_fluct  &&   true  );
+};
+
+bool operator!= (const pub_last_mk__ALL__execs_ticker& a, const pub_last_mk__ALL__execs_ticker& b)
+{
+    return !(a==b);
+};
+
+
+
+bool operator== (const plaet& a, const plaet& b)
+{
+    return (          a.market ==  b.market  &&          a.product ==  b.product  &&          a.compacted_data ==  b.compacted_data  &&          a.key ==  b.key  &&          a.datetime ==  b.datetime  &&   true  );
+};
+
+bool operator!= (const plaet& a, const plaet& b)
 {
     return !(a==b);
 };
@@ -3027,6 +3274,278 @@ void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ppc
 
 
 
+
+
+void  copy (sub_last_exec_info& c, const qpid::types::Variant& v)
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("pri");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field price on message sub_last_exec_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.price, it->second);
+                        //c.price = it->second;
+//   field_type
+
+                    it = mv.find("qt");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field quantity on message sub_last_exec_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.quantity, it->second);
+                        //c.quantity = it->second;
+//   field_type
+
+                    it = mv.find("dt");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field datetime on message sub_last_exec_info::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.datetime, it->second);
+                        //c.datetime = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void  copy (sub_last_exec_info__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_last_exec_info& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  field_type
+        __internal_add2map(map, a.price, std::string("pri"));
+//  field_type
+        __internal_add2map(map, a.quantity, std::string("qt"));
+//  field_type
+        __internal_add2map(map, a.datetime, std::string("dt"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_last_exec_info__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_last_exec_info>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_last_exec_info__qpid_map>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+void  copy (pub_last_mk__ALL__execs_ticker& c, const qpid::types::Variant& v)
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   sub_msg_type
+
+                    it = mv.find("pc");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product_code on message pub_last_mk__ALL__execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.product_code, it->second);
+                        //__internal_qpid_fill(c.product_code, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("lexs");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field last_execs on message pub_last_mk__ALL__execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.last_execs, it->second);
+                        //__internal_qpid_fill(c.last_execs, it->second.asMap());
+//   sub_msg_type
+
+                    it = mv.find("ocf");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field orig_control_fluct on message pub_last_mk__ALL__execs_ticker::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.orig_control_fluct, it->second);
+                        //__internal_qpid_fill(c.orig_control_fluct, it->second.asMap());
+
+        c.check_recomended ();
+    }
+
+
+void  copy (pub_last_mk__ALL__execs_ticker__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk__ALL__execs_ticker& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  sub_msg_type
+        __internal_add2map(map, a.product_code, std::string("pc"));
+//  sub_msg_type
+        __internal_add2map(map, a.last_execs, std::string("lexs"));
+//  sub_msg_type
+        __internal_add2map(map, a.orig_control_fluct, std::string("ocf"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk__ALL__execs_ticker__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk__ALL__execs_ticker>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk__ALL__execs_ticker__qpid_map>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+
+
+void  copy (plaet& c, const qpid::types::Variant& v)
+    {
+        qpid::types::Variant::Map  mv = v.asMap();
+
+        std::map<qpid::types::Variant::Map::key_type, qpid::types::Variant>::const_iterator it;
+//   field_type
+
+                    it = mv.find("mk");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field market on message plaet::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.market, it->second);
+                        //c.market = it->second;
+//   field_type
+
+                    it = mv.find("pr");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field product on message plaet::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.product, it->second);
+                        //c.product = it->second;
+//   field_type
+
+                    it = mv.find("cd");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field compacted_data on message plaet::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.compacted_data, it->second);
+                        //c.compacted_data = it->second;
+//   field_type
+
+                    it = mv.find("k");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field key on message plaet::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.key, it->second);
+                        //c.key = it->second;
+//   field_type
+
+                    it = mv.find("dt");
+                    if (it== mv.end())
+                        throw mtk::Alarm(MTK_HERE, "msg_build", "missing mandatory field datetime on message plaet::__internal_qpid_fill", mtk::alPriorCritic);
+                    else
+                        copy(c.datetime, it->second);
+                        //c.datetime = it->second;
+
+        c.check_recomended ();
+    }
+
+
+void  copy (plaet__qpid_map& c, const qpid::types::Variant& v)
+    {
+        copy(c.m_static, v);
+        c.m_qpid_map = v.asMap();
+    }
+
+void __internal_add2map (qpid::types::Variant::Map& map, const plaet& a)
+{
+
+    a.before_send();
+    a.check_recomended();
+
+//  field_type
+        __internal_add2map(map, a.market, std::string("mk"));
+//  field_type
+        __internal_add2map(map, a.product, std::string("pr"));
+//  field_type
+        __internal_add2map(map, a.compacted_data, std::string("cd"));
+//  field_type
+        __internal_add2map(map, a.key, std::string("k"));
+//  field_type
+        __internal_add2map(map, a.datetime, std::string("dt"));
+
+
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const plaet__qpid_map& a)
+{
+    a.m_static.before_send();
+    a.m_static.check_recomended();
+
+    __internal_add2map(map, a.m_static);
+    mtk::merge__keep_destination(map, a.m_qpid_map);
+};
+
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<plaet>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<plaet__qpid_map>& a, const std::string& field)
+{
+    if(a.HasValue())
+        __internal_add2map(map, a.Get(), field);
+}
+
+
+
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
+//generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
 //generate_qpid_coding___coded_as_qpid_Map(class_name, class_info, class_properties, send_code)
@@ -3177,6 +3696,60 @@ qpid::types::Variant::Map   res_product_info::qpidmsg_codded_as_qpid_map (void) 
 
 
 qpid::types::Variant::Map   ppc::qpidmsg_codded_as_qpid_map (void) const
+{
+    qpid::types::Variant::Map   content;
+
+
+//  field_type
+//        content["mk"] = this->market;
+        __internal_add2map(content, this->market, std::string("mk"));
+//  field_type
+//        content["pr"] = this->product;
+        __internal_add2map(content, this->product, std::string("pr"));
+//  field_type
+//        content["cd"] = this->compacted_data;
+        __internal_add2map(content, this->compacted_data, std::string("cd"));
+//  field_type
+//        content["k"] = this->key;
+        __internal_add2map(content, this->key, std::string("k"));
+//  field_type
+//        content["dt"] = this->datetime;
+        __internal_add2map(content, this->datetime, std::string("dt"));
+
+
+
+    
+    return content;
+};
+
+
+
+
+qpid::types::Variant::Map   pub_last_mk__ALL__execs_ticker::qpidmsg_codded_as_qpid_map (void) const
+{
+    qpid::types::Variant::Map   content;
+
+
+//  sub_msg_type
+//        content["pc"] =  qpidmsg_coded_as_qpid_Map(this->product_code);
+        __internal_add2map(content, this->product_code, std::string("pc"));
+//  sub_msg_type
+//        content["lexs"] =  qpidmsg_coded_as_qpid_Map(this->last_execs);
+        __internal_add2map(content, this->last_execs, std::string("lexs"));
+//  sub_msg_type
+//        content["ocf"] =  qpidmsg_coded_as_qpid_Map(this->orig_control_fluct);
+        __internal_add2map(content, this->orig_control_fluct, std::string("ocf"));
+
+
+
+    
+    return content;
+};
+
+
+
+
+qpid::types::Variant::Map   plaet::qpidmsg_codded_as_qpid_map (void) const
 {
     qpid::types::Variant::Map   content;
 
@@ -3395,6 +3968,46 @@ qpid::types::Variant::Map   ppc::qpidmsg_codded_as_qpid_map (void) const
     ppc  __internal_get_default(ppc*)
     {
         return ppc(
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((std::string*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0)
+            );
+    }
+    
+    sub_last_exec_info  __internal_get_default(sub_last_exec_info*)
+    {
+        return sub_last_exec_info(
+//   field_type
+   __internal_get_default ((mtk::FixedNumber*)0),
+//   field_type
+   __internal_get_default ((mtk::FixedNumber*)0),
+//   field_type
+   __internal_get_default ((mtk::DateTime*)0)
+            );
+    }
+    
+    pub_last_mk__ALL__execs_ticker  __internal_get_default(pub_last_mk__ALL__execs_ticker*)
+    {
+        return pub_last_mk__ALL__execs_ticker(
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_product_code*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::list<sub_last_exec_info >*)0),
+//   sub_msg_type
+   __internal_get_default((mtk::msg::sub_control_fluct*)0)
+            );
+    }
+    
+    plaet  __internal_get_default(plaet*)
+    {
+        return plaet(
 //   field_type
    __internal_get_default ((std::string*)0),
 //   field_type
@@ -3701,6 +4314,67 @@ ppc__qpid_map::ppc__qpid_map (const qpid::types::Variant::Map&  mv)
     {
     }
     
+
+sub_last_exec_info::sub_last_exec_info (const qpid::types::Variant::Map&  mv)
+     : //   field_type
+   price(__internal_get_default((mtk::FixedNumber*)0)),
+//   field_type
+   quantity(__internal_get_default((mtk::FixedNumber*)0)),
+//   field_type
+   datetime(__internal_get_default((mtk::DateTime*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
+
+sub_last_exec_info__qpid_map::sub_last_exec_info__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
+pub_last_mk__ALL__execs_ticker::pub_last_mk__ALL__execs_ticker (const qpid::types::Variant::Map&  mv)
+     : //   sub_msg_type
+   product_code(__internal_get_default((mtk::msg::sub_product_code*)0)),
+//   sub_msg_type
+   last_execs(__internal_get_default((mtk::list<sub_last_exec_info >*)0)),
+//   sub_msg_type
+   orig_control_fluct(__internal_get_default((mtk::msg::sub_control_fluct*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
+
+pub_last_mk__ALL__execs_ticker__qpid_map::pub_last_mk__ALL__execs_ticker__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
+
+plaet::plaet (const qpid::types::Variant::Map&  mv)
+     : //   field_type
+   market(__internal_get_default((std::string*)0)),
+//   field_type
+   product(__internal_get_default((std::string*)0)),
+//   field_type
+   compacted_data(__internal_get_default((std::string*)0)),
+//   field_type
+   key(__internal_get_default((std::string*)0)),
+//   field_type
+   datetime(__internal_get_default((mtk::DateTime*)0)) 
+    {
+        copy(*this, mv);
+        check_recomended ();  
+    }
+
+
+plaet__qpid_map::plaet__qpid_map (const qpid::types::Variant::Map&  mv)
+    :  m_static(mv), m_qpid_map(mv)
+    {
+    }
+    
 mtk::t_qpid_filter  pub_best_prices::get_in_subject (const std::string& product_code_market,const std::string& product_code_product)
     {
         return mtk::t_qpid_filter(MTK_SS("BP." << product_code_market << "." << product_code_product << ""));
@@ -3810,6 +4484,38 @@ mtk::t_qpid_filter  pub_best_prices::get_in_subject (const std::string& product_
         return mtk::t_qpid_address(MTK_SS("PRICES." << market << ""));
     }
     mtk::t_qpid_address  ppc::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << this->market << ""));
+    }
+    mtk::t_qpid_filter  pub_last_mk__ALL__execs_ticker::get_in_subject (const std::string& product_code_market,const std::string& product_code_product)
+    {
+        return mtk::t_qpid_filter(MTK_SS("ALLEX." << product_code_market << "." << product_code_product << ""));
+    }
+    mtk::t_qpid_filter  pub_last_mk__ALL__execs_ticker::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("ALLEX." << this->product_code.market << "." << this->product_code.product << ""));
+    }
+    /*static*/  mtk::t_qpid_address  pub_last_mk__ALL__execs_ticker::static_get_qpid_address (const std::string& product_code_market)
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << product_code_market << ""));
+    }
+    mtk::t_qpid_address  pub_last_mk__ALL__execs_ticker::get_qpid_address (void) const
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << this->product_code.market << ""));
+    }
+    mtk::t_qpid_filter  plaet::get_in_subject (const std::string& product)
+    {
+        return mtk::t_qpid_filter(MTK_SS("PAE." << product << ""));
+    }
+    mtk::t_qpid_filter  plaet::get_out_subject (void) const
+    {
+        return mtk::t_qpid_filter(MTK_SS("PAE." << this->product << ""));
+    }
+    /*static*/  mtk::t_qpid_address  plaet::static_get_qpid_address (const std::string& market)
+    {
+        return mtk::t_qpid_address(MTK_SS("PRICES." << market << ""));
+    }
+    mtk::t_qpid_address  plaet::get_qpid_address (void) const
     {
         return mtk::t_qpid_address(MTK_SS("PRICES." << this->market << ""));
     }

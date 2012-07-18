@@ -19,8 +19,13 @@ namespace publ {
     void  send_last_exec_ticker (const mtk::msg::sub_product_code&  product_code,  const mtk::prices::msg::sub_last_mk_execs_ticker&  last_mk_execs_ticker);
 
 
+
+
     mtk::tuple<mtk::nullable<mtk::prices::msg::sub_best_prices>, mtk::nullable<mtk::prices::msg::sub_last_mk_execs_ticker> >
     decompact_prices(const std::string& compacted_prices);
+
+    mtk::list<mtk::prices::msg::sub_last_exec_info>   decompact_last_exec_list(const std::string&  last_execs);
+
 
 
 };  //  namespace publ {

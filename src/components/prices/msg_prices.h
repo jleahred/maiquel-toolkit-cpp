@@ -1272,6 +1272,255 @@ public:
         };
         
         
+
+//-------------------------------
+//      sub_last_exec_info
+//-------------------------------    
+class sub_last_exec_info     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_last_exec_info (    const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const mtk::DateTime&  _datetime );
+    explicit sub_last_exec_info ( const qpid::types::Variant::Map&  mv );
+    virtual ~sub_last_exec_info (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_last_exec_info"; }
+    static  std::string static_get_message_type_as_string(void)        { return "sub_last_exec_info"; }
+    
+    
+
+    
+
+    
+    
+    
+    
+
+    // fields
+    mtk::FixedNumber                          price; 
+    mtk::FixedNumber                          quantity; 
+    mtk::DateTime                             datetime; 
+
+
+
+    //  ADDRESS info
+
+
+
+    //  subject info
+    
+
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+        //  qpid_variant wrapper for dynamic
+        class sub_last_exec_info__qpid_map
+        {
+        public:
+            explicit  sub_last_exec_info__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  sub_last_exec_info__qpid_map ( const sub_last_exec_info&  c ) : m_static(c) {}
+            explicit  sub_last_exec_info__qpid_map (    const mtk::FixedNumber&  _price,   const mtk::FixedNumber&  _quantity,   const mtk::DateTime&  _datetime );
+            ~sub_last_exec_info__qpid_map() {};
+            
+
+            sub_last_exec_info                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
+
+//-------------------------------
+//      pub_last_mk__ALL__execs_ticker
+//-------------------------------    
+class pub_last_mk__ALL__execs_ticker     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit pub_last_mk__ALL__execs_ticker (    const mtk::msg::sub_product_code&  _product_code,   const mtk::list<sub_last_exec_info >&  _last_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+    explicit pub_last_mk__ALL__execs_ticker ( const qpid::types::Variant::Map&  mv );
+    virtual ~pub_last_mk__ALL__execs_ticker (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "pub_last_mk__ALL__execs_ticker"; }
+    static  std::string static_get_message_type_as_string(void)        { return "pub_last_mk__ALL__execs_ticker"; }
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    mtk::msg::sub_product_code                product_code; 
+    mtk::list<sub_last_exec_info >            last_execs; 
+    mtk::msg::sub_control_fluct               orig_control_fluct; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address (const std::string& product_code_market);
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& product_code_market,const std::string& product_code_product);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+        //  qpid_variant wrapper for dynamic
+        class pub_last_mk__ALL__execs_ticker__qpid_map
+        {
+        public:
+            explicit  pub_last_mk__ALL__execs_ticker__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  pub_last_mk__ALL__execs_ticker__qpid_map ( const pub_last_mk__ALL__execs_ticker&  c ) : m_static(c) {}
+            explicit  pub_last_mk__ALL__execs_ticker__qpid_map (    const mtk::msg::sub_product_code&  _product_code,   const mtk::list<sub_last_exec_info >&  _last_execs,   const mtk::msg::sub_control_fluct&  _orig_control_fluct );
+            ~pub_last_mk__ALL__execs_ticker__qpid_map() {};
+            
+
+            pub_last_mk__ALL__execs_ticker                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address (const std::string& product_code_market)  {  return  pub_last_mk__ALL__execs_ticker::static_get_qpid_address(product_code_market);  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  pub_last_mk__ALL__execs_ticker::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  pub_last_mk__ALL__execs_ticker::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  pub_last_mk__ALL__execs_ticker::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
+
+//-------------------------------
+//      plaet
+//-------------------------------    
+class plaet     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit plaet (    const std::string&  _market,   const std::string&  _product,   const std::string&  _compacted_data,   const std::string&  _key,   const mtk::DateTime&  _datetime );
+    explicit plaet ( const qpid::types::Variant::Map&  mv );
+    virtual ~plaet (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "plaet"; }
+    static  std::string static_get_message_type_as_string(void)        { return "plaet"; }
+    
+    static  int         static_return_message_RT_priority(void)        { return 0; };
+
+    static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { static const auto  result = mtk::nullable<mtk::DateTime>{};  return result; };
+
+    
+    
+    qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;
+    
+
+    // fields
+    std::string                               market; 
+    std::string                               product; 
+    std::string                               compacted_data; 
+    std::string                               key; 
+    mtk::DateTime                             datetime; 
+
+
+
+    //  ADDRESS info
+    static mtk::t_qpid_address  static_get_qpid_address (const std::string& market);
+    mtk::t_qpid_address  get_qpid_address (void) const;
+
+
+
+    //  subject info
+    static mtk::t_qpid_filter  get_in_subject (const std::string& product);
+    virtual mtk::t_qpid_filter  get_out_subject (void) const;
+
+
+    
+    
+    mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+        //  qpid_variant wrapper for dynamic
+        class plaet__qpid_map
+        {
+        public:
+            explicit  plaet__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  plaet__qpid_map ( const plaet&  c ) : m_static(c) {}
+            explicit  plaet__qpid_map (    const std::string&  _market,   const std::string&  _product,   const std::string&  _compacted_data,   const std::string&  _key,   const mtk::DateTime&  _datetime );
+            ~plaet__qpid_map() {};
+            
+
+            plaet                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+            //  DERIVED INFO
+
+            static mtk::t_qpid_address  static_get_qpid_address (const std::string& market)  {  return  plaet::static_get_qpid_address(market);  }
+            mtk::t_qpid_address  get_qpid_address (void) const  {  return  m_static.get_qpid_address();  }
+
+            std::string get_message_type_as_string       (void) const  { return  m_static.get_message_type_as_string(); }
+            static  std::string static_get_message_type_as_string(void)        { return  plaet::static_get_message_type_as_string();  }
+            mtk::t_qpid_filter  get_out_subject (void) const { return  m_static.get_out_subject();  }
+            qpid::types::Variant::Map   qpidmsg_codded_as_qpid_map (void) const;//   {   qpid::types::Variant::Map result;  __internal_add2map(result, *this);  return result;  }
+            static  int         static_return_message_RT_priority(void)        { return  plaet::static_return_message_RT_priority(); }
+            static  mtk::nullable<mtk::DateTime>    static_get_depreciated_on(void)        { return  plaet::static_get_depreciated_on(); }
+
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
     
     
     
@@ -1392,6 +1641,27 @@ bool operator!= (const res_product_info::IC_response& a, const res_product_info:
 bool operator== (const ppc& a, const ppc& b);
 bool operator!= (const ppc& a, const ppc& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_last_exec_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_last_exec_info & c);
+   void           operator >> (const YAML::Node& n,       sub_last_exec_info & c);
+
+bool operator== (const sub_last_exec_info& a, const sub_last_exec_info& b);
+bool operator!= (const sub_last_exec_info& a, const sub_last_exec_info& b);
+
+    std::ostream& operator<< (std::ostream& o, const pub_last_mk__ALL__execs_ticker & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const pub_last_mk__ALL__execs_ticker & c);
+   void           operator >> (const YAML::Node& n,       pub_last_mk__ALL__execs_ticker & c);
+
+bool operator== (const pub_last_mk__ALL__execs_ticker& a, const pub_last_mk__ALL__execs_ticker& b);
+bool operator!= (const pub_last_mk__ALL__execs_ticker& a, const pub_last_mk__ALL__execs_ticker& b);
+
+    std::ostream& operator<< (std::ostream& o, const plaet & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const plaet & c);
+   void           operator >> (const YAML::Node& n,       plaet & c);
+
+bool operator== (const plaet& a, const plaet& b);
+bool operator!= (const plaet& a, const plaet& b);
+
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_price_level& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_price_level>& a, const std::string& field);
 void copy (sub_price_level& a, const qpid::types::Variant& map);
@@ -1440,6 +1710,15 @@ void copy (res_product_info::IC_response& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const ppc& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ppc>& a, const std::string& field);
 void copy (ppc& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_last_exec_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_last_exec_info>& a, const std::string& field);
+void copy (sub_last_exec_info& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk__ALL__execs_ticker& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk__ALL__execs_ticker>& a, const std::string& field);
+void copy (pub_last_mk__ALL__execs_ticker& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const plaet& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<plaet>& a, const std::string& field);
+void copy (plaet& a, const qpid::types::Variant& map);
 
     
     
@@ -1597,6 +1876,36 @@ void __internal_add2map (qpid::types::Variant::Map& map, const ppc__qpid_map& a)
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<ppc__qpid_map>& a, const std::string& field);
 void copy (ppc__qpid_map& a, const qpid::types::Variant& map);
 
+inline std::ostream& operator<< (std::ostream& o, const sub_last_exec_info__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_last_exec_info__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       sub_last_exec_info__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const sub_last_exec_info__qpid_map& a, const sub_last_exec_info__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const sub_last_exec_info__qpid_map& a, const sub_last_exec_info__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_last_exec_info__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_last_exec_info__qpid_map>& a, const std::string& field);
+void copy (sub_last_exec_info__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const pub_last_mk__ALL__execs_ticker__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const pub_last_mk__ALL__execs_ticker__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       pub_last_mk__ALL__execs_ticker__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const pub_last_mk__ALL__execs_ticker__qpid_map& a, const pub_last_mk__ALL__execs_ticker__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const pub_last_mk__ALL__execs_ticker__qpid_map& a, const pub_last_mk__ALL__execs_ticker__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const pub_last_mk__ALL__execs_ticker__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<pub_last_mk__ALL__execs_ticker__qpid_map>& a, const std::string& field);
+void copy (pub_last_mk__ALL__execs_ticker__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const plaet__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const plaet__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       plaet__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const plaet__qpid_map& a, const plaet__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const plaet__qpid_map& a, const plaet__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const plaet__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<plaet__qpid_map>& a, const std::string& field);
+void copy (plaet__qpid_map& a, const qpid::types::Variant& map);
+
     sub_price_level  __internal_get_default(sub_price_level *);
     
         inline sub_price_level__qpid_map  __internal_get_default(sub_price_level__qpid_map *) { return  sub_price_level__qpid_map(__internal_get_default((sub_price_level*)0));  }
@@ -1659,6 +1968,18 @@ void copy (ppc__qpid_map& a, const qpid::types::Variant& map);
     
         inline ppc__qpid_map  __internal_get_default(ppc__qpid_map *) { return  ppc__qpid_map(__internal_get_default((ppc*)0));  }
 
+    sub_last_exec_info  __internal_get_default(sub_last_exec_info *);
+    
+        inline sub_last_exec_info__qpid_map  __internal_get_default(sub_last_exec_info__qpid_map *) { return  sub_last_exec_info__qpid_map(__internal_get_default((sub_last_exec_info*)0));  }
+
+    pub_last_mk__ALL__execs_ticker  __internal_get_default(pub_last_mk__ALL__execs_ticker *);
+    
+        inline pub_last_mk__ALL__execs_ticker__qpid_map  __internal_get_default(pub_last_mk__ALL__execs_ticker__qpid_map *) { return  pub_last_mk__ALL__execs_ticker__qpid_map(__internal_get_default((pub_last_mk__ALL__execs_ticker*)0));  }
+
+    plaet  __internal_get_default(plaet *);
+    
+        inline plaet__qpid_map  __internal_get_default(plaet__qpid_map *) { return  plaet__qpid_map(__internal_get_default((plaet*)0));  }
+
 
 };   //namespace mtk {
 };   //namespace prices {
@@ -1687,6 +2008,10 @@ MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::res_product_inf
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::res_product_info__qpid_map)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ppc)
 MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::ppc__qpid_map)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_last_mk__ALL__execs_ticker)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::pub_last_mk__ALL__execs_ticker__qpid_map)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::plaet)
+MTK_QPID_REGISTER_FACTORY_HANDLE_QPID_EXCHANGE(mtk::prices::msg::plaet__qpid_map)
 
 
 
