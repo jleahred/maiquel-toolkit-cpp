@@ -16,11 +16,12 @@ namespace
 {
 
     const char*   APP_NAME          = "TEST_ROUTES";
-    const char*   APP_VER           = "2012-06-08";
+    const char*   APP_VER           = "2012-07-18";
     const char*   APP_DESCRIPTION   = "Test qpid routes and links";
 
     const char*   APP_MODIFICATIONS = "           2012-05-04     first version\n"
                                       "           2012-06-08     sending email if fails, monitoring all finish, autocheck on time\n"
+                                      "           2012-07-18     sending email even if ok. This is provisional\n"
 										;
 
 
@@ -138,7 +139,13 @@ namespace  testing_route
     {
         mtk::tuple<mtk::DateTime, std::string>  result =   get_result_checked();
         if(ok)
-            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "ureport", MTK_SS("OK      time:" << mtk::dtNowLocal() - get_start_time() << "  " <<  result._1), mtk::alPriorDebug));
+        {
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "ureport", MTK_SS("OK      TEST ROUTES  time:" << mtk::dtNowLocal() - get_start_time() << "  " <<  result._1), mtk::alPriorDebug));
+
+            //  provisional
+            mtk::gen::msg::pub_email  pub_email(mtk::admin::get_config_mandatory_property("TEST_ROUTES.email_to"), "testing routes", MTK_SS("OK      TEST ROUTES  time:" << mtk::dtNowLocal() - get_start_time() << "  " <<  result._1));
+            mtk_send_message("server", pub_email);
+        }
         else
         {
             std::string  error_desc = MTK_SS("ERROR   time:" << mtk::dtNowLocal() - get_start_time() << "  " <<  result._1);
@@ -234,7 +241,7 @@ namespace  testing_route
             get_list_routes_to_test().pop_front();
 
 
-            get_detail_tested().push_back(MTK_SS(mtk::dtNowLocal() << " testing...     "  << get_current_route()
+            get_detail_tested().push_back(MTK_SS(mtk::dtNowLocal() << "(" << get_list_routes_to_test().size()  << ") testing...     "  << get_current_route()
                                                         << "     ... orig " << get_url(get_current_route().origin)
                                                         << "     ... dest " << get_url(get_current_route().dest)
                                                         ));
