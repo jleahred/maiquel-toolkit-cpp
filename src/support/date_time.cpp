@@ -223,7 +223,7 @@ dtTimeQuantity::dtTimeQuantity (dtHours                 _hours          ,
 
 dtTimeQuantity::dtTimeQuantity  (dtQMinutes         _minutes                )
     :
-       timeQuantitySerialNumber ((_minutes.WarningDontDoThisGetInternal()*60*1000)/MILLISECS_ON_DAY        ),
+       timeQuantitySerialNumber ((double(_minutes.WarningDontDoThisGetInternal())*60.*1000.)/MILLISECS_ON_DAY        ),
        decodedTime              (false                                      ),
        sign                     (0                                          ),
        days                     (0                                          ),
@@ -237,7 +237,7 @@ dtTimeQuantity::dtTimeQuantity  (dtQMinutes         _minutes                )
 
 dtTimeQuantity::dtTimeQuantity  (dtQSeconds        _seconds                 )
     :
-       timeQuantitySerialNumber ((_seconds.WarningDontDoThisGetInternal()*1000)/MILLISECS_ON_DAY           ),
+       timeQuantitySerialNumber ((double(_seconds.WarningDontDoThisGetInternal())*1000.)/MILLISECS_ON_DAY           ),
        decodedTime              (false                                      ),
        sign                     (0                                          ),
        days                     (0                                          ),
@@ -266,7 +266,7 @@ dtTimeQuantity::dtTimeQuantity  (dtDays           _days                 )
 
 dtTimeQuantity::dtTimeQuantity  (dtHours          _hours                    )
     :
-       timeQuantitySerialNumber (double(_hours.WarningDontDoThisGetInternal()*60*60*1000)/MILLISECS_ON_DAY ),
+       timeQuantitySerialNumber ((double(_hours.WarningDontDoThisGetInternal())*60.*60.*1000.)/MILLISECS_ON_DAY ),
        decodedTime              (false                                      ),
        sign                     (0                                      ),
        days                     (0                                          ),
@@ -280,7 +280,7 @@ dtTimeQuantity::dtTimeQuantity  (dtHours          _hours                    )
 
 dtTimeQuantity::dtTimeQuantity  (dtMinutes        _minuts                   )
     :
-       timeQuantitySerialNumber (double(_minuts.WarningDontDoThisGetInternal()*60*1000)/MILLISECS_ON_DAY   ),
+       timeQuantitySerialNumber ((double(_minuts.WarningDontDoThisGetInternal())*60.*1000.)/MILLISECS_ON_DAY   ),
        decodedTime              (false                                      ),
        sign                     (0                                          ),
        days                     (0                                          ),
@@ -294,7 +294,7 @@ dtTimeQuantity::dtTimeQuantity  (dtMinutes        _minuts                   )
 
 dtTimeQuantity::dtTimeQuantity  (dtSeconds        _seconds                  )
     :
-       timeQuantitySerialNumber (double(_seconds.WarningDontDoThisGetInternal()*1000)/MILLISECS_ON_DAY     ),
+       timeQuantitySerialNumber ((double(_seconds.WarningDontDoThisGetInternal())*1000.)/MILLISECS_ON_DAY     ),
        decodedTime              (false                                      ),
        sign                     (0                                          ),
        days                     (0                                          ),
