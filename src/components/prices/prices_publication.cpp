@@ -7,6 +7,7 @@
 #include "support/integer_compactor.h"
 #include "support/asynch_signal.hpp"
 #include "support/factory.hpp"
+#include "support/delete_later.hpp"
 
 
 
@@ -364,6 +365,19 @@ void  send_last_execs_all_list(const mtk::msg::sub_product_code& product_code, c
 
     mtk::prices::msg::plaet  msg_to_send(product_code.market, product_code.product, compacted_data, MTK_SS("CN_P" << product_code.market), mtk::dtNowLocal());
     mtk_send_message(url, msg_to_send);
+
+
+    auto it = get_map_product_code__last_exec_info__signal().find(product_code);
+    if(it == get_map_product_code__last_exec_info__signal().end())
+    {
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "pp.send_last_execs_all_list", MTK_SS("Received signal not registered for " << product_code), mtk::alPriorError));
+        return;
+    }
+    else
+    {
+        mtk::delete_later(it->second);
+        get_map_product_code__last_exec_info__signal().erase(it);
+    }
 }
 
 void add_exec__in_contention_all_execs(const mtk::msg::sub_product_code& product_code, const mtk::prices::msg::sub_last_exec_info&  last_exec_info)

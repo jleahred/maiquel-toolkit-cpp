@@ -626,6 +626,7 @@ public:
         {   MTK_TIMER_1S(on_timer);     }
     }
 
+
     void    emit(const TP& value)
     {
         if(params2send.size() > max_queued)
@@ -641,10 +642,10 @@ public:
 
 
 private:
-    INFO                                            info;
-    mtk::list<typename std::remove_reference<TP>::type>      params2send;
-    const mtk::dtTimeQuantity                       max_frec;
-    const size_t                                    max_queued;
+    INFO                                                    info;
+    mtk::list<typename std::remove_reference<TP>::type>     params2send;
+    const mtk::dtTimeQuantity                               max_frec;
+    const size_t                                            max_queued;
 
     void    on_timer(void)
     {
