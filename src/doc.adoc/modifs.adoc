@@ -10,13 +10,16 @@ Fixed errors;;
 * pending
 
 New;;
-* pending
+* Price publication ticker
+* +delete_later+ for CountPtr
+* +async_signal_all_list+
+
 
 Modif interfaz;;
 * +CLASS_NAME+  not needed anymore
 
 Other;;
-* pending
+* Iterators on vector and new constructors
 
 
 

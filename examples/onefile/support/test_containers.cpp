@@ -35,6 +35,9 @@ int main(void)
             std::cout << vint.front() << std::endl;
 
 
+            for(auto itvector=vint.begin(); itvector!=vint.end(); ++itvector)
+                std::cout << *itvector << std::endl;
+
             //  esto lanzaría una excepción
             //std::cout << vint[100] << std::endl;
 
@@ -243,6 +246,56 @@ int main(void)
 
 
 
+        //  Pruebas con vectores +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //  tratamos de avanzar en un iterador que apunta al final
+        std::cout << "Pruebas con vectores +++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+        try
+        {
+            std::cout << ++counter << ".-  tratamos de avanzar en un iterador que apunta al final" << std::endl;
+            mtk::vector<int>  vi;
+            vi.push_back(1);
+            vi.push_back(2);
+            mtk::vector<int>::iterator  it = vi.end();
+            std::cout << *(++it) << std::endl;
+            std::cout << "ERROR... " << std::endl;
+            return -1;
+        }
+        MTK_CATCH_CALLFUNCION (std::cout << "__NR__:  "<< , "OK testing errors", "O K   properly catched")
+
+        //  iterador contenedor borrado
+        try
+        {
+            std::cout << ++counter << ".-  iterador contenedor borrado" << std::endl;
+            mtk::vector<int>  vi;
+            vi.push_back(1);
+            vi.push_back(2);
+            mtk::vector<int>::iterator  it = vi.begin();
+            ++it;
+            vi.clear();
+            std::cout << *it << std::endl;
+            std::cout << "ERROR... " << std::endl;
+            return -1;
+        }
+        MTK_CATCH_CALLFUNCION (std::cout << "__NR__:  "<< , "OK testing errors", "O K   properly catched")
+
+        //  iterador borrado
+        try
+        {
+            std::cout << ++counter << ".-  iterador borrado" << std::endl;
+            mtk::vector<int>  vi;
+            vi.push_back(1);
+            vi.push_back(2);
+            mtk::vector<int>::iterator  it = vi.begin();
+            ++it;
+            vi.pop_back();
+            std::cout << *it << std::endl;
+            std::cout << "ERROR... " << std::endl;
+            return -1;
+        }
+        MTK_CATCH_CALLFUNCION (std::cout << "__NR__:  "<< , "OK testing errors", "O K   properly catched")
+
+
+
         std::cout << std::endl << std::endl << "TIENE BUENA PINTA." << std::endl;
         #include "support/release_on_exit.hpp"
         return 0;
@@ -255,8 +308,8 @@ int main(void)
 
 }
 
-void mtk::AlarmMsg(const mtk::Alarm& al)
-{
-    std::cout << "ouch...: "  << al << std::endl;
-
-}
+//void mtk::AlarmMsg(const mtk::Alarm& al)
+//{
+//    std::cout << "ouch...: "  << al << std::endl;
+//
+//}
