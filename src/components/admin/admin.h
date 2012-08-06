@@ -98,7 +98,9 @@ namespace mtk {
 
 
 
-    void AlarmMsg (const Alarm& error);
+    void AlarmMsg (const Alarm& error);     //  implementation from   alarm.h
+    void AlarmMsg (const Alarm& error, const mtk::DateTime& when);     //  new on admin.h
+
 
 
 void  __internal_admin_nevercall_me____release_on_exit(void);

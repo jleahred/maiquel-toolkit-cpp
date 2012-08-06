@@ -344,7 +344,8 @@ namespace {
         {
             #if MTK_PLATFORM == MTK_LINUX_PLATFORM
 
-                if(mtk::admin::is_production())
+                mtk::Nullable<std::string> is_daemon = get_config_property("ADMIN.daemon");
+                if (!is_daemon.HasValue() || is_daemon.Get().compare("false")!=0)
                 {
                     if(daemon(1,0) == -1)
                     {
@@ -352,6 +353,8 @@ namespace {
                         exit(1);
                     }
                 }
+                if (is_daemon.HasValue()  &&  mtk::admin::is_production())
+                    AlarmMsg(mtk::Alarm(MTK_HERE, "admin.daemon_config", "Process on production with daemon configuration", mtk::alPriorError), mtk::dtNowLocal() + mtk::dtHours(2));
 
             #endif
 
@@ -893,6 +896,7 @@ namespace {
                 }
             }
         }
+
         mtk::list<mtk::admin::msg::sub_command_rd>  data_list;
         mtk::list<std::string>::iterator it2 = response_lines.begin();
         int max_lines_to_respond = 600;
@@ -1489,6 +1493,59 @@ void AlarmMsg (const Alarm& alarm)
     }
 }
 
+
+
+//  delayed_alarm_msgs               ---------------------------------------
+
+void  __internal_check_delayed_alarm_msgs(void);
+
+mtk::list<mtk::tuple< mtk::DateTime, mtk::Alarm> >&     __internal_get_delayed_alarm_msgs_list(void)
+{
+    static mtk::list<mtk::tuple< mtk::DateTime, mtk::Alarm> >*  result;
+    if(result == 0)
+    {
+        MTK_TIMER_1SF(__internal_check_delayed_alarm_msgs);
+        result = new mtk::list<mtk::tuple< mtk::DateTime, mtk::Alarm> >;
+    }
+    return *result;
+}
+
+void  __internal_check_delayed_alarm_msgs(void)
+{
+    auto it = __internal_get_delayed_alarm_msgs_list().begin();
+    while(it!=__internal_get_delayed_alarm_msgs_list().end())
+    {
+        if(it->_0 < mtk::dtNowLocal())
+        {
+            AlarmMsg(it->_1);
+            it = __internal_get_delayed_alarm_msgs_list().erase(it);
+        }
+        else
+            break;
+    }
+}
+
+void AlarmMsg (const Alarm& error, const mtk::DateTime& when)
+{
+    if(__internal_get_delayed_alarm_msgs_list().size() > 1000)
+    {
+        MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(1))
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.delayed alarms", "too many messages queued con delayed alarms, ignoring...", mtk::alPriorError));
+        MTK_END_EXEC_MAX_FREC
+        return;
+    }
+    auto it = __internal_get_delayed_alarm_msgs_list().begin();
+    while(it!=__internal_get_delayed_alarm_msgs_list().end())
+    {
+        if(it->_0 > when)
+        {
+            __internal_get_delayed_alarm_msgs_list().insert(it, mtk::make_tuple(when, error));
+            break;
+        }
+    }
+}
+
+//  delayed_alarm_msgs               ---------------------------------------
 
 
 
