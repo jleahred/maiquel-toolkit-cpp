@@ -67,7 +67,9 @@ namespace {
 
             command_info(const std::string& _group, const std::string& _name, const std::string& _description, bool _confirmation_requiered)
                 :   group(_group), name(_name), description(_description), confirmation_requiered(_confirmation_requiered),
-                    signal_command_received(mtk::make_cptr(new mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*lines response*/> ))   {}
+                    signal_command_received(mtk::make_cptr(new mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*lines response*/> )),
+                    signal_command_received__asynchr_response(mtk::make_cptr(new mtk::Signal<const std::string&, const std::string&, const mtk::msg::sub_request_info&> ))
+                {}
 
             const std::string   group;
             const std::string   name;
@@ -76,6 +78,11 @@ namespace {
             mtk::CountPtr<  mtk::Signal<    const std::string&      /*cmd*/,
                                             const std::string&      /*params*/,
                                             mtk::list<std::string>& /*respnose lines to fill*/> >   signal_command_received;
+
+            mtk::CountPtr<  mtk::Signal<    const std::string& /*cmd*/,
+                                            const std::string& /*params*/,
+                                            const mtk::msg::sub_request_info& > >                   signal_command_received__asynchr_response;
+
         };
 
     public:
@@ -106,6 +113,10 @@ namespace {
 
             mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*response lines*/> >
             register_command(const std::string& group, const std::string& name, const std::string& description, bool confirmation_requeried=false);
+
+            mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, const mtk::msg::sub_request_info& > >
+            register_command__asynchr_response(const std::string& group, const std::string& name, const std::string& description, bool confirmation_requiered=false);
+            void   send_command_response_asynchr(const mtk::msg::sub_request_info& request_info, const std::string command, mtk::list<std::string>  response_lines);
 
 
             mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       signal_alarm_error_critic;
@@ -245,6 +256,8 @@ namespace {
                                                                                                     const mtk::dtTimeQuantity&  error_on,
                                                                                                     const mtk::dtTimeQuantity&  warning_on);
             void                                            check_local_fluct(void);
+
+            mtk::CountPtr<command_info> __internal_register_command(const std::string& group, const std::string& name, const std::string& description, bool confirmation_requiered);
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //          class admin_status
@@ -817,6 +830,58 @@ namespace {
         process_name[pos] = char(process_name[pos] + char(mtk::rand()%4+1));
         return process_name;
     }
+
+
+
+        //std::string params;
+    void __internal_send_response_lines (const mtk::msg::sub_request_info& request_info, const std::string command, mtk::list<std::string>  response_lines)
+    {
+        //  send response command
+        mtk::list<mtk::admin::msg::sub_command_rd>  data_list;
+        mtk::list<std::string>::iterator it2 = response_lines.begin();
+        int max_lines_to_respond = 600;
+
+        while(it2 != response_lines.end())
+        {
+            if(it2->size() > 500)
+            {
+                mtk::vector<std::string>  splitted_lines  =  mtk::s_split(*it2, "\n");
+                if(splitted_lines.size() > unsigned(max_lines_to_respond))
+                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("too many lines  " << splitted_lines.size()  << " >" << max_lines_to_respond+splitted_lines.size() << "   truncating" << command), mtk::alPriorError));
+                for(unsigned ii=0; ii<splitted_lines.size()  &&  max_lines_to_respond ; ++ii, --max_lines_to_respond)
+                {
+                    if(splitted_lines[ii].size() > 600)
+                    {
+                        auto truncated_line = splitted_lines[ii].substr(0, 600);
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in command response" << splitted_lines[ii].substr(0, 200)  << " >600 " <<  " truncating"), mtk::alPriorError));
+                        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii].substr(0, 600) << std::endl << " truncated line... " << std::endl)));
+                    }
+                    else
+                        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii] << std::endl)));
+                }
+            }
+            else
+                data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(*it2 << std::endl)));
+
+            ++it2;
+            --max_lines_to_respond;
+            if(max_lines_to_respond <= 0)
+            {
+                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("too many lines to respond on  " << command << " truncating"), mtk::alPriorError));
+                data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS("too many lines in response, truncating...  " << std::endl)));
+                break;
+            }
+        }
+
+        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.command", MTK_SS("from  " << request_info.process_info << std::endl <<  "command " << command << std::endl
+                                                            << "response first line " << data_list.front().text), mtk::alPriorDebug));
+        //  sending multiresponses in asyncronous way
+        MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::res_command,
+                                        mtk::admin::msg::sub_command_rd,
+                                        mtk::admin::get_url("admin"),
+                                        request_info,
+                                        data_list)
+    }
     void admin_status::on_command_received2(const mtk::admin::msg::req_command2& command_msg)
     {
 
@@ -846,6 +911,8 @@ namespace {
             }
         }
 
+
+        int  asynchronous_dispatching = 0;
         mtk::map<std::string, mtk::CountPtr<command_info> >::iterator it = map_commands.find(command);
         if(it==map_commands.end())
             response_lines.push_back(MTK_SS(command << "  unknow command"));
@@ -880,14 +947,23 @@ namespace {
                     }
                 }
                 //  else, process command
-                else if(it->second->signal_command_received->emit(command, params, response_lines) == 0)
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
+                else
+                {
+                    int  dispatched = 0;
+                    dispatched += it->second->signal_command_received->emit(command, params, response_lines);
+                    asynchronous_dispatching += it->second->signal_command_received__asynchr_response->emit(command, params, command_msg.request_info);
+                    if(dispatched + asynchronous_dispatching == 0)
+                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
+                }
             }
             else
             {
                 if(confirmation_code=="")
                 {
-                    if( it->second->signal_command_received->emit(command, params, response_lines) == 0)
+                    int  dispatched = 0;
+                    dispatched += it->second->signal_command_received->emit(command, params, response_lines);
+                    asynchronous_dispatching += it->second->signal_command_received__asynchr_response->emit(command, params, command_msg.request_info);
+                    if(dispatched + asynchronous_dispatching == 0)
                         mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  has no signal connected"), mtk::alPriorError));
                 }
                 else
@@ -897,50 +973,15 @@ namespace {
             }
         }
 
-        mtk::list<mtk::admin::msg::sub_command_rd>  data_list;
-        mtk::list<std::string>::iterator it2 = response_lines.begin();
-        int max_lines_to_respond = 600;
-        while(it2 != response_lines.end())
+        if(response_lines.size() == 0  &&  asynchronous_dispatching==0)
         {
-            if(it2->size() > 500)
-            {
-                mtk::vector<std::string>  splitted_lines  =  mtk::s_split(*it2, "\n");
-                if(splitted_lines.size() > unsigned(max_lines_to_respond))
-                    mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("too many lines  " << splitted_lines.size()  << " >" << max_lines_to_respond+splitted_lines.size() << "   truncating" << command), mtk::alPriorError));
-                for(unsigned ii=0; ii<splitted_lines.size()  &&  max_lines_to_respond ; ++ii, --max_lines_to_respond)
-                {
-                    if(splitted_lines[ii].size() > 600)
-                    {
-                        auto truncated_line = splitted_lines[ii].substr(0, 600);
-                        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("line too long in command response" << splitted_lines[ii].substr(0, 200)  << " >600 " <<  " truncating"), mtk::alPriorError));
-                        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii].substr(0, 600) << std::endl << " truncated line... " << std::endl)));
-                    }
-                    else
-                        data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(splitted_lines[ii] << std::endl)));
-                }
-            }
-            else
-                data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS(*it2 << std::endl)));
-
-            ++it2;
-            --max_lines_to_respond;
-            if(max_lines_to_respond <= 0)
-            {
-                mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS("too many lines to respond on  " << command << " truncating"), mtk::alPriorError));
-                data_list.push_back(mtk::admin::msg::sub_command_rd(MTK_SS("too many lines in response, truncating...  " << std::endl)));
-                break;
-            }
+            response_lines.push_back("-- ERROR, empty syncrhonous response with no asynchronous substription--");
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin", MTK_SS(command << "  no synchr or asynchr response substription"), mtk::alPriorError));
         }
-
-        mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "admin.command", MTK_SS("from  " << command_msg.request_info.process_info << std::endl <<  "command " << command << std::endl
-                                                            << "response first line " << data_list.front().text), mtk::alPriorDebug));
-        //  sending multiresponses in asyncronous way
-        MTK_SEND_MULTI_RESPONSE(        mtk::admin::msg::res_command,
-                                        mtk::admin::msg::sub_command_rd,
-                                        mtk::admin::get_url("admin"),
-                                        command_msg.request_info,
-                                        data_list)
+        if(response_lines.size() > 0)
+            __internal_send_response_lines (command_msg.request_info, command, response_lines);
     }
+
 
     void admin_status::on_command_received_cli(const mtk::admin::msg::req_command_cli& command_msg)
     {
@@ -1114,6 +1155,16 @@ namespace {
     mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, mtk::list<std::string>& /*response lines*/> >
     admin_status::register_command(const std::string& group, const std::string& name, const std::string& description, bool confirmation_requiered)
     {
+        return __internal_register_command(group, name, description, confirmation_requiered)->signal_command_received;
+    }
+    mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, const mtk::msg::sub_request_info& > >
+    admin_status::register_command__asynchr_response(const std::string& group, const std::string& name, const std::string& description, bool confirmation_requiered)
+    {
+        return __internal_register_command(group, name, description, confirmation_requiered)->signal_command_received__asynchr_response;
+    }
+
+    mtk::CountPtr<admin_status::command_info> admin_status::__internal_register_command(const std::string& group, const std::string& name, const std::string& description, bool confirmation_requiered)
+    {
         std::string full_command_name;
         if(group=="__GLOBAL__")
             full_command_name = name;
@@ -1126,7 +1177,7 @@ namespace {
             std::string help_line = MTK_SS( "        " << mtk::s_AlignLeft (name, 30, '.')  <<  " " << description);
             map_commands_groupped_help[group] = MTK_SS(map_commands_groupped_help[group] << std::endl  <<  help_line);
         }
-        return map_commands[full_command_name]->signal_command_received;
+        return map_commands[full_command_name];
     }
 
 
@@ -1345,6 +1396,17 @@ register_command(const std::string& group, const std::string& name, const std::s
     return admin_status::i()->register_command(group, name, description, confirmation_requiered);
 }
 
+mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, const mtk::msg::sub_request_info&> >
+register_command__asynchr_response(const std::string& group, const std::string& name, const std::string& description, bool confirmation_requiered)
+{
+    return admin_status::i()->register_command__asynchr_response(group, name, description, confirmation_requiered);
+}
+
+void   send_command_response_asynchr(const mtk::msg::sub_request_info& request_info, const std::string command, mtk::list<std::string>  response_lines)
+{
+    __internal_send_response_lines (request_info, command, response_lines);
+}
+
 
 mtk::CountPtr<mtk::Signal<const mtk::Alarm&> >       get_signal_alarm_error_critic(void)
 {
@@ -1527,6 +1589,7 @@ void  __internal_check_delayed_alarm_msgs(void)
 
 void AlarmMsg (const Alarm& error, const mtk::DateTime& when)
 {
+    AlarmMsg(error);
     if(__internal_get_delayed_alarm_msgs_list().size() > 1000)
     {
         MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(1))

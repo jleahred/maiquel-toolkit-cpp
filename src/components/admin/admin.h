@@ -85,6 +85,18 @@ namespace mtk {
                                                                 bool confirmation_requiered=false);
 
 
+
+        //  ASYNCHRONOUS command responses  ---------------
+        mtk::CountPtr<mtk::Signal<const std::string& /*cmd*/, const std::string& /*params*/, const mtk::msg::sub_request_info& > >
+                                            register_command__asynchr_response(   const std::string& group,
+                                                                const std::string& name,
+                                                                const std::string& description,
+                                                                bool confirmation_requiered=false);
+        void   send_command_response_asynchr(const mtk::msg::sub_request_info& request_info, const std::string command, mtk::list<std::string>  response_lines);
+        //  ASYNCHRONOUS command responses  ---------------
+
+
+
         mtk::Signal<>*           get_signal_admin_ready(void);
         mtk::Signal<>*           get_signal_admin_close(void);
         mtk::Signal<>*           get_signal_admin_close_delayed(void);      //  it will be closed on some seconds
@@ -99,7 +111,7 @@ namespace mtk {
 
 
     void AlarmMsg (const Alarm& error);     //  implementation from   alarm.h
-    void AlarmMsg (const Alarm& error, const mtk::DateTime& when);     //  new on admin.h
+    void AlarmMsg (const Alarm& error, const mtk::DateTime& when);     //  new on admin.h.  It will send a remainder at "when"  DateTime
 
 
 
