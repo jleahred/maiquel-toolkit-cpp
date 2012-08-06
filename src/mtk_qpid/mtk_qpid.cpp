@@ -230,7 +230,6 @@ void __internal_impl_handle_qpid_exchange_receiver::check_queue(void)
 //            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_queue", MTK_SS("disconecting receiver  (...) on address  " << receiver->address), mtk::alPriorCritic));
 //        }
 
-        //  this is to protect in case of  handle_qpid_exchange_receiver is out of scope when is processing a message
 
 
 		qpid::messaging::Message message;
@@ -250,12 +249,12 @@ void __internal_impl_handle_qpid_exchange_receiver::check_queue(void)
             {
                 try
                 {
-                    //MTK_HANDLE_DIV0_INIT
+                    MTK_HANDLE_DIV0_INIT
                     {
                         mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_full);
                         signalMessage.emit(message);
                     }
-                    //MTK_HANDLE_DIV0_END
+                    MTK_HANDLE_DIV0_END
                 } catch (const Alarm& alError) {
                     Alarm  qpid_error(
                                 MTK_HERE, "handle_qpid_exchange_receiver",
