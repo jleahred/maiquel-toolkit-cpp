@@ -52,7 +52,7 @@ void  check_to_delete (void)
 template<typename T>
 void  delete_later(const CountPtr<T>& obj)
 {
-    if(obj.getCount()  ==  1)
+    if(obj.getCount()  ==  0)
     {
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "delete_later", MTK_SS("Invalid count: " << obj.getCount()), mtk::alPriorError));
@@ -65,6 +65,26 @@ void  delete_later(const CountPtr<T>& obj)
     if(list_to_delete.size() == 1)
         MTK_TIMER_1SF(check_to_delete<T>);
 }
+
+
+
+
+
+
+
+template  <typename  __IMPL__>
+class  delete_later_wrapper
+{
+    public:
+        explicit delete_later_wrapper(const mtk::CountPtr<__IMPL__>&  impl)
+            :   __impl(impl)
+        {
+        }
+        ~delete_later_wrapper(void)   { mtk::delete_later(__impl); }
+
+
+        CountPtr<__IMPL__>             __impl;
+};
 
 
 

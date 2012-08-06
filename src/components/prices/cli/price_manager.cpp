@@ -345,7 +345,7 @@ internal_price_manager__factory::get_best_prices_suscrp_handle(void)
                             on_price_update);
 
     get_stats().num_best_prices += 1;
-    h_best_prices->signalBeforeDestroy.connect(decrease_subscriptions_best_prices);
+    h_best_prices->__impl->signalBeforeDestroy.connect(decrease_subscriptions_best_prices);
 
     request_full_prod_info();
 
@@ -383,7 +383,7 @@ internal_price_manager__factory::get_mk_last_ex_ticker_suscrp_handle(void)
                             on_last_mk_execs_ticker_update);
 
     get_stats().num_last_exec_ticker += 1;
-    h_last_mk_execs_ticker->signalBeforeDestroy.connect(decrease_subscriptions_last_ex_ticker);
+    h_last_mk_execs_ticker->__impl->signalBeforeDestroy.connect(decrease_subscriptions_last_ex_ticker);
 
     request_full_prod_info();
 
@@ -420,7 +420,7 @@ internal_price_manager__factory::get_addtional_info_suscrp_handle(void)
                             on_addtional_info_update);
 
     get_stats().num_additional_info += 1;
-    h_additional_info->signalBeforeDestroy.connect(decrease_subscriptions_additional_info);
+    h_additional_info->__impl->signalBeforeDestroy.connect(decrease_subscriptions_additional_info);
 
     request_full_prod_info();
 

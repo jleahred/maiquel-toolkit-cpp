@@ -182,8 +182,8 @@ qpid::messaging::Receiver&          mtkqpid_receiver::qpid_receiver(void)
 
 
 
-handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter)
-    :     signalMessage(mtk::make_cptr(new Signal<const qpid::messaging::Message&>))
+__internal_impl_handle_qpid_exchange_receiver::__internal_impl_handle_qpid_exchange_receiver(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter)
+    :     signalMessage{}
         , receiver(get_from_factory<mtkqpid_receiver>(mtk::make_tuple(url, address, filter)))
 {
     ++mtk_qpid_stats::num_created_suscriptions_no_parsing();
@@ -192,7 +192,7 @@ handle_qpid_exchange_receiver::handle_qpid_exchange_receiver(const t_qpid_url& u
 }
 
 
-handle_qpid_exchange_receiver::~handle_qpid_exchange_receiver(void)
+__internal_impl_handle_qpid_exchange_receiver::~__internal_impl_handle_qpid_exchange_receiver(void)
 {
     try{
         ++mtk_qpid_stats::num_deleted_suscriptions_no_parsing();
@@ -202,7 +202,7 @@ handle_qpid_exchange_receiver::~handle_qpid_exchange_receiver(void)
 }
 
 
-void handle_qpid_exchange_receiver::check_queue(void)
+void __internal_impl_handle_qpid_exchange_receiver::check_queue(void)
 {
         qpid::messaging::Receiver           local_receiver;
         try
@@ -248,24 +248,12 @@ void handle_qpid_exchange_receiver::check_queue(void)
 
             try
             {
-                //  copiamos el estado que nos podría hacer falta por si acaso...
-//                std::string localcopy_subject = subject;
-                //  estas copias además tienen el objetivo de asegurar que no salgan de ámbito
-                //  si se destruyese el objeto mientras se ejecuta el método
-                CountPtr< Signal<const qpid::messaging::Message&> >      localcopy_signalMessage(signalMessage);
-                //CountPtr< Signal<const Alarm& > >  localcopy_signalError(signalError);
-
                 try
                 {
                     //MTK_HANDLE_DIV0_INIT
                     {
-
-                        //  OJO, después de emit no debe accederse a este objeto
-                        //  por si nos lo borran en el proceso del propio emit
-                        //  con stop o reescribiéndolo con otro valor
                         mtk::mtk_qpid_stats::message_received(message.getContentSize(), mtk::mtk_qpid_stats::mt_full);
-                        localcopy_signalMessage->emit(message);
-
+                        signalMessage.emit(message);
                     }
                     //MTK_HANDLE_DIV0_END
                 } catch (const Alarm& alError) {

@@ -34,6 +34,8 @@
 #include "support/factory.hpp"
 #include "msg_control_fields.h"
 #include "support/exec_max_frec.h"
+#include "support/delete_later.hpp"
+
 
 
 #include "mtk_qpid_stats.h"
@@ -41,7 +43,7 @@
 
 
 #define  __MTK_CHECK_NON_DEPRECIATED_THIS(__MSG_TYPE__)     \
-        if(__internal_handler__->depreciated_on.HasValue() ==  true)    \
+        if(__internal_handler__->__impl->depreciated_on.HasValue() ==  true)    \
         {           \
             MTK_EXEC_MAX_FREC(mtk::dtMinutes(15))           \
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "depreciated", MTK_SS("previus depreciated register on " << #__MSG_TYPE__), mtk::alPriorError));           \
@@ -58,21 +60,21 @@
                         , mtk::alPriorError));           \
             MTK_END_EXEC_MAX_FREC           \
         }           \
-        if(__internal_handler__->depreciated_on.HasValue()   &&    __internal_handler__->depreciated_on.Get()!= (__DEPRECIATED_DATE__))                     \
+        if(__internal_handler__->__impl->depreciated_on.HasValue()   &&    __internal_handler__->__impl->depreciated_on.Get()!= (__DEPRECIATED_DATE__))                     \
         {           \
             MTK_EXEC_MAX_FREC(mtk::dtMinutes(15))           \
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "depreciated"           \
                         , MTK_SS("previus non depreciated register on " << #__MSG_TYPE__ << "  with diferent depreciated date  "  <<           \
-                          __internal_handler__->depreciated_on.Get()  <<  " != "  <<  __DEPRECIATED_DATE__)           \
+                          __internal_handler__->__impl->depreciated_on.Get()  <<  " != "  <<  __DEPRECIATED_DATE__)           \
                         , mtk::alPriorError));           \
             MTK_END_EXEC_MAX_FREC           \
         }           \
         else           \
-            __internal_handler__->depreciated_on = mtk::make_nullable((__DEPRECIATED_DATE__));           \
+            __internal_handler__->__impl->depreciated_on = mtk::make_nullable((__DEPRECIATED_DATE__));           \
 
 
 #define  __MTK_CHECK_NON_DEPRECIATED_F(__MSG_TYPE__)     \
-        if(__internal_handler__->depreciated_on.HasValue() ==  true)    \
+        if(__internal_handler__->__impl->depreciated_on.HasValue() ==  true)    \
         {           \
             MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(15))           \
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "depreciated", MTK_SS("previus depreciated register on " << #__MSG_TYPE__), mtk::alPriorError));           \
@@ -89,17 +91,17 @@
                         , mtk::alPriorError));           \
             MTK_END_EXEC_MAX_FREC           \
         }           \
-        if(__internal_handler__->depreciated_on.HasValue()   &&    __internal_handler__->depreciated_on.Get()!= (__DEPRECIATED_DATE__))                     \
+        if(__internal_handler__->__impl->depreciated_on.HasValue()   &&    __internal_handler__->__impl->depreciated_on.Get()!= (__DEPRECIATED_DATE__))                     \
         {           \
             MTK_EXEC_MAX_FREC_S(mtk::dtMinutes(15))           \
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "depreciated"           \
                         , MTK_SS("previus non depreciated register on " << #__MSG_TYPE__ << "  with diferent depreciated date  "  <<           \
-                          __internal_handler__->depreciated_on.Get()  <<  "  "  <<  __DEPRECIATED_DATE__)           \
+                          __internal_handler__->__impl->depreciated_on.Get()  <<  "  "  <<  __DEPRECIATED_DATE__)           \
                         , mtk::alPriorError));           \
             MTK_END_EXEC_MAX_FREC           \
         }           \
         else           \
-            __internal_handler__->depreciated_on = mtk::make_nullable((__DEPRECIATED_DATE__));           \
+            __internal_handler__->__impl->depreciated_on = mtk::make_nullable((__DEPRECIATED_DATE__));           \
 
 
 
@@ -114,7 +116,7 @@
                                                                                                                                             mtk::t_qpid_address(__MSG_TYPE__::static_get_qpid_address()), \
                                                                                                                                             __FILTER__));     \
         __MTK_CHECK_NON_DEPRECIATED_F(__MSG_TYPE__)     \
-        __internal_handler__->signalMessage->connect(__FUNCT_RECEPTOR__);     \
+        __internal_handler__->__impl->signalMessage.connect(__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -126,7 +128,7 @@
                                                                                                                                             mtk::t_qpid_address(__MSG_TYPE__::static_get_qpid_address()), \
                                                                                                                                             __FILTER__));     \
         __MTK_CHECK_DEPRECIATED_F(__MSG_TYPE__,  __DEPRECIATED_DATE__)     \
-        __internal_handler__->signalMessage->connect(__FUNCT_RECEPTOR__);     \
+        __internal_handler__->__impl->signalMessage.connect(__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -142,7 +144,7 @@
                                                                                                                                             mtk::t_qpid_address(__MSG_TYPE__::static_get_qpid_address()), \
                                                                                                                                             __FILTER__));     \
         __MTK_CHECK_NON_DEPRECIATED_THIS(__MSG_TYPE__)     \
-        __internal_handler__->signalMessage->connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
+        __internal_handler__->__impl->signalMessage.connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -153,7 +155,7 @@
                                                                                                                                             mtk::t_qpid_address(__MSG_TYPE__::static_get_qpid_address()), \
                                                                                                                                             __FILTER__));     \
         __MTK_CHECK_DEPRECIATED_THIS(__MSG_TYPE__,  __DEPRECIATED_DATE__)     \
-        __internal_handler__->signalMessage->connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
+        __internal_handler__->__impl->signalMessage.connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -165,7 +167,7 @@
     {    \
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
                                             mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
-        __internal_handler__->signalMessage->connect(__FUNCT_RECEPTOR__);     \
+        __internal_handler__->__impl->signalMessage.connect(__FUNCT_RECEPTOR__);     \
         __MTK_CHECK_NON_DEPRECIATED_F(__MSG_TYPE__)     \
         (__HANDLER__) = __internal_handler__;     \
     }
@@ -176,7 +178,7 @@
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
                                             mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
         __MTK_CHECK_DEPRECIATED_F(__MSG_TYPE__,  __DEPRECIATED_DATE__)     \
-        __internal_handler__->signalMessage->connect(__FUNCT_RECEPTOR__);     \
+        __internal_handler__->__impl->signalMessage.connect(__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -189,7 +191,7 @@
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
                                             mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
         __MTK_CHECK_NON_DEPRECIATED_THIS(__MSG_TYPE__)     \
-        __internal_handler__->signalMessage->connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
+        __internal_handler__->__impl->signalMessage.connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -198,7 +200,7 @@
         mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> > __internal_handler__ =      \
                                             mtk::get_from_factory<mtk::handle_qpid_exchange_receiverMT<__MSG_TYPE__> >(mtk::make_tuple(__URL__, __ADDRESS__, __FILTER__));     \
         __MTK_CHECK_DEPRECIATED_THIS(__MSG_TYPE__,  __DEPRECIATED_DATE__)     \
-        __internal_handler__->signalMessage->connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
+        __internal_handler__->__impl->signalMessage.connect(this, &std::remove_reference<decltype(*this)>::type::__FUNCT_RECEPTOR__);     \
         (__HANDLER__) = __internal_handler__;     \
     }
 
@@ -432,14 +434,14 @@ private:
 //---------------------------------------------------------------------
 
 
-class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
+class __internal_impl_handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
     mtk::non_copyable nc;
 
     public:
-        explicit handle_qpid_exchange_receiver(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
-        ~handle_qpid_exchange_receiver(void);
+        explicit __internal_impl_handle_qpid_exchange_receiver(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
+        ~__internal_impl_handle_qpid_exchange_receiver(void);
 
-        CountPtr< Signal<const qpid::messaging::Message&> >       signalMessage;
+        Signal<const qpid::messaging::Message&>        signalMessage;
 
 
     private:
@@ -451,6 +453,8 @@ class handle_qpid_exchange_receiver   :  public mtk::SignalReceptor {
 };
 
 
+
+typedef  mtk::delete_later_wrapper<__internal_impl_handle_qpid_exchange_receiver>   handle_qpid_exchange_receiver;
 
 
 
@@ -482,7 +486,7 @@ inline mtk::CountPtr< mtk::mtkqpid_sender2> create_instance_for_factory (const m
 template<>
 inline mtk::CountPtr< mtk::handle_qpid_exchange_receiver> create_instance_for_factory (const mtk::tuple<t_qpid_url, t_qpid_address, t_qpid_filter>& key, mtk::CountPtr< mtk::handle_qpid_exchange_receiver> result)
 {
-    result = mtk::make_cptr(new mtk::handle_qpid_exchange_receiver(key._0, key._1, key._2));
+    result = mtk::make_cptr(new mtk::handle_qpid_exchange_receiver (make_cptr( new mtk::__internal_impl_handle_qpid_exchange_receiver(key._0, key._1, key._2))));
     return result;
 }
 
@@ -493,12 +497,12 @@ inline mtk::CountPtr< mtk::handle_qpid_exchange_receiver> create_instance_for_fa
 
 
 template<typename MESSAGE_TYPE>
-class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
+class __internal_impl_handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
     mtk::non_copyable nc;
 
     public:
-        explicit handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
-        ~handle_qpid_exchange_receiverMT(void)
+        explicit __internal_impl_handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter);
+        ~__internal_impl_handle_qpid_exchange_receiverMT(void)
         {
             try{
                 ++mtk_qpid_stats::num_deleted_suscriptions();
@@ -509,7 +513,7 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
         }
 
         mtk::nullable<mtk::DateTime>                  depreciated_on;
-        CountPtr< Signal<const MESSAGE_TYPE&> >       signalMessage;
+        Signal<const MESSAGE_TYPE&>                   signalMessage;
         mtk::Signal<>                                 signalBeforeDestroy;
 
 
@@ -521,27 +525,42 @@ class handle_qpid_exchange_receiverMT   :  public mtk::SignalReceptor {
 };
 
 
+
+
+
 template<typename MESSAGE_TYPE>
-inline handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter)
-    :     signalMessage(mtk::make_cptr(new Signal<const MESSAGE_TYPE&>()))
+class handle_qpid_exchange_receiverMT  {
+    public:
+        explicit handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter)
+            : __impl( new __internal_impl_handle_qpid_exchange_receiverMT<MESSAGE_TYPE> {url, address, filter})
+        {
+        }
+        ~handle_qpid_exchange_receiverMT(void)
+        {   mtk::delete_later(__impl);  }
+
+
+
+        CountPtr<__internal_impl_handle_qpid_exchange_receiverMT<MESSAGE_TYPE> >              __impl;
+};
+
+
+
+
+template<typename MESSAGE_TYPE>
+inline __internal_impl_handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::__internal_impl_handle_qpid_exchange_receiverMT(const t_qpid_url& url, const t_qpid_address& address, const t_qpid_filter& filter)
+    :     signalMessage{}
         , hqpid_receiver( get_from_factory<mtk::handle_qpid_exchange_receiver>(mtk::make_tuple(url, address, filter)) )
 {
     ++mtk_qpid_stats::num_created_suscriptions();
-    MTK_CONNECT_THIS(*(hqpid_receiver->signalMessage), on_message)
+    MTK_CONNECT_THIS(hqpid_receiver->__impl->signalMessage, on_message)
 }
 
 
 template<typename MESSAGE_TYPE>
-inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid::messaging::Message& message)
+inline void __internal_impl_handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid::messaging::Message& message)
 {
     //  get control fields
     //  if message type matches, convert and send signal
-
-
-    //  to let a save handle deleting when receiving and processing a message from it selft
-    CountPtr< Signal<const MESSAGE_TYPE&> >       local_copy_signalMessage (signalMessage);;
-    CountPtr<handle_qpid_exchange_receiver>       local_copy_hqpid_receiver(hqpid_receiver);
-
 
     if (message.getContentType() != "amqp/map")
         throw mtk::Alarm(MTK_HERE, "handle_qpid_exchange_receiverMT<>",
@@ -590,7 +609,7 @@ inline void handle_qpid_exchange_receiverMT<MESSAGE_TYPE>::on_message(const qpid
                             ), mtk::alPriorError));
             MTK_END_EXEC_MAX_FREC
 
-            signalMessage->emit(mt);
+            signalMessage.emit(mt);
             MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(5))
                 check_control_fields_flucts(cf.control_fluct_key, cf.sent_date_time);
             MTK_END_EXEC_MAX_FREC
