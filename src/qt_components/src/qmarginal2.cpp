@@ -29,6 +29,7 @@
 #include "support/vector.hpp"
 #include "yaml/yaml.h"
 
+#include "supported_order_types.h"
 
 
 
@@ -918,21 +919,20 @@ void QTableMarginal2::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_hit_the_bid);
 
 
-    if(product_code.market == "EU"  ||  product_code.market == "MARKET")
+    if(supported_order_types::has_market(product_code)  &&  ecimd_config::market_orders())
     {
-        if(ecimd_config::market_orders())
-        {
-            menu.addSeparator();
-            menu.addAction(action_buy_market);
-            menu.addAction(action_sell_market);
-
-        }
+        menu.addSeparator();
+        menu.addAction(action_buy_market);
+        menu.addAction(action_sell_market);
+    }
+    if(supported_order_types::has_stop_market(product_code))
+    {
         menu.addSeparator();
         menu.addAction(action_buy_stop_market);
         menu.addAction(action_sell_stop_market);
     }
 
-    if(product_code.market == "M3"  ||  product_code.market == "MARKET")
+    if(supported_order_types::has_stop_limit(product_code))
     {
         menu.addSeparator();
         menu.addAction(action_buy_stop_limit);
@@ -1258,12 +1258,24 @@ void QTableMarginal2::enable_trading_actions(void)
         action_sell->setEnabled(true);
         action_hit_the_bid->setEnabled(true);
         action_lift_the_offer->setEnabled(true);
-        action_buy_market->setEnabled(true);
-        action_sell_market->setEnabled(true);
-        action_buy_stop_market->setEnabled(true);
-        action_sell_stop_market->setEnabled(true);
-        action_buy_stop_limit->setEnabled(true);
-        action_sell_stop_limit->setEnabled(true);
+
+        mtk::msg::sub_product_code product_code (this->get_current_product_code());
+
+        if(supported_order_types::has_market(product_code)  &&  ecimd_config::market_orders())
+        {
+            action_buy_market->setEnabled(true);
+            action_sell_market->setEnabled(true);
+        }
+        if(supported_order_types::has_stop_market(product_code))
+        {
+            action_buy_stop_market->setEnabled(true);
+            action_sell_stop_market->setEnabled(true);
+        }
+        if(supported_order_types::has_stop_limit(product_code))
+        {
+            action_buy_stop_limit->setEnabled(true);
+            action_sell_stop_limit->setEnabled(true);
+        }
     }
 }
 

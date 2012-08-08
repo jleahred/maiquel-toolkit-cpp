@@ -253,7 +253,7 @@ namespace  testing_route
                                                                             get_url(get_current_route().dest),
                                                                             mtk::t_qpid_address(get_current_route().qe_name),
                                                                             mtk::t_qpid_filter(get_current_route().subject)));
-            get_handle_receptor()->signalMessage->connect(on_message);
+            get_handle_receptor()->__impl->signalMessage.connect(on_message);
             get_last_sent_message() = mtk::dtNowLocal();
 
             MTK_TIMER_1SF(timer_time_out);

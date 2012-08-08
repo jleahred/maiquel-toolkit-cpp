@@ -24,6 +24,10 @@
 #include "ecimd_config.h"
 #include "qt_components/src/qeditorder_and.h"
 
+#include "supported_order_types.h"
+
+
+
 
 QDialog*   get_main_window();
 
@@ -1033,21 +1037,21 @@ void QDepth::contextMenuEvent ( QContextMenuEvent * event )
     menu.addAction(action_hit_the_bid);
 
     mtk::msg::sub_product_code product_code (price_manager->get_product_code());
-    if(product_code.market == "EU"  ||  product_code.market == "MARKET")
+    if(supported_order_types::has_market(product_code)  &&   ecimd_config::market_orders())
     {
+        menu.addSeparator();
+        menu.addAction(action_buy_market);
+        menu.addAction(action_sell_market);
+    }
 
-        if(ecimd_config::market_orders())
-        {
-            menu.addSeparator();
-            menu.addAction(action_buy_market);
-            menu.addAction(action_sell_market);
-        }
+    if(supported_order_types::has_stop_market(product_code))
+    {
         menu.addSeparator();
         menu.addAction(action_buy_stop_market);
         menu.addAction(action_sell_stop_market);
     }
 
-    if(product_code.market == "M3"  ||  product_code.market == "MARKET")
+    if(supported_order_types::has_stop_limit(product_code))
     {
         menu.addSeparator();
         menu.addAction(action_buy_stop_limit);
@@ -1164,19 +1168,18 @@ void QDepth::enable_trading_actions(void)
 
 
         mtk::msg::sub_product_code product_code (price_manager->get_product_code());
-        if(product_code.market == "EU"  ||  product_code.market == "MARKET")
+        if(supported_order_types::has_market(product_code)  &&  ecimd_config::market_orders())
         {
-
-            if(ecimd_config::market_orders())
-            {
-                action_buy_market->setEnabled(true);
-                action_sell_market->setEnabled(true);
-            }
+            action_buy_market->setEnabled(true);
+            action_sell_market->setEnabled(true);
+        }
+        if(supported_order_types::has_stop_market(product_code))
+        {
             action_buy_stop_market->setEnabled(true);
             action_sell_stop_market->setEnabled(true);
         }
 
-        if(product_code.market == "M3"  ||  product_code.market == "MARKET")
+        if(supported_order_types::has_stop_limit(product_code))
         {
             action_buy_stop_limit->setEnabled(true);
             action_sell_stop_limit->setEnabled(true);
