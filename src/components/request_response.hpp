@@ -40,6 +40,9 @@ namespace mtk
 
 
 
+template<typename T>
+void  delete_later_kamikaze(T* const &  ptr);
+
 
 
 //--------------------------------------------------------------------------------------------------
@@ -71,10 +74,10 @@ public:
             }
 
 
+	~__kamikaze_r_response() { }
+
+
 private:
-
-	~__kamikaze_r_response() {}
-
 
     typename mtk::list< DATA_T >            list;
 
@@ -97,7 +100,12 @@ private:
 
         }
 
-        if(list.size()==0)      delete this;
+        //if(list.size()==0)    delete this;        //  this is valid
+        if(list.size()==0)
+        {
+            MTK_TIMER_1D_STOP(send_async);
+            delete_later_kamikaze(this);
+        }
     }
 
 
@@ -107,20 +115,11 @@ private:
 
 
 
-template<typename MSG_T>
-class __kamikaze_receive_r;
-
-template<typename MSG_T>
-void delete_later(__kamikaze_receive_r<MSG_T>* const & ptr_to_delete)
-{
-    delete ptr_to_delete;
-}
 
 
 template<typename MSG_T>
 class __kamikaze_receive_r   :   public  mtk::SignalReceptor  {
     mtk::non_copyable  nc;
-    friend void delete_later<MSG_T>(__kamikaze_receive_r<MSG_T>* const & ptr_to_delete);
 
 public:
 	__kamikaze_receive_r(       const mtk::t_qpid_url&      _url,
@@ -140,9 +139,10 @@ public:
     typename mtk::Signal< const mtk::list<MSG_T>& >    signal_received;
 
 
+	~__kamikaze_receive_r() { }
+
 private:
 
-	~__kamikaze_receive_r() {}
 
 
     typename mtk::list< MSG_T >                                                 list_received;
@@ -164,7 +164,7 @@ private:
                 mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "req_response",
                                 MTK_SS("invalid secuence expected/received  " << expected_secuence << "/" << response.response_info.seq_number
                                     << " canceled response"), mtk::alPriorError));
-                MTK_CALL_LATER1S_F(mtk::dtMilliseconds(10), this, delete_later);
+                delete_later_kamikaze(this);
                 programed_to_delete = true;
                 expected_secuence = -100;
                 return;
@@ -175,12 +175,9 @@ private:
         if(response.response_info.is_last_response  &&  programed_to_delete==false)
         {
             signal_received.emit(list_received);
-            MTK_CALL_LATER1S_F(mtk::dtMilliseconds(10), this, delete_later);
+            delete_later_kamikaze(this);
             programed_to_delete = true;
             //delete this;      //  it is also valid and program doesn't crash but there are memory leaks reported by valgrind
-            //hqpid_response = mtk::CountPtr< mtk::handle_qpid_exchange_receiverMT<MSG_T>      >();
-                //  this is also posible, but it will produce an alarm, it's a bad idea to destroy the objetc that is been executed by
-                //  a signal
         }
     }
 
@@ -190,12 +187,68 @@ private:
         {
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "req_response", MTK_SS("time out on request " << req_context_info), mtk::alPriorError, mtk::alTypeOverflow));
             MTK_TIMER_1S_STOP(check_timeout)
-            MTK_CALL_LATER1S_F(mtk::dtMilliseconds(10), this, delete_later);
+            delete_later_kamikaze(this);
             programed_to_delete = true;
         }
     }
 
 };
+
+
+
+
+
+
+
+template<typename T>
+mtk::list<mtk::tuple<mtk::dtDateTime, T* > >&  get_list_to_delete_kamikaze(void)
+{
+    static  auto  result = new mtk::list<mtk::tuple<mtk::dtDateTime, T* > >{};
+    return  *result;
+}
+
+
+template<typename T>
+void  check_to_delete_kamikaze (void)
+{
+    auto& list_to_delete = get_list_to_delete_kamikaze<T>();
+
+    if(list_to_delete.size()  ==  0)
+    {
+        MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
+            mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "check_to_delete kamikaze", MTK_SS("Called with empty list"), mtk::alPriorError));
+        MTK_END_EXEC_MAX_FREC
+        return;
+    }
+
+
+    auto it= list_to_delete.begin();
+    while(it != list_to_delete.end())
+    {
+        mtk::tuple<mtk::dtDateTime, T* >&  item = *it;
+        if(item._0 + mtk::dtMilliseconds(500)  < mtk::dtNowLocal())
+        {
+            delete it->_1;
+            it->_1 = 0;
+            it = list_to_delete.erase(it);
+        }
+        else
+            ++it;
+    }
+    if(list_to_delete.size() == 0)
+        MTK_TIMER_1SF_STOP(check_to_delete_kamikaze<T>);
+}
+
+
+template<typename T>
+void  delete_later_kamikaze(T* const &  ptr)
+{
+    auto& list_to_delete = get_list_to_delete_kamikaze<T>();
+    list_to_delete.push_back(mtk::make_tuple(mtk::dtNowLocal(),ptr));
+
+    if(list_to_delete.size() == 1)
+        MTK_TIMER_1SF(check_to_delete_kamikaze<T>);
+}
 
 
 }
