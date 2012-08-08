@@ -253,7 +253,7 @@ void QProd_info::on_message_addtional_info(const mtk::msg::sub_product_code& pro
     {
         mtk::prices::msg::sub_future_info  future_info = aditional_info.future_info.Get();
         s_future_info =
-                    QLatin1String("\n") +
+                   QLatin1String("\n") +
                    QLatin1String("----------------------------\n") +
                                tr("*FUTURE*\n")  +
                                tr("  num legs:      ")  +  QLatin1String(MTK_SS(future_info.num_legs).c_str())  +  QLatin1String("\n") +
@@ -264,14 +264,30 @@ void QProd_info::on_message_addtional_info(const mtk::msg::sub_product_code& pro
                     ;
     }
 
+    QString  s_option_info;
+    if(aditional_info.option_info.HasValue())
+    {
+        mtk::prices::msg::sub_option_info  option_info = aditional_info.option_info.Get();
+        s_future_info =
+                   QLatin1String("\n") +
+                   QLatin1String("----------------------------\n") +
+                               tr("*OPTION*\n")  +
+                               tr("  last trad dt:  ")  +  QLatin1String(MTK_SS(option_info.last_trading_dt).c_str()) +  QLatin1String("\n") +
+                               tr("  underlying:    ")  +  QLatin1String(MTK_SS(option_info.underlying).c_str()) +  QLatin1String("\n") +
+                    QLatin1String("---------------------------\n\n")
+                    ;
+    }
+
+
     info->setPlainText(
                     //tr("MARKET:          ")  +  QLatin1String(product_code.market.c_str()) +  QLatin1String("\n") +
                     //tr("PRODUCT:         ")  +  QLatin1String(product_code.product.c_str()) +  QLatin1String("\n") +
-                    tr("group:           ")  +  QLatin1String(product_code.product.c_str()) +  QLatin1String("\n") +
+                    tr("group:           ")  +  QLatin1String(aditional_info.group.c_str()) +  QLatin1String("\n") +
                     tr("value date:      ")  +  QLatin1String(MTK_SS(aditional_info.value_date).c_str()) +  QLatin1String("\n") +
                     tr("unit cost:       ")  +  QLatin1String(MTK_SS(aditional_info.unit_cost).c_str()) +  QLatin1String("\n") +
 
                     s_future_info +
+                    s_option_info +
 
                     tr("description:     ")  +  QLatin1String(product_code.product.c_str()) +  QLatin1String("\n") +
                     tr("misc:            ")  +  QLatin1String(MTK_SS(aditional_info.yaml_misc).c_str())  +  QLatin1String("\n")

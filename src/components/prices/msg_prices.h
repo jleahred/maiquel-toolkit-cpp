@@ -430,7 +430,7 @@ public:
 
     
     // constructor
-    explicit sub_future_info (    const int16_t&  _num_legs,   const mtk::DateTime&  _maturity,   const mtk::DateTime&  _last_trading_dt,   const std::string&  _underlying );
+    explicit sub_future_info (    const int16_t&  _num_legs,   const mtk::nullable<mtk::DateTime>&  _maturity,   const mtk::DateTime&  _last_trading_dt,   const std::string&  _underlying );
     explicit sub_future_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_future_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_future_info"; }
@@ -447,7 +447,7 @@ public:
 
     // fields
     int16_t                                   num_legs; 
-    mtk::DateTime                             maturity; 
+    mtk::nullable<mtk::DateTime>              maturity; 
     mtk::DateTime                             last_trading_dt; 
     std::string                               underlying; 
 
@@ -477,11 +477,81 @@ public:
         public:
             explicit  sub_future_info__qpid_map ( const qpid::types::Variant::Map&  mv );
             explicit  sub_future_info__qpid_map ( const sub_future_info&  c ) : m_static(c) {}
-            explicit  sub_future_info__qpid_map (    const int16_t&  _num_legs,   const mtk::DateTime&  _maturity,   const mtk::DateTime&  _last_trading_dt,   const std::string&  _underlying );
+            explicit  sub_future_info__qpid_map (    const int16_t&  _num_legs,   const mtk::DateTime&  _last_trading_dt,   const std::string&  _underlying );
             ~sub_future_info__qpid_map() {};
             
 
             sub_future_info                   m_static;
+            qpid::types::Variant::Map           m_qpid_map;
+
+            
+
+
+            mtk::msg::sub_control_fields*   __internal_warning_control_fields;
+        };
+        
+        
+
+//-------------------------------
+//      sub_option_info
+//-------------------------------    
+class sub_option_info     
+{
+public:
+    //  inner classes
+
+    
+    // constructor
+    explicit sub_option_info (    const mtk::DateTime&  _last_trading_dt,   const std::string&  _underlying );
+    explicit sub_option_info ( const qpid::types::Variant::Map&  mv );
+    virtual ~sub_option_info (){};
+    virtual std::string get_message_type_as_string       (void) const  { return "sub_option_info"; }
+    static  std::string static_get_message_type_as_string(void)        { return "sub_option_info"; }
+    
+    
+
+    
+
+    
+    
+    
+    
+
+    // fields
+    mtk::DateTime                             last_trading_dt; 
+    std::string                               underlying; 
+
+
+
+    //  ADDRESS info
+
+
+
+    //  subject info
+    
+
+    
+    
+    
+    
+    void        before_send(void) const;
+    
+    void check_recomended(void) const;
+};
+
+
+
+        //  qpid_variant wrapper for dynamic
+        class sub_option_info__qpid_map
+        {
+        public:
+            explicit  sub_option_info__qpid_map ( const qpid::types::Variant::Map&  mv );
+            explicit  sub_option_info__qpid_map ( const sub_option_info&  c ) : m_static(c) {}
+            explicit  sub_option_info__qpid_map (    const mtk::DateTime&  _last_trading_dt,   const std::string&  _underlying );
+            ~sub_option_info__qpid_map() {};
+            
+
+            sub_option_info                   m_static;
             qpid::types::Variant::Map           m_qpid_map;
 
             
@@ -502,7 +572,7 @@ public:
 
     
     // constructor
-    explicit sub_additional_info (    const std::string&  _group,   const mtk::nullable<std::string>&  _description,   const mtk::nullable<mtk::DateTime>&  _value_date,   const mtk::Double&  _unit_cost,   const mtk::nullable<sub_future_info>&  _future_info,   const std::string&  _yaml_misc );
+    explicit sub_additional_info (    const std::string&  _group,   const mtk::nullable<std::string>&  _description,   const mtk::nullable<mtk::DateTime>&  _value_date,   const mtk::Double&  _unit_cost,   const mtk::nullable<sub_future_info>&  _future_info,   const mtk::nullable<sub_option_info>&  _option_info,   const std::string&  _yaml_misc );
     explicit sub_additional_info ( const qpid::types::Variant::Map&  mv );
     virtual ~sub_additional_info (){};
     virtual std::string get_message_type_as_string       (void) const  { return "sub_additional_info"; }
@@ -523,6 +593,7 @@ public:
     mtk::nullable<mtk::DateTime>              value_date; 
     mtk::Double                               unit_cost; 
     mtk::nullable<sub_future_info>            future_info; 
+    mtk::nullable<sub_option_info>            option_info; 
     std::string                               yaml_misc; 
 
 
@@ -1567,6 +1638,13 @@ bool operator!= (const pub_new_products& a, const pub_new_products& b);
 bool operator== (const sub_future_info& a, const sub_future_info& b);
 bool operator!= (const sub_future_info& a, const sub_future_info& b);
 
+    std::ostream& operator<< (std::ostream& o, const sub_option_info & c);
+   YAML::Emitter& operator << (YAML::Emitter&    o, const sub_option_info & c);
+   void           operator >> (const YAML::Node& n,       sub_option_info & c);
+
+bool operator== (const sub_option_info& a, const sub_option_info& b);
+bool operator!= (const sub_option_info& a, const sub_option_info& b);
+
     std::ostream& operator<< (std::ostream& o, const sub_additional_info & c);
    YAML::Emitter& operator << (YAML::Emitter&    o, const sub_additional_info & c);
    void           operator >> (const YAML::Node& n,       sub_additional_info & c);
@@ -1680,6 +1758,9 @@ void copy (pub_new_products& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_future_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_future_info>& a, const std::string& field);
 void copy (sub_future_info& a, const qpid::types::Variant& map);
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_option_info& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_option_info>& a, const std::string& field);
+void copy (sub_option_info& a, const qpid::types::Variant& map);
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_additional_info& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_additional_info>& a, const std::string& field);
 void copy (sub_additional_info& a, const qpid::types::Variant& map);
@@ -1785,6 +1866,16 @@ inline bool operator!= (const sub_future_info__qpid_map& a, const sub_future_inf
 void __internal_add2map (qpid::types::Variant::Map& map, const sub_future_info__qpid_map& a);
 void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_future_info__qpid_map>& a, const std::string& field);
 void copy (sub_future_info__qpid_map& a, const qpid::types::Variant& map);
+
+inline std::ostream& operator<< (std::ostream& o, const sub_option_info__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
+inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_option_info__qpid_map & c)          {  return (o << c.m_static);  };
+inline void           operator >> (const YAML::Node& n,       sub_option_info__qpid_map & c)          {  n  >>  c;  }
+
+inline bool operator== (const sub_option_info__qpid_map& a, const sub_option_info__qpid_map& b)  {  return  a==b;  }
+inline bool operator!= (const sub_option_info__qpid_map& a, const sub_option_info__qpid_map& b)  {  return  a!=b;  }
+void __internal_add2map (qpid::types::Variant::Map& map, const sub_option_info__qpid_map& a);
+void __internal_add2map (qpid::types::Variant::Map& map, const mtk::nullable<sub_option_info__qpid_map>& a, const std::string& field);
+void copy (sub_option_info__qpid_map& a, const qpid::types::Variant& map);
 
 inline std::ostream& operator<< (std::ostream& o, const sub_additional_info__qpid_map & c) {  return (o << c.m_static << "   QPID_VAR: " << c.m_qpid_map);  };
 inline YAML::Emitter& operator << (YAML::Emitter&    o, const sub_additional_info__qpid_map & c)          {  return (o << c.m_static);  };
@@ -1929,6 +2020,10 @@ void copy (plaet__qpid_map& a, const qpid::types::Variant& map);
     sub_future_info  __internal_get_default(sub_future_info *);
     
         inline sub_future_info__qpid_map  __internal_get_default(sub_future_info__qpid_map *) { return  sub_future_info__qpid_map(__internal_get_default((sub_future_info*)0));  }
+
+    sub_option_info  __internal_get_default(sub_option_info *);
+    
+        inline sub_option_info__qpid_map  __internal_get_default(sub_option_info__qpid_map *) { return  sub_option_info__qpid_map(__internal_get_default((sub_option_info*)0));  }
 
     sub_additional_info  __internal_get_default(sub_additional_info *);
     

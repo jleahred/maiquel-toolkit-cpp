@@ -68,10 +68,19 @@ pub_new_products [< QE:CLI_MK, RT:2, SUBJ:CLI.ALL.${market}.NP  >]
 sub_future_info [< >]
 {
     num_legs            (nl)        :       int16
-    maturity            (mat)       :       date_time
+    maturity            (mat)       :       date_time           [optional]      //  eurex doesn't provide it on all products
     last_trading_dt     (ltdt)      :       date_time
     underlying          (under)     :       string
 }
+
+
+sub_option_info [< >]
+{
+    last_trading_dt     (ltdt)      :       date_time
+    underlying          (under)     :       string
+}
+
+
 
 sub_additional_info [< >]
 {
@@ -81,6 +90,7 @@ sub_additional_info [< >]
     unit_cost           (uc)        :       double
 
     future_info         (fai)       :       sub_future_info     [optional]
+    option_info         (opai)      :       sub_option_info     [optional]
 
 
     yaml_misc           (ym)        :       string

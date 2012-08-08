@@ -863,12 +863,14 @@ void  internal_orders_book::publish_all_product_full_info(const  mtk::msg::sub_p
     mtk_send_message("server", ps_conf_full_product_info_init);
 
 
-    mtk::prices::msg::sub_future_info       fut_info(1, mtk::dtToday_0Time(), mtk::dtToday_0Time(), "UNDERLYING");
+    mtk::prices::msg::sub_future_info       fut_info(1, mtk::make_nullable(mtk::dtToday_0Time()), mtk::dtToday_0Time(), "UNDERLYING");
+    mtk::prices::msg::sub_option_info       opt_info(mtk::dtToday_0Time(), "UNDERLYING");
     mtk::prices::msg::sub_additional_info   additional_info (       std::string("GROUP"),
                                                                         mtk::make_nullable(std::string("this is a product...")),
                                                                         mtk::make_nullable(mtk::dtToday_0Time()),
                                                                         0.5,
                                                                         mtk::make_nullable(fut_info),
+                                                                        mtk::make_nullable(opt_info),
                                                                         "");
     mtk::prices::msg::sub_last_mk_execs_ticker  mk_execs_full_info(
                                                                 get_empty_fixed_number(mtk::fnExt(mtk::fnDec(0), mtk::fnInc(1))),
