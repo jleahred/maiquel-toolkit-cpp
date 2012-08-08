@@ -337,12 +337,12 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
 
 
         case fnRoundNotAllowed:
-                intValue = int(valuePow10/inc)*inc;
-                if (intValue!=int(valuePow10))
+                if (int(valuePow10/inc)*inc!=int(valuePow10)  ||  mtk::Double(int((valuePow10/inc)*inc)) != mtk::Double(valuePow10))
                     throw   fnErrorFixedNumber (Alarm (
                                 MTK_HERE, "fixednumber",
                                 "round not allowed",
                                 alPriorError, alTypeNoPermisions));
+                intValue = int(valuePow10/inc)*inc;
                 break;
         default:
 	        throw   fnErrorFixedNumber (Alarm (
