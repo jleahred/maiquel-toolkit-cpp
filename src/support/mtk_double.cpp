@@ -104,18 +104,105 @@ Double Double::operator/= (const Double& d) {
 //  Operadores relacionales conversión todos los parámetros
 
 
-bool operator==(const Double&  d1, const Double&  d2) {
+bool operator==(const Double&  D1, const Double&  D2)
+{
+    // testing performance with  100_000_000 iterations
+
+
+
+    if(D1.IsValid() == false  ||  D2.IsValid() == false)
+        return false;       //  criteria
+    double d1 = D1.get2();
+    double d2 = D2.get2();
+
+
+    //  best performance  5s 300ms
+
+    //  managing zero in a symetric way
+    if(d2<1e-300  &&  d2>-1e-300)        //  it is interpreted as exact zero
+    {       //  here we don't consider the exponent
+        if( d1 > -1e-12  &&  d1 < 1e-12)
+            return true;
+        else
+            return false;
+
+    }
+    if(d1<1e-300  &&  d1>-1e-300)        //  it is interpreted as exact zero
+    {       //  here we don't consider the exponent
+        if( d2 > -1e-12  &&  d2 < 1e-12)
+            return true;
+        else
+            return false;
+    }
+
+    //  checking for not zeros
+    double div = d1 / d2;
+    if( div > 1-1e-10  &&  div < 1+1e-10)
+        return true;
+    else
+        return false;
+
+
+
+    //  very good performance       6s 90ms
+    //  correct with all numbers (big, small and medim)
+    //  pending exponent normalization
+    /*
+    int     exponent1 = 0.;
+    double  significant1= frexp(d1, &exponent1);
+
+    int     exponent2 = 0.;
+    double  significant2= frexp(d2, &exponent2);
+
+    //  normalize exponents
+    //  pending
+    if(exponent1 != exponent2)
+        return false;
+    else
+    {
+        double sig_diff = significant1 - significant2;
+        if(sig_diff > 1e-10  ||  sig_diff < -1e-10)
+            return false;
+    }
+    return true;
+    */
+
+    //  dynamic epsilon.  this is ok but not good in performance    15s
+    /*
+    int max = int(d1.get2()>d2.get2() ? d1.get2() : d2.get2());
+    int __log10 =  0;
+    if(max >= 1)        __log10 = int(::log10(max));
+    else if (max<=-1)   __log10 = int(::log10(-1*max));
+    else                __log10 = 0;
+
     if (d1.IsValid()  &&  d2.IsValid()) {
         if (
-                d1.value - d2.value <  1e-10
+                d1.value - d2.value <  -1*(::pow(10, -12+__log10))//1e-10
                 &&
-                d1.value - d2.value > -1e-10
+                d1.value - d2.value >     (::pow(10, -12+__log10))//1e-10
             )
         {
             return true;
         }
     }
     return false;               //  criterio
+    */
+
+    //  fixed epsilon.  good performance but  wrong with big numbers
+    /*
+
+    if (d1.IsValid()  &&  d2.IsValid()) {
+        if (
+                d1.value - d2.value <   -1e-10
+                &&
+                d1.value - d2.value >  1e-10
+            )
+        {
+            return true;
+        }
+    }
+    return false;               //  criterio
+     */
 };
 
 
