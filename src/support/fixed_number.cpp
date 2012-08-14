@@ -1,4 +1,3 @@
-
 #include "fixed_number.h"
 
 
@@ -276,21 +275,15 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
     double valuePow10 = value * pow10;
 
 
-    //  valorar si pueden intentar pasarnos un número exacto (en un número inexacto
-    //  el double)
-    double difValIntVal = valuePow10 - int(valuePow10);
-    if (    (difValIntVal > 0.  &&   difValIntVal <  0.00000001)
-            ||
-            (difValIntVal < 0.  &&   difValIntVal > -0.00000001)
-       )
+    //  valorar si pueden intentar pasarnos un número exacto (en un número inexacto el double)
     {
-        //  redondeamos y...
-        int redondeado = int((valuePow10*10+ (4.99999)*sign )/10.);         //  FIX IT
-
-        SetIntCode(redondeado, round);
-        return *this;
+        int redondeado = int((valuePow10*10+ (4.999999999999)*sign )/10.);
+        if(mtk::Double(double(redondeado)/pow10)  ==  mtk::Double(valuePow10/pow10))
+        {
+            SetIntCode(redondeado, round);      //  FIX IT
+            return *this;
+        }
     }
-
 
     //  NO parece un número exacto...
     int inc = ext.GetInc();
@@ -337,12 +330,10 @@ FixedNumber& FixedNumber::SetDouble (double value, const fnEnRound round  )
 
 
         case fnRoundNotAllowed:
-                if (int(valuePow10/inc)*inc!=int(valuePow10)  ||  mtk::Double(int((valuePow10/inc)*inc)) != mtk::Double(valuePow10))
-                    throw   fnErrorFixedNumber (Alarm (
-                                MTK_HERE, "fixednumber",
-                                "round not allowed",
-                                alPriorError, alTypeNoPermisions));
-                intValue = int(valuePow10/inc)*inc;
+                throw   fnErrorFixedNumber (Alarm (
+                            MTK_HERE, "fixednumber",
+                            "round not allowed",
+                            alPriorError, alTypeNoPermisions));
                 break;
         default:
 	        throw   fnErrorFixedNumber (Alarm (
