@@ -7,7 +7,7 @@
 #include "support/integer_compactor.h"
 #include "support/asynch_signal.hpp"
 #include "support/factory.hpp"
-#include "support/delete_later.hpp"
+#include "support/delete_later.h"
 
 
 

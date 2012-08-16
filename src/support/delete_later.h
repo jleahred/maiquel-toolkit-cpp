@@ -4,6 +4,8 @@
 
 
 
+#include "support/mtk_string.h"
+#include "support/exec_max_frec.h"
 #include "support/timer.h"
 #include "support/list.hpp"
 #include "support/count_ptr.hpp"
@@ -12,6 +14,8 @@
 
 
 namespace  mtk {
+
+bool& __internal__get_delete_later_clossing(void);
 
 
 template<typename T>
@@ -52,6 +56,8 @@ void  check_to_delete (void)
 template<typename T>
 void  delete_later(const CountPtr<T>& obj)
 {
+    if(__internal__get_delete_later_clossing()) return;
+
     if(obj.getCount()  ==  0)
     {
         MTK_EXEC_MAX_FREC_S(mtk::dtSeconds(30))
@@ -86,6 +92,10 @@ class  delete_later_wrapper
         CountPtr<__IMPL__>             __impl;
 };
 
+
+void  __internal_delete_later_nevercall_me____release_on_exit(void);
+
+#define     RELEASE____internal_delete_later_nevercall_me____release_on_exit   mtk::__internal_delete_later_nevercall_me____release_on_exit();
 
 
 };      //  end namespace mtk

@@ -2615,7 +2615,7 @@ void  copy (sub_additional_info& c, const qpid::types::Variant& v)
                         //__internal_qpid_fill(c.future_info, it->second.asMap());
 //   sub_msg_type
 
-                    it = mv.find("oai");
+                    it = mv.find("opai");
                     if (it!= mv.end())
                         copy(c.option_info, it->second);
                         //__internal_qpid_fill(c.option_info, it->second.asMap());
@@ -2659,7 +2659,7 @@ if (a.future_info.HasValue())
         __internal_add2map(map, a.future_info, std::string("fai"));
 if (a.option_info.HasValue())
 //  sub_msg_type
-        __internal_add2map(map, a.option_info, std::string("oai"));
+        __internal_add2map(map, a.option_info, std::string("opai"));
 //  field_type
         __internal_add2map(map, a.yaml_misc, std::string("ym"));
 

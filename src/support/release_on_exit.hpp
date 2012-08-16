@@ -12,6 +12,11 @@
 //  pero eso no sirve porque el orden de llamada podría ser relevante
 
 
+#ifdef RELEASE____internal_delete_later_nevercall_me____release_on_exit
+    RELEASE____internal_delete_later_nevercall_me____release_on_exit
+#endif
+
+
 
 #ifdef RELEASE__internal_admin_nevercall_me____release_on_exit
     RELEASE__internal_admin_nevercall_me____release_on_exit
