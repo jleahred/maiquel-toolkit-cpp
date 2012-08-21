@@ -16,6 +16,7 @@ public:
     void  set_empty(void);
     bool  is_empty(void) const  {  return _is_empty;  }
 
+
 private:
     bool                _is_empty;
     mutable QString     previous_input;
@@ -24,6 +25,10 @@ private:
     void keyPressEvent(QKeyEvent *event);
     QString textFromValue(double val) const;
 
+
+protected:
+    virtual void focusInEvent  ( QFocusEvent * event );
+    virtual void focusOutEvent ( QFocusEvent * event );
 signals:
 
 public slots:

@@ -30,6 +30,7 @@
 #include "yaml/yaml.h"
 
 #include "supported_order_types.h"
+#include "ecimd_styles.h"
 
 
 
@@ -94,7 +95,7 @@ int marginal_in_table2::counter = 0;
 namespace {
 
 
-    QColor  color_product = qtmisc::mtk_color_header;
+    QColor  color_product = ecimd_styles::color_header;
     const QColor  color_qty     = Qt::white;
     //const QColor  color_qty     = QColor(237,240,249);
     //const QColor  color_price   = mtk_color_header;
@@ -263,13 +264,13 @@ QVariant  qmarginal_table_model::data(const QModelIndex &index, int role) const
             return QBrush(Qt::black);
         if(mt.v_blinking[index.column()]  >  mtk::dtNowLocal())
         {
-            return QBrush(qtmisc::mtk_color_blinking2);
+            return QBrush(ecimd_styles::color_blinking2);
         }
         else
         {
             QColor back_ground_color = Qt::white;
             if(index.column() == 0)
-                back_ground_color = qtmisc::mtk_color_header;
+                back_ground_color = ecimd_styles::color_header;
             else if(index.column() == 2  ||  index.column() == 3)
                 back_ground_color = QColor(240,245,250);
             int current_row = -1;
@@ -461,7 +462,7 @@ QMarginal2::QMarginal2(QWidget *parent) :
     mtkContainerWidget(parent),
     table_marginals(new QTableMarginal2(this))
 {
-    this->setGeometry(QRect(5, 5, 100*4+150+2*5-2, 300-2));
+    //this->setGeometry(QRect(5, 5, 100*4+150+2*5-2, 300-2));
     this->setAcceptDrops(true);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setContentsMargins(5,5,5,5);
@@ -473,6 +474,11 @@ QMarginal2::QMarginal2(QWidget *parent) :
 
 QMarginal2::~QMarginal2()
 {
+}
+
+QSize  QMarginal2::sizeHint(void) const
+{
+    return QSize(100*4+150+2*5-2, 300-2);
 }
 
 
@@ -797,10 +803,21 @@ void QTableMarginal2::dragEnterEvent(QDragEnterEvent *event)
 {
     QTableView::dragEnterEvent(event);
     if(qobject_cast<QTableMarginal2*>(event->source())!=0)
+    {
         event->setDropAction(Qt::MoveAction);
-    else
+        event->accept();
+    }
+    else if(qtmisc::has_product_code(event))
+    {
         event->setDropAction(Qt::CopyAction);
-    event->accept();
+        event->accept();
+        return;
+    }
+    else
+    {
+        event->ignore();
+        return;
+    }
 }
 
 void QTableMarginal2::dragMoveEvent(QDragMoveEvent *event)

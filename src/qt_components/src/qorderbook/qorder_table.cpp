@@ -15,6 +15,7 @@
 #include "components/trading/msg_trd_cli_sm.h"
 #include "components/trading/msg_trd_cli_sl.h"
 #include "components/trading/accounts/account_manager_cli.h"
+#include "ecimd_styles.h"
 
 
 
@@ -398,9 +399,9 @@ public:
     QColor  get_default_background_color(void)
     {
         if      (inner_order->serrors() != "")
-            return qtmisc::mtk_color_problem;
+            return ecimd_styles::color_problem;
         else if (is_last_tr_rj(*inner_order)   &&  inner_order->in_market_no_pend()==false)
-            return qtmisc::mtk_color_rejected;
+            return ecimd_styles::color_rejected;
         else if (inner_order->in_market_no_pend())
             return Qt::white;
         else if (inner_order->is_canceled())
@@ -408,10 +409,10 @@ public:
             return Qt::gray;
         }
         else if (is_full_executed(inner_order))
-            return qtmisc::mtk_color_executed;
+            return ecimd_styles::color_executed;
         //else if(inner_order->last_confirmation().HasValue()==false)
         else if(inner_order->has_pending_rq())
-            return qtmisc::mtk_color_pending;
+            return ecimd_styles::color_pending;
         else
             return Qt::white;
     }
@@ -448,7 +449,7 @@ public:
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (is_last_tr_rj(*inner_order))
         {
-            item->setBackgroundColor(qtmisc::mtk_color_rejected);
+            item->setBackgroundColor(ecimd_styles::color_rejected);
             item->setForeground(Qt::white);
         }
         else
@@ -469,7 +470,7 @@ public:
             throw mtk::Alarm(MTK_HERE, "qorderbook", "ERROR last request and last confirmation null", mtk::alPriorCritic, mtk::alTypeNoPermisions);
         if (is_last_tr_rj(*inner_order))
         {
-            item->setBackgroundColor(qtmisc::mtk_color_rejected);
+            item->setBackgroundColor(ecimd_styles::color_rejected);
             item->setForeground(Qt::white);
         }
         else
@@ -503,17 +504,17 @@ public:
         item->setText(qtmisc::side_as_text(side));
         if (side == mtk::trd::msg::buy)
         {
-            item->setBackgroundColor(qtmisc::mtk_color_buy_cell);
+            item->setBackgroundColor(ecimd_styles::color_buy_cell);
             //item->setForeground(Qt::white);
         }
         else if (side == mtk::trd::msg::sell)
         {
-            item->setBackgroundColor(qtmisc::mtk_color_sell_cell);
+            item->setBackgroundColor(ecimd_styles::color_sell_cell);
             //item->setForeground(Qt::white);
         }
        else
        {
-           item->setBackgroundColor(qtmisc::mtk_color_problem);
+           item->setBackgroundColor(ecimd_styles::color_problem);
            item->setForeground(Qt::white);
        }
     }
@@ -530,7 +531,7 @@ public:
         }
         if (confirmed.HasValue()  &&  confirmed.Get().GetIntCode() != 0)
         {
-            item->setBackgroundColor(qtmisc::mtk_color_executed);
+            item->setBackgroundColor(ecimd_styles::color_executed);
             item->setForeground(QBrush(get_default_font_color()));
         }
         else
@@ -554,7 +555,7 @@ public:
         }
         if (confirmed.IsValid())
         {
-            item->setBackgroundColor(qtmisc::mtk_color_executed);
+            item->setBackgroundColor(ecimd_styles::color_executed);
             item->setForeground(QBrush(get_default_font_color()));
         }
         else

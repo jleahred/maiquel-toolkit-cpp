@@ -5,6 +5,8 @@
 #include "qmtk_misc.h"
 #include <QPalette>
 
+#include "ecimd_styles.h"
+
 
 whistoric_order::whistoric_order(QWidget *parent) :
     QDialog(parent),
@@ -149,9 +151,9 @@ void fill_from(whistoric_order* _this, ORDER_TYPE& order)
 
     QColor  side_color;
     if(qtmisc::get_order_invariant(order).side == mtk::trd::msg::buy)
-        side_color = qtmisc::mtk_color_buy;
+        side_color = ecimd_styles::color_buy;
     else if(qtmisc::get_order_invariant(order).side == mtk::trd::msg::sell)
-        side_color = qtmisc::mtk_color_sell;
+        side_color = ecimd_styles::color_sell;
 
     _this->ui->side->setStyleSheet(QLatin1String("background-color: rgb(") +    QString::number(side_color.red()) + QLatin1String(", ") +
                                                                                 QString::number(side_color.green()) + QLatin1String(", ") +

@@ -58,6 +58,40 @@ QString   dragProductText__ext    (const mtk::msg::sub_product_code& product, co
 
 
 
+bool                                has_product_code        (QDropEvent *event)
+{
+    static  std::string  last_text;
+    static  bool         last_result;
+
+    std::string  current_text = event->mimeData()->text().toStdString();
+
+    if(current_text == last_text)
+        return last_result;
+
+    mtk::CodecStringProperties csp;
+    mtk::CountPtr<std::map<std::string, std::string> > cptr_map_decoded =  csp.Decode(current_text);
+    if(cptr_map_decoded.isValid()== false)
+    {
+        last_result=false;
+        last_text=current_text;
+        return last_result;
+    }
+
+    std::map<std::string, std::string>& map_decoded = *cptr_map_decoded;
+    mtk::msg::sub_product_code product_code("", "");
+
+    product_code.market     = map_decoded["product.market"];
+    product_code.product    = map_decoded["product.product"];
+
+    if(product_code.market == ""  ||  product_code.product =="")
+        last_result = false;
+    else
+        last_result = true;
+
+    last_text=current_text;
+
+    return last_result;
+}
 
 mtk::msg::sub_product_code  get_product_code(QDropEvent *event)
 {
@@ -89,20 +123,6 @@ QString  get_property_value(QDropEvent *event, const QString&  prop_name)
 
 
 
-
-namespace {
-    int base_font_size=13;
-};
-
-int get_base_font_size(void)
-{
-    return base_font_size;
-}
-
-void set_base_font_size(int new_size)
-{
-    base_font_size = new_size;
-}
 
 
 

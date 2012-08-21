@@ -11,6 +11,7 @@
 #include "qmtk_misc.h"
 #include "qt_components/src/qcommontabledelegate.h"
 #include "components/trading/trd_cli_support.h"
+#include "ecimd_styles.h"
 
 
 
@@ -112,7 +113,7 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
     if (item.type == mtk::trd::hist::tt_rq_pending)
     {
         trans_text = tr("rq pend");
-        color = qtmisc::mtk_color_pending;
+        color = ecimd_styles::color_pending;
     }
     else if (item.type == mtk::trd::hist::tt_rq_not_pending)
         trans_text = tr("rq");
@@ -123,7 +124,7 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
     else if (item.type == mtk::trd::hist::tt_rj)
     {
         trans_text = tr("rej");
-        color = qtmisc::mtk_color_rejected;
+        color = ecimd_styles::color_rejected;
         foreground_color = Qt::white;
     }
 
@@ -140,7 +141,7 @@ void        QHistoricTable::update_item(int row, const  mtk::trd::hist::order_hi
     else if (item.type2 == mtk::trd::hist::tt2_ex)
     {
         trans_text += tr(" exec");
-        color = qtmisc::mtk_color_executed;
+        color = ecimd_styles::color_executed;
     }
     else if (item.type2 == mtk::trd::hist::tt2_tr)
         trans_text += tr(" trig");

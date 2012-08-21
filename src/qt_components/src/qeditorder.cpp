@@ -8,6 +8,7 @@
 
 
 #include <QPushButton>
+#include "ecimd_styles.h"
 
 
 
@@ -65,7 +66,7 @@ void QEditOrder::common_init(const RQ_TYPE& rq)
 
 
     QFont font(this->font());
-    font.setPixelSize(qtmisc::get_base_font_size()+2);
+    font.setPixelSize(ecimd_styles::get_base_font_size()+2);
     this->setFont(font);
 
     ui->market->setText(QLatin1String(rq.invariant.product_code.market.c_str()));

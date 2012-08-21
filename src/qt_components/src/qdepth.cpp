@@ -25,6 +25,7 @@
 #include "qt_components/src/qeditorder_and.h"
 
 #include "supported_order_types.h"
+#include "ecimd_styles.h"
 
 
 
@@ -214,9 +215,9 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
                 if(prices.__BID_ASK__.level0.price != prev_painted_prices.__BID_ASK__.level0.price  ||   just_ONE_quantity_is_zero)       \
                 {       \
                     int row=__ROW__;  int col=__COL__;       \
-                    item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                    item(row, col)->setBackgroundColor(ecimd_styles::color_blinking);       \
                     add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
-                    item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                    item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                     add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
                 }       \
                 else       \
@@ -224,7 +225,7 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
                     if(prices.__BID_ASK__.level0.quantity != prev_painted_prices.__BID_ASK__.level0.quantity)       \
                     {       \
                         int row=__ROW__;  int col=1;       \
-                        item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                        item(row, col)->setBackgroundColor(ecimd_styles::color_blinking);       \
                         add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
                     }       \
                 }       \
@@ -242,30 +243,30 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
                     &&  prices.bids.level##__level__.price != prev_painted_prices.bids.level##__next_level__.price)       \
             {       \
                 int row=5 + __level__;  int col=0;       \
-                item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, col)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
-                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
             }       \
             else if(    prices.bids.level##__level__.price    ==  prev_painted_prices.bids.level##__level__.price  &&      \
                    prices.bids.level##__level__.quantity !=  prev_painted_prices.bids.level##__level__.quantity  )       \
             {       \
                     int row=5 + __level__;        \
-                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
             }       \
             else if(    prices.bids.level##__level__.price    ==  prev_painted_prices.bids.level##__prev_level__.price  &&      \
                    prices.bids.level##__level__.quantity !=  prev_painted_prices.bids.level##__prev_level__.quantity  )       \
             {       \
                 int row=5 + __level__;         \
-                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
             }       \
             else if(__level__!=4  &&    prices.bids.level##__level__.price    ==  prev_painted_prices.bids.level##__next_level__.price  &&      \
                    prices.bids.level##__level__.quantity !=  prev_painted_prices.bids.level##__next_level__.quantity  )       \
             {       \
                 int row=5 + __level__;         \
-                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
             }       \
         }          \
@@ -276,30 +277,30 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
                     &&  prices.asks.level##__level__.price != prev_painted_prices.asks.level##__next_level__.price)       \
             {       \
                 int row=4-__level__;  int col=2;       \
-                item(row, col)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, col)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, col, now + mtk::dtMilliseconds(200));       \
-                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
             }           \
             else if(    prices.asks.level##__level__.price    ==  prev_painted_prices.asks.level##__level__.price  &&      \
                    prices.asks.level##__level__.quantity !=  prev_painted_prices.asks.level##__level__.quantity  )       \
             {       \
                     int row=4-  __level__;        \
-                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
             }       \
             else if(    prices.asks.level##__level__.price    ==  prev_painted_prices.asks.level##__prev_level__.price  &&      \
                    prices.asks.level##__level__.quantity !=  prev_painted_prices.asks.level##__prev_level__.quantity  )       \
             {       \
                 int row=4- __level__;         \
-                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
             }       \
             else if(__level__!=4  &&    prices.asks.level##__level__.price    ==  prev_painted_prices.asks.level##__next_level__.price  &&      \
                    prices.asks.level##__level__.quantity !=  prev_painted_prices.asks.level##__next_level__.quantity  )       \
             {       \
                 int row=4- __level__;         \
-                item(row, 1)->setBackgroundColor(qtmisc::mtk_color_blinking);       \
+                item(row, 1)->setBackgroundColor(ecimd_styles::color_blinking);       \
                 add_blinking(row, 1, now + mtk::dtMilliseconds(200));       \
             }       \
     }
@@ -316,6 +317,12 @@ void QTableDeph::generate_blinking(const mtk::prices::msg::sub_best_prices&  pri
 
 
 
+QSize  QDepth::sizeHint(void) const
+{
+    return QSize(290-2, 300-2);
+}
+
+
 QDepth::QDepth(QWidget *parent) :
     mtkContainerWidget(parent),
     table_widget(new QTableDeph(this)),
@@ -328,7 +335,7 @@ QDepth::QDepth(QWidget *parent) :
     showing_menu(false),
     keep_paint_focus(false)
 {
-    this->setGeometry(QRect(5, 5, 290-2, 300-2));
+    //this->setGeometry(QRect(5, 5, 290-2, 300-2));
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(5,5,5,5);
@@ -340,9 +347,9 @@ QDepth::QDepth(QWidget *parent) :
     this->setAcceptDrops(true);
 
     {
-        QString  snullcolor = QLatin1String("rgb(")+ QString::number(qtmisc::mtk_color_null.red()) + QLatin1String(", ") +
-                                        QString::number(qtmisc::mtk_color_null.green()) + QLatin1String(", ") +
-                                        QString::number(qtmisc::mtk_color_null.blue()) +  QLatin1String(");");
+        QString  snullcolor = QLatin1String("rgb(")+ QString::number(ecimd_styles::color_null.red()) + QLatin1String(", ") +
+                                        QString::number(ecimd_styles::color_null.green()) + QLatin1String(", ") +
+                                        QString::number(ecimd_styles::color_null.blue()) +  QLatin1String(");");
         style_sheet_null = QString::fromUtf8("background-color: ") + snullcolor  + QString::fromUtf8("\n" "color: rgb(191,219,255); font-weight: 1000;");
         style_sheet_normal = QString::fromUtf8("background-color: rgb(0, 0, 30);\n" "color: rgb(191,219,255); font-weight: 1000;");
     }
@@ -959,8 +966,17 @@ void QDepth::request_sell_stop_limit(void)
 
 void QDepth::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->setDropAction(Qt::CopyAction);
-    event->accept();
+    if(qtmisc::has_product_code(event))
+    {
+        event->setDropAction(Qt::CopyAction);
+        event->accept();
+        return;
+    }
+    else
+    {
+        event->ignore();
+        return;
+    }
 }
 
 void QDepth::dropEvent(QDropEvent *event)

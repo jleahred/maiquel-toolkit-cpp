@@ -6,6 +6,7 @@
 #include "components/admin/admin.h"
 #include "components/trading/accounts/account_manager_cli.h"
 #include "components/trading/trd_cli_ord_book.h"
+#include "ecimd_styles.h"
 
 
 #include <QPushButton>
@@ -65,7 +66,7 @@ void QEditOrder_and::common_init(void)
 
 
     QFont font(this->font());
-    font.setPixelSize(qtmisc::get_base_font_size()+2);
+    font.setPixelSize(ecimd_styles::get_base_font_size()+2);
     this->setFont(font);
 
     ui->market->setText(QLatin1String(pc.market.c_str()));

@@ -163,3 +163,16 @@ void  qLocaleDoubleSpinBox::set_empty(void)
     this->setValue(0.);
     this->clear();
 }
+
+
+void qLocaleDoubleSpinBox::focusInEvent  ( QFocusEvent * event )
+{
+    QDoubleSpinBox::focusInEvent(event);
+    lineEdit()->selectAll();
+}
+
+void qLocaleDoubleSpinBox::focusOutEvent ( QFocusEvent * event )
+{
+    QDoubleSpinBox::focusOutEvent(event);
+    lineEdit()->deselect();
+}

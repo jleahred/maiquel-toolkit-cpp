@@ -28,6 +28,7 @@
 
 #include "support/vector.hpp"
 #include "yaml/yaml.h"
+#include "ecimd_styles.h"
 
 
 
@@ -83,7 +84,7 @@ int marginal_in_table_alarm::alarm_counter = 0;
 namespace {
 
 
-    QColor  color_product = qtmisc::mtk_color_header;
+    QColor  color_product = ecimd_styles::color_header;
     const QColor  color_cell   =  Qt::white;//QColor(240,245,250);
 
 
@@ -175,12 +176,17 @@ void qLocaleDoubleSpinBox_delegate::paint ( QPainter * painter, const QStyleOpti
 
 
 
+QSize  QAlarmPrice::sizeHint(void) const
+{
+    return  QSize(100*4+150+2*5-2, 150-2);
+}
+
 
 QAlarmPrice::QAlarmPrice(QWidget *parent) :
     mtkContainerWidget(parent),
     table_alarms(new QTableAlarmPrice(this))
 {
-    this->setGeometry(QRect(5, 5, 100*4+150+2*5-2, 150-2));
+    //this->setGeometry(QRect(5, 5, 100*4+150+2*5-2, 150-2));
     this->setAcceptDrops(true);
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setContentsMargins(5,5,5,5);
@@ -320,7 +326,7 @@ void  marginal_in_table_alarm::set_non_initialized(void)
 
     tw_product->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
     tw_product->setCheckState(Qt::Unchecked);
-    tw_product->setBackgroundColor(qtmisc::mtk_color_header);
+    tw_product->setBackgroundColor(ecimd_styles::color_header);
     QBrush foreground (tw_product->foreground());
     foreground.setColor(Qt::darkGray);
     tw_product->setForeground(foreground);
@@ -553,7 +559,7 @@ void     marginal_in_table_alarm::initialize_paint(void)
         QFont font(tw_product->font());
         font.setBold(true);
         tw_product->setFont(font);
-        tw_product->setBackgroundColor(qtmisc::mtk_color_header);
+        tw_product->setBackgroundColor(ecimd_styles::color_header);
         QBrush foreground (tw_product->foreground());
         foreground.setColor(QColor(30,0,100));
         tw_product->setForeground(foreground);
@@ -653,10 +659,22 @@ void QTableAlarmPrice::dragEnterEvent(QDragEnterEvent *event)
 {
     QTableWidget::dragEnterEvent(event);
     if(qobject_cast<QTableAlarmPrice*>(event->source())!=0)
+    {
         event->setDropAction(Qt::MoveAction);
-    else
+        event->accept();
+        return;
+    }
+    else if(qtmisc::has_product_code(event))
+    {
         event->setDropAction(Qt::CopyAction);
-    event->accept();
+        event->accept();
+        return;
+    }
+    else
+    {
+        event->ignore();
+        return;
+    }
 }
 
 void QTableAlarmPrice::dragMoveEvent(QDragMoveEvent *event)
@@ -1035,3 +1053,4 @@ void QTableAlarmPrice::slot_modif_price_editor(int decimals, int increment)
 {
     price_editor->set_decinc(decimals, increment);
 }
+

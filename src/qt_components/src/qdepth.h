@@ -59,6 +59,7 @@ protected:
     //void paintEvent(QPaintEvent *);
     void focusInEvent (QFocusEvent *e) { paint_focus();  raise(); this->update(); enable_actions();   mtkContainerWidget::focusInEvent(e);}
     void focusOutEvent(QFocusEvent *e) { remove_focus(); raise(); this->update(); disable_actions();  mtkContainerWidget::focusOutEvent(e);}
+    virtual QSize  sizeHint(void) const;
 
 
 

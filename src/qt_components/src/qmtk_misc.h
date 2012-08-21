@@ -32,34 +32,10 @@ mtk::dtDateTime   QDate_as_mtk_DateTime(const  QDate&  qdate);
 
 QString                             dragProductText         (const mtk::msg::sub_product_code& product);
 mtk::msg::sub_product_code          get_product_code        (QDropEvent *event);
+bool                                has_product_code        (QDropEvent *event);
 QString                             get_property_value      (QDropEvent *event, const QString&  prop_name);
 QString                             dragProductText__ext    (const mtk::msg::sub_product_code& product, const mtk::list<mtk::tuple<QString, QString> >&  ext_info);
 
-
-//const QColor mtk_yellow(QColor(Qt::yellow).lighter(150));
-//const QColor mtk_yellow(QColor(227,233,255));
-const QColor mtk_color_header       (QColor(191,219,255));
-const QColor mtk_color_problem      (QColor(Qt::red));
-const QColor mtk_color_sell         (QColor(Qt::red).lighter(160));
-const QColor mtk_color_buy          (QColor(Qt::green).lighter(160));
-const QColor mtk_color_sell_cell    (QColor(255,215,225));
-const QColor mtk_color_buy_cell     (QColor(215,255,225));
-const QColor mtk_color_executed     (QColor(Qt::cyan).lighter(120));
-//const QColor mtk_color_executed     (QColor(255, 175, 75));
-const QColor mtk_color_pending      (QColor(Qt::yellow).lighter(150));
-const QColor mtk_color_null         (QColor(40, 0, 60));
-//const QColor mtk_color_rejected     (QColor(100, 0, 50));
-//const QColor mtk_color_rejected     (QColor(200, 100, 150));
-//const QColor mtk_color_rejected     (QColor(230, 130, 180));
-const QColor mtk_color_rejected     (QColor(255, 0, 0));
-const QColor mtk_color_blinking     (QColor(105, 145, 192));
-const QColor mtk_color_blinking2    =  mtk_color_blinking;
-//const QColor mtk_color_blinking     (QColor(140, 40, 90));
-
-
-
-int  get_base_font_size(void);
-void set_base_font_size(int new_size);
 
 
 void  copy_execs_clipboard(const mtk::list<mtk::trd::msg::CF_EXLK>&  execs);

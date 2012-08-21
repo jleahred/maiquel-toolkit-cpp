@@ -13,6 +13,7 @@
 #include "qt_components/src/qlocaledoublespinbox.h"
 
 #include "ecimd_config.h"
+#include "ecimd_styles.h"
 
 
 
@@ -233,7 +234,7 @@ public:
     {
         this->setTextAlignment(6, Qt::AlignHCenter|Qt::AlignVCenter|Qt::AlignCenter);
         this->setTextAlignment(7, Qt::AlignHCenter|Qt::AlignVCenter|Qt::AlignCenter);
-        this->setBackground(7, QBrush  (qtmisc::mtk_color_header));
+        this->setBackground(7, QBrush  (ecimd_styles::color_header));
         this->setFlags(this->flags() |  Qt::ItemIsEditable);
 
         MTK_CONNECT_THIS(get_signal_loss_win_modif(), slot_loss_win_modified);
@@ -255,7 +256,7 @@ public:
             mtk::AlarmMsg(mtk::Alarm(MTK_HERE, "alarm l/w conf", MTK_SS(account << "  " << alarm  << "  current l/w:" << loss_win), mtk::alPriorDebug));
             editing_alarm = false;
             alarm_triggered = false;
-            this->setBackground(7, QBrush  (qtmisc::mtk_color_header));
+            this->setBackground(7, QBrush  (ecimd_styles::color_header));
             check_alarm();
         }
     }
@@ -267,7 +268,7 @@ public:
 
         alarm_triggered = false;
         alarm = _alarm;
-        this->setBackground(7, QBrush  (qtmisc::mtk_color_header));
+        this->setBackground(7, QBrush  (ecimd_styles::color_header));
         check_alarm();
     }
 
@@ -275,7 +276,7 @@ public:
     {
         if(editing_alarm ==false  &&  alarm_triggered==false   &&  alarm.IsValid()  &&  loss_win.IsValid()  &&  alarm != mtk::Double(0.)  &&  alarm>=loss_win)
         {
-            this->setBackground(7, QBrush  (qtmisc::mtk_color_problem));
+            this->setBackground(7, QBrush  (ecimd_styles::color_problem));
             wUserMessage::show_message(QObject::tr("ALARM\nloss/win  on product %1.  Configured on %2").arg(QLatin1String(MTK_SS(account).c_str()), QLocale::system().toString(alarm.get2(), 'f', 0)));
             static  Phonon::MediaObject* mediaObject = Phonon::createPlayer(Phonon::NoCategory, Phonon::MediaSource(QLatin1String("../data/alarm.wav")));
             mediaObject->stop();
@@ -381,9 +382,9 @@ public:
         this->setFont(5, font);
         this->setFont(6, font);
 
-        QBrush  bbuy(qtmisc::mtk_color_buy_cell);
+        QBrush  bbuy(ecimd_styles::color_buy_cell);
         bbuy.setStyle(Qt::SolidPattern);
-        QBrush  bsell(qtmisc::mtk_color_sell_cell);
+        QBrush  bsell(ecimd_styles::color_sell_cell);
         bsell.setStyle(Qt::SolidPattern);
         this->setBackground(1, bbuy);
         this->setBackground(2, bbuy);
@@ -449,9 +450,9 @@ class QTreeWidgetItem_exec__Product  : public  QTreeWidgetItem_exec,   public  m
 
         this->setText(5,    QLocale::system().toString(diff_quantity.GetDouble().get2(), 'f', 0));
 
-        QBrush  bbuy(qtmisc::mtk_color_buy_cell);
+        QBrush  bbuy(ecimd_styles::color_buy_cell);
         bbuy.setStyle(Qt::SolidPattern);
-        QBrush  bsell(qtmisc::mtk_color_sell_cell);
+        QBrush  bsell(ecimd_styles::color_sell_cell);
         bsell.setStyle(Qt::SolidPattern);
         if(diff_quantity.GetIntCode() == 0)
             this->setBackground(5, QBrush());

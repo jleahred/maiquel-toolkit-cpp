@@ -10,7 +10,7 @@
 #include "qt_components/src/qmtk_misc.h"
 
 #include "yaml/yaml.h"
-
+#include "ecimd_styles.h"
 
 
 
@@ -94,6 +94,8 @@ void mtk_uTitle::paintEvent(QPaintEvent *event)
 
 
 
+
+
 mtk_uResize::mtk_uResize(QWidget *parent) :
     QWidget(parent)
 {
@@ -149,7 +151,7 @@ mtkContainerWidget::mtkContainerWidget(QWidget *parent) :
     QWidget(parent)
 {
     title = new mtk_uTitle(this);
-    title->setGeometry(0,0,80,22);
+    title->setGeometry(0,0,80,20);
     connect(title, SIGNAL(on_mouseMoveEvent(QMouseEvent*)), this, SLOT(title_mouseMoveEvent(QMouseEvent*)));
     connect(title, SIGNAL(on_mousePressEvent(QMouseEvent*)), this, SLOT(title_mousePressEvent(QMouseEvent*)));
     connect(title, SIGNAL(on_mouseReleaseEvent(QMouseEvent*)), this, SLOT(title_mouseReleaseEvent(QMouseEvent*)));
@@ -216,13 +218,22 @@ void mtkContainerWidget::title_mouseReleaseEvent(QMouseEvent* /*event*/)
 
 void	mtkContainerWidget::resizeEvent ( QResizeEvent * /*event*/ )
 {
-    resizer->setGeometry(this->width()-20, this->height()-20, 20, 20);
+    resizer->setGeometry(this->width()-15, this->height()-15, 20, 20);
     resizer->raise();
 
-    resizer_right->setGeometry(this->width()-10, 20, 20, this->height()-45);
+    resizer_right->setGeometry(this->width()-10, 20, 20, this->height()-30);
     resizer_right->raise();
 }
 
+
+
+QSize    mtkContainerWidget::sizeHint(void)
+{
+    QSize  size_hint = QWidget::sizeHint();
+    size_hint.setHeight((size_hint.height()+7)/10*10);
+    size_hint.setWidth((size_hint.width()+7)/10*10);
+    return size_hint;
+}
 
 void mtkContainerWidget::resize_mouseMoveEvent(QMouseEvent* event)
 {
@@ -235,6 +246,11 @@ void mtkContainerWidget::resize_mouseMoveEvent(QMouseEvent* event)
     newsize = newsize/10*10;
     newsize.setHeight(newsize.height()-2);
     newsize.setWidth(newsize.width()-2);
+    QSize  size_hint = this->minimumSizeHint();  //this->sizeHint();
+    if(size_hint.height() > newsize.height())
+        newsize.setHeight(size_hint.height());
+    if(size_hint.width() > newsize.width())
+        newsize.setWidth(size_hint.width());
     resize(newsize);
 }
 
@@ -247,6 +263,11 @@ void mtkContainerWidget::resize_mouseMoveEvent_right(QMouseEvent* event)
     newsize = newsize/10*10;
     newsize.setWidth(newsize.width()-2);
     newsize.setHeight(this->height());
+    QSize  size_hint = this->minimumSizeHint();
+    if(size_hint.height() > newsize.height())
+        newsize.setHeight(size_hint.height());
+    if(size_hint.width() > newsize.width())
+        newsize.setWidth(size_hint.width());
     resize(newsize);
 }
 
@@ -262,7 +283,7 @@ void mtkContainerWidget::paintEvent   (QPaintEvent *event)
     QWidget::paintEvent(event);
     QPainter qpainter(this);
 
-    QColor color = qtmisc::mtk_color_header;
+    QColor color = ecimd_styles::color_header;
     if (this->hasFocus())
         color = Qt::blue;
     QPen pen = QPen(color, 1, Qt::SolidLine);

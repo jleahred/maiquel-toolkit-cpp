@@ -56,10 +56,16 @@ MTK_ADMIN_REGISTER_GLOBAL_COMMANDS(register_global_commands)
 int QTickerExecs::num_subscriptions = 0;
 
 
+
+QSize  QTickerExecs::sizeHint(void) const
+{
+    return QSize(290-2, 300-2);
+}
+
 QTickerExecs::QTickerExecs(QWidget *parent) :
         mtkContainerWidget(parent), product_code(mtk::msg::__internal_get_default((mtk::msg::sub_product_code*)0))
 {
-    this->setGeometry(QRect(5, 5, 290-2, 300-2));
+    //this->setGeometry(QRect(5, 5, 290-2, 300-2));
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(5,5,5,5);
@@ -115,8 +121,17 @@ void	QTickerExecs::resizeEvent ( QResizeEvent *  event )
 
 void QTickerExecs::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->setDropAction(Qt::CopyAction);
-    event->accept();
+    if(qtmisc::has_product_code(event))
+    {
+        event->setDropAction(Qt::CopyAction);
+        event->accept();
+        return;
+    }
+    else
+    {
+        event->ignore();
+        return;
+    }
 }
 
 void QTickerExecs::dropEvent(QDropEvent *event)

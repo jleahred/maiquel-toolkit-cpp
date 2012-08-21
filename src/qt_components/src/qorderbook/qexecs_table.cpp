@@ -14,6 +14,7 @@
 #include "qt_components/src/qcommontabledelegate.h"
 #include "components/trading/trd_cli_support.h"
 #include "components/trading/trd_cli_historic.h"
+#include "ecimd_styles.h"
 
 extern  void  show_execs_report_window(void);
 
@@ -94,7 +95,7 @@ public:
 
     QColor  get_default_color(void)
     {
-        return qtmisc::mtk_color_executed;
+        return ecimd_styles::color_executed;
     }
 
 
@@ -112,12 +113,12 @@ public:
         if (exec_item.confirm_info.invariant.side == mtk::trd::msg::buy)
         {
             item->setText(QObject::tr("buy"));
-            item->setBackgroundColor(qtmisc::mtk_color_buy_cell);
+            item->setBackgroundColor(ecimd_styles::color_buy_cell);
         }
         else
         {
             item->setText(QObject::tr("sell"));
-            item->setBackgroundColor(qtmisc::mtk_color_sell_cell);
+            item->setBackgroundColor(ecimd_styles::color_sell_cell);
         }
         item->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
     }

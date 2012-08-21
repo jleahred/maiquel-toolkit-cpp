@@ -209,6 +209,7 @@ public slots:
 
 
 protected:
+    virtual QSize  sizeHint(void) const;
 
 
 private slots:

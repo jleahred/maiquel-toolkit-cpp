@@ -100,12 +100,16 @@ void QProd_info::Highlighter::highlightBlock(const QString &text)
 
 
 
+QSize  QProd_info::sizeHint(void) const
+{
+    return  QSize(290-2, 300-2);
+}
 
 
 QProd_info::QProd_info(QWidget *parent) :
     mtkContainerWidget(parent)
 {
-    this->setGeometry(QRect(5, 5, 290-2, 300-2));
+    //this->setGeometry(QRect(5, 5, 290-2, 300-2));
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setSpacing(0);
     layout->setContentsMargins(5,5,5,5);
@@ -162,8 +166,17 @@ void	QProd_info::resizeEvent ( QResizeEvent *  event )
 
 void QProd_info::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->setDropAction(Qt::CopyAction);
-    event->accept();
+    if(qtmisc::has_product_code(event))
+    {
+        event->setDropAction(Qt::CopyAction);
+        event->accept();
+        return;
+    }
+    else
+    {
+        event->ignore();
+        return;
+    }
 }
 
 void QProd_info::dropEvent(QDropEvent *event)
@@ -246,7 +259,7 @@ void QProd_info::remove_focus(void)
 }
 
 
-void QProd_info::on_message_addtional_info(const mtk::msg::sub_product_code& product_code, const mtk::prices::msg::sub_additional_info&  aditional_info)
+void QProd_info::on_message_addtional_info(const mtk::msg::sub_product_code& /*product_code*/, const mtk::prices::msg::sub_additional_info&  aditional_info)
 {
     QString  s_future_info;
     if(aditional_info.future_info.HasValue())
@@ -260,7 +273,7 @@ void QProd_info::on_message_addtional_info(const mtk::msg::sub_product_code& pro
                                tr("  maturity:      ")  +  QLatin1String(MTK_SS(future_info.maturity).c_str()) +  QLatin1String("\n") +
                                tr("  last trad dt:  ")  +  QLatin1String(MTK_SS(future_info.last_trading_dt).c_str()) +  QLatin1String("\n") +
                                tr("  underlying:    ")  +  QLatin1String(MTK_SS(future_info.underlying).c_str()) +  QLatin1String("\n") +
-                    QLatin1String("---------------------------\n\n")
+                    QLatin1String("---------------------------\n")
                     ;
     }
 
@@ -268,13 +281,13 @@ void QProd_info::on_message_addtional_info(const mtk::msg::sub_product_code& pro
     if(aditional_info.option_info.HasValue())
     {
         mtk::prices::msg::sub_option_info  option_info = aditional_info.option_info.Get();
-        s_future_info =
+        s_option_info =
                    QLatin1String("\n") +
                    QLatin1String("----------------------------\n") +
                                tr("*OPTION*\n")  +
                                tr("  last trad dt:  ")  +  QLatin1String(MTK_SS(option_info.last_trading_dt).c_str()) +  QLatin1String("\n") +
                                tr("  underlying:    ")  +  QLatin1String(MTK_SS(option_info.underlying).c_str()) +  QLatin1String("\n") +
-                    QLatin1String("---------------------------\n\n")
+                    QLatin1String("---------------------------\n")
                     ;
     }
 
@@ -289,7 +302,7 @@ void QProd_info::on_message_addtional_info(const mtk::msg::sub_product_code& pro
                     s_future_info +
                     s_option_info +
 
-                    tr("description:     ")  +  QLatin1String(product_code.product.c_str()) +  QLatin1String("\n") +
+                    tr("\ndescription:     ")  +  QLatin1String(MTK_SS(aditional_info.description).c_str()) +  QLatin1String("\n") +
                     tr("misc:            ")  +  QLatin1String(MTK_SS(aditional_info.yaml_misc).c_str())  +  QLatin1String("\n")
             );
 }

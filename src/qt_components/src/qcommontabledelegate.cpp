@@ -6,6 +6,8 @@
 #include <QHeaderView>
 
 #include "qt_components/src/qmtk_misc.h"
+#include "ecimd_styles.h"
+
 
 /*
 QCommonTableDelegate::QCommonTableDelegate(QObject *parent) :
@@ -215,7 +217,7 @@ void QCommonTableDelegate_view::paint(QPainter* painter, const QStyleOptionViewI
 
     QColor cell_color = Qt::white;
     if(index.column() == 0)
-            cell_color = qtmisc::mtk_color_header;
+            cell_color = ecimd_styles::color_header;
     else if (index.column() == 2  ||  index.column() == 3)
             cell_color = color_price;
 
