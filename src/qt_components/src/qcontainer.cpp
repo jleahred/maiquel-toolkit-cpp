@@ -17,12 +17,13 @@
 #include "qt_components/src/qalarm_price.h"
 #include "qt_components/src/qprod_info.h"
 #include "qt_components/src/qticker_execs.h"
+#include "qt_components/src/automatics/switch_money/qswitch_money.h"
+
 
 
 #include "support/string_codec.h"
 #include "components/admin/admin.h"
 #include "yaml/yaml.h"
-
 
 
 
@@ -37,9 +38,25 @@ qContainer::qContainer(QWidget *parent) :
 
 
 
+void     qContainer::insert_component        (QWidget* compo)
+{
+    connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    ++counter_insertions;
+    counter_insertions %= 6;
+    compo->show();
+    compo->setFocus();
+    compo->adjustSize();
+}
+
+
 
 QMarginal2*  qContainer::insert_qmarginal2(void)
 {
+    auto compo= new QMarginal2(this->widget());
+    insert_component(compo);
+    return compo;
+    /*
     auto compo= new QMarginal2(this->widget());
     connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
     compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
@@ -47,63 +64,98 @@ QMarginal2*  qContainer::insert_qmarginal2(void)
     counter_insertions %= 6;
     compo->show();
     compo->setFocus();
+    compo->adjustSize();
     return compo;
+    */
 }
 
 
 
 QDepth* qContainer::insert_qdepth()
 {
-    QDepth* depth= new QDepth(this->widget());
-    connect(depth, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
-    depth->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    QDepth* compo= new QDepth(this->widget());
+    insert_component(compo);
+    return compo;
+    /*
+    connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
-    depth->show();
-    depth->setFocus();
-
-    return depth;
+    compo->show();
+    compo->setFocus();
+    compo->adjustSize();
+    return compo;
+    */
 }
 
 
 QAlarmPrice*    qContainer::insert_qalarm_price     (void)
 {
     QAlarmPrice* compo= new QAlarmPrice(this->widget());
+    insert_component(compo);
+    return compo;
+    /*
     connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
     compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
     compo->show();
     compo->setFocus();
-
+    compo->adjustSize();
     return compo;
+    */
 }
 
 QProd_info*    qContainer::insert_qproduct_info     (void)
 {
     QProd_info* compo= new QProd_info(this->widget());
+    insert_component(compo);
+    return compo;
+    /*
     connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
     compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
     compo->show();
     compo->setFocus();
-
+    compo->adjustSize();
     return compo;
+    */
 }
 
 
 QTickerExecs*   qContainer::insert_qticker_execs    (void)
 {
     QTickerExecs* compo= new QTickerExecs(this->widget());
+    insert_component(compo);
+    return compo;
+    /*
     connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
     compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
     ++counter_insertions;
     counter_insertions %= 6;
     compo->show();
     compo->setFocus();
-
+    compo->adjustSize();
     return compo;
+    */
+}
+
+QSwicthMoney*   qContainer::insert_qswitch_money    (void)
+{
+    QSwicthMoney* compo= new QSwicthMoney(this->widget());
+    insert_component(compo);
+    return compo;
+    /*
+    connect(compo, SIGNAL(signal_stop_moving()), this, SLOT(slot_widget_moved_or_deleted()));
+    compo->move(QPoint(counter_insertions*20+7, counter_insertions*20+7) );
+    ++counter_insertions;
+    counter_insertions %= 6;
+    compo->show();
+    compo->setFocus();
+    compo->adjustSize();
+    return compo;
+    */
 }
 
 
@@ -180,6 +232,15 @@ YAML::Emitter& operator << (YAML::Emitter& out, const qContainer& m)
         out << YAML::EndSeq;
 
 
+        out << YAML::Key  << "switch_money"  << YAML::Value  << YAML::BeginSeq;
+        for(int i=0; i<m.widget()->children().count(); ++i)
+        {
+            QSwicthMoney* compo = dynamic_cast<QSwicthMoney*>(m.widget()->children().at(i));
+            if(compo!=0)
+                out << *compo;
+        }
+        out << YAML::EndSeq;
+
 
 
     out << YAML::EndMap;
@@ -242,6 +303,15 @@ void     operator>> (const YAML::Node & node   , qContainer& c)
         {
             QTickerExecs* d = c.insert_qticker_execs();
             node["ticker_execs"][i] >>  *d;
+        }
+    }
+
+    if(node.FindValue("switch_money"))
+    {
+        for(unsigned i=0; i<node["switch_money"].size(); ++i)
+        {
+            QSwicthMoney* d = c.insert_qswitch_money();
+            node["switch_money"][i] >>  *d;
         }
     }
 

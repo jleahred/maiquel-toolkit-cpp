@@ -10,6 +10,7 @@ class  QDepth;
 class  QAlarmPrice;
 class  QProd_info;
 class  QTickerExecs;
+class  QSwicthMoney;
 
 
 
@@ -24,6 +25,7 @@ public:
     QAlarmPrice*    insert_qalarm_price     (void);
     QProd_info*     insert_qproduct_info    (void);
     QTickerExecs*   insert_qticker_execs    (void);
+    QSwicthMoney*   insert_qswitch_money    (void);
 
 
     friend YAML::Emitter& operator << (YAML::Emitter   & out , const qContainer& m);
@@ -35,6 +37,7 @@ protected:
 
 private:
     int   counter_insertions;
+    void  insert_component        (QWidget* compo);
 
 signals:
 

@@ -12,7 +12,10 @@ namespace
         bool historic_execs;
         bool loss_win;
         bool new_order_and;
+
+        //  components
         bool execs_ticker;
+        bool switch_money;
     };
 
 
@@ -34,7 +37,7 @@ namespace
 
         if(__config == 0)
         {
-            __config = new config{true, false, false, false, false, false};
+            __config = new config{true, false, false, false, false, false, false};
 
             if(mtk::admin::get_process_info().location.broker_code ==  "CANDORRA")
             {
@@ -44,6 +47,7 @@ namespace
                 __config->loss_win              = true;
                 __config->new_order_and         = true;
                 __config->execs_ticker          = true;
+                __config->switch_money          = false;
             }
 
             else if(mtk::admin::get_process_info().location.broker_code ==  "CIMD")
@@ -54,6 +58,7 @@ namespace
                 __config->loss_win              = true;
                 __config->new_order_and         = false;
                 __config->execs_ticker          = true;
+                __config->switch_money          = true;
             }
             else
             {
@@ -63,6 +68,7 @@ namespace
                 __config->loss_win              = false;
                 __config->new_order_and         = false;
                 __config->execs_ticker          = false;
+                __config->switch_money          = false;
             }
 
             MTK_TIMER_1SF(timer_send_ecimd_config)
@@ -140,5 +146,6 @@ IMPLEMENT_CONFIG(historic_execs)
 IMPLEMENT_CONFIG(loss_win)
 IMPLEMENT_CONFIG(new_order_and)
 IMPLEMENT_CONFIG(execs_ticker)
+IMPLEMENT_CONFIG(switch_money)
 
 }

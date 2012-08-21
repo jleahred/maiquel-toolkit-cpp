@@ -15,9 +15,11 @@ namespace  ecimd_config
     bool historic_execs     (void);
     bool loss_win           (void);
 
-    bool new_order_and      (void);
+    bool new_order_and      (void); //  new order andorra type
 
+    //  components
     bool execs_ticker       (void);
+    bool switch_money       (void);
 }
 
 
